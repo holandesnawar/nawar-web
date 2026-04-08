@@ -1,7 +1,7 @@
 import { defineQuery } from 'groq'
 
 export const LANDING_QUERY = defineQuery(`
-  *[_type == "landingPage"][0]{
+  *[_type == "landingPage" && _id == "landingPage"][0]{
     hero,
     stats,
     marqueeItems,
