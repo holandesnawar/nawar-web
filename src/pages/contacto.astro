@@ -1,0 +1,81 @@
+---
+import { sanityClient } from 'sanity:client'
+import { PortableText } from 'astro-portabletext'
+import Layout from '../layouts/Layout.astro'
+import { CONTACT_QUERY } from '../sanity/queries'
+
+export const prerender = true
+
+const page = await sanityClient.fetch(CONTACT_QUERY)
+---
+
+<Layout
+  title={page?.seo?.title || 'Contacto — Nawar Academia'}
+  description={page?.seo?.description || 'Contacta con Nawar Academia'}
+>
+  <div class="max-w-2xl mx-auto px-6 py-16">
+    <h1 class="text-3xl font-bold mb-8">{page?.title || 'Contacto'}</h1>
+
+    {page?.intro && (
+      <div class="prose mb-10">
+        <PortableText value={page.intro} />
+      </div>
+    )}
+
+    {page?.email && (
+      <p class="mb-10 text-gray-600">
+        También puedes escribirme a{' '}
+        <a href={`mailto:${page.email}`} class="underline hover:text-gray-900">{page.email}</a>
+      </p>
+    )}
+
+    <div class="bg-gray-50 rounded-2xl p-8">
+      <h2 class="font-semibold text-xl mb-6">{page?.formTitle || 'Envíame un mensaje'}</h2>
+      <form
+        name="contacto"
+        method="POST"
+        data-netlify="true"
+        class="flex flex-col gap-4"
+        action="/gracias"
+      >
+        <input type="hidden" name="form-name" value="contacto" />
+        <div>
+          <label class="block text-sm font-medium mb-1" for="nombre">Nombre</label>
+          <input
+            id="nombre"
+            name="nombre"
+            type="text"
+            required
+            class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1" for="email">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1" for="mensaje">Mensaje</label>
+          <textarea
+            id="mensaje"
+            name="mensaje"
+            rows={5}
+            required
+            class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 resize-none"
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          class="bg-gray-900 text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors self-start"
+        >
+          Enviar mensaje
+        </button>
+      </form>
+    </div>
+  </div>
+</Layout>

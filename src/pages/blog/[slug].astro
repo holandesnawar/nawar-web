@@ -1,0 +1,63 @@
+---
+import { sanityClient } from 'sanity:client'
+import { PortableText } from 'astro-portabletext'
+import Layout from '../../layouts/Layout.astro'
+import { POST_QUERY, POST_SLUGS_QUERY } from '../../sanity/queries'
+import imageUrlBuilder from '@sanity/image-url'
+
+export const prerender = true
+
+export async function getStaticPaths() {
+  const slugs = await sanityClient.fetch(POST_SLUGS_QUERY)
+  return slugs.map((item: { slug: string }) => ({ params: { slug: item.slug } }))
+}
+
+const { slug } = Astro.params
+const post = await sanityClient.fetch(POST_QUERY, { slug })
+
+if (!post) {
+  return Astro.redirect('/blog')
+}
+
+const builder = imageUrlBuilder(sanityClient)
+const urlFor = (source: any) => builder.image(source)
+---
+
+<Layout
+  title={post.seo?.title || post.title}
+  description={post.seo?.description || post.excerpt}
+>
+  <article class="max-w-2xl mx-auto px-6 py-16">
+    <!-- Cabecera -->
+    <header class="mb-10">
+      <p class="text-sm text-gray-400 mb-3">
+        {post.publishedAt
+          ? new Date(post.publishedAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
+          : ''}
+      </p>
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">{post.title}</h1>
+      {post.excerpt && <p class="text-lg text-gray-600">{post.excerpt}</p>}
+    </header>
+
+    <!-- Imagen principal -->
+    {post.mainImage && (
+      <img
+        src={urlFor(post.mainImage).width(800).height(450).fit('crop').url()}
+        alt={post.mainImage.alt || post.title}
+        class="w-full rounded-2xl mb-10 aspect-[16/9] object-cover"
+      />
+    )}
+
+    <!-- Contenido -->
+    {post.body && (
+      <div class="prose max-w-none">
+        <PortableText value={post.body} />
+      </div>
+    )}
+
+    <!-- Volver -->
+    <div class="mt-16 pt-8 border-t border-gray-100">
+      <a href="/blog" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">← Volver al blog</a>
+    </div>
+  </article>
+</Layout>

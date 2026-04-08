@@ -1,0 +1,47 @@
+---
+import { sanityClient } from 'sanity:client'
+import Layout from '../../layouts/Layout.astro'
+import { POSTS_QUERY } from '../../sanity/queries'
+import imageUrlBuilder from '@sanity/image-url'
+
+export const prerender = true
+
+const posts = await sanityClient.fetch(POSTS_QUERY)
+const builder = imageUrlBuilder(sanityClient)
+const urlFor = (source: any) => builder.image(source)
+---
+
+<Layout title="Blog — Nawar Academia" description="Posts sobre aprendizaje del neerlandés">
+  <div class="max-w-4xl mx-auto px-6 py-16">
+    <h1 class="text-3xl font-bold mb-12">Blog</h1>
+
+    {posts.length === 0 && (
+      <p class="text-gray-500">Aún no hay posts publicados. ¡Vuelve pronto!</p>
+    )}
+
+    <div class="grid gap-8">
+      {posts.map((post: any) => (
+        <a
+          href={`/blog/${post.slug}`}
+          class="group grid md:grid-cols-[200px_1fr] gap-6 border-b border-gray-100 pb-8"
+        >
+          {post.mainImage && (
+            <img
+              src={urlFor(post.mainImage).width(400).height(250).fit('crop').url()}
+              alt={post.mainImage.alt || post.title}
+              class="w-full rounded-xl aspect-[4/3] object-cover"
+            />
+          )}
+          <div class="flex flex-col justify-center">
+            <p class="text-xs text-gray-400 mb-2">
+              {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}
+            </p>
+            <h2 class="text-xl font-semibold mb-2 group-hover:underline">{post.title}</h2>
+            {post.excerpt && <p class="text-gray-600 text-sm line-clamp-3">{post.excerpt}</p>}
+            <span class="text-sm mt-3 text-gray-400 group-hover:text-gray-700 transition-colors">Leer más →</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>
