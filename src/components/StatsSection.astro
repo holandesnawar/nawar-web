@@ -1,0 +1,30 @@
+---
+interface Stat { value: string; label: string }
+interface Props { stats: Stat[] }
+const { stats } = Astro.props
+
+const delayClass = (i: number) => ['','d1','d2','d3'][i % 4]
+---
+
+<section data-navbar="light" class="bg-white py-24 border-b border-[#DDE6F5]">
+  <div class="max-w-5xl mx-auto px-6">
+
+    <div class="sr text-center mb-14">
+      <p class="text-[12px] font-semibold text-[#9CA3AF] tracking-[0.15em] uppercase">
+        La academia en números
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
+      {stats.map((s, i) => (
+        <div class={`sr ${delayClass(i)} text-center space-y-2`}>
+          <p class="text-[56px] md:text-[64px] font-extrabold leading-none tracking-tight text-[#1D0084]">
+            {s.value}
+          </p>
+          <p class="text-[13px] text-[#9CA3AF] font-medium">{s.label}</p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

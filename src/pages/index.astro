@@ -1,105 +1,55 @@
 ---
 import { sanityClient } from 'sanity:client'
-import { PortableText } from 'astro-portabletext'
 import Layout from '../layouts/Layout.astro'
-import { HOME_QUERY } from '../sanity/queries'
-import imageUrlBuilder from '@sanity/image-url'
+import { LANDING_QUERY } from '../sanity/queries'
 
-export const prerender = true
+import NavbarLanding from '../components/NavbarLanding'
+import HeroSection from '../components/HeroSection.astro'
+import StatsSection from '../components/StatsSection.astro'
+import MarqueeSection from '../components/MarqueeSection.astro'
+import PainPointsSection from '../components/PainPointsSection.astro'
+import FeaturesSection from '../components/FeaturesSection.astro'
+import StepsSection from '../components/StepsSection'
+import StickyComparisonSection from '../components/StickyComparisonSection'
+import TestimonialsSection from '../components/TestimonialsSection.astro'
+import AboutSection from '../components/AboutSection.astro'
+import CallToActionSection from '../components/CallToActionSection.astro'
+import DoubtSection from '../components/DoubtSection.astro'
+import FooterLanding from '../components/FooterLanding'
 
-const page = await sanityClient.fetch(HOME_QUERY)
-const builder = imageUrlBuilder(sanityClient)
-const urlFor = (source: any) => builder.image(source)
+export const prerender = false
+
+const page = await sanityClient.fetch(LANDING_QUERY)
+
+// Fallbacks for when Sanity document doesn't exist yet
+const hero         = page?.hero         ?? {}
+const stats        = page?.stats        ?? []
+const marqueeItems = page?.marqueeItems ?? []
+const painPoints   = page?.painPoints   ?? []
+const features     = page?.features     ?? []
+const steps        = page?.steps        ?? []
+const comparison   = page?.comparison   ?? []
+const testimonials = page?.testimonials ?? []
+const doubts       = page?.doubts       ?? []
+const about        = page?.about        ?? {}
 ---
 
 <Layout
-  title={page?.seo?.title || 'Nawar Academia'}
-  description={page?.seo?.description || 'Aprende neerlandés con Nawar'}
+  title="Nawar — Aprende neerlandés online"
+  description="Academia de neerlandés para hispanohablantes. Clases en vivo, método desde el español y comunidad activa."
 >
-  <!-- Hero -->
-  {page?.hero && (
-    <section class="max-w-4xl mx-auto px-6 py-20 text-center">
-      <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-6">
-        {page.hero.headline}
-      </h1>
-      {page.hero.subheadline && (
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-10">
-          {page.hero.subheadline}
-        </p>
-      )}
-      {page.hero.cta && (
-        <a
-          href={page.hero.ctaUrl || '/lista-de-espera'}
-          class="inline-block bg-gray-900 text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors"
-        >
-          {page.hero.cta}
-        </a>
-      )}
-    </section>
-  )}
+  <NavbarLanding client:load />
 
-  <!-- Sobre mí -->
-  {page?.about && (
-    <section class="max-w-4xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center">
-      {page.about.image && (
-        <img
-          src={urlFor(page.about.image).width(600).height(600).fit('crop').url()}
-          alt="Nawar"
-          class="rounded-2xl w-full aspect-square object-cover"
-        />
-      )}
-      <div>
-        {page.about.title && <h2 class="text-3xl font-bold mb-6">{page.about.title}</h2>}
-        {page.about.body && (
-          <div class="prose">
-            <PortableText value={page.about.body} />
-          </div>
-        )}
-      </div>
-    </section>
-  )}
-
-  <!-- Posts destacados -->
-  {page?.featuredPosts?.length > 0 && (
-    <section class="max-w-4xl mx-auto px-6 py-16">
-      <h2 class="text-2xl font-bold mb-8">Últimas entradas</h2>
-      <div class="grid md:grid-cols-3 gap-6">
-        {page.featuredPosts.map((post: any) => (
-          <a href={`/blog/${post.slug}`} class="group block border border-gray-100 rounded-xl overflow-hidden hover:border-gray-300 transition-colors">
-            {post.mainImage && (
-              <img
-                src={urlFor(post.mainImage).width(400).height(250).fit('crop').url()}
-                alt={post.mainImage.alt || post.title}
-                class="w-full aspect-[8/5] object-cover"
-              />
-            )}
-            <div class="p-4">
-              <p class="text-xs text-gray-400 mb-1">
-                {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('es-ES') : ''}
-              </p>
-              <h3 class="font-semibold group-hover:underline">{post.title}</h3>
-              {post.excerpt && <p class="text-sm text-gray-600 mt-1 line-clamp-2">{post.excerpt}</p>}
-            </div>
-          </a>
-        ))}
-      </div>
-      <div class="mt-8 text-center">
-        <a href="/blog" class="text-sm underline hover:text-gray-600">Ver todos los posts →</a>
-      </div>
-    </section>
-  )}
-
-  <!-- CTA Lista de espera -->
-  <section class="bg-gray-50 mt-16">
-    <div class="max-w-4xl mx-auto px-6 py-16 text-center">
-      <h2 class="text-2xl font-bold mb-4">¿Quieres aprender neerlandés?</h2>
-      <p class="text-gray-600 mb-8">Apúntate a la lista de espera y te avisamos cuando abramos nuevas plazas.</p>
-      <a
-        href="/lista-de-espera"
-        class="inline-block bg-gray-900 text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors"
-      >
-        Quiero apuntarme
-      </a>
-    </div>
-  </section>
+  <HeroSection hero={hero} />
+  <StatsSection stats={stats} />
+  <MarqueeSection items={marqueeItems} />
+  <PainPointsSection painPoints={painPoints} />
+  <FeaturesSection features={features} />
+  <StepsSection steps={steps} client:load />
+  <StickyComparisonSection items={comparison} client:load />
+  <TestimonialsSection testimonials={testimonials} />
+  <AboutSection about={about} />
+  <CallToActionSection />
+  <DoubtSection doubts={doubts} />
+  <FooterLanding client:load />
 </Layout>

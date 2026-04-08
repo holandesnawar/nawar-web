@@ -1,0 +1,100 @@
+---
+interface About { paragraph1?: string; paragraph2?: string; paragraph3?: string }
+interface Props { about: About }
+const { about } = Astro.props
+
+const pillars = [
+  { icon: '🧠', label: 'Método comparado español–neerlandés' },
+  { icon: '🎙️', label: 'Práctica oral desde la primera clase' },
+  { icon: '🇳🇱', label: 'Neerlandés real, no de libro de texto' },
+  { icon: '🌍', label: 'Comunidad exclusiva de hispanohablantes' },
+]
+---
+
+<section data-navbar="light" id="academia" class="relative bg-white overflow-hidden py-32">
+  <div aria-hidden class="absolute inset-0 dots-light pointer-events-none" />
+  <div aria-hidden class="absolute inset-0 pointer-events-none">
+    <div
+      class="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px]"
+      style="background: radial-gradient(circle, rgba(2,93,199,0.06) 0%, transparent 65%)"
+    />
+  </div>
+
+  <div class="relative max-w-6xl mx-auto px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+
+      <!-- Left — visual card -->
+      <div class="sr-s flex justify-center">
+        <div class="relative w-72 lg:w-80">
+          <div
+            class="w-full aspect-[4/5] rounded-3xl border border-[#DDE6F5] bg-[#F0F5FF] flex flex-col items-center justify-center gap-6 p-8 overflow-hidden relative"
+            style="box-shadow: 0 24px 60px rgba(29,0,132,0.10)"
+          >
+            <div aria-hidden class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 20%, rgba(2,93,199,0.12) 0%, transparent 65%)" />
+            <div aria-hidden class="absolute inset-0 dots-light opacity-60" />
+
+            <div class="relative z-10 text-center space-y-2">
+              <p class="text-[#025dc7] eyebrow">Academia Nawar</p>
+              <p class="text-[#1D0084] font-extrabold text-[26px] leading-tight">Neerlandés<br />para hispanohablantes</p>
+            </div>
+
+            <div class="relative z-10 w-full space-y-2">
+              {pillars.map(p => (
+                <div class="flex items-center gap-3 bg-white border border-[#DDE6F5] rounded-xl px-4 py-2.5">
+                  <span class="text-base">{p.icon}</span>
+                  <span class="text-[#1D0084] text-[12px] font-medium">{p.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div aria-hidden class="absolute top-4 left-4 w-full h-full rounded-3xl border border-[#DDE6F5] -z-10" />
+        </div>
+      </div>
+
+      <!-- Right — copy -->
+      <div class="sr d1 space-y-8">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#dde8f8] text-[#1D0084] eyebrow">
+          <svg class="w-3 h-3 shrink-0" viewBox="0 0 12 12" fill="none">
+            <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          La academia
+        </span>
+
+        <h2 class="title text-[#1D0084]">
+          Diseñada para quienes aprenden{' '}
+          <span class="text-[#025dc7]">desde el español</span>
+        </h2>
+
+        <div class="space-y-5 text-[16px] text-[#4A5568] leading-relaxed">
+          {about.paragraph1 && <p>{about.paragraph1}</p>}
+          {about.paragraph2 && <p>{about.paragraph2}</p>}
+          {about.paragraph3 && <p>{about.paragraph3}</p>}
+        </div>
+
+        <div class="flex items-center gap-4 pt-2">
+          <div class="flex -space-x-2">
+            {['AG','CM','LP','RV'].map(ini => (
+              <div class="w-9 h-9 rounded-full bg-[#1D0084] border-2 border-white flex items-center justify-center text-white text-[10px] font-bold">
+                {ini}
+              </div>
+            ))}
+          </div>
+          <p class="text-[14px] text-[#6B7180]">
+            <span class="text-[#1D0084] font-semibold">+600 estudiantes</span> de 15 países
+          </p>
+        </div>
+
+        <a
+          href="#cursos"
+          class="inline-flex items-center gap-2 px-6 py-3 text-[14px] font-semibold rounded-xl bg-[#4da3ff] text-[#0a1a4a] hover:bg-[#3391f0] hover:scale-[1.02] transition-all duration-200"
+        >
+          Ver todos los cursos
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>

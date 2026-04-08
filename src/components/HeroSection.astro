@@ -1,0 +1,189 @@
+---
+interface Hero {
+  badge?: string
+  headlineMain?: string
+  headlineAccent?: string
+  headlineSuffix?: string
+  subtitleDesktop?: string
+  subtitleMobile?: string
+  ctaPrimary?: string
+  ctaSecondary?: string
+  socialProofLabel?: string
+}
+interface Props { hero: Hero }
+const { hero } = Astro.props
+
+const VOCAB = [
+  { nl: 'ik werk',    es: 'yo trabajo' },
+  { nl: 'jij werkt',  es: 'tú trabajas' },
+  { nl: 'hij werkt',  es: 'él trabaja' },
+  { nl: 'wij werken', es: 'nosotros trabajamos' },
+]
+---
+
+<section data-navbar="dark" class="relative bg-[#1D0084] overflow-hidden min-h-[90vh] flex items-center">
+
+  <div aria-hidden class="absolute inset-0 pointer-events-none">
+    <div
+      class="absolute top-[-5%] left-1/2 -translate-x-1/2 w-[1000px] h-[750px]"
+      style="background: radial-gradient(ellipse at center, rgba(11,109,240,0.40) 0%, transparent 65%)"
+    />
+    <div
+      class="absolute top-1/3 -right-40 w-[600px] h-[600px]"
+      style="background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 65%)"
+    />
+  </div>
+  <div aria-hidden class="absolute inset-0 dots-dark pointer-events-none" />
+
+  <div class="relative w-full max-w-6xl mx-auto px-6 pt-36 pb-32">
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-16 xl:gap-20 items-center">
+
+      <!-- Left -->
+      <div class="max-w-2xl space-y-8">
+
+        {hero.badge && (
+          <div class="hidden md:inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/14 bg-white/7 text-white/65 eyebrow">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#0b6df0] animate-pulse" />
+            {hero.badge}
+          </div>
+        )}
+
+        <!-- Mobile title -->
+        <h1 class="md:hidden display text-white" style="font-size:clamp(30px,8vw,44px);line-height:1.18">
+          Da el siguiente paso en tu camino del{' '}
+          <span class="text-[#4da3ff]">{hero.headlineAccent || 'neerlandés'}</span>
+        </h1>
+        <!-- Desktop title -->
+        <h1 class="hidden md:block display text-white" style="line-height:1.18">
+          {hero.headlineMain || 'Aprende'}{' '}
+          <span class="text-[#4da3ff]">{hero.headlineAccent || 'neerlandés'}</span>
+          <br />{hero.headlineSuffix || 'desde el español.'}
+        </h1>
+
+        {hero.subtitleMobile && (
+          <p class="md:hidden text-[17px] leading-[1.65] text-white max-w-[520px]">
+            {hero.subtitleMobile}
+          </p>
+        )}
+        {hero.subtitleDesktop && (
+          <p class="hidden md:block text-[19px] leading-[1.65] text-white/55 max-w-[520px]">
+            {hero.subtitleDesktop}
+          </p>
+        )}
+
+        {hero.socialProofLabel && (
+          <div class="hidden md:flex items-center gap-5">
+            <div class="flex -space-x-2.5">
+              {['AG','CM','LP','RV','SM'].map(ini => (
+                <div class="w-9 h-9 rounded-full bg-[#025dc7] border-2 border-[#1D0084] flex items-center justify-center text-white text-[10px] font-bold">
+                  {ini}
+                </div>
+              ))}
+            </div>
+            <div>
+              <div class="flex gap-0.5 mb-1">
+                {Array.from({ length: 5 }).map(() => (
+                  <svg class="w-4 h-4 fill-[#F58220]" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                  </svg>
+                ))}
+              </div>
+              <p class="text-[13px] text-white/40 font-medium">{hero.socialProofLabel}</p>
+            </div>
+          </div>
+        )}
+
+        <!-- Mobile CTA -->
+        <a
+          href="#lista-espera"
+          class="md:hidden inline-flex items-center gap-2 px-7 py-3.5 text-[15px] font-semibold rounded-xl bg-[#4da3ff] text-white hover:bg-[#5eb4ff] transition-all duration-200 shadow-[0_4px_20px_rgba(77,163,255,0.35)]"
+        >
+          Únete
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+        <!-- Desktop CTAs -->
+        <div class="hidden md:flex items-center gap-3 flex-wrap pt-1">
+          <a
+            href="#lista-espera"
+            class="inline-flex items-center gap-2.5 px-7 py-3.5 text-[15px] font-semibold rounded-xl bg-[#4da3ff] text-white hover:bg-[#5eb4ff] transition-all duration-200 shadow-[0_4px_20px_rgba(77,163,255,0.35)] hover:shadow-[0_6px_28px_rgba(77,163,255,0.50)] hover:scale-[1.02]"
+          >
+            {hero.ctaPrimary || 'Lista de espera'}
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+          <a
+            href="#metodo"
+            class="inline-flex items-center gap-2.5 px-7 py-3.5 text-[15px] font-semibold rounded-xl border border-white/30 text-white hover:bg-white/10 hover:border-white/55 hover:scale-[1.02] transition-all duration-200"
+          >
+            {hero.ctaSecondary || 'Cómo funciona'}
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Right — lesson card -->
+      <div class="-mt-2 max-w-sm mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:shrink-0">
+        <div class="relative">
+          <div
+            class="glass rounded-[24px] p-6 space-y-5"
+            style="box-shadow: 0 40px 80px rgba(0,0,0,0.40), 0 0 0 1px rgba(255,255,255,0.09)"
+          >
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-white/12 border border-white/14 flex items-center justify-center text-lg">🎓</div>
+              <div class="flex-1 min-w-0">
+                <p class="text-white text-[13px] font-semibold truncate">Clase en directo</p>
+                <p class="text-white/40 text-[11px]">Módulo A1 · Hoy 19:00 h</p>
+              </div>
+              <span class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/22 shrink-0">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span class="text-emerald-300 text-[10px] font-semibold">En vivo</span>
+              </span>
+            </div>
+
+            <div>
+              <p class="text-white/30 text-[10px] font-semibold mb-1 uppercase tracking-widest">Lección 6</p>
+              <p class="text-white font-bold text-[17px]">Los verbos en presente 🇳🇱</p>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-[11px] text-white/30 mb-2">
+                <span>Progreso del módulo</span><span>65%</span>
+              </div>
+              <div class="h-1.5 bg-white/8 rounded-full overflow-hidden">
+                <div class="h-full w-[65%] bg-gradient-to-r from-[#0b6df0] to-[#4da3ff] rounded-full" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              {VOCAB.map(v => (
+                <div class="rounded-xl p-3 bg-white/6 border border-white/9">
+                  <p class="text-white text-[12px] font-bold">{v.nl}</p>
+                  <p class="text-[#4da3ff] text-[11px] mt-0.5">{v.es}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="hidden lg:flex absolute -top-4 -right-4 bg-white rounded-2xl px-4 py-3 items-center gap-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.22)]">
+            <span class="text-xl">🔥</span>
+            <div>
+              <p class="text-[#1D0084] font-bold text-[12px] leading-none">Racha de 7 días</p>
+              <p class="text-[#9CA3AF] text-[10px] mt-0.5">¡Sigue así!</p>
+            </div>
+          </div>
+          <div class="hidden lg:flex absolute -bottom-4 -left-4 bg-white rounded-2xl px-4 py-3 items-center gap-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.22)]">
+            <span class="text-xl">🇪🇸🇲🇽🇦🇷</span>
+            <div>
+              <p class="text-[#1D0084] font-bold text-[12px] leading-none">24 estudiantes</p>
+              <p class="text-[#9CA3AF] text-[10px] mt-0.5">en esta clase</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

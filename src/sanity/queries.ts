@@ -1,5 +1,20 @@
 import { defineQuery } from 'groq'
 
+export const LANDING_QUERY = defineQuery(`
+  *[_type == "landingPage"][0]{
+    hero,
+    stats,
+    marqueeItems,
+    painPoints,
+    features,
+    steps,
+    comparison,
+    testimonials,
+    doubts,
+    about
+  }
+`)
+
 export const HOME_QUERY = defineQuery(`
   *[_type == "homePage"][0]{
     hero,
