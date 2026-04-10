@@ -19,6 +19,7 @@ export default defineConfig({
       useCdn: false, // false para builds estáticos, siempre datos frescos
       studioBasePath: '/studio',
       stega: {
+        enabled: true,
         studioUrl: '/studio',
       },
     }),

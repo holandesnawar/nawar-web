@@ -1,0 +1,55 @@
+---
+---
+<div class="signup-wrap" id="apuntate" data-navbar="dark">
+  <div class="signup-glow" aria-hidden="true"></div>
+  <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></div>
+  <div class="signup-inner sr">
+    <span class="badge-dark" style="margin-bottom:20px;">
+      <svg class="check-icon" fill="none" viewBox="0 0 12 12">
+        <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Empieza hoy
+    </span>
+    <h2 class="signup-title">Aprende como el 1%</h2>
+    <p class="signup-sub">Únete a la lista de espera y sé el primero en saber cuando abramos plazas.</p>
+    <ul class="signup-perks">
+      <li>
+        <svg width="16" height="16" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        Diseñado para hispanohablantes
+      </li>
+      <li>
+        <svg width="16" height="16" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        Sin experiencia previa necesaria
+      </li>
+      <li>
+        <svg width="16" height="16" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        Garantía 15 días, reembolso completo
+      </li>
+    </ul>
+    <div id="signup-success" class="signup-success" style="display:none;">
+      <svg width="16" height="16" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+      </svg>
+      ¡Perfecto! Pronto recibirás noticias de nosotros.
+    </div>
+    <form id="signup-form" class="signup-form">
+      <input id="signup-email" type="email" class="signup-input" placeholder="Introduce tu correo electrónico." autocomplete="email">
+      <button type="submit" class="signup-btn">UNIRME</button>
+    </form>
+    <p class="signup-privacy">
+      Al hacer clic, confirmo que he leído y aceptado la <a href="#">política de privacidad</a>.
+    </p>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('signup-form');
+  const success = document.getElementById('signup-success');
+  if (form && success) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      form.style.display = 'none';
+      success.style.display = 'flex';
+    });
+  }
+</script>

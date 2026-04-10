@@ -1,47 +1,108 @@
 ---
 import { sanityClient } from 'sanity:client'
 import Layout from '../../layouts/Layout.astro'
+import NavbarLanding from '../../components/NavbarLanding'
+import FooterLanding from '../../components/FooterLanding'
 import { POSTS_QUERY } from '../../sanity/queries'
 import imageUrlBuilder from '@sanity/image-url'
 
-export const prerender = true
+export const prerender = false
 
 const posts = await sanityClient.fetch(POSTS_QUERY)
 const builder = imageUrlBuilder(sanityClient)
 const urlFor = (source: any) => builder.image(source)
+
+const fmt = (d: string) =>
+  new Date(d).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
 ---
 
-<Layout title="Blog — Nawar Academia" description="Posts sobre aprendizaje del neerlandés">
-  <div class="max-w-4xl mx-auto px-6 py-16">
-    <h1 class="text-3xl font-bold mb-12">Blog</h1>
+<Layout
+  title="Blog — Nawar Academia"
+  description="Artículos sobre el aprendizaje del neerlandés para hispanohablantes. Gramática, cultura, consejos y más."
+>
+  <NavbarLanding client:load />
 
-    {posts.length === 0 && (
-      <p class="text-gray-500">Aún no hay posts publicados. ¡Vuelve pronto!</p>
-    )}
-
-    <div class="grid gap-8">
-      {posts.map((post: any) => (
-        <a
-          href={`/blog/${post.slug}`}
-          class="group grid md:grid-cols-[200px_1fr] gap-6 border-b border-gray-100 pb-8"
-        >
-          {post.mainImage && (
-            <img
-              src={urlFor(post.mainImage).width(400).height(250).fit('crop').url()}
-              alt={post.mainImage.alt || post.title}
-              class="w-full rounded-xl aspect-[4/3] object-cover"
-            />
-          )}
-          <div class="flex flex-col justify-center">
-            <p class="text-xs text-gray-400 mb-2">
-              {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}
-            </p>
-            <h2 class="text-xl font-semibold mb-2 group-hover:underline">{post.title}</h2>
-            {post.excerpt && <p class="text-gray-600 text-sm line-clamp-3">{post.excerpt}</p>}
-            <span class="text-sm mt-3 text-gray-400 group-hover:text-gray-700 transition-colors">Leer más →</span>
-          </div>
-        </a>
-      ))}
+  <!-- Hero -->
+  <section data-navbar="dark" class="relative bg-[#1D0084] overflow-hidden pt-36 pb-24">
+    <div aria-hidden class="absolute inset-0 pointer-events-none">
+      <div
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px]"
+        style="background: radial-gradient(ellipse at center top, rgba(11,109,240,0.38) 0%, transparent 65%)"
+      />
     </div>
-  </div>
+    <div aria-hidden class="absolute inset-0 dots-dark pointer-events-none" />
+
+    <div class="relative max-w-4xl mx-auto px-6 text-center">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#025dc7] text-[#e0f2ff] eyebrow mb-6">
+        <svg class="w-3 h-3 shrink-0" viewBox="0 0 12 12" fill="none">
+          <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Recursos gratuitos
+      </span>
+      <h1 class="title text-white mb-4">
+        Aprende más sobre<br/>
+        <span class="text-[#4da3ff]">el neerlandés</span>
+      </h1>
+      <p class="text-[18px] text-white/55 leading-relaxed max-w-lg mx-auto">
+        Gramática, cultura, consejos de aprendizaje y todo lo que necesitas saber desde el español.
+      </p>
+    </div>
+  </section>
+
+  <!-- Posts -->
+  <section data-navbar="light" class="relative bg-white overflow-hidden py-24">
+    <div aria-hidden class="absolute inset-0 dots-light pointer-events-none opacity-50" />
+    <div class="relative max-w-5xl mx-auto px-6">
+
+      {posts.length === 0 ? (
+        <div class="text-center py-20">
+          <div class="text-5xl mb-4">📝</div>
+          <p class="text-[18px] text-[#9CA3AF] font-medium">Pronto llegan los primeros artículos.</p>
+          <p class="text-[15px] text-[#C4C9D8] mt-2">¡Vuelve pronto!</p>
+        </div>
+      ) : (
+        <div class="space-y-6">
+          {posts.map((post: any, i: number) => (
+            <a
+              href={`/blog/${post.slug}`}
+              class={`group sr ${['','d1','d2','d3'][i % 4]} card-white rounded-2xl overflow-hidden flex flex-col md:flex-row hover:no-underline`}
+            >
+              {post.mainImage ? (
+                <div class="md:w-[280px] md:shrink-0 overflow-hidden">
+                  <img
+                    src={urlFor(post.mainImage).width(560).height(360).fit('crop').url()}
+                    alt={post.mainImage.alt || post.title}
+                    class="w-full h-48 md:h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                  />
+                </div>
+              ) : (
+                <div class="md:w-[280px] md:shrink-0 bg-gradient-to-br from-[#1D0084] to-[#025dc7] flex items-center justify-center h-48 md:h-auto">
+                  <span class="text-4xl opacity-60">🇳🇱</span>
+                </div>
+              )}
+              <div class="flex-1 p-7 md:p-8 flex flex-col justify-center">
+                {post.publishedAt && (
+                  <p class="eyebrow text-[#9CA3AF] mb-3">{fmt(post.publishedAt)}</p>
+                )}
+                <h2 class="text-[20px] font-semibold text-[#1D0084] leading-snug mb-3 group-hover:text-[#025dc7] transition-colors" style="font-family: var(--font-poppins), system-ui, sans-serif">
+                  {post.title}
+                </h2>
+                {post.excerpt && (
+                  <p class="text-[14px] text-[#5A6480] leading-relaxed line-clamp-2 mb-4">{post.excerpt}</p>
+                )}
+                <div class="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#025dc7] group-hover:gap-3 transition-all duration-200">
+                  Leer artículo
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                  </svg>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <FooterLanding client:load />
 </Layout>

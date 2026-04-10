@@ -17,6 +17,9 @@ export const resolve: PresentationPluginOptions['resolve'] = {
     homePage: defineLocations({
       resolve: () => ({ locations: [{ title: 'Inicio', href: '/' }] }),
     }),
+    landingPage: defineLocations({
+      resolve: () => ({ locations: [{ title: 'Inicio', href: '/' }] }),
+    }),
     contactPage: defineLocations({
       resolve: () => ({ locations: [{ title: 'Contacto', href: '/contacto' }] }),
     }),

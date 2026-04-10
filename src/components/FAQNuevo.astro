@@ -1,0 +1,104 @@
+---
+---
+<section id="faq" class="section-light py-section" data-navbar="light" style="position:relative;overflow:hidden;">
+  <div class="dots-light" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.5;"></div>
+  <div class="inner">
+    <div style="text-align:center;max-width:640px;margin:0 auto 64px;" class="sr">
+      <span class="badge-light">Preguntas Frecuentes</span>
+      <h2 class="title" style="color:#1D0084;margin-bottom:16px;">
+        Todo lo que necesitas saber antes de <span style="color:#025dc7;">empezar</span>
+      </h2>
+    </div>
+    <div class="faq-list" id="faq-list">
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false">
+          <span class="faq-q">¿Qué es NAWAR?</span>
+          <span class="faq-icon"><svg fill="none" stroke="#1D0084" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-body">
+          <div class="faq-content">
+            <p>NAWAR es nuestra academia de neerlandés para hispanohablantes. Elegimos este nombre porque en árabe "Nawar" significa "flor": representa crecimiento, constancia y progreso real (sin prisa, pero sin pausa).</p>
+            <ul><li>Explicaciones pensadas para hispanohablantes (comparaciones con el español)</li><li>Un método paso a paso para avanzar sin bloquearte</li><li>Práctica constante para hablar y entender desde el inicio</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false">
+          <span class="faq-q">¿Por qué debería aprender neerlandés si ya hablo inglés?</span>
+          <span class="faq-icon"><svg fill="none" stroke="#1D0084" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-body">
+          <div class="faq-content">
+            <p>Hablar neerlandés es clave para acceder a empleos de calidad, estudios universitarios y beneficios migratorios. El inglés ayuda a "defenderse", pero quien realmente destaca es quien domina el neerlandés.</p>
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false">
+          <span class="faq-q">¿Necesito tener conocimientos previos o experiencia con idiomas?</span>
+          <span class="faq-icon"><svg fill="none" stroke="#1D0084" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-body">
+          <div class="faq-content">
+            <p>No. Nuestros cursos están diseñados para hispanohablantes desde nivel 0. Usamos estructuras claras y comparaciones con el español, incluso si nunca has estudiado otro idioma.</p>
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false">
+          <span class="faq-q">¿Qué tipo de soporte ofrecen si tengo dudas durante el curso?</span>
+          <span class="faq-icon"><svg fill="none" stroke="#1D0084" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-body">
+          <div class="faq-content">
+            <p>Tendrás acceso a asistencia directa por email, WhatsApp y mensajes dentro de la plataforma, además de la comunidad de estudiantes.</p>
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false">
+          <span class="faq-q">¿Puedo estudiar a mi propio ritmo o hay horarios fijos?</span>
+          <span class="faq-icon"><svg fill="none" stroke="#1D0084" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-body">
+          <div class="faq-content">
+            <p>Sí, puedes avanzar a tu propio ritmo. Todo el contenido está disponible 24/7. No hay horarios fijos: tú decides cuántas horas dedicas por semana.</p>
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false">
+          <span class="faq-q">¿Qué diferencia a esta escuela de otras formaciones de neerlandés?</span>
+          <span class="faq-icon"><svg fill="none" stroke="#1D0084" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-body">
+          <div class="faq-content">
+            <p>Enseñamos neerlandés con enfoque realista y adaptado al hispanohablante: gramática funcional, comprensión cultural y práctica contextual orientada a resultados medibles.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const faqList = document.getElementById('faq-list');
+  if (faqList) {
+    faqList.addEventListener('click', function(e) {
+      const btn = (e.target as Element).closest('.faq-btn');
+      if (!btn) return;
+      const item = btn.closest('.faq-item');
+      const body = item?.querySelector('.faq-body') as HTMLElement | null;
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      faqList.querySelectorAll('.faq-item').forEach((i: Element) => {
+        i.querySelector('.faq-btn')?.setAttribute('aria-expanded', 'false');
+        const b = i.querySelector('.faq-body') as HTMLElement | null;
+        if (b) b.style.maxHeight = '';
+      });
+      if (!expanded && body) {
+        btn.setAttribute('aria-expanded', 'true');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+  }
+</script>

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css'
+import { VisualEditing } from '@sanity/astro/visual-editing'
 
 interface Props {
   title?: string
@@ -41,6 +42,7 @@ const {
   </head>
   <body class="min-h-screen antialiased" style="background:#1D0084">
     <slot />
+    <VisualEditing enabled={true} />
 
     <!-- Scroll reveal: watches .sr and .sr-s elements and adds .vis on intersection -->
     <script>
@@ -53,7 +55,7 @@ const {
             }
           })
         },
-        { threshold: 0.12 }
+        { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
       )
       document.querySelectorAll('.sr, .sr-s').forEach((el) => obs.observe(el))
     </script>

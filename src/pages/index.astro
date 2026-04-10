@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro'
 import { LANDING_QUERY } from '../sanity/queries'
 
 import NavbarLanding from '../components/NavbarLanding'
-import HeroSection from '../components/HeroSection.astro'
+import HeroNuevo from '../components/HeroNuevo.astro'
 import StatsSection from '../components/StatsSection.astro'
 import MarqueeSection from '../components/MarqueeSection.astro'
 import PainPointsSection from '../components/PainPointsSection.astro'
@@ -14,15 +14,20 @@ import StickyComparisonSection from '../components/StickyComparisonSection'
 import TestimonialsSection from '../components/TestimonialsSection.astro'
 import AboutSection from '../components/AboutSection.astro'
 import CallToActionSection from '../components/CallToActionSection.astro'
-import DoubtSection from '../components/DoubtSection.astro'
-import FooterLanding from '../components/FooterLanding'
+import PorQueNawar from '../components/PorQueNawar.astro'
+import BenefitsSection from '../components/BenefitsSection.astro'
+import ProcesoSection from '../components/ProcesoSection.astro'
+import ParaQuienSection from '../components/ParaQuienSection.astro'
+import ValorNuevo from '../components/ValorNuevo.astro'
+import BlogNuevo from '../components/BlogNuevo.astro'
+import FAQNuevo from '../components/FAQNuevo.astro'
+import FooterNuevo from '../components/FooterNuevo.astro'
+import '../styles/nawar-sections.css'
 
 export const prerender = false
 
 const page = await sanityClient.fetch(LANDING_QUERY)
 
-// Fallbacks for when Sanity document doesn't exist yet
-const hero         = page?.hero         ?? {}
 const stats        = page?.stats        ?? []
 const marqueeItems = page?.marqueeItems ?? []
 const painPoints   = page?.painPoints   ?? []
@@ -30,7 +35,6 @@ const features     = page?.features     ?? []
 const steps        = page?.steps        ?? []
 const comparison   = page?.comparison   ?? []
 const testimonials = page?.testimonials ?? []
-const doubts       = page?.doubts       ?? []
 const about        = page?.about        ?? {}
 ---
 
@@ -40,9 +44,13 @@ const about        = page?.about        ?? {}
 >
   <NavbarLanding client:load />
 
-  <HeroSection hero={hero} />
+  <HeroNuevo />
   <StatsSection stats={stats} />
   <MarqueeSection items={marqueeItems} />
+  <PorQueNawar />
+  <BenefitsSection />
+  <ProcesoSection />
+  <ParaQuienSection />
   <PainPointsSection painPoints={painPoints} />
   <FeaturesSection features={features} />
   <StepsSection steps={steps} client:load />
@@ -50,6 +58,8 @@ const about        = page?.about        ?? {}
   <TestimonialsSection testimonials={testimonials} />
   <AboutSection about={about} />
   <CallToActionSection />
-  <DoubtSection doubts={doubts} />
-  <FooterLanding client:load />
+  <ValorNuevo />
+  <BlogNuevo />
+  <FAQNuevo />
+  <FooterNuevo />
 </Layout>
