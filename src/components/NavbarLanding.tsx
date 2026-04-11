@@ -224,7 +224,7 @@ export default function NavbarLanding() {
             >
               <button
                 onClick={closeMenu}
-                className="w-11 h-11 flex items-center justify-center rounded-full bg-white/10 text-white/60 hover:bg-white/18 hover:text-white/90 transition-all duration-200"
+                className="w-10 h-10 flex items-center justify-center text-white hover:text-white/70 transition-colors duration-200"
                 aria-label="Cerrar menú"
               >
                 <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
