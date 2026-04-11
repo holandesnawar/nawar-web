@@ -5,15 +5,11 @@ import { LANDING_QUERY } from '../sanity/queries'
 
 import NavbarLanding from '../components/NavbarLanding'
 import HeroNuevo from '../components/HeroNuevo.astro'
-import StatsSection from '../components/StatsSection.astro'
-import MarqueeSection from '../components/MarqueeSection.astro'
 import PainPointsSection from '../components/PainPointsSection.astro'
 import FeaturesSection from '../components/FeaturesSection.astro'
 import StepsSection from '../components/StepsSection'
 import StickyComparisonSection from '../components/StickyComparisonSection'
 import TestimonialsSection from '../components/TestimonialsSection.astro'
-import AboutSection from '../components/AboutSection.astro'
-import CallToActionSection from '../components/CallToActionSection.astro'
 import PorQueNawar from '../components/PorQueNawar.astro'
 import BenefitsSection from '../components/BenefitsSection.astro'
 import ProcesoSection from '../components/ProcesoSection.astro'
@@ -28,14 +24,11 @@ export const prerender = false
 
 const page = await sanityClient.fetch(LANDING_QUERY)
 
-const stats        = page?.stats        ?? []
-const marqueeItems = page?.marqueeItems ?? []
 const painPoints   = page?.painPoints   ?? []
 const features     = page?.features     ?? []
 const steps        = page?.steps        ?? []
 const comparison   = page?.comparison   ?? []
 const testimonials = page?.testimonials ?? []
-const about        = page?.about        ?? {}
 ---
 
 <Layout
@@ -45,19 +38,15 @@ const about        = page?.about        ?? {}
   <NavbarLanding client:load />
 
   <HeroNuevo />
-  <StatsSection stats={stats} />
-  <MarqueeSection items={marqueeItems} />
   <PorQueNawar />
   <BenefitsSection />
   <ProcesoSection />
+  <StickyComparisonSection items={comparison} client:load />
   <ParaQuienSection />
   <PainPointsSection painPoints={painPoints} />
   <FeaturesSection features={features} />
   <StepsSection steps={steps} client:load />
-  <StickyComparisonSection items={comparison} client:load />
   <TestimonialsSection testimonials={testimonials} />
-  <AboutSection about={about} />
-  <CallToActionSection />
   <ValorNuevo />
   <BlogNuevo />
   <FAQNuevo />

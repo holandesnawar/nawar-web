@@ -44,20 +44,64 @@ const {
     <slot />
     <VisualEditing enabled={true} />
 
-    <!-- Scroll reveal: watches .sr and .sr-s elements and adds .vis on intersection -->
+    <!-- Scroll reveal: sequential stagger for .sr/.sr-s, bidirectional for .sr-bi -->
     <script>
-      const obs = new IntersectionObserver(
+      // Sequential stagger state
+      let batchCount = 0
+      let batchTimer: ReturnType<typeof setTimeout> | null = null
+      const STEP = 0.08        // seconds between each element in a batch
+      const MAX_DELAY = 0.32   // cap so last element never waits more than this
+      const RESET_AFTER = 600  // ms of silence before resetting counter
+
+      function resetBatch() {
+        batchCount = 0
+        batchTimer = null
+      }
+
+      // One-way observer — triggers as soon as element enters viewport
+      const obsOnce = new IntersectionObserver(
         (entries) => {
           entries.forEach((e) => {
+            if (!e.isIntersecting) return
+            const el = e.target as HTMLElement
+            if (batchTimer) clearTimeout(batchTimer)
+            batchTimer = setTimeout(resetBatch, RESET_AFTER)
+            const extra = Math.min(batchCount * STEP, MAX_DELAY)
+            el.style.animationDelay = extra > 0 ? `${extra.toFixed(2)}s` : ''
+            el.classList.add('vis')
+            batchCount++
+            obsOnce.unobserve(el)
+          })
+        },
+        { threshold: 0.06, rootMargin: '0px 0px 0px 0px' }
+      )
+
+      // Bidirectional observer (keeps observing to reverse on exit)
+      let biCount = 0
+      let biTimer: ReturnType<typeof setTimeout> | null = null
+
+      const obsBi = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            const el = e.target as HTMLElement
             if (e.isIntersecting) {
-              e.target.classList.add('vis')
-              obs.unobserve(e.target)
+              if (biTimer) clearTimeout(biTimer)
+              biTimer = setTimeout(() => { biCount = 0; biTimer = null }, RESET_AFTER)
+              const delay = Math.min(biCount * STEP, MAX_DELAY)
+              el.style.transitionDelay = delay > 0 ? `${delay.toFixed(2)}s` : '0s'
+              el.classList.add('vis')
+              biCount++
+            } else {
+              el.style.transitionDelay = '0s'
+              el.classList.remove('vis')
             }
           })
         },
-        { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+        { threshold: 0.06, rootMargin: '0px 0px 0px 0px' }
       )
-      document.querySelectorAll('.sr, .sr-s').forEach((el) => obs.observe(el))
+
+      document.querySelectorAll('.sr, .sr-s').forEach((el) => obsOnce.observe(el))
+      document.querySelectorAll('.sr-bi').forEach((el) => obsBi.observe(el))
     </script>
   </body>
 </html>

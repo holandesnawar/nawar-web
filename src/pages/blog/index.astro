@@ -2,8 +2,9 @@
 import { sanityClient } from 'sanity:client'
 import Layout from '../../layouts/Layout.astro'
 import NavbarLanding from '../../components/NavbarLanding'
-import FooterLanding from '../../components/FooterLanding'
+import FooterNuevo from '../../components/FooterNuevo.astro'
 import { POSTS_QUERY } from '../../sanity/queries'
+import '../../styles/nawar-sections.css'
 import imageUrlBuilder from '@sanity/image-url'
 
 export const prerender = false
@@ -104,5 +105,5 @@ const fmt = (d: string) =>
     </div>
   </section>
 
-  <FooterLanding client:load />
+  <FooterNuevo />
 </Layout>

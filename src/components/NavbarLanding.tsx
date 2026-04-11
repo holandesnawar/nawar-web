@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 
 const NAV_LINKS = [
   { label: 'Inicio',         href: '/' },
-  { label: 'Nuestra visión', href: '#academia' },
+  { label: 'Nuestra visión', href: '/nuestra-vision' },
   { label: 'Blog',           href: '/blog' },
   { label: 'Contacto',       href: '/contacto' },
 ]
@@ -105,7 +105,7 @@ export default function NavbarLanding() {
                 <a
                   key={link.href}
                   href={r(link.href)}
-                  className="px-4 py-2 text-[15px] font-medium text-white/88 hover:text-white/50 transition-colors duration-200"
+                  className="px-4 py-2 text-[15px] font-semibold text-white/88 hover:text-white/50 transition-colors duration-200"
                 >
                   {link.label}
                 </a>
@@ -116,13 +116,13 @@ export default function NavbarLanding() {
             <div className="hidden md:flex items-center gap-3">
               <a
                 href="#"
-                className="text-[14px] font-medium text-white/70 hover:text-white transition-colors duration-200 px-3 py-2"
+                className="px-4 py-2 text-[15px] font-semibold text-white/88 hover:text-white/50 transition-colors duration-200"
               >
                 Acceso a alumnos
               </a>
               <a
                 href={r('#lista-espera')}
-                className="inline-flex items-center gap-2 px-6 py-2.5 text-[14px] font-semibold rounded-xl bg-[#4da3ff] text-white hover:bg-[#69baff] transition-all duration-200 shadow-[0_2px_16px_rgba(77,163,255,0.35)]"
+                className="inline-flex items-center gap-2 px-7 py-3 text-[15px] font-semibold rounded-lg bg-[#4da3ff] text-[#1D0084] transition-colors duration-200"
               >
                 Apúntate
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">

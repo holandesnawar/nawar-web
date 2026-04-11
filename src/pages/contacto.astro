@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import NavbarLanding from '../components/NavbarLanding'
-import FooterLanding from '../components/FooterLanding'
+import FooterNuevo from '../components/FooterNuevo.astro'
+import '../styles/nawar-sections.css'
 
 export const prerender = false
 ---
@@ -12,165 +13,235 @@ export const prerender = false
 >
   <NavbarLanding client:load />
 
-  <!-- Hero -->
-  <section data-navbar="dark" class="relative bg-[#1D0084] overflow-hidden pt-36 pb-24">
-    <div aria-hidden class="absolute inset-0 pointer-events-none">
-      <div
-        class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px]"
-        style="background: radial-gradient(ellipse at center top, rgba(11,109,240,0.38) 0%, transparent 65%)"
-      />
-    </div>
-    <div aria-hidden class="absolute inset-0 dots-dark pointer-events-none" />
+  <section data-navbar="dark" class="ct-section">
+    <!-- Background -->
+    <div class="ct-bg" aria-hidden="true"></div>
+    <div class="ct-glow" aria-hidden="true"></div>
+    <div class="dots-dark ct-dots" aria-hidden="true"></div>
 
-    <div class="relative max-w-2xl mx-auto px-6 text-center">
-      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#025dc7] text-[#e0f2ff] eyebrow mb-6">
-        <svg class="w-3 h-3 shrink-0" viewBox="0 0 12 12" fill="none">
-          <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Estamos aquí
-      </span>
-      <h1 class="title text-white mb-4">
-        Hablemos de tu<br/>
-        <span class="text-[#4da3ff]">aprendizaje</span>
-      </h1>
-      <p class="text-[18px] text-white/55 leading-relaxed max-w-md mx-auto">
-        ¿Tienes dudas sobre los cursos o el método? Escríbenos y te respondemos en menos de 24 horas.
-      </p>
-    </div>
-  </section>
+    <div class="ct-container">
 
-  <!-- Form card -->
-  <section data-navbar="light" class="relative bg-white overflow-hidden py-24">
-    <div aria-hidden class="absolute inset-0 dots-light pointer-events-none opacity-60" />
-
-    <div class="relative max-w-xl mx-auto px-6">
-
-      <!-- Contact options row -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-        <a
-          href="mailto:hola@holandesnawar.com"
-          class="group card-soft rounded-2xl p-5 flex items-center gap-4 hover:no-underline"
-        >
-          <div class="w-10 h-10 rounded-2xl bg-[#1D0084]/8 border border-[#1D0084]/12 flex items-center justify-center shrink-0 group-hover:bg-[#1D0084]/14 transition-colors">
-            <svg class="w-5 h-5 text-[#1D0084]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-            </svg>
+      <!-- Left: form panel -->
+      <div class="ct-panel">
+        <div class="ct-panel-inner">
+          <div class="ct-heading">
+            <h1 class="ct-title">Estamos aquí<br>para ayudarte</h1>
+            <p class="ct-sub">¿Tienes dudas sobre los cursos o el método? Escríbenos y te respondemos en menos de 24 horas.</p>
           </div>
-          <div>
-            <p class="text-[12px] text-[#9CA3AF] font-medium">Email directo</p>
-            <p class="text-[14px] text-[#1D0084] font-semibold">hola@holandesnawar.com</p>
-          </div>
-        </a>
 
-        <div class="card-soft rounded-2xl p-5 flex items-center gap-4">
-          <div class="w-10 h-10 rounded-2xl bg-[#1D0084]/8 border border-[#1D0084]/12 flex items-center justify-center shrink-0">
-            <svg class="w-5 h-5 text-[#1D0084]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+          <form id="contact-form" class="ct-form" novalidate>
+            <div class="ct-row">
+              <div class="ct-field">
+                <label class="ct-label" for="nombre">Nombre</label>
+                <input id="nombre" name="nombre" type="text" required placeholder="Tu nombre" class="ct-input" />
+              </div>
+              <div class="ct-field">
+                <label class="ct-label" for="email">Correo</label>
+                <input id="email" name="email" type="email" required placeholder="tu@email.com" class="ct-input" />
+              </div>
+            </div>
+
+            <div class="ct-field">
+              <label class="ct-label" for="mensaje">Mensaje</label>
+              <textarea id="mensaje" name="mensaje" rows="5" required placeholder="¿En qué podemos ayudarte?" class="ct-input" style="resize:none;"></textarea>
+            </div>
+
+            <button type="submit" id="submit-btn" class="ct-submit">
+              Enviar mensaje
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </button>
+
+            <p class="ct-privacy">Al enviar aceptas nuestra <a href="#">política de privacidad</a>.</p>
+          </form>
+
+          <div id="success-msg" style="display:none;" class="ct-success">
+            <div class="ct-success-icon">
+              <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <h3 class="ct-success-title">¡Mensaje enviado!</h3>
+            <p class="ct-success-sub">Te respondemos en menos de 24 horas.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: tulip image -->
+      <div class="ct-image-side">
+        <div class="ct-image-wrap">
+          <img
+            src="https://d1yei2z3i6k35z.cloudfront.net/9533860/676188e625099_Tulipfield_NL.jpg"
+            alt="Campo de tulipanes"
+            class="ct-image"
+          />
+          <div class="ct-image-badge">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-          </div>
-          <div>
-            <p class="text-[12px] text-[#9CA3AF] font-medium">Tiempo de respuesta</p>
-            <p class="text-[14px] text-[#1D0084] font-semibold">Menos de 24 horas</p>
+            Respuesta en menos de 24h
           </div>
         </div>
       </div>
 
-      <!-- Form -->
-      <div class="bg-white border border-[#DDE6F5] rounded-3xl p-8 md:p-10 shadow-[0_4px_40px_rgba(29,0,132,0.08)]">
-        <h2 class="text-[20px] font-semibold text-[#1D0084] mb-6" style="font-family: var(--font-poppins), system-ui, sans-serif">
-          Envíanos un mensaje
-        </h2>
-
-        <form
-          id="contact-form"
-          class="space-y-5"
-          novalidate
-        >
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div>
-              <label class="block text-[13px] font-medium text-[#374151] mb-1.5" for="nombre">Nombre</label>
-              <input
-                id="nombre"
-                name="nombre"
-                type="text"
-                required
-                placeholder="Tu nombre"
-                class="w-full border border-[#DDE6F5] rounded-xl px-4 py-3 text-[14px] text-[#1D0084] placeholder:text-[#9CA3AF] bg-[#F8FAFF] focus:outline-none focus:border-[#025dc7]/50 focus:ring-2 focus:ring-[#025dc7]/10 transition-all"
-              />
-            </div>
-            <div>
-              <label class="block text-[13px] font-medium text-[#374151] mb-1.5" for="email">Email</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                placeholder="tu@email.com"
-                class="w-full border border-[#DDE6F5] rounded-xl px-4 py-3 text-[14px] text-[#1D0084] placeholder:text-[#9CA3AF] bg-[#F8FAFF] focus:outline-none focus:border-[#025dc7]/50 focus:ring-2 focus:ring-[#025dc7]/10 transition-all"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-[13px] font-medium text-[#374151] mb-1.5" for="asunto">Asunto</label>
-            <select
-              id="asunto"
-              name="asunto"
-              class="w-full border border-[#DDE6F5] rounded-xl px-4 py-3 text-[14px] text-[#1D0084] bg-[#F8FAFF] focus:outline-none focus:border-[#025dc7]/50 focus:ring-2 focus:ring-[#025dc7]/10 transition-all appearance-none"
-            >
-              <option value="">Selecciona un asunto</option>
-              <option value="cursos">Información sobre cursos</option>
-              <option value="metodo">El método Nawar</option>
-              <option value="precio">Precio y formas de pago</option>
-              <option value="otro">Otro</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-[13px] font-medium text-[#374151] mb-1.5" for="mensaje">Mensaje</label>
-            <textarea
-              id="mensaje"
-              name="mensaje"
-              rows={5}
-              required
-              placeholder="Cuéntanos en qué podemos ayudarte..."
-              class="w-full border border-[#DDE6F5] rounded-xl px-4 py-3 text-[14px] text-[#1D0084] placeholder:text-[#9CA3AF] bg-[#F8FAFF] focus:outline-none focus:border-[#025dc7]/50 focus:ring-2 focus:ring-[#025dc7]/10 transition-all resize-none"
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            id="submit-btn"
-            class="w-full flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#1D0084] text-white text-[15px] font-semibold hover:bg-[#025dc7] transition-all duration-200 shadow-[0_4px_20px_rgba(29,0,132,0.20)] hover:scale-[1.01]"
-          >
-            Enviar mensaje
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-          </button>
-        </form>
-
-        <!-- Success state (hidden by default) -->
-        <div id="success-msg" class="hidden text-center py-8">
-          <div class="w-14 h-14 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center mx-auto mb-4">
-            <svg class="w-7 h-7 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-            </svg>
-          </div>
-          <h3 class="text-[18px] font-semibold text-[#1D0084] mb-2">¡Mensaje enviado!</h3>
-          <p class="text-[14px] text-[#5A6480]">Te respondemos en menos de 24 horas. Revisa tu bandeja de entrada.</p>
-        </div>
-      </div>
     </div>
   </section>
 
-  <FooterLanding client:load />
+  <FooterNuevo />
 </Layout>
+
+<style>
+/* ── Section ── */
+.ct-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: #0d0050;
+  padding: 120px 0 80px;
+}
+.ct-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #0a0040 0%, #1D0084 50%, #0b1a60 100%);
+}
+.ct-glow {
+  position: absolute;
+  top: -10%; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 600px;
+  background: radial-gradient(ellipse at center top, rgba(11,109,240,0.35) 0%, transparent 65%);
+  pointer-events: none;
+}
+.ct-dots {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.4;
+}
+.ct-container {
+  position: relative; z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  width: 100%;
+}
+
+/* ── Glass form panel ── */
+.ct-panel {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 24px;
+  padding: 2px;
+}
+.ct-panel-inner {
+  padding: 44px 40px;
+}
+.ct-heading { margin-bottom: 36px; }
+.ct-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+.ct-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.58);
+  line-height: 1.65;
+}
+
+/* ── Form ── */
+.ct-form { display: flex; flex-direction: column; gap: 16px; }
+.ct-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.ct-field { display: flex; flex-direction: column; gap: 6px; }
+.ct-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(255,255,255,0.50);
+}
+.ct-input {
+  padding: 13px 16px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.07);
+  font-size: 14px; color: #fff;
+  font-family: inherit; outline: none; width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s, background 0.2s;
+}
+.ct-input::placeholder { color: rgba(255,255,255,0.28); }
+.ct-input:focus {
+  border-color: rgba(77,163,255,0.6);
+  background: rgba(255,255,255,0.11);
+}
+.ct-submit {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 14px; border-radius: 8px; border: none; cursor: pointer;
+  background: #4da3ff; color: #1D0084;
+  font-size: 15px; font-weight: 700; font-family: inherit;
+  margin-top: 4px;
+}
+.ct-privacy { font-size: 12px; color: rgba(255,255,255,0.30); text-align: center; }
+.ct-privacy a { color: rgba(255,255,255,0.50); text-decoration: underline; }
+
+/* ── Success ── */
+.ct-success { text-align: center; padding: 32px 0; }
+.ct-success-icon {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.30);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px; color: #10b981;
+}
+.ct-success-title { font-family: 'Poppins', system-ui, sans-serif; font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+.ct-success-sub { font-size: 14px; color: rgba(255,255,255,0.50); }
+
+/* ── Right image ── */
+.ct-image-side { display: flex; align-items: center; }
+.ct-image-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+}
+.ct-image {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.ct-image-badge {
+  position: absolute;
+  bottom: 20px; left: 50%; transform: translateX(-50%);
+  white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.92);
+  color: #1D0084;
+  font-size: 13px; font-weight: 600;
+  padding: 10px 18px; border-radius: 9999px;
+  backdrop-filter: blur(8px);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .ct-container { grid-template-columns: 1fr; gap: 40px; }
+  .ct-image-side { order: -1; }
+  .ct-image-wrap { aspect-ratio: 16/9; }
+  .ct-section { padding: 120px 0 60px; }
+  .ct-container { padding: 0 20px; }
+}
+@media (max-width: 540px) {
+  .ct-row { grid-template-columns: 1fr; }
+  .ct-panel-inner { padding: 32px 24px; }
+}
+</style>
 
 <script>
   const form = document.getElementById('contact-form') as HTMLFormElement | null
   const successMsg = document.getElementById('success-msg')
-  const submitBtn = document.getElementById('submit-btn')
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault()
@@ -178,13 +249,12 @@ export const prerender = false
 
     if (submitBtn) {
       submitBtn.textContent = 'Enviando…'
-      submitBtn.setAttribute('disabled', 'true')
+      submitBtn.disabled = true
     }
 
-    // Simulated send — replace with your email service (Resend, Formspree, etc.)
     await new Promise(r => setTimeout(r, 1000))
 
-    form.classList.add('hidden')
-    successMsg?.classList.remove('hidden')
+    form.style.display = 'none'
+    if (successMsg) successMsg.style.display = 'block'
   })
 </script>

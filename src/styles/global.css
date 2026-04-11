@@ -126,12 +126,13 @@ body {
 }
 .ticker       { animation: ticker-ltr 35s linear infinite; }
 .ticker:hover { animation-play-state: paused; }
+.ticker-flow  { animation: ticker-ltr 28s linear infinite; }
 
 /* ════════════════════════════════════
    SCROLL REVEAL
 ════════════════════════════════════ */
 @keyframes in-up {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(22px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes in-scale {
@@ -140,14 +141,25 @@ body {
 }
 
 .sr       { opacity: 0; }
-.sr.vis   { animation: in-up    0.72s cubic-bezier(0.22,1,0.36,1) forwards; }
+.sr.vis   { animation: in-up    0.85s cubic-bezier(0.22,1,0.36,1) forwards; }
 .sr-s     { opacity: 0; }
-.sr-s.vis { animation: in-scale 0.72s cubic-bezier(0.22,1,0.36,1) forwards; }
+.sr-s.vis { animation: in-scale 0.85s cubic-bezier(0.22,1,0.36,1) forwards; }
 
-.d1 { animation-delay: 0.10s; }
-.d2 { animation-delay: 0.20s; }
-.d3 { animation-delay: 0.30s; }
-.d4 { animation-delay: 0.40s; }
+/* Bidirectional: uses transitions so removing .vis reverses naturally */
+.sr-bi {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1);
+}
+.sr-bi.vis {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.d1 { animation-delay: 0.07s; }
+.d2 { animation-delay: 0.14s; }
+.d3 { animation-delay: 0.21s; }
+.d4 { animation-delay: 0.28s; }
 
 /* ════════════════════════════════════
    MOBILE MENU OVERLAY
