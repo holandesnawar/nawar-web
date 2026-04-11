@@ -24,9 +24,9 @@ export default function StickyComparisonSection({ items }: Props) {
           {/* Left — sticky, align-self:start is required for sticky inside flex */}
           <div
             className="lg:w-[42%] shrink-0 lg:sticky lg:top-0 lg:h-screen"
-            style={{ display: 'flex', alignItems: 'center', alignSelf: 'flex-start' }}
+            style={{ display: 'flex', alignItems: 'flex-start', alignSelf: 'flex-start' }}
           >
-            <div className="space-y-6 w-full py-20 lg:pr-16">
+            <div className="space-y-6 w-full py-10 lg:py-20 lg:pr-16">
               <span className="badge-light eyebrow">
                 <svg className="check-icon" fill="none" viewBox="0 0 12 12">
                   <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
@@ -42,24 +42,11 @@ export default function StickyComparisonSection({ items }: Props) {
               <p className="text-[17px] text-[#1D0084] leading-relaxed" style={{ opacity: 0.65 }}>
                 No es solo un curso de idiomas. Es el método que debería haber existido desde el principio.
               </p>
-
-              <div className="flex items-center gap-4 pt-2">
-                <div className="flex -space-x-2">
-                  {['AG','CM','LP','RV'].map(ini => (
-                    <div key={ini} className="w-9 h-9 rounded-full bg-[#1D0084] border-2 border-[#F0F5FF] flex items-center justify-center text-white text-[10px] font-bold">
-                      {ini}
-                    </div>
-                  ))}
-                </div>
-                <p className="text-[14px] text-[#1D0084]/60">
-                  <span className="text-[#1D0084] font-semibold">+600 estudiantes</span> ya lo han comprobado
-                </p>
-              </div>
             </div>
           </div>
 
           {/* Right — normal scroll, cards flow naturally */}
-          <div className="lg:w-[58%] py-20 space-y-5">
+          <div className="lg:w-[58%] pt-2 pb-10 lg:py-20 space-y-5">
             {items.map((item) => (
               <div key={item.title} className="bg-white rounded-3xl p-8">
                 <div className="flex items-center gap-4 mb-6">

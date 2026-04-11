@@ -135,7 +135,7 @@ export default function NavbarLanding() {
             <div className="md:hidden flex items-center gap-2">
               <a
                 href={r('#lista-espera')}
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-[#4da3ff] text-white text-[14px] font-semibold hover:bg-[#5eb4ff] transition-all duration-200"
+                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-[#4da3ff] text-[#1D0084] text-[14px] font-semibold hover:bg-[#5eb4ff] transition-all duration-200"
               >
                 Apúntate
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
@@ -206,7 +206,7 @@ export default function NavbarLanding() {
               <a
                 href={r('#lista-espera')}
                 onClick={handleLink}
-                className="flex w-full items-center justify-center gap-2.5 px-6 py-4 text-[16px] font-semibold rounded-xl bg-[#4da3ff] text-white hover:bg-[#5eb4ff] transition-all duration-200 shadow-[0_4px_20px_rgba(77,163,255,0.30)]"
+                className="flex w-full items-center justify-center gap-2.5 px-6 py-4 text-[16px] font-semibold rounded-xl bg-[#4da3ff] text-[#1D0084] hover:bg-[#5eb4ff] transition-all duration-200 shadow-[0_4px_20px_rgba(77,163,255,0.30)]"
               >
                 Apúntate
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
@@ -214,24 +214,24 @@ export default function NavbarLanding() {
                 </svg>
               </a>
             </div>
-          </div>
 
-          <div
-            className="relative z-10 pb-12 flex justify-center flex-shrink-0"
-            style={{
-              animation: `link-reveal 0.55s cubic-bezier(0.16,1,0.3,1) ${0.10 + NAV_LINKS.length * 0.065 + 0.15}s forwards`,
-              opacity: 0,
-            }}
-          >
-            <button
-              onClick={closeMenu}
-              className="w-10 h-10 flex items-center justify-center text-white hover:text-white/70 transition-colors duration-200"
-              aria-label="Cerrar menú"
+            <div
+              className="mt-8 flex justify-center"
+              style={{
+                animation: `link-reveal 0.55s cubic-bezier(0.16,1,0.3,1) ${0.10 + NAV_LINKS.length * 0.065 + 0.15}s forwards`,
+                opacity: 0,
+              }}
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+              <button
+                onClick={closeMenu}
+                className="w-11 h-11 flex items-center justify-center rounded-full bg-white/10 text-white/60 hover:bg-white/18 hover:text-white/90 transition-all duration-200"
+                aria-label="Cerrar menú"
+              >
+                <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       )}
