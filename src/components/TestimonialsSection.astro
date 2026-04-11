@@ -6,7 +6,7 @@ const { testimonials } = Astro.props
 const delayClass = (i: number) => ['','d1','d2','d3'][i % 4]
 ---
 
-<section data-navbar="dark" id="opiniones" class="relative bg-[#1D0084] overflow-hidden py-32">
+<section data-navbar="dark" id="opiniones" class="relative bg-[#1D0084] overflow-hidden pt-24 pb-10">
   <div aria-hidden class="absolute inset-0 pointer-events-none">
     <div
       class="absolute -top-20 left-1/2 -translate-x-1/2 w-[900px] h-[600px]"
@@ -35,7 +35,7 @@ const delayClass = (i: number) => ['','d1','d2','d3'][i % 4]
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
       {testimonials.map((t, i) => (
-        <div class={`sr-s ${delayClass(i)} glass rounded-2xl p-8 flex flex-col gap-6 h-full`}>
+        <div class={`sr-s ${delayClass(i)} bg-white border border-[#DDE6F5] rounded-2xl p-8 flex flex-col gap-6 h-full`}>
           <div class="flex gap-1">
             {Array.from({ length: t.stars }).map(() => (
               <svg class="w-4 h-4 fill-[#F58220]" viewBox="0 0 20 20">
@@ -43,16 +43,16 @@ const delayClass = (i: number) => ['','d1','d2','d3'][i % 4]
               </svg>
             ))}
           </div>
-          <blockquote class="text-[15px] text-white/65 leading-relaxed flex-1">
+          <blockquote class="text-[15px] text-[#1D0084]/65 leading-relaxed flex-1">
             &ldquo;{t.text}&rdquo;
           </blockquote>
-          <div class="flex items-center gap-3 pt-5 border-t border-white/10">
-            <div class="w-10 h-10 rounded-full bg-[#025dc7]/40 border border-white/16 flex items-center justify-center text-white font-bold text-[12px] shrink-0">
+          <div class="flex items-center gap-3 pt-5 border-t border-[#1D0084]/10">
+            <div class="w-10 h-10 rounded-full bg-[#1D0084]/10 border border-[#1D0084]/15 flex items-center justify-center text-[#1D0084] font-bold text-[12px] shrink-0">
               {t.avatar}
             </div>
             <div>
-              <p class="text-white font-semibold text-[14px]">{t.name}</p>
-              <p class="text-white/38 text-[12px] mt-0.5">{t.origin}</p>
+              <p class="text-[#1D0084] font-semibold text-[14px]">{t.name}</p>
+              <p class="text-[#1D0084]/45 text-[12px] mt-0.5">{t.origin}</p>
             </div>
           </div>
         </div>
