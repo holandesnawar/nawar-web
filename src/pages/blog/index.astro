@@ -40,7 +40,7 @@ const fmt = (d: string) =>
         </svg>
         Recursos gratuitos
       </span>
-      <h1 class="title text-white mb-4">
+      <h1 class="title text-white text-gradient-white mb-4">
         Aprende más sobre<br/>
         <span class="text-[#4da3ff]">el neerlandés</span>
       </h1>
@@ -85,7 +85,7 @@ const fmt = (d: string) =>
                 {post.publishedAt && (
                   <p class="eyebrow text-[#9CA3AF] mb-3">{fmt(post.publishedAt)}</p>
                 )}
-                <h2 class="text-[20px] font-semibold text-[#1D0084] leading-snug mb-3 group-hover:text-[#025dc7] transition-colors" style="font-family: var(--font-poppins), system-ui, sans-serif">
+                <h2 class="text-[20px] font-medium text-[#1D0084] leading-snug mb-3 group-hover:text-[#025dc7] transition-colors" style="font-family: var(--font-poppins), system-ui, sans-serif">
                   {post.title}
                 </h2>
                 {post.excerpt && (

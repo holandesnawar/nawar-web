@@ -28,13 +28,6 @@ const urlFor  = (source: any) => builder.image(source)
 const fmt = (d: string) =>
   new Date(d).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
 
-// Estimate reading time
-const wordCount = post.body
-  ?.filter((b: any) => b._type === 'block')
-  .flatMap((b: any) => b.children?.map((c: any) => c.text) ?? [])
-  .join(' ')
-  .split(/\s+/).length ?? 0
-const readingTime = Math.max(1, Math.ceil(wordCount / 200))
 ---
 
 <Layout
@@ -67,8 +60,6 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 200))
             <span class="eyebrow text-white/40">{fmt(post.publishedAt)}</span>
           </>
         )}
-        <span class="text-white/20">·</span>
-        <span class="eyebrow text-white/40">{readingTime} min</span>
       </div>
 
       <h1 class="text-white mb-5" style="font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(26px, 4.5vw, 56px); font-weight: 700; line-height: 1.08; letter-spacing: -0.03em; max-width: 820px;">

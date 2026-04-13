@@ -23,6 +23,7 @@ export const prerender = false
 
       <!-- Top: Title + subtitle -->
       <div class="ct-top">
+        <span class="badge-dark" style="margin-bottom: 24px;">CONTACTO</span>
         <h1 class="ct-title">Escríbenos y cuéntanos<br>cómo podemos ayudarte.</h1>
         <p class="ct-sub">¿Tienes dudas sobre los cursos o el método? Escríbenos y te respondemos en menos de 24 horas.</p>
       </div>
@@ -36,12 +37,6 @@ export const prerender = false
               alt="Campo de tulipanes"
               class="ct-image"
             />
-            <div class="ct-image-badge">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              Respuesta en menos de 24h
-            </div>
           </div>
         </div>
 
@@ -106,7 +101,7 @@ export const prerender = false
   position: relative;
   overflow: hidden;
   background: #1D0084;
-  padding: 100px 0 80px;
+  padding: 140px 0 80px;
 }
 .ct-bg {
   position: absolute; inset: 0;
@@ -137,7 +132,7 @@ export const prerender = false
 }
 .ct-title {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: clamp(28px, 3.5vw, 46px);
+  font-size: clamp(32px, 5vw, 56px);
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1.12;
@@ -178,17 +173,17 @@ export const prerender = false
 }
 .ct-input {
   padding: 15px 18px; border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.30);
-  background: rgba(255,255,255,0.22);
-  font-size: 15px; color: #fff;
+  border: 1px solid rgba(255,255,255,1);
+  background: rgba(255,255,255,0.95);
+  font-size: 15px; color: #1D0084;
   font-family: inherit; outline: none; width: 100%;
   box-sizing: border-box;
   transition: border-color 0.2s, background 0.2s;
 }
-.ct-input::placeholder { color: rgba(255,255,255,0.60); }
+.ct-input::placeholder { color: rgba(29,0,132,0.55); }
 .ct-input:focus {
-  border-color: rgba(77,163,255,0.70);
-  background: rgba(255,255,255,0.28);
+  border-color: #4da3ff;
+  background: #fff;
   outline: none;
 }
 .ct-submit {
@@ -227,24 +222,15 @@ export const prerender = false
   width: 100%; height: 100%;
   object-fit: cover; display: block;
 }
-.ct-image-badge {
-  position: absolute;
-  bottom: 20px; left: 50%; transform: translateX(-50%);
-  white-space: nowrap;
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(255,255,255,0.92);
-  color: #1D0084;
-  font-size: 13px; font-weight: 600;
-  padding: 10px 18px; border-radius: 9999px;
-  backdrop-filter: blur(8px);
-}
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .ct-columns { grid-template-columns: 1fr; gap: 32px; }
   .ct-image-side { display: none; }
-  .ct-section { padding: 90px 0 60px; }
+  .ct-section { padding: 120px 0 60px; }
   .ct-container { padding: 0 20px; }
+  .ct-top { text-align: left; display: flex; flex-direction: column; align-items: flex-start; }
+  .ct-sub { margin-left: 0; text-align: left; }
 }
 @media (max-width: 540px) {
   .ct-row { grid-template-columns: 1fr; }
