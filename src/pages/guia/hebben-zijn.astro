@@ -48,7 +48,7 @@ export const prerender = false
               <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
               </svg>
-              Hemos recibido tus datos. Revisa tu bandeja para la guía.
+              <span>¡Gracias! Revisa tu correo para ver tu guía. <br/> No olvides revisar la carpeta de spam.</span>
             </div>
 
             <form id="guide-form" class="guide-form">
@@ -134,7 +134,8 @@ export const prerender = false
     font-size: clamp(38px, 6vw, 72px);
     font-weight: 700;
     letter-spacing: -0.045em;
-    line-height: 0.98;
+    line-height: 1.05;
+    padding-bottom: 0.1em;
     margin: 0 0 16px;
   }
 
@@ -159,18 +160,18 @@ export const prerender = false
   .guide-point {
     display: flex;
     align-items: center;
-    gap: 11px;
+    gap: 12px;
     margin: 0;
-    font-size: 14px;
-    line-height: 1.45;
+    font-size: clamp(15px, 1.4vw, 17px);
+    line-height: 1.55;
     color: #ffffff;
   }
 
   .guide-point::before {
     content: '✓';
     flex-shrink: 0;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background: rgba(2, 93, 199, 0.24);
     border: 1px solid #025dc7;
@@ -178,7 +179,7 @@ export const prerender = false
     align-items: center;
     justify-content: center;
     color: #ffffff;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
   }
 
@@ -320,7 +321,7 @@ export const prerender = false
 
     .guide-point {
       align-items: flex-start;
-      font-size: 14px;
+      font-size: 16px;
     }
 
     .guide-visual {
