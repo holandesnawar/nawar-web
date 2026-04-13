@@ -47,15 +47,21 @@ const features = page?.features ?? []
     </div>
   </section>
 
-  <!-- Vision statement — white, left-aligned, large per-phrase animation -->
-  <section id="vision" class="section-light" data-navbar="light" style="padding: 120px 0 100px;">
+  <!-- Vision statement -->
+  <section id="vision" class="section-light" data-navbar="light" style="padding: 80px 0 64px;">
     <div class="inner" style="max-width: 860px;">
 
-      <div class="vision-phrases">
-        <p class="vision-phrase sr-bi">Creemos que aprender neerlandés no debería ser una barrera. Para vivir, trabajar e integrarte en Países Bajos, el idioma es la clave. Pero nadie lo enseñaba desde el español. Con el método correcto, con quien lo entiende, todo cambia. Por eso creamos Nawar: un método diseñado desde el español, por quienes entienden tus retos, tus dudas y tu punto de partida. Más de 600 estudiantes hispanohablantes de 15 países lo han comprobado. El neerlandés no es imposible — solo necesitabas el método adecuado.</p>
-      </div>
+      <p class="vision-phrase">
+        <span class="vphrase">Creemos que aprender neerlandés no debería ser una barrera.</span>
+        <span class="vphrase">Para vivir, trabajar e integrarte en Países Bajos, el idioma es la clave.</span>
+        <span class="vphrase">Pero nadie lo enseñaba desde el español.</span>
+        <span class="vphrase">Con el método correcto, con quien lo entiende, todo cambia.</span>
+        <span class="vphrase">Por eso creamos Nawar: un método diseñado desde el español, por quienes entienden tus retos, tus dudas y tu punto de partida.</span>
+        <span class="vphrase">Más de 600 estudiantes hispanohablantes de 15 países lo han comprobado.</span>
+        <span class="vphrase">El neerlandés no es imposible, solo necesitabas el método adecuado.</span>
+      </p>
 
-      <div class="sr-bi" style="margin-top:56px;">
+      <div class="sr-bi" style="margin-top:48px;">
         <a href="#" class="vision-community-btn">
           Unirse a la comunidad
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -178,20 +184,22 @@ const features = page?.features ?? []
 }
 
 /* ── Vision text phrases ── */
-.vision-phrases {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
 .vision-phrase {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: clamp(22px, 2.6vw, 34px);
+  font-size: clamp(24px, 3vw, 38px);
   font-weight: 400;
-  letter-spacing: -0.015em;
-  line-height: 1.55;
+  letter-spacing: -0.018em;
+  line-height: 1.6;
   color: #1D0084;
   margin: 0;
-  padding: 10px 0;
+}
+.vphrase {
+  display: inline;
+  opacity: 0.12;
+  transition: opacity 0.55s ease;
+}
+.vphrase.vis {
+  opacity: 1;
 }
 .vision-community-btn {
   display: inline-flex; align-items: center; gap: 10px;
@@ -227,3 +235,25 @@ const features = page?.features ?? []
 }
 .vision-value-text { font-size: 14px; color: rgba(255,255,255,0.60); line-height: 1.65; }
 </style>
+
+<script>
+  const phrases = document.querySelectorAll<HTMLElement>('.vphrase')
+
+  const obs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('vis')
+        } else {
+          e.target.classList.remove('vis')
+        }
+      })
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+  )
+
+  phrases.forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.12}s`
+    obs.observe(el)
+  })
+</script>

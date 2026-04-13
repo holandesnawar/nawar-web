@@ -386,7 +386,7 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
   position: relative; overflow: hidden;
   border-radius: 28px;
   background: linear-gradient(180deg, #eef7ff 0%, #7ecbfb 16%, #3b9fe8 58%, #1e7fe9 100%);
-  padding: 56px 40px;
+  padding: 56px 24px;
   text-align: center;
 }
 .footer-signup-glow {

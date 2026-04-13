@@ -23,7 +23,7 @@ export const prerender = false
 
       <!-- Top: Title + subtitle -->
       <div class="ct-top">
-        <h1 class="ct-title">Escríbenos y cuéntanos cómo podemos ayudarte.</h1>
+        <h1 class="ct-title">Escríbenos y cuéntanos<br>cómo podemos ayudarte.</h1>
         <p class="ct-sub">¿Tienes dudas sobre los cursos o el método? Escríbenos y te respondemos en menos de 24 horas.</p>
       </div>
 
@@ -132,26 +132,30 @@ export const prerender = false
 
 /* Top */
 .ct-top {
-  text-align: left;
+  text-align: center;
   margin-bottom: 48px;
 }
 .ct-title {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: clamp(28px, 3.5vw, 44px);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+  font-size: clamp(28px, 3.5vw, 46px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
   margin-bottom: 14px;
-  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.85) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%);
+  background-size: 100% 1.15em;
+  background-repeat: repeat-y;
+  background-position: top left;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .ct-sub {
   font-size: 16px;
   color: rgba(255,255,255,0.88);
   line-height: 1.65;
   max-width: 520px;
-  margin: 0;
+  margin: 0 auto;
 }
 
 /* Columns */
@@ -175,16 +179,16 @@ export const prerender = false
 .ct-input {
   padding: 15px 18px; border-radius: 12px;
   border: 1px solid rgba(255,255,255,0.30);
-  background: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.22);
   font-size: 15px; color: #fff;
   font-family: inherit; outline: none; width: 100%;
   box-sizing: border-box;
   transition: border-color 0.2s, background 0.2s;
 }
-.ct-input::placeholder { color: rgba(255,255,255,0.50); }
+.ct-input::placeholder { color: rgba(255,255,255,0.60); }
 .ct-input:focus {
   border-color: rgba(77,163,255,0.70);
-  background: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.28);
   outline: none;
 }
 .ct-submit {
