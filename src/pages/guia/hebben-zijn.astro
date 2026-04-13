@@ -1,0 +1,378 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import NavbarLanding from '../../components/NavbarLanding'
+import FooterNuevo from '../../components/FooterNuevo.astro'
+import '../../styles/nawar-sections.css'
+
+export const prerender = false
+---
+
+<Layout
+  title="Hebben of Zijn? — Guía gratuita | Holandés Nawar"
+  description="Descarga nuestra guía gratuita y descubre cuándo usar hebben y cuándo usar zijn en neerlandés. Explicaciones claras, ejemplos reales y comparaciones con el español para hispanohablantes."
+  keywords="hebben of zijn, guía gratuita neerlandés, aprender neerlandés desde cero, neerlandés para hispanohablantes"
+>
+  <NavbarLanding client:load />
+
+  <section data-navbar="dark" class="guide-hero">
+    <div class="hero-glow1" aria-hidden="true"></div>
+    <div class="hero-glow2" aria-hidden="true"></div>
+    <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></div>
+
+    <div class="guide-shell">
+      <div class="guide-grid">
+        <div class="guide-copy sr">
+          <span class="badge-dark">
+            <svg class="check-icon" fill="none" viewBox="0 0 12 12">
+              <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            Guía gratuita
+          </span>
+
+          <h1 class="guide-title text-gradient-white">Hebben of Zijn?</h1>
+
+          <p class="guide-lead">
+            Deja tu email y recibe <strong>gratis esta guía de más de 25 páginas</strong> con explicaciones claras,
+            ejemplos reales, frases espejo, comparaciones con el español y trucos para que
+            <strong> nunca más dudes</strong> cuándo usar <strong>hebben</strong> o <strong>zijn</strong>.
+          </p>
+
+          <div class="guide-points">
+            <p class="guide-point">Ideal para niveles A0-A1</p>
+            <p class="guide-point">Explicado en español</p>
+            <p class="guide-point">Con frases útiles y visuales</p>
+          </div>
+
+          <div class="guide-form-wrap">
+            <div id="guide-success" class="guide-success" style="display:none;">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Hemos recibido tus datos. Revisa tu bandeja para la guía.
+            </div>
+
+            <form id="guide-form" class="guide-form">
+              <input
+                id="guide-name"
+                type="text"
+                class="guide-input"
+                placeholder="Nombre"
+                autocomplete="name"
+                required
+              />
+              <input
+                id="guide-email"
+                type="email"
+                class="guide-input"
+                placeholder="Correo"
+                autocomplete="email"
+                required
+              />
+              <button id="guide-submit" type="submit" class="guide-submit">
+                ¡Descargar!
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v10m0 0l-4-4m4 4l4-4M5 19h14" />
+                </svg>
+              </button>
+            </form>
+
+            <p class="guide-privacy">
+              Al hacer clic, confirmo que he leído y aceptado la
+              <a href="https://holandesnawar.com/politica-de-privacidad" target="_blank" rel="noopener noreferrer">política de privacidad</a>
+              y los
+              <a href="https://holandesnawar.com/terminos-y-condiciones" target="_blank" rel="noopener noreferrer">términos y condiciones</a>.
+            </p>
+          </div>
+        </div>
+
+        <div class="guide-visual sr d1">
+          <img
+            src="https://d1yei2z3i6k35z.cloudfront.net/9533860/69064525e0b0e_Aprenderneerlandesdesdeelespanol1.png"
+            alt="Portada de la guía gratuita Hebben of Zijn"
+            class="guide-image"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FooterNuevo />
+</Layout>
+
+<style>
+  .guide-hero {
+    background: #1D0084;
+    position: relative;
+    overflow: hidden;
+    padding: 120px 0 0;
+  }
+
+  .guide-shell {
+    position: relative;
+    z-index: 1;
+    max-width: 1152px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .guide-grid {
+    display: grid;
+    grid-template-columns: 1.08fr 0.92fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  .guide-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 56px;
+  }
+
+  .guide-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: clamp(38px, 6vw, 72px);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+    margin: 0 0 16px;
+  }
+
+  .guide-lead {
+    margin: 0;
+    max-width: 560px;
+    font-size: clamp(15px, 1.4vw, 17px);
+    line-height: 1.65;
+    color: #ffffff;
+  }
+
+  .guide-lead strong {
+    font-weight: 800;
+  }
+
+  .guide-points {
+    display: grid;
+    gap: 12px;
+    margin: 28px 0;
+  }
+
+  .guide-point {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #ffffff;
+  }
+
+  .guide-point::before {
+    content: '✓';
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(2, 93, 199, 0.24);
+    border: 1px solid #025dc7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  .guide-form-wrap {
+    width: 100%;
+    max-width: 540px;
+  }
+
+  .guide-form {
+    display: grid;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .guide-input {
+    width: 100%;
+    min-width: 0;
+    padding: 16px 18px;
+    border-radius: 10px;
+    background: #fff;
+    border: none;
+    color: #1D0084;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+  }
+
+  .guide-input::placeholder {
+    color: #9aa5bc;
+  }
+
+  .guide-input:focus {
+    box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.18);
+  }
+
+  .guide-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: #4da3ff;
+    color: #1D0084;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: background 0.2s ease, transform 0.18s ease;
+  }
+
+  .guide-submit:hover {
+    background: #5eb4ff;
+    transform: translateY(-1px);
+  }
+
+  .guide-success {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
+    padding: 12px 0;
+  }
+
+  .guide-privacy {
+    margin: 14px 0 0;
+    font-size: 12px;
+    line-height: 1.65;
+    color: rgba(255,253,253,0.8);
+  }
+
+  .guide-privacy a {
+    color: rgba(255,255,255,0.55);
+    text-decoration: underline;
+    margin: 0 3px;
+  }
+
+  .guide-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+  }
+
+  .guide-image {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 980px) {
+    .guide-shell {
+      padding: 0 24px;
+    }
+
+    .guide-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .guide-copy {
+      padding-bottom: 0;
+    }
+
+    .guide-visual {
+      justify-content: flex-start;
+      padding-bottom: 28px;
+    }
+
+    .guide-image {
+      max-width: 560px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .guide-hero {
+      padding: 100px 0 0;
+    }
+
+    .guide-shell {
+      padding: 0 20px;
+    }
+
+    .guide-title {
+      font-size: clamp(34px, 12vw, 52px);
+    }
+
+    .guide-lead {
+      max-width: none;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .guide-point {
+      align-items: flex-start;
+      font-size: 14px;
+    }
+
+    .guide-visual {
+      padding-bottom: 20px;
+    }
+
+    .guide-image {
+      max-width: 100%;
+    }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('guide-form') as HTMLFormElement | null
+  const nameInput = document.getElementById('guide-name') as HTMLInputElement | null
+  const emailInput = document.getElementById('guide-email') as HTMLInputElement | null
+  const submitBtn = document.getElementById('guide-submit') as HTMLButtonElement | null
+  const success = document.getElementById('guide-success') as HTMLElement | null
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault()
+
+    const name = nameInput?.value?.trim()
+    const email = emailInput?.value?.trim()
+    if (!name || !email) return
+
+    if (submitBtn) {
+      submitBtn.disabled = true
+      submitBtn.textContent = 'Enviando...'
+    }
+
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, tagName: 'Hebben / Zijn' }),
+      })
+
+      const data = await res.json().catch(() => null)
+
+      if (res.ok && data?.success) {
+        form.style.display = 'none'
+        if (success) success.style.display = 'flex'
+        return
+      }
+    } catch {
+      // Error state handled below.
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = false
+      submitBtn.textContent = 'Inténtalo de nuevo'
+    }
+  })
+</script>

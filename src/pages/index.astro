@@ -5,6 +5,7 @@ import { LANDING_QUERY } from '../sanity/queries'
 
 import NavbarLanding from '../components/NavbarLanding'
 import HeroNuevo from '../components/HeroNuevo.astro'
+import GuidePopup from '../components/GuidePopup.astro'
 import PainPointsSection from '../components/PainPointsSection.astro'
 import StickyComparisonSection from '../components/StickyComparisonSection'
 import TestimonialsSection from '../components/TestimonialsSection.astro'
@@ -38,6 +39,7 @@ const faq          = page?.faq          ?? null
   description="Academia de neerlandés para hispanohablantes. Clases en vivo, método desde el español y comunidad activa."
 >
   <NavbarLanding client:load />
+  <GuidePopup />
 
   <HeroNuevo />
   <PorQueNawar data={porQueNawar} />

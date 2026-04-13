@@ -9,6 +9,10 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const body  = await request.json().catch(() => null)
     const email = body?.email?.trim()
+    const tagName =
+      typeof body?.tagName === 'string' && body.tagName.trim()
+        ? body.tagName.trim()
+        : TAG_NAME
 
     if (!email || !email.includes('@')) {
       return json({ error: 'Email inválido' }, 400)
@@ -63,7 +67,7 @@ export const POST: APIRoute = async ({ request }) => {
     const tagRes = await fetch(`${SYSTEME_BASE}/contacts/${contactId}/tags`, {
       method:  'POST',
       headers,
-      body: JSON.stringify({ name: TAG_NAME }),
+      body: JSON.stringify({ name: tagName }),
     })
 
     if (!tagRes.ok) {

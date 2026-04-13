@@ -1,0 +1,188 @@
+---
+---
+
+<div id="guide-popup" class="guide-popup" aria-hidden="true">
+  <div class="guide-popup-card" role="dialog" aria-labelledby="guide-popup-title" aria-modal="false">
+    <button id="guide-popup-close" class="guide-popup-close" type="button" aria-label="Cerrar">
+      ×
+    </button>
+
+    <div class="guide-popup-head">
+      <div class="guide-popup-emoji" aria-hidden="true">🎁</div>
+      <p class="guide-popup-kicker">Guía gratis</p>
+      <h3 id="guide-popup-title" class="guide-popup-title">¿Hebben of zijn?</h3>
+      <p class="guide-popup-desc">Domina los verbos más usados del neerlandés</p>
+    </div>
+
+    <a class="guide-popup-btn" href="/guia/hebben-zijn">
+      Descargar ahora
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+    </a>
+  </div>
+</div>
+
+<style>
+  .guide-popup {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 2147483647;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+  }
+
+  .guide-popup.is-active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.25s ease, visibility 0s;
+  }
+
+  .guide-popup * {
+    box-sizing: border-box;
+  }
+
+  .guide-popup-card {
+    width: min(92vw, 400px);
+    position: relative;
+    padding: 20px 18px 18px;
+    border-radius: 18px;
+    background: rgba(15, 27, 72, 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 18px 48px rgba(3, 9, 33, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.96);
+    backdrop-filter: saturate(140%) blur(18px);
+    -webkit-backdrop-filter: saturate(140%) blur(18px);
+  }
+
+  .guide-popup-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .guide-popup-close:hover {
+    color: #ffffff;
+  }
+
+  .guide-popup-head {
+    margin-bottom: 14px;
+  }
+
+  .guide-popup-emoji {
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .guide-popup-kicker {
+    margin: 0 0 6px;
+    color: #9fd8ff;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .guide-popup-title {
+    margin: 0;
+    color: #ffffff;
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: 30px;
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+    font-weight: 800;
+  }
+
+  .guide-popup-desc {
+    margin: 8px 0 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .guide-popup-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 10px;
+    background: #4da3ff;
+    color: #1d0084;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 12px 26px rgba(77, 163, 255, 0.22);
+    transition: background 0.2s ease, transform 0.08s ease, box-shadow 0.2s ease;
+  }
+
+  .guide-popup-btn:hover {
+    background: #5eb4ff;
+    box-shadow: 0 16px 30px rgba(77, 163, 255, 0.28);
+  }
+
+  .guide-popup-btn:active {
+    transform: translateY(1px);
+  }
+
+  @media (max-width: 480px) {
+    .guide-popup {
+      left: 12px;
+      right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+    }
+
+    .guide-popup-card {
+      width: 100%;
+      padding: 16px 14px 14px;
+      border-radius: 16px;
+    }
+
+    .guide-popup-title {
+      font-size: 24px;
+    }
+
+    .guide-popup-desc {
+      font-size: 13px;
+    }
+
+    .guide-popup-btn {
+      font-size: 14px;
+      padding: 16px 18px;
+      border-radius: 10px;
+    }
+  }
+</style>
+
+<script>
+  const popup = document.getElementById('guide-popup')
+  const closeBtn = document.getElementById('guide-popup-close')
+
+  if (popup) {
+    window.setTimeout(() => {
+      popup.classList.add('is-active')
+      popup.setAttribute('aria-hidden', 'false')
+    }, 3000)
+  }
+
+  closeBtn?.addEventListener('click', () => {
+    popup?.classList.remove('is-active')
+    popup?.setAttribute('aria-hidden', 'true')
+  })
+</script>
