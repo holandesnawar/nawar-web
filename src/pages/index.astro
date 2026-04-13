@@ -6,8 +6,6 @@ import { LANDING_QUERY } from '../sanity/queries'
 import NavbarLanding from '../components/NavbarLanding'
 import HeroNuevo from '../components/HeroNuevo.astro'
 import PainPointsSection from '../components/PainPointsSection.astro'
-import FeaturesSection from '../components/FeaturesSection.astro'
-import StepsSection from '../components/StepsSection'
 import StickyComparisonSection from '../components/StickyComparisonSection'
 import TestimonialsSection from '../components/TestimonialsSection.astro'
 import PorQueNawar from '../components/PorQueNawar.astro'
@@ -25,10 +23,14 @@ export const prerender = false
 const page = await sanityClient.fetch(LANDING_QUERY)
 
 const painPoints   = page?.painPoints   ?? []
-const features     = page?.features     ?? []
-const steps        = page?.steps        ?? []
 const comparison   = page?.comparison   ?? []
 const testimonials = page?.testimonials ?? []
+const porQueNawar  = page?.porQueNawar  ?? null
+const benefits     = page?.benefits     ?? null
+const proceso      = page?.proceso      ?? null
+const valor        = page?.valor        ?? null
+const paraQuien    = page?.paraQuien    ?? null
+const faq          = page?.faq          ?? null
 ---
 
 <Layout
@@ -38,17 +40,15 @@ const testimonials = page?.testimonials ?? []
   <NavbarLanding client:load />
 
   <HeroNuevo />
-  <PorQueNawar />
-  <BenefitsSection />
-  <ProcesoSection />
-  <ValorNuevo />
+  <PorQueNawar data={porQueNawar} />
+  <BenefitsSection data={benefits} />
+  <ProcesoSection data={proceso} />
+  <ValorNuevo data={valor} />
   <StickyComparisonSection items={comparison} client:load />
-  <ParaQuienSection />
+  <ParaQuienSection data={paraQuien} />
   <PainPointsSection painPoints={painPoints} />
-  <FeaturesSection features={features} />
-  <StepsSection steps={steps} client:load />
   <BlogNuevo />
-  <FAQNuevo />
+  <FAQNuevo data={faq} />
   <TestimonialsSection testimonials={testimonials} />
   <FooterNuevo />
 </Layout>

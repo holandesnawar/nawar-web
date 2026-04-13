@@ -97,10 +97,10 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 200))
 
     {/* 3-col layout */}
     <div class="max-w-[1200px] mx-auto px-6 py-16">
-      <div class="grid grid-cols-1 lg:grid-cols-[56px_1fr_200px] xl:grid-cols-[72px_1fr_220px] gap-0 lg:gap-12 xl:gap-16 items-start">
+      <div class="grid grid-cols-1 lg:grid-cols-[56px_1fr_200px] xl:grid-cols-[72px_1fr_220px] gap-0 lg:gap-12 xl:gap-16">
 
         {/* Share — left */}
-        <div class="hidden lg:block">
+        <div class="hidden lg:block self-stretch">
           <BlogShare title={post.title} client:load />
         </div>
 
@@ -135,7 +135,7 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 200))
         </article>
 
         {/* TOC — right */}
-        <div class="hidden lg:block">
+        <div class="hidden lg:block self-stretch">
           <BlogTOC client:load />
         </div>
 

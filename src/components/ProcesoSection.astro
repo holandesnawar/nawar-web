@@ -1,4 +1,11 @@
 ---
+interface Props { data?: any }
+const { data } = Astro.props
+const badge = data?.badge ?? 'Así de sencillo'
+const title = data?.title ?? 'Dos clics. Listo.'
+const subtitle = data?.subtitle ?? 'Sin trámites, sin esperas eternas. En minutos tienes acceso a todo y empiezas a avanzar.'
+const guaranteeText = data?.guaranteeText ?? 'Garantía de devolución 15 días'
+const ctaText = data?.ctaText ?? 'Unirte'
 ---
 <div class="proceso-wrapper">
 <div class="proceso-outer" data-navbar="dark">
@@ -39,10 +46,10 @@
           <svg class="check-icon" fill="none" viewBox="0 0 12 12">
             <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          Así de sencillo
+          {badge}
         </span>
-        <h2 class="proceso-title">Dos clics. Listo.</h2>
-        <p class="proceso-sub">Sin trámites, sin esperas eternas. En minutos tienes acceso a todo y empiezas a avanzar.</p>
+        <h2 class="proceso-title text-gradient-white">{title}</h2>
+        <p class="proceso-sub">{subtitle}</p>
       </div>
 
       <div class="proceso-steps">
@@ -181,16 +188,18 @@
       <!-- CTA final -->
       <div class="proceso-cta-wrap sr">
         <a href="#apuntate" class="btn-proceso-cta">
-          Unirte
+          {ctaText}
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
           </svg>
         </a>
-        <p class="proceso-garantia">
-          <svg width="14" height="14" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-          </svg>
-          Garantía de devolución 15 días
+        <p class="proceso-garantia" style="color: rgba(255, 255, 255, 0.85);">
+          <span style="flex-shrink:0;width:22px;height:22px;border-radius:50%;background:rgba(77,163,255,0.18);border:1px solid rgba(77,163,255,0.40);display:inline-flex;align-items:center;justify-content:center;">
+            <svg width="11" height="11" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            </svg>
+          </span>
+          {guaranteeText}
         </p>
       </div>
 

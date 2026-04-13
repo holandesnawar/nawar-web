@@ -1,72 +1,283 @@
 ---
+interface Props { data?: any }
+const { data } = Astro.props
+const badge = data?.badge ?? '¿Para quién está diseñado?'
+const subtitle = data?.subtitle ?? 'Tanto si llegas a Países Bajos como si ya vives allí,\nel neerlandés te abre puertas que el inglés no puede.'
+const defaultPoints = [
+  { icon: '🏠', title: 'Residentes', description: 'Aprender el idioma abre la puerta a la vida cotidiana y un verdadero sentido de pertenencia en los Países Bajos.' },
+  { icon: '✈️', title: 'Nueva Vida', description: 'Aprender antes de llegar te da la confianza para empezar tu nueva etapa con seguridad desde el primer día.' },
+  { icon: '💼', title: 'Profesionales', description: 'Mejora tu comunicación con colegas, gana reconocimiento laboral y accede a mejores oportunidades.' },
+  { icon: '🎓', title: 'Formación', description: 'Domina el idioma para acceder a universidades neerlandesas, programas y becas de formación.' },
+]
+const points = data?.points?.length ? data.points : defaultPoints
 ---
-<section class="pq-section" data-navbar="dark">
-  <div class="pq-bg-glow" aria-hidden="true"></div>
-  <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></div>
-  <div class="inner" style="position:relative;z-index:1;">
-    <div class="pq-header sr">
-      <span class="badge-dark">
-        <svg class="check-icon" fill="none" viewBox="0 0 12 12">
-          <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        ¿Para quién está diseñado?
-      </span>
-      <h2 class="pq-title">
-        Un método pensado <span style="color:#4da3ff;">para cada etapa</span>
-      </h2>
-      <p class="pq-sub">
-        Tanto si llegas a Países Bajos como si ya vives allí, el neerlandés te abre puertas que el inglés no puede.
-      </p>
-    </div>
 
-    <div class="pq-grid">
-      <div class="pq-card sr">
-        <div class="pq-card-glow" aria-hidden="true"></div>
-        <span class="pq-num">01</span>
-        <div class="pq-icon">🏠</div>
-        <h3 class="pq-card-title">Residentes</h3>
-        <p class="pq-card-desc">Para quienes quieren residir en los Países Bajos, aprender el idioma abre la puerta a la vida cotidiana, noticias locales y un verdadero sentido de pertenencia.</p>
-        <ul class="pq-perks">
-          <li><svg width="14" height="14" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Integración real en el día a día</li>
-          <li><svg width="14" height="14" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Entiende noticias y trámites locales</li>
-        </ul>
-      </div>
+<div class="pq-wrapper">
+  <div class="pq-outer" data-navbar="dark">
+    <section class="pq-section">
+      <div class="pq-bg-glow" aria-hidden="true"></div>
+      <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.5;"></div>
+      <div class="inner" style="position:relative;z-index:1;">
 
-      <div class="pq-card pq-card--glow sr d1">
-        <div class="pq-card-glow pq-card-glow--bright" aria-hidden="true"></div>
-        <span class="pq-num">02</span>
-        <div class="pq-icon">✈️</div>
-        <h3 class="pq-card-title">Nueva Vida</h3>
-        <p class="pq-card-desc">¿Planeas mudarte? Aprender neerlandés antes de tu llegada te da la confianza para empezar tu nueva etapa con seguridad y aprovechar cada oportunidad.</p>
-        <ul class="pq-perks">
-          <li><svg width="14" height="14" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Preparación antes de llegar</li>
-          <li><svg width="14" height="14" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Integración desde el primer día</li>
-        </ul>
-      </div>
+        <div class="pq-header sr">
+          <span class="badge-dark">
+            <svg class="check-icon" fill="none" viewBox="0 0 12 12">
+              <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            {badge}
+          </span>
+          <h2 class="pq-title text-gradient-white">
+            Un método pensado<br>para cada etapa
+          </h2>
+          <p class="pq-sub">
+            Tanto si llegas a Países Bajos como si ya vives allí,<br>
+            el neerlandés te abre puertas que el inglés no puede.
+          </p>
+        </div>
 
-      <div class="pq-card sr d2">
-        <div class="pq-card-glow" aria-hidden="true"></div>
-        <span class="pq-num">03</span>
-        <div class="pq-icon">💼</div>
-        <h3 class="pq-card-title">Profesionales</h3>
-        <p class="pq-card-desc">Al dominar el idioma mejoras la comunicación con colegas y clientes, ganas reconocimiento laboral y accedes a ascensos y proyectos que antes parecían inalcanzables.</p>
-        <ul class="pq-perks">
-          <li><svg width="14" height="14" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Más oportunidades laborales</li>
-          <li><svg width="14" height="14" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Comunicación fluida con clientes</li>
-        </ul>
-      </div>
+        <!-- Desktop: photo left + 2x2 grid right | Mobile: photo + swipe cards -->
+        <div class="pq-layout">
 
-      <div class="pq-card sr d3">
-        <div class="pq-card-glow" aria-hidden="true"></div>
-        <span class="pq-num">04</span>
-        <div class="pq-icon">🎓</div>
-        <h3 class="pq-card-title">Formación</h3>
-        <p class="pq-card-desc">Si tu meta es cursar estudios en universidades neerlandesas, dominar el idioma te permite acceder a programas, becas y comunicarte sin barreras académicas.</p>
-        <ul class="pq-perks">
-          <li><svg width="14" height="14" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Acceso a universidades locales</li>
-          <li><svg width="14" height="14" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Becas y programas de formación</li>
-        </ul>
+          <!-- Photo -->
+          <div class="pq-photo-col">
+            <div class="pq-photo-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=900&fit=crop&q=80"
+                alt="Estudiantes aprendiendo neerlandés"
+                class="pq-photo"
+              />
+            </div>
+          </div>
+
+          <!-- Points -->
+          <div class="pq-points-col">
+            <div class="pq-points-scroll">
+              {points.map((pt: any, i: number) => (
+                <div class={`pq-point sr${i > 0 ? ` d${i}` : ''}`}>
+                  <div class="pq-point-card">
+                    <div class="pq-point-icon">{pt.icon}</div>
+                    <div class="pq-point-text">
+                      <h3 class="pq-point-title">{pt.title}</h3>
+                      <p class="pq-point-desc">{pt.description}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <!-- Mobile swipe hint -->
+            <div class="pq-swipe-hint" aria-hidden="true">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+              Desliza para ver más
+            </div>
+          </div>
+
+        </div>
       </div>
-    </div>
+    </section>
   </div>
-</section>
+</div>
+
+<style>
+/* ── Outer wrapper (like proceso) ── */
+.pq-wrapper {
+  background: #F0F4FF;
+  padding: 0 72px 80px;
+}
+.pq-outer {
+  overflow: hidden;
+  position: relative;
+  border-radius: 32px;
+}
+
+/* ── Section ── */
+.pq-section {
+  background: #1D0084;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 0;
+}
+.pq-bg-glow {
+  position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 600px;
+  background: radial-gradient(ellipse at center, rgba(11,109,240,0.30) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* ── Header ── */
+.pq-header { text-align: center; max-width: 820px; margin: 0 auto 64px; }
+.pq-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.1;
+  margin-bottom: 18px;
+}
+.pq-sub {
+  font-size: clamp(14px, 1.4vw, 17px);
+  color: rgba(255,255,255,0.62);
+  line-height: 1.65;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* ── Desktop layout: photo left (sticky fills height) + 2×2 grid right ── */
+.pq-layout {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  gap: 56px;
+  align-items: stretch;
+}
+
+/* Photo column */
+.pq-photo-col { display: flex; }
+.pq-photo-wrap {
+  border-radius: 20px; overflow: hidden;
+  width: 100%;
+  position: sticky; top: 92px;
+  height: calc(100vh - 132px);
+}
+.pq-photo {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+
+/* Points column */
+.pq-points-col { display: flex; flex-direction: column; }
+.pq-points-scroll {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  flex: 1;
+}
+
+/* Each item: clean open style, akka-like */
+.pq-point { padding: 0; }
+.pq-point-card {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 32px 28px 32px 0;
+  height: 100%;
+  transition: none;
+}
+/* Right-column items: left border separator */
+.pq-points-scroll .pq-point:nth-child(even) .pq-point-card {
+  padding-left: 32px;
+  padding-right: 0;
+  border-left: 1px solid rgba(255,255,255,0.10);
+}
+/* Bottom-row items: bottom separator */
+.pq-points-scroll .pq-point:nth-last-child(-n+2) .pq-point-card {
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  padding-bottom: 36px;
+}
+
+/* Icon: raw emoji, no box */
+.pq-point-icon {
+  width: auto; height: auto; border-radius: 0;
+  border: none;
+  background: none;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  margin-bottom: 14px;
+}
+.pq-point-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 16px; font-weight: 700;
+  color: #fff; line-height: 1.3; margin-bottom: 10px;
+}
+.pq-point-desc {
+  font-size: 13.5px; color: rgba(255,255,255,0.68); line-height: 1.65;
+}
+
+/* Swipe hint: hidden on desktop */
+.pq-swipe-hint { display: none; }
+
+/* ── Mobile ── */
+@media (max-width: 899px) {
+  .pq-wrapper { padding: 0 0 64px; background: #fff; }
+  .pq-outer { border-radius: 24px; }
+  .pq-section { padding: 64px 0 48px; }
+  .pq-layout { display: flex; flex-direction: column; gap: 24px; }
+
+  /* Photo: visible at top, compact */
+  .pq-photo-col { display: flex; width: 100%; padding: 0 24px; box-sizing: border-box; }
+  .pq-photo-wrap {
+    position: static; height: auto; border-radius: 16px;
+    width: 100%; aspect-ratio: 16/9; overflow: hidden;
+  }
+  .pq-photo { width: 100%; height: 100%; object-fit: cover; aspect-ratio: unset; }
+
+  /* Horizontal scroll cards */
+  .pq-points-col { width: 100%; }
+  .pq-points-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    margin: 0 -24px;
+    padding: 4px 24px 12px;
+    scrollbar-width: none;
+  }
+  .pq-points-scroll::-webkit-scrollbar { display: none; }
+  .pq-point {
+    min-width: 72vw;
+    max-width: 260px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+  /* Mobile card: no background */
+  .pq-point-card {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 18px 16px;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+  }
+  .pq-points-scroll .pq-point:nth-child(even) .pq-point-card {
+    padding-left: 16px;
+    border-left: none;
+  }
+  .pq-points-scroll .pq-point:nth-last-child(-n+2) .pq-point-card {
+    border-bottom: none;
+    padding-bottom: 18px;
+  }
+
+  /* Mobile icon: emoji left, vertically centered */
+  .pq-point-icon {
+    width: auto; height: auto; border: none; background: none;
+    border-radius: 0; font-size: 30px; margin-bottom: 0;
+    padding: 0; flex-shrink: 0; align-self: center;
+  }
+
+  .pq-point-text { flex: 1; display: flex; flex-direction: column; }
+  .pq-point-card .pq-point-title { margin-bottom: 4px; }
+
+  .pq-point-title { font-size: 15px; }
+  /* Clamp description to 3 lines on mobile */
+  .pq-point-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 13px;
+    color: rgba(255,255,255,0.80);
+  }
+
+  /* Swipe hint: visible on mobile */
+  .pq-swipe-hint {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.45);
+    letter-spacing: 0.03em;
+    padding: 4px 24px 0;
+    margin-top: 4px;
+  }
+}
+</style>

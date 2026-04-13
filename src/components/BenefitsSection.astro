@@ -1,4 +1,9 @@
 ---
+interface Props { data?: any }
+const { data } = Astro.props
+const badge = data?.badge ?? '¿Qué incluye?'
+const title = data?.title ?? 'Todo lo que necesitas para aprender de verdad'
+const subtitle = data?.subtitle ?? 'Nada de suerte. Un sistema completo diseñado para que avances desde el primer día.'
 ---
 <section class="benefits-section" data-navbar="light">
   <div class="inner">
@@ -8,10 +13,10 @@
         <svg class="check-icon" fill="none" viewBox="0 0 12 12">
           <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        ¿Qué incluye?
+        {badge}
       </span>
-      <h2 class="benefits-title">Todo lo que necesitas para aprender de verdad</h2>
-      <p class="benefits-sub">Nada de suerte. Un sistema completo diseñado para que avances desde el primer día.</p>
+      <h2 class="benefits-title" set:html={title.replace(/\n/g, '<br>')} />
+      <p class="benefits-sub">{subtitle}</p>
     </div>
 
     <div class="benefits-grid">

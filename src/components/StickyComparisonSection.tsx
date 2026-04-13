@@ -23,10 +23,10 @@ export default function StickyComparisonSection({ items }: Props) {
 
           {/* Left — sticky, align-self:start is required for sticky inside flex */}
           <div
-            className="lg:w-[42%] shrink-0 lg:sticky lg:top-0 lg:h-screen"
+            className="lg:w-[42%] shrink-0 lg:sticky lg:top-[72px] lg:h-[calc(100vh-72px)]"
             style={{ display: 'flex', alignItems: 'flex-start', alignSelf: 'flex-start' }}
           >
-            <div className="space-y-6 w-full py-10 lg:py-20 lg:pr-16">
+            <div className="space-y-6 w-full py-10 lg:py-16 lg:pr-16">
               <span className="badge-light eyebrow">
                 <svg className="check-icon" fill="none" viewBox="0 0 12 12">
                   <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
@@ -34,12 +34,11 @@ export default function StickyComparisonSection({ items }: Props) {
                 Nawar vs academias clásicas
               </span>
 
-              <h2 className="title text-[#1D0084]">
-                Lo que marca la{' '}
-                <span className="text-[#025dc7]">diferencia</span>
+              <h2 className="title text-[#1D0084]" style={{ fontSize: 'clamp(34px, 4.5vw, 58px)' }}>
+                Lo que nos hace<br />diferente al resto
               </h2>
 
-              <p className="text-[17px] text-[#1D0084] leading-relaxed" style={{ opacity: 0.65 }}>
+              <p className="text-[17px] text-[#1D0084] leading-relaxed" style={{ opacity: 0.85 }}>
                 No es solo un curso de idiomas. Es el método que debería haber existido desde el principio.
               </p>
             </div>

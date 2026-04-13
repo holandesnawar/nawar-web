@@ -11,7 +11,13 @@ export const LANDING_QUERY = defineQuery(`
     comparison,
     testimonials,
     doubts,
-    about
+    about,
+    porQueNawar,
+    benefits,
+    proceso,
+    valor,
+    paraQuien,
+    faq
   }
 `)
 

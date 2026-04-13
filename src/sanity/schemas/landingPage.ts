@@ -116,6 +116,152 @@ export const landingPage = defineType({
       ],
     }),
 
+    // ── Por qué Nawar ──────────────────────────────────────────────────────────
+    defineField({
+      name: 'porQueNawar',
+      title: 'Por qué Nawar',
+      type: 'object',
+      fields: [
+        defineField({ name: 'badge', type: 'string', title: 'Badge (eyebrow)' }),
+        defineField({ name: 'title', type: 'string', title: 'Título' }),
+        defineField({ name: 'subtitle', type: 'text', title: 'Subtítulo' }),
+        defineField({ name: 'leftCardTitle', type: 'string', title: 'Tarjeta izq — título' }),
+        defineField({
+          name: 'leftCardItems',
+          type: 'array',
+          title: 'Tarjeta izq — puntos negativos',
+          of: [defineArrayMember({ type: 'string' })],
+        }),
+        defineField({ name: 'rightCardTitle', type: 'string', title: 'Tarjeta der — título' }),
+        defineField({
+          name: 'rightCardItems',
+          type: 'array',
+          title: 'Tarjeta der — puntos positivos',
+          of: [defineArrayMember({ type: 'string' })],
+        }),
+      ],
+    }),
+
+    // ── Benefits (Qué incluye) ───────────────────────────────────────────────
+    defineField({
+      name: 'benefits',
+      title: 'Qué incluye',
+      type: 'object',
+      fields: [
+        defineField({ name: 'badge', type: 'string', title: 'Badge (eyebrow)' }),
+        defineField({ name: 'title', type: 'string', title: 'Título' }),
+        defineField({ name: 'subtitle', type: 'text', title: 'Subtítulo' }),
+        defineField({
+          name: 'cards',
+          type: 'array',
+          title: 'Tarjetas de beneficios',
+          of: [
+            defineArrayMember({
+              type: 'object',
+              fields: [
+                defineField({ name: 'icon', type: 'string', title: 'Emoji / icono' }),
+                defineField({ name: 'title', type: 'string', title: 'Título' }),
+                defineField({ name: 'description', type: 'text', title: 'Descripción' }),
+                defineField({
+                  name: 'perks',
+                  type: 'array',
+                  title: 'Puntos clave',
+                  of: [defineArrayMember({ type: 'string' })],
+                }),
+              ],
+            }),
+          ],
+        }),
+      ],
+    }),
+
+    // ── Proceso ───────────────────────────────────────────────────────────────
+    defineField({
+      name: 'proceso',
+      title: 'Proceso (pasos)',
+      type: 'object',
+      fields: [
+        defineField({ name: 'badge', type: 'string', title: 'Badge (eyebrow)' }),
+        defineField({ name: 'title', type: 'string', title: 'Título' }),
+        defineField({ name: 'subtitle', type: 'text', title: 'Subtítulo' }),
+        defineField({ name: 'guaranteeText', type: 'string', title: 'Texto de garantía' }),
+        defineField({ name: 'ctaText', type: 'string', title: 'Texto del botón CTA' }),
+      ],
+    }),
+
+    // ── Valor (Prepárate para el cambio) ─────────────────────────────────────
+    defineField({
+      name: 'valor',
+      title: 'Valor (CTA section)',
+      type: 'object',
+      fields: [
+        defineField({ name: 'badge', type: 'string', title: 'Badge (eyebrow)' }),
+        defineField({ name: 'title', type: 'string', title: 'Título' }),
+        defineField({ name: 'subtitle', type: 'text', title: 'Subtítulo' }),
+        defineField({ name: 'note', type: 'string', title: 'Nota bajo subtítulo' }),
+        defineField({ name: 'ctaPrimary', type: 'string', title: 'CTA principal' }),
+        defineField({ name: 'ctaSecondary', type: 'string', title: 'CTA secundario' }),
+      ],
+    }),
+
+    // ── Para quién ───────────────────────────────────────────────────────────
+    defineField({
+      name: 'paraQuien',
+      title: 'Para quién',
+      type: 'object',
+      fields: [
+        defineField({ name: 'badge', type: 'string', title: 'Badge (eyebrow)' }),
+        defineField({ name: 'title', type: 'string', title: 'Título' }),
+        defineField({ name: 'subtitle', type: 'text', title: 'Subtítulo' }),
+        defineField({
+          name: 'points',
+          type: 'array',
+          title: 'Puntos / perfiles',
+          of: [
+            defineArrayMember({
+              type: 'object',
+              fields: [
+                defineField({ name: 'icon', type: 'string', title: 'Emoji' }),
+                defineField({ name: 'title', type: 'string', title: 'Título' }),
+                defineField({ name: 'description', type: 'text', title: 'Descripción' }),
+                defineField({
+                  name: 'perks',
+                  type: 'array',
+                  title: 'Puntos clave',
+                  of: [defineArrayMember({ type: 'string' })],
+                }),
+              ],
+            }),
+          ],
+        }),
+      ],
+    }),
+
+    // ── FAQ ───────────────────────────────────────────────────────────────────
+    defineField({
+      name: 'faq',
+      title: 'Preguntas frecuentes',
+      type: 'object',
+      fields: [
+        defineField({ name: 'badge', type: 'string', title: 'Badge (eyebrow)' }),
+        defineField({ name: 'title', type: 'string', title: 'Título' }),
+        defineField({
+          name: 'items',
+          type: 'array',
+          title: 'Preguntas',
+          of: [
+            defineArrayMember({
+              type: 'object',
+              fields: [
+                defineField({ name: 'question', type: 'string', title: 'Pregunta' }),
+                defineField({ name: 'answer', type: 'text', title: 'Respuesta' }),
+              ],
+            }),
+          ],
+        }),
+      ],
+    }),
+
     // ── Testimonials ──────────────────────────────────────────────────────────
     defineField({
       name: 'testimonials',

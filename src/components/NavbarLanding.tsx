@@ -199,7 +199,7 @@ export default function NavbarLanding() {
               <a
                 href="#"
                 onClick={handleLink}
-                className="flex w-full items-center justify-center px-6 py-4 text-[15px] font-semibold rounded-xl bg-white/8 border border-white/16 text-white/80 hover:bg-white/12 hover:text-white transition-all duration-200"
+                className="flex w-full items-center justify-center px-6 py-4 text-[15px] font-semibold rounded-xl bg-white/12 border border-white/25 text-white hover:bg-white/18 transition-all duration-200"
               >
                 Acceso a alumnos
               </a>

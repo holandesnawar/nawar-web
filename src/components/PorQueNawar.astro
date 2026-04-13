@@ -1,4 +1,25 @@
 ---
+interface Props { data?: any }
+const { data } = Astro.props
+const badge = data?.badge ?? 'Por qué existe Nawar'
+const title = data?.title ?? 'El método que nadie\nte había ofrecido'
+const subtitle = data?.subtitle ?? 'Las academias tradicionales no están pensadas para ti. Nawar nació para cambiar eso: neerlandés desde el español, con método real y comunidad que te acompaña.'
+const leftTitle = data?.leftCardTitle ?? 'El 90% de los estudiantes abandona sin hablar ni una frase'
+const leftItems = data?.leftCardItems ?? [
+  'Clases genéricas diseñadas para angloparlantes',
+  'Profesores que no hablan ni entienden español',
+  'Precios elevados sin garantías ni resultados claros',
+  'Sin comunidad: aprendes solo y te abandonas a mitad',
+  'Memorización de reglas sin contexto cultural real',
+]
+const rightTitle = data?.rightCardTitle ?? 'Con Nawar, alcanzas tu nivel B1 en menos de un año'
+const rightItems = data?.rightCardItems ?? [
+  'Método creado específicamente para hispanohablantes',
+  'Profesores que hablan español y entienden tu punto de partida',
+  'Garantía 15 días: si no avanzas, te devolvemos el dinero',
+  'Comunidad activa: no aprendes solo, avanzas con otros',
+  'Clases en vivo con contexto real y cultura neerlandesa',
+]
 ---
 <section class="porq-section" data-navbar="light">
   <div class="inner" style="position:relative;z-index:1;">
@@ -8,54 +29,26 @@
         <svg class="check-icon" fill="none" viewBox="0 0 12 12">
           <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        Por qué existe Nawar
+        {badge}
       </span>
-      <h2 class="porq-title">
-        El método que <span class="accent">nadie te había ofrecido</span>
-      </h2>
-      <p class="porq-sub">
-        Las academias tradicionales no están pensadas para ti. Nawar nació para cambiar eso: neerlandés desde el español, con método real y comunidad que te acompaña.
-      </p>
+      <h2 class="porq-title" set:html={title.replace(/\n/g, '<br>')} />
+      <p class="porq-sub">{subtitle}</p>
     </div>
 
     <div class="porq-cards">
 
       <!-- Tarjeta izquierda: academias tradicionales -->
       <div class="porq-card porq-card--light sr">
-        <h3 class="porq-card-title porq-card-title--light">
-          El 90% de los estudiantes abandona sin hablar ni una frase
-        </h3>
+        <h3 class="porq-card-title porq-card-title--light">{leftTitle}</h3>
         <ul class="porq-list porq-list--bad">
-          <li>
-            <span class="porq-icon-x">
-              <svg width="10" height="10" fill="none" stroke="#dc2626" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-            </span>
-            Clases genéricas diseñadas para angloparlantes
-          </li>
-          <li>
-            <span class="porq-icon-x">
-              <svg width="10" height="10" fill="none" stroke="#dc2626" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-            </span>
-            Profesores que no hablan ni entienden español
-          </li>
-          <li>
-            <span class="porq-icon-x">
-              <svg width="10" height="10" fill="none" stroke="#dc2626" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-            </span>
-            Precios elevados sin garantías ni resultados claros
-          </li>
-          <li>
-            <span class="porq-icon-x">
-              <svg width="10" height="10" fill="none" stroke="#dc2626" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-            </span>
-            Sin comunidad: aprendes solo y te abandonas a mitad
-          </li>
-          <li>
-            <span class="porq-icon-x">
-              <svg width="10" height="10" fill="none" stroke="#dc2626" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-            </span>
-            Memorización de reglas sin contexto cultural real
-          </li>
+          {leftItems.map((item: string) => (
+            <li>
+              <span class="porq-icon-x">
+                <svg width="10" height="10" fill="none" stroke="#dc2626" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              </span>
+              {item}
+            </li>
+          ))}
         </ul>
       </div>
 
@@ -77,44 +70,17 @@
             <circle cx="110" cy="70" r="4" fill="white" opacity="0.6"/>
           </svg>
         </div>
-        <h3 class="porq-card-title porq-card-title--dark">
-          Con Nawar, alcanzas tu nivel B1 en menos de un año
-        </h3>
+        <h3 class="porq-card-title porq-card-title--dark">{rightTitle}</h3>
         <ul class="porq-list porq-list--good">
-          <li>
-            <span class="porq-icon-check">
-              <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-            </span>
-            Método creado específicamente para hispanohablantes
-          </li>
-          <li>
-            <span class="porq-icon-check">
-              <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-            </span>
-            Profesores que hablan español y entienden tu punto de partida
-          </li>
-          <li>
-            <span class="porq-icon-check">
-              <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-            </span>
-            Garantía 15 días: si no avanzas, te devolvemos el dinero
-          </li>
-          <li>
-            <span class="porq-icon-check">
-              <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-            </span>
-            Comunidad activa: no aprendes solo, avanzas con otros
-          </li>
-          <li>
-            <span class="porq-icon-check">
-              <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-            </span>
-            Clases en vivo con contexto real y cultura neerlandesa
-          </li>
+          {rightItems.map((item: string) => (
+            <li>
+              <span class="porq-icon-check">
+                <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </span>
+              {item}
+            </li>
+          ))}
         </ul>
-        <p class="porq-frase">
-          "Aprender desde el español, no a pesar de él — esa es la diferencia Nawar."
-        </p>
       </div>
 
     </div>

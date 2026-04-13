@@ -21,14 +21,32 @@ export const prerender = false
 
     <div class="ct-container">
 
-      <!-- Left: form panel -->
-      <div class="ct-panel">
-        <div class="ct-panel-inner">
-          <div class="ct-heading">
-            <h1 class="ct-title">Estamos aquí<br>para ayudarte</h1>
-            <p class="ct-sub">¿Tienes dudas sobre los cursos o el método? Escríbenos y te respondemos en menos de 24 horas.</p>
-          </div>
+      <!-- Top: Title + subtitle -->
+      <div class="ct-top">
+        <h1 class="ct-title text-gradient-white">Estamos aquí para ayudarte</h1>
+        <p class="ct-sub">¿Tienes dudas sobre los cursos o el método? Escríbenos y te respondemos en menos de 24 horas.</p>
+      </div>
 
+      <div class="ct-columns">
+        <!-- Left: Image -->
+        <div class="ct-image-side">
+          <div class="ct-image-wrap">
+            <img
+              src="https://d1yei2z3i6k35z.cloudfront.net/9533860/676188e625099_Tulipfield_NL.jpg"
+              alt="Campo de tulipanes"
+              class="ct-image"
+            />
+            <div class="ct-image-badge">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Respuesta en menos de 24h
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Form — sin panel wrapper -->
+        <div class="ct-form-side">
           <form id="contact-form" class="ct-form" novalidate>
             <div class="ct-row">
               <div class="ct-field">
@@ -39,6 +57,11 @@ export const prerender = false
                 <label class="ct-label" for="email">Correo</label>
                 <input id="email" name="email" type="email" required placeholder="tu@email.com" class="ct-input" />
               </div>
+            </div>
+
+            <div class="ct-field">
+              <label class="ct-label" for="asunto">Asunto</label>
+              <input id="asunto" name="asunto" type="text" required placeholder="¿Sobre qué quieres hablar?" class="ct-input" />
             </div>
 
             <div class="ct-field">
@@ -68,23 +91,6 @@ export const prerender = false
         </div>
       </div>
 
-      <!-- Right: tulip image -->
-      <div class="ct-image-side">
-        <div class="ct-image-wrap">
-          <img
-            src="https://d1yei2z3i6k35z.cloudfront.net/9533860/676188e625099_Tulipfield_NL.jpg"
-            alt="Campo de tulipanes"
-            class="ct-image"
-          />
-          <div class="ct-image-badge">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            Respuesta en menos de 24h
-          </div>
-        </div>
-      </div>
-
     </div>
   </section>
 
@@ -99,12 +105,12 @@ export const prerender = false
   align-items: center;
   position: relative;
   overflow: hidden;
-  background: #0d0050;
+  background: #1D0084;
   padding: 120px 0 80px;
 }
 .ct-bg {
   position: absolute; inset: 0;
-  background: linear-gradient(135deg, #0a0040 0%, #1D0084 50%, #0b1a60 100%);
+  background: #1D0084;
 }
 .ct-glow {
   position: absolute;
@@ -121,72 +127,75 @@ export const prerender = false
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 32px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  align-items: center;
   width: 100%;
 }
 
-/* ── Glass form panel ── */
-.ct-panel {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-radius: 24px;
-  padding: 2px;
+/* Top */
+.ct-top {
+  text-align: center;
+  margin-bottom: 48px;
 }
-.ct-panel-inner {
-  padding: 44px 40px;
-}
-.ct-heading { margin-bottom: 36px; }
 .ct-title {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: clamp(26px, 3vw, 40px);
+  font-size: clamp(28px, 3.5vw, 44px);
   font-weight: 600;
-  color: #fff;
   letter-spacing: -0.02em;
   line-height: 1.15;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  /* text-gradient-white takes over color */
 }
 .ct-sub {
-  font-size: 15px;
-  color: rgba(255,255,255,0.58);
+  font-size: 16px;
+  color: rgba(255,255,255,0.60);
   line-height: 1.65;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
-/* ── Form ── */
-.ct-form { display: flex; flex-direction: column; gap: 16px; }
-.ct-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.ct-field { display: flex; flex-direction: column; gap: 6px; }
+/* Columns */
+.ct-columns {
+  display: grid;
+  grid-template-columns: 0.4fr 0.6fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ── Form — sin panel wrapper, abierto ── */
+.ct-form-side { padding-top: 8px; }
+.ct-form { display: flex; flex-direction: column; gap: 20px; }
+.ct-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ct-field { display: flex; flex-direction: column; gap: 8px; }
 .ct-label {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: rgba(255,255,255,0.50);
+  font-size: 13px; font-weight: 600;
+  color: rgba(255,255,255,0.95);
+  letter-spacing: 0.01em;
 }
 .ct-input {
-  padding: 13px 16px; border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.07);
-  font-size: 14px; color: #fff;
+  padding: 15px 18px; border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.30);
+  background: rgba(255,255,255,0.12);
+  font-size: 15px; color: #fff;
   font-family: inherit; outline: none; width: 100%;
   box-sizing: border-box;
   transition: border-color 0.2s, background 0.2s;
 }
-.ct-input::placeholder { color: rgba(255,255,255,0.28); }
+.ct-input::placeholder { color: rgba(255,255,255,0.50); }
 .ct-input:focus {
-  border-color: rgba(77,163,255,0.6);
-  background: rgba(255,255,255,0.11);
+  border-color: rgba(77,163,255,0.70);
+  background: rgba(255,255,255,0.18);
+  outline: none;
 }
 .ct-submit {
   display: flex; align-items: center; justify-content: center; gap: 10px;
-  padding: 14px; border-radius: 8px; border: none; cursor: pointer;
+  padding: 16px; border-radius: 12px; border: none; cursor: pointer;
   background: #4da3ff; color: #1D0084;
   font-size: 15px; font-weight: 700; font-family: inherit;
   margin-top: 4px;
+  transition: background 0.2s;
 }
-.ct-privacy { font-size: 12px; color: rgba(255,255,255,0.30); text-align: center; }
-.ct-privacy a { color: rgba(255,255,255,0.50); text-decoration: underline; }
+.ct-submit:hover { background: #3391f0; }
+.ct-privacy { font-size: 12px; color: rgba(255,255,255,0.40); text-align: center; }
+.ct-privacy a { color: rgba(255,255,255,0.60); text-decoration: underline; }
 
 /* ── Success ── */
 .ct-success { text-align: center; padding: 32px 0; }
@@ -199,8 +208,8 @@ export const prerender = false
 .ct-success-title { font-family: 'Poppins', system-ui, sans-serif; font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 6px; }
 .ct-success-sub { font-size: 14px; color: rgba(255,255,255,0.50); }
 
-/* ── Right image ── */
-.ct-image-side { display: flex; align-items: center; }
+/* ── Image ── */
+.ct-image-side { display: flex; align-items: flex-start; }
 .ct-image-wrap {
   position: relative;
   width: 100%;
@@ -226,35 +235,49 @@ export const prerender = false
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .ct-container { grid-template-columns: 1fr; gap: 40px; }
-  .ct-image-side { order: -1; }
-  .ct-image-wrap { aspect-ratio: 16/9; }
+  .ct-columns { grid-template-columns: 1fr; gap: 32px; }
+  .ct-image-side { display: none; }
   .ct-section { padding: 120px 0 60px; }
   .ct-container { padding: 0 20px; }
 }
 @media (max-width: 540px) {
   .ct-row { grid-template-columns: 1fr; }
-  .ct-panel-inner { padding: 32px 24px; }
 }
 </style>
 
 <script>
-  const form = document.getElementById('contact-form') as HTMLFormElement | null
-  const successMsg = document.getElementById('success-msg')
-  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null
+  const form       = document.getElementById('contact-form') as HTMLFormElement | null
+  const successMsg = document.getElementById('success-msg') as HTMLElement | null
+  const submitBtn  = document.getElementById('submit-btn') as HTMLButtonElement | null
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault()
     if (!form.checkValidity()) { form.reportValidity(); return }
 
-    if (submitBtn) {
-      submitBtn.textContent = 'Enviando…'
-      submitBtn.disabled = true
+    const nombre  = (form.querySelector('#nombre')  as HTMLInputElement)?.value?.trim()
+    const email   = (form.querySelector('#email')   as HTMLInputElement)?.value?.trim()
+    const asunto  = (form.querySelector('#asunto')  as HTMLInputElement)?.value?.trim()
+    const mensaje = (form.querySelector('#mensaje') as HTMLTextAreaElement)?.value?.trim()
+
+    if (submitBtn) { submitBtn.textContent = 'Enviando…'; submitBtn.disabled = true }
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, email, asunto, mensaje }),
+      })
+      const data = await res.json()
+
+      if (data.success) {
+        form.style.display = 'none'
+        if (successMsg) successMsg.style.display = 'block'
+      } else {
+        if (submitBtn) { submitBtn.textContent = 'Error — inténtalo de nuevo'; submitBtn.disabled = false }
+        console.error('Error contacto:', data.error)
+      }
+    } catch {
+      if (submitBtn) { submitBtn.textContent = 'Error — inténtalo de nuevo'; submitBtn.disabled = false }
     }
-
-    await new Promise(r => setTimeout(r, 1000))
-
-    form.style.display = 'none'
-    if (successMsg) successMsg.style.display = 'block'
   })
 </script>

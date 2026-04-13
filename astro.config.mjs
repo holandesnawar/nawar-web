@@ -9,6 +9,12 @@ export default defineConfig({
   adapter: vercel(),
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      exclude: ['@sanity/astro'],
+    },
+    ssr: {
+      noExternal: ['sanity', '@sanity/ui', '@sanity/icons'],
+    },
   },
   integrations: [
     react(),

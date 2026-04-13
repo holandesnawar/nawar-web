@@ -1,4 +1,12 @@
 ---
+interface Props { data?: any }
+const { data } = Astro.props
+const badge = data?.badge ?? 'Prepárate para el cambio'
+const title = data?.title ?? 'El idioma ya no es una barrera: es una ventaja competitiva.'
+const subtitle = data?.subtitle ?? 'En un mundo cada vez más globalizado, hablar neerlandés te abre las puertas a mejores oportunidades laborales, migratorias y académicas en Países Bajos y Bélgica.'
+const note = data?.note ?? 'Domina el neerlandés y transforma tu futuro profesional →'
+const ctaPrimary = data?.ctaPrimary ?? 'Quiero empezar'
+const ctaSecondary = data?.ctaSecondary ?? 'Preguntas frecuentes'
 ---
 <section class="section-dark py-section" data-navbar="dark" style="position:relative;overflow:hidden;">
   <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:1000px;height:700px;background:radial-gradient(ellipse at center,rgba(11,109,240,0.35) 0%,transparent 65%);pointer-events:none;" aria-hidden="true"></div>
@@ -11,30 +19,29 @@
           <svg class="check-icon" fill="none" viewBox="0 0 12 12">
             <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          Prepárate para el cambio
+          {badge}
         </span>
-        <h2 class="value-title">
-          El idioma ya no es una barrera: es una <span style="color:#4da3ff;">ventaja competitiva</span>.
-        </h2>
-        <p class="value-sub">
-          En un mundo cada vez más globalizado, hablar neerlandés te abre las puertas a mejores oportunidades laborales, migratorias y académicas en Países Bajos y Bélgica.
-        </p>
-        <p class="value-note">Domina el neerlandés y transforma tu futuro profesional →</p>
+        <h2 class="value-title text-gradient-white" set:html={title.replace(/\n/g, '<br>')} />
+        <p class="value-sub">{subtitle}</p>
+        <p class="value-note">{note}</p>
         <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;">
-          <a href="#apuntate" class="btn-primary" style="font-size:15px;padding:14px 28px;">
-            Quiero empezar
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <a href="#lista-espera" class="valor-cta-btn">
+            {ctaPrimary}
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
             </svg>
           </a>
-          <a href="#faq" class="btn-outline-white" style="font-size:15px;padding:14px 24px;">Preguntas frecuentes</a>
+          <a href="#faq" class="btn-outline-white" style="font-size:15px;padding:14px 24px;">{ctaSecondary}</a>
         </div>
       </div>
       <div class="value-right sr d1">
-        <div class="value-stat"><p class="value-stat-num">600+</p><p class="value-stat-label">Estudiantes formados</p></div>
-        <div class="value-stat"><p class="value-stat-num">4.9★</p><p class="value-stat-label">Valoración media</p></div>
-        <div class="value-stat"><p class="value-stat-num">+5</p><p class="value-stat-label">Años de experiencia</p></div>
-        <div class="value-stat"><p class="value-stat-num">15+</p><p class="value-stat-label">Países representados</p></div>
+        <div class="value-image-wrap">
+          <img
+            src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=500&fit=crop&q=80"
+            alt="Estudiantes aprendiendo"
+            class="value-image"
+          />
+        </div>
       </div>
     </div>
   </div>

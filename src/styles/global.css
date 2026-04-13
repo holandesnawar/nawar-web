@@ -173,7 +173,7 @@ body {
   to   { clip-path: circle(0%   at 50% 0%); }
 }
 .menu-drop { animation: menu-drop 0.58s cubic-bezier(0.16,1,0.3,1) forwards; }
-.menu-lift { animation: menu-lift 0.42s cubic-bezier(0.7,0,0.84,0)  forwards; }
+.menu-lift { animation: menu-lift 0.42s cubic-bezier(0.33,0,0.67,0)  forwards; }
 
 @keyframes link-reveal {
   from { opacity: 0; transform: translateY(18px); }
