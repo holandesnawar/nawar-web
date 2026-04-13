@@ -23,7 +23,7 @@ export const prerender = false
 
       <!-- Top: Title + subtitle -->
       <div class="ct-top">
-        <h1 class="ct-title text-gradient-white">Estamos aquí para ayudarte</h1>
+        <h1 class="ct-title">Escríbenos y cuéntanos cómo podemos ayudarte.</h1>
         <p class="ct-sub">¿Tienes dudas sobre los cursos o el método? Escríbenos y te respondemos en menos de 24 horas.</p>
       </div>
 
@@ -106,7 +106,7 @@ export const prerender = false
   position: relative;
   overflow: hidden;
   background: #1D0084;
-  padding: 120px 0 80px;
+  padding: 100px 0 80px;
 }
 .ct-bg {
   position: absolute; inset: 0;
@@ -132,7 +132,7 @@ export const prerender = false
 
 /* Top */
 .ct-top {
-  text-align: center;
+  text-align: left;
   margin-bottom: 48px;
 }
 .ct-title {
@@ -142,14 +142,16 @@ export const prerender = false
   letter-spacing: -0.02em;
   line-height: 1.15;
   margin-bottom: 14px;
-  /* text-gradient-white takes over color */
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.85) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .ct-sub {
   font-size: 16px;
-  color: rgba(255,255,255,0.60);
+  color: rgba(255,255,255,0.88);
   line-height: 1.65;
-  max-width: 480px;
-  margin: 0 auto;
+  max-width: 520px;
+  margin: 0;
 }
 
 /* Columns */
@@ -237,7 +239,7 @@ export const prerender = false
 @media (max-width: 900px) {
   .ct-columns { grid-template-columns: 1fr; gap: 32px; }
   .ct-image-side { display: none; }
-  .ct-section { padding: 120px 0 60px; }
+  .ct-section { padding: 90px 0 60px; }
   .ct-container { padding: 0 20px; }
 }
 @media (max-width: 540px) {
