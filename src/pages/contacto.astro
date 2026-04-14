@@ -24,7 +24,7 @@ export const prerender = false
       <!-- Top: Title + subtitle -->
       <div class="ct-top">
         <span class="badge-dark" style="margin-bottom: 24px;">CONTACTO</span>
-        <h1 class="ct-title">Escríbenos y cuéntanos<br>cómo podemos ayudarte.</h1>
+        <h1 class="ct-title">Escríbenos y cuéntanos<br><span style="color: #4da3ff; -webkit-text-fill-color: #4da3ff;">cómo podemos ayudarte.</span></h1>
         <p class="ct-sub">¿Tienes dudas sobre los cursos o el método? Escríbenos y te respondemos en menos de 24 horas.</p>
       </div>
 
@@ -133,14 +133,11 @@ export const prerender = false
 .ct-title {
   font-family: 'Poppins', system-ui, sans-serif;
   font-size: clamp(32px, 5vw, 56px);
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.025em;
   line-height: 1.12;
   margin-bottom: 14px;
   background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%);
-  background-size: 100% 1.15em;
-  background-repeat: repeat-y;
-  background-position: top left;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

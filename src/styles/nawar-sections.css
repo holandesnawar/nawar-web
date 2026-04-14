@@ -12,9 +12,6 @@
       gets the same top→fade effect regardless of line breaks) ── */
 .text-gradient-white {
   background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%);
-  background-size: 100% 1.15em;
-  background-repeat: repeat-y;
-  background-position: top left;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
