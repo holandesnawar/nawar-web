@@ -43,13 +43,34 @@
 </div>
 
 <script>
-  const form = document.getElementById('signup-form');
-  const success = document.getElementById('signup-success');
-  if (form && success) {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      form.style.display = 'none';
-      success.style.display = 'flex';
-    });
-  }
+  const form    = document.getElementById('signup-form') as HTMLFormElement | null;
+  const success = document.getElementById('signup-success') as HTMLElement | null;
+  const btn     = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+
+  form?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const email = (document.getElementById('signup-email') as HTMLInputElement)?.value?.trim();
+    if (!email) return;
+
+    if (btn) { btn.textContent = '...'; btn.disabled = true; }
+
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json().catch(() => null);
+
+      if (res.ok && data?.success) {
+        (form as HTMLElement).style.display = 'none';
+        if (success) success.style.display = 'flex';
+      } else {
+        if (btn) { btn.textContent = 'Inténtalo de nuevo'; btn.disabled = false; }
+        console.error('[signup] error:', data?.error);
+      }
+    } catch {
+      if (btn) { btn.textContent = 'Error — inténtalo de nuevo'; btn.disabled = false; }
+    }
+  });
 </script>

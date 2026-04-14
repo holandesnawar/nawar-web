@@ -64,10 +64,16 @@ export const prerender = false
                 id="guide-email"
                 type="email"
                 class="guide-input"
-                placeholder="Correo"
+                placeholder="Correo electrónico"
                 autocomplete="email"
                 required
               />
+              <p class="guide-privacy">
+                Al hacer clic, confirmo que he leído y aceptado la
+                <a href="https://holandesnawar.com/politica-de-privacidad" target="_blank" rel="noopener noreferrer">política de privacidad</a>
+                y los
+                <a href="https://holandesnawar.com/terminos-y-condiciones" target="_blank" rel="noopener noreferrer">términos y condiciones</a>.
+              </p>
               <button id="guide-submit" type="submit" class="guide-submit">
                 ¡Descargar!
                 <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -75,13 +81,6 @@ export const prerender = false
                 </svg>
               </button>
             </form>
-
-            <p class="guide-privacy">
-              Al hacer clic, confirmo que he leído y aceptado la
-              <a href="https://holandesnawar.com/politica-de-privacidad" target="_blank" rel="noopener noreferrer">política de privacidad</a>
-              y los
-              <a href="https://holandesnawar.com/terminos-y-condiciones" target="_blank" rel="noopener noreferrer">términos y condiciones</a>.
-            </p>
           </div>
         </div>
 
@@ -190,7 +189,7 @@ export const prerender = false
 
   .guide-form {
     display: grid;
-    gap: 8px;
+    gap: 16px;
     width: 100%;
   }
 
@@ -249,7 +248,7 @@ export const prerender = false
   }
 
   .guide-privacy {
-    margin: 14px 0 0;
+    margin: 0;
     font-size: 12px;
     line-height: 1.65;
     color: rgba(255,253,253,0.8);

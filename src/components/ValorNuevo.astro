@@ -21,7 +21,10 @@ const ctaSecondary = data?.ctaSecondary ?? 'Preguntas frecuentes'
           </svg>
           {badge}
         </span>
-        <h2 class="value-title text-gradient-white" set:html={title.replace(/\n/g, '<br>')} />
+        <h2 class="value-title">
+          <span class="text-gradient-white">El idioma ya no es una barrera:</span><br class="hidden md:block" />
+          <span style="color: #4da3ff; -webkit-text-fill-color: #4da3ff;">es una ventaja competitiva.</span>
+        </h2>
         <p class="value-sub">{subtitle}</p>
         <p class="value-note">{note}</p>
         <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;">

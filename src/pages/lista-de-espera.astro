@@ -1,82 +1,495 @@
 ---
-import { sanityClient } from 'sanity:client'
-import { PortableText } from 'astro-portabletext'
 import Layout from '../layouts/Layout.astro'
-import { WAITLIST_QUERY } from '../sanity/queries'
+import '../styles/nawar-sections.css'
 
-export const prerender = true
-
-const page = await sanityClient.fetch(WAITLIST_QUERY)
+export const prerender = false
 ---
 
 <Layout
-  title={page?.seo?.title || 'Lista de espera — Nawar Academia'}
-  description={page?.seo?.description || 'Apúntate a la lista de espera'}
+  title="Lista de espera — Holandés Nawar"
+  description="Apúntate a la lista de espera de Holandés Nawar y sé el primero en saber cuando abramos plazas."
 >
-  <div class="max-w-2xl mx-auto px-6 py-16">
-    <h1 class="text-3xl font-bold mb-4">
-      {page?.headline || page?.title || 'Lista de espera'}
-    </h1>
+  <div class="wl-page">
+    <div class="wl-glow1" aria-hidden="true"></div>
+    <div class="wl-glow2" aria-hidden="true"></div>
+    <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.4;"></div>
 
-    {page?.body && (
-      <div class="prose mb-10">
-        <PortableText value={page.body} />
+    <div class="wl-shell">
+
+      <!-- Logo -->
+      <a href="/" class="wl-logo-link">
+        <img
+          src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png"
+          alt="Holandés Nawar"
+          class="wl-logo"
+        />
+      </a>
+
+      <!-- Header -->
+      <div class="wl-header">
+        <span class="wl-badge">
+          <svg class="check-icon" fill="none" viewBox="0 0 12 12">
+            <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Plazas limitadas
+        </span>
+        <h1 class="wl-title"><span class="wl-title-gradient">Únete a la lista de espera</span></h1>
+        <p class="wl-subtitle-lead">Gracias por tu interés en Nawar.</p>
+        <p class="wl-subtitle-body">
+          Nuestra comunidad reúne a personas ambiciosas y con visión, unidas por el propósito de aprender el neerlandés y mejorar sus oportunidades a largo plazo.
+        </p>
       </div>
-    )}
 
-    <div class="bg-gray-50 rounded-2xl p-8">
-      <h2 class="font-semibold text-xl mb-6">
-        {page?.formTitle || 'Apúntate a la lista de espera'}
-      </h2>
-      <form
-        name="lista-espera"
-        method="POST"
-        data-netlify="true"
-        class="flex flex-col gap-4"
-        action="/gracias"
-      >
-        <input type="hidden" name="form-name" value="lista-espera" />
-        <div>
-          <label class="block text-sm font-medium mb-1" for="nombre">Nombre</label>
-          <input
-            id="nombre"
-            name="nombre"
-            type="text"
-            required
-            class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
-          />
+      <!-- Success -->
+      <div id="wl-success" class="wl-success" style="display:none;">
+        <div class="wl-success-icon">
+          <svg width="30" height="30" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
         </div>
-        <div>
-          <label class="block text-sm font-medium mb-1" for="email">Email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
-          />
+        <h2 class="wl-success-title">¡Ya estás en la lista!</h2>
+        <p class="wl-success-msg">
+          Te avisaremos en cuanto abramos plazas. Revisa tu bandeja de entrada (y la carpeta de spam por si acaso).
+        </p>
+        <a href="/" class="wl-success-back">Volver al inicio</a>
+      </div>
+
+      <!-- Formulario directo sobre el azul -->
+      <form id="wl-form" class="wl-form" novalidate>
+
+        <!-- Fila 1: nombre + apellido -->
+        <div class="wl-row">
+          <div class="wl-field">
+            <label class="wl-label" for="wl-nombre">Nombre <span class="wl-req">*</span></label>
+            <input id="wl-nombre" type="text" class="wl-input" placeholder="Tu nombre" autocomplete="given-name" required />
+            <span class="wl-err" data-for="wl-nombre">Completa este campo</span>
+          </div>
+          <div class="wl-field">
+            <label class="wl-label" for="wl-apellido">Apellido(s) <span class="wl-req">*</span></label>
+            <input id="wl-apellido" type="text" class="wl-input" placeholder="Tus apellidos" autocomplete="family-name" required />
+            <span class="wl-err" data-for="wl-apellido">Completa este campo</span>
+          </div>
         </div>
-        <div>
-          <label class="block text-sm font-medium mb-1" for="nivel">Nivel actual de neerlandés</label>
-          <select
-            id="nivel"
-            name="nivel"
-            class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 bg-white"
-          >
-            <option value="">Selecciona...</option>
-            <option value="cero">Cero — nunca he estudiado</option>
-            <option value="basico">Básico — conozco algunas palabras</option>
-            <option value="intermedio">Intermedio — puedo mantener conversaciones sencillas</option>
-            <option value="avanzado">Avanzado — quiero perfeccionar</option>
-          </select>
+
+        <!-- Fila 2: email + teléfono -->
+        <div class="wl-row">
+          <div class="wl-field">
+            <label class="wl-label" for="wl-email">Correo electrónico <span class="wl-req">*</span></label>
+            <input id="wl-email" type="email" class="wl-input" placeholder="tu@email.com" autocomplete="email" required />
+            <span class="wl-err" data-for="wl-email">Introduce un email válido</span>
+          </div>
+          <div class="wl-field">
+            <label class="wl-label" for="wl-telefono">Número de teléfono</label>
+            <input id="wl-telefono" type="tel" class="wl-input" placeholder="+34 600 000 000" autocomplete="tel" />
+          </div>
         </div>
-        <button
-          type="submit"
-          class="bg-gray-900 text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors self-start"
-        >
-          {page?.formButtonText || 'Quiero apuntarme'}
-        </button>
+
+        <!-- Fila 3: las dos preguntas juntas -->
+        <div class="wl-row">
+          <div class="wl-field">
+            <label class="wl-label" for="wl-conociste">¿Cómo conociste Nawar?</label>
+            <div class="wl-select-wrap">
+              <select id="wl-conociste" class="wl-select">
+                <option value="" disabled selected>Selecciona...</option>
+                <option value="instagram">Instagram</option>
+                <option value="tiktok">TikTok</option>
+                <option value="youtube">YouTube</option>
+                <option value="recomendacion">Recomendación de un amigo</option>
+                <option value="google">Google / internet</option>
+                <option value="evento">Un evento o charla</option>
+                <option value="otro">Otro</option>
+              </select>
+              <svg class="wl-select-arrow" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </div>
+          </div>
+          <div class="wl-field">
+            <label class="wl-label" for="wl-nivel">¿Qué nivel de neerlandés tienes?</label>
+            <div class="wl-select-wrap">
+              <select id="wl-nivel" class="wl-select">
+                <option value="" disabled selected>Selecciona...</option>
+                <option value="ninguno">Ninguno — nunca he estudiado</option>
+                <option value="a0">A0 — algunas palabras sueltas</option>
+                <option value="a1">A1 — frases simples</option>
+                <option value="a2">A2 — conversaciones básicas</option>
+                <option value="b1">B1 — situaciones cotidianas</option>
+                <option value="b2">B2 — nivel independiente</option>
+              </select>
+              <svg class="wl-select-arrow" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón -->
+        <div class="wl-btn-wrap">
+          <button id="wl-submit" type="submit" class="wl-btn">
+            <span id="wl-btn-text">Aplicar ahora</span>
+            <svg id="wl-btn-arrow" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+            <svg id="wl-btn-spinner" class="wl-spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:none;">
+              <path stroke-linecap="round" d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+          </button>
+          <p class="wl-privacy">
+            Al hacer clic confirmo que he leído y acepto la
+            <a href="https://holandesnawar.com/politica-de-privacidad" target="_blank" rel="noopener noreferrer">política de privacidad</a>
+            y los
+            <a href="https://holandesnawar.com/terminos-y-condiciones" target="_blank" rel="noopener noreferrer">términos y condiciones</a>.
+          </p>
+        </div>
+
       </form>
+
     </div>
   </div>
 </Layout>
+
+<style>
+  /* ── Página ── */
+  .wl-page {
+    min-height: 100vh;
+    background: #1D0084;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 52px 32px 96px;
+  }
+  .wl-glow1 {
+    position: absolute; top: -140px; left: 50%; transform: translateX(-50%);
+    width: 960px; height: 560px;
+    background: radial-gradient(ellipse at center, rgba(11,109,240,0.5) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .wl-glow2 {
+    position: absolute; bottom: -60px; right: -80px;
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse at center, rgba(77,163,255,0.16) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  /* ── Shell ── */
+  .wl-shell {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 700px;
+    display: flex; flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* ── Logo ── */
+  .wl-logo-link { display: inline-block; margin-bottom: 44px; }
+  .wl-logo { height: 38px; width: auto; object-fit: contain; }
+
+  /* ── Badge (mismo estilo que badge-dark del home + glass) ── */
+  .wl-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px; border-radius: 9999px;
+    background: #025dc7;
+    border: 1px solid rgba(77,163,255,0.2);
+    color: #e0f2ff;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  /* ── Header ── */
+  .wl-header {
+    width: 100%;
+    display: flex; flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 48px;
+  }
+  .wl-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: clamp(38px, 5.5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.08;
+    margin: 0;
+    margin-top: 10px;
+  }
+  /* Mismo efecto gradiente que el título del hero home */
+  .wl-title-gradient {
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  /* "Gracias por tu interés en Nawar" — más grande y blanco */
+  .wl-subtitle-lead {
+    font-size: clamp(17px, 1.8vw, 20px);
+    font-weight: 700;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.95);
+    max-width: 600px;
+    margin: 0;
+  }
+  /* Descripción — menos bold, más blanco que antes */
+  .wl-subtitle-body {
+    font-size: clamp(14px, 1.3vw, 16px);
+    font-weight: 400;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 600px;
+    margin: 0;
+  }
+
+  /* ── Form ── */
+  .wl-form {
+    width: 100%;
+    display: flex; flex-direction: column;
+    gap: 32px;
+  }
+
+  .wl-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .wl-field {
+    display: flex; flex-direction: column;
+    gap: 8px; position: relative;
+  }
+
+  /* Labels blancos */
+  .wl-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.4;
+  }
+  .wl-req { color: rgba(255,255,255,0.45); font-weight: 500; }
+
+  /* Input solo línea inferior */
+  .wl-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.28);
+    border-radius: 0;
+    padding: 10px 0;
+    color: #ffffff;
+    font-size: 16px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+  .wl-input::placeholder { color: rgba(255,255,255,0.28); }
+  .wl-input:focus { border-bottom-color: #4da3ff; }
+  .wl-input.invalid { border-bottom-color: rgba(255, 100, 100, 0.8); }
+
+  /* Error */
+  .wl-err {
+    display: none;
+    font-size: 12px;
+    color: rgba(255,120,120,0.9);
+    font-weight: 500;
+  }
+  .wl-err.visible { display: block; }
+
+  /* Select solo línea inferior */
+  .wl-select-wrap { position: relative; }
+  .wl-select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid rgba(255,255,255,0.28);
+    border-radius: 0;
+    padding: 10px 24px 10px 0;
+    color: #ffffff;
+    font-size: 16px;
+    font-family: inherit;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    color-scheme: dark;
+  }
+  .wl-select option {
+    background: #1a0099;
+    color: #ffffff;
+  }
+  .wl-select:focus { border-bottom-color: #4da3ff; }
+  .wl-select-arrow {
+    position: absolute; right: 2px; top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* Botón */
+  .wl-btn-wrap {
+    display: flex; flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding-top: 8px;
+  }
+  .wl-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    padding: 16px 36px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    background: #4da3ff;
+    color: #1D0084;
+    font-size: 17px;
+    font-weight: 700;
+    font-family: inherit;
+    transition: none;
+  }
+  .wl-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+  @keyframes wl-spin { to { transform: rotate(360deg); } }
+  .wl-spinner { animation: wl-spin 0.8s linear infinite; }
+
+  /* Privacidad */
+  .wl-privacy {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.6;
+    margin: 0;
+  }
+  .wl-privacy a {
+    color: rgba(255,255,255,0.5);
+    text-decoration: underline;
+    text-decoration-color: rgba(255,255,255,0.2);
+  }
+  .wl-privacy a:hover { color: rgba(255,255,255,0.75); }
+
+  /* Success (sobre fondo azul) */
+  .wl-success {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0 48px;
+  }
+  .wl-success-icon {
+    width: 58px; height: 58px; border-radius: 50%;
+    background: rgba(77,163,255,0.15);
+    border: 1.5px solid rgba(77,163,255,0.3);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .wl-success-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: 28px; font-weight: 700;
+    color: #ffffff; margin: 0;
+    letter-spacing: -0.03em;
+  }
+  .wl-success-msg {
+    font-size: 16px; color: rgba(255,255,255,0.92);
+    line-height: 1.7; max-width: 480px; margin: 0;
+  }
+  .wl-success-back {
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    margin-top: 8px; padding: 16px 36px; border-radius: 12px;
+    background: #4da3ff;
+    border: none;
+    color: #1D0084; font-size: 17px; font-weight: 700;
+    font-family: inherit;
+    text-decoration: none; transition: none;
+    cursor: pointer;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .wl-page { padding: 36px 20px 72px; }
+    .wl-row { grid-template-columns: 1fr; gap: 28px; }
+    .wl-title { font-size: clamp(28px, 9vw, 38px); }
+    .wl-btn { width: 100%; justify-content: center; }
+    .wl-btn-wrap { align-items: stretch; }
+  }
+</style>
+
+<script>
+  const form     = document.getElementById('wl-form') as HTMLFormElement | null
+  const success  = document.getElementById('wl-success') as HTMLElement | null
+  const submit   = document.getElementById('wl-submit') as HTMLButtonElement | null
+  const btnText  = document.getElementById('wl-btn-text') as HTMLElement | null
+  const btnArrow = document.getElementById('wl-btn-arrow') as HTMLElement | null
+  const spinner  = document.getElementById('wl-btn-spinner') as HTMLElement | null
+
+  function setLoading(on: boolean) {
+    if (!submit) return
+    submit.disabled = on
+    if (btnText)  btnText.textContent   = on ? 'Enviando...' : 'Aplicar ahora'
+    if (btnArrow) btnArrow.style.display = on ? 'none' : 'block'
+    if (spinner)  spinner.style.display  = on ? 'block' : 'none'
+  }
+
+  function showError(id: string, show: boolean) {
+    const input = document.getElementById(id) as HTMLInputElement | null
+    const err   = document.querySelector(`[data-for="${id}"]`) as HTMLElement | null
+    if (!input || !err) return
+    input.classList.toggle('invalid', show)
+    err.classList.toggle('visible', show)
+  }
+
+  function validate(): boolean {
+    const nombre   = (document.getElementById('wl-nombre')   as HTMLInputElement)?.value?.trim()
+    const apellido = (document.getElementById('wl-apellido') as HTMLInputElement)?.value?.trim()
+    const email    = (document.getElementById('wl-email')    as HTMLInputElement)?.value?.trim()
+    let ok = true
+    showError('wl-nombre',   !nombre);   if (!nombre)   ok = false
+    showError('wl-apellido', !apellido); if (!apellido) ok = false
+    showError('wl-email', !email || !email.includes('@'))
+    if (!email || !email.includes('@')) ok = false
+    return ok
+  }
+
+  ;['wl-nombre', 'wl-apellido', 'wl-email'].forEach(id => {
+    document.getElementById(id)?.addEventListener('input', () => showError(id, false))
+  })
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    if (!validate()) return
+    setLoading(true)
+
+    const nombre    = (document.getElementById('wl-nombre')    as HTMLInputElement).value.trim()
+    const apellido  = (document.getElementById('wl-apellido')  as HTMLInputElement).value.trim()
+    const email     = (document.getElementById('wl-email')     as HTMLInputElement).value.trim()
+    const telefono  = (document.getElementById('wl-telefono')  as HTMLInputElement)?.value?.trim() ?? ''
+    const conociste = (document.getElementById('wl-conociste') as HTMLSelectElement)?.value ?? ''
+    const nivel     = (document.getElementById('wl-nivel')     as HTMLSelectElement)?.value ?? ''
+
+    try {
+      const res  = await fetch('/api/waitlist', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ firstName: nombre, lastName: apellido, email, phone: telefono, conociste, nivel }),
+      })
+      const data = await res.json().catch(() => null)
+
+      if (res.ok && data?.success) {
+        if (form)    (form as HTMLElement).style.display    = 'none'
+        if (success) success.style.display = 'flex'
+      } else {
+        setLoading(false)
+        if (btnText) {
+          btnText.textContent = data?.error ?? 'Error — inténtalo de nuevo'
+          setTimeout(() => { if (btnText) btnText.textContent = 'Aplicar ahora' }, 3500)
+        }
+      }
+    } catch {
+      setLoading(false)
+      if (btnText) {
+        btnText.textContent = 'Error — inténtalo de nuevo'
+        setTimeout(() => { if (btnText) btnText.textContent = 'Aplicar ahora' }, 3500)
+      }
+    }
+  })
+</script>

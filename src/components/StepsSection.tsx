@@ -173,7 +173,7 @@ export default function StepsSection({ steps }: Props) {
 
         <div className="pt-16">
           <a
-            href="#lista-espera"
+            href="/lista-de-espera"
             className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#4da3ff] text-white text-[15px] font-semibold hover:bg-[#5eb4ff] transition-all duration-200 shadow-[0_4px_20px_rgba(77,163,255,0.28)]"
           >
             Únete a la lista de espera
@@ -269,7 +269,7 @@ export default function StepsSection({ steps }: Props) {
                     <Visual />
                     {i === steps.length - 1 && (
                       <a
-                        href="#lista-espera"
+                        href="/lista-de-espera"
                         className="mt-7 inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-[#4da3ff] text-white text-[14px] font-semibold hover:bg-[#5eb4ff] transition-all duration-200 shadow-[0_4px_20px_rgba(77,163,255,0.28)] self-start"
                       >
                         Únete a la lista de espera

@@ -121,7 +121,7 @@ export default function NavbarLanding() {
                 Acceso a alumnos
               </a>
               <a
-                href="https://www.holandesnawar.com/es/login"
+                href="/lista-de-espera"
                 className="inline-flex items-center gap-2 px-7 py-3 text-[15px] font-semibold rounded-lg bg-[#4da3ff] text-[#1D0084] transition-colors duration-200"
               >
                 Apúntate
@@ -134,7 +134,7 @@ export default function NavbarLanding() {
             {/* Mobile */}
             <div className="md:hidden flex items-center gap-2">
               <a
-                href="https://www.holandesnawar.com/es/login"
+                href="/lista-de-espera"
                 className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-[#4da3ff] text-[#1D0084] text-[14px] font-semibold hover:bg-[#5eb4ff] transition-all duration-200"
               >
                 Apúntate
@@ -204,7 +204,7 @@ export default function NavbarLanding() {
                 Acceso a alumnos
               </a>
               <a
-                href="https://www.holandesnawar.com/es/login"
+                href="/lista-de-espera"
                 onClick={handleLink}
                 className="flex w-full items-center justify-center gap-2.5 px-6 py-4 text-[16px] font-semibold rounded-xl bg-[#4da3ff] text-[#1D0084] hover:bg-[#5eb4ff] transition-all duration-200 shadow-[0_4px_20px_rgba(77,163,255,0.30)]"
               >
