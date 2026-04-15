@@ -53,11 +53,13 @@ const items = data?.items?.length ? data.items : defaultItems
   margin: 0 auto 48px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 12px;
 }
 @media (max-width: 768px) {
-  .faq-section { padding: 52px 0 48px; }
+  .faq-section { padding: 48px 0 48px; }
   .faq-header-wrap { margin-bottom: 28px; }
+  .faq-header-wrap .title { font-size: clamp(20px, 5.5vw, 28px); }
 }
 
 .faq-modern {
