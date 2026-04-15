@@ -34,11 +34,11 @@ export default function StickyComparisonSection({ items }: Props) {
                 Nawar vs academias clásicas
               </span>
 
-              <h2 className="title text-[#1D0084]" style={{ fontSize: 'clamp(34px, 4.5vw, 58px)' }}>
+              <h2 className="title text-[#1D0084]" style={{ fontSize: 'clamp(26px, 3.2vw, 42px)' }}>
                 Lo que nos hace<br />diferente al resto
               </h2>
 
-              <p className="text-[17px] text-[#1D0084] leading-relaxed" style={{ opacity: 0.85 }}>
+              <p className="text-[15px] text-[#1D0084] leading-relaxed" style={{ opacity: 0.85 }}>
                 No es solo un curso de idiomas. Es el método que debería haber existido desde el principio.
               </p>
             </div>

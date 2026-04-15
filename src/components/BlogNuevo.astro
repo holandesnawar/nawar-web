@@ -1,5 +1,19 @@
 ---
+import { sanityClient } from 'sanity:client'
+import { POSTS_QUERY } from '../sanity/queries'
+import imageUrlBuilder from '@sanity/image-url'
+
+// Traemos los 3 posts más recientes
+const allPosts = await sanityClient.fetch(POSTS_QUERY)
+const posts = allPosts.slice(0, 3)
+
+const builder = imageUrlBuilder(sanityClient)
+const urlFor  = (source: any) => builder.image(source)
+
+const fmt = (d: string) =>
+  new Date(d).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
 ---
+
 <section class="section-light" data-navbar="light" style="position:relative;overflow:hidden;padding:96px 0 64px;">
   <div class="dots-light" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></div>
   <div class="inner">
@@ -9,49 +23,76 @@
       </span>
       <h2 class="title" style="color:#1D0084;margin-bottom:16px;white-space:nowrap;">Nuestros últimos artículos</h2>
     </div>
+
     <div class="blog-grid">
-      <article class="blog-card sr">
-        <div class="blog-img">🇳🇱</div>
-        <div class="blog-body">
-          <p class="blog-date">9 de julio de 2025</p>
-          <h3 class="blog-title">¿Qué significan los colores de la bandera de Holanda?</h3>
-          <p class="blog-desc">Descubre el significado del rojo, blanco y azul en la bandera de los Países Bajos, su origen histórico y curiosidades que casi nadie conoce.</p>
-          <a href="/blog" class="blog-link">
-            Leer artículo
-            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-          </a>
-        </div>
-      </article>
-      <article class="blog-card sr d1">
-        <div class="blog-img">📚</div>
-        <div class="blog-body">
-          <p class="blog-date">18 de julio de 2025</p>
-          <h3 class="blog-title">Los 10 verbos más usados en neerlandés</h3>
-          <p class="blog-desc">Aprende los verbos clave que escucharás todos los días en neerlandés y cómo usarlos con ejemplos reales pensados para hispanohablantes.</p>
-          <a href="/blog" class="blog-link">
-            Leer artículo
-            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-          </a>
-        </div>
-      </article>
-      <article class="blog-card sr d2">
-        <div class="blog-img">💡</div>
-        <div class="blog-body">
-          <p class="blog-date">4 de agosto de 2025</p>
-          <h3 class="blog-title">Errores comunes al aprender neerlandés y cómo evitarlos</h3>
-          <p class="blog-desc">Desde la pronunciación hasta la gramática, revisamos los fallos más típicos de los hispanohablantes y cómo corregirlos paso a paso.</p>
-          <a href="/blog" class="blog-link">
-            Leer artículo
-            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-          </a>
-        </div>
-      </article>
+      {posts.length === 0 ? (
+        <!-- Fallback si Sanity no tiene posts todavía -->
+        <>
+          <article class="blog-card sr">
+            <div class="blog-img">🇳🇱</div>
+            <div class="blog-body">
+              <p class="blog-date">Próximamente</p>
+              <h3 class="blog-title">Artículos sobre neerlandés en camino</h3>
+              <p class="blog-desc">Pronto publicaremos artículos sobre gramática, cultura y consejos para hispanohablantes.</p>
+              <a href="/blog" class="blog-link">
+                Ver el blog
+                <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+              </a>
+            </div>
+          </article>
+        </>
+      ) : (
+        posts.map((post: any, i: number) => (
+          <article class={`blog-card sr${i > 0 ? ` d${i}` : ''}`}>
+            {post.mainImage ? (
+              <div class="blog-img blog-img-photo">
+                <img
+                  src={urlFor(post.mainImage).width(600).height(340).fit('crop').quality(80).url()}
+                  alt={post.mainImage.alt || post.title}
+                  loading="lazy"
+                  width="600"
+                  height="340"
+                />
+              </div>
+            ) : (
+              <div class="blog-img">🇳🇱</div>
+            )}
+            <div class="blog-body">
+              {post.publishedAt && (
+                <p class="blog-date">{fmt(post.publishedAt)}</p>
+              )}
+              <h3 class="blog-title">{post.title}</h3>
+              {post.excerpt && (
+                <p class="blog-desc">{post.excerpt}</p>
+              )}
+              <a href={`/blog/${post.slug}`} class="blog-link">
+                Leer artículo
+                <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+              </a>
+            </div>
+          </article>
+        ))
+      )}
     </div>
+
   </div>
 </section>
+
+<style>
+  /* Foto real en vez de emoji */
+  .blog-img-photo {
+    padding: 0 !important;
+    font-size: unset !important;
+    background: #f0f4ff !important;
+  }
+  .blog-img-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+</style>

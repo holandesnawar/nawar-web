@@ -1,39 +1,29 @@
 ---
-import { sanityClient } from 'sanity:client'
 import Layout from '../layouts/Layout.astro'
 import NavbarLanding from '../components/NavbarLanding'
-import FeaturesSection from '../components/FeaturesSection.astro'
+import MetodoNawar from '../components/MetodoNawar.astro'
 import FooterNuevo from '../components/FooterNuevo.astro'
 import '../styles/nawar-sections.css'
-import { LANDING_QUERY } from '../sanity/queries'
-
-export const prerender = false
-
-const page = await sanityClient.fetch(LANDING_QUERY)
-const features = page?.features ?? []
 ---
 
 <Layout
   title="Nawar | Nuestra Visión"
-  description="Conoce la filosofía detrás de Nawar. Creemos que aprender neerlandés no debe ser una barrera. Descubre nuestro método diseñado por y para hispanohablantes en Países Bajos."
+  description="Conoce la filosofía detrás de Nawar. Creemos que aprender neerlandés no debería ser una barrera. Descubre nuestro método diseñado por y para hispanohablantes en Países Bajos."
 >
   <NavbarLanding client:load />
 
-  <!-- Video Hero — title at bottom, center free -->
+  <!-- 1 ── Video Hero -->
   <section class="vision-hero" data-navbar="dark">
     <video
       class="vision-video"
       src="https://docs.holandesnawar.com/audio/Sobrenosotros1-ezgif.com-webp-to-mp4-converter%20(1).mp4"
-      autoplay
-      muted
-      loop
-      playsinline
+      autoplay muted loop playsinline
     ></video>
     <div class="vision-overlay" aria-hidden="true"></div>
-
     <div class="vision-content">
       <h1 class="vision-title">
-        <span class="text-gradient-white">Ayudarte a aprender</span> <span class="vision-accent" style="color: #4da3ff; -webkit-text-fill-color: #4da3ff;">neerlandés</span>
+        <span class="text-gradient-white">Ayudarte a aprender</span>
+        <span class="vision-accent"> neerlandés</span>
       </h1>
       <p class="vision-sub">
         Nawar nació para que ningún hispanohablante tenga que enfrentarse al neerlandés sin el método que realmente funciona.
@@ -47,16 +37,14 @@ const features = page?.features ?? []
     </div>
   </section>
 
-  <!-- Vision statement -->
+  <!-- 2 ── Vision statement (scroll-reveal phrases) -->
   <section id="vision" class="section-light" data-navbar="light" style="padding: 80px 0 64px;">
     <div class="inner" style="max-width: 860px;">
-
       <p class="vision-phrase">
         {"Creemos que aprender neerlandés no debería ser una barrera. Para vivir, trabajar e integrarte en Países Bajos, el idioma es la clave. Pero nadie lo enseñaba desde el español. Con el método correcto, con quien lo entiende, todo cambia. Por eso creamos Nawar: un método diseñado desde el español, por quienes entienden tus retos, tus dudas y tu punto de partida. Más de 600 estudiantes hispanohablantes de 15 países lo han comprobado. El neerlandés no es imposible, solo necesitabas el método adecuado.".split(" ").map((w: string) => <span class="vphrase">{w} </span>)}
       </p>
-
       <div class="sr-bi" style="margin-top:48px;">
-        <a href="#" class="vision-community-btn">
+        <a href="/lista-de-espera" class="vision-community-btn">
           Unirse a la comunidad
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
@@ -66,40 +54,50 @@ const features = page?.features ?? []
     </div>
   </section>
 
-  <!-- El método Nawar -->
-  <FeaturesSection features={features} />
-
-  <!-- Values -->
-  <section class="section-dark py-section" data-navbar="dark">
+  <!-- 3 ── Mensaje del CEO -->
+  <section class="ceo-section" data-navbar="dark">
     <div class="hero-glow1" aria-hidden="true"></div>
-    <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></div>
-    <div class="inner" style="position:relative;z-index:1;">
-      <div style="text-align:center;max-width:520px;margin:0 auto 56px;" class="sr">
-        <span class="badge-dark">Nuestros valores</span>
-        <h2 class="title">
-          <span class="text-gradient-white">Lo que nos guía</span><br class="hidden sm:block" />
-          <span style="color: #4da3ff; -webkit-text-fill-color: #4da3ff;">cada día</span>
-        </h2>
-      </div>
-      <div class="vision-values-grid">
-        <div class="vision-value-card">
-          <div class="vision-value-icon">🎯</div>
-          <h3 class="vision-value-title">Método desde el español</h3>
-          <p class="vision-value-text">Explicamos el neerlandés partiendo de lo que ya conoces, sin pasar por el inglés ni los métodos genéricos.</p>
+    <div class="hero-glow2" aria-hidden="true"></div>
+    <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.4;"></div>
+
+    <div class="ceo-shell">
+      <div class="ceo-grid">
+
+        <!-- Izquierda: badge + título -->
+        <div class="ceo-left sr">
+          <span class="badge-dark">
+            <svg class="check-icon" fill="none" viewBox="0 0 12 12">
+              <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Nuestra historia
+          </span>
+          <h2 class="ceo-title">
+            <span class="text-gradient-white">Nacido del amor</span><br>
+            <span class="text-gradient-white">por el pueblo</span><br>
+            <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;">hispano unido.</span>
+          </h2>
         </div>
-        <div class="vision-value-card">
-          <div class="vision-value-icon">🤝</div>
-          <h3 class="vision-value-title">Comunidad real</h3>
-          <p class="vision-value-text">Aprendes rodeado de personas que viven exactamente la misma experiencia que tú, con los mismos retos.</p>
+
+        <!-- Derecha: texto CEO -->
+        <div class="ceo-right sr d1">
+          <blockquote class="ceo-quote">
+            <p>Empecé Nawar porque yo mismo viví la frustración de aprender neerlandés sin los recursos correctos. Los métodos disponibles eran genéricos, pensados para cualquiera menos para un hispanohablante.</p>
+            <p>Con el tiempo entendí que el español y el neerlandés tienen mucho más en común de lo que parece. Solo hacía falta alguien que lo enseñara desde el lugar correcto.</p>
+            <p>Por eso construí Nawar desde cero: un método diseñado para quien piensa en español, que quiere vivir, trabajar e integrarse de verdad en los Países Bajos. Esto no es un curso de idiomas. Es el método que yo hubiera querido tener.</p>
+          </blockquote>
+          <div class="ceo-author">
+            <div class="ceo-divider"></div>
+            <p class="ceo-name">Rida Nawar</p>
+            <p class="ceo-role">Fundador de Nawar</p>
+          </div>
         </div>
-        <div class="vision-value-card">
-          <div class="vision-value-icon">🔴</div>
-          <h3 class="vision-value-title">En directo, siempre</h3>
-          <p class="vision-value-text">Las clases son en vivo porque la interacción real es insustituible para aprender un idioma de verdad.</p>
-        </div>
+
       </div>
     </div>
   </section>
+
+  <!-- 4 ── Lo que aportamos (última sección) -->
+  <MetodoNawar />
 
   <FooterNuevo />
 </Layout>
@@ -107,149 +105,161 @@ const features = page?.features ?? []
 <style>
 /* ── Video Hero ── */
 .vision-hero {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  min-height: 600px;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-  background: #0a0030;
+  position: relative; width: 100%; height: 100vh;
+  min-height: 600px; display: flex; align-items: flex-end;
+  overflow: hidden; background: #0a0030;
 }
 .vision-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: 0;
 }
 .vision-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(10, 0, 48, 0.10) 0%,
-    rgba(10, 0, 48, 0.05) 30%,
-    rgba(10, 0, 48, 0.70) 65%,
-    rgba(10, 0, 48, 0.94) 100%
-  );
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(10,0,48,0.10) 0%, rgba(10,0,48,0.05) 30%, rgba(10,0,48,0.70) 65%, rgba(10,0,48,0.94) 100%);
   z-index: 1;
 }
 .vision-content {
-  position: relative;
-  z-index: 3;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  position: relative; z-index: 3; width: 100%;
+  max-width: 1200px; margin: 0 auto;
   padding: 0 24px 72px;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  display: flex; flex-direction: column; align-items: flex-start;
 }
 .vision-title {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: clamp(30px, 4.2vw, 58px);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.08;
-  color: #fff;
-  margin-bottom: 18px;
-  max-width: 640px;
-  text-align: left;
+  font-size: clamp(30px, 4.2vw, 58px); font-weight: 600;
+  letter-spacing: -0.03em; line-height: 1.08; color: #fff;
+  margin-bottom: 18px; max-width: 640px;
 }
 .vision-accent { color: #4da3ff; }
 .vision-sub {
-  font-size: clamp(14px, 1.4vw, 17px);
-  color: rgba(255,255,255,0.70);
-  line-height: 1.65;
-  max-width: 440px;
-  margin-bottom: 32px;
-  text-align: left;
+  font-size: clamp(14px, 1.4vw, 17px); color: rgba(255,255,255,0.70);
+  line-height: 1.65; max-width: 440px; margin-bottom: 32px;
 }
 .vision-cta {
   display: inline-flex; align-items: center; gap: 10px;
   padding: 15px 28px; border-radius: 12px;
   background: #4da3ff; color: #1D0084;
-  font-size: 15px; font-weight: 700;
-  text-decoration: none;
+  font-size: 15px; font-weight: 700; text-decoration: none;
 }
 @media (max-width: 640px) {
   .vision-content { padding: 0 20px 52px; }
   .vision-title { font-size: clamp(26px, 7vw, 36px); }
 }
 
-/* ── Vision text phrases ── */
+/* ── Vision phrases ── */
 .vision-phrase {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: clamp(28px, 4vw, 46px);
-  font-weight: 400;
-  letter-spacing: -0.018em;
-  line-height: 1.45;
-  color: #1D0084;
-  margin: 0;
+  font-size: clamp(28px, 4vw, 46px); font-weight: 400;
+  letter-spacing: -0.018em; line-height: 1.45; color: #1D0084; margin: 0;
 }
-.vphrase {
-  display: inline;
-  opacity: 0.12;
-  transition: opacity 0.55s ease;
-}
-.vphrase.vis {
-  opacity: 1;
-}
+.vphrase { display: inline; opacity: 0.12; transition: opacity 0.55s ease; }
+.vphrase.vis { opacity: 1; }
 .vision-community-btn {
   display: inline-flex; align-items: center; gap: 10px;
   padding: 16px 32px; border-radius: 14px;
   background: #4da3ff; color: #1D0084;
-  font-size: 15px; font-weight: 700;
-  text-decoration: none;
+  font-size: 15px; font-weight: 700; text-decoration: none;
 }
-
 
 /* ── Values ── */
 .vision-values-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
+  display: grid; grid-template-columns: 1fr; gap: 20px;
 }
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .vision-values-grid { grid-template-columns: 1fr 1fr 1fr; }
 }
 .vision-value-card {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 20px;
-  padding: 32px 28px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 20px; padding: 32px 28px;
 }
 .vision-value-icon { font-size: 32px; margin-bottom: 16px; }
 .vision-value-title {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 10px;
+  font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 10px;
 }
 .vision-value-text { font-size: 14px; color: rgba(255,255,255,0.60); line-height: 1.65; }
+
+/* ── CEO Section ── */
+.ceo-section {
+  background: #1D0084;
+  position: relative;
+  overflow: hidden;
+  padding: 96px 0 104px;
+}
+.ceo-shell {
+  position: relative; z-index: 1;
+  max-width: 1152px; margin: 0 auto; padding: 0 32px;
+}
+.ceo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: flex-start;
+}
+.ceo-left {
+  display: flex; flex-direction: column; gap: 12px;
+  align-items: flex-start;
+}
+.ceo-title {
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-size: clamp(32px, 4.5vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+  margin: 0;
+}
+.ceo-right {
+  display: flex; flex-direction: column; gap: 32px;
+}
+.ceo-quote {
+  margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.ceo-quote p {
+  font-size: clamp(15px, 1.4vw, 17px);
+  color: rgba(255,255,255,0.92);
+  line-height: 1.75;
+  margin: 0;
+}
+.ceo-author {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.ceo-divider {
+  width: 40px; height: 2px;
+  background: #4da3ff;
+  margin-bottom: 12px;
+}
+.ceo-name {
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-size: 17px; font-weight: 700;
+  color: #ffffff; margin: 0;
+}
+.ceo-role {
+  font-size: 14px; color: rgba(255,255,255,0.80);
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .ceo-grid { grid-template-columns: 1fr; gap: 48px; }
+  .ceo-section { padding: 72px 0 80px; }
+  .ceo-shell { padding: 0 24px; }
+}
+@media (max-width: 640px) {
+  .ceo-section { padding: 60px 0 72px; }
+  .ceo-shell { padding: 0 20px; }
+}
 </style>
 
 <script>
   const phrases = document.querySelectorAll<HTMLElement>('.vphrase')
-
   const obs = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add('vis')
-        } else {
-          e.target.classList.remove('vis')
-        }
+        if (e.isIntersecting) e.target.classList.add('vis')
+        else e.target.classList.remove('vis')
       })
     },
     { threshold: 0, rootMargin: '0px 0px -20% 0px' }
   )
-
-  phrases.forEach((el, i) => {
-    obs.observe(el)
-  })
+  phrases.forEach((el) => obs.observe(el))
 </script>

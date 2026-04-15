@@ -6,7 +6,7 @@ import { LANDING_QUERY } from '../sanity/queries'
 import NavbarLanding from '../components/NavbarLanding'
 import HeroNuevo from '../components/HeroNuevo.astro'
 import GuidePopup from '../components/GuidePopup.astro'
-import PainPointsSection from '../components/PainPointsSection.astro'
+// PainPointsSection eliminada temporalmente — para restaurar: import PainPointsSection from '../components/PainPointsSection.astro'
 import StickyComparisonSection from '../components/StickyComparisonSection'
 import TestimonialsSection from '../components/TestimonialsSection.astro'
 import PorQueNawar from '../components/PorQueNawar.astro'
@@ -48,7 +48,7 @@ const faq          = page?.faq          ?? null
   <ValorNuevo data={valor} />
   <StickyComparisonSection items={comparison} client:load />
   <ParaQuienSection data={paraQuien} />
-  <PainPointsSection painPoints={painPoints} />
+  {/* <PainPointsSection painPoints={painPoints} /> — eliminada temporalmente */}
   <BlogNuevo />
   <FAQNuevo data={faq} />
   <TestimonialsSection testimonials={testimonials} />

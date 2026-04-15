@@ -61,7 +61,7 @@ export default function NavbarLanding() {
   }, [update])
 
   useEffect(() => {
-    const handler = () => { if (window.innerWidth >= 768) closeMenu() }
+    const handler = () => { if (window.innerWidth >= 1024) closeMenu() }
     window.addEventListener('resize', handler)
     return () => window.removeEventListener('resize', handler)
   }, [])
@@ -95,12 +95,12 @@ export default function NavbarLanding() {
               <img
                 src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png"
                 alt="Nawar"
-                className="h-10 md:h-9 w-auto object-contain"
+                className="h-12 lg:h-11 w-auto object-contain"
               />
             </a>
 
             {/* Desktop links */}
-            <nav className="hidden md:flex items-center gap-1">
+            <nav className="hidden lg:flex items-center gap-1">
               {NAV_LINKS.map((link) => (
                 <a
                   key={link.href}
@@ -113,7 +113,7 @@ export default function NavbarLanding() {
             </nav>
 
             {/* Desktop CTAs */}
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden lg:flex items-center gap-3">
               <a
                 href="#"
                 className="px-4 py-2 text-[15px] font-semibold text-white/88 hover:text-white/50 transition-colors duration-200"
@@ -132,7 +132,7 @@ export default function NavbarLanding() {
             </div>
 
             {/* Mobile */}
-            <div className="md:hidden flex items-center gap-2">
+            <div className="lg:hidden flex items-center gap-2">
               <a
                 href="/lista-de-espera"
                 className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-[#4da3ff] text-[#1D0084] text-[14px] font-semibold hover:bg-[#5eb4ff] transition-all duration-200"
