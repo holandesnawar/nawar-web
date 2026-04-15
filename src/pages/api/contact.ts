@@ -16,63 +16,77 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const gmailPass = import.meta.env.GMAIL_APP_PASSWORD
-    if (!gmailPass) return json({ error: 'Email service no configurado' }, 500)
 
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'holandesnawar@gmail.com',
-        pass: gmailPass,
-      },
-    })
+    if (!gmailPass) {
+      console.error('[contact] GMAIL_APP_PASSWORD no configurada')
+      // Devolver éxito — no mostrar error al usuario
+      return json({ success: true })
+    }
 
-    await transporter.sendMail({
-      from: '"Nawar Academia" <holandesnawar@gmail.com>',
-      to:   'info@holandesnawar.com',
-      replyTo: email,
-      subject: `Nueva consulta: ${asunto}`,
-      html: `
-        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:32px;">
-          <h2 style="color:#1D0084;margin-bottom:4px;">Nueva consulta desde holandesnawar.com</h2>
-          <hr style="border:none;border-top:1px solid #e5e7eb;margin:16px 0;">
+    try {
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'holandesnawar@gmail.com',
+          pass: gmailPass,
+        },
+      })
 
-          <table style="width:100%;border-collapse:collapse;">
-            <tr>
-              <td style="padding:10px 0;color:#6b7280;font-size:13px;width:100px;">Nombre</td>
-              <td style="padding:10px 0;color:#111827;font-size:15px;font-weight:600;">${escapeHtml(nombre) || '—'}</td>
-            </tr>
-            <tr style="background:#f9fafb;">
-              <td style="padding:10px 8px;color:#6b7280;font-size:13px;">Email</td>
-              <td style="padding:10px 8px;">
-                <a href="mailto:${escapeHtml(email)}" style="color:#1D0084;font-size:15px;">${escapeHtml(email)}</a>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:10px 0;color:#6b7280;font-size:13px;">Asunto</td>
-              <td style="padding:10px 0;color:#111827;font-size:15px;">${escapeHtml(asunto)}</td>
-            </tr>
-          </table>
+      await transporter.sendMail({
+        from:    '"Nawar Academia" <holandesnawar@gmail.com>',
+        to:      'info@holandesnawar.com',
+        replyTo: email,
+        subject: `Nueva consulta: ${asunto}`,
+        html: `
+          <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:32px;">
+            <h2 style="color:#1D0084;margin-bottom:4px;">Nueva consulta desde holandesnawar.com</h2>
+            <hr style="border:none;border-top:1px solid #e5e7eb;margin:16px 0;">
 
-          <div style="margin-top:20px;">
-            <p style="color:#6b7280;font-size:13px;margin-bottom:8px;">Mensaje</p>
-            <div style="background:#f3f4f6;border-radius:12px;padding:20px;font-size:15px;color:#111827;line-height:1.65;white-space:pre-wrap;">${escapeHtml(mensaje)}</div>
+            <table style="width:100%;border-collapse:collapse;">
+              <tr>
+                <td style="padding:10px 0;color:#6b7280;font-size:13px;width:100px;">Nombre</td>
+                <td style="padding:10px 0;color:#111827;font-size:15px;font-weight:600;">${escapeHtml(nombre) || '—'}</td>
+              </tr>
+              <tr style="background:#f9fafb;">
+                <td style="padding:10px 8px;color:#6b7280;font-size:13px;">Email</td>
+                <td style="padding:10px 8px;">
+                  <a href="mailto:${escapeHtml(email)}" style="color:#1D0084;font-size:15px;">${escapeHtml(email)}</a>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0;color:#6b7280;font-size:13px;">Asunto</td>
+                <td style="padding:10px 0;color:#111827;font-size:15px;">${escapeHtml(asunto)}</td>
+              </tr>
+            </table>
+
+            <div style="margin-top:20px;">
+              <p style="color:#6b7280;font-size:13px;margin-bottom:8px;">Mensaje</p>
+              <div style="background:#f3f4f6;border-radius:12px;padding:20px;font-size:15px;color:#111827;line-height:1.65;white-space:pre-wrap;">${escapeHtml(mensaje)}</div>
+            </div>
+
+            <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;">
+              <a href="mailto:${escapeHtml(email)}?subject=Re: ${encodeURIComponent(asunto)}"
+                 style="display:inline-block;background:#1D0084;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;">
+                Responder a ${escapeHtml(nombre || email)}
+              </a>
+            </div>
           </div>
+        `,
+      })
 
-          <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;">
-            <a href="mailto:${escapeHtml(email)}?subject=Re: ${encodeURIComponent(asunto)}"
-               style="display:inline-block;background:#1D0084;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;">
-              Responder a ${escapeHtml(nombre || email)}
-            </a>
-          </div>
-        </div>
-      `,
-    })
+      console.log('[contact] email sent from:', email)
 
+    } catch (emailErr) {
+      // Loguear el error internamente pero no bloquearlo al usuario
+      console.error('[contact] email send failed:', emailErr)
+    }
+
+    // Siempre éxito — el usuario nunca debe ver errores del servicio de email
     return json({ success: true })
 
   } catch (e) {
     console.error('[contact] exception:', e)
-    return json({ error: 'Error al enviar el email' }, 500)
+    return json({ success: true })
   }
 }
 
