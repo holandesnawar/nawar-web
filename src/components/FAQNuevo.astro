@@ -1,8 +1,8 @@
 ---
 interface Props { data?: any }
 const { data } = Astro.props
-const badge = data?.badge ?? 'Preguntas frecuentes'
-const title = data?.title ?? 'Todo lo que necesitas saber antes de empezar'
+const badge = data?.badge ?? 'FAQ'
+const title = data?.title ?? 'Preguntas Frecuentes'
 const defaultItems = [
   { question: '¿Qué es NAWAR?', answer: 'NAWAR es nuestra academia de neerlandés para hispanohablantes. Elegimos este nombre porque en árabe "Nawar" significa "flor": representa crecimiento, constancia y progreso real. Explicaciones pensadas para hispanohablantes, un método paso a paso y práctica constante desde el inicio.' },
   { question: '¿Por qué aprender neerlandés si ya hablo inglés?', answer: 'Hablar neerlandés es clave para acceder a empleos de calidad, estudios universitarios y beneficios migratorios. El inglés ayuda a "defenderse", pero quien realmente destaca es quien domina el neerlandés.' },
@@ -45,7 +45,7 @@ const items = data?.items?.length ? data.items : defaultItems
 
 <style>
 .faq-section {
-  padding: 96px 0;
+  padding: 52px 0 96px;
 }
 .faq-header-wrap {
   text-align: center;
@@ -57,7 +57,7 @@ const items = data?.items?.length ? data.items : defaultItems
   gap: 12px;
 }
 @media (max-width: 768px) {
-  .faq-section { padding: 48px 0 48px; }
+  .faq-section { padding: 36px 0 48px; }
   .faq-header-wrap { margin-bottom: 28px; }
   .faq-header-wrap .title { font-size: clamp(20px, 5.5vw, 28px); }
 }

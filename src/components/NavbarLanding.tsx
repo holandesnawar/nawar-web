@@ -105,7 +105,7 @@ export default function NavbarLanding() {
                 <a
                   key={link.href}
                   href={r(link.href)}
-                  className="px-4 py-2 text-[15px] font-semibold text-white/88 hover:text-white/50 transition-colors duration-200"
+                  className="px-4 py-2 text-[15px] font-bold text-white/88 hover:text-white/50 transition-colors duration-200"
                 >
                   {link.label}
                 </a>
@@ -116,7 +116,7 @@ export default function NavbarLanding() {
             <div className="hidden lg:flex items-center gap-3">
               <a
                 href="#"
-                className="px-4 py-2 text-[15px] font-semibold text-white/88 hover:text-white/50 transition-colors duration-200"
+                className="px-4 py-2 text-[15px] font-bold text-white/88 hover:text-white/50 transition-colors duration-200"
               >
                 Acceso a alumnos
               </a>
