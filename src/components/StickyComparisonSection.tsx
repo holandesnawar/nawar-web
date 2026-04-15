@@ -48,14 +48,14 @@ export default function StickyComparisonSection({ items }: Props) {
 
       <div className="relative max-w-6xl mx-auto px-6">
         {/* align-items: flex-start so both columns begin at the same top */}
-        <div className="flex flex-col lg:flex-row lg:items-start">
+        <div className="flex flex-col lg:flex-row">
 
-          {/* Left — sticky, align-self:start is required for sticky inside flex */}
-          <div
-            className="lg:w-[42%] shrink-0 lg:sticky lg:top-[72px] lg:h-[calc(100vh-72px)]"
-            style={{ display: 'flex', alignItems: 'flex-start', alignSelf: 'flex-start' }}
-          >
-            <div className="space-y-6 w-full py-10 lg:py-16 lg:pr-16">
+          {/* Left — outer div stretches full height of row; inner div is sticky */}
+          <div className="lg:w-[42%] shrink-0">
+            <div
+              className="lg:sticky lg:top-[72px] space-y-6 w-full py-10 lg:py-20 lg:pr-16"
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}
+            >
               <span className="badge-light eyebrow">
                 <svg className="check-icon" fill="none" viewBox="0 0 12 12">
                   <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
@@ -67,14 +67,14 @@ export default function StickyComparisonSection({ items }: Props) {
                 Lo que nos hace<br />diferente al resto
               </h2>
 
-              <p className="text-[15px] text-[#1D0084] leading-relaxed" style={{ opacity: 0.85 }}>
-                No es solo un curso de idiomas. Es el método que debería haber existido desde el principio.
+              <p className="text-[15px] font-medium text-[#1D0084] leading-relaxed" style={{ opacity: 1 }}>
+                No es solo un curso de idiomas. Es un método construido específicamente para hispanohablantes: sin el filtro del inglés, con profesores que entienden tu punto de partida y con una comunidad que avanza contigo.
               </p>
             </div>
           </div>
 
           {/* Right — normal scroll, cards flow naturally */}
-          <div className="lg:w-[58%] pt-2 pb-10 lg:py-20 space-y-5">
+          <div className="lg:w-[58%] py-10 lg:py-20 space-y-5">
             {safeItems.map((item) => (
               <div key={item.title} className="bg-white rounded-3xl p-8">
                 <div className="flex items-center gap-4 mb-6">

@@ -1,0 +1,116 @@
+---
+import Layout from '../layouts/Layout.astro'
+import NavbarLanding from '../components/NavbarLanding'
+import FooterNuevo from '../components/FooterNuevo.astro'
+import '../styles/nawar-sections.css'
+
+export const prerender = true
+---
+
+<Layout
+  title="Política de Privacidad — Holandés Nawar"
+  description="Política de privacidad de Holandés Nawar. Cómo recopilamos, usamos y protegemos tus datos personales."
+>
+  <NavbarLanding client:load />
+
+  <div class="legal-page">
+    <div class="legal-glow" aria-hidden="true"></div>
+    <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.3;"></div>
+
+    <div class="legal-shell">
+      <div class="legal-header">
+        <span class="badge-dark">Legal</span>
+        <h1 class="legal-title">Política de Privacidad</h1>
+      </div>
+
+      <div class="legal-body">
+        <p>El sitio web <strong>www.holandesnawar.com</strong> es propiedad de "HOLANDÉS NAWAR", quien es responsable del tratamiento de sus datos personales. Hemos adoptado esta Política de Privacidad, que determina cómo procesamos la información recopilada por www.holandesnawar.com y proporciona las razones por las cuales debemos recopilar ciertos datos personales sobre usted. Le recomendamos leer esta Política de Privacidad antes de usar el sitio web.</p>
+        <p>Nos comprometemos a garantizar la confidencialidad y seguridad de sus datos personales.</p>
+
+        <h2>Responsable del tratamiento de sus datos personales</h2>
+        <ul>
+          <li><strong>Titular:</strong> HOLANDÉS NAWAR</li>
+          <li><strong>Dirección:</strong> Kemphaan 11, Waspik 5165KH, Países Bajos</li>
+          <li><strong>Email:</strong> <a href="mailto:info@holandesnawar.com">info@holandesnawar.com</a></li>
+        </ul>
+
+        <h2>Información personal que recopilamos</h2>
+        <p>Cuando visita www.holandesnawar.com, recopilamos automáticamente cierta información sobre su dispositivo, incluyendo información sobre su navegador web, dirección IP y algunas de las cookies instaladas en su dispositivo. Además, mientras navega por el sitio, recopilamos información sobre las páginas web individuales que visualiza y cómo interactúa con el sitio. Nos referimos a esta información recopilada automáticamente como «Información del Dispositivo».</p>
+
+        <h2>¿Por qué procesamos sus datos?</h2>
+        <p>Nuestra máxima prioridad es la seguridad de los datos del usuario. La información recopilada automáticamente se utiliza solo para identificar posibles casos de abuso y establecer información estadística respecto al uso del sitio web. Esta información estadística no se agrega de tal manera que pueda identificar a un usuario particular del sistema.</p>
+        <p>Puede visitar el sitio web sin revelar cualquier información que lo identifique como un individuo específico e identificable. Sin embargo, si desea utilizar algunas características del sitio web, como el formulario de contacto, puede proporcionar datos personales como su correo electrónico, nombre y número de teléfono.</p>
+
+        <h2>Sus derechos</h2>
+        <p>Si es residente en Europa, tiene los siguientes derechos relacionados con sus datos personales:</p>
+        <ul>
+          <li>El derecho a ser informado.</li>
+          <li>El derecho de acceso.</li>
+          <li>El derecho a la rectificación.</li>
+          <li>El derecho de supresión.</li>
+          <li>El derecho a restringir el procesamiento.</li>
+          <li>El derecho a la portabilidad de los datos.</li>
+          <li>El derecho a objetar.</li>
+          <li>Derechos en relación con la toma de decisiones automatizada y la elaboración de perfiles.</li>
+        </ul>
+        <p>Para ejercer estos derechos, contáctenos a través de la información de contacto proporcionada anteriormente. Además, su información podría ser transferida fuera de Europa, incluyendo Canadá y Estados Unidos.</p>
+
+        <h2>Enlaces a otros sitios web</h2>
+        <p>Nuestro sitio web puede contener enlaces a otros sitios web que no son propiedad ni están controlados por nosotros. No somos responsables de las prácticas de privacidad de dichos otros sitios web o terceros. Le animamos a leer las declaraciones de privacidad de cada sitio web que recopila información personal.</p>
+
+        <h2>Seguridad de la información</h2>
+        <p>Mantenemos salvaguardias administrativas, técnicas y físicas razonables para proteger contra el acceso, uso, modificación y divulgación de datos personales no autorizados. Sin embargo, ninguna transmisión de datos a través de Internet o red inalámbrica puede garantizarse completamente segura.</p>
+
+        <h2>Divulgación legal</h2>
+        <p>Divulgaremos cualquier información que recolectamos, usamos o recibimos si se requiere o se permite por ley, como para cumplir con una citación o proceso legal similar, y cuando creemos de buena fe que la divulgación es necesaria para proteger nuestros derechos, su seguridad o la seguridad de otros, investigar fraude o responder a una solicitud gubernamental.</p>
+
+        <h2>Información de contacto</h2>
+        <p>Si desea contactarnos para entender más sobre esta Política o respecto a cualquier asunto relacionado con los derechos individuales y su Información Personal, envíe un correo electrónico a <a href="mailto:info@holandesnawar.com">info@holandesnawar.com</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <FooterNuevo />
+</Layout>
+
+<style>
+  .legal-page {
+    background: #1D0084; min-height: 100vh;
+    position: relative; overflow: hidden;
+    padding: 140px 0 96px;
+  }
+  .legal-glow {
+    position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 500px;
+    background: radial-gradient(ellipse at center, rgba(11,109,240,0.38) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .legal-shell { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 0 32px; }
+  .legal-header { margin-bottom: 48px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+  .legal-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: clamp(32px, 5vw, 52px); font-weight: 700;
+    letter-spacing: -0.035em; line-height: 1.1;
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin: 0;
+  }
+  .legal-body { padding: 0; }
+  .legal-body p { font-size: 15px; color: rgba(255,255,255,0.82); line-height: 1.75; margin: 0 0 16px; }
+  .legal-body h2 {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: 17px; font-weight: 700; color: #ffffff;
+    margin: 32px 0 10px; line-height: 1.3;
+  }
+  .legal-body ul { margin: 0 0 16px; padding-left: 0; display: flex; flex-direction: column; gap: 7px; list-style: none; }
+  .legal-body ul li { font-size: 15px; color: rgba(255,255,255,0.78); line-height: 1.65; padding-left: 18px; position: relative; }
+  .legal-body ul li::before { content: "–"; position: absolute; left: 0; color: #4da3ff; font-weight: 700; }
+  .legal-body a { color: #4da3ff; text-decoration: underline; text-decoration-color: rgba(77,163,255,0.35); }
+  .legal-body a:hover { text-decoration-color: #4da3ff; }
+  .legal-body strong { color: rgba(255,255,255,0.95); font-weight: 600; }
+  @media (max-width: 640px) {
+    .legal-page { padding: 120px 0 64px; }
+    .legal-shell { padding: 0 20px; }
+    .legal-body { padding: 28px 20px; }
+  }
+</style>

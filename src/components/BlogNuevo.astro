@@ -3,7 +3,6 @@ import { sanityClient } from 'sanity:client'
 import { POSTS_QUERY } from '../sanity/queries'
 import imageUrlBuilder from '@sanity/image-url'
 
-// Traemos los 3 posts más recientes
 const allPosts = await sanityClient.fetch(POSTS_QUERY)
 const posts = allPosts.slice(0, 3)
 
@@ -17,61 +16,40 @@ const fmt = (d: string) =>
 <section class="section-light blog-section" data-navbar="light" style="position:relative;overflow:hidden;">
   <div class="dots-light" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></div>
   <div class="inner">
+
+    <!-- Badge + título (título oculto en móvil) -->
     <div class="blog-header-wrap">
       <span class="badge-light" style="letter-spacing:0.06em;text-transform:none;font-size:12px;padding:6px 14px;">
         BLOG · HOLANDÉS NAWAR
       </span>
-      <h2 class="title" style="color:#1D0084;margin-bottom:0;white-space:nowrap;">Nuestros últimos artículos</h2>
+      <h2 class="title blog-title-desktop" style="color:#1D0084;margin-bottom:0;white-space:nowrap;">Nuestros últimos artículos</h2>
     </div>
 
-    <div class="blog-grid">
+    <!-- DESKTOP: grid 3 tarjetas azul-hero -->
+    <div class="blog-grid-desktop">
       {posts.length === 0 ? (
-        <!-- Fallback si Sanity no tiene posts todavía -->
-        <>
-          <article class="blog-card sr">
-            <div class="blog-img">🇳🇱</div>
-            <div class="blog-body">
-              <p class="blog-date">Próximamente</p>
-              <h3 class="blog-title">Artículos sobre neerlandés en camino</h3>
-              <p class="blog-desc">Pronto publicaremos artículos sobre gramática, cultura y consejos para hispanohablantes.</p>
-              <a href="/blog" class="blog-link">
-                Ver el blog
-                <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                </svg>
-              </a>
-            </div>
-          </article>
-        </>
+        <div class="bn-card">
+          <div class="bn-body">
+            <h3 class="bn-title">Artículos sobre neerlandés en camino</h3>
+            <p class="bn-date">Próximamente</p>
+            <span class="bn-read">Ver el blog <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+          </div>
+        </div>
       ) : (
         posts.map((post: any, i: number) => (
-          <a href={`/blog/${post.slug}`} class={`blog-card blog-card-link sr${i > 0 ? ` d${i}` : ''}`}>
-            {post.mainImage ? (
-              <div class="blog-img blog-img-photo">
-                <img
-                  src={urlFor(post.mainImage).width(600).height(340).fit('crop').quality(80).url()}
-                  alt={post.mainImage.alt || post.title}
-                  loading="lazy"
-                  width="600"
-                  height="340"
-                />
+          <a href={`/blog/${post.slug}`} class={`bn-card sr${i > 0 ? ` d${i}` : ''}`} style={`--ci:${i}`}>
+            {post.mainImage && (
+              <div class="bn-img">
+                <img src={urlFor(post.mainImage).width(560).height(300).fit('crop').quality(80).url()} alt={post.mainImage.alt || post.title} loading="lazy" width="560" height="300" />
               </div>
-            ) : (
-              <div class="blog-img">🇳🇱</div>
             )}
-            <div class="blog-body">
-              {post.publishedAt && (
-                <p class="blog-date">{fmt(post.publishedAt)}</p>
-              )}
-              <h3 class="blog-title">{post.title}</h3>
-              {post.excerpt && (
-                <p class="blog-desc">{post.excerpt}</p>
-              )}
-              <span class="blog-link">
+            <div class="bn-body">
+              {post.publishedAt && <p class="bn-date">{fmt(post.publishedAt)}</p>}
+              <h3 class="bn-title">{post.title}</h3>
+              {post.excerpt && <p class="bn-excerpt">{post.excerpt}</p>}
+              <span class="bn-read">
                 Leer artículo
-                <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                </svg>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
               </span>
             </div>
           </a>
@@ -79,39 +57,89 @@ const fmt = (d: string) =>
       )}
     </div>
 
+    <!-- MOBILE: slider mismo estilo -->
+    <div class="blog-slider-mobile">
+      {posts.map((post: any) => (
+        <a href={`/blog/${post.slug}`} class="bn-card bsm-card">
+          {post.mainImage && (
+            <div class="bn-img">
+              <img src={urlFor(post.mainImage).width(480).height(240).fit('crop').quality(80).url()} alt={post.mainImage.alt || post.title} loading="lazy" />
+            </div>
+          )}
+          <div class="bn-body">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
+              <h3 class="bn-title" style="font-size:14px;">{post.title}</h3>
+              <span style="flex-shrink:0;width:26px;height:26px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;margin-top:1px;">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg>
+              </span>
+            </div>
+            {post.publishedAt && <p class="bn-date">{fmt(post.publishedAt)}</p>}
+          </div>
+        </a>
+      ))}
+    </div>
+
   </div>
 </section>
 
 <style>
-  .blog-section {
-    padding: 96px 0 64px;
-  }
+  .blog-section { padding: 96px 0 64px; }
   .blog-header-wrap {
-    text-align: center;
-    max-width: 640px;
-    margin: 0 auto 56px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
+    text-align: center; max-width: 640px; margin: 0 auto 52px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
   }
 
-  /* Foto real en vez de emoji */
-  .blog-img-photo {
-    padding: 0 !important;
-    font-size: unset !important;
-    background: #f0f4ff !important;
+  /* ── TARJETA AZUL-HERO (desktop + mobile) ── */
+  .bn-card {
+    border-radius: 18px; overflow: hidden; text-decoration: none; color: #fff;
+    display: flex; flex-direction: column; position: relative;
+    /* Fondo como hero sección 1: azul base + glow radial */
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(29,0,132,0.30) 0%, transparent 55%),
+      #1D0084;
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: none;
+    transition: transform .2s ease-out, border-color .2s;
   }
-  .blog-img-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  .bn-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255,255,255,0.18);
   }
+  .bn-img { overflow: hidden; border-radius: 14px; margin: 12px 12px 0; flex-shrink: 0; }
+  .bn-img img { display: block; width: 100%; height: auto; border-radius: 14px; transition: transform .2s; }
+  .bn-card:hover .bn-img img { transform: scale(1.04); }
+  .bn-body { padding: 14px 18px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .bn-date { font-size: 12px; color: rgba(220,235,255,0.68); margin: 0; }
+  .bn-title { font-family: var(--font-poppins), system-ui, sans-serif; font-size: 17px; font-weight: 700; line-height: 1.3; margin: 0; color: #fff; }
+  .bn-excerpt { font-size: 13px; font-weight: 500; line-height: 1.65; color: rgba(222,234,255,0.88); margin: 2px 0 0; flex: 1;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .bn-read { margin-top: 10px; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.85);
+    display: inline-flex; align-items: center; gap: 5px; }
+  .bn-read svg { width: 13px; height: 13px; }
+  .bn-card:hover .bn-read { color: #fff; }
 
+  /* ── DESKTOP GRID ── */
+  .blog-grid-desktop { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+  .blog-slider-mobile { display: none; }
+  .blog-title-desktop { display: block; }
+
+  /* ── MOBILE ── */
   @media (max-width: 768px) {
     .blog-section { padding: 40px 0 40px; }
-    .blog-header-wrap { margin-bottom: 28px; }
-    .blog-header-wrap .title { white-space: normal; }
+    .blog-header-wrap { margin-bottom: 24px; }
+    .blog-title-desktop { display: none; }
+    .blog-grid-desktop  { display: none; }
+
+    .blog-slider-mobile {
+      display: flex; gap: 12px; overflow-x: auto;
+      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+      padding: 4px 16px 12px; margin: 0 -16px; scrollbar-width: none;
+    }
+    .blog-slider-mobile::-webkit-scrollbar { display: none; }
+    .bsm-card {
+      scroll-snap-align: start; flex-shrink: 0;
+      width: 62vw; min-width: 220px; max-width: 280px;
+    }
+    .bsm-card .bn-title { font-size: 14px !important; }
   }
 </style>

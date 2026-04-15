@@ -30,9 +30,12 @@ const points = data?.points?.length ? data.points : defaultPoints
             <span class="text-gradient-white">Un método pensado</span><br>
             <span style="color: #4da3ff; -webkit-text-fill-color: #4da3ff;">para cada etapa</span>
           </h2>
-          <p class="pq-sub">
+          <p class="pq-sub pq-sub-desktop">
             Tanto si llegas a Países Bajos como si ya vives allí,<br>
             el neerlandés te abre puertas que el inglés no puede.
+          </p>
+          <p class="pq-sub pq-sub-mobile">
+            El neerlandés abre puertas que el inglés no puede.
           </p>
         </div>
 
@@ -85,12 +88,15 @@ const points = data?.points?.length ? data.points : defaultPoints
 /* ── Outer wrapper (like proceso) ── */
 .pq-wrapper {
   background: #F0F4FF;
-  padding: 0 72px 80px;
+  padding: 0 48px 80px;
 }
 .pq-outer {
   overflow: hidden;
   position: relative;
   border-radius: 32px;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ── Section ── */
@@ -216,14 +222,17 @@ const points = data?.points?.length ? data.points : defaultPoints
   color: #fff; line-height: 1.3; margin-bottom: 10px;
 }
 .pq-point-desc {
-  font-size: 13.5px; color: rgba(255,255,255,0.68); line-height: 1.65;
+  font-size: 13.5px; color: rgba(255,255,255,0.90); line-height: 1.65;
 }
 
 /* Swipe hint: hidden on desktop */
 .pq-swipe-hint { display: none; }
+.pq-sub-mobile { display: none; }
 
 /* ── Mobile ── */
 @media (max-width: 899px) {
+  .pq-sub-desktop { display: none; }
+  .pq-sub-mobile  { display: block; }
   .pq-wrapper { padding: 0 0 64px; background: #fff; }
   .pq-outer { border-radius: 24px; }
   .pq-section { padding: 64px 0 48px; }
@@ -290,12 +299,9 @@ const points = data?.points?.length ? data.points : defaultPoints
   .pq-point-title { font-size: 15px; }
   /* Clamp description to 3 lines on mobile */
   .pq-point-desc {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
     font-size: 13px;
-    color: rgba(255,255,255,0.80);
+    color: rgba(255,255,255,0.90);
+    line-height: 1.55;
   }
 
   /* Swipe hint: visible on mobile */

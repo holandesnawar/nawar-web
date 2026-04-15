@@ -4,14 +4,50 @@ interface Props { testimonials: Testimonial[] }
 const { testimonials } = Astro.props
 
 const delayClass = (i: number) => ['','d1','d2','d3'][i % 4]
+
+const defaultTestimonials = [
+  {
+    name: 'Manuel Torres',
+    role: 'La Haya, Países Bajos',
+    photo: 'https://d1yei2z3i6k35z.cloudfront.net/9533860/69e0053ba5da56.21234955_67d4ee1d66e49_-Manuel.png',
+    stars: 5,
+    title: 'Por fin entiendo a mis vecinos',
+    text: 'Llevaba un año en los Países Bajos y apenas podía comunicarme. Con Nawar empecé desde cero y en pocas semanas ya podía hacer la compra, hablar con el médico y entender las cartas que me llegaban a casa. Nada de lo que había probado antes me había funcionado así.',
+  },
+  {
+    name: 'Carlos R.',
+    role: 'Rotterdam, Países Bajos',
+    photo: 'https://d1yei2z3i6k35z.cloudfront.net/9533860/69e0053ba534a9.03913994_685dd8fdb2a472025-06-27013229-carlos.png',
+    stars: 5,
+    title: 'Me ascendieron a los 4 meses',
+    text: 'Mi jefe me dijo que valoraba que hiciera el esfuerzo de aprender neerlandés. No era obligatorio, pero marcó la diferencia. El método de Nawar es muy práctico: aprendes lo que realmente usas en el trabajo y en el día a día, no vocabulario de libro.',
+  },
+  {
+    name: 'Lucía V.',
+    role: 'Ámsterdam, Países Bajos',
+    photo: 'https://d1yei2z3i6k35z.cloudfront.net/9533860/69e0053ba629e4.43150312_67d4f1119f7db_9a2d6c00ff1cfacea35572fac1288ffa-luc%C3%ADa.png',
+    stars: 5,
+    title: 'La comunidad hace la diferencia',
+    text: 'Lo que más me ayudó fue el grupo de estudiantes hispanohablantes. Todos pasamos por lo mismo y nos ayudamos mucho. Cuando tenía una duda, alguien la respondía en minutos. Eso de no estar sola aprendiendo cambió todo para mí.',
+  },
+]
+
+const items = (testimonials && testimonials.length > 0) ? testimonials.map((t: any, i: number) => ({
+  name: t.name,
+  role: t.origin,
+  photo: null,
+  avatar: t.avatar || t.name?.[0] || '?',
+  avatarColor: ['#025dc7','#1D0084','#0b6df0'][i % 3],
+  stars: t.stars || 5,
+  title: '',
+  text: t.text,
+})) : defaultTestimonials
 ---
 
 <section data-navbar="dark" id="opiniones" class="relative bg-[#1D0084] overflow-hidden pb-10" style="margin-top: 0; padding-top: 96px;">
   <div aria-hidden class="absolute inset-0 pointer-events-none">
-    <div
-      class="absolute -top-20 left-1/2 -translate-x-1/2 w-[900px] h-[600px]"
-      style="background: radial-gradient(ellipse at top center, rgba(11,109,240,0.40) 0%, transparent 65%)"
-    />
+    <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-[900px] h-[600px]"
+         style="background: radial-gradient(ellipse at top center, rgba(11,109,240,0.40) 0%, transparent 65%)" />
   </div>
   <div aria-hidden class="absolute inset-0 dots-dark pointer-events-none" />
 
@@ -31,30 +67,85 @@ const delayClass = (i: number) => ['','d1','d2','d3'][i % 4]
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-      {testimonials.map((t, i) => (
-        <div class={`sr-s ${delayClass(i)} bg-white border border-[#DDE6F5] rounded-2xl p-8 flex flex-col gap-6 h-full`}>
-          <div class="flex gap-1">
-            {Array.from({ length: t.stars }).map(() => (
-              <svg class="w-4 h-4 fill-[#F58220]" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-              </svg>
-            ))}
-          </div>
-          <blockquote class="text-[15px] text-[#1D0084]/85 leading-relaxed flex-1">
-            &ldquo;{t.text}&rdquo;
-          </blockquote>
-          <div class="flex items-center gap-3 pt-5 border-t border-[#1D0084]/10">
-            <div class="w-10 h-10 rounded-full bg-[#1D0084]/10 border border-[#1D0084]/15 flex items-center justify-center text-[#1D0084] font-bold text-[12px] shrink-0">
-              {t.avatar}
+      {items.map((t: any, i: number) => (
+        <div class={`sr-s ${delayClass(i)} tcard`}>
+          <!-- Header: avatar + nombre + estrellas -->
+          <div class="tcard-header">
+            <div class="tcard-avatar-wrap">
+              {t.photo ? (
+                <img src={t.photo} alt={t.name} class="tcard-avatar-img" />
+              ) : (
+                <div class="tcard-avatar" style={`background:${t.avatarColor}`}>{t.avatar}</div>
+              )}
+              <div>
+                <p class="tcard-name">{t.name}</p>
+                <p class="tcard-role">{t.role}</p>
+              </div>
             </div>
-            <div>
-              <p class="text-[#1D0084] font-semibold text-[14px]">{t.name}</p>
-              <p class="text-[#1D0084]/45 text-[12px] mt-0.5">{t.origin}</p>
+            <div class="tcard-stars">
+              {Array.from({ length: t.stars }).map(() => (
+                <svg class="w-3.5 h-3.5 fill-[#F58220]" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              ))}
             </div>
           </div>
+          <!-- Título bold -->
+          {t.title && <p class="tcard-title">{t.title}</p>}
+          <!-- Texto sin comillas -->
+          <p class="tcard-text">{t.text}</p>
         </div>
       ))}
     </div>
 
   </div>
 </section>
+
+<style>
+  .tcard {
+    background: #fff;
+    border: 1px solid #DDE6F5;
+    border-radius: 18px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .tcard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .tcard-avatar-wrap {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .tcard-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; color: #fff;
+    flex-shrink: 0;
+  }
+  .tcard-avatar-img {
+    width: 40px; height: 40px; border-radius: 50%;
+    object-fit: cover; flex-shrink: 0;
+    border: 2px solid rgba(29,0,132,0.10);
+  }
+  .tcard-name {
+    font-size: 14px; font-weight: 700; color: #1D0084; margin: 0;
+  }
+  .tcard-role {
+    font-size: 12px; font-weight: 500; color: rgba(29,0,132,0.60); margin: 0;
+  }
+  .tcard-stars {
+    display: flex; gap: 2px; flex-shrink: 0;
+  }
+  .tcard-title {
+    font-size: 15px; font-weight: 800;
+    color: #1D0084; margin: 0; line-height: 1.35;
+  }
+  .tcard-text {
+    font-size: 14px; font-weight: 500; color: rgba(29,0,132,0.88);
+    line-height: 1.7; margin: 0; flex: 1;
+  }
+</style>

@@ -7,6 +7,11 @@
 .section-light { background: #fff;    position: relative; overflow: hidden; }
 .inner { max-width: 1152px; margin: 0 auto; padding: 0 24px; }
 .py-section { padding-top: 96px; padding-bottom: 96px; }
+@media (max-width: 768px) {
+  .py-section { padding-top: 52px; padding-bottom: 52px; }
+  .section-dark.py-section,
+  .section-light.py-section { padding-top: 52px; padding-bottom: 52px; }
+}
 
 /* ── Gradient text — per-letter (gradient repeats each em so every character
       gets the same top→fade effect regardless of line breaks) ── */
@@ -642,8 +647,9 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
 .mock-pill--live { background: rgba(16,185,129,0.20); color: #10b981; }
 
 .mock-chat {
-  width: 88%; position: relative; z-index: 1;
+  width: 90%; position: relative; z-index: 1;
   display: flex; flex-direction: column; gap: 10px;
+  margin: 0 auto;
 }
 .mock-bubble {
   padding: 10px 14px; border-radius: 14px; max-width: 75%;
@@ -652,6 +658,9 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
 .mock-bubble--in  { background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.75); align-self: flex-start; border-bottom-left-radius: 4px; }
 .mock-bubble--out { background: #1a6dd4; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
 .mock-bubble-meta { font-size: 10px; color: rgba(255,255,255,0.35); margin-bottom: 4px; }
+.mock-chat-header { display: flex; align-items: center; justify-content: space-between; padding: 6px 0 8px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 2px; }
+.mock-chat-name { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.75); }
+.mock-chat-count { font-size: 10px; color: rgba(255,255,255,0.35); }
 
 .mock-video {
   width: 88%; position: relative; z-index: 1;
@@ -710,7 +719,7 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
 ════════════════════════════════════ */
 .proceso-wrapper {
   background: #F0F4FF;
-  padding: 0 72px 80px;
+  padding: 0 48px 80px;
 }
 @media (max-width: 767px) {
   .proceso-wrapper {
@@ -723,6 +732,9 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
   overflow: hidden;
   position: relative;
   border-radius: 32px;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
 }
 @media (max-width: 767px) {
   .proceso-outer { border-radius: 24px; }
@@ -833,12 +845,12 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
 }
 .proceso-mockup-inner { padding: 16px 18px; }
 .pm-row {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
   padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .pm-row:last-child { border-bottom: none; }
-.pm-label { font-size: 11px; color: rgba(255,255,255,0.50); min-width: 80px; }
-.pm-value { font-size: 12px; color: #fff; font-weight: 500; }
+.pm-label { font-size: 11px; color: rgba(255,255,255,0.50); flex-shrink: 0; }
+.pm-value { font-size: 12px; color: #fff; font-weight: 500; text-align: right; }
 .pm-badge {
   padding: 2px 8px; border-radius: 9999px; font-size: 10px; font-weight: 600;
   background: rgba(77,163,255,0.18); color: #4da3ff;

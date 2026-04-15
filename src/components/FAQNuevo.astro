@@ -1,7 +1,7 @@
 ---
 interface Props { data?: any }
 const { data } = Astro.props
-const badge = data?.badge ?? 'FAQ'
+const badge = data?.badge ?? '¿Tienes dudas?'
 const title = data?.title ?? 'Preguntas Frecuentes'
 const defaultItems = [
   { question: '¿Qué es NAWAR?', answer: 'NAWAR es nuestra academia de neerlandés para hispanohablantes. Elegimos este nombre porque en árabe "Nawar" significa "flor": representa crecimiento, constancia y progreso real. Explicaciones pensadas para hispanohablantes, un método paso a paso y práctica constante desde el inicio.' },
@@ -59,7 +59,7 @@ const items = data?.items?.length ? data.items : defaultItems
 @media (max-width: 768px) {
   .faq-section { padding: 36px 0 48px; }
   .faq-header-wrap { margin-bottom: 28px; }
-  .faq-header-wrap .title { font-size: clamp(20px, 5.5vw, 28px); }
+  .faq-header-wrap .title { font-size: clamp(24px, 6.5vw, 34px); }
 }
 
 .faq-modern {
@@ -111,7 +111,7 @@ const items = data?.items?.length ? data.items : defaultItems
 }
 .faq-modern-content p {
   padding-top: 18px;
-  font-size: 15px; color: #1D0084; line-height: 1.75;
+  font-size: 15px; font-weight: 500; color: #1D0084; line-height: 1.75;
 }
 </style>
 
