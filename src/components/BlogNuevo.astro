@@ -21,7 +21,7 @@ const fmt = (d: string) =>
       <span class="badge-light" style="letter-spacing:0.06em;text-transform:none;font-size:12px;padding:6px 14px;">
         BLOG · HOLANDÉS NAWAR
       </span>
-      <h2 class="title" style="color:#1D0084;margin-bottom:0;">Nuestros últimos artículos</h2>
+      <h2 class="title" style="color:#1D0084;margin-bottom:0;white-space:nowrap;">Nuestros últimos artículos</h2>
     </div>
 
     <div class="blog-grid">
@@ -45,7 +45,7 @@ const fmt = (d: string) =>
         </>
       ) : (
         posts.map((post: any, i: number) => (
-          <article class={`blog-card sr${i > 0 ? ` d${i}` : ''}`}>
+          <a href={`/blog/${post.slug}`} class={`blog-card blog-card-link sr${i > 0 ? ` d${i}` : ''}`}>
             {post.mainImage ? (
               <div class="blog-img blog-img-photo">
                 <img
@@ -67,14 +67,14 @@ const fmt = (d: string) =>
               {post.excerpt && (
                 <p class="blog-desc">{post.excerpt}</p>
               )}
-              <a href={`/blog/${post.slug}`} class="blog-link">
+              <span class="blog-link">
                 Leer artículo
                 <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
-              </a>
+              </span>
             </div>
-          </article>
+          </a>
         ))
       )}
     </div>
@@ -112,5 +112,6 @@ const fmt = (d: string) =>
   @media (max-width: 768px) {
     .blog-section { padding: 40px 0 40px; }
     .blog-header-wrap { margin-bottom: 28px; }
+    .blog-header-wrap .title { white-space: normal; }
   }
 </style>

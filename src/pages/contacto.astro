@@ -28,7 +28,7 @@ export const prerender = false
           <span class="text-gradient-white">Escríbenos y cuéntanos</span><br>
           <span style="color: #4da3ff; -webkit-text-fill-color: #4da3ff;">cómo podemos ayudarte.</span>
         </h1>
-        <p class="ct-sub">¿Tienes dudas sobre los cursos o el método? Escríbenos y te respondemos en menos de 24 horas.</p>
+        <p class="ct-sub">Me encantaría conectarme contigo para descubrir la mejor manera de ayudarte a dominar el neerlandés, así que no dudes en escribirme si tienes preguntas. ¿Te interesa una colaboración? ¡A mí también! Déjame un mensaje con tus grandes ideas aquí abajo.</p>
       </div>
 
       <div class="ct-columns">
@@ -140,10 +140,6 @@ export const prerender = false
   letter-spacing: -0.025em;
   line-height: 1.12;
   margin-bottom: 14px;
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 .ct-sub {
   font-size: 16px;
@@ -225,11 +221,11 @@ export const prerender = false
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .ct-columns { grid-template-columns: 1fr; gap: 32px; }
+  .ct-columns { grid-template-columns: 1fr; gap: 20px; }
   .ct-image-side { display: none; }
   .ct-section { padding: 120px 0 60px; }
   .ct-container { padding: 0 20px; }
-  .ct-top { text-align: left; display: flex; flex-direction: column; align-items: flex-start; }
+  .ct-top { text-align: left; display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 24px; }
   .ct-sub { margin-left: 0; text-align: left; }
 }
 @media (max-width: 540px) {
