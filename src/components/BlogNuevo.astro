@@ -14,14 +14,14 @@ const fmt = (d: string) =>
   new Date(d).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
 ---
 
-<section class="section-light" data-navbar="light" style="position:relative;overflow:hidden;padding:96px 0 64px;">
+<section class="section-light blog-section" data-navbar="light" style="position:relative;overflow:hidden;">
   <div class="dots-light" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></div>
   <div class="inner">
-    <div style="text-align:center;max-width:640px;margin:0 auto 72px;">
+    <div class="blog-header-wrap">
       <span class="badge-light" style="letter-spacing:0.06em;text-transform:none;font-size:12px;padding:6px 14px;">
         BLOG · HOLANDÉS NAWAR
       </span>
-      <h2 class="title" style="color:#1D0084;margin-bottom:16px;white-space:nowrap;">Nuestros últimos artículos</h2>
+      <h2 class="title" style="color:#1D0084;margin-bottom:0;">Nuestros últimos artículos</h2>
     </div>
 
     <div class="blog-grid">
@@ -83,6 +83,18 @@ const fmt = (d: string) =>
 </section>
 
 <style>
+  .blog-section {
+    padding: 96px 0 64px;
+  }
+  .blog-header-wrap {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
   /* Foto real en vez de emoji */
   .blog-img-photo {
     padding: 0 !important;
@@ -94,5 +106,10 @@ const fmt = (d: string) =>
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  @media (max-width: 768px) {
+    .blog-section { padding: 52px 0 40px; }
+    .blog-header-wrap { margin-bottom: 32px; }
   }
 </style>

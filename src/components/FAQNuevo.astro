@@ -13,12 +13,12 @@ const defaultItems = [
 ]
 const items = data?.items?.length ? data.items : defaultItems
 ---
-<section id="faq" class="section-light py-section" data-navbar="light" style="position:relative;overflow:hidden;">
+<section id="faq" class="section-light faq-section" data-navbar="light" style="position:relative;overflow:hidden;">
   <div class="dots-light" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.5;"></div>
   <div class="inner">
-    <div style="text-align:center;max-width:720px;margin:0 auto 64px;">
+    <div class="faq-header-wrap">
       <span class="badge-light">{badge}</span>
-      <h2 class="title" style="color:#1D0084;margin-bottom:16px;">{title}</h2>
+      <h2 class="title" style="color:#1D0084;margin-bottom:0;">{title}</h2>
     </div>
 
     <div class="faq-modern" id="faq-list">
@@ -44,6 +44,22 @@ const items = data?.items?.length ? data.items : defaultItems
 </section>
 
 <style>
+.faq-section {
+  padding: 96px 0;
+}
+.faq-header-wrap {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (max-width: 768px) {
+  .faq-section { padding: 52px 0 48px; }
+  .faq-header-wrap { margin-bottom: 28px; }
+}
+
 .faq-modern {
   max-width: 760px;
   margin: 0 auto;
