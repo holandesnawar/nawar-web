@@ -12,7 +12,36 @@ interface Props {
   items: ComparisonItem[]
 }
 
+const DEFAULT_ITEMS: ComparisonItem[] = [
+  {
+    icon: '🇪🇸',
+    title: 'Explicado desde el español',
+    nawarText: 'El método parte de tu idioma. Comparamos estructuras, resolvemos dudas en español y conectamos lo que ya sabes con lo que vas a aprender.',
+    classicText: 'Las academias tradicionales enseñan neerlandés desde el inglés o con materiales genéricos que no tienen en cuenta tu punto de partida.',
+  },
+  {
+    icon: '🎥',
+    title: 'Clases en vivo, no grabaciones pasivas',
+    nawarText: 'Sesiones en directo donde puedes preguntar, practicar y recibir feedback inmediato. Aprendes interactuando, no solo escuchando.',
+    classicText: 'Cursos grabados donde avanzas solo, sin posibilidad de preguntar ni corregir en tiempo real. El aprendizaje se vuelve pasivo y poco efectivo.',
+  },
+  {
+    icon: '🤝',
+    title: 'Comunidad de hispanohablantes',
+    nawarText: 'Aprendes rodeado de personas que comparten tu idioma, tus retos y tu contexto. La comunidad acelera el aprendizaje y mantiene la motivación.',
+    classicText: 'Aprendes en solitario, sin nadie que entienda exactamente tus dudas desde el español. La soledad hace que muchos abandonen a mitad.',
+  },
+  {
+    icon: '📈',
+    title: 'Ruta progresiva y estructurada',
+    nawarText: 'Un camino claro desde cero: cada módulo se apoya en el anterior. Sabes exactamente donde estás y hacia donde vas en todo momento.',
+    classicText: 'Contenido disperso sin un orden pedagógico claro. Es habitual sentirse perdido, repetir lo mismo o saltar temas sin la base necesaria.',
+  },
+]
+
 export default function StickyComparisonSection({ items }: Props) {
+  // Usar fallback si Sanity no tiene datos o tiene texto corrupto
+  const safeItems = (items && items.length > 0) ? items : DEFAULT_ITEMS
   return (
     <section data-navbar="light" className="sc-section relative bg-[#F0F5FF]" style={{ overflowX: 'clip' }}>
       <div aria-hidden className="absolute inset-0 dots-light pointer-events-none opacity-40" />
@@ -46,7 +75,7 @@ export default function StickyComparisonSection({ items }: Props) {
 
           {/* Right — normal scroll, cards flow naturally */}
           <div className="lg:w-[58%] pt-2 pb-10 lg:py-20 space-y-5">
-            {items.map((item) => (
+            {safeItems.map((item) => (
               <div key={item.title} className="bg-white rounded-3xl p-8">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-14 h-14 shrink-0 rounded-2xl bg-[#F0F5FF] flex items-center justify-center text-3xl">

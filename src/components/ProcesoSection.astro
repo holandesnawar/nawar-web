@@ -3,7 +3,7 @@ interface Props { data?: any }
 const { data } = Astro.props
 const badge = data?.badge ?? 'Así de sencillo'
 const title = data?.title ?? 'Dos clics. Listo.'
-const subtitle = data?.subtitle ?? 'Sin trámites, sin esperas eternas. En minutos tienes acceso a todo y empiezas a avanzar.'
+const subtitle = data?.subtitle ?? 'Sin trámites, sin esperas. Reserva tu plaza en minutos y recibirás acceso prioritario antes del lanzamiento.'
 const guaranteeText = data?.guaranteeText ?? 'Garantía de devolución 15 días'
 const ctaText = data?.ctaText ?? 'Unirte'
 ---
@@ -101,13 +101,13 @@ const ctaText = data?.ctaText ?? 'Unirte'
         <div class="proceso-card sr d1">
           <div class="proceso-card-glow" aria-hidden="true"></div>
           <div class="proceso-num">02</div>
-          <h3 class="proceso-card-title">Recibe acceso inmediato</h3>
+          <h3 class="proceso-card-title">Confirma tu plaza prioritaria</h3>
           <ul class="proceso-perks">
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Toda la formación disponible al instante
+              Acceso garantizado en el lanzamiento
             </li>
             <li>
               <span class="proceso-check">
@@ -162,7 +162,7 @@ const ctaText = data?.ctaText ?? 'Unirte'
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Garantía 15 días o te devolvemos el dinero
+              Garantía 15 días: si no te convence, te devolvemos el dinero
             </li>
           </ul>
           <div class="proceso-mockup">
@@ -173,11 +173,11 @@ const ctaText = data?.ctaText ?? 'Unirte'
               </div>
               <div class="pm-row">
                 <span class="pm-label">Próxima clase</span>
-                <span class="pm-badge">Jueves 19:00</span>
+                <span class="pm-badge">En el lanzamiento</span>
               </div>
               <div class="pm-row">
                 <span class="pm-label">Racha</span>
-                <span class="pm-value">🔥 7 días seguidos</span>
+                <span class="pm-value">Con método desde el día 1</span>
               </div>
             </div>
           </div>
