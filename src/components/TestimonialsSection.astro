@@ -32,16 +32,8 @@ const defaultTestimonials = [
   },
 ]
 
-const items = (testimonials && testimonials.length > 0) ? testimonials.map((t: any, i: number) => ({
-  name: t.name,
-  role: t.origin,
-  photo: null,
-  avatar: t.avatar || t.name?.[0] || '?',
-  avatarColor: ['#025dc7','#1D0084','#0b6df0'][i % 3],
-  stars: t.stars || 5,
-  title: '',
-  text: t.text,
-})) : defaultTestimonials
+// Siempre usamos los testimonios hardcodeados con fotos reales
+const items = defaultTestimonials
 ---
 
 <section data-navbar="dark" id="opiniones" class="relative bg-[#1D0084] overflow-hidden pb-10" style="margin-top: 0; padding-top: 96px;">
