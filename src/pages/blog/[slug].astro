@@ -28,11 +28,18 @@ const urlFor  = (source: any) => builder.image(source)
 const fmt = (d: string) =>
   new Date(d).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
 
+const postOgImage = post.coverImage
+  ? urlFor(post.coverImage).width(1200).height(630).fit('crop').url()
+  : 'https://docs.holandesnawar.com/iconos/og-image.png'
+
+const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
 ---
 
 <Layout
   title={post.seo?.title || post.title}
   description={post.seo?.description || post.excerpt}
+  ogImage={postOgImage}
+  canonicalURL={canonicalURL}
 >
   <NavbarLanding client:load />
 

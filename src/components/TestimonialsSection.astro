@@ -65,7 +65,9 @@ const items = defaultTestimonials
           <div class="tcard-header">
             <div class="tcard-avatar-wrap">
               {t.photo ? (
-                <img src={t.photo} alt={t.name} class="tcard-avatar-img" />
+                <div class="tcard-avatar-bg">
+                  <img src={t.photo} alt={t.name} class="tcard-avatar-img" />
+                </div>
               ) : (
                 <div class="tcard-avatar" style={`background:${t.avatarColor}`}>{t.avatar}</div>
               )}
@@ -118,10 +120,16 @@ const items = defaultTestimonials
     font-size: 15px; font-weight: 700; color: #fff;
     flex-shrink: 0;
   }
+  .tcard-avatar-bg {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: #1D0084;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    padding: 3px;
+  }
   .tcard-avatar-img {
     width: 40px; height: 40px; border-radius: 50%;
-    object-fit: cover; flex-shrink: 0;
-    border: 2px solid rgba(29,0,132,0.10);
+    object-fit: cover;
   }
   .tcard-name {
     font-size: 14px; font-weight: 700; color: #1D0084; margin: 0;

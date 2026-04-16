@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro'
+import NavbarLanding from '../components/NavbarLanding'
+import FooterNuevo from '../components/FooterNuevo.astro'
+import '../styles/nawar-sections.css'
+---
+
+<Layout
+  title="Página no encontrada — HolandésNawar"
+  description="Esta página no existe. Vuelve a la home de HolandésNawar."
+>
+  <NavbarLanding client:load />
+
+  <section
+    data-navbar="dark"
+    class="relative bg-[#1D0084] min-h-screen flex items-center justify-center overflow-hidden"
+  >
+    <!-- Glow -->
+    <div aria-hidden class="absolute inset-0 pointer-events-none">
+      <div
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px]"
+        style="background: radial-gradient(ellipse at center top, rgba(11,109,240,0.38) 0%, transparent 65%)"
+      />
+    </div>
+    <div aria-hidden class="absolute inset-0 dots-dark pointer-events-none" />
+
+    <div class="relative text-center px-6 max-w-xl mx-auto space-y-6">
+      <!-- 404 grande -->
+      <p class="text-[120px] font-black leading-none" style="color: rgba(255,255,255,0.08);">404</p>
+
+      <div class="-mt-8 space-y-4">
+        <h1 class="text-3xl font-extrabold text-white">
+          Esta página no existe
+        </h1>
+        <p class="text-base font-medium" style="color: rgba(255,255,255,0.65);">
+          Puede que hayas escrito mal la URL o que el contenido se haya movido.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+        <a
+          href="/"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#0B6DF0] text-white font-bold text-sm hover:bg-[#0A5FD6] transition-colors"
+        >
+          Ir a la home
+        </a>
+        <a
+          href="/blog"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-sm transition-colors"
+          style="background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85);"
+        >
+          Ver el blog
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <FooterNuevo />
+</Layout>

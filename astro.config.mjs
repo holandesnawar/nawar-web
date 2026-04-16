@@ -3,8 +3,10 @@ import sanity from '@sanity/astro'
 import react from '@astrojs/react'
 import vercel from '@astrojs/vercel'
 import tailwindcss from '@tailwindcss/vite'
+import sitemap from '@astrojs/sitemap'
 
 export default defineConfig({
+  site: 'https://www.holandesnawar.com',
   output: 'server',
   adapter: vercel(),
   vite: {
@@ -18,6 +20,10 @@ export default defineConfig({
   },
   integrations: [
     react(),
+    sitemap({
+      filter: (page) =>
+        !page.includes('/studio/') && !page.includes('/api/'),
+    }),
     sanity({
       projectId: 't0qvkil8',
       dataset: 'production',
