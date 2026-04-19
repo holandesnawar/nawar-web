@@ -53,7 +53,7 @@ export default function StickyComparisonSection({ items }: Props) {
           {/* Left — outer div stretches full height of row; inner div is sticky */}
           <div className="lg:w-[42%] shrink-0">
             <div
-              className="lg:sticky lg:top-[72px] space-y-6 w-full py-10 lg:py-20 lg:pr-16"
+              className="lg:sticky lg:top-[72px] space-y-6 w-full pt-10 pb-2 lg:py-20 lg:pr-16"
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}
             >
               <span className="badge-light eyebrow">
@@ -74,7 +74,7 @@ export default function StickyComparisonSection({ items }: Props) {
           </div>
 
           {/* Right — normal scroll, cards flow naturally */}
-          <div className="lg:w-[58%] py-10 lg:py-20 space-y-5">
+          <div className="lg:w-[58%] pt-2 pb-10 lg:py-20 space-y-5">
             {safeItems.map((item) => (
               <div key={item.title} className="bg-white rounded-3xl p-8">
                 <div className="flex items-center gap-4 mb-6">

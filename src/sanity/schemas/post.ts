@@ -34,6 +34,20 @@ export const post = defineType({
       validation: (rule) => rule.max(200).warning('Máximo 200 caracteres para SEO'),
     }),
     defineField({
+      name: 'category',
+      title: 'Categoría',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Inburgering', value: 'inburgering' },
+          { title: 'Cultura', value: 'cultura' },
+          { title: 'Vocabulario', value: 'vocabulario' },
+          { title: 'Pronunciación', value: 'pronunciacion' },
+        ],
+        layout: 'radio',
+      },
+    }),
+    defineField({
       name: 'mainImage',
       title: 'Imagen principal',
       type: 'image',

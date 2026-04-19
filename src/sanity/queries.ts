@@ -44,7 +44,9 @@ export const POSTS_QUERY = defineQuery(`
     "slug": slug.current,
     publishedAt,
     excerpt,
-    mainImage
+    mainImage,
+    category,
+    "readingMinutes": round(length(pt::text(body)) / 1000)
   }
 `)
 
@@ -57,7 +59,21 @@ export const POST_QUERY = defineQuery(`
     excerpt,
     mainImage,
     body,
+    category,
     seo
+  }
+`)
+
+export const RELATED_POSTS_QUERY = defineQuery(`
+  *[_type == "post" && slug.current != $slug && defined(slug.current)] | order(publishedAt desc)[0...3]{
+    _id,
+    title,
+    "slug": slug.current,
+    publishedAt,
+    excerpt,
+    mainImage,
+    category,
+    "readingMinutes": round(length(pt::text(body)) / 1000)
   }
 `)
 
