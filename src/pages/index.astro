@@ -10,7 +10,7 @@ import GuidePopup from '../components/GuidePopup.astro'
 import StickyComparisonSection from '../components/StickyComparisonSection'
 import TestimonialsSection from '../components/TestimonialsSection.astro'
 import PorQueNawar from '../components/PorQueNawar.astro'
-import BenefitsSection from '../components/BenefitsSection.astro'
+// BenefitsSection oculta temporalmente hasta que la formación esté lista — para restaurar: import BenefitsSection from '../components/BenefitsSection.astro'
 import ProcesoSection from '../components/ProcesoSection.astro'
 import ParaQuienSection from '../components/ParaQuienSection.astro'
 import ValorNuevo from '../components/ValorNuevo.astro'
@@ -43,7 +43,7 @@ const faq          = page?.faq          ?? null
 
   <HeroNuevo />
   <PorQueNawar data={porQueNawar} />
-  <BenefitsSection data={benefits} />
+  {/* <BenefitsSection data={benefits} /> — oculta hasta que la formación esté lista */}
   <ProcesoSection data={proceso} />
   <ValorNuevo data={valor} />
   <StickyComparisonSection items={comparison} client:load />
