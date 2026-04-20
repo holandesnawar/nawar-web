@@ -1,6 +1,8 @@
 ---
 title: Errores comunes al aprender neerlandés y cómo evitarlos
 publishedAt: 2026-04-13T23:33:03.923Z
+excerpt: Desde la pronunciación hasta la gramática, revisamos los fallos más
+  típicos de los hispanohablantes y cómo corregirlos paso a paso.
 category: pronunciacion
 mainImage:
   src: /blog/images/errores-comunes-al-aprender-neerlandes-y-como-evitarlos.png
