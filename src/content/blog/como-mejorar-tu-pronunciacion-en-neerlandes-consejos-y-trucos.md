@@ -1,7 +1,9 @@
 ---
 title: "Cómo mejorar tu pronunciación en neerlandés: consejos y trucos"
 publishedAt: 2026-04-13T23:50:03.997Z
-excerpt: El neerlandés es un idioma fascinante, pero su pronunciación puede resultar desafiante para los hablantes no nativos.
+excerpt: El neerlandés es un idioma fascinante, pero su pronunciación puede
+  resultar desafiante para los hablantes no nativos.
+category: pronunciacion
 mainImage:
   src: /blog/images/como-mejorar-tu-pronunciacion-en-neerlandes-consejos-y-trucos.png
 readingMinutes: 3
