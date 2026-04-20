@@ -1,7 +1,6 @@
 ---
-import { sanityClient } from 'sanity:client'
 import Layout from '../layouts/Layout.astro'
-import { LANDING_QUERY } from '../sanity/queries'
+import landing from '../data/landing.json'
 
 import NavbarLanding from '../components/NavbarLanding'
 import HeroNuevo from '../components/HeroNuevo.astro'
@@ -19,19 +18,17 @@ import FAQNuevo from '../components/FAQNuevo.astro'
 import FooterNuevo from '../components/FooterNuevo.astro'
 import '../styles/nawar-sections.css'
 
-export const prerender = false
+export const prerender = true
 
-const page = await sanityClient.fetch(LANDING_QUERY)
-
-const painPoints   = page?.painPoints   ?? []
-const comparison   = page?.comparison   ?? []
-const testimonials = page?.testimonials ?? []
-const porQueNawar  = page?.porQueNawar  ?? null
-const benefits     = page?.benefits     ?? null
-const proceso      = page?.proceso      ?? null
-const valor        = page?.valor        ?? null
-const paraQuien    = page?.paraQuien    ?? null
-const faq          = page?.faq          ?? null
+const painPoints   = landing.painPoints   ?? []
+const comparison   = landing.comparison   ?? []
+const testimonials = landing.testimonials ?? []
+const porQueNawar  = landing.porQueNawar  ?? null
+const benefits     = landing.benefits     ?? null
+const proceso      = landing.proceso      ?? null
+const valor        = landing.valor        ?? null
+const paraQuien    = landing.paraQuien    ?? null
+const faq          = landing.faq          ?? null
 ---
 
 <Layout

@@ -14,18 +14,10 @@
     "@astrojs/react": "^4.0.0",
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/vercel": "^8.0.0",
-    "@sanity/astro": "^3.0.0",
-    "@sanity/icons": "^3.0.0",
-    "@sanity/image-url": "^1.0.0",
-    "@sanity/vision": "^3.99.0",
-    "@sanity/visual-editing": "^2.0.0",
     "astro": "^5.0.0",
-    "astro-portabletext": "^0.10.0",
-    "groq": "^3.0.0",
     "nodemailer": "^8.0.5",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "sanity": "^3.0.0"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
