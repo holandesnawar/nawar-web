@@ -1,12 +1,19 @@
 ---
 title: El alfabeto neerlandés y cómo pronunciar cada letra correctamente
 publishedAt: 2026-04-10T23:40:00.000Z
+category: vocabulario
 mainImage:
   src: /blog/images/el-alfabeto-neerlandes-y-como-pronunciar-cada-letra-correctamente.png
 readingMinutes: 5
 seo:
   title: El alfabeto neerlandés y cómo pronunciar cada letra correctamente
-  description: El neerlandés, o holandés, es un idioma germánico hablado principalmente en los Países Bajos, Bélgica y algunas regiones de Surinam y las Antillas Neerlandesas. Al igual que muchos otros idiomas, el neerlandés tiene un alfabeto que contiene 26 letras, similar al alfabeto latino, pero con algunas peculiaridades en cuanto a pronunciación. En este artículo, exploraremos las letras del alfabeto neerlandés y cómo pronunciarlas correctamente.
+  description: El neerlandés, o holandés, es un idioma germánico hablado
+    principalmente en los Países Bajos, Bélgica y algunas regiones de Surinam y
+    las Antillas Neerlandesas. Al igual que muchos otros idiomas, el neerlandés
+    tiene un alfabeto que contiene 26 letras, similar al alfabeto latino, pero
+    con algunas peculiaridades en cuanto a pronunciación. En este artículo,
+    exploraremos las letras del alfabeto neerlandés y cómo pronunciarlas
+    correctamente.
 ---
 El neerlandés, o holandés, es un idioma germánico hablado principalmente en los Países Bajos, Bélgica y algunas regiones de Surinam y las Antillas Neerlandesas. Al igual que muchos otros idiomas, el neerlandés tiene un alfabeto que contiene 26 letras, similar al alfabeto latino, pero con algunas peculiaridades en cuanto a pronunciación. En este artículo, exploraremos las letras del alfabeto neerlandés y cómo pronunciarlas correctamente.
 
