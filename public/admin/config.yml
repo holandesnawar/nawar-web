@@ -195,10 +195,11 @@ collections:
           - label: "Testimonios"
             name: "testimonials"
             widget: "list"
-            summary: "{{fields.name}} — {{fields.origin}}"
+            summary: "{{fields.name}} — {{fields.role}}"
             fields:
-              - { label: "Iniciales avatar", name: "avatar", widget: "string", hint: "Ej: AG, CM, LP" }
-              - { label: "Nombre",           name: "name",   widget: "string" }
-              - { label: "Origen",           name: "origin", widget: "string" }
-              - { label: "Estrellas",        name: "stars",  widget: "number", value_type: "int", min: 1, max: 5, default: 5 }
-              - { label: "Texto",            name: "text",   widget: "text" }
+              - { label: "Nombre",        name: "name",  widget: "string" }
+              - { label: "Ubicación/rol", name: "role",  widget: "string", required: false, hint: "Ej: La Haya, Países Bajos" }
+              - { label: "Foto (URL)",    name: "photo", widget: "string", required: false, hint: "URL completa de la imagen" }
+              - { label: "Estrellas",     name: "stars", widget: "number", value_type: "int", min: 1, max: 5, default: 5 }
+              - { label: "Título corto",  name: "title", widget: "string", required: false, hint: "Ej: Por fin entiendo a mis vecinos" }
+              - { label: "Testimonio",    name: "text",  widget: "text" }

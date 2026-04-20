@@ -1,11 +1,11 @@
 ---
-interface Testimonial { name: string; origin: string; text: string; stars: number; avatar: string }
-interface Props { testimonials: Testimonial[] }
+interface Testimonial { name: string; role?: string; photo?: string; stars: number; title?: string; text: string }
+interface Props { testimonials?: Testimonial[] }
 const { testimonials } = Astro.props
 
 const delayClass = (i: number) => ['','d1','d2','d3'][i % 4]
 
-const defaultTestimonials = [
+const defaultTestimonials: Testimonial[] = [
   {
     name: 'Manuel Torres',
     role: 'La Haya, Países Bajos',
@@ -32,8 +32,8 @@ const defaultTestimonials = [
   },
 ]
 
-// Siempre usamos los testimonios hardcodeados con fotos reales
-const items = defaultTestimonials
+// Si el CMS nos pasa testimonios, los usamos. Si no, caemos a los defaults.
+const items: Testimonial[] = testimonials && testimonials.length ? testimonials : defaultTestimonials
 ---
 
 <section data-navbar="dark" id="opiniones" class="relative bg-[#1D0084] overflow-hidden pb-10" style="margin-top: 0; padding-top: 96px;">

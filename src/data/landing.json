@@ -77,8 +77,29 @@
     ]
   },
   "testimonials": [
-    { "avatar": "AG", "name": "Ana García",     "origin": "Madrid · trabaja en Ámsterdam",     "stars": 5, "text": "Llevaba dos años intentando aprender neerlandés con apps y no avanzaba. En tres meses con Nawar conseguí mantener conversaciones básicas en el trabajo. El método desde el español marca la diferencia." },
-    { "avatar": "CM", "name": "Carlos Mendoza", "origin": "México · estudiante en Rotterdam", "stars": 5, "text": "Lo que más me sorprendió fue lo rápido que empecé a hablar. Normalmente me bloqueaba con los idiomas, pero aquí practiqué desde el primer día y eso cambia todo." },
-    { "avatar": "LP", "name": "Lucía Pérez",    "origin": "Buenos Aires · mudándose a Utrecht","stars": 5, "text": "La comunidad es increíble. Tener compañeros hispanohablantes con quienes practicar entre clases acelera muchísimo el aprendizaje. Ya no me siento sola en este proceso." }
+    {
+      "name": "Manuel Torres",
+      "role": "La Haya, Países Bajos",
+      "photo": "https://d1yei2z3i6k35z.cloudfront.net/9533860/69e0053ba5da56.21234955_67d4ee1d66e49_-Manuel.png",
+      "stars": 5,
+      "title": "Por fin entiendo a mis vecinos",
+      "text": "Llevaba un año en los Países Bajos y apenas podía comunicarme. Con Nawar empecé desde cero y en pocas semanas ya podía hacer la compra, hablar con el médico y entender las cartas que me llegaban a casa. Nada de lo que había probado antes me había funcionado así."
+    },
+    {
+      "name": "Carlos R.",
+      "role": "Rotterdam, Países Bajos",
+      "photo": "https://d1yei2z3i6k35z.cloudfront.net/9533860/69e0053ba534a9.03913994_685dd8fdb2a472025-06-27013229-carlos.png",
+      "stars": 5,
+      "title": "Me ascendieron a los 4 meses",
+      "text": "Mi jefe me dijo que valoraba que hiciera el esfuerzo de aprender neerlandés. No era obligatorio, pero marcó la diferencia. El método de Nawar es muy práctico: aprendes lo que realmente usas en el trabajo y en el día a día, no vocabulario de libro."
+    },
+    {
+      "name": "Lucía V.",
+      "role": "Ámsterdam, Países Bajos",
+      "photo": "https://d1yei2z3i6k35z.cloudfront.net/9533860/69e0053ba629e4.43150312_67d4f1119f7db_9a2d6c00ff1cfacea35572fac1288ffa-luc%C3%ADa.png",
+      "stars": 5,
+      "title": "La comunidad hace la diferencia",
+      "text": "Lo que más me ayudó fue el grupo de estudiantes hispanohablantes. Todos pasamos por lo mismo y nos ayudamos mucho. Cuando tenía una duda, alguien la respondía en minutos. Eso de no estar sola aprendiendo cambió todo para mí."
+    }
   ]
 }

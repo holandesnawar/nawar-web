@@ -28,7 +28,7 @@ export const prerender = false
           <span class="text-gradient-white">Escríbenos y cuéntanos</span><br>
           <span style="color: #4da3ff; -webkit-text-fill-color: #4da3ff;">cómo podemos ayudarte.</span>
         </h1>
-        <p class="ct-sub">Me encantaría conectarme contigo para descubrir la mejor manera de ayudarte a dominar el neerlandés, así que no dudes en escribirme si tienes preguntas. ¿Te interesa una colaboración? ¡A mí también! Déjame un mensaje con tus grandes ideas aquí abajo.</p>
+        <p class="ct-sub">Nos encantaría conectar contigo para descubrir la mejor manera de ayudarte a dominar el neerlandés, así que no dudes en escribirnos si tienes preguntas. ¿Te interesa una colaboración? ¡A nosotros también! Déjanos un mensaje con tus ideas aquí abajo.</p>
       </div>
 
       <div class="ct-columns">
@@ -43,8 +43,9 @@ export const prerender = false
           </div>
         </div>
 
-        <!-- Right: Form — sin panel wrapper -->
+        <!-- Right: Form — glass card translúcido -->
         <div class="ct-form-side">
+          <div class="ct-form-card">
           <form id="contact-form" class="ct-form" novalidate>
             <div class="ct-row">
               <div class="ct-field">
@@ -85,6 +86,7 @@ export const prerender = false
             </div>
             <h3 class="ct-success-title">¡Mensaje enviado!</h3>
             <p class="ct-success-sub">Te respondemos en menos de 24 horas.</p>
+          </div>
           </div>
         </div>
       </div>
@@ -157,29 +159,48 @@ export const prerender = false
   align-items: start;
 }
 
-/* ── Form — sin panel wrapper, abierto ── */
+/* ── Form — glass card translúcido ── */
 .ct-form-side { padding-top: 8px; }
-.ct-form { display: flex; flex-direction: column; gap: 20px; }
-.ct-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.ct-field { display: flex; flex-direction: column; gap: 8px; }
+.ct-form-card {
+  position: relative;
+  padding: 28px 28px 24px;
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.06) inset,
+    0 20px 60px rgba(0,0,0,0.25);
+}
+.ct-form { display: flex; flex-direction: column; gap: 18px; }
+.ct-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.ct-field { display: flex; flex-direction: column; gap: 7px; }
 .ct-label {
-  font-size: 13px; font-weight: 600;
-  color: rgba(255,255,255,0.95);
-  letter-spacing: 0.01em;
+  font-size: 12.5px; font-weight: 600;
+  color: rgba(255,255,255,0.78);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 .ct-input {
-  padding: 15px 18px; border-radius: 12px;
-  border: 1px solid rgba(255,255,255,1);
-  background: rgba(255,255,255,0.95);
-  font-size: 15px; color: #1D0084;
+  padding: 14px 16px; border-radius: 11px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.05);
+  font-size: 15px; color: #fff;
   font-family: inherit; outline: none; width: 100%;
   box-sizing: border-box;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
-.ct-input::placeholder { color: rgba(29,0,132,0.55); }
+.ct-input::placeholder { color: rgba(255,255,255,0.38); }
+.ct-input:hover {
+  border-color: rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.07);
+}
 .ct-input:focus {
   border-color: #4da3ff;
-  background: #fff;
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 0 3px rgba(77,163,255,0.18);
   outline: none;
 }
 .ct-submit {
@@ -187,12 +208,13 @@ export const prerender = false
   padding: 16px; border-radius: 12px; border: none; cursor: pointer;
   background: #4da3ff; color: #1D0084;
   font-size: 15px; font-weight: 700; font-family: inherit;
-  margin-top: 4px;
-  transition: background 0.2s;
+  margin-top: 6px;
+  transition: background 0.2s, transform 0.15s;
 }
-.ct-submit:hover { background: #3391f0; }
-.ct-privacy { font-size: 12px; color: rgba(255,255,255,0.40); text-align: center; }
-.ct-privacy a { color: rgba(255,255,255,0.60); text-decoration: underline; }
+.ct-submit:hover { background: #5eb4ff; transform: translateY(-1px); }
+.ct-submit:active { transform: translateY(0); }
+.ct-privacy { font-size: 12px; color: rgba(255,255,255,0.45); text-align: center; margin-top: 2px; }
+.ct-privacy a { color: rgba(255,255,255,0.72); text-decoration: underline; }
 
 /* ── Success ── */
 .ct-success { text-align: center; padding: 32px 0; }
@@ -213,6 +235,15 @@ export const prerender = false
   border-radius: 20px;
   overflow: hidden;
   aspect-ratio: 3/4;
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.06) inset,
+    0 20px 60px rgba(0,0,0,0.30);
+}
+.ct-image-wrap::after {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(29,0,132,0) 55%, rgba(29,0,132,0.35) 100%);
 }
 .ct-image {
   width: 100%; height: 100%;
@@ -227,6 +258,7 @@ export const prerender = false
   .ct-container { padding: 0 20px; }
   .ct-top { text-align: left; display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 24px; }
   .ct-sub { margin-left: 0; text-align: left; }
+  .ct-form-card { padding: 22px 20px 20px; }
 }
 @media (max-width: 540px) {
   .ct-row { grid-template-columns: 1fr; }

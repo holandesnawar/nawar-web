@@ -90,7 +90,7 @@ export default function StickyComparisonSection({ items }: Props) {
                 </div>
 
                 <div className="mb-3 p-4 rounded-2xl bg-[#F0F8FF]">
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-[#025dc7] mb-2">Con Nawar</p>
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-[#025dc7] mb-2">Con nosotros</p>
                   <div className="flex gap-3 items-start">
                     <span className="mt-0.5 w-5 h-5 shrink-0 rounded-full bg-[#025dc7] flex items-center justify-center">
                       <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
