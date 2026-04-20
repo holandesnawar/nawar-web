@@ -1,13 +1,15 @@
 ---
-title: "¿Qué significan los colores de la bandera de Holanda? Origen y curiosidades"
+title: ¿Qué significan los colores de la bandera de Holanda? Origen y curiosidades
 publishedAt: 2026-04-09T08:24:09.702Z
+category: cultura
 mainImage:
   src: /blog/images/bandera-holanda-significado.png
   alt: Holanda
 readingMinutes: 2
 seo:
-  title: "Colores de la bandera de Holanda | Origen y Curiosidades"
-  description: La bandera de los Países Bajos, también conocida como bandera de Holanda— es una de las más reconocidas de Europa.
+  title: Colores de la bandera de Holanda | Origen y Curiosidades
+  description: La bandera de los Países Bajos, también conocida como bandera de
+    Holanda— es una de las más reconocidas de Europa.
 ---
 **📜 Origen histórico: de naranja a rojo**
 
