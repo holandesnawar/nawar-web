@@ -1,6 +1,11 @@
 ---
 title: ¿Qué significan los colores de la bandera de Holanda? Origen y curiosidades
 publishedAt: 2026-04-09T08:24:09.702Z
+excerpt: >
+  Originalmente, la bandera de los Países Bajos no era roja, blanca y azul, sino
+  naranja, blanca y azul. Este diseño fue usado durante la rebelión contra el
+  dominio español en el siglo XVI, y estaba ligado directamente a Guillermo de
+  Orange (Willem van Oranje), el líder de la independencia neerlandesa.
 category: cultura
 mainImage:
   src: /blog/images/bandera-holanda-significado.png
