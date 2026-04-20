@@ -1,13 +1,15 @@
 ---
 title: Los 10 verbos más usados en neerlandés
 publishedAt: 2026-04-10T22:20:00.000Z
+category: vocabulario
 mainImage:
   src: /blog/images/los-10-verbos-mas-usados-en-neerlandes.png
   alt: Los 10 verbos más usados en neerlandés
 readingMinutes: 2
 seo:
   title: Los 10 verbos más usados en neerlandés
-  description: "Cuando estás empezando a aprender neerlandés, no necesitas memorizar cientos de palabras: basta con empezar por las más útiles."
+  description: "Cuando estás empezando a aprender neerlandés, no necesitas
+    memorizar cientos de palabras: basta con empezar por las más útiles."
 ---
 Cuando estás empezando a aprender neerlandés, no necesitas memorizar cientos de palabras: basta con empezar por las más útiles. En este artículo te comparto los **10 verbos más usados en neerlandés**, con su significado, conjugación básica y un ejemplo práctico para cada uno. Perfecto para hispanohablantes que quieren empezar con lo esencial.
 
