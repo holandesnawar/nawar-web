@@ -1,13 +1,16 @@
 ---
 title: Errores comunes al aprender neerlandés y cómo evitarlos
 publishedAt: 2026-04-13T23:33:03.923Z
+category: pronunciacion
 mainImage:
   src: /blog/images/errores-comunes-al-aprender-neerlandes-y-como-evitarlos.png
   alt: Imagen
 readingMinutes: 4
 seo:
   title: Errores comunes al aprender neerlandés y cómo evitarlos
-  description: Uno de los mayores desafíos del neerlandés es la pronunciación. Hay sonidos que no existen en español y pueden ser difíciles de reproducir correctamente.
+  description: Uno de los mayores desafíos del neerlandés es la pronunciación. Hay
+    sonidos que no existen en español y pueden ser difíciles de reproducir
+    correctamente.
 ---
 ## **1. Pronunciar mal los sonidos más difíciles**
 
