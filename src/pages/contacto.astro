@@ -43,9 +43,8 @@ export const prerender = false
           </div>
         </div>
 
-        <!-- Right: Form — glass card translúcido -->
+        <!-- Right: Form -->
         <div class="ct-form-side">
-          <div class="ct-form-card">
           <form id="contact-form" class="ct-form" novalidate>
             <div class="ct-row">
               <div class="ct-field">
@@ -86,7 +85,6 @@ export const prerender = false
             </div>
             <h3 class="ct-success-title">¡Mensaje enviado!</h3>
             <p class="ct-success-sub">Te respondemos en menos de 24 horas.</p>
-          </div>
           </div>
         </div>
       </div>
@@ -159,21 +157,8 @@ export const prerender = false
   align-items: start;
 }
 
-/* ── Form — glass card translúcido ── */
+/* ── Form ── */
 .ct-form-side { padding-top: 8px; }
-.ct-form-card {
-  position: relative;
-  padding: 28px 28px 24px;
-  border-radius: 20px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%);
-  border: 1px solid rgba(255,255,255,0.10);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.06) inset,
-    0 20px 60px rgba(0,0,0,0.25);
-}
 .ct-form { display: flex; flex-direction: column; gap: 18px; }
 .ct-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .ct-field { display: flex; flex-direction: column; gap: 7px; }
@@ -258,7 +243,6 @@ export const prerender = false
   .ct-container { padding: 0 20px; }
   .ct-top { text-align: left; display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 24px; }
   .ct-sub { margin-left: 0; text-align: left; }
-  .ct-form-card { padding: 22px 20px 20px; }
 }
 @media (max-width: 540px) {
   .ct-row { grid-template-columns: 1fr; }
