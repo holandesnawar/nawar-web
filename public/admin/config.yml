@@ -192,10 +192,6 @@ collections:
               - { label: "Párrafo 2", name: "paragraph2", widget: "text" }
               - { label: "Párrafo 3", name: "paragraph3", widget: "text" }
 
-          # ─── Campos opcionales (por si se activan en el futuro) ───
-          - { label: "Por qué Nawar (opcional)", name: "porQueNawar", widget: "object", required: false, fields: [] }
-          - { label: "Benefits (opcional)",       name: "benefits",    widget: "object", required: false, fields: [] }
-          - { label: "Proceso (opcional)",        name: "proceso",     widget: "object", required: false, fields: [] }
-          - { label: "Valor (opcional)",          name: "valor",       widget: "object", required: false, fields: [] }
-          - { label: "Para quién (opcional)",     name: "paraQuien",   widget: "object", required: false, fields: [] }
-          - { label: "FAQ (opcional)",            name: "faq",         widget: "object", required: false, fields: [] }
+          # Los bloques porQueNawar, benefits, proceso, valor, paraQuien y faq
+          # usan textos por defecto hardcodeados en sus componentes Astro.
+          # Se pueden añadir aquí cuando quieras editarlos desde el CMS.
