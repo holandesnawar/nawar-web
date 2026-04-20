@@ -1,6 +1,9 @@
 ---
 title: El alfabeto neerlandés y cómo pronunciar cada letra correctamente
 publishedAt: 2026-04-10T23:40:00.000Z
+excerpt: "El neerlandés, o holandés, es un idioma germánico hablado
+  principalmente en los Países Bajos, Bélgica y algunas regiones de Surinam y
+  las Antillas Neerlandesas. "
 category: vocabulario
 mainImage:
   src: /blog/images/el-alfabeto-neerlandes-y-como-pronunciar-cada-letra-correctamente.png
