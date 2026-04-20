@@ -1,0 +1,199 @@
+# ─────────────────────────────────────────────────
+# Decap CMS config — Holandés Nawar
+# ─────────────────────────────────────────────────
+
+backend:
+  name: github
+  repo: holandesnawar/nawar-web
+  branch: main
+  base_url: https://www.holandesnawar.com
+  auth_endpoint: api/auth
+
+# Commits se autoren como "Nawar CMS <email> via Decap"
+commit_messages:
+  create: "content: crea {{collection}} \"{{slug}}\""
+  update: "content: actualiza {{collection}} \"{{slug}}\""
+  delete: "content: elimina {{collection}} \"{{slug}}\""
+  uploadMedia: "content: sube imagen \"{{path}}\""
+  deleteMedia: "content: elimina imagen \"{{path}}\""
+
+# Subida de imágenes a public/blog/images/, se sirven desde /blog/images/
+media_folder: "public/blog/images"
+public_folder: "/blog/images"
+
+# Permite editar en vivo y ver previsualización antes de publicar
+publish_mode: simple
+site_url: https://www.holandesnawar.com
+logo_url: https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png
+locale: es
+
+collections:
+
+  # ── BLOG ──────────────────────────────────────────
+  - name: "blog"
+    label: "📝 Blog"
+    label_singular: "artículo"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    preview_path: "blog/{{slug}}"
+    summary: "{{title}} — {{publishedAt | date('DD/MM/YYYY')}}"
+    sortable_fields: ['publishedAt', 'title']
+    view_groups:
+      - label: Categoría
+        field: category
+    fields:
+      - { label: "Título",    name: "title",       widget: "string" }
+      - { label: "Fecha",     name: "publishedAt", widget: "datetime", date_format: "YYYY-MM-DD", time_format: "HH:mm", format: "YYYY-MM-DDTHH:mm:ss.SSSZ" }
+      - { label: "Extracto (máx 200 car.)", name: "excerpt", widget: "text", required: false }
+      - label: "Categoría"
+        name: "category"
+        widget: "select"
+        required: false
+        options:
+          - { label: "Inburgering",   value: "inburgering" }
+          - { label: "Cultura",       value: "cultura" }
+          - { label: "Vocabulario",   value: "vocabulario" }
+          - { label: "Pronunciación", value: "pronunciacion" }
+      - label: "Imagen principal"
+        name: "mainImage"
+        widget: "object"
+        required: false
+        collapsed: false
+        fields:
+          - { label: "Imagen",      name: "src", widget: "image" }
+          - { label: "Texto alt.", name: "alt", widget: "string", required: false }
+      - { label: "Minutos de lectura", name: "readingMinutes", widget: "number", required: false, default: 3, value_type: "int", min: 1, max: 60 }
+      - label: "SEO (opcional)"
+        name: "seo"
+        widget: "object"
+        required: false
+        collapsed: true
+        fields:
+          - { label: "Meta título",      name: "title",       widget: "string", required: false }
+          - { label: "Meta descripción", name: "description", widget: "text",   required: false }
+      - { label: "Contenido", name: "body", widget: "markdown" }
+
+  # ── LANDING (HOME) ────────────────────────────────
+  - name: "landing"
+    label: "🏠 Home / Landing"
+    files:
+      - label: "Datos de la home"
+        name: "home"
+        file: "src/data/landing.json"
+        format: "json"
+        fields:
+
+          # ─── Hero ───
+          - label: "Hero (banner superior)"
+            name: "hero"
+            widget: "object"
+            collapsed: false
+            fields:
+              - { label: "Pill superior",             name: "badge",             widget: "string" }
+              - { label: "Titular — parte 1",         name: "headlineMain",      widget: "string" }
+              - { label: "Titular — acento",          name: "headlineAccent",    widget: "string" }
+              - { label: "Titular — parte 2",         name: "headlineSuffix",    widget: "string" }
+              - { label: "Subtítulo (desktop)",       name: "subtitleDesktop",   widget: "text" }
+              - { label: "Subtítulo (móvil)",         name: "subtitleMobile",    widget: "text" }
+              - { label: "CTA primario",              name: "ctaPrimary",        widget: "string" }
+              - { label: "CTA secundario",            name: "ctaSecondary",      widget: "string" }
+              - { label: "Texto de prueba social",    name: "socialProofLabel",  widget: "string" }
+
+          # ─── Stats ───
+          - label: "Estadísticas"
+            name: "stats"
+            widget: "list"
+            max: 6
+            summary: "{{fields.value}} — {{fields.label}}"
+            fields:
+              - { label: "Valor",    name: "value", widget: "string" }
+              - { label: "Etiqueta", name: "label", widget: "string" }
+
+          # ─── Marquee de banderas ───
+          - label: "Banderas del marquee"
+            name: "marqueeItems"
+            widget: "list"
+            field: { label: "País (con bandera)", name: "item", widget: "string" }
+
+          # ─── Pain points ───
+          - label: "Problemas comunes (PainPoints)"
+            name: "painPoints"
+            widget: "list"
+            summary: "{{fields.icon}} {{fields.title}}"
+            fields:
+              - { label: "Icono / emoji",  name: "icon",        widget: "string" }
+              - { label: "Título",         name: "title",       widget: "string" }
+              - { label: "Descripción",    name: "description", widget: "text" }
+
+          # ─── Features ───
+          - label: "Características (Features)"
+            name: "features"
+            widget: "list"
+            summary: "{{fields.icon}} {{fields.title}}"
+            fields:
+              - { label: "Icono / emoji",  name: "icon",        widget: "string" }
+              - { label: "Título",         name: "title",       widget: "string" }
+              - { label: "Descripción",    name: "description", widget: "text" }
+
+          # ─── Pasos del método ───
+          - label: "Pasos del método"
+            name: "steps"
+            widget: "list"
+            summary: "{{fields.number}} — {{fields.title}}"
+            fields:
+              - { label: "Número", name: "number",      widget: "string" }
+              - { label: "Título", name: "title",       widget: "string" }
+              - { label: "Descripción", name: "description", widget: "text" }
+
+          # ─── Comparación ───
+          - label: "Comparación Nawar vs clásicas"
+            name: "comparison"
+            widget: "list"
+            summary: "{{fields.icon}} {{fields.title}}"
+            fields:
+              - { label: "Icono",       name: "icon",        widget: "string" }
+              - { label: "Título",      name: "title",       widget: "string" }
+              - { label: "Texto Nawar",    name: "nawarText",   widget: "text" }
+              - { label: "Texto clásicas", name: "classicText", widget: "text" }
+
+          # ─── Testimonios ───
+          - label: "Testimonios"
+            name: "testimonials"
+            widget: "list"
+            summary: "{{fields.name}} — {{fields.origin}}"
+            fields:
+              - { label: "Iniciales avatar", name: "avatar", widget: "string", hint: "Ej: AG, CM, LP" }
+              - { label: "Nombre",           name: "name",   widget: "string" }
+              - { label: "Origen",           name: "origin", widget: "string" }
+              - { label: "Estrellas",        name: "stars",  widget: "number", value_type: "int", min: 1, max: 5, default: 5 }
+              - { label: "Texto",            name: "text",   widget: "text" }
+
+          # ─── Doubts ───
+          - label: "Dudas/objeciones"
+            name: "doubts"
+            widget: "list"
+            summary: "{{fields.icon}} — {{fields.text}}"
+            fields:
+              - { label: "Icono", name: "icon", widget: "string" }
+              - { label: "Texto", name: "text", widget: "text" }
+
+          # ─── About ───
+          - label: "Sobre Nawar (3 párrafos)"
+            name: "about"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Párrafo 1", name: "paragraph1", widget: "text" }
+              - { label: "Párrafo 2", name: "paragraph2", widget: "text" }
+              - { label: "Párrafo 3", name: "paragraph3", widget: "text" }
+
+          # ─── Campos opcionales (por si se activan en el futuro) ───
+          - { label: "Por qué Nawar (opcional)", name: "porQueNawar", widget: "object", required: false, fields: [] }
+          - { label: "Benefits (opcional)",       name: "benefits",    widget: "object", required: false, fields: [] }
+          - { label: "Proceso (opcional)",        name: "proceso",     widget: "object", required: false, fields: [] }
+          - { label: "Valor (opcional)",          name: "valor",       widget: "object", required: false, fields: [] }
+          - { label: "Para quién (opcional)",     name: "paraQuien",   widget: "object", required: false, fields: [] }
+          - { label: "FAQ (opcional)",            name: "faq",         widget: "object", required: false, fields: [] }

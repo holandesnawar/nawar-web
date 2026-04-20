@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # No indexar el studio de Sanity ni las rutas de API
-Disallow: /studio/
+Disallow: /admin/
 Disallow: /api/
 
 Sitemap: https://www.holandesnawar.com/sitemap-index.xml
