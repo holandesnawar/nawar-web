@@ -6,7 +6,9 @@ backend:
   name: github
   repo: holandesnawar/nawar-web
   branch: main
-  base_url: https://www.holandesnawar.com
+  # NOTA: cuando migres a tu dominio final, cambia base_url y site_url abajo
+  # a https://www.holandesnawar.com (también la callback URL de GitHub OAuth)
+  base_url: https://nawar-web.vercel.app
   auth_endpoint: api/auth
 
 # Commits se autoren como "Nawar CMS <email> via Decap"
@@ -23,7 +25,7 @@ public_folder: "/blog/images"
 
 # Permite editar en vivo y ver previsualización antes de publicar
 publish_mode: simple
-site_url: https://www.holandesnawar.com
+site_url: https://nawar-web.vercel.app
 logo_url: https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png
 locale: es
 
