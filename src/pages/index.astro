@@ -20,15 +20,14 @@ import '../styles/nawar-sections.css'
 
 export const prerender = true
 
-const painPoints   = landing.painPoints   ?? []
-const comparison   = landing.comparison   ?? []
-const testimonials = landing.testimonials ?? []
-const porQueNawar  = landing.porQueNawar  ?? null
-const benefits     = landing.benefits     ?? null
-const proceso      = landing.proceso      ?? null
-const valor        = landing.valor        ?? null
-const paraQuien    = landing.paraQuien    ?? null
-const faq          = landing.faq          ?? null
+const hero         = (landing as any).hero         ?? null
+const comparison   = (landing as any).comparison   ?? []
+const testimonials = (landing as any).testimonials ?? []
+const porQueNawar  = (landing as any).porQueNawar  ?? null
+const proceso      = (landing as any).proceso      ?? null
+const valor        = (landing as any).valor        ?? null
+const paraQuien    = (landing as any).paraQuien    ?? null
+const faq          = (landing as any).faq          ?? null
 ---
 
 <Layout
@@ -38,7 +37,7 @@ const faq          = landing.faq          ?? null
   <NavbarLanding client:load />
   <GuidePopup />
 
-  <HeroNuevo />
+  <HeroNuevo data={hero} />
   <PorQueNawar data={porQueNawar} />
   {/* <BenefitsSection data={benefits} /> — oculta hasta que la formación esté lista */}
   <ProcesoSection data={proceso} />

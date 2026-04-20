@@ -11,7 +11,6 @@ backend:
   base_url: https://nawar-web.vercel.app
   auth_endpoint: api/auth
 
-# Commits se autoren como "Nawar CMS <email> via Decap"
 commit_messages:
   create: "content: crea {{collection}} \"{{slug}}\""
   update: "content: actualiza {{collection}} \"{{slug}}\""
@@ -19,11 +18,9 @@ commit_messages:
   uploadMedia: "content: sube imagen \"{{path}}\""
   deleteMedia: "content: elimina imagen \"{{path}}\""
 
-# Subida de imágenes a public/blog/images/, se sirven desde /blog/images/
 media_folder: "public/blog/images"
 public_folder: "/blog/images"
 
-# Permite editar en vivo y ver previsualización antes de publicar
 publish_mode: simple
 site_url: https://nawar-web.vercel.app
 logo_url: https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png
@@ -78,88 +75,121 @@ collections:
           - { label: "Meta descripción", name: "description", widget: "text",   required: false }
       - { label: "Contenido", name: "body", widget: "markdown" }
 
-  # ── LANDING (HOME) ────────────────────────────────
+  # ── HOME / LANDING ────────────────────────────────
   - name: "landing"
     label: "🏠 Home / Landing"
     files:
-      - label: "Datos de la home"
+      - label: "Contenido de la home"
         name: "home"
         file: "src/data/landing.json"
         format: "json"
         fields:
 
-          # ─── Hero ───
-          - label: "Hero (banner superior)"
+          # ─── Hero (banner superior) ───
+          - label: "Hero (banner azul de inicio)"
             name: "hero"
             widget: "object"
             collapsed: false
             fields:
-              - { label: "Pill superior",             name: "badge",             widget: "string" }
-              - { label: "Titular — parte 1",         name: "headlineMain",      widget: "string" }
-              - { label: "Titular — acento",          name: "headlineAccent",    widget: "string" }
-              - { label: "Titular — parte 2",         name: "headlineSuffix",    widget: "string" }
-              - { label: "Subtítulo (desktop)",       name: "subtitleDesktop",   widget: "text" }
-              - { label: "Subtítulo (móvil)",         name: "subtitleMobile",    widget: "text" }
-              - { label: "CTA primario",              name: "ctaPrimary",        widget: "string" }
-              - { label: "CTA secundario",            name: "ctaSecondary",      widget: "string" }
-              - { label: "Texto de prueba social",    name: "socialProofLabel",  widget: "string" }
+              - { label: "Pill superior",                 name: "badge",      widget: "string" }
+              - { label: "Título — línea 1 (blanca)",     name: "titleLine1", widget: "string" }
+              - { label: "Título — línea 2 (azul claro)", name: "titleLine2", widget: "string" }
+              - { label: "Subtítulo",                     name: "subtitle",   widget: "text" }
+              - label: "Bullets (3 ítems)"
+                name: "bullets"
+                widget: "list"
+                field: { label: "Bullet", name: "bullet", widget: "string" }
+              - { label: "Texto del botón CTA", name: "ctaText", widget: "string" }
 
-          # ─── Stats ───
-          - label: "Estadísticas"
-            name: "stats"
-            widget: "list"
-            max: 6
-            summary: "{{fields.value}} — {{fields.label}}"
+          # ─── Por qué existe Nawar ───
+          - label: "Por qué existe Nawar"
+            name: "porQueNawar"
+            widget: "object"
+            collapsed: true
             fields:
-              - { label: "Valor",    name: "value", widget: "string" }
-              - { label: "Etiqueta", name: "label", widget: "string" }
+              - { label: "Pill",      name: "badge",    widget: "string" }
+              - { label: "Título (usa \\n para salto)", name: "title", widget: "string" }
+              - { label: "Subtítulo", name: "subtitle", widget: "text" }
+              - { label: "Título tarjeta izquierda (roja)",  name: "leftCardTitle",  widget: "string" }
+              - label: "Ítems tarjeta izquierda"
+                name: "leftCardItems"
+                widget: "list"
+                field: { label: "Ítem", name: "item", widget: "string" }
+              - { label: "Título tarjeta derecha (Nawar)",   name: "rightCardTitle", widget: "string" }
+              - label: "Ítems tarjeta derecha"
+                name: "rightCardItems"
+                widget: "list"
+                field: { label: "Ítem", name: "item", widget: "string" }
 
-          # ─── Marquee de banderas ───
-          - label: "Banderas del marquee"
-            name: "marqueeItems"
-            widget: "list"
-            field: { label: "País (con bandera)", name: "item", widget: "string" }
-
-          # ─── Pain points ───
-          - label: "Problemas comunes (PainPoints)"
-            name: "painPoints"
-            widget: "list"
-            summary: "{{fields.icon}} {{fields.title}}"
+          # ─── Proceso (Dos clics, Listo) ───
+          - label: "Sección 'Así de sencillo'"
+            name: "proceso"
+            widget: "object"
+            collapsed: true
             fields:
-              - { label: "Icono / emoji",  name: "icon",        widget: "string" }
-              - { label: "Título",         name: "title",       widget: "string" }
-              - { label: "Descripción",    name: "description", widget: "text" }
+              - { label: "Pill",              name: "badge",          widget: "string" }
+              - { label: "Título",            name: "title",          widget: "string" }
+              - { label: "Subtítulo",         name: "subtitle",       widget: "text" }
+              - { label: "Texto de garantía", name: "guaranteeText",  widget: "string" }
+              - { label: "Texto del CTA",     name: "ctaText",        widget: "string" }
 
-          # ─── Features ───
-          - label: "Características (Features)"
-            name: "features"
-            widget: "list"
-            summary: "{{fields.icon}} {{fields.title}}"
+          # ─── Valor ───
+          - label: "Sección 'Prepárate para el cambio'"
+            name: "valor"
+            widget: "object"
+            collapsed: true
             fields:
-              - { label: "Icono / emoji",  name: "icon",        widget: "string" }
-              - { label: "Título",         name: "title",       widget: "string" }
-              - { label: "Descripción",    name: "description", widget: "text" }
+              - { label: "Pill",             name: "badge",        widget: "string" }
+              - { label: "Título línea 1",   name: "titleLine1",   widget: "string" }
+              - { label: "Título línea 2 (azul claro)", name: "titleLine2", widget: "string" }
+              - { label: "Subtítulo",        name: "subtitle",     widget: "text" }
+              - { label: "Frase final con flecha", name: "note",   widget: "string" }
+              - { label: "CTA primario",     name: "ctaPrimary",   widget: "string" }
+              - { label: "CTA secundario",   name: "ctaSecondary", widget: "string" }
 
-          # ─── Pasos del método ───
-          - label: "Pasos del método"
-            name: "steps"
-            widget: "list"
-            summary: "{{fields.number}} — {{fields.title}}"
-            fields:
-              - { label: "Número", name: "number",      widget: "string" }
-              - { label: "Título", name: "title",       widget: "string" }
-              - { label: "Descripción", name: "description", widget: "text" }
-
-          # ─── Comparación ───
-          - label: "Comparación Nawar vs clásicas"
+          # ─── Comparison (Nawar vs clásicas) ───
+          - label: "Comparación Nawar vs academias clásicas"
             name: "comparison"
             widget: "list"
             summary: "{{fields.icon}} {{fields.title}}"
             fields:
-              - { label: "Icono",       name: "icon",        widget: "string" }
-              - { label: "Título",      name: "title",       widget: "string" }
+              - { label: "Icono / emoji",  name: "icon",        widget: "string" }
+              - { label: "Título",         name: "title",       widget: "string" }
               - { label: "Texto Nawar",    name: "nawarText",   widget: "text" }
               - { label: "Texto clásicas", name: "classicText", widget: "text" }
+
+          # ─── Para quién ───
+          - label: "¿Para quién está diseñado?"
+            name: "paraQuien"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Pill",      name: "badge",    widget: "string" }
+              - { label: "Subtítulo (usa \\n para saltos)", name: "subtitle", widget: "text" }
+              - label: "Puntos (perfiles)"
+                name: "points"
+                widget: "list"
+                summary: "{{fields.icon}} {{fields.title}}"
+                fields:
+                  - { label: "Icono",       name: "icon",        widget: "string" }
+                  - { label: "Título",      name: "title",       widget: "string" }
+                  - { label: "Descripción", name: "description", widget: "text" }
+
+          # ─── FAQ ───
+          - label: "Preguntas frecuentes"
+            name: "faq"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Pill",   name: "badge", widget: "string" }
+              - { label: "Título", name: "title", widget: "string" }
+              - label: "Preguntas / respuestas"
+                name: "items"
+                widget: "list"
+                summary: "{{fields.question}}"
+                fields:
+                  - { label: "Pregunta",  name: "question", widget: "string" }
+                  - { label: "Respuesta", name: "answer",   widget: "text" }
 
           # ─── Testimonios ───
           - label: "Testimonios"
@@ -172,26 +202,3 @@ collections:
               - { label: "Origen",           name: "origin", widget: "string" }
               - { label: "Estrellas",        name: "stars",  widget: "number", value_type: "int", min: 1, max: 5, default: 5 }
               - { label: "Texto",            name: "text",   widget: "text" }
-
-          # ─── Doubts ───
-          - label: "Dudas/objeciones"
-            name: "doubts"
-            widget: "list"
-            summary: "{{fields.icon}} — {{fields.text}}"
-            fields:
-              - { label: "Icono", name: "icon", widget: "string" }
-              - { label: "Texto", name: "text", widget: "text" }
-
-          # ─── About ───
-          - label: "Sobre Nawar (3 párrafos)"
-            name: "about"
-            widget: "object"
-            collapsed: true
-            fields:
-              - { label: "Párrafo 1", name: "paragraph1", widget: "text" }
-              - { label: "Párrafo 2", name: "paragraph2", widget: "text" }
-              - { label: "Párrafo 3", name: "paragraph3", widget: "text" }
-
-          # Los bloques porQueNawar, benefits, proceso, valor, paraQuien y faq
-          # usan textos por defecto hardcodeados en sus componentes Astro.
-          # Se pueden añadir aquí cuando quieras editarlos desde el CMS.

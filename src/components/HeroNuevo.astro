@@ -1,4 +1,16 @@
 ---
+interface Props { data?: any }
+const { data } = Astro.props
+const badge      = data?.badge      ?? 'Neerlandés para hispanohablantes'
+const titleLine1 = data?.titleLine1 ?? 'Aprende neerlandés'
+const titleLine2 = data?.titleLine2 ?? 'de verdad'
+const subtitle   = data?.subtitle   ?? 'El método que debería haber existido desde siempre para cualquier hispanohablante que quiere aprender neerlandés.'
+const bullets    = data?.bullets?.length ? data.bullets : [
+  'Explicado desde el español, sin pasar por el inglés',
+  'Sin experiencia previa — desde cero hasta conversar',
+  'Comunidad activa de +600 hispanohablantes',
+]
+const ctaText    = data?.ctaText    ?? 'Únete a la lista de espera'
 ---
 <section id="inicio" class="hero-section" data-navbar="dark">
   <div class="hero-glow1" aria-hidden="true"></div>
@@ -47,43 +59,29 @@
         <svg class="check-icon" fill="none" viewBox="0 0 12 12">
           <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>
-        Neerlandés para hispanohablantes
+        {badge}
       </span>
 
       <h1 class="hero-title h-anim" style="--hd:0.18s">
-        <span class="hero-title-gradient">Aprende neerlandés</span><br>
-        <span style="color: #4da3ff; -webkit-text-fill-color: #4da3ff;">de verdad</span>
+        <span class="hero-title-gradient">{titleLine1}</span><br>
+        <span style="color: #4da3ff; -webkit-text-fill-color: #4da3ff;">{titleLine2}</span>
       </h1>
 
       <p class="hero-sub h-anim" style="--hd:0.28s">
-        El método que debería haber existido desde siempre para cualquier hispanohablante que quiere aprender neerlandés.
+        {subtitle}
       </p>
 
       <ul class="hero-bullets h-anim" style="--hd:0.38s">
-        <li>
-          <span class="hero-check">
-            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-            </svg>
-          </span>
-          Explicado desde el español, sin pasar por el inglés
-        </li>
-        <li>
-          <span class="hero-check">
-            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-            </svg>
-          </span>
-          Sin experiencia previa — desde cero hasta conversar
-        </li>
-        <li>
-          <span class="hero-check">
-            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-            </svg>
-          </span>
-          Comunidad activa de +600 hispanohablantes
-        </li>
+        {bullets.map((item: string) => (
+          <li>
+            <span class="hero-check">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </span>
+            {item}
+          </li>
+        ))}
       </ul>
 
       <div class="hero-form-row h-anim" id="lista-espera" style="--hd:0.48s">
@@ -97,7 +95,7 @@
             required
           />
           <button type="submit" class="hero-form-btn">
-            Únete a la lista de espera
+            {ctaText}
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
             </svg>
