@@ -1,13 +1,19 @@
 ---
-import { sanityClient } from 'sanity:client'
-import { POSTS_QUERY } from '../sanity/queries'
-import imageUrlBuilder from '@sanity/image-url'
+import { getCollection } from 'astro:content'
 
-const allPosts = await sanityClient.fetch(POSTS_QUERY)
-const posts = allPosts.slice(0, 3)
-
-const builder = imageUrlBuilder(sanityClient)
-const urlFor  = (source: any) => builder.image(source)
+const entries = await getCollection('blog')
+const posts = entries
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 3)
+  .map((e) => ({
+    title: e.data.title,
+    slug: e.slug,
+    publishedAt: e.data.publishedAt.toISOString(),
+    excerpt: e.data.excerpt,
+    category: e.data.category,
+    mainImage: e.data.mainImage,
+    readingMinutes: e.data.readingMinutes,
+  }))
 
 const fmt = (d: string) =>
   new Date(d).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -51,9 +57,9 @@ const CATEGORY_META: Record<string, { label: string; className: string }> = {
           const mins = Math.max(1, Number(post.readingMinutes) || 3)
           return (
             <a href={`/blog/${post.slug}`} class={`bn-card sr${i > 0 ? ` d${i}` : ''}`} style={`--ci:${i}`}>
-              {post.mainImage && (
+              {post.mainImage?.src && (
                 <div class="bn-img">
-                  <img src={urlFor(post.mainImage).width(600).height(360).fit('crop').quality(82).url()} alt={post.mainImage.alt || post.title} loading="lazy" width="600" height="360" />
+                  <img src={post.mainImage.src} alt={post.mainImage.alt || post.title} loading="lazy" width="600" height="360" />
                 </div>
               )}
               <div class="bn-body">
@@ -90,9 +96,9 @@ const CATEGORY_META: Record<string, { label: string; className: string }> = {
         const mins = Math.max(1, Number(post.readingMinutes) || 3)
         return (
           <a href={`/blog/${post.slug}`} class="bn-card bsm-card">
-            {post.mainImage && (
+            {post.mainImage?.src && (
               <div class="bn-img">
-                <img src={urlFor(post.mainImage).width(520).height(312).fit('crop').quality(80).url()} alt={post.mainImage.alt || post.title} loading="lazy" />
+                <img src={post.mainImage.src} alt={post.mainImage.alt || post.title} loading="lazy" />
               </div>
             )}
             <div class="bn-body">

@@ -1,17 +1,25 @@
 ---
-import { sanityClient } from 'sanity:client'
+import { getCollection } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
 import NavbarLanding from '../../components/NavbarLanding'
 import FooterNuevo from '../../components/FooterNuevo.astro'
-import { POSTS_QUERY } from '../../sanity/queries'
 import '../../styles/nawar-sections.css'
-import imageUrlBuilder from '@sanity/image-url'
 
-export const prerender = false
+export const prerender = true
 
-const posts = await sanityClient.fetch(POSTS_QUERY)
-const builder = imageUrlBuilder(sanityClient)
-const urlFor = (source: any) => builder.image(source)
+const entries = await getCollection('blog')
+const posts = entries
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .map((e) => ({
+    _id: e.id,
+    title: e.data.title,
+    slug: e.slug,
+    publishedAt: e.data.publishedAt.toISOString(),
+    excerpt: e.data.excerpt,
+    category: e.data.category,
+    mainImage: e.data.mainImage,
+    readingMinutes: e.data.readingMinutes,
+  }))
 
 const fmt = (d: string) =>
   new Date(d).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -119,10 +127,10 @@ const FILTERS = [
                   data-category={post.category || ''}
                   data-search={searchText}
                 >
-                  {post.mainImage ? (
+                  {post.mainImage?.src ? (
                     <div class="bp-img">
                       <img
-                        src={urlFor(post.mainImage).width(600).height(360).fit('crop').quality(82).url()}
+                        src={post.mainImage.src}
                         alt={post.mainImage.alt || post.title}
                         loading={i < 3 ? 'eager' : 'lazy'}
                         width="600" height="360"

@@ -1,28 +1,51 @@
 ---
-import { sanityClient } from 'sanity:client'
-import { PortableText } from 'astro-portabletext'
+import { getCollection, getEntry } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
 import NavbarLanding from '../../components/NavbarLanding'
 import FooterNuevo from '../../components/FooterNuevo.astro'
 import '../../styles/nawar-sections.css'
 import BlogTOC from '../../components/BlogTOC'
 import BlogShare from '../../components/BlogShare'
-import { POST_QUERY, POST_SLUGS_QUERY, RELATED_POSTS_QUERY } from '../../sanity/queries'
-import imageUrlBuilder from '@sanity/image-url'
 
 export const prerender = true
 
 export async function getStaticPaths() {
-  const slugs = await sanityClient.fetch(POST_SLUGS_QUERY)
-  return slugs.map((item: { slug: string }) => ({ params: { slug: item.slug } }))
+  const entries = await getCollection('blog')
+  return entries.map((e) => ({ params: { slug: e.slug } }))
 }
 
-const { slug } = Astro.params
-const post = await sanityClient.fetch(POST_QUERY, { slug })
+const { slug } = Astro.params as { slug: string }
+const entry = await getEntry('blog', slug)
 
-if (!post) return Astro.redirect('/blog')
+if (!entry) return Astro.redirect('/blog')
 
-const relatedPosts = await sanityClient.fetch(RELATED_POSTS_QUERY, { slug })
+const post = {
+  title: entry.data.title,
+  slug: entry.slug,
+  publishedAt: entry.data.publishedAt.toISOString(),
+  excerpt: entry.data.excerpt,
+  category: entry.data.category,
+  mainImage: entry.data.mainImage,
+  readingMinutes: entry.data.readingMinutes,
+  seo: entry.data.seo,
+}
+const { Content } = await entry.render()
+
+// Artículos relacionados: 3 más nuevos distintos al actual
+const allEntries = await getCollection('blog')
+const relatedPosts = allEntries
+  .filter((e) => e.slug !== slug)
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 3)
+  .map((e) => ({
+    title: e.data.title,
+    slug: e.slug,
+    publishedAt: e.data.publishedAt.toISOString(),
+    excerpt: e.data.excerpt,
+    category: e.data.category,
+    mainImage: e.data.mainImage,
+    readingMinutes: e.data.readingMinutes,
+  }))
 
 const CATEGORY_META: Record<string, { label: string; className: string }> = {
   inburgering:   { label: 'Inburgering',   className: 'bp-chip--inbu' },
@@ -31,14 +54,11 @@ const CATEGORY_META: Record<string, { label: string; className: string }> = {
   pronunciacion: { label: 'Pronunciación', className: 'bp-chip--pron' },
 }
 
-const builder = imageUrlBuilder(sanityClient)
-const urlFor  = (source: any) => builder.image(source)
-
 const fmt = (d: string) =>
   new Date(d).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
 
-const postOgImage = post.coverImage
-  ? urlFor(post.coverImage).width(1200).height(630).fit('crop').url()
+const postOgImage = post.mainImage?.src
+  ? `https://www.holandesnawar.com${post.mainImage.src}`
   : 'https://docs.holandesnawar.com/iconos/og-image.png'
 
 const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
@@ -99,10 +119,10 @@ const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
   <div data-navbar="light" class="bg-white">
 
     {/* Featured image */}
-    {post.mainImage && (
+    {post.mainImage?.src && (
       <div class="max-w-4xl mx-auto px-6 -mt-1 pt-10">
         <img
-          src={urlFor(post.mainImage).width(1200).height(600).fit('crop').url()}
+          src={post.mainImage.src}
           alt={post.mainImage.alt || post.title}
           class="w-full rounded-2xl object-cover aspect-[2/1] shadow-[0_8px_40px_rgba(29,0,132,0.12)]"
         />
@@ -120,11 +140,9 @@ const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
 
         {/* Article — center */}
         <article class="blog-article min-w-0">
-          {post.body && (
-            <div class="prose-nawar">
-              <PortableText value={post.body} />
-            </div>
-          )}
+          <div class="prose-nawar">
+            <Content />
+          </div>
 
           {/* Mobile share */}
           <div class="mt-12 pt-8 border-t border-[#DDE6F5] lg:hidden">
@@ -171,10 +189,10 @@ const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
             const mins = Math.max(1, Number(p.readingMinutes) || 3)
             return (
               <a href={`/blog/${p.slug}`} class="bp-card" style={`--card-delay:${0.04 + i * 0.06}s`}>
-                {p.mainImage ? (
+                {p.mainImage?.src ? (
                   <div class="bp-img">
                     <img
-                      src={urlFor(p.mainImage).width(600).height(360).fit('crop').quality(80).url()}
+                      src={p.mainImage.src}
                       alt={p.mainImage.alt || p.title}
                       loading="lazy"
                       width="600" height="360"
