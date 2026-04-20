@@ -73,7 +73,7 @@ const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
   <NavbarLanding client:load />
 
   <!-- Hero -->
-  <section data-navbar="dark" class="relative bg-[#1D0084] overflow-hidden pt-36 pb-16">
+  <section data-navbar="dark" class="relative bg-[#1D0084] overflow-hidden post-hero">
     <div aria-hidden class="absolute inset-0 pointer-events-none">
       <div
         class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[700px]"
@@ -84,13 +84,13 @@ const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
 
     <div class="relative max-w-4xl mx-auto px-6">
       {post.category && CATEGORY_META[post.category] && (
-        <div class="mb-5">
+        <div class="mb-4">
           <span class={`bp-chip ${CATEGORY_META[post.category].className}`}>
             {CATEGORY_META[post.category].label}
           </span>
         </div>
       )}
-      <div class="flex items-center gap-3 mb-6">
+      <div class="flex items-center gap-3 mb-5">
         <a href="/blog" class="eyebrow text-[#4da3ff]/70 hover:text-[#4da3ff] transition-colors flex items-center gap-1.5">
           <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
@@ -105,7 +105,7 @@ const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
         )}
       </div>
 
-      <h1 class="text-white mb-5" style="font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(26px, 4.5vw, 56px); font-weight: 700; line-height: 1.08; letter-spacing: -0.03em; max-width: 820px;">
+      <h1 class="post-hero-title text-white mb-4">
         {post.title}
       </h1>
 
@@ -120,7 +120,7 @@ const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
 
     {/* Featured image */}
     {post.mainImage?.src && (
-      <div class="max-w-4xl mx-auto px-6 -mt-1 pt-10">
+      <div class="max-w-4xl mx-auto px-6 post-featured-wrap">
         <img
           src={post.mainImage.src}
           alt={post.mainImage.alt || post.title}
@@ -130,12 +130,12 @@ const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
     )}
 
     {/* 3-col layout */}
-    <div class="max-w-[1200px] mx-auto px-6 py-16">
+    <div class="max-w-[1200px] mx-auto px-6 post-body-wrap">
       <div class="grid grid-cols-1 lg:grid-cols-[56px_1fr_200px] xl:grid-cols-[72px_1fr_220px] gap-0 lg:gap-12 xl:gap-16">
 
-        {/* Share — left */}
+        {/* Share — left (solo desktop) */}
         <div class="hidden lg:block self-stretch">
-          <BlogShare title={post.title} client:load />
+          <BlogShare title={post.title} variant="sidebar" client:load />
         </div>
 
         {/* Article — center */}
@@ -144,12 +144,10 @@ const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
             <Content />
           </div>
 
-          {/* Mobile share */}
-          <div class="mt-12 pt-8 border-t border-[#DDE6F5] lg:hidden">
+          {/* Mobile share (solo mobile, horizontal) */}
+          <div class="mt-10 pt-6 border-t border-[#DDE6F5] lg:hidden">
             <p class="text-[12px] font-semibold text-[#9CA3AF] uppercase tracking-[0.14em] mb-4">Compartir</p>
-            <div class="flex items-center gap-3">
-              <BlogShare title={post.title} client:load />
-            </div>
+            <BlogShare title={post.title} variant="inline" client:load />
           </div>
 
           {/* Back link */}
@@ -340,6 +338,32 @@ const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
     border: none;
     border-top: 1px solid #DDE6F5;
     margin: 2.5rem 0;
+  }
+
+  /* ── Hero del post ── */
+  .post-hero {
+    padding: 9rem 0 4rem; /* pt-36 pb-16 desktop */
+  }
+  .post-hero-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: clamp(26px, 4.5vw, 56px);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    max-width: 820px;
+  }
+  .post-featured-wrap { padding-top: 2.5rem; margin-top: -0.25rem; }  /* pt-10 -mt-1 */
+  .post-body-wrap { padding-top: 4rem; padding-bottom: 4rem; }          /* py-16 */
+
+  @media (max-width: 900px) {
+    .post-hero { padding: 6.5rem 0 2.5rem; }
+    .post-hero-title {
+      font-size: clamp(24px, 6.5vw, 32px);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+    .post-featured-wrap { padding-top: 1.25rem; }
+    .post-body-wrap { padding-top: 2rem; padding-bottom: 2.5rem; }
   }
 
   /* ── Artículos relacionados ── */
