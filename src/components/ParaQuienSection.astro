@@ -88,7 +88,7 @@ const points = data?.points?.length ? data.points : defaultPoints
 /* ── Outer wrapper (like proceso) ── */
 .pq-wrapper {
   background: #F0F4FF;
-  padding: 0 48px 80px;
+  padding: 64px 48px 80px;
 }
 .pq-outer {
   overflow: hidden;
@@ -194,7 +194,7 @@ const points = data?.points?.length ? data.points : defaultPoints
 
 /* ── Tablet (900-1200px): foto izquierda pequeña + 2×2 grid derecha ── */
 @media (max-width: 1200px) and (min-width: 900px) {
-  .pq-wrapper { padding: 0 24px 64px; }
+  .pq-wrapper { padding: 48px 24px 64px; }
   .pq-layout {
     grid-template-columns: 200px 1fr;
     gap: 32px;
@@ -233,7 +233,7 @@ const points = data?.points?.length ? data.points : defaultPoints
 @media (max-width: 899px) {
   .pq-sub-desktop { display: none; }
   .pq-sub-mobile  { display: block; }
-  .pq-wrapper { padding: 0 0 64px; background: #fff; }
+  .pq-wrapper { padding: 0 0 48px; background: #fff; }
   .pq-outer { border-radius: 24px; }
   .pq-section { padding: 64px 0 48px; }
   .pq-layout { display: flex; flex-direction: column; gap: 24px; }
