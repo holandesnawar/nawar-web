@@ -6,9 +6,11 @@
   <meta name="robots" content="noindex" />
   <title>Nawar — Panel de contenido</title>
   <link rel="icon" type="image/png" href="/favicon.png" />
+  <!-- Ruta explícita al config para evitar problemas de resolución relativa -->
+  <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
 </head>
 <body>
-  <!-- Decap CMS se renderiza aquí -->
-  <script src="https://unpkg.com/decap-cms@^3.8.3/dist/decap-cms.js"></script>
+  <!-- Versión fijada para evitar cambios sorpresa en semver -->
+  <script src="https://unpkg.com/decap-cms@3.8.3/dist/decap-cms.js"></script>
 </body>
 </html>
