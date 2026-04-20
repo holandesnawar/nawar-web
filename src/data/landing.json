@@ -6,7 +6,7 @@
     "subtitle": "El método que debería haber existido desde siempre para cualquier hispanohablante que quiere aprender neerlandés.",
     "bullets": [
       "Explicado desde el español, sin pasar por el inglés",
-      "Sin experiencia previa — desde cero hasta conversar",
+      "Sin experiencia previa, desde cero hasta conversar",
       "Comunidad activa de +600 hispanohablantes"
     ],
     "ctaText": "Únete a la lista de espera"
@@ -49,31 +49,85 @@
     "ctaSecondary": "Preguntas frecuentes"
   },
   "comparison": [
-    { "icon": "🧭",    "title": "Punto de partida",  "nawarText": "Explica todo desde el español. Cada regla tiene un paralelo con tu idioma materno.",           "classicText": "Diseñado para angloparlantes. Si partes del español, muchas explicaciones no tienen sentido." },
-    { "icon": "🗣️",    "title": "Práctica oral",     "nawarText": "Hablas desde la primera clase en un entorno seguro con otros hispanohablantes.",                "classicText": "La mayoría de cursos dejan la conversación para niveles avanzados. Primero 'estudias', luego practicas." },
-    { "icon": "👩‍🏫", "title": "Feedback real",     "nawarText": "Un profesor real corrige tus errores y te explica el por qué, no solo el qué.",                 "classicText": "Una app o un vídeo no puede detectar tu acento ni darte retroalimentación personalizada." },
-    { "icon": "🤝",    "title": "Comunidad",         "nawarText": "Aprendes con personas que comparten tu idioma, tu cultura y tus referencias.",                   "classicText": "Estudias solo. No hay con quién practicar ni compartir avances." }
+    {
+      "icon": "🧭",
+      "title": "Punto de partida",
+      "nawarText": "Explica todo desde el español. Cada regla tiene un paralelo con tu idioma materno.",
+      "classicText": "Diseñado para angloparlantes. Si partes del español, muchas explicaciones no tienen sentido."
+    },
+    {
+      "icon": "🗣️",
+      "title": "Práctica oral",
+      "nawarText": "Hablas desde la primera clase en un entorno seguro con otros hispanohablantes.",
+      "classicText": "La mayoría de cursos dejan la conversación para niveles avanzados. Primero 'estudias', luego practicas."
+    },
+    {
+      "icon": "👩‍🏫",
+      "title": "Feedback real",
+      "nawarText": "Un profesor real corrige tus errores y te explica el por qué, no solo el qué.",
+      "classicText": "Una app o un vídeo no puede detectar tu acento ni darte retroalimentación personalizada."
+    },
+    {
+      "icon": "🤝",
+      "title": "Comunidad",
+      "nawarText": "Aprendes con personas que comparten tu idioma, tu cultura y tus referencias.",
+      "classicText": "Estudias solo. No hay con quién practicar ni compartir avances."
+    }
   ],
   "paraQuien": {
     "badge": "¿Para quién está diseñado?",
     "subtitle": "Tanto si llegas a Países Bajos como si ya vives allí,\nel neerlandés te abre puertas que el inglés no puede.",
     "points": [
-      { "icon": "🏠",  "title": "Residentes",    "description": "Aprender el idioma abre la puerta a la vida cotidiana y un verdadero sentido de pertenencia en los Países Bajos." },
-      { "icon": "✈️",  "title": "Nueva Vida",    "description": "Aprender antes de llegar te da la confianza para empezar tu nueva etapa con seguridad desde el primer día." },
-      { "icon": "💼",  "title": "Profesionales", "description": "Mejora tu comunicación con colegas, gana reconocimiento laboral y accede a mejores oportunidades." },
-      { "icon": "🎓",  "title": "Formación",     "description": "Domina el idioma para acceder a universidades neerlandesas, programas y becas de formación." }
+      {
+        "icon": "🏠",
+        "title": "Residentes",
+        "description": "Aprender el idioma abre la puerta a la vida cotidiana y un verdadero sentido de pertenencia en los Países Bajos."
+      },
+      {
+        "icon": "✈️",
+        "title": "Nueva Vida",
+        "description": "Aprender antes de llegar te da la confianza para empezar tu nueva etapa con seguridad desde el primer día."
+      },
+      {
+        "icon": "💼",
+        "title": "Profesionales",
+        "description": "Mejora tu comunicación con colegas, gana reconocimiento laboral y accede a mejores oportunidades."
+      },
+      {
+        "icon": "🎓",
+        "title": "Formación",
+        "description": "Domina el idioma para acceder a universidades neerlandesas, programas y becas de formación."
+      }
     ]
   },
   "faq": {
     "badge": "¿Tienes dudas?",
     "title": "Preguntas Frecuentes",
     "items": [
-      { "question": "¿Qué es NAWAR?",                                    "answer": "NAWAR es nuestra academia de neerlandés para hispanohablantes. Elegimos este nombre porque en árabe \"Nawar\" significa \"flor\": representa crecimiento, constancia y progreso real. Explicaciones pensadas para hispanohablantes, un método paso a paso y práctica constante desde el inicio." },
-      { "question": "¿Por qué aprender neerlandés si ya hablo inglés?",   "answer": "Hablar neerlandés es clave para acceder a empleos de calidad, estudios universitarios y beneficios migratorios. El inglés ayuda a \"defenderse\", pero quien realmente destaca es quien domina el neerlandés." },
-      { "question": "¿Necesito conocimientos previos?",                   "answer": "No. Nuestros cursos están diseñados para hispanohablantes desde nivel 0. Usamos estructuras claras y comparaciones con el español, incluso si nunca has estudiado otro idioma." },
-      { "question": "¿Qué soporte ofrecen si tengo dudas?",               "answer": "Tendrás acceso a asistencia directa por email y WhatsApp, además de la comunidad privada de estudiantes donde podrás resolver dudas y practicar con otros hispanohablantes." },
-      { "question": "¿Puedo estudiar a mi propio ritmo?",                 "answer": "Sí. Todo el contenido está disponible 24/7 y no hay horarios fijos. Tú decides cuántas horas dedicas por semana. Las clases en vivo son opcionales y quedan grabadas." },
-      { "question": "¿Qué diferencia a Nawar de otras formaciones?",       "answer": "Enseñamos neerlandés desde el español: gramática funcional, comprensión cultural y práctica contextual. No es una app ni una academia genérica — es el método que debería haber existido desde el principio." }
+      {
+        "question": "¿Qué es Nawar?",
+        "answer": "NAWAR es nuestra academia de neerlandés para hispanohablantes. Elegimos este nombre porque en árabe \"Nawar\" significa \"flor\": representa crecimiento, constancia y progreso real. Explicaciones pensadas para hispanohablantes, un método paso a paso y práctica constante desde el inicio."
+      },
+      {
+        "question": "¿Por qué aprender neerlandés si ya hablo inglés?",
+        "answer": "Hablar neerlandés es clave para acceder a empleos de calidad, estudios universitarios y beneficios migratorios. El inglés ayuda a \"defenderse\", pero quien realmente destaca es quien domina el neerlandés."
+      },
+      {
+        "question": "¿Necesito conocimientos previos?",
+        "answer": "No. Nuestras formaciones están diseñadas para hispanohablantes desde nivel 0. Usamos estructuras claras y comparaciones con el español, incluso si nunca has estudiado otro idioma."
+      },
+      {
+        "question": "¿Qué soporte ofrecen si tengo dudas?",
+        "answer": "Tendrás acceso a asistencia directa por email y WhatsApp, además de la comunidad privada de estudiantes donde podrás resolver dudas y practicar con otros hispanohablantes."
+      },
+      {
+        "question": "¿Puedo estudiar a mi propio ritmo?",
+        "answer": "Sí. Todo el contenido está disponible 24/7 y no hay horarios fijos. Tú decides cuántas horas dedicas por semana. Las clases en vivo son opcionales y quedan grabadas."
+      },
+      {
+        "question": "¿Qué diferencia a Nawar de otras formaciones?",
+        "answer": "Enseñamos neerlandés desde el español: gramática funcional, comprensión cultural y práctica contextual. No es una app ni una academia genérica — es el método que debería haber existido desde el principio."
+      }
     ]
   },
   "testimonials": [
@@ -83,7 +137,7 @@
       "photo": "https://d1yei2z3i6k35z.cloudfront.net/9533860/69e0053ba5da56.21234955_67d4ee1d66e49_-Manuel.png",
       "stars": 5,
       "title": "Por fin entiendo a mis vecinos",
-      "text": "Llevaba un año en los Países Bajos y apenas podía comunicarme. Con Nawar empecé desde cero y en pocas semanas ya podía hacer la compra, hablar con el médico y entender las cartas que me llegaban a casa. Nada de lo que había probado antes me había funcionado así."
+      "text": "Llevaba un año en los Países Bajos y apenas podía comunicarme. Empecé en Nawar desde cero y en pocas semanas ya podía hacer la compra, hablar con el médico y entender las cartas que me llegaban a casa. Nada de lo que había probado antes me había funcionado así."
     },
     {
       "name": "Carlos R.",
@@ -91,7 +145,7 @@
       "photo": "https://d1yei2z3i6k35z.cloudfront.net/9533860/69e0053ba534a9.03913994_685dd8fdb2a472025-06-27013229-carlos.png",
       "stars": 5,
       "title": "Me ascendieron a los 4 meses",
-      "text": "Mi jefe me dijo que valoraba que hiciera el esfuerzo de aprender neerlandés. No era obligatorio, pero marcó la diferencia. El método de Nawar es muy práctico: aprendes lo que realmente usas en el trabajo y en el día a día, no vocabulario de libro."
+      "text": "Mi jefe me dijo que valoraba que hiciera el esfuerzo de aprender neerlandés. No era obligatorio, pero marcó la diferencia. El método en la formación es muy práctico: aprendes lo que realmente usas en el trabajo y en el día a día, no vocabulario de libro."
     },
     {
       "name": "Lucía V.",
