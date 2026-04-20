@@ -271,7 +271,11 @@ const CATEGORY_META: Record<string, { label: string; className: string }> = {
     .blog-slider-mobile {
       display: flex; gap: 14px; overflow-x: auto;
       scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-      padding: 4px 32px 12px; margin: 0 -16px; scrollbar-width: none;
+      scroll-padding-left: 0;
+      /* Respeta el padding-left de .inner (24px) y sólo sangra por la derecha */
+      padding: 4px 0 12px 0;
+      margin: 0 -24px 0 0;
+      scrollbar-width: none;
     }
     .blog-slider-mobile::-webkit-scrollbar { display: none; }
     .bsm-card {
