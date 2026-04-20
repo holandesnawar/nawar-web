@@ -6,16 +6,23 @@ import type { APIRoute } from 'astro'
 
 export const prerender = false
 
-export const GET: APIRoute = ({ url, redirect }) => {
+function resolvePublicHost(request: Request, fallbackHost: string): { proto: string; host: string } {
+  // Vercel/proxies inyectan estos headers con el host y protocolo externos
+  const xfHost  = request.headers.get('x-forwarded-host')
+  const xfProto = request.headers.get('x-forwarded-proto')
+  const host    = xfHost || fallbackHost
+  const proto   = xfProto || (host.includes('localhost') ? 'http' : 'https')
+  return { proto, host }
+}
+
+export const GET: APIRoute = ({ url, redirect, request }) => {
   const clientId = import.meta.env.GITHUB_CLIENT_ID || process.env.GITHUB_CLIENT_ID
   if (!clientId) {
     return new Response('Missing GITHUB_CLIENT_ID env var', { status: 500 })
   }
 
-  // Construimos el redirect_uri a partir del host actual
-  // Así funciona en producción, previews y localhost sin configuración extra
-  const proto = url.hostname === 'localhost' ? 'http' : 'https'
-  const redirectUri = `${proto}://${url.host}/api/callback`
+  const { proto, host } = resolvePublicHost(request, url.host)
+  const redirectUri = `${proto}://${host}/api/callback`
 
   const params = new URLSearchParams({
     client_id: clientId,
