@@ -1,13 +1,20 @@
 ---
 title: Cómo hacer la compra en neerlandés sin problemas
 publishedAt: 2026-04-13T23:52:45.687Z
-excerpt: Hacer la compra en un país de habla neerlandesa puede parecer complicado al principio, pero con un poco de práctica y conocimiento del vocabulario básico, podrás desenvolverte sin problemas.
+excerpt: Hacer la compra en un país de habla neerlandesa puede parecer
+  complicado al principio, pero con un poco de práctica y conocimiento del
+  vocabulario básico, podrás desenvolverte sin problemas.
+category: vocabulario
 mainImage:
   src: /blog/images/como-hacer-la-compra-en-neerlandes-sin-problemas.png
 readingMinutes: 3
 seo:
   title: Cómo hacer la compra en neerlandés sin problemas
-  description: Hacer la compra en un país de habla neerlandesa puede parecer complicado al principio, pero con un poco de práctica y conocimiento del vocabulario básico, podrás desenvolverte sin problemas. Aquí te ofrecemos algunos consejos y frases útiles para que tu experiencia de compra sea más sencilla y fluida.
+  description: Hacer la compra en un país de habla neerlandesa puede parecer
+    complicado al principio, pero con un poco de práctica y conocimiento del
+    vocabulario básico, podrás desenvolverte sin problemas. Aquí te ofrecemos
+    algunos consejos y frases útiles para que tu experiencia de compra sea más
+    sencilla y fluida.
 ---
 ## **🛒 1. Conoce el vocabulario básico**
 
@@ -33,7 +40,7 @@ Antes de salir de compras, es importante familiarizarse con algunas palabras cla
 
 Cuando estés en la tienda, estas frases te serán de gran ayuda:
 
-• "Waar kan ik [product] vinden?" – ¿Dónde puedo encontrar [producto]?
+• "Waar kan ik \[product] vinden?" – ¿Dónde puedo encontrar \[producto]?
 
 • "Heeft u verse groenten?" – ¿Tienen verduras frescas?
 
