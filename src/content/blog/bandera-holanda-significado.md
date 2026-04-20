@@ -53,4 +53,4 @@ Estos significados se han ido adoptando con el tiempo y forman parte del imagina
 
 Aunque no está en la bandera oficial, el color **naranja es inseparable de la identidad neerlandesa**. Si alguna vez estás en Holanda durante un evento nacional, verás que todos se visten de naranja, pintan sus caras y decoran calles enteras con ese color. Es un símbolo de orgullo nacional muy fuerte.
 
-La bandera de los Países Bajos no solo representa a un país, sino también a una historia de lucha, resistencia y evolución. Entender el **significado de sus colores** y su origen es una forma de acercarse a la identidad neerlandesa con más profundidad.
+> La bandera de los Países Bajos no solo representa a un país, sino también a una historia de lucha, resistencia y evolución. Entender el **significado de sus colores** y su origen es una forma de acercarse a la identidad neerlandesa con más profundidad.
