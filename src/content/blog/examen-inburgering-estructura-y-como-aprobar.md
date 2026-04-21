@@ -83,7 +83,7 @@ El verdadero coste no está en el examen, está en **cuánto tiempo y energía p
 
 ## Cómo prepararte (lo que sí funciona)
 
-### **1. Aprende desde el español, no desde el inglés**
+**1. Aprende desde el español, no desde el inglés**
 
 Si tu idioma materno es el español, **no pases por el filtro del inglés**. Las academias genéricas traducen sus materiales, pero explican los conceptos pensando en angloparlantes. Pierdes tiempo haciendo una traducción mental doble.
 
