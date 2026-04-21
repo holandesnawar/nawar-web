@@ -1,6 +1,6 @@
 ---
 title: "Qué es el Inburgering: guía completa para hispanohablantes en Países Bajos"
-publishedAt: 2026-04-16T14:00:00.000+02:00
+publishedAt: 2026-04-11T14:00:00.000+02:00
 excerpt: Todo lo que necesitas saber sobre el Inburgering explicado desde el
   español. Qué es, quién debe hacerlo, plazos, coste, multas y cómo empezar.
 category: inburgering
