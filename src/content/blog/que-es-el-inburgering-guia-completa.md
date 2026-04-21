@@ -6,6 +6,7 @@ excerpt: Todo lo que necesitas saber sobre el Inburgering explicado desde el
 category: inburgering
 mainImage:
   src: /blog/images/como-estudiar.jpg
+  alt: como-estudiar
 readingMinutes: 7
 seo:
   title: "Qué es el Inburgering: guía completa para hispanohablantes | Nawar"
