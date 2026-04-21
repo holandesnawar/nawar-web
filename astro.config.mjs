@@ -15,10 +15,11 @@ export default defineConfig({
     react(),
     sitemap({
       // Sólo indexamos home, /nuestra-vision, /blog, /blog/*, /guia/*
-      // El resto (contacto, lista-de-espera, legales, admin, api) NO se incluye
+      // El resto (contacto, acceso, lista-de-espera, legales, admin, api) NO se incluye
       filter: (page) =>
         !page.includes('/api/') &&
         !page.includes('/admin/') &&
+        !page.includes('/acceso') &&
         !page.includes('/contacto') &&
         !page.includes('/lista-de-espera') &&
         !page.includes('/cookies') &&

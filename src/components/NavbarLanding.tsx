@@ -115,7 +115,7 @@ export default function NavbarLanding() {
             {/* Desktop CTAs */}
             <div className="hidden lg:flex items-center gap-3">
               <a
-                href="#"
+                href="/acceso"
                 className="px-4 py-2 text-[15px] font-bold text-white/88 hover:text-white/50 transition-colors duration-200"
               >
                 Acceso a alumnos
@@ -197,7 +197,7 @@ export default function NavbarLanding() {
               }}
             >
               <a
-                href="#"
+                href="/acceso"
                 onClick={handleLink}
                 className="flex w-full items-center justify-center px-6 py-4 text-[15px] font-semibold rounded-xl bg-white/12 border border-white/25 text-white hover:bg-white/18 transition-all duration-200"
               >

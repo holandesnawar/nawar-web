@@ -1,0 +1,271 @@
+---
+import Layout from '../layouts/Layout.astro'
+import '../styles/nawar-sections.css'
+---
+
+<Layout
+  title="Acceso alumnos — Holandés Nawar"
+  description="Accede a la plataforma de alumnos de Holandés Nawar."
+  noindex={true}
+>
+  <main class="login-page" data-navbar="dark">
+
+    <!-- Fondo con glow + dots (misma estética que hero) -->
+    <div aria-hidden class="login-glow"></div>
+    <div aria-hidden class="dots-dark login-dots"></div>
+
+    <div class="login-shell">
+
+      <!-- Logo -->
+      <a href="/" class="login-logo-link" aria-label="Volver a la home">
+        <img
+          src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png"
+          alt="Nawar"
+          class="login-logo"
+        />
+      </a>
+
+      <!-- Card de login -->
+      <div class="login-card">
+        <h1 class="login-title">
+          <span class="text-gradient-white">Bienvenid@</span>
+          <span style="color: #4da3ff; -webkit-text-fill-color: #4da3ff;">de vuelta</span>
+        </h1>
+        <p class="login-sub">Accede a tu plataforma de alumno.</p>
+
+        <form id="login-form" class="login-form" novalidate>
+          <div class="login-field">
+            <label for="login-email" class="login-label">Correo electrónico</label>
+            <input
+              id="login-email"
+              type="email"
+              placeholder="tu@email.com"
+              class="login-input"
+              autocomplete="email"
+              required
+            />
+          </div>
+
+          <div class="login-field">
+            <label for="login-password" class="login-label">Contraseña</label>
+            <input
+              id="login-password"
+              type="password"
+              placeholder="••••••••"
+              class="login-input"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="login-submit">
+            Entrar
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </button>
+        </form>
+
+        <p id="login-notice" class="login-notice" hidden>
+          La plataforma aún no está disponible. Pronto te avisaremos.
+        </p>
+
+        <p class="login-help">
+          ¿Problemas para entrar? <a href="/contacto">Escríbenos</a>.
+        </p>
+      </div>
+
+      <p class="login-back">
+        <a href="/">← Volver a la web</a>
+      </p>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .login-page {
+    min-height: 100vh;
+    background: #1D0084;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 20px;
+  }
+
+  .login-glow {
+    position: absolute;
+    top: -20%; left: 50%;
+    transform: translateX(-50%);
+    width: 900px; height: 700px;
+    background: radial-gradient(ellipse at center, rgba(11,109,240,0.40) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .login-dots {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .login-shell {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+  /* Logo arriba */
+  .login-logo-link { display: inline-flex; }
+  .login-logo {
+    height: 56px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  /* Card */
+  .login-card {
+    width: 100%;
+    padding: 40px 32px 32px;
+    border-radius: 22px;
+    background: rgba(15, 27, 72, 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: saturate(140%) blur(18px);
+    -webkit-backdrop-filter: saturate(140%) blur(18px);
+    box-shadow:
+      0 20px 60px rgba(3, 9, 33, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.96);
+  }
+
+  .login-title {
+    font-family: 'Poppins', system-ui, sans-serif;
+    font-size: clamp(26px, 4vw, 32px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .login-sub {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.70);
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  /* Form */
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .login-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .login-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.92);
+    letter-spacing: 0.01em;
+  }
+  .login-input {
+    padding: 15px 18px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    background: #F0F5FF;
+    font-size: 15px;
+    color: #1D0084;
+    font-family: inherit;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  }
+  .login-input::placeholder { color: rgba(29, 0, 132, 0.45); }
+  .login-input:hover { background: #E5ECFF; }
+  .login-input:focus {
+    border-color: #4da3ff;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.22);
+  }
+
+  .login-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 18px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    background: #4da3ff;
+    color: #1D0084;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    margin-top: 8px;
+    transition: background 0.2s;
+  }
+  .login-submit:hover { background: #5eb4ff; }
+
+  .login-notice {
+    margin-top: 16px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(77, 163, 255, 0.12);
+    border: 1px solid rgba(77, 163, 255, 0.28);
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.88);
+    text-align: center;
+  }
+
+  .login-help {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .login-help a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .login-help a:hover { color: #fff; }
+
+  .login-back {
+    margin: 0;
+  }
+  .login-back a {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .login-back a:hover { color: rgba(255, 255, 255, 0.9); }
+
+  @media (max-width: 480px) {
+    .login-card { padding: 32px 22px 24px; }
+    .login-logo { height: 48px; }
+  }
+</style>
+
+<script>
+  // No hay backend de login — mostramos aviso en su lugar
+  const form   = document.getElementById('login-form') as HTMLFormElement | null
+  const notice = document.getElementById('login-notice') as HTMLElement | null
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault()
+    if (notice) {
+      notice.hidden = false
+      notice.style.animation = 'login-fade 0.25s ease-out'
+    }
+  })
+</script>
