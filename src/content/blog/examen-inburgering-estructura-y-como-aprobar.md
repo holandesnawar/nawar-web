@@ -87,7 +87,7 @@ El verdadero coste no está en el examen — está en **cuánto tiempo y energí
 
 Si tu idioma materno es el español, **no pases por el filtro del inglés**. Las academias genéricas traducen sus materiales, pero explican los conceptos pensando en angloparlantes. Pierdes tiempo haciendo una traducción mental doble.
 
-El español tiene **más similitudes con el neerlandés de las que crees** — si las usas como palanca, avanzas mucho más rápido. Ese es exactamente el enfoque de nuestra [formación para hispanohablantes](/).
+El español tiene **más similitudes con el neerlandés de las que crees,** si las usas como palanca, avanzas mucho más rápido. Ese es exactamente el enfoque de nuestra [formación para hispanohablantes](/).
 
 #### 2. Combina 3 tipos de input
 
@@ -124,6 +124,6 @@ Empieza por KNM (el más fácil y el que más confianza te da), luego lectura y 
 
 La mayoría de nuestros alumnos llegan después de probar apps genéricas, clases grupales en inglés, y cursos que asumen que ya sabes cómo pensar en neerlandés. **Nada de eso está pensado para un hispanohablante**.
 
-En Nawar enseñamos neerlandés **desde el español**, con explicaciones claras de gramática, práctica oral estructurada desde el día 1 y una comunidad de +600 hispanohablantes que te acompañan. Es el atajo real para llegar al B1 en meses, no años — y para aprobar las 5 partes del Inburgering con tranquilidad.
+Desde Nawar enseñamos neerlandés **desde el español**, con explicaciones claras de gramática, práctica oral estructurada desde el día 1 y una comunidad de hispanohablantes que te acompañan. 
 
-[👉 Apúntate a la lista de espera](/lista-de-espera) y recibe acceso prioritario cuando abramos la próxima edición.[](/blog/como-mejorar-tu-pronunciacion-en-neerlandes-consejos-y-trucos)
+[👉 Apúntate a la lista de espera](/lista-de-espera) y recibe acceso prioritario.[](/blog/como-mejorar-tu-pronunciacion-en-neerlandes-consejos-y-trucos)
