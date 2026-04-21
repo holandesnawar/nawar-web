@@ -39,7 +39,7 @@ El **nivel B1 del MCER** equivale a un nivel de neerlandés intermedio: puedes m
 
 El examen se divide en **5 exámenes independientes**. Puedes presentarlos por separado, e incluso en orden distinto. Aquí te explicamos cada uno:
 
-### 1. KNM — Conocimiento de la Sociedad Neerlandesa
+**1. KNM — Conocimiento de la Sociedad Neerlandesa**
 
 KNM (*Kennis van de Nederlandse Maatschappij*) es el examen sobre cómo funciona la sociedad en Países Bajos: sanidad, educación, trabajo, vivienda, leyes y cultura.
 
@@ -47,28 +47,28 @@ KNM (*Kennis van de Nederlandse Maatschappij*) es el examen sobre cómo funciona
 * Duración: 45 minutos.
 * Objetivo: demostrar que conoces las reglas del día a día del país.
 
-### 2. Lectura (Lezen)
+**2. Lectura (Lezen)**
 
 Se evalúa tu capacidad de comprender textos escritos en neerlandés: correos, anuncios, artículos y formularios oficiales.
 
 * Formato: lectura + preguntas tipo test.
 * Duración: 65 minutos.
 
-### 3. Escucha (Luisteren)
+**3. Escucha (Luisteren)**
 
 Audios de situaciones cotidianas (una conversación, las noticias, un mensaje de voz) y preguntas sobre lo que has entendido.
 
 * Formato: audios + preguntas tipo test.
 * Duración: 45 minutos.
 
-### 4. Escritura (Schrijven)
+**4. Escritura (Schrijven)**
 
 Tienes que redactar textos cortos: un correo, una carta, un formulario. Se evalúa estructura, gramática y vocabulario.
 
 * Formato: textos a redactar.
 * Duración: 40 minutos.
 
-### 5. Habla (Spreken)
+**5. Habla (Spreken)**
 
 Un examen en ordenador donde respondes oralmente a preguntas grabadas. Se evalúa pronunciación, fluidez y corrección gramatical.
 
@@ -89,13 +89,13 @@ Si tu idioma materno es el español, **no pases por el filtro del inglés**. Las
 
 El español tiene **más similitudes con el neerlandés de las que crees,** si las usas como palanca, avanzas mucho más rápido. Ese es exactamente el enfoque de nuestra [formación para hispanohablantes](/).
 
-#### 2. Combina 3 tipos de input
+**2. Combina 3 tipos de input**
 
 * Gramática estructurada: libros, cursos y clases con explicaciones claras.
 * Input real: podcasts, series neerlandesas con subtítulos, redes sociales en neerlandés.
 * Output desde el día 1: hablar, aunque sea contigo mismo. La fluidez se entrena, no se piensa.
 
-### 3. Prepara cada parte del examen por separado
+**3. Prepara cada parte del examen por separado**
 
 No te obsesiones con "el examen" como un todo:
 
@@ -104,11 +104,11 @@ No te obsesiones con "el examen" como un todo:
 * Escritura: escribe 1 texto corto a la semana y hazlo corregir.
 * Habla: graba audios tuyos respondiendo preguntas típicas.
 
-### 4. Haz simulacros antes de presentarte
+**4. Haz simulacros antes de presentarte**
 
 DUO publica exámenes de muestra gratis en [inburgeren.nl](https://www.inburgeren.nl). Haz al menos **3 simulacros** antes de cada parte.
 
-### 5. Preséntalos uno a uno, no todos a la vez
+**5. Preséntalos uno a uno, no todos a la vez**
 
 Empieza por KNM (el más fácil y el que más confianza te da), luego lectura y escucha, y deja hablar y escribir para el final. Presentar todos a la vez es la receta para tener que repetir 3 exámenes.
 
