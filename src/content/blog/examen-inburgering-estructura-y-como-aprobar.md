@@ -124,6 +124,4 @@ Empieza por KNM (el más fácil y el que más confianza te da), luego lectura y 
 
 La mayoría de nuestros alumnos llegan después de probar apps genéricas, clases grupales en inglés, y cursos que asumen que ya sabes cómo pensar en neerlandés. **Nada de eso está pensado para un hispanohablante**.
 
-Desde Nawar enseñamos neerlandés **desde el español**, con explicaciones claras de gramática, práctica oral estructurada desde el día 1 y una comunidad de hispanohablantes que te acompañan. 
-
-[👉 Apúntate a la lista de espera](/lista-de-espera) y recibe acceso prioritario.[](/blog/como-mejorar-tu-pronunciacion-en-neerlandes-consejos-y-trucos)
+[👉 Apúntate a la lista de espera](/lista-de-espera) y recibe acceso prioritario a nuestra formación con gramática comparada, práctica oral desde el día 1 y una comunidad de hispanohablantes que avanzan contigo[](/blog/como-mejorar-tu-pronunciacion-en-neerlandes-consejos-y-trucos)
