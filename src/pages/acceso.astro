@@ -25,19 +25,20 @@ import '../styles/nawar-sections.css'
         />
       </a>
 
-      <!-- Card de login -->
-      <div class="login-card">
+      <!-- Formulario abierto, sin card glass -->
+      <div class="login-block">
         <h1 class="login-title">
           <span class="text-gradient-white">Bienvenid@</span>
           <span style="color: #4da3ff; -webkit-text-fill-color: #4da3ff;">de vuelta</span>
         </h1>
         <p class="login-sub">Accede a tu plataforma de alumno.</p>
 
-        <form id="login-form" class="login-form" novalidate>
+        <form id="login-form" class="login-form">
           <div class="login-field">
             <label for="login-email" class="login-label">Correo electrónico</label>
             <input
               id="login-email"
+              name="email"
               type="email"
               placeholder="tu@email.com"
               class="login-input"
@@ -50,11 +51,13 @@ import '../styles/nawar-sections.css'
             <label for="login-password" class="login-label">Contraseña</label>
             <input
               id="login-password"
+              name="password"
               type="password"
               placeholder="••••••••"
               class="login-input"
               autocomplete="current-password"
               required
+              minlength="4"
             />
           </div>
 
@@ -67,7 +70,7 @@ import '../styles/nawar-sections.css'
         </form>
 
         <p id="login-notice" class="login-notice" hidden>
-          La plataforma aún no está disponible. Pronto te avisaremos.
+          Correo o contraseña incorrectos. Inténtalo de nuevo.
         </p>
 
         <p class="login-help">
@@ -127,18 +130,9 @@ import '../styles/nawar-sections.css'
     object-fit: contain;
   }
 
-  /* Card */
-  .login-card {
+  /* Bloque abierto (sin card) */
+  .login-block {
     width: 100%;
-    padding: 40px 32px 32px;
-    border-radius: 22px;
-    background: rgba(15, 27, 72, 0.42);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    backdrop-filter: saturate(140%) blur(18px);
-    -webkit-backdrop-filter: saturate(140%) blur(18px);
-    box-shadow:
-      0 20px 60px rgba(3, 9, 33, 0.34),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.96);
   }
 
@@ -219,10 +213,10 @@ import '../styles/nawar-sections.css'
     margin-top: 16px;
     padding: 12px 14px;
     border-radius: 10px;
-    background: rgba(77, 163, 255, 0.12);
-    border: 1px solid rgba(77, 163, 255, 0.28);
+    background: rgba(220, 38, 38, 0.14);
+    border: 1px solid rgba(220, 38, 38, 0.40);
     font-size: 13.5px;
-    color: rgba(255, 255, 255, 0.88);
+    color: #fca5a5;
     text-align: center;
   }
 
@@ -251,21 +245,27 @@ import '../styles/nawar-sections.css'
   .login-back a:hover { color: rgba(255, 255, 255, 0.9); }
 
   @media (max-width: 480px) {
-    .login-card { padding: 32px 22px 24px; }
     .login-logo { height: 48px; }
   }
 </style>
 
 <script>
-  // No hay backend de login — mostramos aviso en su lugar
+  // Login solo-diseño: validación nativa + mensaje de error falso al enviar
   const form   = document.getElementById('login-form') as HTMLFormElement | null
   const notice = document.getElementById('login-notice') as HTMLElement | null
 
   form?.addEventListener('submit', (e) => {
     e.preventDefault()
-    if (notice) {
-      notice.hidden = false
-      notice.style.animation = 'login-fade 0.25s ease-out'
+
+    // Con el form SIN 'novalidate', el navegador muestra "Rellena este campo"
+    // automáticamente si hay campos vacíos. Si pasa la validación, mostramos
+    // el mensaje de error como si fuera un login fallido real.
+    if (!form.checkValidity()) {
+      form.reportValidity()
+      if (notice) notice.hidden = true
+      return
     }
+
+    if (notice) notice.hidden = false
   })
 </script>
