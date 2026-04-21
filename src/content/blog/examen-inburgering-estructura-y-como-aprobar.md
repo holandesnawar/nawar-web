@@ -79,7 +79,7 @@ Un examen en ordenador donde respondes oralmente a preguntas grabadas. Se evalú
 
 Cada parte tiene un precio individual. En 2026, el coste aproximado por examen es de **50 € por parte**, lo que suma unos **250 €** si apruebas todo a la primera. Si suspendes alguna parte, tendrás que volver a pagarla al repetir.
 
-El verdadero coste no está en el examen — está en **cuánto tiempo y energía pierdes** si estudias con un método mal pensado para ti. Hay quienes dedican 2 años y no llegan, y quienes llegan al B1 en un año con una ruta clara.
+El verdadero coste no está en el examen, está en **cuánto tiempo y energía pierdes** si estudias con un método mal pensado para ti. Hay quienes dedican 2 años y no llegan, y quienes llegan al B1 en un año con una ruta clara.
 
 ## Cómo prepararte (lo que sí funciona)
 
