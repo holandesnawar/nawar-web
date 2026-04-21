@@ -16,7 +16,7 @@ seo:
   description: La bandera de los Países Bajos, también conocida como bandera de
     Holanda— es una de las más reconocidas de Europa.
 ---
-# **📜 Origen histórico: de naranja a rojo**
+## **📜 Origen histórico: de naranja a rojo**
 
 Originalmente, la bandera de los Países Bajos no era roja, blanca y azul, sino **naranja, blanca y azul**. Este diseño fue usado durante la rebelión contra el dominio español en el siglo XVI, y estaba ligado directamente a **Guillermo de Orange** (*Willem van Oranje*), el líder de la independencia neerlandesa.
 
@@ -46,7 +46,7 @@ Aunque el simbolismo exacto no está oficialmente definido por el gobierno neerl
 
 Estos significados se han ido adoptando con el tiempo y forman parte del imaginario popular y educativo del país.
 
-**Curiosidades sobre la bandera**
+### **Curiosidades sobre la bandera**
 
 • La bandera **no debe confundirse con la de Luxemburgo**, que es muy parecida pero tiene el azul más claro.
 
@@ -54,7 +54,7 @@ Estos significados se han ido adoptando con el tiempo y forman parte del imagina
 
 • El diseño actual fue **oficializado en 1937** por decreto real, aunque ya se usaba desde siglos antes.
 
-**🟠 ¿Y el naranja entonces?**
+## **🟠 ¿Y el naranja entonces?**
 
 Aunque no está en la bandera oficial, el color **naranja es inseparable de la identidad neerlandesa**. Si alguna vez estás en Holanda durante un evento nacional, verás que todos se visten de naranja, pintan sus caras y decoran calles enteras con ese color. Es un símbolo de orgullo nacional muy fuerte.
 
