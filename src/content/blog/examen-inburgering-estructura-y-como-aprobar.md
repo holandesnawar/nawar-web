@@ -1,12 +1,18 @@
 ---
 title: "Examen de Inburgering: estructura, partes y cómo aprobar desde el español"
 publishedAt: 2026-04-21T10:00:00.000Z
-excerpt: Guía completa sobre el examen de Inburgering en 2026. Estructura, partes (KNM, lectura, escritura, escucha, habla), nivel A2/B1 y consejos prácticos para aprobar desde el español.
+excerpt: Guía completa sobre el examen de Inburgering en 2026. Estructura,
+  partes (KNM, lectura, escritura, escucha, habla), nivel A2/B1 y consejos
+  prácticos para aprobar desde el español.
 category: inburgering
+mainImage:
+  src: /blog/images/examen-tips.jpeg
 readingMinutes: 6
 seo:
   title: "Examen de Inburgering 2026: estructura, partes y cómo aprobar | Nawar"
-  description: "Todo sobre el examen de Inburgering: partes del examen, nivel A2/B1, precio, consejos para aprobar y recursos desde el español. Guía actualizada 2026."
+  description: "Todo sobre el examen de Inburgering: partes del examen, nivel
+    A2/B1, precio, consejos para aprobar y recursos desde el español. Guía
+    actualizada 2026."
 ---
 
 Si vives en Países Bajos y tienes que hacer el **examen de Inburgering**, seguramente te sientas abrumado. El proceso es exigente, está diseñado en neerlandés, y la información oficial suele estar solo en holandés o inglés. En esta guía te explicamos **desde el español** cómo funciona el examen, sus partes y qué estrategias usar para aprobar.
