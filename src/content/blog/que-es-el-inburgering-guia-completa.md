@@ -90,11 +90,13 @@ Tras empadronarte, el ayuntamiento envía tu información a DUO, quien te envía
 
 ### 2. Elige una escuela o método — aquí se juega todo
 
-Esta es la decisión más importante de todo el proceso. No todas las formaciones son iguales:
+Esta es la decisión más importante de todo el proceso. No todas las formaciones son iguales.
 
-* **Academias grupales presenciales**: horarios fijos, mezclan alumnos de 20 nacionalidades distintas. Las explicaciones están pensadas para angloparlantes, no para ti.
-* **Apps genéricas (Duolingo, Babbel)**: vocabulario suelto, sin método. No te preparan para la parte oral del examen ni para hablar en el día a día.
-* **Nuestra formación para hispanohablantes**: [Nawar](/) enseña neerlandés **desde el español**, con gramática comparada, práctica oral desde el día 1 y una comunidad de +600 hispanohablantes que avanzan contigo. Es la única forma que realmente aprovecha que tu idioma materno es el español.
+**Academias grupales presenciales:** horarios fijos, mezclan alumnos de 20 nacionalidades distintas. Las explicaciones están pensadas para angloparlantes, no para ti.
+
+**Apps genéricas (Duolingo, Babbel):** vocabulario suelto, sin método. No te preparan para la parte oral del examen ni para hablar en el día a día.
+
+**Nuestra formación para hispanohablantes:** en [Nawar](/) enseñamos neerlandés desde el español, con gramática comparada, práctica oral desde el día 1 y una comunidad de +600 hispanohablantes que avanzan contigo. Es la única forma que realmente aprovecha que tu idioma materno es el español.
 
 Si partes de cero o nivel A0-A1 y quieres llegar al B1 en 12–18 meses, nuestra formación está pensada exactamente para eso.
 
