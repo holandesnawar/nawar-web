@@ -449,9 +449,10 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
 .footer-signup-success {
   display: flex; align-items: center; justify-content: center; gap: 8px;
   padding: 12px 20px; border-radius: 10px;
-  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.35);
-  color: #ffffff; font-size: 14px; font-weight: 500; margin-bottom: 14px;
+  background: #F0F5FF; border: 1px solid rgba(29,0,132,0.18);
+  color: #1D0084; font-size: 14px; font-weight: 600; margin-bottom: 14px;
 }
+.footer-signup-success svg { stroke: #1D0084; }
 
 /* ════════════════════════════════════
    POR QUÉ EXISTE NAWAR

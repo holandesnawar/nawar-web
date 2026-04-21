@@ -49,13 +49,13 @@ export default function BlogTOC() {
                 'flex items-start gap-2.5 py-[5px] text-[12.5px] leading-snug transition-all duration-200 group',
                 h.level === 'h3' ? 'pl-3.5' : '',
                 activeId === h.id
-                  ? 'text-[#025dc7] font-semibold'
+                  ? 'text-[#1D0084] font-semibold'
                   : 'text-[#9CA3AF] hover:text-[#374151]',
               ].join(' ')}
             >
               <span className={[
                 'mt-[6px] w-[5px] h-[5px] rounded-full shrink-0 transition-all duration-200',
-                activeId === h.id ? 'bg-[#025dc7] scale-[1.4]' : 'bg-[#D1D5DB] group-hover:bg-[#9CA3AF]',
+                activeId === h.id ? 'bg-[#1D0084] scale-[1.4]' : 'bg-[#D1D5DB] group-hover:bg-[#9CA3AF]',
               ].join(' ')} />
               <span>{h.text}</span>
             </a>
