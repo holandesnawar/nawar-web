@@ -20,12 +20,7 @@ const points = data?.points?.length ? data.points : defaultPoints
       <div class="inner" style="position:relative;z-index:1;">
 
         <div class="pq-header sr">
-          <span class="badge-dark">
-            <svg class="check-icon" fill="none" viewBox="0 0 12 12">
-              <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            {badge}
-          </span>
+          <span class="badge-dark">{badge}</span>
           <h2 class="pq-title">
             <span class="text-gradient-white">Un método pensado</span><br>
             <span style="color: #4da3ff; -webkit-text-fill-color: #4da3ff;">para cada etapa</span>
@@ -123,7 +118,7 @@ const points = data?.points?.length ? data.points : defaultPoints
 }
 .pq-sub {
   font-size: clamp(14px, 1.4vw, 17px);
-  color: rgba(255,255,255,0.62);
+  color: rgba(255,255,255,0.92);
   line-height: 1.65;
   max-width: 520px;
   margin: 0 auto;
@@ -231,12 +226,14 @@ const points = data?.points?.length ? data.points : defaultPoints
 
 /* ── Mobile ── */
 @media (max-width: 899px) {
-  .pq-sub-desktop { display: none; }
-  .pq-sub-mobile  { display: block; }
+  /* En mobile mostramos el mismo subtítulo completo que en desktop */
+  .pq-sub-desktop { display: block; }
+  .pq-sub-mobile  { display: none; }
+  .pq-header { margin-bottom: 28px; }
   .pq-wrapper { padding: 0 0 48px; background: #fff; }
   .pq-outer { border-radius: 24px; }
-  .pq-section { padding: 64px 0 48px; }
-  .pq-layout { display: flex; flex-direction: column; gap: 24px; }
+  .pq-section { padding: 56px 0 40px; }
+  .pq-layout { display: flex; flex-direction: column; gap: 20px; }
 
   /* Photo: visible at top, compact */
   .pq-photo-col { display: flex; width: 100%; padding: 0 24px; box-sizing: border-box; }

@@ -10,6 +10,7 @@ export const prerender = false
 <Layout
   title="Nawar | Contacto"
   description="¿Tienes dudas sobre nuestros cursos de neerlandés? Contacta con Nawar Academia y te responderemos en menos de 24 horas para ayudarte a dar el siguiente paso."
+  noindex={true}
 >
   <NavbarLanding client:load />
 
@@ -164,27 +165,26 @@ export const prerender = false
 .ct-field { display: flex; flex-direction: column; gap: 7px; }
 .ct-label {
   font-size: 13px; font-weight: 600;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255,255,255,0.92);
   letter-spacing: 0.01em;
 }
 .ct-input {
-  padding: 14px 16px; border-radius: 11px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.05);
-  font-size: 15px; color: #fff;
+  padding: 15px 18px; border-radius: 12px;
+  border: 1px solid transparent;
+  background: #F0F5FF;
+  font-size: 15px; color: #1D0084;
   font-family: inherit; outline: none; width: 100%;
   box-sizing: border-box;
   transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
-.ct-input::placeholder { color: rgba(255,255,255,0.62); }
+.ct-input::placeholder { color: rgba(29,0,132,0.45); }
 .ct-input:hover {
-  border-color: rgba(255,255,255,0.22);
-  background: rgba(255,255,255,0.07);
+  background: #E5ECFF;
 }
 .ct-input:focus {
   border-color: #4da3ff;
-  background: rgba(255,255,255,0.08);
-  box-shadow: 0 0 0 3px rgba(77,163,255,0.18);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(77,163,255,0.22);
   outline: none;
 }
 .ct-submit {
@@ -195,8 +195,7 @@ export const prerender = false
   margin-top: 6px;
   transition: background 0.2s, transform 0.15s;
 }
-.ct-submit:hover { background: #5eb4ff; transform: translateY(-1px); }
-.ct-submit:active { transform: translateY(0); }
+.ct-submit:hover { background: #5eb4ff; }
 .ct-privacy { font-size: 12px; color: rgba(255,255,255,0.45); text-align: center; margin-top: 2px; }
 .ct-privacy a { color: rgba(255,255,255,0.72); text-decoration: underline; }
 

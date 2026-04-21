@@ -71,7 +71,11 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ error: 'Email inválido' }, 400)
   }
 
-  const gmailPass = import.meta.env.GMAIL_APP_PASSWORD
+  const gmailPass =
+    (import.meta.env.GMAIL_APP_PASSWORD as string | undefined) ||
+    (typeof process !== 'undefined' ? process.env.GMAIL_APP_PASSWORD : undefined)
+
+  console.log('[contact] received:', { email, hasPass: !!gmailPass })
 
   if (gmailPass) {
     // 🔥 Fire and forget — responde inmediatamente, envía en segundo plano

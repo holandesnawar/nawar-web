@@ -56,12 +56,7 @@ export default function StickyComparisonSection({ items }: Props) {
               className="lg:sticky lg:top-[72px] space-y-6 w-full pt-10 pb-2 lg:py-20 lg:pr-16"
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}
             >
-              <span className="badge-light eyebrow">
-                <svg className="check-icon" fill="none" viewBox="0 0 12 12">
-                  <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                Nawar vs academias clásicas
-              </span>
+              <span className="badge-light eyebrow">Nawar vs academias clásicas</span>
 
               <h2 className="title text-[#1D0084]" style={{ fontSize: 'clamp(26px, 3.2vw, 42px)' }}>
                 Lo que nos hace<br />diferente al resto
@@ -78,7 +73,7 @@ export default function StickyComparisonSection({ items }: Props) {
             {safeItems.map((item) => (
               <div key={item.title} className="bg-white rounded-3xl p-8">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-14 h-14 shrink-0 rounded-2xl bg-[#F0F5FF] flex items-center justify-center text-3xl">
+                  <div className="w-14 h-14 shrink-0 rounded-2xl bg-[#F0F8FF] flex items-center justify-center text-3xl">
                     {item.icon}
                   </div>
                   <h3
@@ -90,9 +85,9 @@ export default function StickyComparisonSection({ items }: Props) {
                 </div>
 
                 <div className="mb-3 p-4 rounded-2xl bg-[#F0F8FF]">
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-[#025dc7] mb-2">Con nosotros</p>
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-[#4da3ff] mb-2">Con nosotros</p>
                   <div className="flex gap-3 items-start">
-                    <span className="mt-0.5 w-5 h-5 shrink-0 rounded-full bg-[#025dc7] flex items-center justify-center">
+                    <span className="mt-0.5 w-5 h-5 shrink-0 rounded-full bg-[#4da3ff] flex items-center justify-center">
                       <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>

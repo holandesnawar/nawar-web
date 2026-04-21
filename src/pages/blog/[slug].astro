@@ -70,6 +70,46 @@ const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
   ogImage={postOgImage}
   canonicalURL={canonicalURL}
 >
+  <!-- Schema.org BlogPosting — SEO rich results para el artículo -->
+  <script type="application/ld+json" is:inline set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    'headline': post.title,
+    'description': post.excerpt || post.seo?.description,
+    'image': postOgImage,
+    'author': {
+      '@type': 'Organization',
+      'name': 'Holandés Nawar',
+      'url': 'https://www.holandesnawar.com',
+    },
+    'publisher': {
+      '@type': 'Organization',
+      'name': 'Holandés Nawar',
+      'logo': {
+        '@type': 'ImageObject',
+        'url': 'https://docs.holandesnawar.com/iconos/logo.png',
+      },
+    },
+    'datePublished': post.publishedAt,
+    'dateModified': post.publishedAt,
+    'mainEntityOfPage': {
+      '@type': 'WebPage',
+      '@id': canonicalURL,
+    },
+    'inLanguage': 'es',
+  })} />
+
+  <!-- Schema.org BreadcrumbList -->
+  <script type="application/ld+json" is:inline set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      { '@type': 'ListItem', 'position': 1, 'name': 'Inicio', 'item': 'https://www.holandesnawar.com/' },
+      { '@type': 'ListItem', 'position': 2, 'name': 'Blog', 'item': 'https://www.holandesnawar.com/blog' },
+      { '@type': 'ListItem', 'position': 3, 'name': post.title, 'item': canonicalURL },
+    ],
+  })} />
+
   <NavbarLanding client:load />
 
   <!-- Hero -->
@@ -339,6 +379,32 @@ const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
     border-top: 1px solid #DDE6F5;
     margin: 2.5rem 0;
   }
+
+  /* Tablas markdown (p.ej. tabla de precios del Inburgering) */
+  :global(.prose-nawar table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 14.5px;
+    border: 1px solid #DDE6F5;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  :global(.prose-nawar thead) { background: #F0F5FF; }
+  :global(.prose-nawar th) {
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    color: #1D0084;
+    border-bottom: 1px solid #DDE6F5;
+  }
+  :global(.prose-nawar td) {
+    padding: 10px 14px;
+    border-bottom: 1px solid #F0F5FF;
+    color: #374151;
+  }
+  :global(.prose-nawar tr:last-child td) { border-bottom: none; }
+  :global(.prose-nawar tr:last-child td strong) { color: #1D0084; }
 
   /* ── Hero del post ── */
   .post-hero {

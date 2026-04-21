@@ -191,7 +191,7 @@
   text-decoration: none;
   transition: background 0.2s, transform 0.15s;
 }
-.valor-cta-btn:hover { background: #3391f0; transform: translateY(-1px); }
+.valor-cta-btn:hover { background: #3391f0; }
 @media (max-width: 1023px) {
   .value-right { display: none; }
 }
@@ -729,13 +729,13 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
    PROCESO — steps dark section
 ════════════════════════════════════ */
 .proceso-wrapper {
-  background: #F0F4FF;
+  background: #FFFFFF;
   padding: 0 48px 80px;
 }
 @media (max-width: 767px) {
   .proceso-wrapper {
     padding: 0 0 64px;
-    background: #fff;
+    background: #FFFFFF;
   }
 }
 
@@ -768,15 +768,19 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
   background: radial-gradient(circle, rgba(77,163,255,0.20) 0%, transparent 65%);
   pointer-events: none;
 }
-/* Globo decorativo tipo akka */
-.proceso-globe {
-  position: absolute; right: -160px; top: 50%;
-  transform: translateY(-50%);
-  width: 580px; height: 580px;
-  opacity: 0.55; pointer-events: none;
+/* ── Patrón de puntos azul claro (fondo de la sección) ── */
+.proceso-dots-bg {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(77,163,255,0.35) 1.2px, transparent 1.5px);
+  background-size: 22px 22px;
+  opacity: 0.6;
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
 }
-@media (max-width: 1024px) { .proceso-globe { opacity: 0.25; right: -220px; } }
-@media (max-width: 767px)  { .proceso-globe { display: none; } }
+@media (max-width: 767px) {
+  .proceso-dots-bg { background-size: 18px 18px; opacity: 0.5; }
+}
 
 .proceso-header {
   text-align: center; max-width: 620px; margin: 0 auto 48px;
@@ -798,13 +802,17 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
 @media (min-width: 1024px) { .proceso-steps { grid-template-columns: 1fr 1fr 1fr; } }
 
 .proceso-card {
-  background: rgba(255,255,255,0.07);
-  backdrop-filter: blur(24px) saturate(1.1);
-  -webkit-backdrop-filter: blur(24px) saturate(1.1);
+  /* Apple glass más suave */
+  background: rgba(15, 27, 72, 0.26);
+  backdrop-filter: saturate(130%) blur(14px);
+  -webkit-backdrop-filter: saturate(130%) blur(14px);
   border: 1px solid rgba(255,255,255,0.13);
   border-radius: 22px; padding: 32px 28px 28px;
   position: relative; overflow: hidden;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+  box-shadow:
+    0 10px 30px rgba(3, 9, 33, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.96);
 }
 .proceso-card:hover {
   border-color: rgba(255,255,255,0.22);
@@ -888,5 +896,6 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
 @media (max-width: 767px) {
   .btn-proceso-cta { font-size: 18px; padding: 18px 44px; width: 100%; justify-content: center; }
   .proceso-cta-wrap { display: flex; flex-direction: column; align-items: stretch; }
+  .proceso-garantia { margin-top: 28px; }
   .proceso-wrapper { padding: 0 0 64px; }
 }

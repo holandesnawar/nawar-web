@@ -14,7 +14,16 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      filter: (page) => !page.includes('/api/'),
+      // Sólo indexamos home, /nuestra-vision, /blog, /blog/*, /guia/*
+      // El resto (contacto, lista-de-espera, legales, admin, api) NO se incluye
+      filter: (page) =>
+        !page.includes('/api/') &&
+        !page.includes('/admin/') &&
+        !page.includes('/contacto') &&
+        !page.includes('/lista-de-espera') &&
+        !page.includes('/cookies') &&
+        !page.includes('/politica-de-privacidad') &&
+        !page.includes('/terminos-y-condiciones'),
     }),
   ],
 })

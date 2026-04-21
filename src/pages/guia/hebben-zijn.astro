@@ -177,6 +177,7 @@ export const prerender = false
     gap: 11px;
     margin: 0;
     font-size: clamp(15px, 1.4vw, 17px);
+    font-weight: 600;
     line-height: 1.45;
     color: #ffffff;
   }
@@ -207,22 +208,29 @@ export const prerender = false
   .guide-input {
     width: 100%;
     min-width: 0;
-    padding: 16px 18px;
-    border-radius: 10px;
-    background: #fff;
-    border: none;
+    padding: 15px 18px;
+    border-radius: 12px;
+    background: #F0F5FF;
+    border: 1px solid transparent;
     color: #1D0084;
-    font-size: 14px;
+    font-size: 15px;
     font-family: inherit;
     outline: none;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
   }
 
   .guide-input::placeholder {
-    color: #9aa5bc;
+    color: rgba(29,0,132,0.45);
+  }
+
+  .guide-input:hover {
+    background: #E5ECFF;
   }
 
   .guide-input:focus {
-    box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.18);
+    border-color: #4da3ff;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(77,163,255,0.22);
   }
 
   .guide-submit {
@@ -274,14 +282,14 @@ export const prerender = false
   .guide-visual {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     align-self: stretch;
   }
 
   .guide-image {
     display: block;
-    width: 100%;
-    max-width: 100%;
+    width: 108%;
+    max-width: 108%;
     height: auto;
     margin: 0 auto;
   }

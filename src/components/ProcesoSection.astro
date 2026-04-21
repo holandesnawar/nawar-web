@@ -13,41 +13,13 @@ const ctaText = data?.ctaText ?? 'Unirte'
     <div class="proceso-glow-tl" aria-hidden="true"></div>
     <div class="proceso-glow-br" aria-hidden="true"></div>
 
-    <!-- Globo decorativo SVG -->
-    <div class="proceso-globe" aria-hidden="true">
-      <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="250" cy="250" r="220" stroke="rgba(77,163,255,0.30)" stroke-width="1"/>
-        <circle cx="250" cy="250" r="160" stroke="rgba(77,163,255,0.20)" stroke-width="1"/>
-        <circle cx="250" cy="250" r="100" stroke="rgba(77,163,255,0.18)" stroke-width="1"/>
-        <ellipse cx="250" cy="250" rx="220" ry="60"  stroke="rgba(77,163,255,0.18)" stroke-width="1"/>
-        <ellipse cx="250" cy="250" rx="220" ry="110" stroke="rgba(77,163,255,0.15)" stroke-width="1"/>
-        <ellipse cx="250" cy="250" rx="220" ry="170" stroke="rgba(77,163,255,0.13)" stroke-width="1"/>
-        <ellipse cx="250" cy="250" rx="60"  ry="220" stroke="rgba(77,163,255,0.18)" stroke-width="1"/>
-        <ellipse cx="250" cy="250" rx="110" ry="220" stroke="rgba(77,163,255,0.15)" stroke-width="1"/>
-        <ellipse cx="250" cy="250" rx="170" ry="220" stroke="rgba(77,163,255,0.13)" stroke-width="1"/>
-        <line x1="250" y1="30"  x2="250" y2="470" stroke="rgba(77,163,255,0.22)" stroke-width="1"/>
-        <line x1="30"  y1="250" x2="470" y2="250" stroke="rgba(77,163,255,0.22)" stroke-width="1"/>
-        <!-- Arco brillante accent -->
-        <path d="M250 30 Q340 130 370 250 Q340 370 250 470" stroke="#4da3ff" stroke-width="2" fill="none" opacity="0.55"/>
-        <path d="M250 30 Q160 130 130 250 Q160 370 250 470" stroke="#4da3ff" stroke-width="1.2" fill="none" opacity="0.28"/>
-        <!-- Puntos de intersección -->
-        <circle cx="250" cy="30"  r="4" fill="#4da3ff" opacity="0.6"/>
-        <circle cx="250" cy="470" r="4" fill="#4da3ff" opacity="0.6"/>
-        <circle cx="30"  cy="250" r="4" fill="#4da3ff" opacity="0.4"/>
-        <circle cx="470" cy="250" r="4" fill="#4da3ff" opacity="0.4"/>
-        <circle cx="370" cy="250" r="5" fill="#4da3ff" opacity="0.7"/>
-      </svg>
-    </div>
+    <!-- Patrón de puntos azul claro (detrás de las tarjetas) -->
+    <div class="proceso-dots-bg" aria-hidden="true"></div>
 
     <div class="inner" style="position:relative;z-index:1;">
 
       <div class="proceso-header">
-        <span class="badge-dark">
-          <svg class="check-icon" fill="none" viewBox="0 0 12 12">
-            <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          {badge}
-        </span>
+        <span class="badge-dark">{badge}</span>
         <h2 class="proceso-title text-gradient-white">{title}</h2>
         <p class="proceso-sub">{subtitle}</p>
       </div>
@@ -162,7 +134,7 @@ const ctaText = data?.ctaText ?? 'Unirte'
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Garantía 15 días: si no te convence, te devolvemos el dinero
+              Clases en vivo con profesores que hablan tu idioma
             </li>
           </ul>
           <div class="proceso-mockup">

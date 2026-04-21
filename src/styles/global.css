@@ -161,6 +161,12 @@ body {
 .d3 { animation-delay: 0.21s; }
 .d4 { animation-delay: 0.28s; }
 
+/* Tarjetas de ProcesoSection — stagger rápido y uniforme (overrides inline del observer) */
+.proceso-card.sr { animation-duration: 0.55s !important; }
+.proceso-card.sr:nth-of-type(1) { animation-delay: 0s !important; }
+.proceso-card.sr:nth-of-type(2) { animation-delay: 0.09s !important; }
+.proceso-card.sr:nth-of-type(3) { animation-delay: 0.18s !important; }
+
 /* ════════════════════════════════════
    MOBILE MENU OVERLAY
 ════════════════════════════════════ */

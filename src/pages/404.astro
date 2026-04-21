@@ -15,39 +15,57 @@ import '../styles/nawar-sections.css'
     data-navbar="dark"
     class="relative bg-[#1D0084] min-h-screen flex items-center justify-center overflow-hidden"
   >
-    <!-- Glow -->
+    <!-- Glow radial (como el hero) -->
     <div aria-hidden class="absolute inset-0 pointer-events-none">
       <div
-        class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px]"
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[700px]"
         style="background: radial-gradient(ellipse at center top, rgba(11,109,240,0.38) 0%, transparent 65%)"
       />
     </div>
     <div aria-hidden class="absolute inset-0 dots-dark pointer-events-none" />
 
-    <div class="relative text-center px-6 max-w-xl mx-auto space-y-6">
-      <!-- 404 grande -->
-      <p class="text-[120px] font-black leading-none" style="color: rgba(255,255,255,0.08);">404</p>
+    <div class="relative text-center px-6 max-w-xl mx-auto">
 
-      <div class="-mt-8 space-y-4">
-        <h1 class="text-3xl font-extrabold text-white">
-          Esta página no existe
+      <!-- 404 gigante de fondo -->
+      <p
+        class="select-none"
+        style="font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(120px, 18vw, 200px); font-weight: 800; line-height: 0.9; letter-spacing: -0.04em; background: linear-gradient(180deg, rgba(77,163,255,0.28) 0%, rgba(77,163,255,0) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;"
+      >
+        404
+      </p>
+
+      <div style="margin-top: -16px;">
+        <h1
+          class="text-white"
+          style="font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(26px, 4vw, 38px); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 12px;"
+        >
+          <span class="text-gradient-white">Esta página</span>
+          <span style="color: #4da3ff; -webkit-text-fill-color: #4da3ff;">no existe.</span>
         </h1>
-        <p class="text-base font-medium" style="color: rgba(255,255,255,0.65);">
-          Puede que hayas escrito mal la URL o que el contenido se haya movido.
+        <p class="text-[17px] leading-relaxed" style="color: rgba(255,255,255,0.65); max-width: 440px; margin: 0 auto;">
+          Puede que hayas escrito mal la URL o que el contenido se haya movido. Vuelve al inicio y sigue explorando.
         </p>
       </div>
 
-      <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+      <div class="flex flex-col sm:flex-row gap-3 justify-center items-center" style="margin-top: 32px;">
         <a
           href="/"
-          class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#0B6DF0] text-white font-bold text-sm hover:bg-[#0A5FD6] transition-colors"
+          class="inline-flex items-center justify-center gap-2 rounded-lg"
+          style="padding: 14px 28px; background: #4da3ff; color: #1D0084; font-size: 15px; font-weight: 700; font-family: inherit; transition: background 0.2s;"
+          onmouseover="this.style.background='#5eb4ff'"
+          onmouseout="this.style.background='#4da3ff'"
         >
-          Ir a la home
+          Volver al inicio
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
         </a>
         <a
           href="/blog"
-          class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-sm transition-colors"
-          style="background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85);"
+          class="inline-flex items-center justify-center rounded-lg"
+          style="padding: 14px 24px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); font-size: 15px; font-weight: 600; border: 1px solid rgba(255,255,255,0.14); transition: background 0.2s, border-color 0.2s;"
+          onmouseover="this.style.background='rgba(255,255,255,0.10)'; this.style.borderColor='rgba(255,255,255,0.24)'"
+          onmouseout="this.style.background='rgba(255,255,255,0.06)'; this.style.borderColor='rgba(255,255,255,0.14)'"
         >
           Ver el blog
         </a>

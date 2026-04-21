@@ -7,6 +7,9 @@ category: pronunciacion
 mainImage:
   src: /blog/images/como-mejorar-tu-pronunciacion-en-neerlandes-consejos-y-trucos.png
 readingMinutes: 3
+seo:
+  title: "Cómo mejorar tu pronunciación en neerlandés: consejos para hispanohablantes"
+  description: Mejora tu pronunciación en neerlandés paso a paso. Trucos prácticos para hispanohablantes que quieren sonar más naturales y entender mejor a los nativos.
 ---
 Si quieres mejorar tu pronunciación en neerlandés y sonar más natural, aquí te dejamos algunos consejos y trucos que te ayudarán en tu aprendizaje.
 

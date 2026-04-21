@@ -14,6 +14,16 @@ const defaultItems = [
 const items = data?.items?.length ? data.items : defaultItems
 ---
 <section id="faq" class="section-light faq-section" data-navbar="light" style="position:relative;overflow:hidden;">
+  <!-- Schema.org FAQPage — habilita rich results de preguntas en Google -->
+  <script type="application/ld+json" is:inline set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    'mainEntity': items.map((item: any) => ({
+      '@type': 'Question',
+      'name': item.question,
+      'acceptedAnswer': { '@type': 'Answer', 'text': item.answer },
+    })),
+  })} />
   <div class="dots-light" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.5;"></div>
   <div class="inner">
     <div class="faq-header-wrap">

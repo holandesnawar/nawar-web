@@ -139,7 +139,12 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ error: 'Email inválido' }, 400)
   }
 
-  const apiKey = import.meta.env.SYSTEME_API_KEY
+  // Doble acceso: import.meta.env (dev) + process.env (serverless Vercel)
+  const apiKey =
+    (import.meta.env.SYSTEME_API_KEY as string | undefined) ||
+    (typeof process !== 'undefined' ? process.env.SYSTEME_API_KEY : undefined)
+
+  console.log('[waitlist] received:', { email, tagName, hasKey: !!apiKey })
 
   if (apiKey) {
     const headers = {

@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css'
+import Analytics from '@vercel/analytics/astro'
+import SpeedInsights from '@vercel/speed-insights/astro'
 
 interface Props {
   title?: string
@@ -7,6 +9,7 @@ interface Props {
   keywords?: string
   ogImage?: string
   canonicalURL?: string
+  noindex?: boolean
 }
 
 const {
@@ -15,6 +18,7 @@ const {
   keywords = 'neerlandés, holandés, curso online, hispanohablantes, clases en vivo, Países Bajos',
   ogImage = 'https://www.holandesnawar.com/og-image.png',
   canonicalURL = Astro.url.href,
+  noindex = false,
 } = Astro.props
 
 const siteURL = 'https://www.holandesnawar.com'
@@ -27,7 +31,7 @@ const siteURL = 'https://www.holandesnawar.com'
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords} />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
     <title>{title}</title>
 
     <!-- Canonical -->
@@ -103,6 +107,11 @@ const siteURL = 'https://www.holandesnawar.com'
   </head>
   <body class="min-h-screen antialiased" style="background:#1D0084">
     <slot />
+
+    <!-- Vercel Analytics — pageviews y visitantes anónimos -->
+    <Analytics />
+    <!-- Vercel Speed Insights — Core Web Vitals (LCP, CLS, INP) para SEO -->
+    <SpeedInsights />
 
     <!-- Scroll reveal: sequential stagger for .sr/.sr-s, bidirectional for .sr-bi -->
     <script>
