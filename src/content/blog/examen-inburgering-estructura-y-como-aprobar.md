@@ -83,7 +83,7 @@ El verdadero coste no está en el examen, está en **cuánto tiempo y energía p
 
 ## Cómo prepararte (lo que sí funciona)
 
-#### 1. Aprende desde el español, no desde el inglés
+### **1. Aprende desde el español, no desde el inglés**
 
 Si tu idioma materno es el español, **no pases por el filtro del inglés**. Las academias genéricas traducen sus materiales, pero explican los conceptos pensando en angloparlantes. Pierdes tiempo haciendo una traducción mental doble.
 
@@ -95,7 +95,7 @@ El español tiene **más similitudes con el neerlandés de las que crees,** si l
 * Input real: podcasts, series neerlandesas con subtítulos, redes sociales en neerlandés.
 * Output desde el día 1: hablar, aunque sea contigo mismo. La fluidez se entrena, no se piensa.
 
-#### 3. Prepara cada parte del examen por separado
+### 3. Prepara cada parte del examen por separado
 
 No te obsesiones con "el examen" como un todo:
 
@@ -104,11 +104,11 @@ No te obsesiones con "el examen" como un todo:
 * Escritura: escribe 1 texto corto a la semana y hazlo corregir.
 * Habla: graba audios tuyos respondiendo preguntas típicas.
 
-#### 4. Haz simulacros antes de presentarte
+### 4. Haz simulacros antes de presentarte
 
 DUO publica exámenes de muestra gratis en [inburgeren.nl](https://www.inburgeren.nl). Haz al menos **3 simulacros** antes de cada parte.
 
-#### 5. Preséntalos uno a uno, no todos a la vez
+### 5. Preséntalos uno a uno, no todos a la vez
 
 Empieza por KNM (el más fácil y el que más confianza te da), luego lectura y escucha, y deja hablar y escribir para el final. Presentar todos a la vez es la receta para tener que repetir 3 exámenes.
 
