@@ -38,9 +38,9 @@ La obligación aplica principalmente a:
 * Refugiados y personas con protección internacional.
 * Familiares reagrupados (por ejemplo, cónyuge de un residente).
 
-NO están obligadas (normalmente):
+NO están obligados (normalmente):
 
-* Ciudadanos de la Unión Europea (incluidos españoles) — aunque hacerlo es altamente recomendable.
+* Ciudadanos de la Unión Europea, aunque hacerlo es altamente recomendable.
 * Personas con permiso temporal de estudios o trabajo altamente cualificado (*kennismigrant*).
 * Niños menores de 18 años y mayores de 66.
 
@@ -88,7 +88,7 @@ El precio no es lo importante — lo importante es **cuánto tiempo y energía p
 
 Tras empadronarte, el ayuntamiento envía tu información a DUO, quien te envía una carta oficial (*Brief Inburgeringsplicht*). Ahí empieza tu cuenta atrás de 3 años.
 
-### 2. Elige una escuela o método — aquí se juega todo
+### 2. Elige una escuela o método, aquí se juega todo
 
 Esta es la decisión más importante de todo el proceso. No todas las formaciones son iguales.
 
@@ -96,13 +96,13 @@ Esta es la decisión más importante de todo el proceso. No todas las formacione
 
 **Apps genéricas (Duolingo, Babbel):** vocabulario suelto, sin método. No te preparan para la parte oral del examen ni para hablar en el día a día.
 
-**Nuestra formación para hispanohablantes:** en [Nawar](/) enseñamos neerlandés desde el español, con gramática comparada, práctica oral desde el día 1 y una comunidad de +600 hispanohablantes que avanzan contigo. Es la única forma que realmente aprovecha que tu idioma materno es el español.
+**Nuestra formación para hispanohablantes:** Desde [Nawar](/) enseñamos neerlandés desde el español, con gramática comparada, práctica oral desde el día 1 y una comunidad de hispanohablantes que avanzan contigo. 
 
 Si partes de cero o nivel A0-A1 y quieres llegar al B1 en 12–18 meses, nuestra formación está pensada exactamente para eso.
 
 ### 3. Estudia con constancia
 
-La clave no es el método: es la **constancia**. 1 hora al día durante 12–18 meses te lleva al B1 sin sufrir.
+La clave está en la constancia, dedicar alrededor de 1 hora al día durante varios meses puede ayudarte a avanzar hacia un nivel B1 de forma progresiva. 
 
 ### 4. Presenta los exámenes uno a uno
 
@@ -110,13 +110,11 @@ No esperes a estar "listo" para todo. Presenta KNM primero (el más fácil), lue
 
 ## Consejos extra para hispanohablantes
 
-* Evita aprender neerlandés desde el inglés — pierdes tiempo y confianza.
+* Evita aprender neerlandés desde el inglés, pierdes tiempo y confianza.
 * Únete a una comunidad de hispanohablantes; aprender solo es el principal motivo de abandono.
-* Habla desde el día 1; la parte de habla del examen es la que más suspende.
-* No subestimes el KNM: es tipo test, pero las reglas de la sociedad neerlandesa son muy específicas.
+* Habla desde el día 1, la parte de habla del examen es la que más se suspende.
+* No subestimes el KNM, es tipo test, pero las reglas de la sociedad neerlandesa son muy específicas.
 
 ## Conclusión
 
-El Inburgering **no es un obstáculo, es una puerta**. Aprobar significa acceder a mejores empleos, más oportunidades académicas, y eventualmente la ciudadanía neerlandesa. Con método, constancia y soporte desde tu idioma, lo superas en los 3 años que tienes.
-
-¿Quieres un curso de neerlandés **diseñado específicamente para hispanohablantes principiantes que están haciendo el Inburgering**? [Apúntate a la lista de espera](/lista-de-espera) y recibe acceso prioritario cuando abramos la próxima edición.[](/blog/como-mejorar-tu-pronunciacion-en-neerlandes-consejos-y-trucos)
+El Inburgering **no es un obstáculo, es una puerta**. Aprobar significa acceder a mejores empleos, más oportunidades académicas, y eventualmente la ciudadanía neerlandesa. Con método, constancia y soporte desde tu idioma, lo superas en los 3 años que tienes.[](/blog/como-mejorar-tu-pronunciacion-en-neerlandes-consejos-y-trucos)
