@@ -6,9 +6,7 @@ backend:
   name: github
   repo: holandesnawar/nawar-web
   branch: main
-  # NOTA: cuando migres a tu dominio final, cambia base_url y site_url abajo
-  # a https://www.holandesnawar.com (también la callback URL de GitHub OAuth)
-  base_url: https://nawar-web.vercel.app
+  base_url: https://www.holandesnawar.com
   auth_endpoint: api/auth
 
 commit_messages:
@@ -22,7 +20,7 @@ media_folder: "public/blog/images"
 public_folder: "/blog/images"
 
 publish_mode: simple
-site_url: https://nawar-web.vercel.app
+site_url: https://www.holandesnawar.com
 logo_url: https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png
 locale: es
 
