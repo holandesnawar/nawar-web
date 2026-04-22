@@ -1,0 +1,166 @@
+---
+// Página de preview de la imagen Open Graph.
+// Se renderiza a exactamente 1200×630 (tamaño estándar de OG).
+//
+// Uso:
+// 1. Ir a http://localhost:4321/og-preview (o al deploy)
+// 2. En DevTools → dispositivo personalizado 1200x630
+// 3. Screenshot → guardar como public/og-image.png
+//
+// Esta página no se indexa.
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>OG Image Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: #0a0043; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    /* OG canvas exacto: 1200×630 */
+    .og {
+      position: relative;
+      width: 1200px;
+      height: 630px;
+      background: #1D0084;
+      overflow: hidden;
+      font-family: 'Poppins', system-ui, sans-serif;
+    }
+
+    /* Halo radial desde arriba (como el hero) */
+    .og-glow {
+      position: absolute;
+      top: -240px; left: 50%;
+      transform: translateX(-50%);
+      width: 1100px; height: 800px;
+      background: radial-gradient(ellipse at center top, rgba(77,163,255,0.45) 0%, rgba(77,163,255,0.10) 42%, transparent 72%);
+      pointer-events: none;
+    }
+
+    /* Arco izquierdo — 1/10 de un círculo grande, bulge hacia fuera */
+    .og-arc-left,
+    .og-arc-right {
+      position: absolute;
+      top: 50%;
+      width: 260px;
+      height: 440px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .og-arc-left  { left: -200px; }
+    .og-arc-right { right: -200px; }
+
+    /* Logo centrado abajo del texto */
+    .og-logo {
+      position: absolute;
+      left: 50%;
+      bottom: 92px;
+      transform: translateX(-50%);
+      height: 64px;
+      width: auto;
+      filter: drop-shadow(0 4px 24px rgba(77,163,255,0.4));
+    }
+
+    /* Contenido centrado */
+    .og-text-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 120px 200px;
+      text-align: center;
+    }
+    .og-title {
+      font-size: 58px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      max-width: 900px;
+    }
+    .og-title-white {
+      background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.62) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+    .og-title-blue {
+      color: #4da3ff;
+      display: inline-block;
+      margin-top: 6px;
+    }
+
+    /* Dots sutiles de fondo (como dots-dark) */
+    .og-dots {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1.5px);
+      background-size: 28px 28px;
+      opacity: 0.6;
+      mask-image: radial-gradient(ellipse at center, #000 40%, transparent 85%);
+      -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 85%);
+    }
+  </style>
+</head>
+<body>
+  <div class="og">
+    <div class="og-glow"></div>
+    <div class="og-dots"></div>
+
+    <!-- Arco izquierdo: 1/10 de un círculo que se sale hacia la izquierda -->
+    <svg class="og-arc-left" viewBox="0 0 260 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M 260 0 Q -60 220 260 440"
+        stroke="#4da3ff"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        opacity="0.55"
+      />
+    </svg>
+
+    <!-- Arco derecho: espejo -->
+    <svg class="og-arc-right" viewBox="0 0 260 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M 0 0 Q 320 220 0 440"
+        stroke="#4da3ff"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        opacity="0.55"
+      />
+    </svg>
+
+    <!-- Texto centrado -->
+    <div class="og-text-wrap">
+      <h1 class="og-title">
+        <span class="og-title-white">Descubre el método de aprender neerlandés</span>
+        <br />
+        <span class="og-title-blue">que el mundo hispano necesita.</span>
+      </h1>
+    </div>
+
+    <!-- Logo al pie -->
+    <img
+      src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png"
+      alt="Holandés Nawar"
+      class="og-logo"
+    />
+  </div>
+</body>
+</html>

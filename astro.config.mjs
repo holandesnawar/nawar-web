@@ -24,7 +24,8 @@ export default defineConfig({
         !page.includes('/lista-de-espera') &&
         !page.includes('/cookies') &&
         !page.includes('/politica-de-privacidad') &&
-        !page.includes('/terminos-y-condiciones'),
+        !page.includes('/terminos-y-condiciones') &&
+        !page.includes('/og-preview'),
     }),
   ],
 })
