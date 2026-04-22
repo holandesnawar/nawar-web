@@ -40,55 +40,31 @@
     .og-glow {
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at center, rgba(77,163,255,0.22) 0%, transparent 55%);
+      background: radial-gradient(ellipse at center, rgba(77,163,255,0.18) 0%, transparent 60%);
       pointer-events: none;
     }
 
-    /* Dos semicirculos bulgendo hacia adentro desde los bordes.
-       El centro del circulo esta ON el borde, asi vemos justo la mitad. */
+    /* Semicirculos casi fuera del canvas: solo un 10% asoma por los lados */
     .og-orb {
       position: absolute;
       top: 50%;
-      width: 820px;
-      height: 820px;
+      width: 900px;
+      height: 900px;
       transform: translateY(-50%);
       border-radius: 50%;
       pointer-events: none;
-    }
-    .og-orb-left {
-      left: -410px; /* centro en x=0 → vemos semicirculo derecho */
+      border: 1.5px solid rgba(77,163,255,0.5);
       background: radial-gradient(
         circle,
-        rgba(77,163,255,0.65) 0%,
-        rgba(77,163,255,0.35) 45%,
-        rgba(77,163,255,0.10) 80%,
+        rgba(77,163,255,0.28) 60%,
+        rgba(77,163,255,0.15) 85%,
+        rgba(77,163,255,0.05) 97%,
         transparent 100%
       );
     }
-    .og-orb-right {
-      right: -410px; /* centro en x=1200 → vemos semicirculo izquierdo */
-      background: radial-gradient(
-        circle,
-        rgba(77,163,255,0.65) 0%,
-        rgba(77,163,255,0.35) 45%,
-        rgba(77,163,255,0.10) 80%,
-        transparent 100%
-      );
-    }
-
-    /* Sutiles outlines para definir mejor los semicirculos */
-    .og-orb-ring {
-      position: absolute;
-      top: 50%;
-      width: 820px;
-      height: 820px;
-      transform: translateY(-50%);
-      border-radius: 50%;
-      border: 1px solid rgba(77,163,255,0.25);
-      pointer-events: none;
-    }
-    .og-orb-ring-left  { left: -410px; }
-    .og-orb-ring-right { right: -410px; }
+    /* 900 width, 810 off-screen → 90px visible (10% del diametro) */
+    .og-orb-left  { left: -810px; }
+    .og-orb-right { right: -810px; }
 
     /* Contenido centrado */
     .og-text-wrap {
@@ -98,28 +74,29 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 60px 90px 140px;
+      padding: 60px 60px 140px;
       text-align: center;
       z-index: 2;
     }
     .og-title {
-      font-size: 48px;
       font-weight: 700;
       line-height: 1.2;
       letter-spacing: -0.02em;
-      max-width: 1020px;
+      white-space: nowrap; /* fuerza 1 visual line por span */
     }
     .og-title-white {
-      background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.6) 100%);
+      font-size: 46px;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.62) 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
       display: block;
     }
     .og-title-blue {
+      font-size: 46px;
       color: #4da3ff;
       display: block;
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
     /* Logo centrado abajo */
@@ -139,18 +116,16 @@
   <div class="og">
     <div class="og-glow"></div>
 
-    <!-- Semicirculos grandes de marca -->
+    <!-- Semicirculos asomando 10% desde los bordes -->
     <div class="og-orb og-orb-left"></div>
     <div class="og-orb og-orb-right"></div>
-    <div class="og-orb-ring og-orb-ring-left"></div>
-    <div class="og-orb-ring og-orb-ring-right"></div>
 
-    <!-- Texto en 2 lineas -->
+    <!-- Texto en EXACTAMENTE 2 lineas -->
     <div class="og-text-wrap">
-      <h1 class="og-title">
+      <div class="og-title">
         <span class="og-title-white">Descubre el método de aprender neerlandés</span>
         <span class="og-title-blue">que el mundo hispano necesita.</span>
-      </h1>
+      </div>
     </div>
 
     <!-- Logo Nawar -->
