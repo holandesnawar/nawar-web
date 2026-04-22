@@ -44,41 +44,39 @@
       pointer-events: none;
     }
 
-    /* Semicirculos que TOCAN las esquinas: centro en borde vertical
-       a mitad de altura (y=315), radio 315 → pasa por (0,0) y (0,630).
-       Bounding box 630x630, la mitad fuera del canvas. */
+    /* Semicirculos grandes que:
+       1) tocan las 4 esquinas del canvas (0,0)(0,630) y (1200,0)(1200,630)
+       2) pero solo asoman un 10% de su diametro (bulge ~105px)
+       Geometria: r=525, centro en (-420, 315) → radio² = 420² + 315²
+       Bounding box 1050x1050, 945px off-screen, 105px visibles */
     .og-orb {
       position: absolute;
-      top: 0;
-      width: 630px;
-      height: 630px;
+      top: -210px; /* cy(315) - r(525) */
+      width: 1050px;
+      height: 1050px;
       border-radius: 50%;
       pointer-events: none;
-      /* Color azul claro de marca con gradient sutil */
       background: radial-gradient(
         circle at 100% 50%,
-        rgba(77,163,255,0.55) 0%,
+        rgba(77,163,255,0.60) 0%,
         rgba(77,163,255,0.42) 40%,
-        rgba(77,163,255,0.28) 70%,
-        rgba(77,163,255,0.15) 100%
+        rgba(77,163,255,0.25) 75%,
+        rgba(77,163,255,0.12) 100%
       );
-      border: 2px solid rgba(77,163,255,0.7);
-      /* Sombra profesional: halo exterior azul + interior sutil */
+      border: 2px solid rgba(77,163,255,0.65);
       filter:
         drop-shadow(0 0 60px rgba(77,163,255,0.35))
         drop-shadow(0 20px 40px rgba(11,109,240,0.25));
     }
-    .og-orb-left {
-      left: -315px;
-    }
+    .og-orb-left  { left: -945px; }
     .og-orb-right {
-      right: -315px;
+      right: -945px;
       background: radial-gradient(
         circle at 0% 50%,
-        rgba(77,163,255,0.55) 0%,
+        rgba(77,163,255,0.60) 0%,
         rgba(77,163,255,0.42) 40%,
-        rgba(77,163,255,0.28) 70%,
-        rgba(77,163,255,0.15) 100%
+        rgba(77,163,255,0.25) 75%,
+        rgba(77,163,255,0.12) 100%
       );
     }
 
