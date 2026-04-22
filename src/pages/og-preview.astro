@@ -1,0 +1,143 @@
+---
+// Página de preview de la imagen Open Graph (1200×630).
+// Abre /og-preview en Chrome → DevTools → modo dispositivo 1200x630 →
+// capture full-size screenshot → guardar como public/og-image.png
+// Esta página se borrará cuando termines.
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>OG Image Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: #0a0043; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .og {
+      position: relative;
+      width: 1200px;
+      height: 630px;
+      background: #1D0084;
+      overflow: hidden;
+      font-family: 'Poppins', system-ui, sans-serif;
+    }
+
+    .og-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(77,163,255,0.20) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Semicirculos tocando esquinas, 10% visible */
+    .og-orb {
+      position: absolute;
+      top: -210px;
+      width: 1050px;
+      height: 1050px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(
+        circle at 100% 50%,
+        rgba(77,163,255,0.60) 0%,
+        rgba(77,163,255,0.42) 40%,
+        rgba(77,163,255,0.25) 75%,
+        rgba(77,163,255,0.12) 100%
+      );
+      border: 2px solid rgba(77,163,255,0.65);
+      filter:
+        drop-shadow(0 0 60px rgba(77,163,255,0.35))
+        drop-shadow(0 20px 40px rgba(11,109,240,0.25));
+    }
+    .og-orb-left  { left: -945px; }
+    .og-orb-right {
+      right: -945px;
+      background: radial-gradient(
+        circle at 0% 50%,
+        rgba(77,163,255,0.60) 0%,
+        rgba(77,163,255,0.42) 40%,
+        rgba(77,163,255,0.25) 75%,
+        rgba(77,163,255,0.12) 100%
+      );
+    }
+
+    .og-text-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 60px 160px;
+      text-align: center;
+      z-index: 2;
+    }
+    .og-title {
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+    .og-title-white {
+      font-size: 54px;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.62) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+    }
+    .og-title-blue {
+      font-size: 54px;
+      color: #4da3ff;
+      display: block;
+      margin-top: 10px;
+    }
+
+    /* Logo — mas grande y sin sombra */
+    .og-logo {
+      position: absolute;
+      left: 50%;
+      bottom: 48px;
+      transform: translateX(-50%);
+      height: 76px;
+      width: auto;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <div class="og">
+    <div class="og-glow"></div>
+
+    <div class="og-orb og-orb-left"></div>
+    <div class="og-orb og-orb-right"></div>
+
+    <div class="og-text-wrap">
+      <div class="og-title">
+        <span class="og-title-white">Descubre el primer método</span>
+        <span class="og-title-blue">creado para hispanohablantes</span>
+      </div>
+    </div>
+
+    <img
+      src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png"
+      alt="Holandés Nawar"
+      class="og-logo"
+    />
+  </div>
+</body>
+</html>
