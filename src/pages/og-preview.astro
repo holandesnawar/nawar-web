@@ -1,13 +1,7 @@
 ---
-// Página de preview de la imagen Open Graph.
-// Se renderiza a exactamente 1200×630 (tamaño estándar de OG).
-//
-// Uso:
-// 1. Ir a http://localhost:4321/og-preview (o al deploy)
-// 2. En DevTools → dispositivo personalizado 1200x630
-// 3. Screenshot → guardar como public/og-image.png
-//
-// Esta página no se indexa.
+// Página de preview de la imagen Open Graph (1200×630).
+// Abre /og-preview en Chrome → DevTools → modo dispositivo 1200x630 →
+// capture full-size screenshot → guardar como public/og-image.png
 ---
 <!DOCTYPE html>
 <html lang="es">
@@ -42,39 +36,59 @@
       font-family: 'Poppins', system-ui, sans-serif;
     }
 
-    /* Halo radial desde arriba (como el hero) */
+    /* Halo radial suave desde el centro */
     .og-glow {
       position: absolute;
-      top: -240px; left: 50%;
-      transform: translateX(-50%);
-      width: 1100px; height: 800px;
-      background: radial-gradient(ellipse at center top, rgba(77,163,255,0.45) 0%, rgba(77,163,255,0.10) 42%, transparent 72%);
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(77,163,255,0.22) 0%, transparent 55%);
       pointer-events: none;
     }
 
-    /* Arco izquierdo — 1/10 de un círculo grande, bulge hacia fuera */
-    .og-arc-left,
-    .og-arc-right {
+    /* Dos semicirculos bulgendo hacia adentro desde los bordes.
+       El centro del circulo esta ON el borde, asi vemos justo la mitad. */
+    .og-orb {
       position: absolute;
       top: 50%;
-      width: 260px;
-      height: 440px;
+      width: 820px;
+      height: 820px;
       transform: translateY(-50%);
+      border-radius: 50%;
       pointer-events: none;
     }
-    .og-arc-left  { left: -200px; }
-    .og-arc-right { right: -200px; }
-
-    /* Logo centrado abajo del texto */
-    .og-logo {
-      position: absolute;
-      left: 50%;
-      bottom: 92px;
-      transform: translateX(-50%);
-      height: 64px;
-      width: auto;
-      filter: drop-shadow(0 4px 24px rgba(77,163,255,0.4));
+    .og-orb-left {
+      left: -410px; /* centro en x=0 → vemos semicirculo derecho */
+      background: radial-gradient(
+        circle,
+        rgba(77,163,255,0.65) 0%,
+        rgba(77,163,255,0.35) 45%,
+        rgba(77,163,255,0.10) 80%,
+        transparent 100%
+      );
     }
+    .og-orb-right {
+      right: -410px; /* centro en x=1200 → vemos semicirculo izquierdo */
+      background: radial-gradient(
+        circle,
+        rgba(77,163,255,0.65) 0%,
+        rgba(77,163,255,0.35) 45%,
+        rgba(77,163,255,0.10) 80%,
+        transparent 100%
+      );
+    }
+
+    /* Sutiles outlines para definir mejor los semicirculos */
+    .og-orb-ring {
+      position: absolute;
+      top: 50%;
+      width: 820px;
+      height: 820px;
+      transform: translateY(-50%);
+      border-radius: 50%;
+      border: 1px solid rgba(77,163,255,0.25);
+      pointer-events: none;
+    }
+    .og-orb-ring-left  { left: -410px; }
+    .og-orb-ring-right { right: -410px; }
 
     /* Contenido centrado */
     .og-text-wrap {
@@ -84,78 +98,62 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 80px 120px 200px;
+      padding: 60px 90px 140px;
       text-align: center;
+      z-index: 2;
     }
     .og-title {
-      font-size: 58px;
+      font-size: 48px;
       font-weight: 700;
-      line-height: 1.15;
+      line-height: 1.2;
       letter-spacing: -0.02em;
-      max-width: 900px;
+      max-width: 1020px;
     }
     .og-title-white {
-      background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.62) 100%);
+      background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.6) 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      display: inline-block;
+      display: block;
     }
     .og-title-blue {
       color: #4da3ff;
-      display: inline-block;
+      display: block;
       margin-top: 6px;
     }
 
-    /* Dots sutiles de fondo (como dots-dark) */
-    .og-dots {
-      position: absolute; inset: 0;
-      pointer-events: none;
-      background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1.5px);
-      background-size: 28px 28px;
-      opacity: 0.6;
-      mask-image: radial-gradient(ellipse at center, #000 40%, transparent 85%);
-      -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 85%);
+    /* Logo centrado abajo */
+    .og-logo {
+      position: absolute;
+      left: 50%;
+      bottom: 60px;
+      transform: translateX(-50%);
+      height: 56px;
+      width: auto;
+      filter: drop-shadow(0 4px 18px rgba(77,163,255,0.4));
+      z-index: 2;
     }
   </style>
 </head>
 <body>
   <div class="og">
     <div class="og-glow"></div>
-    <div class="og-dots"></div>
 
-    <!-- Arco izquierdo: 1/10 de un círculo que se sale hacia la izquierda -->
-    <svg class="og-arc-left" viewBox="0 0 260 440" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M 260 0 Q -60 220 260 440"
-        stroke="#4da3ff"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        opacity="0.55"
-      />
-    </svg>
+    <!-- Semicirculos grandes de marca -->
+    <div class="og-orb og-orb-left"></div>
+    <div class="og-orb og-orb-right"></div>
+    <div class="og-orb-ring og-orb-ring-left"></div>
+    <div class="og-orb-ring og-orb-ring-right"></div>
 
-    <!-- Arco derecho: espejo -->
-    <svg class="og-arc-right" viewBox="0 0 260 440" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M 0 0 Q 320 220 0 440"
-        stroke="#4da3ff"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        opacity="0.55"
-      />
-    </svg>
-
-    <!-- Texto centrado -->
+    <!-- Texto en 2 lineas -->
     <div class="og-text-wrap">
       <h1 class="og-title">
         <span class="og-title-white">Descubre el método de aprender neerlandés</span>
-        <br />
         <span class="og-title-blue">que el mundo hispano necesita.</span>
       </h1>
     </div>
 
-    <!-- Logo al pie -->
+    <!-- Logo Nawar -->
     <img
       src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png"
       alt="Holandés Nawar"
