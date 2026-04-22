@@ -40,31 +40,47 @@
     .og-glow {
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at center, rgba(77,163,255,0.18) 0%, transparent 60%);
+      background: radial-gradient(ellipse at center, rgba(77,163,255,0.20) 0%, transparent 60%);
       pointer-events: none;
     }
 
-    /* Semicirculos casi fuera del canvas: solo un 10% asoma por los lados */
+    /* Semicirculos que TOCAN las esquinas: centro en borde vertical
+       a mitad de altura (y=315), radio 315 → pasa por (0,0) y (0,630).
+       Bounding box 630x630, la mitad fuera del canvas. */
     .og-orb {
       position: absolute;
-      top: 50%;
-      width: 900px;
-      height: 900px;
-      transform: translateY(-50%);
+      top: 0;
+      width: 630px;
+      height: 630px;
       border-radius: 50%;
       pointer-events: none;
-      border: 1.5px solid rgba(77,163,255,0.5);
+      /* Color azul claro de marca con gradient sutil */
       background: radial-gradient(
-        circle,
-        rgba(77,163,255,0.28) 60%,
-        rgba(77,163,255,0.15) 85%,
-        rgba(77,163,255,0.05) 97%,
-        transparent 100%
+        circle at 100% 50%,
+        rgba(77,163,255,0.55) 0%,
+        rgba(77,163,255,0.42) 40%,
+        rgba(77,163,255,0.28) 70%,
+        rgba(77,163,255,0.15) 100%
+      );
+      border: 2px solid rgba(77,163,255,0.7);
+      /* Sombra profesional: halo exterior azul + interior sutil */
+      filter:
+        drop-shadow(0 0 60px rgba(77,163,255,0.35))
+        drop-shadow(0 20px 40px rgba(11,109,240,0.25));
+    }
+    .og-orb-left {
+      left: -315px;
+    }
+    .og-orb-right {
+      right: -315px;
+      background: radial-gradient(
+        circle at 0% 50%,
+        rgba(77,163,255,0.55) 0%,
+        rgba(77,163,255,0.42) 40%,
+        rgba(77,163,255,0.28) 70%,
+        rgba(77,163,255,0.15) 100%
       );
     }
-    /* 900 width, 810 off-screen → 90px visible (10% del diametro) */
-    .og-orb-left  { left: -810px; }
-    .og-orb-right { right: -810px; }
 
     /* Contenido centrado */
     .og-text-wrap {
@@ -82,10 +98,10 @@
       font-weight: 700;
       line-height: 1.2;
       letter-spacing: -0.02em;
-      white-space: nowrap; /* fuerza 1 visual line por span */
+      white-space: nowrap;
     }
     .og-title-white {
-      font-size: 46px;
+      font-size: 54px;
       background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.62) 100%);
       -webkit-background-clip: text;
       background-clip: text;
@@ -93,10 +109,10 @@
       display: block;
     }
     .og-title-blue {
-      font-size: 46px;
+      font-size: 54px;
       color: #4da3ff;
       display: block;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
     /* Logo centrado abajo */
@@ -116,15 +132,15 @@
   <div class="og">
     <div class="og-glow"></div>
 
-    <!-- Semicirculos asomando 10% desde los bordes -->
+    <!-- Semicirculos tocando las esquinas -->
     <div class="og-orb og-orb-left"></div>
     <div class="og-orb og-orb-right"></div>
 
     <!-- Texto en EXACTAMENTE 2 lineas -->
     <div class="og-text-wrap">
       <div class="og-title">
-        <span class="og-title-white">Descubre el método de aprender neerlandés</span>
-        <span class="og-title-blue">que el mundo hispano necesita.</span>
+        <span class="og-title-white">Descubre el primer método</span>
+        <span class="og-title-blue">creado para hispanohablantes</span>
       </div>
     </div>
 
