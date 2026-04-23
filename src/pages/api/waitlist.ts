@@ -152,14 +152,17 @@ export const POST: APIRoute = async ({ request }) => {
       'Content-Type': 'application/json',
       'accept':       'application/json',
     }
-    // 🔥 Fire and forget — no await, responde inmediatamente
-    syncToCRM(email, firstName, lastName, phone, conociste, nivel, tagName, headers)
-      .catch(e => console.error('[waitlist] background sync failed:', e))
+    // IMPORTANTE: await (no fire-and-forget) — Vercel Serverless termina la
+    // función al responder y mata cualquier Promise pendiente en background.
+    try {
+      await syncToCRM(email, firstName, lastName, phone, conociste, nivel, tagName, headers)
+    } catch (e) {
+      console.error('[waitlist] sync failed:', e)
+    }
   } else {
     console.error('[waitlist] SYSTEME_API_KEY not set — skipping CRM sync for:', email)
   }
 
-  // Respuesta inmediata al usuario
   return json({
     success: true,
     message: '¡Registrado con éxito! Te avisamos en cuanto abramos plazas.',

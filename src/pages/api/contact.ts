@@ -78,14 +78,17 @@ export const POST: APIRoute = async ({ request }) => {
   console.log('[contact] received:', { email, hasPass: !!gmailPass })
 
   if (gmailPass) {
-    // 🔥 Fire and forget — responde inmediatamente, envía en segundo plano
-    sendContactEmail(nombre, email, asunto, mensaje, gmailPass)
-      .catch(e => console.error('[contact] background send failed:', e))
+    // IMPORTANTE: await — Vercel Serverless mata las Promises pendientes al
+    // responder, así que NO se puede hacer fire-and-forget aquí.
+    try {
+      await sendContactEmail(nombre, email, asunto, mensaje, gmailPass)
+    } catch (e) {
+      console.error('[contact] send failed:', e)
+    }
   } else {
     console.error('[contact] GMAIL_APP_PASSWORD not set — email not sent for:', email)
   }
 
-  // Respuesta inmediata
   return json({ success: true })
 }
 
