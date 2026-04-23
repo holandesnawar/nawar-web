@@ -29,6 +29,17 @@ async function findTagId(tagName: string, headers: Record<string, string>): Prom
   return null
 }
 
+type SyncDebug = {
+  createStatus?: number
+  createBody?: string
+  contactId?: number | null
+  tagId?: number | null
+  tagStatus?: number
+  searchStatus?: number
+  searchBody?: string
+  error?: string
+}
+
 async function syncToCRM(
   email: string,
   firstName: string,
@@ -37,7 +48,8 @@ async function syncToCRM(
   conociste: string,
   nivel: string,
   tagName: string,
-  headers: Record<string, string>
+  headers: Record<string, string>,
+  debug: SyncDebug
 ): Promise<void> {
   try {
     const body: Record<string, any> = { email }
@@ -54,6 +66,8 @@ async function syncToCRM(
       fetch(`${SYSTEME_BASE}/contacts`, { method: 'POST', headers, body: JSON.stringify(body) }),
       findTagId(tagName, headers),
     ])
+    debug.createStatus = createRes.status
+    debug.tagId = tagId
 
     let contactId: number | null = null
 
@@ -63,6 +77,7 @@ async function syncToCRM(
       console.log('[waitlist] contact created:', contactId)
     } else {
       const errText = await createRes.text()
+      debug.createBody = errText.slice(0, 200)
       console.log('[waitlist] create failed:', createRes.status, errText.slice(0, 150))
 
       // Buscar el contacto existente
@@ -70,8 +85,10 @@ async function syncToCRM(
         `${SYSTEME_BASE}/contacts?email=${encodeURIComponent(email)}`,
         { headers }
       )
+      debug.searchStatus = searchRes.status
       if (searchRes.ok) {
         const sd = await searchRes.json().catch(() => null)
+        debug.searchBody = JSON.stringify(sd).slice(0, 200)
         const items = sd?.items ?? sd?.contacts ?? (Array.isArray(sd) ? sd : null)
         if (Array.isArray(items) && items.length > 0) contactId = items[0]?.id ?? null
         else if (sd?.id) contactId = sd.id
@@ -103,11 +120,14 @@ async function syncToCRM(
       }
     }
 
+    debug.contactId = contactId
+
     // Añadir etiqueta
     if (contactId && tagId) {
       const tr = await fetch(`${SYSTEME_BASE}/contacts/${contactId}/tags`, {
         method: 'POST', headers, body: JSON.stringify({ tagId }),
       })
+      debug.tagStatus = tr.status
       if (tr.ok) console.log('[waitlist] tag added:', tagName, 'to', contactId)
       else if (tr.status !== 409) console.error('[waitlist] tag error:', tr.status)
     } else {
@@ -115,6 +135,7 @@ async function syncToCRM(
       if (!tagId)     console.error('[waitlist] tag not found:', tagName)
     }
   } catch (e) {
+    debug.error = (e as Error).message
     console.error('[waitlist] syncToCRM error:', e)
   }
 }
@@ -146,21 +167,32 @@ export const POST: APIRoute = async ({ request }) => {
 
   console.log('[waitlist] received:', { email, tagName, hasKey: !!apiKey })
 
+  const debug: SyncDebug = {}
   if (apiKey) {
     const headers = {
       'X-API-Key':    apiKey,
       'Content-Type': 'application/json',
       'accept':       'application/json',
     }
-    // IMPORTANTE: await (no fire-and-forget) — Vercel Serverless termina la
-    // función al responder y mata cualquier Promise pendiente en background.
     try {
-      await syncToCRM(email, firstName, lastName, phone, conociste, nivel, tagName, headers)
+      await syncToCRM(email, firstName, lastName, phone, conociste, nivel, tagName, headers, debug)
     } catch (e) {
+      debug.error = (e as Error).message
       console.error('[waitlist] sync failed:', e)
     }
   } else {
+    debug.error = 'SYSTEME_API_KEY not set'
     console.error('[waitlist] SYSTEME_API_KEY not set — skipping CRM sync for:', email)
+  }
+
+  // ?debug=1 → devuelve info de Systeme para diagnosticar
+  const url = new URL(request.url)
+  if (url.searchParams.get('debug') === '1') {
+    return json({
+      success: true,
+      message: '¡Registrado con éxito! Te avisamos en cuanto abramos plazas.',
+      debug,
+    })
   }
 
   return json({
