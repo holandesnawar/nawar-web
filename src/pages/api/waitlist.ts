@@ -185,16 +185,6 @@ export const POST: APIRoute = async ({ request }) => {
     console.error('[waitlist] SYSTEME_API_KEY not set — skipping CRM sync for:', email)
   }
 
-  // ?debug=1 → devuelve info de Systeme para diagnosticar
-  const url = new URL(request.url)
-  if (url.searchParams.get('debug') === '1') {
-    return json({
-      success: true,
-      message: '¡Registrado con éxito! Te avisamos en cuanto abramos plazas.',
-      debug,
-    })
-  }
-
   return json({
     success: true,
     message: '¡Registrado con éxito! Te avisamos en cuanto abramos plazas.',
