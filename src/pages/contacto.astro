@@ -47,6 +47,12 @@ export const prerender = false
         <!-- Right: Form -->
         <div class="ct-form-side">
           <form id="contact-form" class="ct-form" novalidate>
+            {/* Honeypot anti-bot — invisible para usuarios, atrae bots */}
+            <div class="ct-honeypot" aria-hidden="true">
+              <label>No rellenar este campo
+                <input type="text" name="website" id="contact-honeypot" tabindex="-1" autocomplete="off" />
+              </label>
+            </div>
             <div class="ct-row">
               <div class="ct-field">
                 <label class="ct-label" for="nombre">Nombre</label>
@@ -161,6 +167,18 @@ export const prerender = false
 /* ── Form ── */
 .ct-form-side { padding-top: 8px; }
 .ct-form { display: flex; flex-direction: column; gap: 18px; }
+
+/* Honeypot — invisible para humanos, irresistible para bots */
+.ct-honeypot {
+  position: absolute !important;
+  left: -10000px !important;
+  top: auto !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 .ct-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .ct-field { display: flex; flex-direction: column; gap: 7px; }
 .ct-label {
@@ -260,6 +278,7 @@ export const prerender = false
     const email   = (form.querySelector('#email')   as HTMLInputElement)?.value?.trim()
     const asunto  = (form.querySelector('#asunto')  as HTMLInputElement)?.value?.trim()
     const mensaje = (form.querySelector('#mensaje') as HTMLTextAreaElement)?.value?.trim()
+    const website = (form.querySelector('#contact-honeypot') as HTMLInputElement)?.value || ''
 
     if (submitBtn) { submitBtn.textContent = 'Enviando…'; submitBtn.disabled = true }
 
@@ -267,7 +286,7 @@ export const prerender = false
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, email, asunto, mensaje }),
+        body: JSON.stringify({ nombre, email, asunto, mensaje, website }),
       })
       const data = await res.json()
 

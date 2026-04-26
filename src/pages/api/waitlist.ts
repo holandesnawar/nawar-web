@@ -155,6 +155,18 @@ export const POST: APIRoute = async ({ request }) => {
       ? body.tagName.trim()
       : TAG_NAME
 
+  // ── Honeypot anti-bot ──
+  // Si el campo trampa 'website' viene relleno, es un bot.
+  // Devolvemos success silencioso para no avisar al bot.
+  const honeypot = (body?.website ?? '').toString().trim()
+  if (honeypot) {
+    console.log('[waitlist] honeypot triggered, ignoring submission from:', email)
+    return json({
+      success: true,
+      message: '¡Registrado con éxito! Te avisamos en cuanto abramos plazas.',
+    })
+  }
+
   // Única validación que bloquea: email inválido
   if (!email || !email.includes('@')) {
     return json({ error: 'Email inválido' }, 400)

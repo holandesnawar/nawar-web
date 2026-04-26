@@ -86,6 +86,8 @@ const ctaText    = data?.ctaText    ?? 'Únete a la lista de espera'
 
       <div class="hero-form-row h-anim" id="lista-espera" style="--hd:0.48s">
         <form id="hero-signup-form" class="hero-form">
+          {/* Honeypot anti-bot */}
+          <input type="text" id="hero-honeypot" name="website" tabindex="-1" autocomplete="off" class="hero-honeypot" aria-hidden="true" />
           <input
             id="hero-email"
             type="email"
@@ -269,6 +271,14 @@ const ctaText    = data?.ctaText    ?? 'Únete a la lista de espera'
 
 /* ── Form row ── */
 .hero-form-row { width: 100%; max-width: 540px; margin-bottom: 10px; }
+.hero-honeypot {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 .hero-form {
   display: flex;
   gap: 8px;
@@ -376,6 +386,7 @@ const ctaText    = data?.ctaText    ?? 'Únete a la lista de espera'
   form?.addEventListener('submit', async (e) => {
     e.preventDefault()
     const email = (document.getElementById('hero-email') as HTMLInputElement)?.value?.trim()
+    const website = (document.getElementById('hero-honeypot') as HTMLInputElement | null)?.value || ''
     if (!email) return
 
     if (btn) { btn.textContent = '...'; btn.disabled = true }
@@ -384,7 +395,7 @@ const ctaText    = data?.ctaText    ?? 'Únete a la lista de espera'
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, website }),
       })
       const data = await res.json()
 

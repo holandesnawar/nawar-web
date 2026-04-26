@@ -58,6 +58,13 @@ export const prerender = false
       <!-- Formulario directo sobre el azul -->
       <form id="wl-form" class="wl-form" novalidate>
 
+        {/* Honeypot anti-bot */}
+        <div class="wl-honeypot" aria-hidden="true">
+          <label>No rellenar
+            <input type="text" id="wl-honeypot" name="website" tabindex="-1" autocomplete="off" />
+          </label>
+        </div>
+
         <!-- Fila 1: nombre + apellido -->
         <div class="wl-row">
           <div class="wl-field">
@@ -246,6 +253,17 @@ export const prerender = false
     width: 100%;
     display: flex; flex-direction: column;
     gap: 32px;
+  }
+
+  /* Honeypot — invisible para humanos */
+  .wl-honeypot {
+    position: absolute !important;
+    left: -10000px !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 
   .wl-row {
@@ -466,12 +484,13 @@ export const prerender = false
     const telefono  = (document.getElementById('wl-telefono')  as HTMLInputElement)?.value?.trim() ?? ''
     const conociste = (document.getElementById('wl-conociste') as HTMLSelectElement)?.value ?? ''
     const nivel     = (document.getElementById('wl-nivel')     as HTMLSelectElement)?.value ?? ''
+    const website   = (document.getElementById('wl-honeypot')  as HTMLInputElement | null)?.value ?? ''
 
     try {
       const res  = await fetch('/api/waitlist', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName: nombre, lastName: apellido, email, phone: telefono, conociste, nivel }),
+        body: JSON.stringify({ firstName: nombre, lastName: apellido, email, phone: telefono, conociste, nivel, website }),
       })
       const data = await res.json().catch(() => null)
 

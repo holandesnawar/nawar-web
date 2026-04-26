@@ -67,6 +67,12 @@ export const prerender = false
             </div>
 
             <form id="guide-form" class="guide-form">
+              {/* Honeypot anti-bot — invisible */}
+              <div class="guide-honeypot" aria-hidden="true">
+                <label>No rellenar
+                  <input type="text" id="guide-honeypot" name="website" tabindex="-1" autocomplete="off" />
+                </label>
+              </div>
               <input
                 id="guide-name"
                 type="text"
@@ -203,6 +209,17 @@ export const prerender = false
     display: grid;
     gap: 16px;
     width: 100%;
+  }
+
+  /* Honeypot — invisible para humanos */
+  .guide-honeypot {
+    position: absolute !important;
+    left: -10000px !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 
   .guide-input {
@@ -364,6 +381,7 @@ export const prerender = false
 
     const name = nameInput?.value?.trim()
     const email = emailInput?.value?.trim()
+    const website = (document.getElementById('guide-honeypot') as HTMLInputElement | null)?.value || ''
     if (!name || !email) return
 
     if (submitBtn) {
@@ -375,7 +393,7 @@ export const prerender = false
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, tagName: 'Hebben / Zijn' }),
+        body: JSON.stringify({ name, email, tagName: 'Hebben / Zijn', website }),
       })
 
       const data = await res.json().catch(() => null)

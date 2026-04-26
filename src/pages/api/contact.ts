@@ -67,6 +67,15 @@ export const POST: APIRoute = async ({ request }) => {
   const asunto  = body?.asunto?.trim()  ?? '(sin asunto)'
   const mensaje = body?.mensaje?.trim() ?? '(sin mensaje)'
 
+  // ── Honeypot anti-bot ──
+  // Si el campo trampa 'website' viene relleno, es un bot.
+  // Devolvemos success silencioso para no avisar al bot.
+  const honeypot = (body?.website ?? '').toString().trim()
+  if (honeypot) {
+    console.log('[contact] honeypot triggered, ignoring submission from:', email)
+    return json({ success: true })
+  }
+
   if (!email || !email.includes('@')) {
     return json({ error: 'Email inválido' }, 400)
   }

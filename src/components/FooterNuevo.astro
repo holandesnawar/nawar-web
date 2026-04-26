@@ -33,6 +33,8 @@
           ¡Perfecto! Pronto recibirás noticias de nosotros.
         </div>
         <form id="footer-signup-form" class="footer-signup-form">
+          {/* Honeypot anti-bot */}
+          <input type="text" id="footer-honeypot" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;opacity:0;pointer-events:none;" />
           <input id="footer-signup-email" type="email" class="footer-signup-input" placeholder="Introduce tu correo electrónico" autocomplete="email" required>
           <button type="submit" class="footer-signup-btn">
             Lista de espera
@@ -109,6 +111,7 @@
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = (document.getElementById('footer-signup-email') as HTMLInputElement)?.value?.trim();
+    const website = (document.getElementById('footer-honeypot') as HTMLInputElement | null)?.value || '';
     if (!email) return;
 
     if (btn) { btn.textContent = '...'; btn.disabled = true; }
@@ -117,7 +120,7 @@
       const res  = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, website }),
       });
       const data = await res.json();
 
