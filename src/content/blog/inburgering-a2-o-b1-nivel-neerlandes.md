@@ -49,12 +49,12 @@ El nivel A2 te permite comunicarte en situaciones cotidianas básicas: ir al mé
     </thead>
     <tbody>
       <tr style="background-color:#e8f3ff;">
-        <td style="padding:13px 18px; border-bottom:1px solid #d3e7ff; color:#333; font-weight:600;">A2 <span style="font-weight:400; color:#666; font-size:0.88rem;">(estándar antiguo)</span></td>
+        <td style="padding:13px 18px; border-bottom:1px solid #d3e7ff; color:#333; font-weight:600;">A2</td>
         <td style="padding:13px 18px; border-bottom:1px solid #d3e7ff; color:#333;">Pedir un café, presentarte, entender señales y carteles sencillos.</td>
         <td style="padding:13px 18px; border-bottom:1px solid #d3e7ff; color:#333;">Frases cortas, audios lentos, temas predecibles del día a día.</td>
       </tr>
       <tr style="background-color:#ffffff;">
-        <td style="padding:13px 18px; color:#333; font-weight:600;">B1 <span style="font-weight:400; color:#666; font-size:0.88rem;">(estándar nuevo)</span></td>
+        <td style="padding:13px 18px; color:#333; font-weight:600;">B1</td>
         <td style="padding:13px 18px; color:#333;">Escribir una carta de reclamación, defenderte en una entrevista de trabajo, entender una noticia de radio.</td>
         <td style="padding:13px 18px; color:#333;"><strong>Gramática compleja</strong>, audios rápidos con ruido de fondo y temas abstractos.</td>
       </tr>
