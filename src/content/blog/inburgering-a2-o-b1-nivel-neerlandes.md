@@ -1,10 +1,10 @@
 ---
 title: "¿Necesitas A2 o B1 para el inburgering? Depende de cuándo llegaste"
 publishedAt: 2026-05-14T10:00:00.000+02:00
-excerpt: Hay mucha confusión — y algunos bulos — sobre qué nivel de neerlandés
+excerpt: "Hay mucha confusión — y algunos bulos — sobre qué nivel de neerlandés
   necesitas para el inburgering. La respuesta no es la misma para todos: depende
   de cuándo recibiste tu permiso de residencia. Te lo explicamos con claridad y
-  sin alarmar.
+  sin alarmar."
 category: inburgering
 mainImage:
   src: /blog/images/necesitas-a2-o-b1-para-inburgering.jpg
