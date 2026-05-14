@@ -37,55 +37,13 @@ Este cambio se debe a la **Wet Inburgering 2021** (Ley de Integración Cívica 2
 
 El nivel A2 te permite comunicarte en situaciones cotidianas básicas: ir al médico, hacer la compra, entender instrucciones sencillas. El nivel B1 es significativamente más exigente: implica poder participar en conversaciones sobre trabajo, sociedad y temas del día a día con cierta fluidez. Pasar de A2 a B1 requiere aproximadamente el doble de tiempo de estudio.
 
-<div class="tabla-wrapper" style="overflow-x:auto; margin: 2rem 0;">
 
-  <table style="width:100%; border-collapse:collapse; font-family:inherit; font-size:0.95rem; border-radius:12px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.08);">
 
-\    <thead>
-
-\    <tr style="background-color:#4ea3ff; color:white;">
-
-\    <th style="padding:14px 18px; text-align:left; font-weight:600; letter-spacing:0.02em;">Nivel</th>
-
-\    <th style="padding:14px 18px; text-align:left; font-weight:600; letter-spacing:0.02em;">Qué puedes hacer</th>
-
-\    <th style="padding:14px 18px; text-align:left; font-weight:600; letter-spacing:0.02em;">Realidad del examen</th>
-
-\    </tr>
-
-\    </thead>
-
-\    <tbody>
-
-\    <tr style="background-color:#e8f3ff;">
-
-\    <td style="padding:13px 18px; border-bottom:1px solid #d3e7ff; color:#333; font-weight:600;">A2</td>
-
-\    <td style="padding:13px 18px; border-bottom:1px solid #d3e7ff; color:#333;">Pedir un café, presentarte, entender señales y carteles sencillos.</td>
-
-\    <td style="padding:13px 18px; border-bottom:1px solid #d3e7ff; color:#333;">Frases cortas, audios lentos, temas predecibles del día a día.</td>
-
-\    </tr>
-
-\    <tr style="background-color:#ffffff;">
-
-\    <td style="padding:13px 18px; color:#333; font-weight:600;">B1</td>
-
-\    <td style="padding:13px 18px; color:#333;">Escribir una carta de reclamación, defenderte en una entrevista de trabajo, entender una noticia de radio.</td>
-
-\    <td style="padding:13px 18px; color:#333;"><strong>Gramática compleja</strong>, audios rápidos con ruido de fondo y temas abstractos.</td>
-
-\    </tr>
-
-\    </tbody>
-
-  </table>
-
-</div>
+<div class="tabla-wrapper" style="overflow-x:auto; margin: 2rem 0;">  <table style="width:100%; border-collapse:collapse; font-family:inherit; font-size:0.95rem; border-radius:12px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.08);">    <thead>      <tr style="background-color:#4ea3ff; color:white;">        <th style="padding:14px 18px; text-align:left; font-weight:600; letter-spacing:0.02em;">Nivel</th>        <th style="padding:14px 18px; text-align:left; font-weight:600; letter-spacing:0.02em;">Qué puedes hacer</th>        <th style="padding:14px 18px; text-align:left; font-weight:600; letter-spacing:0.02em;">Realidad del examen</th>      </tr>    </thead>    <tbody>      <tr style="background-color:#e8f3ff;">        <td style="padding:13px 18px; border-bottom:1px solid #d3e7ff; color:#333; font-weight:600;">A2</td>        <td style="padding:13px 18px; border-bottom:1px solid #d3e7ff; color:#333;">Pedir un café, presentarte, entender señales y carteles sencillos.</td>        <td style="padding:13px 18px; border-bottom:1px solid #d3e7ff; color:#333;">Frases cortas, audios lentos, temas predecibles del día a día.</td>      </tr>      <tr style="background-color:#ffffff;">        <td style="padding:13px 18px; color:#333; font-weight:600;">B1</td>        <td style="padding:13px 18px; color:#333;">Escribir una carta de reclamación, defenderte en una entrevista de trabajo, entender una noticia de radio.</td>        <td style="padding:13px 18px; color:#333;"><strong>Gramática compleja</strong>, audios rápidos con ruido de fondo y temas abstractos.</td>      </tr>    </tbody>  </table></div>
 
 
 
-📌 \*\*Caso especial:\*\* si estás en la ruta de autosuficiencia (\*Z-route\*), tu requisito sigue siendo \*\*A2\*\*, con exención del módulo laboral.
+📌 **Caso especial**: si estás en la ruta de autosuficiencia (**Z-route**), tu requisito sigue siendo **A2**, con exención del módulo laboral.
 
 ## ¿Y lo de que el A2 ya no vale? ¿Es verdad?
 
