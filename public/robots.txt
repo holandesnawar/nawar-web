@@ -5,4 +5,9 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
+# Landings de venta: no indexar en Google pero dejar que los crawlers
+# de redes sociales (que ignoran robots.txt) generen preview en DMs
+Disallow: /ebook-a0-a1
+Disallow: /ebook-a0-a1/
+
 Sitemap: https://www.holandesnawar.com/sitemap-index.xml
