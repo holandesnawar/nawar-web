@@ -1,0 +1,881 @@
+---
+import Layout from '../layouts/Layout.astro'
+import FooterNuevo from '../components/FooterNuevo.astro'
+import FAQNuevo from '../components/FAQNuevo.astro'
+import '../styles/nawar-sections.css'
+
+export const prerender = true
+
+const mockupHero  = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/6733be7eb79b8_MOCKUP10.png'
+const mockupOpen  = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/6733c5291da36_MOCKUP7.png'
+
+const CHECKOUT_URL = 'https://holandesnawar.systeme.io/ebook-a0-a1-pago'
+
+const features = [
+  {
+    icon: '🇪🇸',
+    badge: 'Traducido al español',
+    title: 'Diseñado para hispanohablantes desde cero',
+    desc: 'Cada explicación, regla y ejemplo está pensado desde el español. Te lleva desde lo más básico hasta el nivel A0–A1 sin pasar por el inglés.',
+  },
+  {
+    icon: '✍️',
+    badge: 'Ejercicios prácticos',
+    title: 'Ejercicios al final de cada lección',
+    desc: 'Para fijar lo que aprendes. Refuerzan vocabulario y gramática, y al final del ebook tienes todas las respuestas para autocorregirte.',
+  },
+  {
+    icon: '📚',
+    badge: 'Gramática + vocabulario',
+    title: 'Todo lo que necesitas para empezar',
+    desc: 'Frases de uso diario, vocabulario esencial y las estructuras gramaticales básicas del neerlandés. Los fundamentos que necesitas, sin relleno.',
+  },
+]
+
+const paraTi = [
+  {
+    icon: '🌱',
+    title: 'Empiezas con el neerlandés',
+    desc: 'Buscas una introducción clara a la gramática básica y a las primeras frases para defenderte en el día a día.',
+  },
+  {
+    icon: '🛂',
+    title: 'Vas al Basisexamen o Inburgering',
+    desc: 'Necesitas asentar las bases del idioma para preparar el examen y conseguir tu visa o nacionalidad.',
+  },
+  {
+    icon: '🔁',
+    title: 'Quieres repasar la base',
+    desc: 'Ya empezaste pero hay reglas que no se te quedan: este ebook es la referencia limpia que estabas buscando.',
+  },
+]
+
+const incluye = [
+  '7 lecciones sobre los temas básicos de la gramática neerlandesa',
+  'Vocabulario esencial incluido en cada lección',
+  'Ejercicios prácticos al final de cada lección',
+  'Explicaciones y traducciones completas al español',
+  'Respuestas a todos los ejercicios',
+  'Acceso de por vida en PDF — descárgalo en cualquier dispositivo',
+]
+
+const ebookTestimonials = [
+  {
+    name: 'Daniel Jiménez',
+    stars: 5,
+    title: 'Claro y bien organizado',
+    text: 'Una herramienta clara y bien organizada para quienes empiezan a estudiar neerlandés. Con explicaciones sencillas y ejemplos prácticos. ¡Muchas gracias!',
+  },
+  {
+    name: 'Manuel Gutiérrez',
+    stars: 5,
+    title: 'Aplicable desde el primer día',
+    text: 'Me gustó especialmente que incluye ejemplos útiles para el día a día: puedes aplicar lo aprendido casi de inmediato. También hay ejercicios que te obligan a practicar, algo que se agradece mucho cuando estás empezando.',
+  },
+  {
+    name: 'Lorena Gómez',
+    stars: 5,
+    title: 'Para empezar sin frustrarse',
+    text: 'Lo ideal para alguien que recién comienza en el idioma: las claves para poder empezar y progresar sin frustrarse.',
+  },
+]
+
+const faqEbook = {
+  badge: '¿Tienes dudas?',
+  title: 'Preguntas frecuentes',
+  items: [
+    {
+      question: '¿Cómo funciona el eBook?',
+      answer: 'Un eBook es un libro digital que puedes leer en cualquier dispositivo: ordenador, tablet o teléfono. Una vez completes tu compra, recibirás un enlace para descargar el eBook en formato PDF y podrás acceder a él en cualquier momento.',
+    },
+    {
+      question: '¿En qué formato está disponible?',
+      answer: 'El eBook está en formato PDF, así que puedes abrirlo en cualquier dispositivo, guardarlo donde prefieras o imprimirlo si te gusta estudiar en papel.',
+    },
+    {
+      question: '¿Necesito conexión a internet para usarlo?',
+      answer: 'No. Una vez descargado, puedes acceder al eBook sin conexión en cualquier momento.',
+    },
+    {
+      question: '¿Cuánto tiempo tendré acceso al eBook?',
+      answer: 'El acceso es de por vida. Podrás consultarlo siempre que lo necesites y volver a descargarlo cuando quieras.',
+    },
+    {
+      question: '¿Incluye ejercicios o material adicional?',
+      answer: 'Sí. Encontrarás ejercicios prácticos al final de cada lección para reforzar el aprendizaje, junto con explicaciones detalladas de gramática y vocabulario, y las respuestas a todos los ejercicios.',
+    },
+    {
+      question: '¿Cómo puedo contactaros si tengo dudas?',
+      answer: 'Si tienes alguna pregunta, escríbenos a info@holandesnawar.com y estaremos encantados de ayudarte.',
+    },
+  ],
+}
+---
+
+<Layout
+  title="eBook A0–A1 de neerlandés | Holandés Nawar"
+  description="Descubre el eBook definitivo para aprender neerlandés desde el español. Gramática clara, vocabulario esencial y ejercicios prácticos para llegar al nivel A0–A1."
+  keywords="ebook neerlandés, ebook holandés, neerlandés A0 A1, gramática neerlandés básico, vocabulario neerlandés básico, aprender holandés desde el español"
+  ogImage={mockupOpen}
+  noindex={true}
+>
+  <!-- ════════════════════════════════════
+       NAVBAR — solo logo + CTA
+  ════════════════════════════════════ -->
+  <header class="ebook-nav" id="ebook-nav">
+    <div class="ebook-nav-inner">
+      <a href="/" class="ebook-nav-logo" aria-label="Ir al inicio de Holandés Nawar">
+        <img
+          src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png"
+          alt="Holandés Nawar"
+        />
+      </a>
+      <a href={CHECKOUT_URL} class="ebook-nav-cta">
+        Quiero mi eBook
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- ════════════════════════════════════
+       HERO
+  ════════════════════════════════════ -->
+  <section class="ebook-hero" data-navbar="dark">
+    <div class="ebook-hero-glow1" aria-hidden="true"></div>
+    <div class="ebook-hero-glow2" aria-hidden="true"></div>
+    <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.5;"></div>
+
+    <div class="ebook-hero-wrap">
+
+      <!-- LEFT: text -->
+      <div class="ebook-hero-text">
+        <span class="badge-dark h-anim" style="--hd:0.08s">
+          <svg class="check-icon" fill="none" viewBox="0 0 12 12">
+            <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          eBook nivel A0 – A1
+        </span>
+
+        <h1 class="hero-title h-anim" style="--hd:0.18s">
+          <span class="hero-title-gradient">Tu primer paso</span><br>
+          <span class="hero-title-gradient">en neerlandés,</span><br>
+          <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;">desde el español</span>
+        </h1>
+
+        <p class="hero-sub h-anim" style="--hd:0.28s">
+          El eBook diseñado para hispanohablantes que quieren aprender neerlandés de forma clara, accesible y divertida. Toda la gramática, vocabulario y ejercicios que necesitas para empezar.
+        </p>
+
+        <ul class="hero-bullets h-anim" style="--hd:0.38s">
+          <li>
+            <span class="hero-check">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </span>
+            Traducido al español, sin pasar por el inglés
+          </li>
+          <li>
+            <span class="hero-check">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </span>
+            7 lecciones con ejercicios y respuestas incluidas
+          </li>
+          <li>
+            <span class="hero-check">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </span>
+            Descarga en PDF con acceso de por vida
+          </li>
+        </ul>
+
+        <div class="ebook-cta-row h-anim" style="--hd:0.48s">
+          <a href={CHECKOUT_URL} class="ebook-cta-primary">
+            Quiero mi eBook
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+          <a href="#que-incluye" class="btn-outline-white ebook-cta-secondary">
+            Ver qué incluye
+          </a>
+        </div>
+
+        <p class="hero-privacy h-anim" style="--hd:0.55s">
+          Pago único · Descarga inmediata · Acceso de por vida
+        </p>
+      </div>
+
+      <!-- RIGHT: ebook mockup -->
+      <div class="ebook-hero-visual h-anim" style="--hd:0.2s">
+        <div class="ebook-mockup-wrap">
+          <img src={mockupHero} alt="eBook A0–A1 de neerlandés de Holandés Nawar" class="ebook-mockup-img" />
+
+          <div class="float-badge fb-top">
+            <span style="font-size:18px;">📘</span>
+            <div>
+              <p>PDF descargable</p>
+              <p>Acceso de por vida</p>
+            </div>
+          </div>
+          <div class="float-badge fb-bot">
+            <span style="font-size:18px;">🇪🇸</span>
+            <div>
+              <p>100% en español</p>
+              <p>Para hispanohablantes</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       FEATURES — Por qué este eBook
+  ════════════════════════════════════ -->
+  <section class="section-light ebook-features-section" data-navbar="light">
+    <div class="dots-light" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.5;"></div>
+    <div class="inner" style="position:relative;z-index:1;">
+
+      <div class="ebook-features-header">
+        <span class="badge-light">Por qué este eBook</span>
+        <h2 class="title" style="color:#1D0084;margin-bottom:16px;">
+          El recurso que faltaba para empezar de verdad
+        </h2>
+        <p class="ebook-features-sub">
+          Sin recursos al azar, sin saltos imposibles y sin tener que pasar por el inglés. Un punto de partida claro para hispanohablantes.
+        </p>
+      </div>
+
+      <div class="ebook-features-grid">
+        {features.map((f) => (
+          <article class="ebook-feature-card sr">
+            <div class="ebook-feature-icon">{f.icon}</div>
+            <span class="ebook-feature-badge">{f.badge}</span>
+            <h3 class="ebook-feature-title">{f.title}</h3>
+            <p class="ebook-feature-desc">{f.desc}</p>
+          </article>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       PARA TI SI…
+  ════════════════════════════════════ -->
+  <section class="section-dark py-section" data-navbar="dark" style="position:relative;overflow:hidden;">
+    <div class="hero-glow1" aria-hidden="true" style="top:-160px;right:-100px;"></div>
+    <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.6;"></div>
+    <div class="inner" style="position:relative;z-index:1;">
+
+      <div class="ebook-para-header">
+        <span class="badge-dark">Para ti si…</span>
+        <h2 class="title" style="margin-bottom:0;">
+          <span class="text-gradient-white">Este eBook es para ti</span><br class="hidden md:block" />
+          <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;">si te identificas con esto</span>
+        </h2>
+      </div>
+
+      <div class="ebook-para-grid">
+        {paraTi.map((p) => (
+          <article class="ebook-para-card sr">
+            <div class="ebook-para-icon">{p.icon}</div>
+            <h3 class="ebook-para-title">{p.title}</h3>
+            <p class="ebook-para-desc">{p.desc}</p>
+          </article>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       QUÉ INCLUYE  +  CTA principal
+  ════════════════════════════════════ -->
+  <section id="que-incluye" class="section-dark py-section" data-navbar="dark" style="position:relative;overflow:hidden;padding-top:32px;">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:1000px;height:700px;background:radial-gradient(ellipse at center,rgba(11,109,240,0.30) 0%,transparent 65%);pointer-events:none;" aria-hidden="true"></div>
+
+    <div class="inner" style="position:relative;z-index:1;">
+      <div class="ebook-incluye-grid">
+
+        <!-- LEFT: mockup -->
+        <div class="ebook-incluye-img-wrap sr">
+          <img src={mockupOpen} alt="eBook abierto mostrando contenido en español y neerlandés" class="ebook-incluye-img" />
+        </div>
+
+        <!-- RIGHT: lista + CTA -->
+        <div class="ebook-incluye-text sr d1">
+          <span class="badge-dark">¿Qué encontrarás dentro?</span>
+          <h2 class="value-title">
+            <span class="text-gradient-white">Todo lo que necesitas para</span><br class="hidden md:block" />
+            <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;">tu nivel A0 – A1</span>
+          </h2>
+
+          <ul class="ebook-incluye-list">
+            {incluye.map((item) => (
+              <li>
+                <span class="ebook-incluye-check">
+                  <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div class="ebook-incluye-cta">
+            <a href={CHECKOUT_URL} class="ebook-cta-primary ebook-cta-big">
+              Tu eBook te espera
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </a>
+            <p class="ebook-incluye-note">Pago único · Descarga inmediata en PDF</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       TESTIMONIOS (light)
+  ════════════════════════════════════ -->
+  <section id="opiniones" class="section-light ebook-testimonials" data-navbar="light">
+    <div class="dots-light" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.5;"></div>
+    <div class="inner" style="position:relative;z-index:1;">
+
+      <div class="ebook-test-header">
+        <span class="badge-light">Resultados reales</span>
+        <h2 class="title" style="color:#1D0084;margin:0;">
+          Esto dicen nuestros alumnos
+        </h2>
+      </div>
+
+      <div class="ebook-test-grid">
+        {ebookTestimonials.map((t) => (
+          <article class="ebook-test-card sr-s">
+            <div class="ebook-test-head">
+              <p class="ebook-test-name">{t.name}</p>
+              <div class="ebook-test-stars" aria-label={`${t.stars} de 5 estrellas`}>
+                {Array.from({ length: t.stars }).map(() => (
+                  <svg viewBox="0 0 20 20" fill="#F58220" width="14" height="14">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                  </svg>
+                ))}
+              </div>
+            </div>
+            {t.title && <p class="ebook-test-title">{t.title}</p>}
+            <p class="ebook-test-text">{t.text}</p>
+          </article>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       FAQ
+  ════════════════════════════════════ -->
+  <FAQNuevo data={faqEbook} />
+
+  <FooterNuevo />
+</Layout>
+
+<style>
+/* ════════════════════════════════════
+   NAVBAR ebook (logo + CTA)
+════════════════════════════════════ */
+.ebook-nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 50;
+  background-color: rgba(29, 0, 132, 0);
+}
+.ebook-nav-inner {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.ebook-nav-logo { display: inline-flex; align-items: center; flex-shrink: 0; }
+.ebook-nav-logo img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+.ebook-nav-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 22px;
+  border-radius: 8px;
+  background: #4da3ff;
+  color: #1D0084;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.ebook-nav-cta:hover { background: #3391f0; }
+@media (max-width: 600px) {
+  .ebook-nav-inner { height: 64px; padding: 0 16px; }
+  .ebook-nav-logo img { height: 38px; }
+  .ebook-nav-cta { padding: 10px 16px; font-size: 13px; gap: 6px; }
+  .ebook-nav-cta svg { width: 12px; height: 12px; }
+}
+
+/* ── Hero animations ── */
+@keyframes h-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.h-anim {
+  opacity: 0;
+  animation: h-in 0.75s cubic-bezier(0.22,1,0.36,1) forwards;
+  animation-delay: var(--hd, 0s);
+}
+
+/* ── Hero title gradient (per-letter) ── */
+.hero-title-gradient {
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Hero bullets ── */
+.hero-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+.hero-bullets li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.45;
+}
+.hero-check {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid #4da3ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4da3ff;
+}
+
+.hero-sub {
+  font-size: clamp(15px, 1.4vw, 17px);
+  max-width: 480px;
+  margin-bottom: 22px;
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+.hero-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(38px, 5.2vw, 64px);
+  font-weight: 700; letter-spacing: -0.03em; line-height: 1.05;
+  color: #fff;
+  margin: 0 0 18px;
+}
+
+.hero-privacy {
+  font-size: 12px;
+  color: rgba(255,253,253,0.75);
+}
+
+/* ════════════════════════════════════
+   HERO
+════════════════════════════════════ */
+.ebook-hero {
+  background: #1D0084;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+.ebook-hero-glow1 {
+  position: absolute; top: -120px; right: -80px;
+  width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(11,109,240,0.40) 0%, transparent 65%);
+  pointer-events: none;
+}
+.ebook-hero-glow2 {
+  position: absolute; bottom: -200px; left: -100px;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(11,109,240,0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+.ebook-hero-wrap {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 130px 32px 80px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 64px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.ebook-hero-text { display: flex; flex-direction: column; align-items: flex-start; }
+.ebook-hero-text .hero-sub { max-width: 520px; }
+
+.ebook-hero-visual {
+  display: flex; align-items: center; justify-content: center;
+}
+.ebook-mockup-wrap {
+  position: relative;
+  width: 100%; max-width: 460px;
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.45));
+}
+.ebook-mockup-img {
+  width: 100%; height: auto; display: block;
+  transform: rotate(-2deg);
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+.ebook-mockup-wrap:hover .ebook-mockup-img { transform: rotate(0deg) scale(1.02); }
+
+/* ── CTA ── */
+.ebook-cta-row {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  margin-top: 4px; margin-bottom: 18px;
+}
+.ebook-cta-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 26px; border-radius: 8px;
+  background: #4da3ff; color: #1D0084;
+  font-size: 14px; font-weight: 700;
+  text-decoration: none;
+  border: none;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.ebook-cta-primary:hover { background: #3391f0; }
+.ebook-cta-big {
+  padding: 16px 32px; font-size: 16px;
+}
+.ebook-cta-secondary {
+  font-size: 14px;
+  padding: 14px 22px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ════════════════════════════════════
+   FEATURES (light section)
+════════════════════════════════════ */
+.ebook-features-section {
+  padding: 96px 0;
+}
+.ebook-features-header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 56px;
+}
+.ebook-features-sub {
+  font-size: 17px;
+  color: #1D0084;
+  line-height: 1.65;
+}
+@media (max-width: 767px) {
+  .ebook-features-section { padding: 36px 0 56px; }
+  .ebook-features-header { margin-bottom: 32px; }
+}
+
+.ebook-features-grid {
+  display: grid; grid-template-columns: 1fr; gap: 20px;
+}
+@media (min-width: 768px)  { .ebook-features-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .ebook-features-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+.ebook-feature-card {
+  background: #fff;
+  border: 1px solid #DDE6F5;
+  border-radius: 20px;
+  padding: 32px 28px;
+  box-shadow: 0 2px 16px rgba(29,0,132,0.05);
+  display: flex; flex-direction: column; align-items: flex-start;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.ebook-feature-card:hover {
+  border-color: rgba(2,93,199,0.22);
+  box-shadow: 0 8px 32px rgba(2,93,199,0.10);
+  transform: translateY(-3px);
+}
+.ebook-feature-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: linear-gradient(135deg, #d6effc 0%, #9fd5f5 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; margin-bottom: 20px;
+}
+.ebook-feature-badge {
+  display: inline-flex; align-items: center;
+  padding: 5px 13px; border-radius: 9999px;
+  background: #F0F5FF; color: #025dc7;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.ebook-feature-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 19px; font-weight: 600; color: #1D0084;
+  letter-spacing: -0.01em; line-height: 1.3; margin-bottom: 12px;
+}
+.ebook-feature-desc {
+  font-size: 14.5px; color: #1D0084; font-weight: 500; line-height: 1.65;
+}
+
+/* ════════════════════════════════════
+   PARA TI SI… (dark)
+════════════════════════════════════ */
+.ebook-para-header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 36px;
+}
+@media (max-width: 767px) {
+  .ebook-para-header { margin-bottom: 24px; }
+}
+
+.ebook-para-grid {
+  display: grid; grid-template-columns: 1fr; gap: 18px;
+}
+@media (min-width: 768px)  { .ebook-para-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+.ebook-para-card {
+  position: relative; overflow: hidden;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 20px;
+  padding: 28px 24px;
+  transition: border-color 0.25s, background 0.25s, transform 0.25s;
+}
+.ebook-para-card:hover {
+  border-color: rgba(77,163,255,0.35);
+  background: rgba(255,255,255,0.08);
+  transform: translateY(-3px);
+}
+.ebook-para-icon { font-size: 30px; margin-bottom: 14px; }
+.ebook-para-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 18px; font-weight: 700; color: #fff;
+  margin-bottom: 10px; letter-spacing: -0.01em;
+}
+.ebook-para-desc {
+  font-size: 14.5px; color: rgba(255,255,255,0.85); line-height: 1.65;
+}
+
+/* ════════════════════════════════════
+   QUÉ INCLUYE + CTA
+════════════════════════════════════ */
+.ebook-incluye-grid {
+  display: grid; grid-template-columns: 1fr; gap: 56px;
+  align-items: center;
+}
+@media (min-width: 1024px) {
+  .ebook-incluye-grid { grid-template-columns: 1fr 1fr; gap: 72px; }
+}
+.ebook-incluye-img-wrap {
+  display: flex; align-items: center; justify-content: center;
+}
+.ebook-incluye-img {
+  width: 100%; max-width: 520px; height: auto;
+  filter: drop-shadow(0 20px 50px rgba(0,0,0,0.35));
+  transform: rotate(2deg);
+  transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+.ebook-incluye-img-wrap:hover .ebook-incluye-img { transform: rotate(0deg) scale(1.02); }
+
+.ebook-incluye-text { display: flex; flex-direction: column; align-items: flex-start; }
+.ebook-incluye-text .value-title { margin-bottom: 28px; }
+
+.ebook-incluye-list {
+  list-style: none; padding: 0; margin: 0 0 36px;
+  display: flex; flex-direction: column; gap: 14px;
+  width: 100%;
+}
+.ebook-incluye-list li {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 16px; font-weight: 500; color: #fff; line-height: 1.55;
+}
+.ebook-incluye-check {
+  flex-shrink: 0; margin-top: 2px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(77,163,255,0.18);
+  border: 1px solid rgba(77,163,255,0.45);
+  color: #4da3ff;
+  display: flex; align-items: center; justify-content: center;
+}
+.ebook-incluye-cta {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+}
+.ebook-incluye-note {
+  font-size: 13px; color: rgba(255,255,255,0.65);
+}
+
+/* ════════════════════════════════════
+   TESTIMONIOS (light)
+════════════════════════════════════ */
+.ebook-testimonials {
+  padding: 96px 0 64px;
+  position: relative;
+  overflow: hidden;
+}
+@media (max-width: 767px) {
+  .ebook-testimonials { padding: 56px 0 32px; }
+}
+.ebook-test-header {
+  text-align: center;
+  max-width: 920px;
+  margin: 0 auto 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+@media (min-width: 768px) {
+  .ebook-test-header .title { white-space: nowrap; }
+}
+.ebook-test-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+@media (min-width: 768px)  { .ebook-test-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .ebook-test-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+.ebook-test-card {
+  background: #fff;
+  border: 1px solid #DDE6F5;
+  border-radius: 18px;
+  padding: 26px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 2px 12px rgba(29,0,132,0.04);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.ebook-test-card:hover {
+  border-color: rgba(2,93,199,0.22);
+  box-shadow: 0 8px 32px rgba(2,93,199,0.08);
+  transform: translateY(-2px);
+}
+.ebook-test-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ebook-test-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1D0084;
+  margin: 0;
+}
+.ebook-test-stars { display: flex; gap: 2px; flex-shrink: 0; }
+.ebook-test-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #1D0084;
+  margin: 0;
+  line-height: 1.35;
+}
+.ebook-test-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(29,0,132,0.88);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════ */
+@media (max-width: 900px) {
+  .ebook-hero { min-height: auto; }
+  .ebook-hero-wrap {
+    grid-template-columns: 1fr;
+    padding: 110px 24px 56px;
+    gap: 32px;
+  }
+  .ebook-hero-text  { order: 1; }
+  .ebook-hero-visual { order: 2; margin-top: 4px; }
+  .ebook-mockup-wrap { max-width: 320px; margin: 0 auto; }
+  .ebook-mockup-img { transform: rotate(0deg); }
+  .ebook-cta-row { width: 100%; flex-direction: column; align-items: stretch; }
+  .ebook-cta-primary { justify-content: center; }
+  .float-badge { display: none; }
+  .ebook-incluye-img { transform: rotate(0deg); max-width: 360px; }
+  .ebook-cta-big { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 600px) {
+  .hidden { display: none; }
+}
+</style>
+
+<script>
+  const nav = document.getElementById('ebook-nav') as HTMLElement | null
+  if (nav) {
+    type NavTheme = 'dark' | 'light'
+    const readTheme = (el: Element | null): NavTheme | null => {
+      let node: Element | null = el
+      while (node) {
+        const t = node.getAttribute('data-navbar')
+        if (t === 'light' || t === 'dark') return t as NavTheme
+        node = node.parentElement
+      }
+      return null
+    }
+    const update = () => {
+      const sy = window.scrollY
+      const vh = window.innerHeight
+      const themeBottom = readTheme(document.elementFromPoint(window.innerWidth / 2, 72))
+      const themeTop    = readTheme(document.elementFromPoint(window.innerWidth / 2, 4))
+      if (themeBottom === 'light') {
+        nav.style.transition = 'background-color 0.55s ease'
+        nav.style.backgroundColor = 'rgba(29,0,132,1)'
+      } else if (themeTop === 'dark' && sy > vh * 0.9) {
+        nav.style.transition = 'background-color 0.55s ease'
+        nav.style.backgroundColor = 'rgba(29,0,132,0)'
+      } else {
+        const fadeStart = vh * 0.38
+        const fadeEnd   = vh * 0.84
+        const opacity   = Math.min(1, Math.max(0, (sy - fadeStart) / (fadeEnd - fadeStart)))
+        nav.style.transition = 'none'
+        nav.style.backgroundColor = `rgba(29,0,132,${opacity.toFixed(3)})`
+      }
+    }
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+  }
+</script>
