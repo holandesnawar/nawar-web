@@ -1,81 +1,450 @@
 ---
-export const prerender = true;
+import Layout from '../layouts/Layout.astro'
+
+export const prerender = false
 ---
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Matrícula — Formación Nawar A0-A1</title>
-  <meta name="robots" content="noindex, nofollow">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;min-height:100vh;font-family:'Inter',sans-serif;color:#fff;background:#1D0084;background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px),radial-gradient(circle 700px at 100% 0%,rgba(11,109,240,.40) 0%,transparent 65%),radial-gradient(circle 600px at 0% 100%,rgba(11,109,240,.18) 0%,transparent 65%);background-size:28px 28px,auto,auto;background-repeat:repeat,no-repeat,no-repeat}
-    body{display:flex;align-items:center;justify-content:center;padding:4rem 1.5rem}
-    .wrap{width:100%;max-width:36rem}
-    h1{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(28px,6vw,40px);line-height:1.1;text-align:center;margin:0 0 .5rem 0}
-    .sub{text-align:center;color:rgba(255,255,255,.7);margin:0 0 2rem 0;font-size:15px}
-    form{display:grid;gap:1rem}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-    @media(max-width:640px){.row{grid-template-columns:1fr}}
-    label{display:block;font-weight:600;font-size:14px;margin-bottom:.375rem;color:#fff}
-    label .hint{font-weight:400;font-size:12px;color:rgba(255,255,255,.5)}
-    input,select{width:100%;padding:.75rem 1rem;border-radius:.5rem;border:0;outline:0;background:#fff;color:#111827;font-size:16px;font-family:inherit}
-    input:focus,select:focus{box-shadow:0 0 0 2px rgba(77,163,255,.6)}
-    button{margin-top:.5rem;width:100%;padding:.9rem 1rem;background:#4da3ff;color:#0a1656;border:0;border-radius:.5rem;cursor:pointer;font-weight:700;font-size:16px;font-family:inherit}
-    button:hover:not(:disabled){background:#6cb5ff}
-    button:disabled{opacity:.55;cursor:not-allowed}
-    .legal{text-align:center;font-size:12px;color:rgba(255,255,255,.55);margin:.75rem 0 0 0}
-    .legal a{color:#fff;text-decoration:underline}
-    .err{position:fixed;top:0;left:0;right:0;z-index:50;background:#EF4444;color:#fff;padding:.75rem 1rem;display:none;font-size:14px;font-weight:500}
-    .err.show{display:flex;justify-content:space-between;gap:1rem}
-    .err button.close{background:transparent;color:#fff;padding:.25rem .5rem;border:0;font-size:18px;font-weight:700;cursor:pointer;width:auto}
-  </style>
-</head>
-<body>
-  <div id="err" class="err" role="alert"><span id="errText"></span><button class="close" onclick="document.getElementById('err').classList.remove('show')" aria-label="Cerrar">×</button></div>
-  <div class="wrap">
-    <h1>Formulario de matrícula</h1>
-    <p class="sub">Rellena tus datos y pasa al pago. Solo tarda un minuto.</p>
-    <form id="form">
-      <div class="row">
-        <div><label for="first_name">Nombre</label><input id="first_name" type="text" autocomplete="given-name" required></div>
-        <div><label for="last_name">Apellidos</label><input id="last_name" type="text" autocomplete="family-name" required></div>
-      </div>
-      <div><label for="email">Correo</label><input id="email" type="email" autocomplete="email" placeholder="tu@email.com" required></div>
-      <div><label for="phone">Teléfono <span class="hint">— con prefijo internacional, ej. +34 600 12 34 56</span></label><input id="phone" type="tel" autocomplete="tel" placeholder="+34 600 12 34 56"></div>
-      <div class="row">
-        <div><label for="country">País</label>
-          <select id="country">
-            <option value="NL">Países Bajos</option><option value="ES">España</option><option value="BE">Bélgica</option><option value="DE">Alemania</option><option value="FR">Francia</option><option value="IT">Italia</option><option value="PT">Portugal</option><option value="MX">México</option><option value="AR">Argentina</option><option value="CO">Colombia</option><option value="CL">Chile</option><option value="PE">Perú</option><option value="US">Estados Unidos</option><option value="GB">Reino Unido</option><option value="OTRO">Otro</option>
-          </select>
-        </div>
-        <div><label for="city">Ciudad</label><input id="city" type="text" autocomplete="address-level2"></div>
-      </div>
-      <button id="submit" type="submit">Continuar al pago →</button>
-      <p class="legal">Al continuar aceptas los <a href="/terminos-y-condiciones" target="_blank">Términos</a> y la <a href="/politica-de-privacidad" target="_blank">Política de privacidad</a>.</p>
-    </form>
+
+<Layout
+  title="Matrícula — Formación Nawar A0-A1"
+  description="Reserva tu plaza en la Formación Nawar A0-A1 y empieza a aprender neerlandés desde cero: método desde el español, clases en vivo y una comunidad que te acompaña."
+>
+  <!-- Banner de error global -->
+  <div id="err" class="mx-toast" role="alert">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>
+    </svg>
+    <span id="errText"></span>
+    <button class="mx-toast-close" type="button" id="errClose" aria-label="Cerrar">×</button>
   </div>
-  <script is:inline>
-    (function(){
-      var form=document.getElementById('form'),btn=document.getElementById('submit'),err=document.getElementById('err'),errText=document.getElementById('errText');
-      function showError(m){errText.textContent=m;err.classList.add('show');window.scrollTo({top:0,behavior:'smooth'})}
-      form.addEventListener('submit',async function(ev){
-        ev.preventDefault();err.classList.remove('show');
-        var payload={first_name:form.first_name.value.trim(),last_name:form.last_name.value.trim(),email:form.email.value.trim().toLowerCase(),phone:form.phone.value.trim(),country:form.country.value,city:form.city.value.trim()};
-        if(!payload.first_name||!payload.last_name||!payload.email){showError('Rellena nombre, apellidos y email para continuar.');return}
-        btn.disabled=true;btn.textContent='Preparando tu pago…';
-        try{
-          var res=await fetch('https://academia.holandesnawar.nl/api/v1/payments/enroll',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-          var data=await res.json();
-          if(!res.ok||!data||!data.checkout_url){showError((data&&data.detail)||'No se pudo crear la matrícula.');btn.disabled=false;btn.textContent='Continuar al pago →';return}
-          window.location.href=data.checkout_url;
-        }catch(e){showError('Hubo un problema de red. Vuelve a intentarlo.');btn.disabled=false;btn.textContent='Continuar al pago →'}
-      });
-    })();
-  </script>
-</body>
-</html>
+
+  <div class="mx-page">
+    <div class="mx-glow1" aria-hidden="true"></div>
+    <div class="mx-glow2" aria-hidden="true"></div>
+    <div class="mx-dots" aria-hidden="true"></div>
+
+    <div class="mx-shell">
+      <!-- Logo -->
+      <a href="/" class="mx-logo-link" aria-label="Volver al inicio">
+        <img
+          src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png"
+          alt="Holandés Nawar"
+          class="mx-logo"
+          width="150"
+          height="38"
+        />
+      </a>
+
+      <!-- Header -->
+      <header class="mx-header">
+        <span class="mx-badge">
+          <svg class="mx-badge-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true">
+            <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Formación A0 → A1 · Plazas limitadas
+        </span>
+        <h1 class="mx-title"><span class="mx-title-gradient">Reserva tu plaza y empieza desde cero</span></h1>
+        <p class="mx-lead">Estás a un paso de tu primera clase.</p>
+        <p class="mx-body">
+          Completa tus datos y pasa al pago seguro. En cuanto se confirme,
+          recibirás un email para crear tu cuenta y entrar a la academia.
+        </p>
+
+        <!-- Beneficios -->
+        <ul class="mx-perks">
+          <li><span class="mx-perk-dot"></span>Método desde el español</li>
+          <li><span class="mx-perk-dot"></span>Clases en vivo</li>
+          <li><span class="mx-perk-dot"></span>Comunidad activa</li>
+          <li><span class="mx-perk-dot"></span>Acceso inmediato</li>
+        </ul>
+      </header>
+
+      <!-- Formulario en panel glass -->
+      <form id="form" class="mx-form" novalidate>
+        {/* Honeypot anti-bot */}
+        <div class="mx-honeypot" aria-hidden="true">
+          <label>No rellenar
+            <input type="text" id="mx-honeypot" name="website" tabindex="-1" autocomplete="off" />
+          </label>
+        </div>
+
+        <div class="mx-row">
+          <div class="mx-field">
+            <label class="mx-label" for="first_name">Nombre <span class="mx-req">*</span></label>
+            <input id="first_name" name="first_name" type="text" class="mx-input" placeholder="Tu nombre" autocomplete="given-name" required />
+            <span class="mx-err" data-for="first_name">Completa este campo</span>
+          </div>
+          <div class="mx-field">
+            <label class="mx-label" for="last_name">Apellidos <span class="mx-req">*</span></label>
+            <input id="last_name" name="last_name" type="text" class="mx-input" placeholder="Tus apellidos" autocomplete="family-name" required />
+            <span class="mx-err" data-for="last_name">Completa este campo</span>
+          </div>
+        </div>
+
+        <div class="mx-field">
+          <label class="mx-label" for="email">Correo electrónico <span class="mx-req">*</span></label>
+          <input id="email" name="email" type="email" class="mx-input" placeholder="tu@email.com" autocomplete="email" required />
+          <span class="mx-err" data-for="email">Introduce un email válido</span>
+        </div>
+
+        <div class="mx-field">
+          <label class="mx-label" for="phone">Teléfono <span class="mx-hint">— con prefijo, ej. +34 600 12 34 56</span></label>
+          <input id="phone" name="phone" type="tel" class="mx-input" placeholder="+34 600 12 34 56" autocomplete="tel" />
+        </div>
+
+        <div class="mx-row">
+          <div class="mx-field">
+            <label class="mx-label" for="country">País</label>
+            <div class="mx-select-wrap">
+              <select id="country" name="country" class="mx-select">
+                <option value="NL">Países Bajos</option>
+                <option value="ES">España</option>
+                <option value="BE">Bélgica</option>
+                <option value="DE">Alemania</option>
+                <option value="FR">Francia</option>
+                <option value="IT">Italia</option>
+                <option value="PT">Portugal</option>
+                <option value="MX">México</option>
+                <option value="AR">Argentina</option>
+                <option value="CO">Colombia</option>
+                <option value="CL">Chile</option>
+                <option value="PE">Perú</option>
+                <option value="US">Estados Unidos</option>
+                <option value="GB">Reino Unido</option>
+                <option value="OTRO">Otro</option>
+              </select>
+              <svg class="mx-select-arrow" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </div>
+          </div>
+          <div class="mx-field">
+            <label class="mx-label" for="city">Ciudad</label>
+            <input id="city" name="city" type="text" class="mx-input" placeholder="Tu ciudad" autocomplete="address-level2" />
+          </div>
+        </div>
+
+        <button id="submit" type="submit" class="mx-btn">
+          <span id="mx-btn-text">Continuar al pago</span>
+          <svg id="mx-btn-arrow" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+          <svg id="mx-btn-spinner" class="mx-spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:none;" aria-hidden="true">
+            <path stroke-linecap="round" d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+        </button>
+
+        <div class="mx-trust">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+          </svg>
+          Pago 100% seguro procesado por Stripe
+        </div>
+
+        <p class="mx-legal">
+          Al continuar confirmo que he leído y acepto los
+          <a href="/terminos-y-condiciones" target="_blank" rel="noreferrer">Términos</a>
+          y la
+          <a href="/politica-de-privacidad" target="_blank" rel="noreferrer">Política de privacidad</a>.
+        </p>
+      </form>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* ── Página ── */
+  .mx-page {
+    min-height: 100vh;
+    background: #1d0084;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 56px 32px 100px;
+  }
+  .mx-glow1 {
+    position: absolute; top: -160px; left: 50%; transform: translateX(-50%);
+    width: 1000px; height: 580px;
+    background: radial-gradient(ellipse at center, rgba(11, 109, 240, 0.5) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .mx-glow2 {
+    position: absolute; bottom: -80px; right: -100px;
+    width: 640px; height: 420px;
+    background: radial-gradient(ellipse at center, rgba(77, 163, 255, 0.16) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .mx-dots {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.5;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* ── Shell ── */
+  .mx-shell {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 640px;
+    display: flex; flex-direction: column; align-items: flex-start;
+    color: #fff;
+  }
+
+  /* ── Logo ── */
+  .mx-logo-link { display: inline-block; margin-bottom: 40px; }
+  .mx-logo { height: 38px; width: auto; object-fit: contain; }
+
+  /* ── Badge ── */
+  .mx-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px; border-radius: 9999px;
+    background: #025dc7;
+    border: 1px solid rgba(77, 163, 255, 0.2);
+    color: #e0f2ff;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.13em; text-transform: uppercase;
+  }
+  .mx-badge-icon { width: 12px; height: 12px; }
+
+  /* ── Header ── */
+  .mx-header {
+    width: 100%;
+    display: flex; flex-direction: column; align-items: flex-start;
+    gap: 14px; margin: 14px 0 40px;
+  }
+  .mx-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: clamp(34px, 5.2vw, 52px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.08;
+    margin: 4px 0 0;
+  }
+  .mx-title-gradient {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.45) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .mx-lead {
+    font-size: clamp(17px, 1.8vw, 20px);
+    font-weight: 700; line-height: 1.4;
+    color: rgba(255, 255, 255, 0.95);
+    max-width: 540px; margin: 0;
+  }
+  .mx-body {
+    font-size: clamp(14px, 1.3vw, 16px);
+    font-weight: 400; line-height: 1.7;
+    color: rgba(255, 255, 255, 0.72);
+    max-width: 540px; margin: 0;
+  }
+
+  /* ── Beneficios ── */
+  .mx-perks {
+    list-style: none; padding: 0; margin: 6px 0 0;
+    display: flex; flex-wrap: wrap; gap: 10px 22px;
+  }
+  .mx-perks li {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.88);
+  }
+  .mx-perk-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #4da3ff; box-shadow: 0 0 10px rgba(77, 163, 255, 0.8);
+  }
+
+  /* ── Form (panel glass) ── */
+  .mx-form {
+    width: 100%;
+    display: flex; flex-direction: column; gap: 26px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 22px;
+    padding: 34px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.6);
+  }
+
+  .mx-honeypot {
+    position: absolute !important; left: -10000px !important;
+    width: 1px !important; height: 1px !important;
+    overflow: hidden !important; opacity: 0 !important; pointer-events: none !important;
+  }
+
+  .mx-row { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+  .mx-field { display: flex; flex-direction: column; gap: 8px; position: relative; }
+
+  .mx-label { font-size: 14px; font-weight: 600; color: #fff; line-height: 1.4; }
+  .mx-req { color: rgba(255, 255, 255, 0.45); font-weight: 500; }
+  .mx-hint { font-weight: 400; font-size: 12px; color: rgba(255, 255, 255, 0.5); }
+
+  .mx-input {
+    width: 100%; background: transparent; border: none;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.28);
+    border-radius: 0; padding: 10px 0;
+    color: #fff; font-size: 16px; font-family: inherit;
+    outline: none; transition: border-color 0.2s; box-sizing: border-box;
+  }
+  .mx-input::placeholder { color: rgba(255, 255, 255, 0.3); }
+  .mx-input:focus { border-bottom-color: #4da3ff; }
+  .mx-input.invalid { border-bottom-color: rgba(255, 100, 100, 0.85); }
+
+  .mx-err { display: none; font-size: 12px; color: rgba(255, 120, 120, 0.95); font-weight: 500; }
+  .mx-err.visible { display: block; }
+
+  .mx-select-wrap { position: relative; }
+  .mx-select {
+    width: 100%; background: transparent; border: none;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.28);
+    border-radius: 0; padding: 10px 24px 10px 0;
+    color: #fff; font-size: 16px; font-family: inherit;
+    outline: none; appearance: none; -webkit-appearance: none;
+    cursor: pointer; transition: border-color 0.2s; color-scheme: dark;
+  }
+  .mx-select option { background: #1a0099; color: #fff; }
+  .mx-select:focus { border-bottom-color: #4da3ff; }
+  .mx-select-arrow {
+    position: absolute; right: 2px; top: 50%; transform: translateY(-50%);
+    pointer-events: none; color: rgba(255, 255, 255, 0.45);
+  }
+
+  /* ── Botón ── */
+  .mx-btn {
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    width: 100%; margin-top: 4px; padding: 16px 36px;
+    border-radius: 12px; border: none; cursor: pointer;
+    background: #4da3ff; color: #0a1656;
+    font-size: 17px; font-weight: 700; font-family: inherit;
+    transition: background-color 0.15s;
+  }
+  .mx-btn:hover:not(:disabled) { background: #6cb5ff; }
+  .mx-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+  @keyframes mx-spin { to { transform: rotate(360deg); } }
+  .mx-spinner { animation: mx-spin 0.8s linear infinite; }
+
+  /* ── Confianza / legal ── */
+  .mx-trust {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, 0.7);
+    margin-top: -8px;
+  }
+  .mx-legal {
+    text-align: center; font-size: 12px; line-height: 1.6;
+    color: rgba(255, 255, 255, 0.45); margin: 0;
+  }
+  .mx-legal a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.25);
+  }
+  .mx-legal a:hover { color: #fff; }
+
+  /* ── Toast de error ── */
+  .mx-toast {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: none; align-items: center; gap: 10px;
+    padding: 13px 18px;
+    background: #ef4444; color: #fff;
+    font-size: 14px; font-weight: 500;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  }
+  .mx-toast.show { display: flex; }
+  .mx-toast span { flex: 1; }
+  .mx-toast-close {
+    background: transparent; border: none; color: #fff;
+    font-size: 20px; font-weight: 700; line-height: 1;
+    cursor: pointer; padding: 2px 6px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .mx-page { padding: 36px 18px 72px; }
+    .mx-form { padding: 24px 20px; gap: 22px; }
+    .mx-row { grid-template-columns: 1fr; gap: 22px; }
+    .mx-title { font-size: clamp(28px, 9vw, 38px); }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('form') as HTMLFormElement | null
+  const btn = document.getElementById('submit') as HTMLButtonElement | null
+  const btnText = document.getElementById('mx-btn-text') as HTMLElement | null
+  const btnArrow = document.getElementById('mx-btn-arrow') as HTMLElement | null
+  const spinner = document.getElementById('mx-btn-spinner') as HTMLElement | null
+  const toast = document.getElementById('err') as HTMLElement | null
+  const toastText = document.getElementById('errText') as HTMLElement | null
+  const toastClose = document.getElementById('errClose') as HTMLButtonElement | null
+
+  function setLoading(on: boolean) {
+    if (!btn) return
+    btn.disabled = on
+    if (btnText) btnText.textContent = on ? 'Preparando tu pago…' : 'Continuar al pago'
+    if (btnArrow) btnArrow.style.display = on ? 'none' : 'block'
+    if (spinner) spinner.style.display = on ? 'block' : 'none'
+  }
+
+  function showToast(msg: string) {
+    if (toastText) toastText.textContent = msg
+    toast?.classList.add('show')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+  toastClose?.addEventListener('click', () => toast?.classList.remove('show'))
+
+  function showError(id: string, show: boolean) {
+    const input = document.getElementById(id) as HTMLInputElement | null
+    const err = document.querySelector(`[data-for="${id}"]`) as HTMLElement | null
+    input?.classList.toggle('invalid', show)
+    err?.classList.toggle('visible', show)
+  }
+
+  function validate(): boolean {
+    const first = (document.getElementById('first_name') as HTMLInputElement)?.value?.trim()
+    const last = (document.getElementById('last_name') as HTMLInputElement)?.value?.trim()
+    const email = (document.getElementById('email') as HTMLInputElement)?.value?.trim()
+    let ok = true
+    showError('first_name', !first); if (!first) ok = false
+    showError('last_name', !last); if (!last) ok = false
+    const emailBad = !email || !email.includes('@')
+    showError('email', emailBad); if (emailBad) ok = false
+    return ok
+  }
+
+  ;['first_name', 'last_name', 'email'].forEach((id) => {
+    document.getElementById(id)?.addEventListener('input', () => showError(id, false))
+  })
+
+  form?.addEventListener('submit', async (ev) => {
+    ev.preventDefault()
+    toast?.classList.remove('show')
+    if (!validate()) return
+    setLoading(true)
+
+    const payload = {
+      first_name: (document.getElementById('first_name') as HTMLInputElement).value.trim(),
+      last_name: (document.getElementById('last_name') as HTMLInputElement).value.trim(),
+      email: (document.getElementById('email') as HTMLInputElement).value.trim().toLowerCase(),
+      phone: (document.getElementById('phone') as HTMLInputElement).value.trim(),
+      country: (document.getElementById('country') as HTMLSelectElement).value,
+      city: (document.getElementById('city') as HTMLInputElement).value.trim(),
+      website: (document.getElementById('mx-honeypot') as HTMLInputElement | null)?.value ?? '',
+    }
+
+    try {
+      const res = await fetch('/api/enroll', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const data = await res.json().catch(() => null)
+      if (!res.ok || !data || !data.checkout_url) {
+        showToast((data && data.detail) || 'No se pudo crear la matrícula. Vuelve a intentarlo en un momento.')
+        setLoading(false)
+        return
+      }
+      window.location.href = data.checkout_url
+    } catch {
+      showToast('Hubo un problema de red. Revisa tu conexión y vuelve a intentarlo.')
+      setLoading(false)
+    }
+  })
+</script>
