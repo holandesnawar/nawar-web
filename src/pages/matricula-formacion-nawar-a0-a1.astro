@@ -1,0 +1,81 @@
+---
+export const prerender = true;
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Matrícula — Formación Nawar A0-A1</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;min-height:100vh;font-family:'Inter',sans-serif;color:#fff;background:#1D0084;background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px),radial-gradient(circle 700px at 100% 0%,rgba(11,109,240,.40) 0%,transparent 65%),radial-gradient(circle 600px at 0% 100%,rgba(11,109,240,.18) 0%,transparent 65%);background-size:28px 28px,auto,auto;background-repeat:repeat,no-repeat,no-repeat}
+    body{display:flex;align-items:center;justify-content:center;padding:4rem 1.5rem}
+    .wrap{width:100%;max-width:36rem}
+    h1{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(28px,6vw,40px);line-height:1.1;text-align:center;margin:0 0 .5rem 0}
+    .sub{text-align:center;color:rgba(255,255,255,.7);margin:0 0 2rem 0;font-size:15px}
+    form{display:grid;gap:1rem}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    @media(max-width:640px){.row{grid-template-columns:1fr}}
+    label{display:block;font-weight:600;font-size:14px;margin-bottom:.375rem;color:#fff}
+    label .hint{font-weight:400;font-size:12px;color:rgba(255,255,255,.5)}
+    input,select{width:100%;padding:.75rem 1rem;border-radius:.5rem;border:0;outline:0;background:#fff;color:#111827;font-size:16px;font-family:inherit}
+    input:focus,select:focus{box-shadow:0 0 0 2px rgba(77,163,255,.6)}
+    button{margin-top:.5rem;width:100%;padding:.9rem 1rem;background:#4da3ff;color:#0a1656;border:0;border-radius:.5rem;cursor:pointer;font-weight:700;font-size:16px;font-family:inherit}
+    button:hover:not(:disabled){background:#6cb5ff}
+    button:disabled{opacity:.55;cursor:not-allowed}
+    .legal{text-align:center;font-size:12px;color:rgba(255,255,255,.55);margin:.75rem 0 0 0}
+    .legal a{color:#fff;text-decoration:underline}
+    .err{position:fixed;top:0;left:0;right:0;z-index:50;background:#EF4444;color:#fff;padding:.75rem 1rem;display:none;font-size:14px;font-weight:500}
+    .err.show{display:flex;justify-content:space-between;gap:1rem}
+    .err button.close{background:transparent;color:#fff;padding:.25rem .5rem;border:0;font-size:18px;font-weight:700;cursor:pointer;width:auto}
+  </style>
+</head>
+<body>
+  <div id="err" class="err" role="alert"><span id="errText"></span><button class="close" onclick="document.getElementById('err').classList.remove('show')" aria-label="Cerrar">×</button></div>
+  <div class="wrap">
+    <h1>Formulario de matrícula</h1>
+    <p class="sub">Rellena tus datos y pasa al pago. Solo tarda un minuto.</p>
+    <form id="form">
+      <div class="row">
+        <div><label for="first_name">Nombre</label><input id="first_name" type="text" autocomplete="given-name" required></div>
+        <div><label for="last_name">Apellidos</label><input id="last_name" type="text" autocomplete="family-name" required></div>
+      </div>
+      <div><label for="email">Correo</label><input id="email" type="email" autocomplete="email" placeholder="tu@email.com" required></div>
+      <div><label for="phone">Teléfono <span class="hint">— con prefijo internacional, ej. +34 600 12 34 56</span></label><input id="phone" type="tel" autocomplete="tel" placeholder="+34 600 12 34 56"></div>
+      <div class="row">
+        <div><label for="country">País</label>
+          <select id="country">
+            <option value="NL">Países Bajos</option><option value="ES">España</option><option value="BE">Bélgica</option><option value="DE">Alemania</option><option value="FR">Francia</option><option value="IT">Italia</option><option value="PT">Portugal</option><option value="MX">México</option><option value="AR">Argentina</option><option value="CO">Colombia</option><option value="CL">Chile</option><option value="PE">Perú</option><option value="US">Estados Unidos</option><option value="GB">Reino Unido</option><option value="OTRO">Otro</option>
+          </select>
+        </div>
+        <div><label for="city">Ciudad</label><input id="city" type="text" autocomplete="address-level2"></div>
+      </div>
+      <button id="submit" type="submit">Continuar al pago →</button>
+      <p class="legal">Al continuar aceptas los <a href="/terminos-y-condiciones" target="_blank">Términos</a> y la <a href="/politica-de-privacidad" target="_blank">Política de privacidad</a>.</p>
+    </form>
+  </div>
+  <script is:inline>
+    (function(){
+      var form=document.getElementById('form'),btn=document.getElementById('submit'),err=document.getElementById('err'),errText=document.getElementById('errText');
+      function showError(m){errText.textContent=m;err.classList.add('show');window.scrollTo({top:0,behavior:'smooth'})}
+      form.addEventListener('submit',async function(ev){
+        ev.preventDefault();err.classList.remove('show');
+        var payload={first_name:form.first_name.value.trim(),last_name:form.last_name.value.trim(),email:form.email.value.trim().toLowerCase(),phone:form.phone.value.trim(),country:form.country.value,city:form.city.value.trim()};
+        if(!payload.first_name||!payload.last_name||!payload.email){showError('Rellena nombre, apellidos y email para continuar.');return}
+        btn.disabled=true;btn.textContent='Preparando tu pago…';
+        try{
+          var res=await fetch('https://academia.holandesnawar.nl/api/v1/payments/enroll',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+          var data=await res.json();
+          if(!res.ok||!data||!data.checkout_url){showError((data&&data.detail)||'No se pudo crear la matrícula.');btn.disabled=false;btn.textContent='Continuar al pago →';return}
+          window.location.href=data.checkout_url;
+        }catch(e){showError('Hubo un problema de red. Vuelve a intentarlo.');btn.disabled=false;btn.textContent='Continuar al pago →'}
+      });
+    })();
+  </script>
+</body>
+</html>
