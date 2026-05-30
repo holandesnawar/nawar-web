@@ -32,13 +32,6 @@ export const prerender = false
         />
       </a>
 
-      <!-- Icono de éxito -->
-      <div class="bv-check">
-        <svg width="40" height="40" fill="none" stroke="#4da3ff" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-        </svg>
-      </div>
-
       <span class="bv-badge">
         <svg class="bv-badge-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true">
           <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -46,9 +39,9 @@ export const prerender = false
         Pago confirmado
       </span>
 
-      <h1 class="bv-title"><span class="bv-title-gradient">¡Bienvenid@ a Holandés Nawar!</span></h1>
+      <h1 class="bv-title"><span class="bv-title-gradient">¡Bienvenid@ a Holandés Nawar! Tu plaza ya está reservada 🎉</span></h1>
       <p class="bv-lead">
-        Tu plaza está reservada y tu compra confirmada. Estás dentro 🎉
+        Tu compra está confirmada y tu cuenta lista para activarse. Sigue estos tres pasos y en menos de un minuto estarás dentro de la academia, listo para tu primera lección.
       </p>
 
       <!-- Pasos siguientes -->
@@ -58,22 +51,22 @@ export const prerender = false
           <li>
             <span class="bv-step-num">1</span>
             <div>
-              <strong>Revisa tu email</strong>
-              <span>Te hemos enviado un enlace para crear tu contraseña. ¿No lo ves? Mira la carpeta de Spam o Promociones — suele tardar un minuto.</span>
+              <strong>Abre el email que te acabamos de enviar</strong>
+              <span>Busca un correo nuestro con el asunto de bienvenida. ¿No aparece en unos minutos? Revisa las carpetas de Spam y Promociones — a veces se escapa ahí.</span>
             </div>
           </li>
           <li>
             <span class="bv-step-num">2</span>
             <div>
               <strong>Crea tu contraseña</strong>
-              <span>Pulsa el enlace del email y elige una contraseña para tu cuenta de la academia.</span>
+              <span>Pulsa el botón del email y elige una contraseña segura. Con eso tu cuenta de la academia queda activada a tu nombre.</span>
             </div>
           </li>
           <li>
             <span class="bv-step-num">3</span>
             <div>
-              <strong>Entra y empieza</strong>
-              <span>Accede a la academia y ponte con tu primera lección cuando quieras.</span>
+              <strong>Entra y empieza a aprender</strong>
+              <span>Accede con tu correo y tu nueva contraseña, y abre tu primera clase cuando quieras. Avanzas a tu ritmo, desde donde estés.</span>
             </div>
           </li>
         </ol>
@@ -107,7 +100,7 @@ export const prerender = false
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 56px 32px 80px;
+    padding: 56px 24px 80px;
     color: #fff;
   }
   .bv-glow1 {
@@ -131,7 +124,7 @@ export const prerender = false
   /* ── Shell ── */
   .bv-shell {
     position: relative; z-index: 1;
-    width: 100%; max-width: 560px;
+    width: 100%; max-width: 820px;
     display: flex; flex-direction: column; align-items: center;
     text-align: center;
   }
@@ -139,21 +132,6 @@ export const prerender = false
   /* ── Logo ── */
   .bv-logo-link { display: inline-block; margin-bottom: 32px; }
   .bv-logo { height: 36px; width: auto; object-fit: contain; }
-
-  /* ── Check ── */
-  .bv-check {
-    width: 84px; height: 84px; border-radius: 50%;
-    background: rgba(77, 163, 255, 0.14);
-    border: 1.5px solid rgba(77, 163, 255, 0.35);
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 22px;
-    box-shadow: 0 0 60px -10px rgba(77, 163, 255, 0.6);
-    animation: bv-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  }
-  @keyframes bv-pop {
-    from { transform: scale(0.6); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
 
   /* ── Badge ── */
   .bv-badge {
@@ -183,9 +161,9 @@ export const prerender = false
   }
   .bv-lead {
     font-size: clamp(16px, 1.6vw, 19px);
-    font-weight: 500; line-height: 1.55;
+    font-weight: 500; line-height: 1.6;
     color: rgba(255, 255, 255, 0.85);
-    margin: 16px 0 0; max-width: 460px;
+    margin: 16px 0 0; max-width: 620px;
   }
 
   /* ── Pasos ── */
