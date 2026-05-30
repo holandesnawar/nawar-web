@@ -5,12 +5,37 @@ export const prerender = false
 // Backend de la academia que crea la sesión de pago de Stripe y devuelve { checkout_url }.
 const ACADEMIA_ENROLL_URL = 'https://academia.holandesnawar.nl/api/v1/payments/enroll'
 
-// Brevo (Sendinblue) — guardamos el lead antes de pagar para poder reengancharlo.
-const BREVO_BASE = 'https://api.brevo.com/v3'
+// systeme.io — CRM centralizado (mismo que usa la lista de espera).
+const SYSTEME_BASE = 'https://api.systeme.io/api'
+const TAG_NAME     = 'Matriculado sin pagar'
 
-// ── Brevo: guardar/actualizar el lead (no bloquea el pago) ─────────────────────
+// ── systeme.io helpers (mismo patrón que waitlist.ts) ──────────────────────────
 
-async function syncToBrevo(
+async function findTagId(tagName: string, headers: Record<string, string>): Promise<number | null> {
+  try {
+    const res = await fetch(`${SYSTEME_BASE}/tags?itemsPerPage=100`, { headers })
+    if (!res.ok) return null
+    const data = await res.json().catch(() => null)
+    const tags: any[] = data?.items ?? []
+    const match = tags.find((t: any) => t.name?.toLowerCase() === tagName.toLowerCase())
+    if (match) return match.id
+    if (tags.length === 100) {
+      const res2 = await fetch(`${SYSTEME_BASE}/tags?itemsPerPage=100&page=2`, { headers })
+      if (res2.ok) {
+        const data2 = await res2.json().catch(() => null)
+        const m2 = (data2?.items ?? []).find((t: any) => t.name?.toLowerCase() === tagName.toLowerCase())
+        if (m2) return m2.id
+      }
+    }
+  } catch (e) {
+    console.error('[enroll] findTagId error:', e)
+  }
+  return null
+}
+
+// Crea o encuentra el contacto, actualiza sus datos y le añade el tag de reenganche.
+// Nunca lanza: el CRM no debe bloquear el pago.
+async function syncToCRM(
   lead: {
     email: string
     firstName: string
@@ -19,47 +44,81 @@ async function syncToBrevo(
     country: string
     city: string
   },
-  apiKey: string,
-  listId: string
+  headers: Record<string, string>
 ): Promise<void> {
   try {
-    const attributes: Record<string, string> = {}
-    if (lead.firstName) attributes.FIRSTNAME = lead.firstName
-    if (lead.lastName)  attributes.LASTNAME  = lead.lastName
-    if (lead.phone)     attributes.SMS       = lead.phone
-    if (lead.country)   attributes.COUNTRY   = lead.country
-    if (lead.city)      attributes.CITY      = lead.city
-    // Estado para campañas de reenganche de quienes no completan el pago.
-    attributes.ESTADO = 'matriculado-sin-pagar'
+    const body: Record<string, any> = { email: lead.email }
+    if (lead.firstName) body.firstName = lead.firstName
+    if (lead.lastName)  body.surname   = lead.lastName
+    if (lead.phone)     body.phone     = lead.phone
+    const fields: { slug: string; value: string }[] = []
+    if (lead.country) fields.push({ slug: 'country', value: lead.country })
+    if (lead.city)    fields.push({ slug: 'city',    value: lead.city })
+    if (fields.length) body.fields = fields
 
-    const body: Record<string, unknown> = {
-      email: lead.email,
-      attributes,
-      updateEnabled: true,
-    }
-    const listIdNum = Number(listId)
-    if (Number.isFinite(listIdNum) && listIdNum > 0) {
-      body.listIds = [listIdNum]
-    }
+    // Crear contacto y buscar el tag en paralelo.
+    const [createRes, tagId] = await Promise.all([
+      fetch(`${SYSTEME_BASE}/contacts`, { method: 'POST', headers, body: JSON.stringify(body) }),
+      findTagId(TAG_NAME, headers),
+    ])
 
-    const res = await fetch(`${BREVO_BASE}/contacts`, {
-      method: 'POST',
-      headers: {
-        'api-key': apiKey,
-        'Content-Type': 'application/json',
-        accept: 'application/json',
-      },
-      body: JSON.stringify(body),
-    })
+    let contactId: number | null = null
 
-    if (res.ok || res.status === 204) {
-      console.log('[enroll] brevo contact upserted:', lead.email)
+    if (createRes.ok) {
+      const data = await createRes.json().catch(() => null)
+      contactId = data?.id ?? null
+      console.log('[enroll] contact created:', contactId)
     } else {
-      const txt = await res.text().catch(() => '')
-      console.error('[enroll] brevo error:', res.status, txt.slice(0, 200))
+      console.log('[enroll] create failed:', createRes.status, '— buscando contacto existente')
+      // Ya existía: buscarlo y actualizar sus datos.
+      const searchRes = await fetch(
+        `${SYSTEME_BASE}/contacts?email=${encodeURIComponent(lead.email)}`,
+        { headers }
+      )
+      if (searchRes.ok) {
+        const sd = await searchRes.json().catch(() => null)
+        const items = sd?.items ?? sd?.contacts ?? (Array.isArray(sd) ? sd : null)
+        if (Array.isArray(items) && items.length > 0) contactId = items[0]?.id ?? null
+        else if (sd?.id) contactId = sd.id
+
+        if (contactId) {
+          const upd: Record<string, any> = {}
+          if (lead.firstName) upd.firstName = lead.firstName
+          if (lead.lastName)  upd.surname   = lead.lastName
+          if (lead.phone)     upd.phone     = lead.phone
+          const updFields: { slug: string; value: string }[] = []
+          if (lead.country) updFields.push({ slug: 'country', value: lead.country })
+          if (lead.city)    updFields.push({ slug: 'city',    value: lead.city })
+          if (updFields.length) upd.fields = updFields
+          if (Object.keys(upd).length > 0) {
+            let pr = await fetch(`${SYSTEME_BASE}/contacts/${contactId}`, {
+              method: 'PATCH', headers, body: JSON.stringify(upd),
+            })
+            if (!pr.ok && pr.status === 405) {
+              pr = await fetch(`${SYSTEME_BASE}/contacts/${contactId}`, {
+                method: 'PUT', headers, body: JSON.stringify(upd),
+              })
+            }
+            if (pr.ok) console.log('[enroll] contact updated:', contactId)
+            else console.error('[enroll] update error:', pr.status)
+          }
+        }
+      }
+    }
+
+    // Añadir el tag de reenganche.
+    if (contactId && tagId) {
+      const tr = await fetch(`${SYSTEME_BASE}/contacts/${contactId}/tags`, {
+        method: 'POST', headers, body: JSON.stringify({ tagId }),
+      })
+      if (tr.ok) console.log('[enroll] tag added:', TAG_NAME, 'to', contactId)
+      else if (tr.status !== 409) console.error('[enroll] tag error:', tr.status)
+    } else {
+      if (!contactId) console.error('[enroll] no contactId for:', lead.email)
+      if (!tagId)     console.error('[enroll] tag not found:', TAG_NAME)
     }
   } catch (e) {
-    console.error('[enroll] syncToBrevo error:', e)
+    console.error('[enroll] syncToCRM error:', e)
   }
 }
 
@@ -86,23 +145,21 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ detail: 'Faltan datos obligatorios.' }, 400)
   }
 
-  // ── 1) Brevo (no bloqueante): guardamos el lead aunque el pago falle ──
-  const brevoKey =
-    (import.meta.env.BREVO_API_KEY as string | undefined) ||
-    (typeof process !== 'undefined' ? process.env.BREVO_API_KEY : undefined)
-  const brevoListId =
-    (import.meta.env.BREVO_LIST_ID as string | undefined) ||
-    (typeof process !== 'undefined' ? process.env.BREVO_LIST_ID : undefined)
+  // ── 1) systeme.io (no bloqueante): guardamos el lead aunque el pago falle ──
+  const apiKey =
+    (import.meta.env.SYSTEME_API_KEY as string | undefined) ||
+    (typeof process !== 'undefined' ? process.env.SYSTEME_API_KEY : undefined)
 
-  if (brevoKey) {
-    // await para que Vercel no mate la promesa, pero los errores nunca bloquean el pago.
-    await syncToBrevo(
-      { email, firstName, lastName, phone, country, city },
-      brevoKey,
-      brevoListId ?? ''
-    )
+  if (apiKey) {
+    const headers = {
+      'X-API-Key':    apiKey,
+      'Content-Type': 'application/json',
+      accept:         'application/json',
+    }
+    // await para que Vercel no mate la promesa; los errores nunca bloquean el pago.
+    await syncToCRM({ email, firstName, lastName, phone, country, city }, headers)
   } else {
-    console.warn('[enroll] BREVO_API_KEY not set — skipping CRM sync for:', email)
+    console.warn('[enroll] SYSTEME_API_KEY not set — skipping CRM sync for:', email)
   }
 
   // ── 2) Crear la sesión de pago en la academia y devolver checkout_url ──
