@@ -1,42 +1,246 @@
 ---
-export const prerender = true;
+import Layout from '../layouts/Layout.astro'
+
+export const prerender = false
 ---
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>¡Bienvenido a Holandés Nawar!</title>
-  <meta name="robots" content="noindex, nofollow">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;min-height:100vh;font-family:'Inter',sans-serif;color:#fff;background:#1D0084;background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px),radial-gradient(circle 700px at 100% 0%,rgba(11,109,240,.40) 0%,transparent 65%),radial-gradient(circle 600px at 0% 100%,rgba(11,109,240,.18) 0%,transparent 65%);background-size:28px 28px,auto,auto;background-repeat:repeat,no-repeat,no-repeat}
-    body{display:flex;align-items:center;justify-content:center;padding:4rem 1.5rem}
-    .wrap{width:100%;max-width:28rem;text-align:center}
-    .emoji{font-size:3rem;display:block;margin-bottom:1.5rem}
-    h1{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(28px,6vw,36px);line-height:1.15;margin:0}
-    h1 span{color:#4da3ff}
-    .lead{color:rgba(255,255,255,.8);line-height:1.55;margin:1rem 0 0 0;font-size:16px}
-    .tip{color:rgba(255,255,255,.55);font-size:13px;margin:.75rem 0 0 0}
-    .actions{margin-top:2rem}
-    a.btn{display:inline-flex;align-items:center;justify-content:center;width:100%;padding:.9rem 1rem;background:#4da3ff;color:#0a1656;border-radius:.5rem;text-decoration:none;font-weight:700;font-size:16px}
-    a.btn:hover{background:#6cb5ff}
-    .below{color:rgba(255,255,255,.55);font-size:12px;margin:.75rem 0 0 0}
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <span class="emoji">🎉</span>
-    <h1>¡Bienvenid<span>@</span> a Holandés Nawar!</h1>
-    <p class="lead">Tu compra está confirmada. Te acabamos de mandar un email con un enlace para crear tu contraseña.</p>
-    <p class="tip">¿No lo ves? Mira la carpeta de Spam o Promociones — suele tardar un minuto.</p>
-    <div class="actions">
-      <a class="btn" href="https://academia.holandesnawar.nl/login">Ya creé mi contraseña — Entrar</a>
-      <p class="below">Si ya pulsaste el enlace del email y pusiste tu contraseña, entra desde aquí.</p>
+
+<!--
+  Página de bienvenida después del pago — Holandés Nawar.
+  Stripe redirige aquí tras checkout completado (?session_id=cs_...).
+  La cuenta + email se procesan en el backend de la academia (webhook de Stripe);
+  aquí solo damos confirmación visual.
+-->
+<Layout
+  title="¡Bienvenido a Holandés Nawar!"
+  description="Tu compra está confirmada. Bienvenido a Holandés Nawar."
+  noindex={true}
+>
+  <div class="bv-page">
+    <div class="bv-glow1" aria-hidden="true"></div>
+    <div class="bv-glow2" aria-hidden="true"></div>
+    <div class="bv-dots" aria-hidden="true"></div>
+
+    <div class="bv-shell">
+      <!-- Logo -->
+      <a href="/" class="bv-logo-link" aria-label="Volver al inicio">
+        <img
+          src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png"
+          alt="Holandés Nawar"
+          class="bv-logo"
+          width="150"
+          height="38"
+        />
+      </a>
+
+      <!-- Icono de éxito -->
+      <div class="bv-check">
+        <svg width="40" height="40" fill="none" stroke="#4da3ff" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+
+      <span class="bv-badge">
+        <svg class="bv-badge-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true">
+          <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Pago confirmado
+      </span>
+
+      <h1 class="bv-title"><span class="bv-title-gradient">¡Bienvenid@ a Holandés Nawar!</span></h1>
+      <p class="bv-lead">
+        Tu plaza está reservada y tu compra confirmada. Estás dentro 🎉
+      </p>
+
+      <!-- Pasos siguientes -->
+      <div class="bv-steps">
+        <p class="bv-steps-title">Qué sigue ahora</p>
+        <ol class="bv-steps-list">
+          <li>
+            <span class="bv-step-num">1</span>
+            <div>
+              <strong>Revisa tu email</strong>
+              <span>Te hemos enviado un enlace para crear tu contraseña. ¿No lo ves? Mira la carpeta de Spam o Promociones — suele tardar un minuto.</span>
+            </div>
+          </li>
+          <li>
+            <span class="bv-step-num">2</span>
+            <div>
+              <strong>Crea tu contraseña</strong>
+              <span>Pulsa el enlace del email y elige una contraseña para tu cuenta de la academia.</span>
+            </div>
+          </li>
+          <li>
+            <span class="bv-step-num">3</span>
+            <div>
+              <strong>Entra y empieza</strong>
+              <span>Accede a la academia y ponte con tu primera lección cuando quieras.</span>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Acciones -->
+      <div class="bv-actions">
+        <a class="bv-btn" href="https://academia.holandesnawar.nl/login">
+          Ya creé mi contraseña — Entrar
+          <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+        <p class="bv-help">
+          ¿Algún problema con tu acceso? Escríbenos a
+          <a href="mailto:info@holandesnawar.com">info@holandesnawar.com</a>
+          y te ayudamos.
+        </p>
+      </div>
     </div>
   </div>
-</body>
-</html>
+</Layout>
+
+<style>
+  /* ── Página ── */
+  .bv-page {
+    min-height: 100vh;
+    background: #1d0084;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 32px 80px;
+    color: #fff;
+  }
+  .bv-glow1 {
+    position: absolute; top: -160px; left: 50%; transform: translateX(-50%);
+    width: 1000px; height: 580px;
+    background: radial-gradient(ellipse at center, rgba(11, 109, 240, 0.5) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .bv-glow2 {
+    position: absolute; bottom: -80px; right: -100px;
+    width: 640px; height: 420px;
+    background: radial-gradient(ellipse at center, rgba(77, 163, 255, 0.16) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .bv-dots {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.5;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* ── Shell ── */
+  .bv-shell {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 560px;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+  }
+
+  /* ── Logo ── */
+  .bv-logo-link { display: inline-block; margin-bottom: 32px; }
+  .bv-logo { height: 36px; width: auto; object-fit: contain; }
+
+  /* ── Check ── */
+  .bv-check {
+    width: 84px; height: 84px; border-radius: 50%;
+    background: rgba(77, 163, 255, 0.14);
+    border: 1.5px solid rgba(77, 163, 255, 0.35);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 22px;
+    box-shadow: 0 0 60px -10px rgba(77, 163, 255, 0.6);
+    animation: bv-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  @keyframes bv-pop {
+    from { transform: scale(0.6); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* ── Badge ── */
+  .bv-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px; border-radius: 9999px;
+    background: #025dc7;
+    border: 1px solid rgba(77, 163, 255, 0.2);
+    color: #e0f2ff;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.13em; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .bv-badge-icon { width: 12px; height: 12px; }
+
+  /* ── Título ── */
+  .bv-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: clamp(30px, 5vw, 46px);
+    font-weight: 800; letter-spacing: -0.04em; line-height: 1.1;
+    margin: 0;
+  }
+  .bv-title-gradient {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.45) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .bv-lead {
+    font-size: clamp(16px, 1.6vw, 19px);
+    font-weight: 500; line-height: 1.55;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 16px 0 0; max-width: 460px;
+  }
+
+  /* ── Pasos ── */
+  .bv-steps {
+    width: 100%; text-align: left;
+    margin-top: 36px; padding: 28px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 22px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.6);
+  }
+  .bv-steps-title {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55); margin: 0 0 18px;
+  }
+  .bv-steps-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+  .bv-steps-list li { display: flex; gap: 14px; align-items: flex-start; }
+  .bv-step-num {
+    flex-shrink: 0;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #4da3ff; color: #0a1656;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+  }
+  .bv-steps-list strong { display: block; font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+  .bv-steps-list span { display: block; font-size: 14px; line-height: 1.6; color: rgba(255, 255, 255, 0.68); }
+
+  /* ── Acciones ── */
+  .bv-actions { width: 100%; margin-top: 28px; }
+  .bv-btn {
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    width: 100%; padding: 16px 36px;
+    border-radius: 12px; text-decoration: none;
+    background: #4da3ff; color: #0a1656;
+    font-size: 17px; font-weight: 700;
+    transition: background-color 0.15s;
+  }
+  .bv-btn:hover { background: #6cb5ff; }
+  .bv-help {
+    font-size: 13px; line-height: 1.6;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 16px 0 0;
+  }
+  .bv-help a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.25);
+  }
+  .bv-help a:hover { color: #fff; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .bv-page { padding: 40px 18px 64px; }
+    .bv-steps { padding: 22px 18px; }
+    .bv-title { font-size: clamp(26px, 8vw, 34px); }
+  }
+</style>
