@@ -7,31 +7,11 @@ const ACADEMIA_ENROLL_URL = 'https://academia.holandesnawar.nl/api/v1/payments/e
 
 // systeme.io — CRM centralizado (mismo que usa la lista de espera).
 const SYSTEME_BASE = 'https://api.systeme.io/api'
-const TAG_NAME     = 'Matriculado sin pagar'
+// ID de la etiqueta "Matriculado sin pagar" en systeme.io (para reenganche).
+// Cableado por ID en vez de por nombre: es más fiable y no depende de que el texto coincida.
+const TAG_ID_SIN_PAGAR = 2033154
 
 // ── systeme.io helpers (mismo patrón que waitlist.ts) ──────────────────────────
-
-async function findTagId(tagName: string, headers: Record<string, string>): Promise<number | null> {
-  try {
-    const res = await fetch(`${SYSTEME_BASE}/tags?itemsPerPage=100`, { headers })
-    if (!res.ok) return null
-    const data = await res.json().catch(() => null)
-    const tags: any[] = data?.items ?? []
-    const match = tags.find((t: any) => t.name?.toLowerCase() === tagName.toLowerCase())
-    if (match) return match.id
-    if (tags.length === 100) {
-      const res2 = await fetch(`${SYSTEME_BASE}/tags?itemsPerPage=100&page=2`, { headers })
-      if (res2.ok) {
-        const data2 = await res2.json().catch(() => null)
-        const m2 = (data2?.items ?? []).find((t: any) => t.name?.toLowerCase() === tagName.toLowerCase())
-        if (m2) return m2.id
-      }
-    }
-  } catch (e) {
-    console.error('[enroll] findTagId error:', e)
-  }
-  return null
-}
 
 // Crea o encuentra el contacto, actualiza sus datos y le añade el tag de reenganche.
 // Nunca lanza: el CRM no debe bloquear el pago.
@@ -56,11 +36,9 @@ async function syncToCRM(
     if (lead.city)    fields.push({ slug: 'city',    value: lead.city })
     if (fields.length) body.fields = fields
 
-    // Crear contacto y buscar el tag en paralelo.
-    const [createRes, tagId] = await Promise.all([
-      fetch(`${SYSTEME_BASE}/contacts`, { method: 'POST', headers, body: JSON.stringify(body) }),
-      findTagId(TAG_NAME, headers),
-    ])
+    const createRes = await fetch(`${SYSTEME_BASE}/contacts`, {
+      method: 'POST', headers, body: JSON.stringify(body),
+    })
 
     let contactId: number | null = null
 
@@ -106,16 +84,15 @@ async function syncToCRM(
       }
     }
 
-    // Añadir el tag de reenganche.
-    if (contactId && tagId) {
+    // Añadir el tag de reenganche por su ID (más fiable que buscar por nombre).
+    if (contactId) {
       const tr = await fetch(`${SYSTEME_BASE}/contacts/${contactId}/tags`, {
-        method: 'POST', headers, body: JSON.stringify({ tagId }),
+        method: 'POST', headers, body: JSON.stringify({ tagId: TAG_ID_SIN_PAGAR }),
       })
-      if (tr.ok) console.log('[enroll] tag added:', TAG_NAME, 'to', contactId)
+      if (tr.ok) console.log('[enroll] tag', TAG_ID_SIN_PAGAR, 'added to', contactId)
       else if (tr.status !== 409) console.error('[enroll] tag error:', tr.status)
     } else {
-      if (!contactId) console.error('[enroll] no contactId for:', lead.email)
-      if (!tagId)     console.error('[enroll] tag not found:', TAG_NAME)
+      console.error('[enroll] no contactId for:', lead.email)
     }
   } catch (e) {
     console.error('[enroll] syncToCRM error:', e)
