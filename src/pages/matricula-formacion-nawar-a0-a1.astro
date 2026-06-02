@@ -419,7 +419,7 @@ export const prerender = false
         setLoading(false)
         return
       }
-      window.location.href = data.checkout_url
+      window.location.href = data.payment_url
     } catch {
       showToast('Hubo un problema de red. Revisa tu conexión y vuelve a intentarlo.')
       setLoading(false)
