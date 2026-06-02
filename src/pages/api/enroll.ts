@@ -2,8 +2,10 @@ import type { APIRoute } from 'astro'
 
 export const prerender = false
 
-// Backend de la academia que crea la sesión de pago de Stripe y devuelve { checkout_url }.
-const ACADEMIA_ENROLL_URL = 'https://academia.holandesnawar.nl/api/v1/payments/enroll'
+// Backend de la academia: crea un PaymentIntent + devuelve la URL de nuestro
+// checkout embedded Nawar (/auth/pago-formacion-a0-a1 con Stripe Elements
+// dentro). El buyer ya no sale del dominio de la academia.
+const ACADEMIA_ENROLL_URL = 'https://academia.holandesnawar.nl/api/v1/payments/enroll-intent'
 
 // systeme.io — CRM centralizado (mismo que usa la lista de espera).
 const SYSTEME_BASE = 'https://api.systeme.io/api'
@@ -139,7 +141,7 @@ export const POST: APIRoute = async ({ request }) => {
     console.warn('[enroll] SYSTEME_API_KEY not set — skipping CRM sync for:', email)
   }
 
-  // ── 2) Crear la sesión de pago en la academia y devolver checkout_url ──
+  // ── 2) Crear el PaymentIntent en la academia y devolver payment_url ──
   try {
     const res = await fetch(ACADEMIA_ENROLL_URL, {
       method: 'POST',
@@ -167,16 +169,16 @@ export const POST: APIRoute = async ({ request }) => {
       return json({ detail }, 502)
     }
 
-    const checkoutUrl = data?.checkout_url ?? data?.checkoutUrl ?? data?.url ?? null
-    if (!checkoutUrl) {
-      console.error('[enroll] academia ok pero sin checkout_url:', JSON.stringify(data).slice(0, 200))
+    const paymentUrl = data?.payment_url ?? data?.paymentUrl ?? null
+    if (!paymentUrl) {
+      console.error('[enroll] academia ok pero sin payment_url:', JSON.stringify(data).slice(0, 200))
       return json(
         { detail: 'No se pudo iniciar el pago. Vuelve a intentarlo en un momento.' },
         502
       )
     }
 
-    return json({ checkout_url: checkoutUrl })
+    return json({ payment_url: paymentUrl })
   } catch (e) {
     console.error('[enroll] academia request failed:', e)
     return json(
