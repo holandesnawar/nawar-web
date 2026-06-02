@@ -414,7 +414,7 @@ export const prerender = false
         body: JSON.stringify(payload),
       })
       const data = await res.json().catch(() => null)
-      if (!res.ok || !data || !data.checkout_url) {
+      if (!res.ok || !data || !data.payment_url) {
         showToast((data && data.detail) || 'No se pudo crear la matrícula. Vuelve a intentarlo en un momento.')
         setLoading(false)
         return
