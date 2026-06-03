@@ -51,7 +51,8 @@ export const prerender = false
       </header>
 
       <!-- Formulario en panel glass -->
-      <form id="form" class="mx-form" novalidate>
+      <div class="mx-form-wrap">
+        <form id="form" class="mx-form" novalidate>
         {/* Honeypot anti-bot */}
         <div class="mx-honeypot" aria-hidden="true">
           <label>No rellenar
@@ -138,7 +139,8 @@ export const prerender = false
           y la
           <a href="/politica-de-privacidad" target="_blank" rel="noreferrer">Política de privacidad</a>.
         </p>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </Layout>
@@ -230,17 +232,22 @@ export const prerender = false
     max-width: 620px; margin: 0;
   }
 
-  /* ── Form (panel glass) ── */
+  .mx-form-wrap { position: relative; width: 100%; }
+
+  /* ── Form (panel de cristal · frosted neutro y transparente) ── */
   .mx-form {
+    position: relative; z-index: 1;
     width: 100%;
-    display: flex; flex-direction: column; gap: 26px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 22px;
-    padding: 34px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.6);
+    display: flex; flex-direction: column; gap: 24px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 24px;
+    padding: 36px;
+    backdrop-filter: blur(30px) saturate(105%);
+    -webkit-backdrop-filter: blur(30px) saturate(105%);
+    box-shadow:
+      0 30px 70px -30px rgba(3, 9, 33, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.38);
   }
 
   .mx-honeypot {
@@ -256,34 +263,40 @@ export const prerender = false
   .mx-req { color: rgba(255, 255, 255, 0.45); font-weight: 500; }
   .mx-hint { font-weight: 400; font-size: 12px; color: rgba(255, 255, 255, 0.5); }
 
-  .mx-input {
-    width: 100%; background: transparent; border: none;
-    border-bottom: 1.5px solid rgba(255, 255, 255, 0.28);
-    border-radius: 0; padding: 10px 0;
+  /* Campos en cajita de cristal sobre el panel glass */
+  .mx-input, .mx-select {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 12px;
+    padding: 13px 14px;
     color: #fff; font-size: 16px; font-family: inherit;
-    outline: none; transition: border-color 0.2s; box-sizing: border-box;
+    outline: none; box-sizing: border-box;
+    transition: border-color 0.18s, box-shadow 0.18s, background-color 0.18s;
   }
-  .mx-input::placeholder { color: rgba(255, 255, 255, 0.3); }
-  .mx-input:focus { border-bottom-color: #4da3ff; }
-  .mx-input.invalid { border-bottom-color: rgba(255, 100, 100, 0.85); }
+  .mx-input::placeholder { color: rgba(255, 255, 255, 0.5); }
+  .mx-input:focus, .mx-select:focus {
+    border-color: #4da3ff; background: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.3);
+  }
+  .mx-input.invalid {
+    border-color: #ff7b7b;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+  }
 
   .mx-err { display: none; font-size: 12px; color: rgba(255, 120, 120, 0.95); font-weight: 500; }
   .mx-err.visible { display: block; }
 
   .mx-select-wrap { position: relative; }
   .mx-select {
-    width: 100%; background: transparent; border: none;
-    border-bottom: 1.5px solid rgba(255, 255, 255, 0.28);
-    border-radius: 0; padding: 10px 24px 10px 0;
-    color: #fff; font-size: 16px; font-family: inherit;
-    outline: none; appearance: none; -webkit-appearance: none;
-    cursor: pointer; transition: border-color 0.2s; color-scheme: dark;
+    padding-right: 38px;
+    appearance: none; -webkit-appearance: none;
+    cursor: pointer; color-scheme: dark;
   }
-  .mx-select option { background: #1a0099; color: #fff; }
-  .mx-select:focus { border-bottom-color: #4da3ff; }
+  .mx-select option { background: #1a0a5e; color: #fff; }
   .mx-select-arrow {
-    position: absolute; right: 2px; top: 50%; transform: translateY(-50%);
-    pointer-events: none; color: rgba(255, 255, 255, 0.45);
+    position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
+    pointer-events: none; color: rgba(255, 255, 255, 0.5);
   }
 
   /* ── Botón ── */
@@ -293,9 +306,11 @@ export const prerender = false
     border-radius: 12px; border: none; cursor: pointer;
     background: #4da3ff; color: #0a1656;
     font-size: 17px; font-weight: 700; font-family: inherit;
-    transition: background-color 0.15s;
+    box-shadow: 0 12px 26px -10px rgba(11, 109, 240, 0.6);
+    transition: background-color 0.15s, box-shadow 0.15s, transform 0.05s;
   }
   .mx-btn:hover:not(:disabled) { background: #6cb5ff; }
+  .mx-btn:active:not(:disabled) { transform: translateY(1px); }
   .mx-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
   @keyframes mx-spin { to { transform: rotate(360deg); } }
@@ -305,14 +320,14 @@ export const prerender = false
   .mx-trust {
     display: flex; align-items: center; justify-content: center; gap: 8px;
     font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, 0.95);
-    margin-top: -8px;
+    margin-top: -6px;
   }
   .mx-legal {
     text-align: center; font-size: 12px; line-height: 1.6;
-    color: rgba(255, 255, 255, 0.45); margin: 0;
+    color: rgba(255, 255, 255, 0.5); margin: 0;
   }
   .mx-legal a {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.75);
     text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.25);
   }
   .mx-legal a:hover { color: #fff; }
