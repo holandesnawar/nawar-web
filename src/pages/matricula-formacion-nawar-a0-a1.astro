@@ -50,9 +50,8 @@ export const prerender = false
         </p>
       </header>
 
-      <!-- Formulario en panel glass -->
-      <div class="mx-form-wrap">
-        <form id="form" class="mx-form" novalidate>
+      <!-- Formulario directo sobre el azul (sin tarjeta) -->
+      <form id="form" class="mx-form" novalidate>
         {/* Honeypot anti-bot */}
         <div class="mx-honeypot" aria-hidden="true">
           <label>No rellenar
@@ -73,15 +72,16 @@ export const prerender = false
           </div>
         </div>
 
-        <div class="mx-field">
-          <label class="mx-label" for="email">Correo electrónico <span class="mx-req">*</span></label>
-          <input id="email" name="email" type="email" class="mx-input" placeholder="tu@email.com" autocomplete="email" required />
-          <span class="mx-err" data-for="email">Introduce un email válido</span>
-        </div>
-
-        <div class="mx-field">
-          <label class="mx-label" for="phone">Teléfono <span class="mx-hint">— con prefijo, ej. +34 600 12 34 56</span></label>
-          <input id="phone" name="phone" type="tel" class="mx-input" placeholder="+34 600 12 34 56" autocomplete="tel" />
+        <div class="mx-row">
+          <div class="mx-field">
+            <label class="mx-label" for="email">Correo electrónico <span class="mx-req">*</span></label>
+            <input id="email" name="email" type="email" class="mx-input" placeholder="tu@email.com" autocomplete="email" required />
+            <span class="mx-err" data-for="email">Introduce un email válido</span>
+          </div>
+          <div class="mx-field">
+            <label class="mx-label" for="phone">Teléfono <span class="mx-hint">— con prefijo</span></label>
+            <input id="phone" name="phone" type="tel" class="mx-input" placeholder="+34 600 12 34 56" autocomplete="tel" />
+          </div>
         </div>
 
         <div class="mx-row">
@@ -116,31 +116,32 @@ export const prerender = false
           </div>
         </div>
 
-        <button id="submit" type="submit" class="mx-btn">
-          <span id="mx-btn-text">Continuar al pago</span>
-          <svg id="mx-btn-arrow" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-          </svg>
-          <svg id="mx-btn-spinner" class="mx-spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:none;" aria-hidden="true">
-            <path stroke-linecap="round" d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-          </svg>
-        </button>
+        <div class="mx-btn-wrap">
+          <button id="submit" type="submit" class="mx-btn">
+            <span id="mx-btn-text">Continuar al pago</span>
+            <svg id="mx-btn-arrow" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+            <svg id="mx-btn-spinner" class="mx-spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:none;" aria-hidden="true">
+              <path stroke-linecap="round" d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+          </button>
 
-        <div class="mx-trust">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
-          </svg>
-          Pago 100% seguro procesado por Stripe
+          <div class="mx-trust">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+            </svg>
+            Pago 100% seguro procesado por Stripe
+          </div>
+
+          <p class="mx-legal">
+            Al continuar confirmo que he leído y acepto los
+            <a href="/terminos-y-condiciones" target="_blank" rel="noreferrer">Términos</a>
+            y la
+            <a href="/politica-de-privacidad" target="_blank" rel="noreferrer">Política de privacidad</a>.
+          </p>
         </div>
-
-        <p class="mx-legal">
-          Al continuar confirmo que he leído y acepto los
-          <a href="/terminos-y-condiciones" target="_blank" rel="noreferrer">Términos</a>
-          y la
-          <a href="/politica-de-privacidad" target="_blank" rel="noreferrer">Política de privacidad</a>.
-        </p>
-        </form>
-      </div>
+      </form>
     </div>
   </div>
 </Layout>
@@ -149,28 +150,28 @@ export const prerender = false
   /* ── Página ── */
   .mx-page {
     min-height: 100vh;
-    background: #1d0084;
+    background: #1D0084;
     position: relative;
     overflow: hidden;
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding: 56px 24px 100px;
+    padding: 52px 32px 96px;
   }
   .mx-glow1 {
-    position: absolute; top: -160px; left: 50%; transform: translateX(-50%);
-    width: 1000px; height: 580px;
-    background: radial-gradient(ellipse at center, rgba(11, 109, 240, 0.5) 0%, transparent 65%);
+    position: absolute; top: -140px; left: 50%; transform: translateX(-50%);
+    width: 960px; height: 560px;
+    background: radial-gradient(ellipse at center, rgba(11,109,240,0.5) 0%, transparent 65%);
     pointer-events: none;
   }
   .mx-glow2 {
-    position: absolute; bottom: -80px; right: -100px;
-    width: 640px; height: 420px;
-    background: radial-gradient(ellipse at center, rgba(77, 163, 255, 0.16) 0%, transparent 65%);
+    position: absolute; bottom: -60px; right: -80px;
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse at center, rgba(77,163,255,0.16) 0%, transparent 65%);
     pointer-events: none;
   }
   .mx-dots {
-    position: absolute; inset: 0; pointer-events: none; opacity: 0.5;
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.4;
     background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
     background-size: 28px 28px;
   }
@@ -178,13 +179,13 @@ export const prerender = false
   /* ── Shell ── */
   .mx-shell {
     position: relative; z-index: 1;
-    width: 100%; max-width: 880px;
+    width: 100%; max-width: 700px;
     display: flex; flex-direction: column; align-items: flex-start;
     color: #fff;
   }
 
   /* ── Logo ── */
-  .mx-logo-link { display: inline-block; margin-bottom: 40px; }
+  .mx-logo-link { display: inline-block; margin-bottom: 44px; }
   .mx-logo { height: 38px; width: auto; object-fit: contain; }
 
   /* ── Badge ── */
@@ -195,7 +196,8 @@ export const prerender = false
     border: 1px solid rgba(77, 163, 255, 0.2);
     color: #e0f2ff;
     font-size: 11px; font-weight: 700;
-    letter-spacing: 0.13em; text-transform: uppercase;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 6px;
   }
   .mx-badge-icon { width: 12px; height: 12px; }
 
@@ -203,15 +205,15 @@ export const prerender = false
   .mx-header {
     width: 100%;
     display: flex; flex-direction: column; align-items: flex-start;
-    gap: 14px; margin: 14px 0 40px;
+    gap: 14px; margin-bottom: 48px;
   }
   .mx-title {
     font-family: var(--font-poppins), system-ui, sans-serif;
-    font-size: clamp(34px, 5.2vw, 52px);
-    font-weight: 800;
+    font-size: clamp(38px, 5.5vw, 56px);
+    font-weight: 700;
     letter-spacing: -0.04em;
     line-height: 1.08;
-    margin: 4px 0 0;
+    margin: 0; margin-top: 10px;
   }
   .mx-title-gradient {
     background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.45) 100%);
@@ -223,31 +225,19 @@ export const prerender = false
     font-size: clamp(17px, 1.8vw, 20px);
     font-weight: 700; line-height: 1.4;
     color: rgba(255, 255, 255, 0.95);
-    max-width: 540px; margin: 0;
+    max-width: 600px; margin: 0;
   }
   .mx-body {
-    font-size: clamp(15px, 1.3vw, 17px);
+    font-size: clamp(14px, 1.3vw, 16px);
     font-weight: 400; line-height: 1.7;
-    color: rgba(255, 255, 255, 0.95);
-    max-width: 620px; margin: 0;
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 600px; margin: 0;
   }
 
-  .mx-form-wrap { position: relative; width: 100%; }
-
-  /* ── Form (panel de cristal · frosted neutro y transparente) ── */
+  /* ── Form (directo sobre el azul, sin tarjeta) ── */
   .mx-form {
-    position: relative; z-index: 1;
     width: 100%;
-    display: flex; flex-direction: column; gap: 24px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    border-radius: 24px;
-    padding: 36px;
-    backdrop-filter: blur(30px) saturate(105%);
-    -webkit-backdrop-filter: blur(30px) saturate(105%);
-    box-shadow:
-      0 30px 70px -30px rgba(3, 9, 33, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.38);
+    display: flex; flex-direction: column; gap: 32px;
   }
 
   .mx-honeypot {
@@ -256,61 +246,65 @@ export const prerender = false
     overflow: hidden !important; opacity: 0 !important; pointer-events: none !important;
   }
 
-  .mx-row { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+  .mx-row { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
   .mx-field { display: flex; flex-direction: column; gap: 8px; position: relative; }
 
   .mx-label { font-size: 14px; font-weight: 600; color: #fff; line-height: 1.4; }
   .mx-req { color: rgba(255, 255, 255, 0.45); font-weight: 500; }
   .mx-hint { font-weight: 400; font-size: 12px; color: rgba(255, 255, 255, 0.5); }
 
-  /* Campos en cajita de cristal sobre el panel glass */
-  .mx-input, .mx-select {
+  /* Input — solo línea inferior */
+  .mx-input {
     width: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.24);
-    border-radius: 12px;
-    padding: 13px 14px;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.28);
+    border-radius: 0;
+    padding: 10px 0;
     color: #fff; font-size: 16px; font-family: inherit;
-    outline: none; box-sizing: border-box;
-    transition: border-color 0.18s, box-shadow 0.18s, background-color 0.18s;
+    outline: none; transition: border-color 0.2s; box-sizing: border-box;
   }
-  .mx-input::placeholder { color: rgba(255, 255, 255, 0.5); }
-  .mx-input:focus, .mx-select:focus {
-    border-color: #4da3ff; background: rgba(255, 255, 255, 0.16);
-    box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.3);
-  }
-  .mx-input.invalid {
-    border-color: #ff7b7b;
-    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
-  }
+  .mx-input::placeholder { color: rgba(255, 255, 255, 0.28); }
+  .mx-input:focus { border-bottom-color: #4da3ff; }
+  .mx-input.invalid { border-bottom-color: rgba(255, 100, 100, 0.8); }
 
-  .mx-err { display: none; font-size: 12px; color: rgba(255, 120, 120, 0.95); font-weight: 500; }
+  .mx-err { display: none; font-size: 12px; color: rgba(255, 120, 120, 0.9); font-weight: 500; }
   .mx-err.visible { display: block; }
 
+  /* Select — solo línea inferior */
   .mx-select-wrap { position: relative; }
   .mx-select {
-    padding-right: 38px;
-    appearance: none; -webkit-appearance: none;
-    cursor: pointer; color-scheme: dark;
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.28);
+    border-radius: 0;
+    padding: 10px 24px 10px 0;
+    color: #fff; font-size: 16px; font-family: inherit;
+    outline: none; appearance: none; -webkit-appearance: none;
+    cursor: pointer; transition: border-color 0.2s; color-scheme: dark;
   }
-  .mx-select option { background: #1a0a5e; color: #fff; }
+  .mx-select option { background: #1a0099; color: #fff; }
+  .mx-select:focus { border-bottom-color: #4da3ff; }
   .mx-select-arrow {
-    position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
-    pointer-events: none; color: rgba(255, 255, 255, 0.5);
+    position: absolute; right: 2px; top: 50%; transform: translateY(-50%);
+    pointer-events: none; color: rgba(255, 255, 255, 0.45);
   }
 
   /* ── Botón ── */
+  .mx-btn-wrap {
+    display: flex; flex-direction: column; align-items: flex-start;
+    gap: 14px; padding-top: 8px;
+  }
   .mx-btn {
     display: flex; align-items: center; justify-content: center; gap: 9px;
-    width: 100%; margin-top: 4px; padding: 16px 36px;
+    width: 100%; padding: 16px 36px;
     border-radius: 12px; border: none; cursor: pointer;
-    background: #4da3ff; color: #0a1656;
+    background: #4da3ff; color: #1D0084;
     font-size: 17px; font-weight: 700; font-family: inherit;
-    box-shadow: 0 12px 26px -10px rgba(11, 109, 240, 0.6);
-    transition: background-color 0.15s, box-shadow 0.15s, transform 0.05s;
+    transition: background-color 0.15s;
   }
   .mx-btn:hover:not(:disabled) { background: #6cb5ff; }
-  .mx-btn:active:not(:disabled) { transform: translateY(1px); }
   .mx-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
   @keyframes mx-spin { to { transform: rotate(360deg); } }
@@ -318,19 +312,18 @@ export const prerender = false
 
   /* ── Confianza / legal ── */
   .mx-trust {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, 0.95);
-    margin-top: -6px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, 0.85);
   }
   .mx-legal {
-    text-align: center; font-size: 12px; line-height: 1.6;
-    color: rgba(255, 255, 255, 0.5); margin: 0;
+    font-size: 12px; line-height: 1.6;
+    color: rgba(255, 255, 255, 0.4); margin: 0;
   }
   .mx-legal a {
-    color: rgba(255, 255, 255, 0.75);
-    text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.2);
   }
-  .mx-legal a:hover { color: #fff; }
+  .mx-legal a:hover { color: rgba(255, 255, 255, 0.75); }
 
   /* ── Toast de error ── */
   .mx-toast {
@@ -351,10 +344,11 @@ export const prerender = false
 
   /* ── Responsive ── */
   @media (max-width: 640px) {
-    .mx-page { padding: 36px 16px 72px; }
-    .mx-form { padding: 24px 20px; gap: 22px; }
-    .mx-row { grid-template-columns: 1fr; gap: 22px; }
+    .mx-page { padding: 36px 20px 72px; }
+    .mx-row { grid-template-columns: 1fr; gap: 28px; }
     .mx-title { font-size: clamp(28px, 9vw, 38px); }
+    .mx-btn { width: 100%; justify-content: center; }
+    .mx-btn-wrap { align-items: stretch; }
   }
 </style>
 
