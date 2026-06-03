@@ -52,8 +52,6 @@ export const prerender = false
 
       <!-- Formulario en panel glass -->
       <div class="mx-form-wrap">
-        <div class="mx-orb mx-orb-a" aria-hidden="true"></div>
-        <div class="mx-orb mx-orb-b" aria-hidden="true"></div>
         <form id="form" class="mx-form" novalidate>
         {/* Honeypot anti-bot */}
         <div class="mx-honeypot" aria-hidden="true">
@@ -234,36 +232,22 @@ export const prerender = false
     max-width: 620px; margin: 0;
   }
 
-  /* ── Orbes de color desfocados detrás del panel para que el cristal refracte ── */
   .mx-form-wrap { position: relative; width: 100%; }
-  .mx-orb {
-    position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
-    filter: blur(50px);
-  }
-  .mx-orb-a {
-    width: 340px; height: 340px; top: -50px; left: -40px;
-    background: radial-gradient(circle, rgba(77, 163, 255, 0.7) 0%, transparent 70%);
-  }
-  .mx-orb-b {
-    width: 300px; height: 300px; bottom: -60px; right: -30px;
-    background: radial-gradient(circle, rgba(124, 104, 255, 0.55) 0%, transparent 70%);
-  }
 
-  /* ── Form (panel de cristal claro · liquid glass) ── */
+  /* ── Form (panel de cristal · frosted neutro y transparente) ── */
   .mx-form {
     position: relative; z-index: 1;
     width: 100%;
     display: flex; flex-direction: column; gap: 24px;
-    background:
-      linear-gradient(150deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.07) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     border-radius: 24px;
     padding: 36px;
-    backdrop-filter: blur(22px) saturate(170%);
-    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    backdrop-filter: blur(30px) saturate(105%);
+    -webkit-backdrop-filter: blur(30px) saturate(105%);
     box-shadow:
-      0 30px 70px -28px rgba(3, 9, 33, 0.55),
-      inset 0 1px 0 rgba(255, 255, 255, 0.45);
+      0 30px 70px -30px rgba(3, 9, 33, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.38);
   }
 
   .mx-honeypot {
