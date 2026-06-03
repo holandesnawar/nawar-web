@@ -230,19 +230,19 @@ export const prerender = false
     max-width: 620px; margin: 0;
   }
 
-  /* ── Form (panel cristal claro · frosted glass tipo Apple) ── */
+  /* ── Form (panel glass · mismo efecto que el GuidePopup del home) ── */
   .mx-form {
     width: 100%;
     display: flex; flex-direction: column; gap: 24px;
-    background: rgba(255, 255, 255, 0.82);
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    border-radius: 24px;
+    background: rgba(15, 27, 72, 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 22px;
     padding: 36px;
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    backdrop-filter: saturate(140%) blur(18px);
+    -webkit-backdrop-filter: saturate(140%) blur(18px);
     box-shadow:
-      0 40px 90px -45px rgba(8, 11, 60, 0.7),
-      inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      0 18px 48px rgba(3, 9, 33, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
   .mx-honeypot {
@@ -254,43 +254,46 @@ export const prerender = false
   .mx-row { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
   .mx-field { display: flex; flex-direction: column; gap: 8px; position: relative; }
 
-  .mx-label { font-size: 14px; font-weight: 600; color: #1a1f36; line-height: 1.4; }
-  .mx-req { color: #9aa1b5; font-weight: 500; }
-  .mx-hint { font-weight: 400; font-size: 12px; color: #6b7280; }
+  .mx-label { font-size: 14px; font-weight: 600; color: #fff; line-height: 1.4; }
+  .mx-req { color: rgba(255, 255, 255, 0.45); font-weight: 500; }
+  .mx-hint { font-weight: 400; font-size: 12px; color: rgba(255, 255, 255, 0.5); }
 
+  /* Campos en cajita de cristal (frosted) sobre el panel glass */
   .mx-input, .mx-select {
     width: 100%;
-    background: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(26, 31, 54, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 12px;
     padding: 13px 14px;
-    color: #1a1f36; font-size: 16px; font-family: inherit;
+    color: #fff; font-size: 16px; font-family: inherit;
     outline: none; box-sizing: border-box;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     transition: border-color 0.18s, box-shadow 0.18s, background-color 0.18s;
   }
-  .mx-input::placeholder { color: #9aa1b5; }
+  .mx-input::placeholder { color: rgba(255, 255, 255, 0.4); }
   .mx-input:focus, .mx-select:focus {
-    border-color: #4da3ff; background: #fff;
-    box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.25);
+    border-color: #4da3ff; background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.28);
   }
   .mx-input.invalid {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.16);
+    border-color: #ff7b7b;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
   }
 
-  .mx-err { display: none; font-size: 12px; color: #dc2626; font-weight: 500; }
+  .mx-err { display: none; font-size: 12px; color: rgba(255, 120, 120, 0.95); font-weight: 500; }
   .mx-err.visible { display: block; }
 
   .mx-select-wrap { position: relative; }
   .mx-select {
     padding-right: 38px;
     appearance: none; -webkit-appearance: none;
-    cursor: pointer; color-scheme: light;
+    cursor: pointer; color-scheme: dark;
   }
-  .mx-select option { background: #fff; color: #1a1f36; }
+  .mx-select option { background: #1a0a5e; color: #fff; }
   .mx-select-arrow {
     position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
-    pointer-events: none; color: #6b7280;
+    pointer-events: none; color: rgba(255, 255, 255, 0.5);
   }
 
   /* ── Botón ── */
@@ -313,18 +316,18 @@ export const prerender = false
   /* ── Confianza / legal ── */
   .mx-trust {
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    font-size: 13px; font-weight: 500; color: #475569;
+    font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, 0.95);
     margin-top: -6px;
   }
   .mx-legal {
     text-align: center; font-size: 12px; line-height: 1.6;
-    color: #8a90a3; margin: 0;
+    color: rgba(255, 255, 255, 0.5); margin: 0;
   }
   .mx-legal a {
-    color: #025dc7;
-    text-decoration: underline; text-decoration-color: rgba(2, 93, 199, 0.35);
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.25);
   }
-  .mx-legal a:hover { color: #1d0084; }
+  .mx-legal a:hover { color: #fff; }
 
   /* ── Toast de error ── */
   .mx-toast {
