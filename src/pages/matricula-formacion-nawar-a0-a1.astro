@@ -51,7 +51,10 @@ export const prerender = false
       </header>
 
       <!-- Formulario en panel glass -->
-      <form id="form" class="mx-form" novalidate>
+      <div class="mx-form-wrap">
+        <div class="mx-orb mx-orb-a" aria-hidden="true"></div>
+        <div class="mx-orb mx-orb-b" aria-hidden="true"></div>
+        <form id="form" class="mx-form" novalidate>
         {/* Honeypot anti-bot */}
         <div class="mx-honeypot" aria-hidden="true">
           <label>No rellenar
@@ -138,7 +141,8 @@ export const prerender = false
           y la
           <a href="/politica-de-privacidad" target="_blank" rel="noreferrer">Política de privacidad</a>.
         </p>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </Layout>
@@ -230,19 +234,36 @@ export const prerender = false
     max-width: 620px; margin: 0;
   }
 
-  /* ── Form (panel glass · mismo efecto que el GuidePopup del home) ── */
+  /* ── Orbes de color desfocados detrás del panel para que el cristal refracte ── */
+  .mx-form-wrap { position: relative; width: 100%; }
+  .mx-orb {
+    position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
+    filter: blur(50px);
+  }
+  .mx-orb-a {
+    width: 340px; height: 340px; top: -50px; left: -40px;
+    background: radial-gradient(circle, rgba(77, 163, 255, 0.7) 0%, transparent 70%);
+  }
+  .mx-orb-b {
+    width: 300px; height: 300px; bottom: -60px; right: -30px;
+    background: radial-gradient(circle, rgba(124, 104, 255, 0.55) 0%, transparent 70%);
+  }
+
+  /* ── Form (panel de cristal claro · liquid glass) ── */
   .mx-form {
+    position: relative; z-index: 1;
     width: 100%;
     display: flex; flex-direction: column; gap: 24px;
-    background: rgba(15, 27, 72, 0.42);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 22px;
+    background:
+      linear-gradient(150deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.07) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 24px;
     padding: 36px;
-    backdrop-filter: saturate(140%) blur(18px);
-    -webkit-backdrop-filter: saturate(140%) blur(18px);
+    backdrop-filter: blur(22px) saturate(170%);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
     box-shadow:
-      0 18px 48px rgba(3, 9, 33, 0.34),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      0 30px 70px -28px rgba(3, 9, 33, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.45);
   }
 
   .mx-honeypot {
@@ -258,23 +279,21 @@ export const prerender = false
   .mx-req { color: rgba(255, 255, 255, 0.45); font-weight: 500; }
   .mx-hint { font-weight: 400; font-size: 12px; color: rgba(255, 255, 255, 0.5); }
 
-  /* Campos en cajita de cristal (frosted) sobre el panel glass */
+  /* Campos en cajita de cristal sobre el panel glass */
   .mx-input, .mx-select {
     width: 100%;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.24);
     border-radius: 12px;
     padding: 13px 14px;
     color: #fff; font-size: 16px; font-family: inherit;
     outline: none; box-sizing: border-box;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
     transition: border-color 0.18s, box-shadow 0.18s, background-color 0.18s;
   }
-  .mx-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+  .mx-input::placeholder { color: rgba(255, 255, 255, 0.5); }
   .mx-input:focus, .mx-select:focus {
-    border-color: #4da3ff; background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.28);
+    border-color: #4da3ff; background: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.3);
   }
   .mx-input.invalid {
     border-color: #ff7b7b;
