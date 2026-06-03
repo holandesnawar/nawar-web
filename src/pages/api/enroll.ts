@@ -2,10 +2,11 @@ import type { APIRoute } from 'astro'
 
 export const prerender = false
 
-// Backend de la academia: crea la sesión de pago de Stripe (Checkout hosted)
-// y devuelve { checkout_url }. (El endpoint enroll-intent / checkout embedded
-// aún no existe en el backend; usamos el Checkout hosted, que sí funciona.)
-const ACADEMIA_ENROLL_URL = 'https://academia.holandesnawar.nl/api/v1/payments/enroll'
+// Backend de la academia: crea un PaymentIntent y devuelve la URL de NUESTRO
+// checkout embebido (Stripe Elements dentro de la academia), no el de Stripe.
+// payment_url = academia.holandesnawar.nl/auth/matricula-formacion-nawar-a0-a1?ei=&cs=&pk=
+// La academia debe servir la rama que tiene este endpoint (adoring-dijkstra).
+const ACADEMIA_ENROLL_URL = 'https://academia.holandesnawar.nl/api/v1/payments/enroll-intent'
 
 // systeme.io — CRM centralizado (mismo que usa la lista de espera).
 const SYSTEME_BASE = 'https://api.systeme.io/api'
@@ -141,7 +142,7 @@ export const POST: APIRoute = async ({ request }) => {
     console.warn('[enroll] SYSTEME_API_KEY not set — skipping CRM sync for:', email)
   }
 
-  // ── 2) Crear la sesión de pago en la academia y devolver la URL de pago ──
+  // ── 2) Crear el PaymentIntent en la academia y devolver payment_url ──
   try {
     const res = await fetch(ACADEMIA_ENROLL_URL, {
       method: 'POST',
@@ -169,17 +170,17 @@ export const POST: APIRoute = async ({ request }) => {
       return json({ detail }, 502)
     }
 
-    const checkoutUrl = data?.checkout_url ?? data?.checkoutUrl ?? data?.payment_url ?? data?.url ?? null
-    if (!checkoutUrl) {
-      console.error('[enroll] academia ok pero sin checkout_url:', JSON.stringify(data).slice(0, 200))
+    const paymentUrl = data?.payment_url ?? data?.paymentUrl ?? data?.checkout_url ?? data?.url ?? null
+    if (!paymentUrl) {
+      console.error('[enroll] academia ok pero sin payment_url:', JSON.stringify(data).slice(0, 200))
       return json(
         { detail: 'No se pudo iniciar el pago. Vuelve a intentarlo en un momento.' },
         502
       )
     }
 
-    // El front (matricula) lee `payment_url`; devolvemos ahí la URL del checkout.
-    return json({ payment_url: checkoutUrl, checkout_url: checkoutUrl })
+    // El front (matricula) lee `payment_url` y redirige a nuestro checkout embebido.
+    return json({ payment_url: paymentUrl })
   } catch (e) {
     console.error('[enroll] academia request failed:', e)
     return json(
