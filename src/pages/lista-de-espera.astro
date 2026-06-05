@@ -95,7 +95,7 @@ export const prerender = false
         <!-- Fila 3: las dos preguntas juntas -->
         <div class="wl-row">
           <div class="wl-field">
-            <label class="wl-label" for="wl-conociste">¿Cómo conociste Nawar?</label>
+            <label class="wl-label" for="wl-conociste">¿Cómo conociste Nawar? <span class="wl-req">*</span></label>
             <div class="wl-select-wrap">
               <select id="wl-conociste" class="wl-select">
                 <option value="" disabled selected>Selecciona...</option>
@@ -111,9 +111,10 @@ export const prerender = false
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
               </svg>
             </div>
+            <span class="wl-err" data-for="wl-conociste">Selecciona una opción</span>
           </div>
           <div class="wl-field">
-            <label class="wl-label" for="wl-nivel">¿Qué nivel de neerlandés tienes?</label>
+            <label class="wl-label" for="wl-nivel">¿Qué nivel de neerlandés tienes? <span class="wl-req">*</span></label>
             <div class="wl-select-wrap">
               <select id="wl-nivel" class="wl-select">
                 <option value="" disabled selected>Selecciona...</option>
@@ -128,6 +129,7 @@ export const prerender = false
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
               </svg>
             </div>
+            <span class="wl-err" data-for="wl-nivel">Selecciona una opción</span>
           </div>
         </div>
 
@@ -303,7 +305,7 @@ export const prerender = false
   }
   .wl-input::placeholder { color: rgba(255,255,255,0.28); }
   .wl-input:focus { border-bottom-color: #4da3ff; }
-  .wl-input.invalid { border-bottom-color: rgba(255, 100, 100, 0.8); }
+  .wl-input.invalid, .wl-select.invalid { border-bottom-color: rgba(255, 100, 100, 0.8); }
 
   /* Error */
   .wl-err {
@@ -461,16 +463,23 @@ export const prerender = false
     const nombre   = (document.getElementById('wl-nombre')   as HTMLInputElement)?.value?.trim()
     const apellido = (document.getElementById('wl-apellido') as HTMLInputElement)?.value?.trim()
     const email    = (document.getElementById('wl-email')    as HTMLInputElement)?.value?.trim()
+    const conociste = (document.getElementById('wl-conociste') as HTMLSelectElement)?.value
+    const nivel     = (document.getElementById('wl-nivel')     as HTMLSelectElement)?.value
     let ok = true
     showError('wl-nombre',   !nombre);   if (!nombre)   ok = false
     showError('wl-apellido', !apellido); if (!apellido) ok = false
     showError('wl-email', !email || !email.includes('@'))
     if (!email || !email.includes('@')) ok = false
+    showError('wl-conociste', !conociste); if (!conociste) ok = false
+    showError('wl-nivel',     !nivel);     if (!nivel)     ok = false
     return ok
   }
 
   ;['wl-nombre', 'wl-apellido', 'wl-email'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', () => showError(id, false))
+  })
+  ;['wl-conociste', 'wl-nivel'].forEach(id => {
+    document.getElementById(id)?.addEventListener('change', () => showError(id, false))
   })
 
   form?.addEventListener('submit', async (e) => {
