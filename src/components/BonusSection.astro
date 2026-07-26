@@ -1,0 +1,143 @@
+---
+// Los bonus de la cohorte fundadora — con el certificado como protagonista.
+const bonus = [
+  {
+    icon: '📚',
+    title: 'Guías premium descargables',
+    desc: 'Las guías Nawar que resuelven lo que más cuesta: hebben & zijn, los artículos de/het, pronunciación… tuyas para siempre.',
+  },
+  {
+    icon: '🔒',
+    title: 'Precio fundador bloqueado',
+    desc: 'Entras con el precio de lanzamiento y mantienes condiciones preferentes en los siguientes niveles.',
+  },
+  {
+    icon: '🚀',
+    title: 'Acceso anticipado a lo nuevo',
+    desc: 'Cada mejora, herramienta o nivel nuevo de la academia — tú lo pruebas primero.',
+  },
+]
+---
+<section class="bn-section" data-navbar="light">
+  <div class="inner" style="position:relative;z-index:1;">
+
+    <div class="bn-header sr">
+      <span class="badge-light">Además, de regalo</span>
+      <h2 class="bn-title">Los bonus de la <span class="bn-accent">cohorte fundadora</span></h2>
+    </div>
+
+    <div class="bn-layout">
+
+      <!-- Certificado — el bonus estrella, con diseño de documento elegante -->
+      <div class="bn-cert-col sr">
+        <div class="bn-cert" aria-label="Certificado Holandés Nawar">
+          <div class="bn-cert-border">
+            <div class="bn-cert-head">
+              <img src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png" alt="Holandés Nawar" class="bn-cert-logo" />
+            </div>
+            <p class="bn-cert-kicker">CERTIFICADO DE FINALIZACIÓN</p>
+            <p class="bn-cert-course">Formación Neerlandés A0 → A1</p>
+            <div class="bn-cert-nameline">
+              <span class="bn-cert-name">Tu nombre</span>
+            </div>
+            <p class="bn-cert-text">ha completado con éxito el programa completo del Método Holandés Nawar</p>
+            <div class="bn-cert-foot">
+              <div class="bn-cert-sig">
+                <span class="bn-cert-sigline"></span>
+                <span class="bn-cert-siglabel">Director académico</span>
+              </div>
+              <div class="bn-cert-seal">
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="bn-cert-caption">🎓 <strong>Certificado Holandés Nawar</strong> al completar la formación — tu nivel, demostrado.</p>
+      </div>
+
+      <!-- Resto de bonus -->
+      <div class="bn-list-col">
+        {bonus.map((b, i) => (
+          <div class={`bn-item sr${i > 0 ? ` d${i}` : ''}`}>
+            <span class="bn-item-icon">{b.icon}</span>
+            <div>
+              <h3 class="bn-item-title">{b.title}</h3>
+              <p class="bn-item-desc">{b.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+.bn-section { background: #F0F4FF; position: relative; overflow: hidden; padding: 96px 0; }
+.bn-header { text-align: center; max-width: 720px; margin: 0 auto 52px; }
+.bn-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.12;
+  color: #101336; margin-top: 18px;
+}
+.bn-accent { color: #025dc7; }
+
+.bn-layout {
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 40px; align-items: center; max-width: 1000px; margin: 0 auto;
+}
+@media (max-width: 860px) { .bn-layout { grid-template-columns: 1fr; } }
+
+/* ── Certificado ── */
+.bn-cert {
+  background: #1D0084; border-radius: 24px; padding: 16px;
+  box-shadow: 0 30px 70px rgba(29,0,132,0.25);
+  transform: rotate(-1.2deg);
+  transition: transform 0.3s ease;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px),
+    radial-gradient(circle 480px at 100% 0%, rgba(11,109,240,0.40) 0%, transparent 65%);
+  background-size: 28px 28px, auto;
+}
+.bn-cert:hover { transform: rotate(0deg) translateY(-4px); }
+.bn-cert-border {
+  border: 1px solid rgba(255,255,255,0.22); border-radius: 16px;
+  padding: 34px 30px 28px; text-align: center;
+}
+.bn-cert-logo { height: 34px; margin: 0 auto 20px; display: block; }
+.bn-cert-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.28em; color: #4da3ff; margin-bottom: 8px; }
+.bn-cert-course {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 19px; font-weight: 600; color: #fff; margin-bottom: 22px;
+}
+.bn-cert-nameline { border-bottom: 1px solid rgba(255,255,255,0.30); max-width: 260px; margin: 0 auto 8px; padding-bottom: 6px; }
+.bn-cert-name {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 21px; font-style: italic; color: rgba(255,255,255,0.9);
+}
+.bn-cert-text { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.55; max-width: 300px; margin: 0 auto 26px; }
+.bn-cert-foot { display: flex; align-items: flex-end; justify-content: space-between; }
+.bn-cert-sig { text-align: left; }
+.bn-cert-sigline { display: block; width: 110px; border-bottom: 1px solid rgba(255,255,255,0.35); margin-bottom: 5px; }
+.bn-cert-siglabel { font-size: 10px; color: rgba(255,255,255,0.45); }
+.bn-cert-seal {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, #4da3ff, #0b6df0);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 18px rgba(11,109,240,0.45);
+}
+.bn-cert-caption { text-align: center; margin-top: 22px; font-size: 14.5px; color: #101336; }
+
+/* ── Bonus items ── */
+.bn-list-col { display: flex; flex-direction: column; gap: 16px; }
+.bn-item {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: #fff; border: 1px solid #E4EAF8; border-radius: 20px;
+  padding: 22px 24px;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.bn-item:hover { transform: translateY(-3px); border-color: rgba(2,93,199,0.35); box-shadow: 0 14px 34px rgba(29,0,132,0.08); }
+.bn-item-icon { font-size: 26px; line-height: 1.2; }
+.bn-item-title { font-family: 'Poppins', system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #101336; margin-bottom: 5px; }
+.bn-item-desc { font-size: 13.5px; color: #5A6480; line-height: 1.6; }
+</style>

@@ -1,0 +1,88 @@
+---
+// Los 3 pilares — por qué el método es efectivo para ti.
+const pilares = [
+  {
+    num: '01',
+    icon: '🇪🇸',
+    title: 'Desde el español, no desde el inglés',
+    desc: 'Cada regla se explica comparándola con tu idioma. Entiendes el porqué de las cosas — y lo que entiendes, no se olvida.',
+  },
+  {
+    num: '02',
+    icon: '🧭',
+    title: 'Sistema, no fuerza de voluntad',
+    desc: 'Un camino claro por unidades: sabes qué toca hoy, la plataforma guarda tu progreso y el repaso inteligente te devuelve justo lo que fallaste.',
+  },
+  {
+    num: '03',
+    icon: '🤝',
+    title: 'Acompañamiento real',
+    desc: 'Clases en vivo, consultas respondidas por el equipo y una comunidad que avanza contigo. Nunca estudias solo.',
+  },
+]
+---
+<section class="pil-section" data-navbar="light">
+  <div class="inner" style="position:relative;z-index:1;">
+    <div class="pil-header sr">
+      <span class="badge-light">Por qué funciona</span>
+      <h2 class="pil-title">Un método efectivo para ti,<br /><span class="pil-accent">por tres razones</span></h2>
+      <p class="pil-sub">No es magia ni talento: son tres pilares que hacen que esta vez sí llegues a hablarlo.</p>
+    </div>
+
+    <div class="pil-grid">
+      {pilares.map((p, i) => (
+        <div class={`pil-card sr${i > 0 ? ` d${i}` : ''}`}>
+          <div class="pil-card-top">
+            <span class="pil-num">{p.num}</span>
+            <span class="pil-icon">{p.icon}</span>
+          </div>
+          <h3 class="pil-card-title">{p.title}</h3>
+          <p class="pil-card-desc">{p.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.pil-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
+.pil-header { text-align: center; max-width: 760px; margin: 0 auto 56px; }
+.pil-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.12;
+  color: #101336; margin: 18px 0 16px;
+}
+.pil-accent { color: #025dc7; }
+.pil-sub { font-size: clamp(14px, 1.4vw, 17px); color: #5A6480; line-height: 1.6; }
+
+.pil-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+@media (max-width: 860px) { .pil-grid { grid-template-columns: 1fr; } }
+
+.pil-card {
+  background: #F7F9FF;
+  border: 1px solid #E4EAF8;
+  border-radius: 24px;
+  padding: 32px 28px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.pil-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(2,93,199,0.35);
+  box-shadow: 0 18px 44px rgba(29,0,132,0.10);
+}
+.pil-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.pil-num {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 14px; font-weight: 700; letter-spacing: 0.08em;
+  color: #025dc7; background: rgba(77,163,255,0.12);
+  border-radius: 999px; padding: 6px 14px;
+}
+.pil-icon { font-size: 30px; line-height: 1; }
+.pil-card-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 19px; font-weight: 600; color: #101336;
+  line-height: 1.3; margin-bottom: 10px;
+}
+.pil-card-desc { font-size: 14.5px; color: #5A6480; line-height: 1.65; }
+</style>

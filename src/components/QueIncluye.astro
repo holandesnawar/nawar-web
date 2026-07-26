@@ -1,0 +1,181 @@
+---
+// Qué incluye el programa — visual grande + todo lo que recibes + niveles.
+const incluye = [
+  { icon: '🗺️', title: 'Programa completo A0 → A1', desc: '8 meses de camino estructurado, unidad a unidad.' },
+  { icon: '🎥', title: 'Clases en vivo semanales', desc: 'Practica y resuelve dudas con el equipo cada semana.' },
+  { icon: '📼', title: 'Todas las clases grabadas', desc: '¿Te perdiste una? La ves cuando quieras, para siempre.' },
+  { icon: '📖', title: 'Libros y materiales', desc: 'Presentaciones, guías y PDFs descargables de cada lección.' },
+  { icon: '💻', title: 'Plataforma interactiva', desc: 'Flashcards, lectura, escucha con audio nativo y ejercicios.' },
+  { icon: '🔁', title: 'Repaso inteligente', desc: 'La plataforma recuerda tus fallos y te los devuelve hasta dominarlos.' },
+  { icon: '💬', title: 'Soporte y consultas', desc: 'Pregunta lo que sea: el equipo te responde, siempre.' },
+  { icon: '👥', title: 'Comunidad privada', desc: 'Avanza con otros hispanohablantes que van a tu ritmo.' },
+]
+---
+<section class="qi-section" data-navbar="light">
+  <div class="inner" style="position:relative;z-index:1;">
+
+    <div class="qi-header sr">
+      <span class="badge-light">Todo lo que recibes</span>
+      <h2 class="qi-title">Qué incluye <span class="qi-accent">el programa</span></h2>
+      <p class="qi-sub">Una formación completa: no un curso suelto, sino todo lo que necesitas para llegar a hablar.</p>
+    </div>
+
+    <!-- Visual grande: mockup de la plataforma -->
+    <div class="qi-visual sr" aria-hidden="true">
+      <div class="qi-browser">
+        <div class="qi-browser-bar">
+          <span class="qi-dot"></span><span class="qi-dot"></span><span class="qi-dot"></span>
+          <span class="qi-url">academia.holandesnawar.nl</span>
+        </div>
+        <div class="qi-browser-body">
+          <div class="qi-mock-side">
+            <div class="qi-mock-logo"></div>
+            <div class="qi-mock-nav"><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="qi-mock-main">
+            <div class="qi-mock-card qi-mock-card--hero">
+              <div class="qi-mock-label">CONTINÚA DONDE LO DEJASTE</div>
+              <div class="qi-mock-title-line"></div>
+              <div class="qi-mock-progress"><span style="width:64%"></span></div>
+              <div class="qi-mock-btn">Seguir con la lección</div>
+            </div>
+            <div class="qi-mock-row">
+              <div class="qi-mock-card"><div class="qi-mock-emoji">🃏</div><div class="qi-mock-mini">Flashcards</div></div>
+              <div class="qi-mock-card"><div class="qi-mock-emoji">📖</div><div class="qi-mock-mini">Lezen</div></div>
+              <div class="qi-mock-card"><div class="qi-mock-emoji">🎧</div><div class="qi-mock-mini">Luisteren</div></div>
+              <div class="qi-mock-card"><div class="qi-mock-emoji">✏️</div><div class="qi-mock-mini">Ejercicios</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid de lo incluido -->
+    <div class="qi-grid">
+      {incluye.map((item, i) => (
+        <div class={`qi-item sr${i % 4 !== 0 ? ` d${i % 4}` : ''}`}>
+          <span class="qi-item-icon">{item.icon}</span>
+          <div>
+            <h3 class="qi-item-title">{item.title}</h3>
+            <p class="qi-item-desc">{item.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Niveles -->
+    <div class="qi-levels sr">
+      <div class="qi-level qi-level--now">
+        <span class="qi-level-tag">DISPONIBLE AHORA</span>
+        <h3 class="qi-level-title">Nivel A0 → A1</h3>
+        <p class="qi-level-desc">De cero absoluto a mantener tus primeras conversaciones reales: presentarte, tu familia, compras, trabajo y vida diaria en neerlandés.</p>
+      </div>
+      <div class="qi-level qi-level--next">
+        <span class="qi-level-tag qi-level-tag--soon">PRÓXIMAMENTE</span>
+        <h3 class="qi-level-title">Nivel A1 → A2</h3>
+        <p class="qi-level-desc">La continuación natural del camino. Los alumnos fundadores acceden primero y con precio preferente.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.qi-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
+.qi-header { text-align: center; max-width: 760px; margin: 0 auto 48px; }
+.qi-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.12;
+  color: #101336; margin: 18px 0 16px;
+}
+.qi-accent { color: #025dc7; }
+.qi-sub { font-size: clamp(14px, 1.4vw, 17px); color: #5A6480; line-height: 1.6; }
+
+/* ── Visual: mockup navegador ── */
+.qi-visual { max-width: 860px; margin: 0 auto 56px; }
+.qi-browser {
+  border-radius: 20px; overflow: hidden;
+  border: 1px solid #E4EAF8;
+  box-shadow: 0 30px 80px rgba(29,0,132,0.16);
+}
+.qi-browser-bar {
+  display: flex; align-items: center; gap: 6px;
+  background: #F0F4FF; padding: 12px 16px; border-bottom: 1px solid #E4EAF8;
+}
+.qi-dot { width: 10px; height: 10px; border-radius: 50%; background: #D8E0F5; }
+.qi-url {
+  margin-left: 12px; font-size: 12px; color: #8A93AB;
+  background: #fff; border-radius: 8px; padding: 4px 14px;
+}
+.qi-browser-body {
+  display: flex; background: #1D0084; min-height: 300px;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px),
+    radial-gradient(circle 500px at 100% 0%, rgba(11,109,240,0.40) 0%, transparent 65%);
+  background-size: 28px 28px, auto;
+}
+.qi-mock-side { width: 130px; padding: 20px 16px; border-right: 1px solid rgba(255,255,255,0.08); }
+@media (max-width: 560px) { .qi-mock-side { display: none; } }
+.qi-mock-logo { width: 42px; height: 42px; border-radius: 12px; background: rgba(77,163,255,0.35); margin-bottom: 20px; }
+.qi-mock-nav { display: flex; flex-direction: column; gap: 12px; }
+.qi-mock-nav span { height: 9px; border-radius: 4px; background: rgba(255,255,255,0.18); }
+.qi-mock-nav span:nth-child(1) { width: 90%; background: rgba(77,163,255,0.55); }
+.qi-mock-nav span:nth-child(2) { width: 75%; }
+.qi-mock-nav span:nth-child(3) { width: 85%; }
+.qi-mock-nav span:nth-child(4) { width: 60%; }
+.qi-mock-main { flex: 1; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+.qi-mock-card {
+  background: rgba(255,255,255,0.96); border-radius: 14px; padding: 16px;
+  flex: 1; text-align: center;
+}
+.qi-mock-card--hero { text-align: left; padding: 20px; }
+.qi-mock-label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; color: #025dc7; margin-bottom: 8px; }
+.qi-mock-title-line { height: 12px; width: 60%; border-radius: 6px; background: #E4EAF8; margin-bottom: 14px; }
+.qi-mock-progress { height: 8px; border-radius: 999px; background: #F0F4FF; overflow: hidden; margin-bottom: 14px; }
+.qi-mock-progress span { display: block; height: 100%; border-radius: 999px; background: #4da3ff; }
+.qi-mock-btn {
+  display: inline-block; background: #4da3ff; color: #0a1656;
+  font-size: 12px; font-weight: 700; border-radius: 10px; padding: 8px 16px;
+}
+.qi-mock-row { display: flex; gap: 12px; }
+.qi-mock-emoji { font-size: 22px; margin-bottom: 6px; }
+.qi-mock-mini { font-size: 11px; font-weight: 600; color: #101336; }
+@media (max-width: 560px) { .qi-mock-row { flex-wrap: wrap; } .qi-mock-card { min-width: 40%; } }
+
+/* ── Grid incluido ── */
+.qi-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+  margin-bottom: 56px;
+}
+@media (max-width: 1024px) { .qi-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px)  { .qi-grid { grid-template-columns: 1fr; } }
+.qi-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: #F7F9FF; border: 1px solid #E4EAF8; border-radius: 18px;
+  padding: 20px;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.qi-item:hover { transform: translateY(-3px); border-color: rgba(2,93,199,0.35); box-shadow: 0 14px 34px rgba(29,0,132,0.08); }
+.qi-item-icon { font-size: 24px; line-height: 1.2; }
+.qi-item-title { font-family: 'Poppins', system-ui, sans-serif; font-size: 15px; font-weight: 600; color: #101336; margin-bottom: 4px; line-height: 1.3; }
+.qi-item-desc { font-size: 13px; color: #5A6480; line-height: 1.55; }
+
+/* ── Niveles ── */
+.qi-levels { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 900px; margin: 0 auto; }
+@media (max-width: 720px) { .qi-levels { grid-template-columns: 1fr; } }
+.qi-level { border-radius: 22px; padding: 28px; }
+.qi-level--now {
+  background: #1D0084; color: #fff; position: relative; overflow: hidden;
+  background-image: radial-gradient(circle 420px at 100% 0%, rgba(11,109,240,0.45) 0%, transparent 65%);
+}
+.qi-level--next { background: #F7F9FF; border: 1px dashed #C9D6F2; }
+.qi-level-tag {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  color: #0a1656; background: #4da3ff; border-radius: 999px; padding: 5px 12px; margin-bottom: 14px;
+}
+.qi-level-tag--soon { background: #E4EAF8; color: #5A6480; }
+.qi-level-title { font-family: 'Poppins', system-ui, sans-serif; font-size: 21px; font-weight: 600; margin-bottom: 8px; }
+.qi-level--next .qi-level-title { color: #101336; }
+.qi-level-desc { font-size: 14px; line-height: 1.6; opacity: 0.85; }
+.qi-level--next .qi-level-desc { color: #5A6480; }
+</style>

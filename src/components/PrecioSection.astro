@@ -1,0 +1,194 @@
+---
+// Sección final de precio — dos columnas: "Tu acceso incluye" + tarjeta de precio.
+const accesoIncluye = [
+  'Programa completo Neerlandés A0 → A1 (8 meses de camino)',
+  'Clases en vivo semanales con el equipo Nawar',
+  'Todas las clases grabadas, disponibles para siempre',
+  'Plataforma interactiva: flashcards, lectura, escucha y ejercicios',
+  'Repaso inteligente que recuerda tus fallos hasta que los dominas',
+  'Libros, presentaciones y materiales descargables',
+  'Soporte y consultas respondidas por el equipo',
+  'Comunidad privada de hispanohablantes',
+  'Certificado Holandés Nawar al completar la formación',
+  'Bonus fundador: guías premium + precio bloqueado + acceso anticipado',
+]
+const precio = '397'
+const precioDespues = '497'
+const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
+---
+<div class="pr-wrapper" id="precio">
+  <div class="pr-outer" data-navbar="dark">
+    <section class="pr-section">
+      <div class="pr-bg-glow" aria-hidden="true"></div>
+      <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.5;"></div>
+      <div class="inner" style="position:relative;z-index:1;">
+
+        <div class="pr-header sr">
+          <span class="badge-dark">Reserva tu plaza</span>
+          <h2 class="pr-title">
+            <span class="text-gradient-white">Todo el camino hasta hablar,</span><br />
+            <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;">en un solo pago</span>
+          </h2>
+        </div>
+
+        <div class="pr-layout">
+
+          <!-- Izquierda: tu acceso incluye -->
+          <div class="pr-includes sr">
+            <h3 class="pr-includes-title">Tu acceso incluye</h3>
+            <ul class="pr-list">
+              {accesoIncluye.map((item) => (
+                <li>
+                  <span class="pr-check">
+                    <svg width="11" height="11" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Derecha: tarjeta de precio -->
+          <div class="pr-card-col sr d1">
+            <div class="pr-card">
+              <span class="pr-card-badge">COHORTE FUNDADORA · PLAZAS LIMITADAS</span>
+              <h3 class="pr-card-name">Formación Neerlandés<br />A0 → A1</h3>
+
+              <div class="pr-price-row">
+                <span class="pr-price">{precio}€</span>
+                <span class="pr-price-meta">
+                  <span class="pr-price-old">{precioDespues}€</span>
+                  <span class="pr-price-note">pago único</span>
+                </span>
+              </div>
+              <p class="pr-price-sub">Precio fundador — subirá a {precioDespues}€ tras la primera cohorte.</p>
+
+              <a href={matriculaUrl} class="pr-cta">
+                Reservar mi plaza
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              </a>
+
+              <div class="pr-guarantee">
+                <svg width="17" height="17" fill="none" stroke="#025dc7" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                <span><strong>Garantía de 15 días.</strong> Si no es para ti, te devolvemos el 100%.</span>
+              </div>
+
+              <div class="pr-payments">
+                <span>Pago seguro con</span>
+                <span class="pr-pay-pill">Tarjeta</span>
+                <span class="pr-pay-pill">iDEAL</span>
+                <span class="pr-pay-pill">Klarna</span>
+                <span class="pr-pay-pill">Bancontact</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<style>
+.pr-wrapper { background: #F0F4FF; padding: 64px 48px 96px; }
+@media (max-width: 640px) { .pr-wrapper { padding: 40px 16px 64px; } }
+.pr-outer { overflow: hidden; position: relative; border-radius: 32px; max-width: 1280px; margin: 0 auto; }
+.pr-section { background: #1D0084; position: relative; overflow: hidden; padding: 80px 0; }
+.pr-bg-glow {
+  position: absolute; top: -15%; left: 50%; transform: translateX(-50%);
+  width: 1000px; height: 650px;
+  background: radial-gradient(ellipse at center, rgba(11,109,240,0.32) 0%, transparent 65%);
+  pointer-events: none;
+}
+.pr-header { text-align: center; max-width: 760px; margin: 0 auto 56px; }
+.pr-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.14;
+  margin-top: 18px;
+}
+
+.pr-layout {
+  display: grid; grid-template-columns: minmax(0, 1fr) 400px;
+  gap: 36px; align-items: start; max-width: 1000px; margin: 0 auto;
+}
+@media (max-width: 900px) { .pr-layout { grid-template-columns: 1fr; } }
+
+/* ── Izquierda: incluye ── */
+.pr-includes {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 24px; padding: 30px 30px;
+}
+.pr-includes-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 19px; font-weight: 600; color: #fff; margin-bottom: 20px;
+}
+.pr-list { display: flex; flex-direction: column; gap: 13px; }
+.pr-list li {
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 14.5px; line-height: 1.55; color: rgba(255,255,255,0.82);
+}
+.pr-check {
+  flex-shrink: 0; width: 21px; height: 21px; border-radius: 50%; margin-top: 1px;
+  background: rgba(77,163,255,0.16); border: 1px solid rgba(77,163,255,0.40);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── Derecha: tarjeta de precio ── */
+.pr-card-col { position: sticky; top: 96px; }
+@media (max-width: 900px) { .pr-card-col { position: static; } }
+.pr-card {
+  background: #fff; border-radius: 26px; padding: 32px 30px;
+  box-shadow: 0 40px 90px rgba(0,0,0,0.35);
+  text-align: left;
+}
+.pr-card-badge {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  color: #0a1656; background: #4da3ff; border-radius: 999px;
+  padding: 6px 14px; margin-bottom: 18px;
+}
+.pr-card-name {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 22px; font-weight: 700; color: #101336; line-height: 1.25;
+  margin-bottom: 20px;
+}
+.pr-price-row { display: flex; align-items: flex-end; gap: 12px; }
+.pr-price {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 56px; font-weight: 700; color: #1D0084; line-height: 1;
+  letter-spacing: -0.02em;
+}
+.pr-price-meta { display: flex; flex-direction: column; padding-bottom: 6px; }
+.pr-price-old { font-size: 17px; color: #9CA3AF; text-decoration: line-through; font-weight: 600; }
+.pr-price-note { font-size: 12px; color: #5A6480; font-weight: 600; }
+.pr-price-sub { font-size: 12.5px; color: #8A93AB; margin: 10px 0 22px; }
+
+.pr-cta {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 16px 20px; border-radius: 14px;
+  background: #4da3ff; color: #0a1656;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 16px; font-weight: 700; text-decoration: none;
+  box-shadow: 0 10px 30px rgba(77,163,255,0.45);
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.pr-cta:hover { background: #5eb4ff; transform: translateY(-2px); box-shadow: 0 14px 36px rgba(77,163,255,0.55); }
+
+.pr-guarantee {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: #F0F5FF; border-radius: 14px; padding: 13px 15px;
+  font-size: 12.5px; color: #0a1656; line-height: 1.5;
+  margin: 18px 0 16px;
+}
+.pr-guarantee svg { flex-shrink: 0; margin-top: 1px; }
+
+.pr-payments {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  font-size: 11px; color: #8A93AB;
+}
+.pr-pay-pill {
+  border: 1px solid #E4EAF8; border-radius: 8px; padding: 3px 9px;
+  font-size: 10.5px; font-weight: 600; color: #5A6480;
+}
+</style>
