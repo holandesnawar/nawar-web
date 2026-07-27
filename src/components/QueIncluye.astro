@@ -1,52 +1,127 @@
 ---
-// Qué incluye el programa — visual grande + todo lo que recibes + niveles.
+// Qué incluye el programa — mockup navegador rico + items con chips SVG + niveles.
+// Acabado nivel home: chips con gradiente, float badges, profundidad, nada de emojis planos.
 const incluye = [
-  { icon: '🗺️', title: 'Programa completo A0 → A1', desc: '8 meses de camino estructurado, unidad a unidad.' },
-  { icon: '🎥', title: 'Clases en vivo semanales', desc: 'Practica y resuelve dudas con el equipo cada semana.' },
-  { icon: '📼', title: 'Todas las clases grabadas', desc: '¿Te perdiste una? La ves cuando quieras, para siempre.' },
-  { icon: '📖', title: 'Libros y materiales', desc: 'Presentaciones, guías y PDFs descargables de cada lección.' },
-  { icon: '💻', title: 'Plataforma interactiva', desc: 'Flashcards, lectura, escucha con audio nativo y ejercicios.' },
-  { icon: '🔁', title: 'Repaso inteligente', desc: 'La plataforma recuerda tus fallos y te los devuelve hasta dominarlos.' },
-  { icon: '💬', title: 'Soporte y consultas', desc: 'Pregunta lo que sea: el equipo te responde, siempre.' },
-  { icon: '👥', title: 'Comunidad privada', desc: 'Avanza con otros hispanohablantes que van a tu ritmo.' },
+  {
+    title: 'Programa completo A0 → A1',
+    desc: '8 meses de camino estructurado, unidad a unidad.',
+    icon: 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7',
+  },
+  {
+    title: 'Clases en vivo semanales',
+    desc: 'Practica y resuelve dudas con el equipo cada semana.',
+    icon: 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
+  },
+  {
+    title: 'Todas las clases grabadas',
+    desc: '¿Te perdiste una? La ves cuando quieras, para siempre.',
+    icon: 'M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+  },
+  {
+    title: 'Libros y materiales',
+    desc: 'Presentaciones, guías y PDFs descargables de cada lección.',
+    icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
+  },
+  {
+    title: 'Plataforma interactiva',
+    desc: 'Flashcards, lectura, escucha con audio nativo y ejercicios.',
+    icon: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+  },
+  {
+    title: 'Repaso inteligente',
+    desc: 'La plataforma recuerda tus fallos y te los devuelve hasta dominarlos.',
+    icon: 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15',
+  },
+  {
+    title: 'Soporte y consultas',
+    desc: 'Pregunta lo que sea: el equipo te responde, siempre.',
+    icon: 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z',
+  },
+  {
+    title: 'Comunidad privada',
+    desc: 'Avanza con otros hispanohablantes que van a tu ritmo.',
+    icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z',
+  },
+]
+const tools = [
+  { label: 'Flashcards', icon: 'M7 7h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V9a2 2 0 012-2z M9 3h8a2 2 0 012 2v10' },
+  { label: 'Lezen', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
+  { label: 'Luisteren', icon: 'M3 18v-6a9 9 0 0118 0v6M3 18a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H5a2 2 0 00-2 2v3zm18 0a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h1a2 2 0 012 2v3z' },
+  { label: 'Oefening', icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' },
 ]
 ---
 <section class="qi-section" data-navbar="light">
   <div class="inner" style="position:relative;z-index:1;">
 
     <div class="qi-header sr">
-      <span class="badge-light">Todo lo que recibes</span>
+      <span class="badge-light">
+        <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Todo lo que recibes
+      </span>
       <h2 class="qi-title">Qué incluye <span class="qi-accent">el programa</span></h2>
       <p class="qi-sub">Una formación completa: no un curso suelto, sino todo lo que necesitas para llegar a hablar.</p>
     </div>
 
-    <!-- Visual grande: mockup de la plataforma -->
+    <!-- Visual grande: la academia real, en un navegador -->
     <div class="qi-visual sr" aria-hidden="true">
+      <div class="qi-visual-glow"></div>
       <div class="qi-browser">
         <div class="qi-browser-bar">
           <span class="qi-dot"></span><span class="qi-dot"></span><span class="qi-dot"></span>
-          <span class="qi-url">academia.holandesnawar.nl</span>
+          <span class="qi-url">
+            <svg width="10" height="10" fill="none" stroke="#8A93AB" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            academia.holandesnawar.nl
+          </span>
         </div>
         <div class="qi-browser-body">
           <div class="qi-mock-side">
-            <div class="qi-mock-logo"></div>
+            <div class="qi-mock-logo">
+              <svg width="18" height="18" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+            </div>
             <div class="qi-mock-nav"><span></span><span></span><span></span><span></span></div>
           </div>
           <div class="qi-mock-main">
+            <div class="qi-mock-live">
+              <span class="qi-live-dot"></span>
+              <span class="qi-live-text"><strong>Clase en vivo</strong> · jueves 19:00 — Práctica de conversación</span>
+              <span class="qi-live-cta">Unirme</span>
+            </div>
             <div class="qi-mock-card qi-mock-card--hero">
               <div class="qi-mock-label">CONTINÚA DONDE LO DEJASTE</div>
-              <div class="qi-mock-title-line"></div>
+              <div class="qi-mock-lesson">Les 4 — Getallen en leeftijd</div>
+              <div class="qi-mock-secs">
+                <span class="qi-sec qi-sec--done"></span>
+                <span class="qi-sec qi-sec--done"></span>
+                <span class="qi-sec qi-sec--now"></span>
+                <span class="qi-sec"></span>
+                <span class="qi-sec"></span>
+              </div>
               <div class="qi-mock-progress"><span style="width:64%"></span></div>
-              <div class="qi-mock-btn">Seguir con la lección</div>
+              <div class="qi-mock-btn">
+                Seguir con la lección
+                <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              </div>
             </div>
             <div class="qi-mock-row">
-              <div class="qi-mock-card"><div class="qi-mock-emoji">🃏</div><div class="qi-mock-mini">Flashcards</div></div>
-              <div class="qi-mock-card"><div class="qi-mock-emoji">📖</div><div class="qi-mock-mini">Lezen</div></div>
-              <div class="qi-mock-card"><div class="qi-mock-emoji">🎧</div><div class="qi-mock-mini">Luisteren</div></div>
-              <div class="qi-mock-card"><div class="qi-mock-emoji">✏️</div><div class="qi-mock-mini">Ejercicios</div></div>
+              {tools.map((t) => (
+                <div class="qi-mock-tool">
+                  <span class="qi-tool-chip">
+                    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d={t.icon}/></svg>
+                  </span>
+                  <span class="qi-tool-label">{t.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
+      </div>
+      <div class="float-badge qi-fb-top">
+        <span style="font-size:18px;">🎥</span>
+        <div><p>Clases en vivo</p><p>cada semana, con el equipo</p></div>
+      </div>
+      <div class="float-badge qi-fb-bot">
+        <span style="font-size:18px;">🔁</span>
+        <div><p>Repaso inteligente</p><p>de lo que fallaste</p></div>
       </div>
     </div>
 
@@ -54,7 +129,9 @@ const incluye = [
     <div class="qi-grid">
       {incluye.map((item, i) => (
         <div class={`qi-item sr${i % 4 !== 0 ? ` d${i % 4}` : ''}`}>
-          <span class="qi-item-icon">{item.icon}</span>
+          <span class="qi-item-chip">
+            <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d={item.icon}/></svg>
+          </span>
           <div>
             <h3 class="qi-item-title">{item.title}</h3>
             <p class="qi-item-desc">{item.desc}</p>
@@ -66,7 +143,8 @@ const incluye = [
     <!-- Niveles -->
     <div class="qi-levels sr">
       <div class="qi-level qi-level--now">
-        <span class="qi-level-tag">DISPONIBLE AHORA</span>
+        <div class="qi-level-glow" aria-hidden="true"></div>
+        <span class="qi-level-tag"><span class="qi-tag-dot"></span>DISPONIBLE AHORA</span>
         <h3 class="qi-level-title">Nivel A0 → A1</h3>
         <p class="qi-level-desc">De cero absoluto a mantener tus primeras conversaciones reales: presentarte, tu familia, compras, trabajo y vida diaria en neerlandés.</p>
       </div>
@@ -93,11 +171,17 @@ const incluye = [
 .qi-sub { font-size: clamp(14px, 1.4vw, 17px); color: #5A6480; line-height: 1.6; }
 
 /* ── Visual: mockup navegador ── */
-.qi-visual { max-width: 860px; margin: 0 auto 56px; }
+.qi-visual { max-width: 880px; margin: 0 auto 64px; position: relative; }
+.qi-visual-glow {
+  position: absolute; inset: -8% -12%;
+  background: radial-gradient(ellipse at center, rgba(11,109,240,0.10) 0%, transparent 62%);
+  pointer-events: none;
+}
 .qi-browser {
+  position: relative;
   border-radius: 20px; overflow: hidden;
   border: 1px solid #E4EAF8;
-  box-shadow: 0 30px 80px rgba(29,0,132,0.16);
+  box-shadow: 0 30px 80px rgba(29,0,132,0.18);
 }
 .qi-browser-bar {
   display: flex; align-items: center; gap: 6px;
@@ -107,40 +191,101 @@ const incluye = [
 .qi-url {
   margin-left: 12px; font-size: 12px; color: #8A93AB;
   background: #fff; border-radius: 8px; padding: 4px 14px;
+  display: inline-flex; align-items: center; gap: 6px;
 }
 .qi-browser-body {
-  display: flex; background: #1D0084; min-height: 300px;
+  display: flex; background: #1D0084; min-height: 320px;
   background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px),
     radial-gradient(circle 500px at 100% 0%, rgba(11,109,240,0.40) 0%, transparent 65%);
   background-size: 28px 28px, auto;
 }
 .qi-mock-side { width: 130px; padding: 20px 16px; border-right: 1px solid rgba(255,255,255,0.08); }
 @media (max-width: 560px) { .qi-mock-side { display: none; } }
-.qi-mock-logo { width: 42px; height: 42px; border-radius: 12px; background: rgba(77,163,255,0.35); margin-bottom: 20px; }
+.qi-mock-logo {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: linear-gradient(135deg, #4da3ff, #0b6df0);
+  box-shadow: 0 8px 20px rgba(11,109,240,0.40);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+}
 .qi-mock-nav { display: flex; flex-direction: column; gap: 12px; }
 .qi-mock-nav span { height: 9px; border-radius: 4px; background: rgba(255,255,255,0.18); }
 .qi-mock-nav span:nth-child(1) { width: 90%; background: rgba(77,163,255,0.55); }
 .qi-mock-nav span:nth-child(2) { width: 75%; }
 .qi-mock-nav span:nth-child(3) { width: 85%; }
 .qi-mock-nav span:nth-child(4) { width: 60%; }
-.qi-mock-main { flex: 1; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
-.qi-mock-card {
-  background: rgba(255,255,255,0.96); border-radius: 14px; padding: 16px;
-  flex: 1; text-align: center;
+.qi-mock-main { flex: 1; padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 13px; }
+
+.qi-mock-live {
+  display: flex; align-items: center; gap: 9px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(6px);
+  border-radius: 12px; padding: 9px 13px;
+  font-size: 11.5px; color: rgba(255,255,255,0.85);
 }
-.qi-mock-card--hero { text-align: left; padding: 20px; }
-.qi-mock-label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; color: #025dc7; margin-bottom: 8px; }
-.qi-mock-title-line { height: 12px; width: 60%; border-radius: 6px; background: #E4EAF8; margin-bottom: 14px; }
+.qi-mock-live strong { color: #fff; font-weight: 600; }
+.qi-live-dot {
+  flex-shrink: 0; width: 8px; height: 8px; border-radius: 50%;
+  background: #ff5c5c; box-shadow: 0 0 0 3px rgba(255,92,92,0.22);
+  animation: qi-pulse 1.8s ease-in-out infinite;
+}
+@keyframes qi-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(255,92,92,0.22); }
+  50% { box-shadow: 0 0 0 6px rgba(255,92,92,0.10); }
+}
+.qi-live-text { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.qi-live-cta {
+  flex-shrink: 0; font-size: 10.5px; font-weight: 700; color: #0a1656;
+  background: #4da3ff; border-radius: 8px; padding: 4px 11px;
+}
+@media (max-width: 560px) { .qi-live-cta { display: none; } }
+
+.qi-mock-card--hero {
+  background: rgba(255,255,255,0.97); border-radius: 14px;
+  text-align: left; padding: 18px 20px;
+  box-shadow: 0 14px 34px rgba(0,0,0,0.20);
+}
+.qi-mock-label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; color: #025dc7; margin-bottom: 7px; }
+.qi-mock-lesson {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 15px; font-weight: 600; color: #101336; margin-bottom: 11px;
+}
+.qi-mock-secs { display: flex; gap: 6px; margin-bottom: 12px; }
+.qi-sec { width: 22px; height: 6px; border-radius: 999px; background: #E4EAF8; }
+.qi-sec--done { background: #22c55e; }
+.qi-sec--now { background: #4da3ff; }
 .qi-mock-progress { height: 8px; border-radius: 999px; background: #F0F4FF; overflow: hidden; margin-bottom: 14px; }
-.qi-mock-progress span { display: block; height: 100%; border-radius: 999px; background: #4da3ff; }
-.qi-mock-btn {
-  display: inline-block; background: #4da3ff; color: #0a1656;
-  font-size: 12px; font-weight: 700; border-radius: 10px; padding: 8px 16px;
+.qi-mock-progress span {
+  display: block; height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg, #4da3ff, #0b6df0);
 }
-.qi-mock-row { display: flex; gap: 12px; }
-.qi-mock-emoji { font-size: 22px; margin-bottom: 6px; }
-.qi-mock-mini { font-size: 11px; font-weight: 600; color: #101336; }
-@media (max-width: 560px) { .qi-mock-row { flex-wrap: wrap; } .qi-mock-card { min-width: 40%; } }
+.qi-mock-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: #4da3ff; color: #0a1656;
+  font-size: 12px; font-weight: 700; border-radius: 10px; padding: 8px 16px;
+  box-shadow: 0 6px 16px rgba(77,163,255,0.40);
+}
+.qi-mock-row { display: flex; gap: 11px; }
+@media (max-width: 560px) { .qi-mock-row { flex-wrap: wrap; } .qi-mock-tool { min-width: 40%; } }
+.qi-mock-tool {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 13px; padding: 13px 8px 11px;
+}
+.qi-tool-chip {
+  width: 30px; height: 30px; border-radius: 10px;
+  background: linear-gradient(135deg, #4da3ff, #0b6df0);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 14px rgba(11,109,240,0.35);
+}
+.qi-tool-label { font-size: 10.5px; font-weight: 600; color: rgba(255,255,255,0.85); }
+
+.qi-fb-top { position: absolute; top: 34px; right: -26px; animation-delay: 0.4s; }
+.qi-fb-bot { position: absolute; bottom: 30px; left: -30px; animation-delay: 1.1s; }
+@media (max-width: 1080px) { .qi-fb-top, .qi-fb-bot { display: none; } }
 
 /* ── Grid incluido ── */
 .qi-grid {
@@ -150,32 +295,53 @@ const incluye = [
 @media (max-width: 1024px) { .qi-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px)  { .qi-grid { grid-template-columns: 1fr; } }
 .qi-item {
-  display: flex; gap: 14px; align-items: flex-start;
-  background: #F7F9FF; border: 1px solid #E4EAF8; border-radius: 18px;
-  padding: 20px;
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  display: flex; flex-direction: column; gap: 0;
+  background: #fff; border: 1px solid #E4EAF8; border-radius: 20px;
+  padding: 24px 22px 22px;
+  box-shadow: 0 2px 10px rgba(29,0,132,0.04);
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
-.qi-item:hover { transform: translateY(-3px); border-color: rgba(2,93,199,0.35); box-shadow: 0 14px 34px rgba(29,0,132,0.08); }
-.qi-item-icon { font-size: 24px; line-height: 1.2; }
-.qi-item-title { font-family: 'Poppins', system-ui, sans-serif; font-size: 15px; font-weight: 600; color: #101336; margin-bottom: 4px; line-height: 1.3; }
+.qi-item:hover {
+  transform: translateY(-5px);
+  border-color: rgba(2,93,199,0.30);
+  box-shadow: 0 20px 46px rgba(29,0,132,0.12);
+}
+.qi-item-chip {
+  width: 44px; height: 44px; border-radius: 14px;
+  background: linear-gradient(135deg, #4da3ff, #0b6df0);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 20px rgba(11,109,240,0.32);
+  margin-bottom: 16px;
+}
+.qi-item-title { font-family: 'Poppins', system-ui, sans-serif; font-size: 15px; font-weight: 600; color: #101336; margin-bottom: 5px; line-height: 1.3; }
 .qi-item-desc { font-size: 13px; color: #5A6480; line-height: 1.55; }
 
 /* ── Niveles ── */
 .qi-levels { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 900px; margin: 0 auto; }
 @media (max-width: 720px) { .qi-levels { grid-template-columns: 1fr; } }
-.qi-level { border-radius: 22px; padding: 28px; }
+.qi-level { border-radius: 22px; padding: 28px; position: relative; overflow: hidden; }
 .qi-level--now {
-  background: #1D0084; color: #fff; position: relative; overflow: hidden;
-  background-image: radial-gradient(circle 420px at 100% 0%, rgba(11,109,240,0.45) 0%, transparent 65%);
+  background: #1D0084; color: #fff;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+.qi-level-glow {
+  position: absolute; top: -30%; right: -20%; width: 420px; height: 300px;
+  background: radial-gradient(ellipse at center, rgba(11,109,240,0.50) 0%, transparent 65%);
+  pointer-events: none;
 }
 .qi-level--next { background: #F7F9FF; border: 1px dashed #C9D6F2; }
 .qi-level-tag {
-  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
   color: #0a1656; background: #4da3ff; border-radius: 999px; padding: 5px 12px; margin-bottom: 14px;
 }
+.qi-tag-dot { width: 6px; height: 6px; border-radius: 50%; background: #0a1656; }
 .qi-level-tag--soon { background: #E4EAF8; color: #5A6480; }
-.qi-level-title { font-family: 'Poppins', system-ui, sans-serif; font-size: 21px; font-weight: 600; margin-bottom: 8px; }
+.qi-level-title { position: relative; z-index: 1; font-family: 'Poppins', system-ui, sans-serif; font-size: 21px; font-weight: 600; margin-bottom: 8px; }
 .qi-level--next .qi-level-title { color: #101336; }
-.qi-level-desc { font-size: 14px; line-height: 1.6; opacity: 0.85; }
+.qi-level-desc { position: relative; z-index: 1; font-size: 14px; line-height: 1.6; opacity: 0.85; }
 .qi-level--next .qi-level-desc { color: #5A6480; }
 </style>

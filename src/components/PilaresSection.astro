@@ -1,42 +1,51 @@
 ---
 // Los 3 pilares — por qué el método es efectivo para ti.
+// Nivel de acabado del home: chips SVG con gradiente, watermark numérico,
+// tarjeta central dark para dar ritmo, hover con profundidad.
 const pilares = [
   {
-    num: '01',
-    icon: '🇪🇸',
-    title: 'Desde el español, no desde el inglés',
+    num: '1',
+    title: 'Desde el español,\nno desde el inglés',
     desc: 'Cada regla se explica comparándola con tu idioma. Entiendes el porqué de las cosas — y lo que entiendes, no se olvida.',
+    icon: 'M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129',
+    dark: false,
   },
   {
-    num: '02',
-    icon: '🧭',
-    title: 'Sistema, no fuerza de voluntad',
+    num: '2',
+    title: 'Sistema, no fuerza\nde voluntad',
     desc: 'Un camino claro por unidades: sabes qué toca hoy, la plataforma guarda tu progreso y el repaso inteligente te devuelve justo lo que fallaste.',
+    icon: 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7',
+    dark: true,
   },
   {
-    num: '03',
-    icon: '🤝',
-    title: 'Acompañamiento real',
+    num: '3',
+    title: 'Acompañamiento\nreal',
     desc: 'Clases en vivo, consultas respondidas por el equipo y una comunidad que avanza contigo. Nunca estudias solo.',
+    icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z',
+    dark: false,
   },
 ]
 ---
 <section class="pil-section" data-navbar="light">
   <div class="inner" style="position:relative;z-index:1;">
     <div class="pil-header sr">
-      <span class="badge-light">Por qué funciona</span>
+      <span class="badge-light">
+        <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Por qué funciona
+      </span>
       <h2 class="pil-title">Un método efectivo para ti,<br /><span class="pil-accent">por tres razones</span></h2>
       <p class="pil-sub">No es magia ni talento: son tres pilares que hacen que esta vez sí llegues a hablarlo.</p>
     </div>
 
     <div class="pil-grid">
       {pilares.map((p, i) => (
-        <div class={`pil-card sr${i > 0 ? ` d${i}` : ''}`}>
-          <div class="pil-card-top">
-            <span class="pil-num">{p.num}</span>
-            <span class="pil-icon">{p.icon}</span>
+        <div class={`pil-card ${p.dark ? 'pil-card--dark' : ''} sr${i > 0 ? ` d${i}` : ''}`}>
+          {p.dark && <div class="pil-card-glow" aria-hidden="true"></div>}
+          <span class="pil-watermark" aria-hidden="true">{p.num}</span>
+          <div class="pil-chip">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d={p.icon}/></svg>
           </div>
-          <h3 class="pil-card-title">{p.title}</h3>
+          <h3 class="pil-card-title" set:html={p.title.replace(/\n/g, '<br />')} />
           <p class="pil-card-desc">{p.desc}</p>
         </div>
       ))}
@@ -56,33 +65,61 @@ const pilares = [
 .pil-accent { color: #025dc7; }
 .pil-sub { font-size: clamp(14px, 1.4vw, 17px); color: #5A6480; line-height: 1.6; }
 
-.pil-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.pil-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
 @media (max-width: 860px) { .pil-grid { grid-template-columns: 1fr; } }
 
 .pil-card {
-  background: #F7F9FF;
+  position: relative; overflow: hidden;
+  background: #fff;
   border: 1px solid #E4EAF8;
-  border-radius: 24px;
-  padding: 32px 28px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  border-radius: 26px;
+  padding: 36px 30px 32px;
+  box-shadow: 0 2px 10px rgba(29,0,132,0.04);
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease, border-color 0.3s ease;
 }
 .pil-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(2,93,199,0.35);
-  box-shadow: 0 18px 44px rgba(29,0,132,0.10);
+  transform: translateY(-6px);
+  border-color: rgba(2,93,199,0.30);
+  box-shadow: 0 26px 60px rgba(29,0,132,0.14);
 }
-.pil-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-.pil-num {
+.pil-card--dark {
+  background: #1D0084;
+  border-color: rgba(255,255,255,0.10);
+  background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+.pil-card--dark:hover { box-shadow: 0 30px 70px rgba(29,0,132,0.35); }
+.pil-card-glow {
+  position: absolute; top: -35%; right: -25%; width: 380px; height: 300px;
+  background: radial-gradient(ellipse at center, rgba(11,109,240,0.50) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.pil-watermark {
+  position: absolute; top: -14px; right: 14px;
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 14px; font-weight: 700; letter-spacing: 0.08em;
-  color: #025dc7; background: rgba(77,163,255,0.12);
-  border-radius: 999px; padding: 6px 14px;
+  font-size: 120px; font-weight: 700; line-height: 1;
+  color: rgba(2,93,199,0.06);
+  user-select: none; pointer-events: none;
 }
-.pil-icon { font-size: 30px; line-height: 1; }
+.pil-card--dark .pil-watermark { color: rgba(255,255,255,0.07); }
+
+.pil-chip {
+  position: relative; z-index: 1;
+  width: 52px; height: 52px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #4da3ff, #0b6df0);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(11,109,240,0.35);
+  margin-bottom: 22px;
+}
 .pil-card-title {
+  position: relative; z-index: 1;
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 19px; font-weight: 600; color: #101336;
-  line-height: 1.3; margin-bottom: 10px;
+  font-size: 20px; font-weight: 600; color: #101336;
+  line-height: 1.28; margin-bottom: 12px;
 }
-.pil-card-desc { font-size: 14.5px; color: #5A6480; line-height: 1.65; }
+.pil-card--dark .pil-card-title { color: #fff; }
+.pil-card-desc { position: relative; z-index: 1; font-size: 14.5px; color: #5A6480; line-height: 1.68; }
+.pil-card--dark .pil-card-desc { color: rgba(255,255,255,0.70); }
 </style>

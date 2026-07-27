@@ -1,5 +1,6 @@
 ---
-// Sección final de precio — dos columnas: "Tu acceso incluye" + tarjeta de precio.
+// Sección final de precio — dos columnas: "Tu acceso incluye" + tarjeta de precio premium.
+// Tarjeta con anillo de gradiente + halo, prueba social, pills de pago refinadas.
 const accesoIncluye = [
   'Programa completo Neerlandés A0 → A1 (8 meses de camino)',
   'Clases en vivo semanales con el equipo Nawar',
@@ -10,8 +11,8 @@ const accesoIncluye = [
   'Soporte y consultas respondidas por el equipo',
   'Comunidad privada de hispanohablantes',
   'Certificado Holandés Nawar al completar la formación',
-  'Bonus fundador: guías premium + precio bloqueado + acceso anticipado',
 ]
+const bonusIncluye = 'Bonus fundador: guías premium + precio bloqueado + acceso anticipado'
 const precio = '397'
 const precioDespues = '497'
 const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
@@ -24,7 +25,10 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
       <div class="inner" style="position:relative;z-index:1;">
 
         <div class="pr-header sr">
-          <span class="badge-dark">Reserva tu plaza</span>
+          <span class="badge-dark">
+            <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Reserva tu plaza
+          </span>
           <h2 class="pr-title">
             <span class="text-gradient-white">Todo el camino hasta hablar,</span><br />
             <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;">en un solo pago</span>
@@ -35,7 +39,12 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 
           <!-- Izquierda: tu acceso incluye -->
           <div class="pr-includes sr">
-            <h3 class="pr-includes-title">Tu acceso incluye</h3>
+            <div class="pr-includes-head">
+              <span class="pr-includes-chip">
+                <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
+              </span>
+              <h3 class="pr-includes-title">Tu acceso incluye</h3>
+            </div>
             <ul class="pr-list">
               {accesoIncluye.map((item) => (
                 <li>
@@ -45,40 +54,64 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
                   {item}
                 </li>
               ))}
+              <li class="pr-list-bonus">
+                <span class="pr-gift">
+                  <svg width="12" height="12" fill="none" stroke="#0a1656" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+                </span>
+                <span><strong>{bonusIncluye}</strong></span>
+              </li>
             </ul>
           </div>
 
-          <!-- Derecha: tarjeta de precio -->
+          <!-- Derecha: tarjeta de precio con anillo de gradiente -->
           <div class="pr-card-col sr d1">
-            <div class="pr-card">
-              <span class="pr-card-badge">COHORTE FUNDADORA · PLAZAS LIMITADAS</span>
-              <h3 class="pr-card-name">Formación Neerlandés<br />A0 → A1</h3>
+            <div class="pr-card-halo" aria-hidden="true"></div>
+            <div class="pr-card-ring">
+              <div class="pr-card">
+                <span class="pr-card-badge"><span class="pr-badge-dot"></span>COHORTE FUNDADORA · PLAZAS LIMITADAS</span>
+                <h3 class="pr-card-name">Formación Neerlandés<br />A0 → A1</h3>
 
-              <div class="pr-price-row">
-                <span class="pr-price">{precio}€</span>
-                <span class="pr-price-meta">
-                  <span class="pr-price-old">{precioDespues}€</span>
-                  <span class="pr-price-note">pago único</span>
-                </span>
-              </div>
-              <p class="pr-price-sub">Precio fundador — subirá a {precioDespues}€ tras la primera cohorte.</p>
+                <div class="pr-price-row">
+                  <span class="pr-price">{precio}€</span>
+                  <span class="pr-price-meta">
+                    <span class="pr-price-old">{precioDespues}€</span>
+                    <span class="pr-price-note">pago único</span>
+                  </span>
+                </div>
+                <p class="pr-price-sub">Precio fundador — subirá a {precioDespues}€ tras la primera cohorte.</p>
 
-              <a href={matriculaUrl} class="pr-cta">
-                Reservar mi plaza
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-              </a>
+                <a href={matriculaUrl} class="pr-cta">
+                  Reservar mi plaza
+                  <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
 
-              <div class="pr-guarantee">
-                <svg width="17" height="17" fill="none" stroke="#025dc7" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                <span><strong>Garantía de 15 días.</strong> Si no es para ti, te devolvemos el 100%.</span>
-              </div>
+                <div class="pr-social">
+                  <span class="pr-avatars" aria-hidden="true">
+                    <span class="pr-avatar">M</span>
+                    <span class="pr-avatar">J</span>
+                    <span class="pr-avatar">L</span>
+                    <span class="pr-avatar pr-avatar--more">+</span>
+                  </span>
+                  <span class="pr-social-text">Únete a la cohorte fundadora — plazas limitadas a 40 alumnos</span>
+                </div>
 
-              <div class="pr-payments">
-                <span>Pago seguro con</span>
-                <span class="pr-pay-pill">Tarjeta</span>
-                <span class="pr-pay-pill">iDEAL</span>
-                <span class="pr-pay-pill">Klarna</span>
-                <span class="pr-pay-pill">Bancontact</span>
+                <div class="pr-guarantee">
+                  <span class="pr-guarantee-chip">
+                    <svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                  </span>
+                  <span><strong>Garantía de 15 días.</strong> Si no es para ti, te devolvemos el 100%.</span>
+                </div>
+
+                <div class="pr-payments">
+                  <span class="pr-pay-secure">
+                    <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    Pago seguro con
+                  </span>
+                  <span class="pr-pay-pill">Tarjeta</span>
+                  <span class="pr-pay-pill">iDEAL</span>
+                  <span class="pr-pay-pill">Klarna</span>
+                  <span class="pr-pay-pill">Bancontact</span>
+                </div>
               </div>
             </div>
           </div>
@@ -109,8 +142,8 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 }
 
 .pr-layout {
-  display: grid; grid-template-columns: minmax(0, 1fr) 400px;
-  gap: 36px; align-items: start; max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: minmax(0, 1fr) 410px;
+  gap: 36px; align-items: start; max-width: 1010px; margin: 0 auto;
 }
 @media (max-width: 900px) { .pr-layout { grid-template-columns: 1fr; } }
 
@@ -118,11 +151,20 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 .pr-includes {
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(6px);
   border-radius: 24px; padding: 30px 30px;
+}
+.pr-includes-head { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+.pr-includes-chip {
+  width: 38px; height: 38px; border-radius: 12px;
+  background: linear-gradient(135deg, #4da3ff, #0b6df0);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 20px rgba(11,109,240,0.40);
 }
 .pr-includes-title {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 19px; font-weight: 600; color: #fff; margin-bottom: 20px;
+  font-size: 19px; font-weight: 600; color: #fff;
 }
 .pr-list { display: flex; flex-direction: column; gap: 13px; }
 .pr-list li {
@@ -134,37 +176,78 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   background: rgba(77,163,255,0.16); border: 1px solid rgba(77,163,255,0.40);
   display: flex; align-items: center; justify-content: center;
 }
+.pr-list-bonus {
+  margin-top: 6px; padding: 13px 14px;
+  background: rgba(77,163,255,0.12);
+  border: 1px solid rgba(77,163,255,0.30);
+  border-radius: 14px;
+  color: #fff !important;
+}
+.pr-list-bonus strong { font-weight: 600; }
+.pr-gift {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 7px; margin-top: 1px;
+  background: #4da3ff;
+  display: flex; align-items: center; justify-content: center;
+}
 
 /* ── Derecha: tarjeta de precio ── */
 .pr-card-col { position: sticky; top: 96px; }
 @media (max-width: 900px) { .pr-card-col { position: static; } }
+.pr-card-halo {
+  position: absolute; inset: -14% -12%;
+  background: radial-gradient(ellipse at center, rgba(77,163,255,0.28) 0%, transparent 62%);
+  pointer-events: none;
+}
+.pr-card-ring {
+  position: relative;
+  padding: 2px; border-radius: 28px;
+  background: linear-gradient(160deg, #4da3ff 0%, rgba(77,163,255,0.18) 35%, rgba(77,163,255,0.10) 65%, #0b6df0 100%);
+  box-shadow: 0 40px 90px rgba(0,0,0,0.40);
+}
 .pr-card {
-  background: #fff; border-radius: 26px; padding: 32px 30px;
-  box-shadow: 0 40px 90px rgba(0,0,0,0.35);
-  text-align: left;
+  background: #fff; border-radius: 26px; padding: 32px 30px 28px;
+  text-align: left; position: relative; overflow: hidden;
+}
+.pr-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 220px;
+  background: radial-gradient(circle 420px at 85% -40%, rgba(77,163,255,0.14) 0%, transparent 65%);
+  pointer-events: none;
 }
 .pr-card-badge {
-  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  position: relative;
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
   color: #0a1656; background: #4da3ff; border-radius: 999px;
   padding: 6px 14px; margin-bottom: 18px;
+  box-shadow: 0 6px 16px rgba(77,163,255,0.40);
 }
+.pr-badge-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: #0a1656;
+  animation: pr-pulse 1.8s ease-in-out infinite;
+}
+@keyframes pr-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 .pr-card-name {
+  position: relative;
   font-family: 'Poppins', system-ui, sans-serif;
   font-size: 22px; font-weight: 700; color: #101336; line-height: 1.25;
   margin-bottom: 20px;
 }
-.pr-price-row { display: flex; align-items: flex-end; gap: 12px; }
+.pr-price-row { position: relative; display: flex; align-items: flex-end; gap: 12px; }
 .pr-price {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 56px; font-weight: 700; color: #1D0084; line-height: 1;
+  font-size: 58px; font-weight: 700; line-height: 1;
   letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #1D0084 30%, #025dc7 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: #1D0084;
 }
 .pr-price-meta { display: flex; flex-direction: column; padding-bottom: 6px; }
 .pr-price-old { font-size: 17px; color: #9CA3AF; text-decoration: line-through; font-weight: 600; }
 .pr-price-note { font-size: 12px; color: #5A6480; font-weight: 600; }
-.pr-price-sub { font-size: 12.5px; color: #8A93AB; margin: 10px 0 22px; }
+.pr-price-sub { position: relative; font-size: 12.5px; color: #8A93AB; margin: 10px 0 22px; }
 
 .pr-cta {
+  position: relative;
   display: flex; align-items: center; justify-content: center; gap: 10px;
   width: 100%; padding: 16px 20px; border-radius: 14px;
   background: #4da3ff; color: #0a1656;
@@ -175,20 +258,47 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 }
 .pr-cta:hover { background: #5eb4ff; transform: translateY(-2px); box-shadow: 0 14px 36px rgba(77,163,255,0.55); }
 
+.pr-social {
+  position: relative;
+  display: flex; align-items: center; gap: 10px;
+  margin: 16px 0 16px;
+}
+.pr-avatars { display: flex; }
+.pr-avatar {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(135deg, #4da3ff, #0b6df0);
+  border: 2px solid #fff;
+  color: #fff; font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-left: -7px;
+}
+.pr-avatar:first-child { margin-left: 0; }
+.pr-avatar--more { background: #1D0084; }
+.pr-social-text { font-size: 11.5px; color: #5A6480; line-height: 1.4; }
+
 .pr-guarantee {
-  display: flex; gap: 10px; align-items: flex-start;
+  position: relative;
+  display: flex; gap: 11px; align-items: flex-start;
   background: #F0F5FF; border-radius: 14px; padding: 13px 15px;
   font-size: 12.5px; color: #0a1656; line-height: 1.5;
-  margin: 18px 0 16px;
+  margin-bottom: 16px;
 }
-.pr-guarantee svg { flex-shrink: 0; margin-top: 1px; }
+.pr-guarantee-chip {
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 9px;
+  background: linear-gradient(135deg, #4da3ff, #0b6df0);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 5px 12px rgba(11,109,240,0.30);
+}
 
 .pr-payments {
+  position: relative;
   display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
   font-size: 11px; color: #8A93AB;
 }
+.pr-pay-secure { display: inline-flex; align-items: center; gap: 5px; font-weight: 600; }
 .pr-pay-pill {
-  border: 1px solid #E4EAF8; border-radius: 8px; padding: 3px 9px;
+  background: #F7F9FF;
+  border: 1px solid #E4EAF8; border-radius: 8px; padding: 4px 10px;
   font-size: 10.5px; font-weight: 600; color: #5A6480;
 }
 </style>
