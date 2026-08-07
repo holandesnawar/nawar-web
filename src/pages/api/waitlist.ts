@@ -206,6 +206,113 @@ async function syncToCRM(
   }
 }
 
+// ── Aviso cuando un alta NO llega al CRM ──────────────────────────────────────
+
+/**
+ * Manda un correo al equipo con el alta que no se ha podido guardar.
+ *
+ * Existe porque la web SIEMPRE le dice al visitante "¡registrado con éxito!"
+ * (no vamos a enseñarle un error por un problema nuestro), así que si el CRM
+ * falla nadie se entera. Pasó: entre junio y agosto de 2026 caducó la clave de
+ * systeme y se perdieron dos meses de altas en silencio.
+ *
+ * Va por Resend, la misma casa que ya manda los correos de la academia.
+ */
+async function alertFailedSignup(details: {
+  email: string
+  firstName: string
+  lastName: string
+  phone: string
+  tagName: string
+  page: string
+  reason: string
+}): Promise<void> {
+  const key = env('RESEND_API_KEY')
+  const to = env('ALERT_EMAIL_TO') || 'holandesnawar@gmail.com'
+  const from = env('ALERT_EMAIL_FROM') || 'Holandés Nawar <noreply@mail.holandesnawar.com>'
+
+  if (!key) {
+    console.error('[waitlist] RESEND_API_KEY no configurada: no se puede avisar del alta perdida')
+    return
+  }
+
+  const cuando = new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid' })
+  const fila = (etiqueta: string, valor: string) =>
+    valor
+      ? `<tr><td style="padding:4px 12px 4px 0;color:#5A6480;">${etiqueta}</td>
+           <td style="padding:4px 0;color:#0a1656;font-weight:600;">${escapeHtml(valor)}</td></tr>`
+      : ''
+
+  const html = `
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:520px;">
+      <h2 style="color:#1D0084;font-size:18px;margin:0 0 6px;">Un alta no ha llegado al CRM</h2>
+      <p style="color:#5A6480;font-size:14px;line-height:1.6;margin:0 0 16px;">
+        Esta persona se apuntó en la web y vio el mensaje de confirmación, pero
+        <strong>no se ha podido guardar en systeme.io</strong>. Apúntala a mano y
+        revisa el motivo.
+      </p>
+      <table style="font-size:14px;border-collapse:collapse;">
+        ${fila('Email', details.email)}
+        ${fila('Nombre', [details.firstName, details.lastName].filter(Boolean).join(' '))}
+        ${fila('Teléfono', details.phone)}
+        ${fila('Se apuntó en', details.page)}
+        ${fila('Etiqueta que tocaba', details.tagName)}
+        ${fila('Cuándo', cuando)}
+      </table>
+      <p style="margin:16px 0 0;padding:10px 12px;background:#F0F5FF;border-radius:8px;
+                color:#0a1656;font-size:13px;line-height:1.5;">
+        <strong>Motivo técnico:</strong> ${escapeHtml(details.reason)}
+      </p>
+    </div>
+  `
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        subject: `⚠️ Alta perdida en la web: ${details.email}`,
+        html,
+      }),
+    })
+    if (!res.ok) {
+      console.error('[waitlist] no se pudo avisar por email:', res.status, (await res.text()).slice(0, 200))
+    } else {
+      console.log('[waitlist] aviso de alta perdida enviado a', to)
+    }
+  } catch (e) {
+    console.error('[waitlist] error avisando del alta perdida:', e)
+  }
+}
+
+function escapeHtml(value: string): string {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+/** En qué página estaba el visitante al apuntarse. */
+function sourcePage(request: Request, body: any): string {
+  const explicit = (body?.source ?? body?.page ?? '').toString().trim()
+  if (explicit) return explicit
+  const referer = request.headers.get('referer') || ''
+  return referer || '(desconocida)'
+}
+
+/** Resumen legible de por qué no se guardó. */
+function failureReason(debug: SyncDebug): string {
+  if (debug.error) return debug.error
+  const partes: string[] = []
+  if (debug.createStatus) partes.push(`crear contacto → ${debug.createStatus}`)
+  if (debug.createBody) partes.push(debug.createBody)
+  if (debug.searchStatus) partes.push(`buscar contacto → ${debug.searchStatus}`)
+  return partes.join(' · ') || 'systeme.io no devolvió ningún contacto'
+}
+
 // ── Route handler ─────────────────────────────────────────────────────────────
 
 export const POST: APIRoute = async ({ request }) => {
@@ -239,11 +346,10 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   // Doble acceso: import.meta.env (dev) + process.env (serverless Vercel)
-  const apiKey =
-    (import.meta.env.SYSTEME_API_KEY as string | undefined) ||
-    (typeof process !== 'undefined' ? process.env.SYSTEME_API_KEY : undefined)
+  const apiKey = env('SYSTEME_API_KEY')
+  const page = sourcePage(request, body)
 
-  console.log('[waitlist] received:', { email, tagName, hasKey: !!apiKey })
+  console.log('[waitlist] received:', { email, tagName, page, hasKey: !!apiKey })
 
   const debug: SyncDebug = {}
   if (apiKey) {
@@ -259,8 +365,23 @@ export const POST: APIRoute = async ({ request }) => {
       console.error('[waitlist] sync failed:', e)
     }
   } else {
-    debug.error = 'SYSTEME_API_KEY not set'
-    console.error('[waitlist] SYSTEME_API_KEY not set — skipping CRM sync for:', email)
+    debug.error = 'SYSTEME_API_KEY no configurada'
+    console.error('[waitlist] SYSTEME_API_KEY no configurada — alta sin guardar:', email)
+  }
+
+  // Si no hay contacto, el alta se ha perdido: avisar YA, con todo lo que hace
+  // falta para apuntarla a mano. Se espera al envío a propósito: en Vercel la
+  // función se congela al responder y una promesa suelta se quedaría sin salir.
+  if (!debug.contactId) {
+    await alertFailedSignup({
+      email,
+      firstName,
+      lastName,
+      phone,
+      tagName,
+      page,
+      reason: failureReason(debug),
+    })
   }
 
   return json({
