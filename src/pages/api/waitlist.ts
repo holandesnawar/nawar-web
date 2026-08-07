@@ -5,25 +5,81 @@ export const prerender = false
 const SYSTEME_BASE = 'https://api.systeme.io/api'
 const TAG_NAME     = 'Lista de espera'
 
+/**
+ * Id de la etiqueta "Lista de espera" en systeme.io.
+ *
+ * Se pone a mano (sale en la URL de la etiqueta en el panel de systeme) porque
+ * buscarla por NOMBRE es frágil: basta con que systeme cambie el formato de su
+ * listado, lo pagine distinto o limite `itemsPerPage` para que deje de
+ * encontrarse — y entonces el contacto se crea pero se queda SIN etiquetar, que
+ * es justo lo que pasó. El endpoint de matrícula (enroll.ts) ya usa ids fijos y
+ * por eso nunca ha fallado.
+ *
+ * Se puede sobreescribir con la variable de entorno SYSTEME_WAITLIST_TAG_ID.
+ */
+const TAG_ID_LISTA_ESPERA = 0 // 0 = sin configurar → se busca por nombre
+
+/** Lee una variable de entorno tanto en desarrollo como en Vercel. */
+function env(name: string): string | undefined {
+  return (
+    ((import.meta as any).env?.[name] as string | undefined) ||
+    (typeof process !== 'undefined' ? process.env[name] : undefined)
+  )
+}
+
+/** Compara nombres de etiqueta sin que estorben acentos raros ni espacios. */
+function normalizeName(value: unknown): string {
+  return String(value ?? '')
+    .normalize('NFC')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase()
+}
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-async function findTagId(tagName: string, headers: Record<string, string>): Promise<number | null> {
+async function findTagId(
+  tagName: string,
+  headers: Record<string, string>,
+  debug: SyncDebug
+): Promise<number | null> {
+  // 1) El id configurado manda: ni una llamada de más, ni nada que se rompa.
+  const fromEnv = Number(env('SYSTEME_WAITLIST_TAG_ID') ?? '')
+  const fixedId = Number.isFinite(fromEnv) && fromEnv > 0 ? fromEnv : TAG_ID_LISTA_ESPERA
+  if (fixedId > 0) return fixedId
+
+  // 2) Respaldo: buscarla por nombre, paginando de verdad y dejando dicho en
+  //    los logs QUÉ ha fallado (antes se devolvía null en silencio).
+  const target = normalizeName(tagName)
+  const seen: string[] = []
   try {
-    const res = await fetch(`${SYSTEME_BASE}/tags?itemsPerPage=100`, { headers })
-    if (!res.ok) return null
-    const data = await res.json().catch(() => null)
-    const tags: any[] = data?.items ?? []
-    const match = tags.find((t: any) => t.name?.toLowerCase() === tagName.toLowerCase())
-    if (match) return match.id
-    if (tags.length === 100) {
-      const res2 = await fetch(`${SYSTEME_BASE}/tags?itemsPerPage=100&page=2`, { headers })
-      if (res2.ok) {
-        const data2 = await res2.json().catch(() => null)
-        const m2 = (data2?.items ?? []).find((t: any) => t.name?.toLowerCase() === tagName.toLowerCase())
-        if (m2) return m2.id
+    for (let page = 1; page <= 5; page++) {
+      const res = await fetch(`${SYSTEME_BASE}/tags?itemsPerPage=50&page=${page}`, { headers })
+      if (!res.ok) {
+        const body = await res.text().catch(() => '')
+        debug.tagLookupStatus = res.status
+        debug.tagLookupBody = body.slice(0, 200)
+        console.error('[waitlist] listado de etiquetas falló:', res.status, body.slice(0, 200))
+        return null
       }
+      const data = await res.json().catch(() => null)
+      // systeme ha devuelto la lista en varios formatos según la versión.
+      const items: any[] = Array.isArray(data) ? data : (data?.items ?? data?.data ?? [])
+      if (!Array.isArray(items) || items.length === 0) break
+
+      for (const t of items) {
+        if (t?.name) seen.push(String(t.name))
+        if (normalizeName(t?.name) === target && t?.id) return Number(t.id)
+      }
+      if (items.length < 50) break // última página
     }
+    debug.tagsSeen = seen.slice(0, 15)
+    console.error(
+      '[waitlist] etiqueta no encontrada:', tagName,
+      '— etiquetas vistas:', seen.slice(0, 15).join(' | ') || '(ninguna)'
+    )
   } catch (e) {
+    debug.error = (e as Error).message
     console.error('[waitlist] findTagId error:', e)
   }
   return null
@@ -31,6 +87,9 @@ async function findTagId(tagName: string, headers: Record<string, string>): Prom
 
 type SyncDebug = {
   createStatus?: number
+  tagLookupStatus?: number
+  tagLookupBody?: string
+  tagsSeen?: string[]
   createBody?: string
   contactId?: number | null
   tagId?: number | null
@@ -64,7 +123,7 @@ async function syncToCRM(
     // Crear o encontrar contacto y buscar tag en paralelo
     const [createRes, tagId] = await Promise.all([
       fetch(`${SYSTEME_BASE}/contacts`, { method: 'POST', headers, body: JSON.stringify(body) }),
-      findTagId(tagName, headers),
+      findTagId(tagName, headers, debug),
     ])
     debug.createStatus = createRes.status
     debug.tagId = tagId
@@ -131,8 +190,15 @@ async function syncToCRM(
       if (tr.ok) console.log('[waitlist] tag added:', tagName, 'to', contactId)
       else if (tr.status !== 409) console.error('[waitlist] tag error:', tr.status)
     } else {
-      if (!contactId) console.error('[waitlist] no contactId for:', email)
-      if (!tagId)     console.error('[waitlist] tag not found:', tagName)
+      if (!contactId) console.error('[waitlist] sin contactId para:', email)
+      // El contacto SÍ está creado; lo único que falta es la etiqueta. Se avisa
+      // así de claro para no volver a leerlo como "no se guardó nada".
+      if (contactId && !tagId) {
+        console.error(
+          '[waitlist] contacto', contactId, 'creado SIN etiqueta —',
+          'pon SYSTEME_WAITLIST_TAG_ID en Vercel con el id de "' + tagName + '"'
+        )
+      }
     }
   } catch (e) {
     debug.error = (e as Error).message
