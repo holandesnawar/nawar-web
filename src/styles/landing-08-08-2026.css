@@ -3392,3 +3392,87 @@
 .l8 .check-icon {
   width: 12px; height: 12px; flex-shrink: 0;
 }
+/* ════════════════════════════════════════════
+   8. FAQ — sin fondo, sobre brand purple
+════════════════════════════════════════════ */
+.np-faq {
+  background: #1D0084;
+  padding: 32px 0 110px;
+  position: relative;
+}
+.np-faq-header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 56px;
+}
+.np-faq-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(30px, 4.6vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.1;
+  margin: 0;
+}
+.np-faq-list {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.np-faq-item {
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+.np-faq-item:first-of-type {
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+.np-faq-item[open] {
+  border-bottom-color: rgba(77,163,255,0.25);
+}
+.np-faq-q {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px 4px;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(16px, 1.7vw, 19px);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: #fff;
+  transition: color 0.25s;
+}
+.np-faq-q::-webkit-details-marker { display: none; }
+.np-faq-q::marker { content: ''; }
+.np-faq-q:hover { color: #4da3ff; }
+.np-faq-icon {
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  color: #4da3ff;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+.np-faq-item[open] .np-faq-icon {
+  transform: rotate(45deg);
+}
+.np-faq-a {
+  padding: 0 4px 22px;
+  animation: np-faq-open 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+.np-faq-a p {
+  font-size: 15px;
+  color: rgba(255,255,255,0.78);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 640px;
+}
+@keyframes np-faq-open {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.np-faq-cta {
+  text-align: center;
+  margin-top: 56px;
+}
