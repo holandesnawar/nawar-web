@@ -302,3 +302,57 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   font-size: 10.5px; font-weight: 600; color: #5A6480;
 }
 </style>
+
+<style>
+/* ── Móvil: centrado y sin roturas ────────────────────────────
+   La tarjeta se diseñó para escritorio, alineada a la izquierda.
+   En pantallas estrechas la pastilla partía en dos con el punto
+   descolocado, el precio quedaba apretado y los métodos de pago
+   se iban a la izquierda en dos filas sueltas. ─────────────── */
+@media (max-width: 560px) {
+  .pr-card { padding: 26px 20px 24px; text-align: center; }
+
+  /* Pastilla: cabe entera, y si parte lo hace centrada */
+  .pr-card-badge {
+    display: inline-flex;
+    max-width: 100%;
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+    padding: 7px 13px;
+    line-height: 1.35;
+    text-align: left;
+    align-items: flex-start;
+  }
+  .pr-badge-dot { margin-top: 4px; flex-shrink: 0; }
+
+  /* Ojo: el salto de línea del título se deja tal cual. Ocultarlo
+     con display:none pegaba las palabras ("NeerlandésA0"). */
+  .pr-card-name { font-size: 22px; }
+
+  /* Precio: cifra y detalle en una línea, centrados y sin apretar */
+  .pr-price-row {
+    justify-content: center;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .pr-price { font-size: 54px; }
+  .pr-price-meta {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
+    padding-bottom: 0;
+  }
+  .pr-price-sub { margin: 12px auto 20px; max-width: 30ch; }
+
+  .pr-cta { width: 100%; justify-content: center; }
+
+  /* Prueba social y garantía: alineadas a la izquierda para que
+     el texto sea legible, pero el bloque centrado */
+  .pr-social, .pr-guarantee { text-align: left; }
+
+  /* Métodos de pago: una sola fila centrada */
+  .pr-payments { justify-content: center; row-gap: 8px; }
+  .pr-pay-secure { width: 100%; justify-content: center; margin-bottom: 2px; }
+}
+</style>

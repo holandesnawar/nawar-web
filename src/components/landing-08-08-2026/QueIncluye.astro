@@ -345,3 +345,36 @@ const tools = [
 .qi-level-desc { position: relative; z-index: 1; font-size: 14px; line-height: 1.6; opacity: 0.85; }
 .qi-level--next .qi-level-desc { color: #5A6480; }
 </style>
+
+<style>
+/* ── Móvil: el navegador falso no cabía ───────────────────────
+   El mockup se diseñó a 880 px con una barra lateral fija de
+   130 px. Por debajo de 700 px el contenido se recortaba por la
+   derecha (422 px de contenido en 340 px de caja). Se quita la
+   barra lateral y se ajustan tamaños para que entre entero. ── */
+@media (max-width: 700px) {
+  .qi-visual { margin-bottom: 44px; }
+  .qi-mock-side { display: none; }
+  .qi-mock-main { padding: 14px; gap: 10px; min-width: 0; }
+
+  .qi-browser-bar { padding: 8px 10px; }
+  .qi-url { font-size: 9.5px; }
+
+  .qi-mock-live { padding: 8px 10px; gap: 7px; flex-wrap: wrap; }
+  .qi-live-text { font-size: 10.5px; line-height: 1.35; }
+  .qi-live-cta { font-size: 9.5px; padding: 3px 9px; }
+
+  .qi-mock-card { padding: 12px; }
+  .qi-mock-label { font-size: 8.5px; }
+  .qi-mock-lesson { font-size: 13px; }
+  .qi-mock-btn { font-size: 11px; padding: 8px 12px; }
+
+  /* Las 4 herramientas: 2×2 en vez de una fila que no cabe */
+  .qi-mock-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .qi-mock-tool { padding: 10px 8px; }
+  .qi-tool-label { font-size: 10.5px; }
+
+  /* Las etiquetas flotantes se salían del recuadro */
+  .qi-fb-top, .qi-fb-bot { display: none; }
+}
+</style>
