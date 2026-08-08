@@ -1,0 +1,1631 @@
+---
+import Layout from '../layouts/Layout.astro'
+import '../styles/landing-08-08-2026.css'
+
+export const prerender = true
+
+/* ─────────────────────────────────────────────────────────────
+   AJUSTES RÁPIDOS
+   ⚠️ CHECKOUT_URL sigue apuntando al enlace de pago de 297 €.
+      Hay que crear el enlace de 397 € en Stripe y pegarlo aquí
+      antes de mandar tráfico a esta página.
+   ⚠️ Los valores del stack (VALOR_TOTAL y el campo `valor` de
+      cada línea) son una propuesta. Cámbialos por los tuyos.
+───────────────────────────────────────────────────────────── */
+const CHECKOUT_URL = 'https://buy.stripe.com/eVq28r7yVfZJdpI8Yd2cg05'
+const PRECIO = '397'
+const VALOR_TOTAL = '2.150'
+const AHORRO = '1.753'
+const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
+
+/* Dolores — carta con lista numerada */
+const dolores = [
+  'llevas meses —o años— diciéndote que esta semana sí empiezas con el neerlandés',
+  'escuchas holandés a tu alrededor y sientes que nunca llegará el día en que lo entiendas',
+  'en el trabajo te pierdes conversaciones importantes porque no tienes el nivel',
+  'en el médico, el ayuntamiento o el banco siempre dependes de alguien para comunicarte',
+  'has probado apps, PDFs, YouTube y clases sueltas, y sigues igual que hace un año',
+  'sientes que el idioma levanta un muro entre tú y el país en el que vives',
+]
+
+/* Ancla de precio */
+const stats = [
+  { num: '€800', label: 'lo que cuesta un solo nivel (A1, A2 o B1) en una academia de neerlandés en Países Bajos' },
+  { num: '€65', label: 'el precio de una única clase suelta con un profesor de neerlandés' },
+  { num: '83%', label: 'de hispanohablantes en Países Bajos abandonan el neerlandés durante el primer año' },
+]
+
+/* Stack de valor — el corazón de la oferta */
+const stack = [
+  { nombre: 'Formación completa A0 → A1', detalle: '7 módulos y +10 h de vídeo estructurado, explicado desde el español', valor: '€800', bonus: false },
+  { nombre: 'Plataforma con ejercicios interactivos', detalle: 'Feedback inmediato, vocabulario con audio nativo, diálogos y seguimiento de tu progreso', valor: '€150', bonus: false },
+  { nombre: 'Clase semanal en directo', detalle: 'Con profesor interno según tu módulo. Todas quedan grabadas', valor: '€780', bonus: true },
+  { nombre: 'Comunidad privada de hispanohablantes', detalle: 'Gente en tu misma situación, no aprendes solo', valor: '€120', bonus: true },
+  { nombre: 'Ejercicios y lecciones extra', detalle: 'Material adicional para repasar y practicar sin límite', valor: '€90', bonus: true },
+  { nombre: 'Soporte y resolución de dudas', detalle: 'Preguntas y te respondemos. No te quedas atascado', valor: '€150', bonus: true },
+  { nombre: 'Certificado oficial A0-A1', detalle: 'Personalizado con tu nombre al completar la formación', valor: '€60', bonus: true },
+]
+
+/* Los 5 bonus */
+const bonuses = [
+  {
+    n: '01', icon: 'i-calendar', valor: '€780',
+    title: 'Clase semanal online en directo',
+    desc: 'Cada semana una clase en vivo con un profesor interno de la formación, asignado según el módulo que estés cursando. ¿No puedes conectarte? La clase queda grabada y siempre está a tu disposición.',
+  },
+  {
+    n: '02', icon: 'i-users', valor: '€120',
+    title: 'Comunidad de hispanohablantes',
+    desc: 'Un grupo privado de personas que están exactamente en tu misma situación: aprendiendo neerlandés desde el español. Os apoyáis, compartís dudas y avanzáis juntos en lugar de estudiar en solitario.',
+  },
+  {
+    n: '03', icon: 'i-book', valor: '€90',
+    title: 'Ejercicios y lecciones extra',
+    desc: 'Material adicional al temario principal para repasar y practicar todo lo que quieras. Vuelve sobre lo que se te resiste tantas veces como necesites hasta que te salga sin pensar.',
+  },
+  {
+    n: '04', icon: 'i-support', valor: '€150',
+    title: 'Soporte y resolución de dudas',
+    desc: 'Cuando algo no te cuadra, preguntas y te respondemos. Sin quedarte bloqueado una semana entera con la misma duda ni buscar respuestas sueltas por internet.',
+  },
+  {
+    n: '05', icon: 'i-award', valor: '€60', gold: true,
+    title: 'Certificado oficial A0-A1',
+    desc: 'Al completar todos los módulos recibes tu certificado personalizado con tu nombre, que acredita tu nivel de neerlandés y el trabajo que has hecho.',
+  },
+]
+
+/* Lo que entra en el precio */
+const incluidoEnPrecio = [
+  'Formación completa A0 → A1 con acceso de por vida',
+  'Plataforma con ejercicios interactivos y seguimiento',
+  'Clase semanal en directo + todas las grabaciones',
+  'Comunidad privada de hispanohablantes',
+  'Ejercicios y lecciones extra para repasar',
+  'Soporte y resolución de dudas',
+  'Certificado oficial A0-A1 personalizado',
+  'Actualizaciones de contenido incluidas',
+]
+
+const faqs = [
+  {
+    q: '¿Por qué cuesta 397 € si dices que vale más de 2.000 €?',
+    a: 'Porque el coste de sumar un alumno más a una formación grabada es mínimo, y prefiero que entre mucha gente a un precio que puedan pagar antes que unos pocos a precio de academia. Ese es todo el truco: una academia te cobra 800 € por un solo nivel porque paga aula, horarios y profesor por hora. Aquí eso no existe.',
+  },
+  {
+    q: '¿Es para principiantes absolutos?',
+    a: 'Sí. La formación está diseñada desde cero, pensando en alguien que nunca ha estudiado neerlandés o que tiene nociones muy básicas. No necesitas saber nada previo para empezar.',
+  },
+  {
+    q: '¿Cuándo tengo acceso?',
+    a: 'El acceso es inmediato. En cuanto completas el pago recibirás un email con tus datos de acceso a la plataforma. Puedes empezar en minutos.',
+  },
+  {
+    q: '¿Durante cuánto tiempo tengo acceso?',
+    a: 'El acceso es de larga duración. Puedes acceder a todos los contenidos y a las actualizaciones futuras de la formación.',
+  },
+  {
+    q: '¿Y si no tengo mucho tiempo?',
+    a: 'La formación está diseñada para adaptarse a tu ritmo. Con 20-30 minutos al día puedes avanzar de forma constante. Tú decides cuándo y cuánto estudias. No hay fechas límite ni presión.',
+  },
+  {
+    q: '¿Qué pasa si no me gusta?',
+    a: 'Tienes 15 días de garantía de devolución total y sin preguntas. Si en ese tiempo sientes que no es para ti, te devolvemos el dinero completo. Sin burocracia.',
+  },
+  {
+    q: '¿Hay soporte si tengo dudas?',
+    a: 'Sí. Tienes acceso a la comunidad de estudiantes donde puedes resolver dudas, además de la clase semanal en directo con el profesor, que es el espacio perfecto para preguntar cualquier cosa.',
+  },
+  {
+    q: '¿Cómo funcionan las clases semanales?',
+    a: 'Cada semana hay una clase en directo con uno de los profesores de la formación, asignado según el módulo que estés cursando. Es un espacio para repasar, practicar y resolver dudas en grupo. Las grabaciones están disponibles si no puedes asistir en vivo.',
+  },
+  {
+    q: '¿Puedo hacerlo desde el móvil?',
+    a: 'Sí. La plataforma está optimizada para móvil, tablet y escritorio. Puedes estudiar desde cualquier dispositivo y continuar donde lo dejaste.',
+  },
+  {
+    q: '¿Está pensado para hispanohablantes?',
+    a: 'Completamente. Todas las explicaciones, comparativas gramaticales y materiales están pensados desde el español. No es una traducción de una formación en inglés: está construido desde cero para hispanohablantes.',
+  },
+  {
+    q: '¿Necesito saber algo de neerlandés antes?',
+    a: 'No. Empezamos desde absolutamente cero. El primer módulo cubre los fundamentos básicos desde el principio, sin asumir conocimiento previo.',
+  },
+  {
+    q: '¿Cómo es la comunidad?',
+    a: 'Un grupo de hispanohablantes aprendiendo neerlandés en la misma situación que tú. Es un espacio para compartir dudas, avances, motivación y práctica. No es un grupo silencioso: es una comunidad activa.',
+  },
+  {
+    q: '¿Y si me arrepiento dentro de un mes?',
+    a: 'La garantía cubre los primeros 15 días, que es tiempo de sobra para ver los primeros módulos completos, entrar a una clase en directo y decidir con criterio. Pasado ese plazo el acceso sigue siendo tuyo, así que no pierdes nada de lo que has pagado.',
+  },
+  {
+    q: '¿Cuándo empiezo?',
+    a: 'En cuanto completes el pago tienes acceso inmediato a toda la plataforma. Puedes empezar hoy mismo, en los próximos minutos si quieres.',
+  },
+]
+
+const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
+---
+
+<Layout
+  title={`Formación Nawar A0-A1 — Aprende neerlandés de verdad`}
+  description="La formación de neerlandés diseñada para hispanohablantes. +10 h de vídeo, ejercicios online, clase semanal en directo, comunidad y certificado. Acceso completo por 397 €."
+  keywords="curso neerlandés online, formación neerlandés hispanohablantes, aprender holandés desde el español, inburgering, neerlandés A0 A1"
+  noindex={true}
+>
+  <div class="l8">
+
+    <svg class="nw-sprite" aria-hidden="true" focusable="false">
+      <defs>
+
+        <!-- Vídeo / lecciones grabadas -->
+        <symbol id="i-video" viewBox="0 0 48 48">
+          <rect x="3" y="12" width="28" height="24" rx="7" fill="var(--ic-a)"/>
+          <path d="M31 20.2l7.2-5c1.7-1.2 4 0 4 2.1v13.4c0 2.1-2.3 3.3-4 2.1l-7.2-5z" fill="var(--ic-b)"/>
+          <path d="M14.6 18.6l9.4 5.4-9.4 5.4z" fill="var(--ic-c)"/>
+        </symbol>
+
+        <!-- Móvil / ejercicios online -->
+        <symbol id="i-mobile" viewBox="0 0 48 48">
+          <rect x="12" y="3" width="24" height="42" rx="6" fill="var(--ic-a)"/>
+          <rect x="16.5" y="10" width="15" height="21" rx="3.5" fill="var(--ic-c)"/>
+          <path d="M20.2 20.6l3.2 3.2 5.2-6" fill="none" stroke="var(--ic-b)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="24" cy="38.4" r="2.6" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Comunidad -->
+        <symbol id="i-users" viewBox="0 0 48 48">
+          <circle cx="18" cy="15.5" r="7.5" fill="var(--ic-a)"/>
+          <path d="M4 40.6a14 14 0 0 1 28 0 2.4 2.4 0 0 1-2.4 2.4H6.4A2.4 2.4 0 0 1 4 40.6z" fill="var(--ic-a)"/>
+          <circle cx="36" cy="18" r="6" fill="var(--ic-b)"/>
+          <path d="M32.6 27.4A11.6 11.6 0 0 1 44 39a2.4 2.4 0 0 1-2.4 2.4h-6.2v-1.2a17.2 17.2 0 0 0-4.4-11.5z" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Clase en directo / formación -->
+        <symbol id="i-live" viewBox="0 0 48 48">
+          <path d="M23 5.4 3.6 14.2a1.1 1.1 0 0 0 0 2l19.4 8.8a2.4 2.4 0 0 0 2 0l19.4-8.8a1.1 1.1 0 0 0 0-2L25 5.4a2.4 2.4 0 0 0-2 0z" fill="var(--ic-a)"/>
+          <path d="M12 21.6v9.8c0 4.6 5.4 8.2 12 8.2s12-3.6 12-8.2v-9.8l-10.7 4.9a3.2 3.2 0 0 1-2.6 0z" fill="var(--ic-b)"/>
+          <path d="M41.4 18.8v9.6" fill="none" stroke="var(--ic-b)" stroke-width="3.2" stroke-linecap="round"/>
+          <circle cx="41.4" cy="32.2" r="3.4" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Reloj / posponer / urgencia -->
+        <symbol id="i-clock" viewBox="0 0 48 48">
+          <circle cx="24" cy="26" r="17" fill="var(--ic-a)"/>
+          <path d="M24 16.4V26l6.6 4" fill="none" stroke="var(--ic-c)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9 8.6 15.2 4.6M39 8.6 32.8 4.6" fill="none" stroke="var(--ic-b)" stroke-width="3.6" stroke-linecap="round"/>
+        </symbol>
+
+        <!-- Sin sonido / no entiendes -->
+        <symbol id="i-mute" viewBox="0 0 48 48">
+          <path d="M22.6 7.4 12.8 15.6H6.4A2.4 2.4 0 0 0 4 18v12a2.4 2.4 0 0 0 2.4 2.4h6.4l9.8 8.2a2 2 0 0 0 3.4-1.6V9a2 2 0 0 0-3.4-1.6z" fill="var(--ic-a)"/>
+          <path d="m32.8 18.6 10 10.8M42.8 18.6l-10 10.8" fill="none" stroke="var(--ic-b)" stroke-width="3.8" stroke-linecap="round"/>
+        </symbol>
+
+        <!-- Trabajo -->
+        <symbol id="i-briefcase" viewBox="0 0 48 48">
+          <path d="M17 15.4v-4.2A4.4 4.4 0 0 1 21.4 6.8h5.2A4.4 4.4 0 0 1 31 11.2v4.2" fill="none" stroke="var(--ic-b)" stroke-width="3.8" stroke-linecap="round"/>
+          <rect x="3" y="14.6" width="42" height="27" rx="6" fill="var(--ic-a)"/>
+          <path d="M3 25h42" fill="none" stroke="var(--ic-c)" stroke-width="2.8"/>
+          <rect x="20.2" y="21.4" width="7.6" height="7.2" rx="2.4" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Médico / ayuntamiento / trámites -->
+        <symbol id="i-building" viewBox="0 0 48 48">
+          <path d="M9 43V13.8a2.2 2.2 0 0 1 1.2-2l12.8-6.4a2.2 2.2 0 0 1 2 0l12.8 6.4a2.2 2.2 0 0 1 1.2 2V43z" fill="var(--ic-a)"/>
+          <path d="M24 16.6v11M18.5 22.1h11" fill="none" stroke="var(--ic-c)" stroke-width="3.6" stroke-linecap="round"/>
+          <rect x="19.4" y="32.4" width="9.2" height="10.6" rx="2.4" fill="var(--ic-b)"/>
+          <path d="M4 43h40" fill="none" stroke="var(--ic-b)" stroke-width="3.8" stroke-linecap="round"/>
+        </symbol>
+
+        <!-- Apps sueltas / recursos dispersos -->
+        <symbol id="i-apps" viewBox="0 0 48 48">
+          <rect x="4" y="4" width="17.4" height="17.4" rx="5" fill="var(--ic-a)"/>
+          <rect x="26.6" y="4" width="17.4" height="17.4" rx="5" fill="var(--ic-b)"/>
+          <rect x="4" y="26.6" width="17.4" height="17.4" rx="5" fill="var(--ic-b)"/>
+          <rect x="26.6" y="26.6" width="17.4" height="17.4" rx="5" fill="var(--ic-a)"/>
+        </symbol>
+
+        <!-- Muro / barrera -->
+        <symbol id="i-wall" viewBox="0 0 48 48">
+          <rect x="3" y="9" width="42" height="30" rx="5" fill="var(--ic-a)"/>
+          <path d="M31 19h14v10H31z" fill="var(--ic-b)"/>
+          <path d="M3 19h42M3 29h42M17 9v10M31 19v10M17 29v10" fill="none" stroke="var(--ic-c)" stroke-width="2.8" stroke-linecap="round"/>
+        </symbol>
+
+        <!-- Tiempo perdido -->
+        <symbol id="i-hourglass" viewBox="0 0 48 48">
+          <path d="M11 4.6h26M11 43.4h26" fill="none" stroke="var(--ic-a)" stroke-width="4" stroke-linecap="round"/>
+          <path d="M14.4 4.6v6.2c0 5.4 9.6 7.6 9.6 13.2s-9.6 7.8-9.6 13.2v6.2M33.6 4.6v6.2c0 5.4-9.6 7.6-9.6 13.2s9.6 7.8 9.6 13.2v6.2" fill="none" stroke="var(--ic-a)" stroke-width="3.6" stroke-linejoin="round"/>
+          <path d="M24 26.8c3.6 2.4 6.2 5.6 7 10.2H17c.8-4.6 3.4-7.8 7-10.2z" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Oportunidades que se escapan -->
+        <symbol id="i-chart-up" viewBox="0 0 48 48">
+          <path d="M6 5v37h37" fill="none" stroke="var(--ic-a)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="m13 32 8.8-9.8 6.6 5.8L40 14.6" fill="none" stroke="var(--ic-b)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M30.4 14.6H40V24" fill="none" stroke="var(--ic-b)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </symbol>
+
+        <!-- Exclusión / sin voz -->
+        <symbol id="i-speech-off" viewBox="0 0 48 48">
+          <path d="M24 6c11 0 20 6.9 20 15.4s-9 15.4-20 15.4a24 24 0 0 1-5.6-.7l-9.4 5a1.4 1.4 0 0 1-2-1.7l2.7-7.5C5.7 29 4 25.4 4 21.4 4 12.9 13 6 24 6z" fill="var(--ic-a)"/>
+          <path d="M15.6 21.4h16.8" fill="none" stroke="var(--ic-b)" stroke-width="4" stroke-linecap="round"/>
+        </symbol>
+
+        <!-- Inseguridad acumulada -->
+        <symbol id="i-shield-alert" viewBox="0 0 48 48">
+          <path d="M24 3.4 7.6 9.5a2.4 2.4 0 0 0-1.6 2.3v10.6c0 9.7 6.7 18.4 16.3 21.9a5.2 5.2 0 0 0 3.4 0c9.6-3.5 16.3-12.2 16.3-21.9V11.8a2.4 2.4 0 0 0-1.6-2.3z" fill="var(--ic-a)"/>
+          <path d="M24 15.4v10.4" fill="none" stroke="var(--ic-b)" stroke-width="4.2" stroke-linecap="round"/>
+          <circle cx="24" cy="32.8" r="2.7" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Garantía -->
+        <symbol id="i-shield-check" viewBox="0 0 48 48">
+          <path d="M24 3.4 7.6 9.5a2.4 2.4 0 0 0-1.6 2.3v10.6c0 9.7 6.7 18.4 16.3 21.9a5.2 5.2 0 0 0 3.4 0c9.6-3.5 16.3-12.2 16.3-21.9V11.8a2.4 2.4 0 0 0-1.6-2.3z" fill="var(--ic-a)"/>
+          <path d="m16.6 23.6 5.4 5.4 10-11" fill="none" stroke="var(--ic-b)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </symbol>
+
+        <!-- Integración / inburgering -->
+        <symbol id="i-passport" viewBox="0 0 48 48">
+          <rect x="8" y="3" width="32" height="42" rx="5" fill="var(--ic-a)"/>
+          <circle cx="24" cy="19.6" r="8.6" fill="var(--ic-c)"/>
+          <path d="M24 11c2.6 2.4 4.1 5.4 4.1 8.6S26.6 25.8 24 28.2c-2.6-2.4-4.1-5.4-4.1-8.6S21.4 13.4 24 11zM15.4 19.6h17.2" fill="none" stroke="var(--ic-a)" stroke-width="2.4"/>
+          <rect x="15" y="33.6" width="18" height="4.6" rx="2.3" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Ejercicios / objetivo -->
+        <symbol id="i-target" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="19" fill="var(--ic-a)"/>
+          <circle cx="24" cy="24" r="12" fill="var(--ic-c)"/>
+          <circle cx="24" cy="24" r="6" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Clase semanal / calendario -->
+        <symbol id="i-calendar" viewBox="0 0 48 48">
+          <rect x="4" y="8" width="40" height="36" rx="6" fill="var(--ic-a)"/>
+          <path d="M4 18.6h40" fill="none" stroke="var(--ic-c)" stroke-width="3.2"/>
+          <path d="M14.4 4v8.4M33.6 4v8.4" fill="none" stroke="var(--ic-b)" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="24" cy="31.4" r="5.2" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Audio nativo -->
+        <symbol id="i-audio" viewBox="0 0 48 48">
+          <path d="M20.6 7.4 11.8 15H6.4A2.4 2.4 0 0 0 4 17.4v13.2A2.4 2.4 0 0 0 6.4 33h5.4l8.8 7.6a2 2 0 0 0 3.4-1.6V9a2 2 0 0 0-3.4-1.6z" fill="var(--ic-a)"/>
+          <path d="M31.4 17.6a9 9 0 0 1 0 12.8M37.8 11.2a18 18 0 0 1 0 25.6" fill="none" stroke="var(--ic-b)" stroke-width="3.8" stroke-linecap="round"/>
+        </symbol>
+
+        <!-- Diálogos / conversación -->
+        <symbol id="i-chat" viewBox="0 0 48 48">
+          <rect x="3" y="7" width="30" height="22" rx="7" fill="var(--ic-a)"/>
+          <path d="M11.4 27.6 9.6 36.8a1 1 0 0 0 1.6 1l9.6-7.4z" fill="var(--ic-a)"/>
+          <rect x="21" y="21" width="24" height="18" rx="6.4" fill="var(--ic-b)"/>
+          <path d="m38.6 37.4 1.6 6.4a1 1 0 0 1-1.6.9l-6.4-5z" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Progreso -->
+        <symbol id="i-chart" viewBox="0 0 48 48">
+          <path d="M6 43h36" fill="none" stroke="var(--ic-a)" stroke-width="4" stroke-linecap="round"/>
+          <rect x="8" y="24" width="9" height="15" rx="3" fill="var(--ic-a)"/>
+          <rect x="19.5" y="16" width="9" height="23" rx="3" fill="var(--ic-a)"/>
+          <rect x="31" y="8" width="9" height="31" rx="3" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Certificado / medalla -->
+        <symbol id="i-award" viewBox="0 0 48 48">
+          <path d="M13.4 24 9.6 43.2a1.2 1.2 0 0 0 1.8 1.2L24 37l12.6 7.4a1.2 1.2 0 0 0 1.8-1.2L34.6 24z" fill="var(--ic-b)"/>
+          <circle cx="24" cy="18" r="14.6" fill="var(--ic-a)"/>
+          <path d="m24 10.2 2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8z" fill="var(--ic-c)"/>
+        </symbol>
+
+        <!-- Explicaciones en español -->
+        <symbol id="i-translate" viewBox="0 0 48 48">
+          <rect x="3" y="6" width="26" height="21" rx="7" fill="var(--ic-a)"/>
+          <path d="M10.8 25.4 9.2 34.6a1 1 0 0 0 1.6 1l9-8z" fill="var(--ic-a)"/>
+          <text x="16" y="21" text-anchor="middle" font-family="Poppins, system-ui, sans-serif" font-size="12" font-weight="800" fill="var(--ic-c)">ES</text>
+          <rect x="21" y="21" width="24" height="19" rx="6.4" fill="var(--ic-b)"/>
+          <path d="m38.6 38.4 1.6 6.2a1 1 0 0 1-1.6.9l-6-4.9z" fill="var(--ic-b)"/>
+          <text x="33" y="34.8" text-anchor="middle" font-family="Poppins, system-ui, sans-serif" font-size="11" font-weight="800" fill="var(--ic-c)">NL</text>
+        </symbol>
+
+        <!-- Ruta clara: salida → meta -->
+        <symbol id="i-route" viewBox="0 0 48 48">
+          <path d="M9 37C9 23 18.5 13.4 32 11.6" fill="none" stroke="var(--ic-a)" stroke-width="4" stroke-linecap="round" stroke-dasharray="0.5 8.4"/>
+          <path d="M32 43.6V6.4" fill="none" stroke="var(--ic-a)" stroke-width="4" stroke-linecap="round"/>
+          <path d="M32 8.6h12.2l-3.4 5.4 3.4 5.4H32z" fill="var(--ic-b)"/>
+          <circle cx="9" cy="37" r="6.2" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Práctica activa -->
+        <symbol id="i-dumbbell" viewBox="0 0 48 48">
+          <rect x="3" y="17.5" width="7" height="13" rx="3" fill="var(--ic-b)"/>
+          <rect x="38" y="17.5" width="7" height="13" rx="3" fill="var(--ic-b)"/>
+          <path d="M19.5 24h9" fill="none" stroke="var(--ic-a)" stroke-width="5.4" stroke-linecap="round"/>
+          <rect x="10.5" y="12" width="9" height="24" rx="4" fill="var(--ic-a)"/>
+          <rect x="28.5" y="12" width="9" height="24" rx="4" fill="var(--ic-a)"/>
+        </symbol>
+
+        <!-- Acceso inmediato -->
+        <symbol id="i-bolt" viewBox="0 0 48 48">
+          <path d="M27.4 3.6 9.8 25.4a1.6 1.6 0 0 0 1.2 2.6h9.2l-2.4 15.4a1.2 1.2 0 0 0 2.2.9l17.8-22.2a1.6 1.6 0 0 0-1.2-2.6h-9.4l3.4-14.9a1.2 1.2 0 0 0-2.2-1z" fill="var(--ic-a)"/>
+          <path d="m40.6 5.6 1.3 3.5 3.5 1.3-3.5 1.3-1.3 3.5-1.3-3.5-3.5-1.3 3.5-1.3z" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Empiezas desde cero -->
+        <symbol id="i-sprout" viewBox="0 0 48 48">
+          <path d="M24 43.6V22" fill="none" stroke="var(--ic-a)" stroke-width="4.4" stroke-linecap="round"/>
+          <path d="M22 24.6C13.6 24.6 6.8 17.8 6.8 9.4c8.4 0 15.2 6.8 15.2 15.2z" fill="var(--ic-a)"/>
+          <path d="M26 22.6c0-8.4 6.8-15.2 15.2-15.2 0 8.4-6.8 15.2-15.2 15.2z" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Repasar la base -->
+        <symbol id="i-repeat" viewBox="0 0 48 48">
+          <path d="M8.4 21A15.8 15.8 0 0 1 36.4 12.4" fill="none" stroke="var(--ic-a)" stroke-width="4.2" stroke-linecap="round"/>
+          <path d="M27.4 9.2 37.6 11.6l-2.4 10.2" fill="none" stroke="var(--ic-a)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M39.6 27A15.8 15.8 0 0 1 11.6 35.6" fill="none" stroke="var(--ic-b)" stroke-width="4.2" stroke-linecap="round"/>
+          <path d="M20.6 38.8 10.4 36.4l2.4-10.2" fill="none" stroke="var(--ic-b)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </symbol>
+
+        <!-- Vida diaria / residentes -->
+        <symbol id="i-home" viewBox="0 0 48 48">
+          <path d="M6.4 21.4 22.6 7.6a2.2 2.2 0 0 1 2.8 0l16.2 13.8V40a3.4 3.4 0 0 1-3.4 3.4H9.8A3.4 3.4 0 0 1 6.4 40z" fill="var(--ic-a)"/>
+          <path d="M3.6 22.8 22.4 6.6a2.4 2.4 0 0 1 3.2 0l18.8 16.2" fill="none" stroke="var(--ic-b)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="19" y="29" width="10" height="14.4" rx="2.4" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Regalo / bonus -->
+        <symbol id="i-gift" viewBox="0 0 48 48">
+          <path d="M24 14.4S22.4 3.6 15.4 3.6a5.4 5.4 0 0 0 0 10.8zM24 14.4s1.6-10.8 8.6-10.8a5.4 5.4 0 0 1 0 10.8z" fill="var(--ic-a)"/>
+          <rect x="3" y="14" width="42" height="10.4" rx="3.6" fill="var(--ic-b)"/>
+          <path d="M7 24.4h34V40a4 4 0 0 1-4 4H11a4 4 0 0 1-4-4z" fill="var(--ic-a)"/>
+          <rect x="20.4" y="14" width="7.2" height="30" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Soporte / dudas -->
+        <symbol id="i-support" viewBox="0 0 48 48">
+          <path d="M24 4c11 0 20 8 20 17.8 0 9.8-9 17.8-20 17.8a24 24 0 0 1-4.6-.5l-9.8 5.2a1.4 1.4 0 0 1-2-1.7l2.8-8C6 31.4 4 26.8 4 21.8 4 12 13 4 24 4z" fill="var(--ic-a)"/>
+          <path d="M19.6 18.2a4.6 4.6 0 1 1 6.2 4.3c-1.2.5-1.8 1.4-1.8 2.6v1" fill="none" stroke="var(--ic-b)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="24" cy="31.4" r="2.6" fill="var(--ic-b)"/>
+        </symbol>
+
+        <!-- Material extra / libro -->
+        <symbol id="i-book" viewBox="0 0 48 48">
+          <path d="M6 9.4A5.4 5.4 0 0 1 11.4 4H40a2 2 0 0 1 2 2v30.6a2 2 0 0 1-2 2H11.4A5.4 5.4 0 0 0 6 44z" fill="var(--ic-a)"/>
+          <path d="M6 44a5.4 5.4 0 0 1 5.4-5.4H42" fill="none" stroke="var(--ic-b)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14.6 13.6h18M14.6 21.6h12" fill="none" stroke="var(--ic-c)" stroke-width="3.4" stroke-linecap="round"/>
+        </symbol>
+
+        <!-- Pago seguro -->
+        <symbol id="i-lock" viewBox="0 0 48 48">
+          <path d="M15 21v-6.4a9 9 0 0 1 18 0V21" fill="none" stroke="var(--ic-b)" stroke-width="4.4" stroke-linecap="round"/>
+          <rect x="7" y="20" width="34" height="24" rx="6" fill="var(--ic-a)"/>
+          <circle cx="24" cy="29.6" r="3.6" fill="var(--ic-c)"/>
+          <path d="M24 32.4v5" fill="none" stroke="var(--ic-c)" stroke-width="3.4" stroke-linecap="round"/>
+        </symbol>
+
+        <!-- Bandera NL -->
+        <symbol id="i-nl" viewBox="0 0 24 16">
+          <rect width="24" height="16" rx="2.4" fill="#fff"/>
+          <path d="M2.4 0h19.2A2.4 2.4 0 0 1 24 2.4v2.93H0V2.4A2.4 2.4 0 0 1 2.4 0z" fill="#AE1C28"/>
+          <path d="M0 10.67h24V13.6a2.4 2.4 0 0 1-2.4 2.4H2.4A2.4 2.4 0 0 1 0 13.6z" fill="#21468B"/>
+        </symbol>
+
+        <!-- Estrella (reseñas) -->
+        <symbol id="i-star" viewBox="0 0 20 20">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" fill="#F58220"/>
+        </symbol>
+
+      </defs></svg>
+
+    <!-- ══════════════════════════════════════════════════════════
+         NAVBAR — fijo, cristal de marca: logo · contador · CTA
+    ══════════════════════════════════════════════════════════ -->
+    <nav class="l8nav">
+      <div class="l8nav-inner">
+        <a href="#hero" class="l8nav-logo" aria-label="Inicio">
+          <img src={LOGO} alt="Holandés con Nawar" width="150" height="38" />
+        </a>
+        <div class="l8nav-timer">
+          <div class="l8nav-timer-label">La oferta termina en</div>
+          <div class="l8nav-timer-value" id="l8-timer">7D 00H 00M 00S</div>
+        </div>
+        <a href={CHECKOUT_URL} class="l8nav-cta" target="_blank" rel="noopener">
+          Obtener acceso
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
+        </a>
+      </div>
+    </nav>
+
+    <!-- ══════════════════════════════════════════════════════════
+         HERO — envoltorio cinematográfico + estructura que vende
+    ══════════════════════════════════════════════════════════ -->
+    <section class="hero" id="hero">
+      <div class="np-hero-aurora np-hero-aurora-1" aria-hidden="true"></div>
+      <div class="np-hero-aurora np-hero-aurora-2" aria-hidden="true"></div>
+      <div class="np-hero-aurora np-hero-aurora-3" aria-hidden="true"></div>
+      <div class="np-hero-grid-bg" aria-hidden="true"></div>
+      <div class="hero-dots dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:.45"></div>
+      <div class="np-hero-particles" aria-hidden="true">
+        <span class="np-particle"></span><span class="np-particle"></span>
+        <span class="np-particle"></span><span class="np-particle"></span>
+        <span class="np-particle"></span><span class="np-particle"></span>
+        <span class="np-particle"></span><span class="np-particle"></span>
+        <span class="np-particle"></span><span class="np-particle"></span>
+      </div>
+      <div class="np-hero-vignette" aria-hidden="true"></div>
+
+      <div class="hero-inner">
+
+        <div data-anim="fade-up">
+          <div class="hero-badge">
+            <span class="badge-dot"></span>
+            Formación activa — Plazas limitadas
+          </div>
+          <h1 class="hero-headline">
+            <span class="text-gradient-white">El neerlandés que llevas</span><br />
+            <span class="text-gradient-white">meses posponiendo</span><br />
+            <em>empieza hoy.</em>
+          </h1>
+          <p class="hero-sub">
+            La primera formación de neerlandés diseñada específicamente para hispanohablantes.
+            Sin rodeos. Sin métodos para angloparlantes. Sin aburrirte a las dos semanas.
+          </p>
+          <div class="hero-ctas">
+            <a href={CHECKOUT_URL} class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+              Quiero aprender neerlandés
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
+            </a>
+            <a href="#oferta" class="btn btn-outline btn-lg">Ver qué incluye</a>
+          </div>
+          <div class="hero-trust">
+            <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-video"/></svg><span>+10h de vídeo</span></div>
+            <div class="trust-sep"></div>
+            <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-mobile"/></svg><span>Ejercicios online</span></div>
+            <div class="trust-sep"></div>
+            <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-users"/></svg><span>Comunidad activa</span></div>
+            <div class="trust-sep"></div>
+            <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-live"/></svg><span>Clases en directo</span></div>
+          </div>
+        </div>
+
+        <div data-anim="fade-left">
+          <div class="platform-mockup">
+            <div class="mockup-header">
+              <div class="mockup-dots"><span></span><span></span><span></span></div>
+              <span class="mockup-title">Formación Nawar A0-A1</span>
+            </div>
+            <div class="mockup-body">
+              <div>
+                <div class="mockup-label">Tu progreso — Módulo 1</div>
+                <div class="mockup-progress-bar"><div class="mockup-progress-fill" style="width:65%"></div></div>
+                <div class="mockup-pct">65% completado</div>
+              </div>
+              <div class="mockup-modules">
+                <div class="mockup-module active">
+                  <div class="module-icon">📹</div>
+                  <div class="module-info">
+                    <span class="module-title">Les 1 — Woordenschat</span>
+                    <span class="module-sub">Vocabulario · 20 min</span>
+                  </div>
+                  <span class="module-badge done">✓</span>
+                </div>
+                <div class="mockup-module active">
+                  <div class="module-icon">📝</div>
+                  <div class="module-info">
+                    <span class="module-title">Les 2 — Grammatica</span>
+                    <span class="module-sub">Gramática · 18 min</span>
+                  </div>
+                  <span class="module-badge done">✓</span>
+                </div>
+                <div class="mockup-module current">
+                  <div class="module-icon">🎯</div>
+                  <div class="module-info">
+                    <span class="module-title">Les 3 — Uitspraak</span>
+                    <span class="module-sub">Pronunciación · 15 min</span>
+                  </div>
+                  <span class="module-badge current-badge">→</span>
+                </div>
+                <div class="mockup-module locked">
+                  <div class="module-icon">🔒</div>
+                  <div class="module-info">
+                    <span class="module-title">Les 4 — Spreken</span>
+                    <span class="module-sub">Hablar · 25 min</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-vocab-card">
+                <div class="vocab-article">de</div>
+                <div class="vocab-word">naam</div>
+                <div class="vocab-translation">el nombre</div>
+                <div class="vocab-example">"Mijn naam is Anna."</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="hero-scroll-hint" aria-hidden="true">↓</div>
+    </section>
+
+    <section class="trust-bar">
+      <div class="container trust-bar-inner">
+        <div class="trust-bar-item"><strong>+10 horas</strong><span>de vídeo estructurado</span></div>
+        <div class="trust-bar-div"></div>
+        <div class="trust-bar-item"><strong>Principiantes</strong><span>desde cero</span></div>
+        <div class="trust-bar-div"></div>
+        <div class="trust-bar-item"><strong>Hispanohablantes</strong><span>diseñado para ti</span></div>
+        <div class="trust-bar-div"></div>
+        <div class="trust-bar-item"><strong>15 días</strong><span>garantía de devolución</span></div>
+        <div class="trust-bar-div"></div>
+        <div class="trust-bar-item"><strong>Clase semanal</strong><span>en directo</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         LA CARTA — el dolor, numerado
+    ══════════════════════════════════════════════════════════ -->
+    <section id="dolor" class="np-letter">
+      <div class="np-letter-glow" aria-hidden="true"></div>
+      <div class="np-letter-inner">
+        <div class="np-letter-sticky">
+          <span class="np-eyebrow-small">Seamos honestos</span>
+          <h2 class="np-letter-heading">
+            Sabemos que<br />
+            <span style="color:#4da3ff;">esto te suena.</span>
+          </h2>
+          <p class="np-letter-aside">
+            Es la misma historia en cada hispanohablante que llega aquí. No es culpa tuya:
+            el problema es el método con el que lo has intentado.
+          </p>
+        </div>
+        <ul class="np-letter-list">
+          {dolores.map((d, i) => (
+            <li class="np-letter-item sr-bi">
+              <span class="np-letter-num">{(i + 1).toString().padStart(2, '0')}</span>
+              <p class="np-letter-text">{d}.</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         LOS NÚMEROS — ancla de precio
+    ══════════════════════════════════════════════════════════ -->
+    <section class="np-stats">
+      <div class="np-stats-grid-bg" aria-hidden="true"></div>
+      <div class="inner" style="position:relative;z-index:1;">
+        <div class="np-stats-header sr">
+          <span class="np-eyebrow-small">Los números que nadie te cuenta</span>
+          <h2 class="np-stats-title">
+            <span class="text-gradient-white">Aprender neerlandés no es caro.</span><br />
+            <span style="color:#4da3ff;">El sistema sí lo es.</span>
+          </h2>
+        </div>
+        <div class="np-stats-grid">
+          {stats.map((s, i) => (
+            <div class="np-stat-card sr-bi" style={`transition-delay:${i * 0.08}s;`}>
+              <div class="np-stat-num">{s.num}</div>
+              <div class="np-stat-line"></div>
+              <p class="np-stat-label">{s.label}</p>
+            </div>
+          ))}
+        </div>
+        <p class="l8-anchor-note sr">
+          Un solo nivel en una academia te cuesta <strong>800 €</strong>. Dos clases sueltas, <strong>130 €</strong>.
+          La formación completa, con clase semanal en directo, comunidad y certificado, cuesta <strong>397 €</strong> una sola vez.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         EL GIRO — aquí entra la formación
+    ══════════════════════════════════════════════════════════ -->
+    <section class="np-reveal section-light">
+      <div class="inner" style="position:relative;z-index:1;">
+        <div class="np-reveal-content sr">
+          <span class="badge-light">Por eso existe la Formación Nawar</span>
+          <h2 class="np-reveal-title">
+            Todo lo que necesitas para hablar neerlandés,<br />
+            <span class="np-reveal-highlight">en un solo sitio y de una sola vez.</span>
+          </h2>
+          <p class="np-reveal-sub">
+            Una ruta completa de A0 a A1 explicada desde el español, con ejercicios que te obligan a
+            activar lo aprendido, una clase en directo cada semana, una comunidad de gente en tu misma
+            situación y un certificado al terminar. Sin horarios, sin desplazamientos y sin pagar por hora.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="parati" id="para-ti">
+      <div class="parati-glow" aria-hidden="true"></div>
+      <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:.55"></div>
+      <div class="container" style="position:relative">
+        <div class="parati-header">
+          <div class="eyebrow eyebrow-dark" data-anim="fade-up">Para ti si…</div>
+          <h2 class="section-title white center" data-anim="fade-up">
+            Esta formación es para ti<br />
+            <span style="color:var(--brand-lt)">si te identificas con esto</span>
+          </h2>
+        </div>
+
+        <div class="parati-grid">
+
+          <div class="parati-card" data-anim="fade-up">
+            <div class="parati-icon"><svg class="nw-icon nw-icon--lg nw-icon--dark" aria-hidden="true"><use href="#i-sprout"/></svg></div>
+            <h3>Empiezas desde cero</h3>
+            <p>Nunca has estudiado neerlandés o tienes cuatro palabras sueltas. Quieres una base clara: gramática, vocabulario y frases para defenderte en el día a día.</p>
+          </div>
+
+          <div class="parati-card" data-anim="fade-up">
+            <div class="parati-icon"><svg class="nw-icon nw-icon--lg nw-icon--dark" aria-hidden="true"><use href="#i-passport"/></svg></div>
+            <h3>Vas a por el Inburgering</h3>
+            <p>Necesitas asentar las bases del idioma para preparar el examen y dar el paso hacia tu permiso, tu visa o tu nacionalidad.</p>
+          </div>
+
+          <div class="parati-card" data-anim="fade-up">
+            <div class="parati-icon"><svg class="nw-icon nw-icon--lg nw-icon--dark" aria-hidden="true"><use href="#i-repeat"/></svg></div>
+            <h3>Quieres repasar la base</h3>
+            <p>Ya empezaste alguna vez, pero hay reglas que no se te quedan. Buscas una ruta ordenada que por fin te haga avanzar en lugar de dar vueltas.</p>
+          </div>
+
+          <div class="parati-card" data-anim="fade-up">
+            <div class="parati-icon"><svg class="nw-icon nw-icon--lg nw-icon--dark" aria-hidden="true"><use href="#i-home"/></svg></div>
+            <h3>Vives en Países Bajos</h3>
+            <p>Trabajo, médico, ayuntamiento, vecinos. Quieres dejar de depender del inglés o de que alguien traduzca por ti cada vez que sales de casa.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="includes" id="incluye">
+      <div class="container">
+        <div style="text-align:center">
+          <div class="eyebrow eyebrow-light" data-anim="fade-up">Todo lo que incluye</div>
+        </div>
+        <h2 class="section-title dark center" data-anim="fade-up">
+          Una formación completa,<br />no un pack de recursos sueltos.
+        </h2>
+        <p class="section-subtitle dark center" data-anim="fade-up">
+          Cada elemento está diseñado para que avances de verdad — no para que acumules material.
+        </p>
+        <div class="bento-grid">
+
+          <!-- Card grande: horas de vídeo -->
+          <div class="bento-card bento-wide" data-anim="fade-up">
+            <div class="bento-accent-bar" style="background:linear-gradient(90deg,#1D0084,#4da3ff)"></div>
+            <div class="bento-card-icon"><svg class="nw-icon nw-icon--lg" aria-hidden="true"><use href="#i-video"/></svg></div>
+            <div class="bento-card-stat">+10<span>h</span></div>
+            <h3>Lecciones grabadas por profesores expertos</h3>
+            <p>Vídeos claros, bien explicados, directamente en español. Pausa, rebobina y repite cuantas veces necesites — sin horarios, sin presión.</p>
+            <span class="bento-pill">Acceso inmediato y de por vida</span>
+          </div>
+
+          <!-- Card: ejercicios -->
+          <div class="bento-card" data-anim="fade-up">
+            <div class="bento-accent-bar" style="background:linear-gradient(90deg,#025dc7,#4da3ff)"></div>
+            <div class="bento-card-icon"><svg class="nw-icon nw-icon--lg" aria-hidden="true"><use href="#i-target"/></svg></div>
+            <h3>Ejercicios online interactivos</h3>
+            <p>Nada de PDFs aburridos. Practica con ejercicios en la plataforma y recibe feedback inmediato en cada respuesta.</p>
+            <span class="bento-pill">Feedback al instante</span>
+          </div>
+
+          <!-- Card: clase semanal -->
+          <div class="bento-card" data-anim="fade-up">
+            <div class="bento-accent-bar" style="background:linear-gradient(90deg,#0b7a4d,#4da3ff)"></div>
+            <div class="bento-card-icon"><svg class="nw-icon nw-icon--lg" aria-hidden="true"><use href="#i-calendar"/></svg></div>
+            <h3>1 clase semanal en directo</h3>
+            <p>Cada semana, una clase en vivo con tu profesor. Repasa, pregunta y practica con otros estudiantes hispanohablantes.</p>
+            <span class="bento-pill">Grabación disponible siempre</span>
+          </div>
+
+          <!-- Card: vocabulario audio -->
+          <div class="bento-card" data-anim="fade-up">
+            <div class="bento-accent-bar" style="background:linear-gradient(90deg,#1D0084,#025dc7)"></div>
+            <div class="bento-card-icon"><svg class="nw-icon nw-icon--lg" aria-hidden="true"><use href="#i-audio"/></svg></div>
+            <h3>Vocabulario con audio nativo</h3>
+            <p>Escucha cada palabra pronunciada por hablantes nativos. Aprende la pronunciación real desde el primer día.</p>
+            <span class="bento-pill">Pronunciación auténtica</span>
+          </div>
+
+          <!-- Card: diálogos -->
+          <div class="bento-card" data-anim="fade-up">
+            <div class="bento-accent-bar" style="background:linear-gradient(90deg,#025dc7,#0b7a4d)"></div>
+            <div class="bento-card-icon"><svg class="nw-icon nw-icon--lg" aria-hidden="true"><use href="#i-chat"/></svg></div>
+            <h3>Diálogos reales con transcripción</h3>
+            <p>Audio, transcripción y traducción en cada diálogo. Entiende el neerlandés real que se habla en Países Bajos.</p>
+            <span class="bento-pill">Audio + traducción + transcripción</span>
+          </div>
+
+          <!-- Card: comunidad -->
+          <div class="bento-card" data-anim="fade-up">
+            <div class="bento-accent-bar" style="background:linear-gradient(90deg,#0b7a4d,#1D0084)"></div>
+            <div class="bento-card-icon"><svg class="nw-icon nw-icon--lg" aria-hidden="true"><use href="#i-users"/></svg></div>
+            <h3>Comunidad de hispanohablantes</h3>
+            <p>Un grupo privado de personas como tú, aprendiendo neerlandés desde el español. Dudas, motivación y práctica.</p>
+            <span class="bento-pill">Comunidad activa</span>
+          </div>
+
+          <!-- Card: progreso -->
+          <div class="bento-card" data-anim="fade-up">
+            <div class="bento-accent-bar" style="background:linear-gradient(90deg,#4da3ff,#1D0084)"></div>
+            <div class="bento-card-icon"><svg class="nw-icon nw-icon--lg" aria-hidden="true"><use href="#i-chart"/></svg></div>
+            <h3>Seguimiento de tu progreso</h3>
+            <p>Sabe exactamente en qué punto estás y qué te queda. Visualiza tu avance lección a lección sin adivinanzas.</p>
+            <span class="bento-pill">Dashboard de progreso</span>
+          </div>
+
+          <!-- Card: certificado -->
+          <div class="bento-card" data-anim="fade-up">
+            <div class="bento-accent-bar" style="background:linear-gradient(90deg,#c9971a,#4da3ff)"></div>
+            <div class="bento-card-icon"><svg class="nw-icon nw-icon--lg nw-icon--gold" aria-hidden="true"><use href="#i-award"/></svg></div>
+            <h3>Certificado oficial A0-A1</h3>
+            <p>Al completar la formación recibes tu certificado personalizado que acredita tu nivel de neerlandés.</p>
+            <span class="bento-pill">Certificado oficial Nawar</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="inside-look">
+      <div class="inside-glow" aria-hidden="true"></div>
+      <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:.4"></div>
+      <div class="container" style="position:relative">
+        <div style="text-align:center">
+          <div class="eyebrow eyebrow-dark" data-anim="fade-up">Así se ve por dentro</div>
+        </div>
+        <h2 class="section-title white center" data-anim="fade-up">
+          Una plataforma diseñada<br />para que aprendas, no para que te pierdas.
+        </h2>
+        <p class="section-subtitle white center" data-anim="fade-up">
+          Accede a tu formación desde cualquier dispositivo. Interfaz clara, fluida y sin distracciones.
+        </p>
+        <div class="mockups-row">
+
+          <!-- Screen 1: Vídeo grabado -->
+          <div class="screen-mockup" data-anim="fade-up">
+            <div class="screen-label">Vídeos por profesores expertos</div>
+            <div class="screen-frame">
+              <div class="screen-inner">
+                <div class="s-section-tag">Les 1 — Woordenschat</div>
+                <div class="s-title">Vocabulario — Voorstellen</div>
+                <!-- Video player mockup -->
+                <div style="background:#0C0C1E;border-radius:10px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;position:relative;margin:2px 0;">
+                  <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1D0084 0%,#025dc7 100%);opacity:.85"></div>
+                  <div style="position:relative;z-index:1;width:40px;height:40px;background:rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:16px;margin-left:3px;color:#1D0084">▶</span>
+                  </div>
+                  <div style="position:absolute;bottom:8px;left:10px;right:10px;z-index:1;">
+                    <div style="height:3px;background:rgba(255,255,255,.25);border-radius:3px;overflow:hidden;">
+                      <div style="width:30%;height:100%;background:#4da3ff;border-radius:3px"></div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin-top:4px;">
+                      <span style="font-size:9px;color:rgba(255,255,255,.6)">3:42</span>
+                      <span style="font-size:9px;color:rgba(255,255,255,.6)">12:18</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="background:#F0F5FF;border-radius:8px;padding:8px 10px;font-size:11px;color:#374151;line-height:1.5;">
+                  🎓 <strong style="color:#1D0084">Nawar</strong> — Profesor experto en neerlandés para hispanohablantes
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Screen 2: Vocab + Exercise -->
+          <div class="screen-mockup" data-anim="fade-up">
+            <div class="screen-label">Vocabulario y ejercicios</div>
+            <div class="screen-frame">
+              <div class="screen-inner">
+                <div class="s-section-tag">Práctica · 4 de 8</div>
+                <div class="s-title">¿Cómo se dice "yo vivo"?</div>
+                <div class="s-options">
+                  <div class="s-option wrong">Ik heet</div>
+                  <div class="s-option">Ik werk</div>
+                  <div class="s-option correct">Ik woon ✓</div>
+                  <div class="s-option">Ik kom</div>
+                </div>
+                <div class="s-feedback correct-fb">
+                  <strong>¡Correcto!</strong> "Wonen" significa vivir. "Ik woon" = yo vivo.
+                </div>
+                <div class="s-vocab-grid" style="grid-template-columns:repeat(2,1fr)">
+                  <div class="s-vocab-card" style="--c:#1D0084">
+                    <div class="s-article">de</div>
+                    <div class="s-word">naam</div>
+                    <div class="s-trans">el nombre</div>
+                  </div>
+                  <div class="s-vocab-card" style="--c:#025dc7">
+                    <div class="s-article">het</div>
+                    <div class="s-word">land</div>
+                    <div class="s-trans">el país</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Screen 3: Dialogue with audio + translation -->
+          <div class="screen-mockup" data-anim="fade-up">
+            <div class="screen-label">Diálogos · audio, transcripción y traducción</div>
+            <div class="screen-frame">
+              <div class="screen-inner">
+                <div class="s-section-tag">Diálogo · Les 1</div>
+                <div class="s-title">Een nieuwe kennis</div>
+                <div class="s-full-audio-bar">
+                  <div class="s-play-btn">▶</div>
+                  <div class="s-progress-track"><div class="s-progress-fill" style="width:25%"></div></div>
+                  <span class="s-time">0:12 / 0:45</span>
+                </div>
+                <div class="s-dialogue">
+                  <div class="s-line">
+                    <span class="s-speaker" style="background:#1D0084">Anna</span>
+                    <div class="s-speech">
+                      <div class="s-dutch">Hallo! Hoe heet jij?</div>
+                      <div class="s-spanish">¡Hola! ¿Cómo te llamas?</div>
+                    </div>
+                  </div>
+                  <div class="s-line">
+                    <span class="s-speaker" style="background:#025dc7">Marco</span>
+                    <div class="s-speech">
+                      <div class="s-dutch">Ik heet Marco. Leuk!</div>
+                      <div class="s-spanish">Me llamo Marco. ¡Encantado!</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px">
+                  <span style="font-size:10px;padding:3px 8px;border-radius:100px;background:rgba(29,0,132,.08);border:1px solid rgba(29,0,132,.15);color:#1D0084;font-weight:600">🔊 Audio</span>
+                  <span style="font-size:10px;padding:3px 8px;border-radius:100px;background:rgba(29,0,132,.08);border:1px solid rgba(29,0,132,.15);color:#1D0084;font-weight:600">📝 Transcripción</span>
+                  <span style="font-size:10px;padding:3px 8px;border-radius:100px;background:rgba(29,0,132,.08);border:1px solid rgba(29,0,132,.15);color:#1D0084;font-weight:600">🇪🇸 Traducción</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="differentiators" id="metodo">
+      <div style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden" aria-hidden="true">
+        <div class="sf-divider-line">
+          <div class="sf-divider-dot" id="sf-dot"></div>
+        </div>
+      </div>
+      <div class="container" style="position:relative">
+        <div class="sf-grid">
+
+          <!-- LEFT: sticky -->
+          <div class="sf-left">
+            <div class="eyebrow eyebrow-light">Por qué funciona</div>
+            <h2>Lo que nos hace<br /><span style="color:var(--brand-mid)">diferentes de verdad.</span></h2>
+            <p>
+              No es solo el contenido — es cómo está estructurado, pensado y explicado específicamente para una persona que habla español y quiere aprender neerlandés.
+            </p>
+            <a href="#precio" class="sf-left-link">
+              Ver acceso completo
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+          </div>
+
+          <!-- RIGHT: scrolling cards -->
+          <div class="sf-right">
+
+            <div class="sf-card" data-anim="fade-up">
+              <div class="sf-card-icon"><svg class="nw-icon" aria-hidden="true"><use href="#i-translate"/></svg></div>
+              <div class="sf-card-body">
+                <h3>Explicaciones en español, no en inglés</h3>
+                <div class="sf-card-nawar">
+                  <span class="sf-check"><svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+                  <p>Aquí todo se explica desde el español. Gramática, pronunciación, comparativas — pensadas para cómo funciona tu cabeza, no la de un angloparlante.</p>
+                </div>
+                <div class="sf-card-classic">
+                  <span class="sf-cross"><svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span>
+                  <p>Las academias tradicionales usan materiales traducidos del inglés que no conectan con tu lengua materna.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="sf-card" data-anim="fade-up">
+              <div class="sf-card-icon"><svg class="nw-icon" aria-hidden="true"><use href="#i-route"/></svg></div>
+              <div class="sf-card-body">
+                <h3>Ruta clara de A0 a A1, sin perderte</h3>
+                <div class="sf-card-nawar">
+                  <span class="sf-check"><svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+                  <p>Cada lección tiene un objetivo concreto. Sabes exactamente qué aprendes hoy, qué viene después y cómo avanzas hacia la conversación real.</p>
+                </div>
+                <div class="sf-card-classic">
+                  <span class="sf-cross"><svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span>
+                  <p>Con apps y recursos sueltos no hay estructura — estudias, olvidas, y al mes sigues en el mismo punto.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="sf-card" data-anim="fade-up">
+              <div class="sf-card-icon"><svg class="nw-icon" aria-hidden="true"><use href="#i-dumbbell"/></svg></div>
+              <div class="sf-card-body">
+                <h3>Práctica activa, no consumo pasivo</h3>
+                <div class="sf-card-nawar">
+                  <span class="sf-check"><svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+                  <p>Ejercicios interactivos que te obligan a activar lo que acabas de aprender. El feedback es inmediato y te explica exactamente qué falla y por qué.</p>
+                </div>
+                <div class="sf-card-classic">
+                  <span class="sf-cross"><svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span>
+                  <p>Ver vídeos o leer PDFs no entrena tu cerebro. Sin práctica activa, los conceptos no se fijan.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="sf-card" data-anim="fade-up">
+              <div class="sf-card-icon"><svg class="nw-icon" aria-hidden="true"><use href="#i-users"/></svg></div>
+              <div class="sf-card-body">
+                <h3>No aprendes solo — hay comunidad real</h3>
+                <div class="sf-card-nawar">
+                  <span class="sf-check"><svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+                  <p>Grupo privado de hispanohablantes en tu misma situación y clase semanal en directo con el profesor para consolidar, preguntar y practicar.</p>
+                </div>
+                <div class="sf-card-classic">
+                  <span class="sf-cross"><svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span>
+                  <p>Estudiar solo es lo más fácil para abandonar. Sin apoyo ni comunidad, la motivación se agota en semanas.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="sf-card" data-anim="fade-up">
+              <div class="sf-card-icon"><svg class="nw-icon" aria-hidden="true"><use href="#i-bolt"/></svg></div>
+              <div class="sf-card-body">
+                <h3>Acceso inmediato, ritmo y vida real</h3>
+                <div class="sf-card-nawar">
+                  <span class="sf-check"><svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+                  <p>Empieza en minutos, avanza 20 min al día. Sin horarios fijos, sin desplazamientos, sin comprometer tu trabajo ni tu familia.</p>
+                </div>
+                <div class="sf-card-classic">
+                  <span class="sf-cross"><svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span>
+                  <p>Las academias presenciales requieren desplazarte, respetar horarios y pagar por hora — lo que hace muy difícil mantener el ritmo.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="solution" id="solution">
+      <div class="container">
+        <div style="text-align:center">
+          <div class="eyebrow eyebrow-dark" data-anim="fade-up">La diferencia es clara</div>
+        </div>
+        <h2 class="section-title white center" data-anim="fade-up">
+          Existe una forma<br />más inteligente de aprender.
+        </h2>
+        <p class="section-subtitle white center" data-anim="fade-up">
+          No más métodos genéricos. No más clases presenciales a precio de academia. Esta formación está construida específicamente para ti.
+        </p>
+        <div class="cmp-wrap" data-anim="fade-up">
+          <div class="cmp-card">
+            <table class="cmp-table" role="table" aria-label="Comparativa de formaciones">
+              <thead>
+                <tr>
+                  <th scope="col" class="cmp-col-feature"> </th>
+                  <th scope="col" class="cmp-col-good">Formación Nawar A0-A1</th>
+                  <th scope="col" class="cmp-col-bad">Academia tradicional</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Impartido por un nativo hispanohablante</th>
+                  <td class="ok"><span class="icon-ok"></span>SÍ</td>
+                  <td class="bad"><span class="icon-bad"></span>NO SIEMPRE</td>
+                </tr>
+                <tr>
+                  <th scope="row">A tu propio ritmo, sin horarios</th>
+                  <td class="ok"><span class="icon-ok"></span>SÍ</td>
+                  <td class="bad">HORARIOS FIJOS</td>
+                </tr>
+                <tr>
+                  <th scope="row">Acceso 24/7 desde cualquier dispositivo</th>
+                  <td class="ok"><span class="icon-ok"></span>SÍ</td>
+                  <td class="bad"><span class="icon-bad"></span>NO</td>
+                </tr>
+                <tr>
+                  <th scope="row">Repetir lecciones cuando quieras</th>
+                  <td class="ok"><span class="icon-ok"></span>SÍ</td>
+                  <td class="bad"><span class="icon-bad"></span>NO</td>
+                </tr>
+                <tr>
+                  <th scope="row">Ejercicios interactivos con feedback</th>
+                  <td class="ok"><span class="icon-ok"></span>SÍ</td>
+                  <td class="bad"><span class="icon-bad"></span>NO</td>
+                </tr>
+                <tr>
+                  <th scope="row">Explicaciones en español</th>
+                  <td class="ok"><span class="icon-ok"></span>SÍ</td>
+                  <td class="bad"><span class="icon-bad"></span>NO</td>
+                </tr>
+                <tr>
+                  <th scope="row">Neerlandés de la vida real</th>
+                  <td class="ok"><span class="icon-ok"></span>SÍ</td>
+                  <td class="bad"><span class="icon-bad"></span>NO</td>
+                </tr>
+                <tr>
+                  <th scope="row">Grabación de clases en vivo</th>
+                  <td class="ok"><span class="icon-ok"></span>SÍ</td>
+                  <td class="bad"><span class="icon-bad"></span>NO</td>
+                </tr>
+                <tr>
+                  <th scope="row">Acceso de por vida + actualizaciones</th>
+                  <td class="ok"><span class="icon-ok"></span>SÍ</td>
+                  <td class="bad"><span class="icon-bad"></span>NO</td>
+                </tr>
+                <tr>
+                  <th scope="row">Comunidad privada de hispanohablantes</th>
+                  <td class="ok"><span class="icon-ok"></span>SÍ</td>
+                  <td class="bad"><span class="icon-bad"></span>NO</td>
+                </tr>
+                <tr>
+                  <th scope="row">Material de apoyo incluido</th>
+                  <td class="ok">INCLUIDO</td>
+                  <td class="bad">COSTE ADICIONAL</td>
+                </tr>
+                <tr class="price-row">
+                  <th scope="row">Precio</th>
+                  <td><span class="price-good">€297 PAGO ÚNICO</span></td>
+                  <td><span class="price-bad">> €2.000 / año</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="results" id="opiniones">
+      <div class="container">
+        <div style="text-align:center">
+          <div class="eyebrow eyebrow-light" data-anim="fade-up">Resultados reales</div>
+        </div>
+        <h2 class="section-title dark center" data-anim="fade-up">
+          Hispanohablantes que ya<br /><span style="color:var(--brand-mid)">hablan neerlandés.</span>
+        </h2>
+        <p class="section-subtitle dark center" data-anim="fade-up">
+          No son promesas. Son personas que empezaron exactamente donde estás tú ahora mismo.
+        </p>
+
+        <div class="results-grid">
+
+          <article class="result-card" data-anim="fade-up">
+            <div class="result-head">
+              <div class="result-person">
+                <div class="result-avatar">
+                  <img src="https://d1yei2z3i6k35z.cloudfront.net/9533860/69e0053ba5da56.21234955_67d4ee1d66e49_-Manuel.png" alt="Manuel Torres" loading="lazy" />
+                </div>
+                <div>
+                  <p class="result-name">Manuel Torres</p>
+                  <p class="result-role">La Haya, Países Bajos</p>
+                </div>
+              </div>
+              <div class="result-stars" aria-label="5 de 5 estrellas">
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+              </div>
+            </div>
+            <p class="result-title">Por fin entiendo a mis vecinos</p>
+            <p class="result-text">Llevaba un año en los Países Bajos y apenas podía comunicarme. Empecé en Nawar desde cero y en pocas semanas ya podía hacer la compra, hablar con el médico y entender las cartas que me llegaban a casa. Nada de lo que había probado antes me había funcionado así.</p>
+          </article>
+
+          <article class="result-card" data-anim="fade-up">
+            <div class="result-head">
+              <div class="result-person">
+                <div class="result-avatar">
+                  <img src="https://d1yei2z3i6k35z.cloudfront.net/9533860/69e0053ba534a9.03913994_685dd8fdb2a472025-06-27013229-carlos.png" alt="Carlos R." loading="lazy" />
+                </div>
+                <div>
+                  <p class="result-name">Carlos R.</p>
+                  <p class="result-role">Rotterdam, Países Bajos</p>
+                </div>
+              </div>
+              <div class="result-stars" aria-label="5 de 5 estrellas">
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+              </div>
+            </div>
+            <p class="result-title">Me ascendieron a los 4 meses</p>
+            <p class="result-text">Mi jefe me dijo que valoraba que hiciera el esfuerzo de aprender neerlandés. No era obligatorio, pero marcó la diferencia. El método de la formación es muy práctico: aprendes lo que realmente usas en el trabajo y en el día a día, no vocabulario de libro.</p>
+          </article>
+
+          <article class="result-card" data-anim="fade-up">
+            <div class="result-head">
+              <div class="result-person">
+                <div class="result-avatar">
+                  <img src="https://d1yei2z3i6k35z.cloudfront.net/9533860/69e0053ba629e4.43150312_67d4f1119f7db_9a2d6c00ff1cfacea35572fac1288ffa-luc%C3%ADa.png" alt="Lucía V." loading="lazy" />
+                </div>
+                <div>
+                  <p class="result-name">Lucía V.</p>
+                  <p class="result-role">Ámsterdam, Países Bajos</p>
+                </div>
+              </div>
+              <div class="result-stars" aria-label="5 de 5 estrellas">
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+                <svg class="nw-star" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-star"/></svg>
+              </div>
+            </div>
+            <p class="result-title">La comunidad hace la diferencia</p>
+            <p class="result-text">Lo que más me ayudó fue el grupo de estudiantes hispanohablantes. Todos pasamos por lo mismo y nos ayudamos mucho. Cuando tenía una duda, alguien la respondía en minutos. Eso de no estar sola aprendiendo cambió todo para mí.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="certificate-section">
+      <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:.35"></div>
+      <div class="container cert-inner" data-anim="fade-up">
+
+        <!-- Left: text -->
+        <div class="cert-text">
+          <div class="eyebrow eyebrow-dark">Al terminar la formación</div>
+          <h2 class="section-title white">
+            Consigue tu certificado<br />
+            <span style="color:var(--brand-lt)">Nawar A0-A1</span>
+          </h2>
+          <p>
+            Al completar la Formación Nawar A0-A1, recibirás un certificado oficial
+            que acredita tu nivel de neerlandés y tu dedicación al aprendizaje.
+          </p>
+          <p>
+            Un reconocimiento real del trabajo que has hecho — y una prueba tangible
+            de tu progreso que puedes compartir, guardar y presentar donde necesites.
+          </p>
+          <ul class="cert-features">
+            <li><span>✓</span> Certificado personalizado con tu nombre y nivel alcanzado</li>
+            <li><span>✓</span> Acredita tu paso de A0 a A1 en neerlandés</li>
+            <li><span>✓</span> Emitido por la Formación Nawar, especialistas en neerlandés para hispanohablantes</li>
+            <li><span>✓</span> En formato digital, listo para descargar y compartir</li>
+            <li><span>✓</span> Lo obtienes completando todos los módulos de la formación</li>
+          </ul>
+        </div>
+
+        <!-- Right: certificate visual -->
+        <div data-anim="fade-left">
+          <div class="cert-card">
+            <img
+              src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png"
+              alt="Nawar"
+              class="cert-card-logo"
+            />
+            <div class="cert-title">Certificado oficial de finalización</div>
+            <div class="cert-line"></div>
+            <div class="cert-student">Este certificado acredita que</div>
+            <div class="cert-student-name">Tu Nombre Aquí</div>
+            <div class="cert-heading">Formación Nawar A0-A1</div>
+            <div class="cert-sub">Neerlandés para hispanohablantes · Nivel A0 → A1</div>
+            <div class="cert-level">
+              <svg class="nw-flag" viewBox="0 0 24 16" aria-hidden="true"><use href="#i-nl"/></svg> Nivel A0 → A1 completado
+            </div>
+            <div class="cert-seal"><svg class="nw-icon nw-icon--md nw-icon--onbrand" aria-hidden="true"><use href="#i-award"/></svg></div>
+            <div class="cert-footer">
+              <div class="cert-sign">
+                <div class="cert-sign-name">Nawar</div>
+                <div class="cert-sign-role">Director de la formación</div>
+              </div>
+              <div class="cert-date">
+                <div style="font-size:11px;font-weight:700;color:#9a7a1a">2025</div>
+                <div>Formación completada</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         ADEMÁS, DE REGALO — los 5 bonus, cada uno en su bloque
+    ══════════════════════════════════════════════════════════ -->
+    <section class="bonuses" id="bonus">
+      <div class="container">
+        <div class="bonuses-lead" data-anim="fade-up">
+          <svg class="nw-icon nw-icon--lg" aria-hidden="true"><use href="#i-gift"/></svg>
+          <div class="eyebrow eyebrow-light">Además, de regalo</div>
+        </div>
+        <h2 class="section-title dark center" data-anim="fade-up">
+          5 bonus incluidos<br />con tu formación.
+        </h2>
+        <p class="section-subtitle dark center" data-anim="fade-up">
+          No pagas nada extra por ellos. Vienen dentro, y son los que hacen que no te quedes a medias.
+        </p>
+
+        <div class="bonus-grid">
+          {bonuses.map((b) => (
+            <article class={`bonus-card${b.gold ? ' bonus-card--gold' : ''}`} data-anim="fade-up">
+              <div class="bonus-top">
+                <span class={`bonus-num${b.gold ? ' bonus-num--gold' : ''}`}>
+                  <span class="bonus-num-label">Bonus</span>{b.n}
+                </span>
+                <div class="bonus-icon">
+                  <svg class={`nw-icon nw-icon--lg ${b.gold ? 'nw-icon--gold' : 'nw-icon--dark'}`} aria-hidden="true"><use href={`#${b.icon}`}/></svg>
+                </div>
+              </div>
+              <h3>{b.title}</h3>
+              <p>{b.desc}</p>
+              <span class={`bonus-value${b.gold ? ' bonus-value--gold' : ''}`}>
+                Valor <s>{b.valor}</s> · incluido
+              </span>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         LA OFERTA — stack de valor + precio
+    ══════════════════════════════════════════════════════════ -->
+    <section class="offer" id="oferta">
+      <div class="offer-glow" aria-hidden="true"></div>
+      <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:.35"></div>
+      <div class="container">
+
+        <div class="offer-header">
+          <div class="eyebrow eyebrow-dark" data-anim="fade-up">Acceso completo</div>
+          <h2 class="section-title white center" data-anim="fade-up">
+            <span class="text-gradient-white">Suma todo lo que te llevas.</span><br />
+            <span style="color:#4da3ff;">Después mira el precio.</span>
+          </h2>
+        </div>
+
+        <div class="offer-grid">
+
+          <!-- Desglose de valor -->
+          <div class="stack" data-anim="fade-up">
+            <div class="stack-title">Lo que estás recibiendo</div>
+            <ul class="stack-list">
+              {stack.map((s) => (
+                <li class={s.bonus ? 'is-bonus' : ''}>
+                  <span class="stack-check">
+                    <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  </span>
+                  <span class="stack-name">
+                    {s.bonus && <span class="stack-tag">Bonus</span>}{s.nombre}
+                    <small>{s.detalle}</small>
+                  </span>
+                  <span class="stack-price">{s.valor}</span>
+                </li>
+              ))}
+            </ul>
+            <div class="stack-total">
+              <span class="stack-total-label">Valor total real</span>
+              <span class="stack-total-value">€{VALOR_TOTAL}</span>
+            </div>
+          </div>
+
+          <!-- Tarjeta de precio -->
+          <div class="price-card" data-anim="fade-up">
+            <div class="price-card-glow" aria-hidden="true"></div>
+            <div class="price-ribbon">Precio de lanzamiento</div>
+
+            <div class="price-tag">Formación Nawar A0-A1</div>
+            <p class="price-was">En vez de <s>€{VALOR_TOTAL}</s></p>
+            <div class="price-row">
+              <span class="price-amount">€{PRECIO}</span>
+              <span class="price-period">pago único</span>
+            </div>
+            <p class="price-desc">
+              Un solo pago. Acceso inmediato y de por vida a la formación, los bonus y las actualizaciones.
+            </p>
+            <span class="price-save">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Te ahorras €{AHORRO}
+            </span>
+
+            <ul class="price-list">
+              {incluidoEnPrecio.map((item) => (
+                <li>
+                  <svg fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            <a href={CHECKOUT_URL} class="price-cta" target="_blank" rel="noopener">
+              Quiero acceder ahora
+              <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
+            </a>
+
+            <div class="price-urgency-row">
+              <span>Este precio termina en:</span>
+              <strong id="l8-price-countdown">—</strong>
+            </div>
+
+            <div class="price-trust">
+              <span><svg class="nw-icon nw-icon--dark" aria-hidden="true"><use href="#i-shield-check"/></svg> 15 días de garantía</span>
+              <span><svg class="nw-icon nw-icon--dark" aria-hidden="true"><use href="#i-lock"/></svg> Pago seguro SSL</span>
+              <span><svg class="nw-icon nw-icon--dark" aria-hidden="true"><use href="#i-bolt"/></svg> Acceso inmediato</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         GARANTÍA — el riesgo lo asumimos nosotros
+    ══════════════════════════════════════════════════════════ -->
+    <section class="guarantee">
+      <div class="container">
+        <div class="guarantee-content" data-anim="fade-up">
+          <div class="guarantee-badge-wrap">
+            <svg class="nw-icon" aria-hidden="true"><use href="#i-shield-check"/></svg>
+          </div>
+          <div class="eyebrow eyebrow-light">Sin riesgo. Totalmente.</div>
+          <h2 class="section-title dark">Pruébala 15 días.<br />Si no es para ti, te devuelvo el dinero.</h2>
+          <p class="guarantee-lead">
+            Entra, mira los módulos, haz los ejercicios, métete en una clase en directo y pregunta en la comunidad.
+            Si en <strong>15 días</strong> sientes que no es lo que esperabas, escribes un email y te devuelvo el
+            importe íntegro. Sin formularios, sin burocracia y sin preguntas incómodas.
+          </p>
+          <div class="guarantee-pills">
+            <span class="guarantee-pill">✓ Devolución en 48h</span>
+            <span class="guarantee-pill">✓ Sin formularios</span>
+            <span class="guarantee-pill">✓ Sin preguntas</span>
+            <span class="guarantee-pill">✓ Dinero completo</span>
+          </div>
+          <p class="guarantee-fine">
+            El riesgo lo asumo yo. Lo único que arriesgas tú es seguir otro año más sin hablar neerlandés.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         FAQ
+    ══════════════════════════════════════════════════════════ -->
+    <section class="faq" id="faq">
+      <div class="container">
+        <div style="text-align:center">
+          <div class="eyebrow eyebrow-dark" data-anim="fade-up">Preguntas frecuentes</div>
+        </div>
+        <h2 class="section-title white center" data-anim="fade-up">
+          Resolvemos tus dudas<br />antes de empezar.
+        </h2>
+        <div class="faq-list">
+          {faqs.map((f) => (
+            <div class="faq-item" data-anim="fade-up">
+              <button class="faq-question" aria-expanded="false" type="button">
+                {f.q}
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">{f.a}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         CTA FINAL
+    ══════════════════════════════════════════════════════════ -->
+    <section class="final-cta">
+      <div class="final-cta-glow" aria-hidden="true"></div>
+      <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:.4"></div>
+      <div class="final-cta-divider" aria-hidden="true"></div>
+      <div class="container" style="position:relative">
+        <div class="content" data-anim="fade-up">
+          <div class="eyebrow eyebrow-accent" style="display:inline-flex;margin-bottom:24px">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" style="flex-shrink:0"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Empieza hoy
+          </div>
+          <h2>Llevas demasiado tiempo esperando.<br />El momento es <em style="color:var(--brand-lt);font-style:normal">ahora.</em></h2>
+          <p>
+            Cada semana que pasa sin neerlandés es una semana más de dependencia, bloqueo e inseguridad.
+            Tienes delante la formación más clara, más estructurada y más pensada para ti — por menos de
+            lo que cuestan seis clases sueltas.
+          </p>
+          <div class="final-cta-btns">
+            <a href={CHECKOUT_URL} class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+              Empezar ahora por €{PRECIO}
+            </a>
+          </div>
+          <p class="final-cta-fine">
+            <svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-shield-check"/></svg>
+            15 días de garantía · Sin riesgo · Acceso inmediato
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         FOOTER
+    ══════════════════════════════════════════════════════════ -->
+    <footer class="footer">
+      <div class="container footer-inner">
+        <a href="#hero" class="footer-logo">
+          <img src={LOGO} alt="Holandés con Nawar" width="120" height="30" />
+        </a>
+        <div class="footer-links">
+          <a href="/politica-de-privacidad">Política de privacidad</a>
+          <a href="/terminos-y-condiciones">Términos y condiciones</a>
+          <a href="/contacto">Contacto</a>
+        </div>
+        <p class="footer-copy">© 2026 Formación Nawar A0-A1. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+
+    <!-- ══════════════════════════════════════════════════════════
+         BARRA STICKY MÓVIL
+    ══════════════════════════════════════════════════════════ -->
+    <div class="mobile-sticky" id="l8-sticky">
+      <div class="mobile-sticky-trust">
+        <svg width="13" height="13" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2l7 4v6c0 5-3.5 8.5-7 10C8.5 20.5 5 17 5 12V6l7-4z"/></svg>
+        <span>Pago seguro</span>
+      </div>
+      <div class="mobile-sticky-price">
+        <s>€{VALOR_TOTAL}</s>
+        <strong>€{PRECIO}</strong>
+      </div>
+      <a href={CHECKOUT_URL} class="btn btn-sticky" target="_blank" rel="noopener">Obtener acceso</a>
+    </div>
+
+  </div>
+</Layout>
+
+<script>
+  /* ── Contador de 7 días: nav + tarjeta de precio ─────────── */
+  ;(function initCountdown() {
+    const KEY = 'nawar_offer_end_l8'
+    const WEEK = 7 * 24 * 60 * 60 * 1000
+
+    let end = parseInt(localStorage.getItem(KEY) || '', 10)
+    if (!end || isNaN(end) || end < Date.now()) {
+      end = Date.now() + WEEK
+      localStorage.setItem(KEY, String(end))
+    }
+
+    const pad = (n: number) => (n < 10 ? '0' : '') + n
+    const navEl = document.getElementById('l8-timer')
+    const priceEl = document.getElementById('l8-price-countdown')
+
+    const tick = () => {
+      const diff = Math.max(0, end - Date.now())
+      const d = Math.floor(diff / 86400000)
+      const h = Math.floor((diff % 86400000) / 3600000)
+      const m = Math.floor((diff % 3600000) / 60000)
+      const s = Math.floor((diff % 60000) / 1000)
+      if (navEl) navEl.textContent = `${d}D ${pad(h)}H ${pad(m)}M ${pad(s)}S`
+      if (priceEl) priceEl.textContent = `${d}d ${pad(h)}h ${pad(m)}m ${pad(s)}s`
+      if (diff === 0) clearInterval(iv)
+    }
+    const iv = setInterval(tick, 1000)
+    tick()
+  })()
+
+  /* ── Animaciones de entrada [data-anim] ──────────────────── */
+  ;(function initScrollAnimations() {
+    const items = document.querySelectorAll('[data-anim]')
+    if (!items.length) return
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+          const el = entry.target as HTMLElement
+          const parent = el.parentElement
+          const siblings = parent
+            ? [...parent.children].filter(
+                (s) => s.hasAttribute('data-anim') && !s.classList.contains('visible')
+              )
+            : [el]
+          const idx = siblings.indexOf(el)
+          setTimeout(() => el.classList.add('visible'), idx >= 0 ? idx * 80 : 0)
+          obs.unobserve(el)
+        })
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    )
+    items.forEach((el) => obs.observe(el))
+  })()
+
+  /* ── Acordeón de FAQ ─────────────────────────────────────── */
+  ;(function initFAQ() {
+    const items = document.querySelectorAll('.faq-item')
+    items.forEach((item) => {
+      const btn = item.querySelector('.faq-question')
+      if (!btn) return
+      btn.addEventListener('click', () => {
+        const wasOpen = item.classList.contains('open')
+        items.forEach((i) => {
+          i.classList.remove('open')
+          i.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false')
+        })
+        if (!wasOpen) {
+          item.classList.add('open')
+          btn.setAttribute('aria-expanded', 'true')
+        }
+      })
+    })
+  })()
+
+  /* ── Punto de la sección sticky ──────────────────────────── */
+  ;(function initStickyDot() {
+    const section = document.querySelector('.differentiators')
+    const dot = document.getElementById('sf-dot')
+    if (!section || !dot) return
+    const START = 0.05
+    const END = 0.95
+    let ticking = false
+    const update = () => {
+      const { top, height } = section.getBoundingClientRect()
+      const travel = height - window.innerHeight
+      const raw = travel > 0 ? -top / travel : 0
+      const progress = START + Math.min(Math.max(raw, 0), 1) * (END - START)
+      ;(dot as HTMLElement).style.top = progress * 100 + '%'
+      ticking = false
+    }
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          requestAnimationFrame(update)
+          ticking = true
+        }
+      },
+      { passive: true }
+    )
+    update()
+  })()
+
+  /* ── Barra sticky móvil: se esconde sobre la oferta ──────── */
+  ;(function initMobileSticky() {
+    const bar = document.getElementById('l8-sticky')
+    const offer = document.getElementById('oferta')
+    if (!bar || !offer) return
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => bar.classList.toggle('hidden', e.isIntersecting)),
+      { threshold: 0.1 }
+    )
+    obs.observe(offer)
+  })()
+
+  /* ── Scroll suave con margen para el nav fijo ────────────── */
+  ;(function initSmoothScroll() {
+    const OFFSET = 88
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        const id = link.getAttribute('href')!.slice(1)
+        const target = document.getElementById(id)
+        if (!target) return
+        e.preventDefault()
+        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - OFFSET, behavior: 'smooth' })
+      })
+    })
+  })()
+
+  /* ── Barra de progreso del mockup del hero ───────────────── */
+  ;(function animateMockupProgress() {
+    const fill = document.querySelector('.mockup-progress-fill') as HTMLElement | null
+    if (!fill) return
+    fill.style.width = '0%'
+    const obs = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return
+          setTimeout(() => (fill.style.width = '65%'), 400)
+          obs.unobserve(e.target)
+        }),
+      { threshold: 0.3 }
+    )
+    obs.observe(fill)
+  })()
+</script>
