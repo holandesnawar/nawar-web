@@ -1,33 +1,9 @@
 ---
-// Los bonus de la cohorte fundadora — con el certificado como protagonista.
-// Certificado nivel "documento de lujo": doble marco, esquinas ornamentales,
-// sello con anillo, brillo diagonal. Bonus con chips SVG gradiente + kicker BONUS N.
-const bonus = [
-  {
-    num: 'BONUS 1',
-    title: 'Clase semanal online en directo',
-    desc: 'Cada semana una clase en vivo con un profesor interno de la formación, asignado según el módulo que estés cursando. Y si no puedes conectarte, queda grabada y siempre está a tu disposición.',
-    icon: 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
-  },
-  {
-    num: 'BONUS 2',
-    title: 'Comunidad de hispanohablantes',
-    desc: 'Un grupo privado de personas que están exactamente en tu misma situación. Os apoyáis, compartís dudas y avanzáis juntos en lugar de estudiar en solitario.',
-    icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z',
-  },
-  {
-    num: 'BONUS 3',
-    title: 'Ejercicios y lecciones extra',
-    desc: 'Material adicional al temario principal para repasar y practicar todo lo que quieras, tantas veces como necesites hasta que te salga sin pensar.',
-    icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
-  },
-  {
-    num: 'BONUS 4',
-    title: 'Soporte y resolución de dudas',
-    desc: 'Cuando algo no te cuadra, preguntas y te respondemos. Sin quedarte bloqueado una semana entera con la misma duda ni buscar respuestas sueltas por internet.',
-    icon: 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z',
-  },
-]
+// Los 5 bonus de la cohorte fundadora.
+// Uno por fila, en orden 1 → 5, alternando visual y texto. Cada bonus
+// tiene su propia maqueta hecha con CSS (nada de iconos con brillo) y
+// el certificado cierra la sección como bonus 5.
+const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
 ---
 <section class="bn-section" data-navbar="light">
   <div class="inner" style="position:relative;z-index:1;">
@@ -41,68 +17,333 @@ const bonus = [
       <p class="bn-sub">No pagas nada extra por ellos. Vienen dentro, y son los que hacen que no te quedes a medias.</p>
     </div>
 
-    <div class="bn-layout">
+    <div class="bn-rows">
 
-      <!-- Certificado — el bonus estrella -->
-      <div class="bn-cert-col sr">
-        <div class="bn-cert-halo" aria-hidden="true"></div>
-        <div class="bn-cert" aria-label="Certificado Holandés Nawar">
-          <div class="bn-cert-sheen" aria-hidden="true"></div>
-          <div class="bn-cert-border">
-            <span class="bn-corner bn-corner--tl" aria-hidden="true"></span>
-            <span class="bn-corner bn-corner--tr" aria-hidden="true"></span>
-            <span class="bn-corner bn-corner--bl" aria-hidden="true"></span>
-            <span class="bn-corner bn-corner--br" aria-hidden="true"></span>
+      <!-- ── BONUS 1 — Clase semanal en directo ── -->
+      <article class="bn-row sr">
+        <div class="bn-visual">
+          <div class="bn-mock bn-mock--dark">
+            <div class="bn-live-top">
+              <span class="bn-live-tag"><span class="bn-live-dot"></span>EN DIRECTO</span>
+              <span class="bn-live-when">jueves · 19:00</span>
+            </div>
+            <p class="bn-live-title">Les 4 — Getallen en leeftijd</p>
+            <p class="bn-live-teacher">Con tu profesor del módulo 4</p>
+            <div class="bn-live-people">
+              <span class="bn-face">M</span><span class="bn-face">J</span>
+              <span class="bn-face">L</span><span class="bn-face">A</span>
+              <span class="bn-face bn-face--more">+18</span>
+            </div>
+            <div class="bn-live-foot">
+              <span class="bn-live-btn">Entrar a la clase</span>
+              <span class="bn-live-rec">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg>
+                Se graba
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="bn-text">
+          <span class="bn-num">Bonus 01</span>
+          <h3 class="bn-name">Clase semanal online en directo</h3>
+          <p class="bn-desc">Cada semana una clase en vivo con un profesor interno de la formación, asignado según el módulo que estés cursando. Y si no puedes conectarte, queda grabada y siempre está a tu disposición.</p>
+        </div>
+      </article>
 
-            <div class="bn-cert-head">
-              <img src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png" alt="Holandés Nawar" class="bn-cert-logo" />
+      <!-- ── BONUS 2 — Comunidad ── -->
+      <article class="bn-row bn-row--flip sr">
+        <div class="bn-visual">
+          <div class="bn-mock bn-mock--light">
+            <div class="bn-chat-top">
+              <span class="bn-chat-name">Comunidad Nawar</span>
+              <span class="bn-chat-online"><span class="bn-online-dot"></span>34 en línea</span>
             </div>
-            <p class="bn-cert-kicker">— CERTIFICADO DE FINALIZACIÓN —</p>
-            <p class="bn-cert-course">Formación Neerlandés A0 → A1</p>
-            <p class="bn-cert-grant">Se otorga a</p>
-            <div class="bn-cert-nameline">
-              <span class="bn-cert-name">Tu nombre</span>
+            <div class="bn-bubble bn-bubble--in">
+              <span class="bn-bubble-who">Lucía</span>
+              ¿Alguien sabe cuándo se usa <em>er</em>? Me lío un poco
             </div>
-            <p class="bn-cert-text">por completar con éxito el programa completo del Método Holandés Nawar</p>
-            <div class="bn-cert-foot">
-              <div class="bn-cert-sig">
-                <span class="bn-cert-sigline"></span>
-                <span class="bn-cert-siglabel">Director académico</span>
+            <div class="bn-bubble bn-bubble--out">
+              <span class="bn-bubble-who">Manuel</span>
+              A mí me pasaba igual. Mira la lección 6, ahí lo explica con ejemplos
+            </div>
+            <div class="bn-bubble bn-bubble--in">
+              <span class="bn-bubble-who">Carlos</span>
+              Justo lo pregunté en la clase del jueves
+            </div>
+          </div>
+        </div>
+        <div class="bn-text">
+          <span class="bn-num">Bonus 02</span>
+          <h3 class="bn-name">Comunidad de hispanohablantes</h3>
+          <p class="bn-desc">Un grupo privado de personas que están exactamente en tu misma situación. Os apoyáis, compartís dudas y avanzáis juntos en lugar de estudiar en solitario.</p>
+        </div>
+      </article>
+
+      <!-- ── BONUS 3 — Ejercicios y lecciones extra ── -->
+      <article class="bn-row sr">
+        <div class="bn-visual">
+          <div class="bn-mock bn-mock--light">
+            <div class="bn-ex-top">
+              <span class="bn-ex-tag">Práctica extra</span>
+              <span class="bn-ex-count">4 de 8</span>
+            </div>
+            <p class="bn-ex-q">¿Cómo se dice «yo vivo»?</p>
+            <div class="bn-ex-opts">
+              <span class="bn-opt">Ik heet</span>
+              <span class="bn-opt bn-opt--ok">Ik woon
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </span>
+              <span class="bn-opt">Ik werk</span>
+            </div>
+            <div class="bn-ex-bar"><span style="width:52%"></span></div>
+            <p class="bn-ex-note">Repite las veces que quieras</p>
+          </div>
+        </div>
+        <div class="bn-text">
+          <span class="bn-num">Bonus 03</span>
+          <h3 class="bn-name">Ejercicios y lecciones extra</h3>
+          <p class="bn-desc">Material adicional al temario principal para repasar y practicar todo lo que quieras, tantas veces como necesites hasta que te salga sin pensar.</p>
+        </div>
+      </article>
+
+      <!-- ── BONUS 4 — Soporte ── -->
+      <article class="bn-row bn-row--flip sr">
+        <div class="bn-visual">
+          <div class="bn-mock bn-mock--dark">
+            <div class="bn-sup-top">
+              <span class="bn-sup-tag">TU CONSULTA</span>
+              <span class="bn-sup-state"><span class="bn-online-dot"></span>Respondida</span>
+            </div>
+            <div class="bn-sup-q">No entiendo por qué el verbo se va al final en esta frase</div>
+            <div class="bn-sup-a">
+              <span class="bn-sup-who">Equipo Nawar</span>
+              Porque es una subordinada con <em>omdat</em>. Te lo explico paso a paso y te dejo tres ejemplos más.
+            </div>
+            <p class="bn-sup-foot">Respondido en menos de 24 h</p>
+          </div>
+        </div>
+        <div class="bn-text">
+          <span class="bn-num">Bonus 04</span>
+          <h3 class="bn-name">Soporte y resolución de dudas</h3>
+          <p class="bn-desc">Cuando algo no te cuadra, preguntas y te respondemos. Sin quedarte bloqueado una semana entera con la misma duda ni buscar respuestas sueltas por internet.</p>
+        </div>
+      </article>
+
+      <!-- ── BONUS 5 — Certificado ── -->
+      <article class="bn-row bn-row--cert sr">
+        <div class="bn-visual">
+          <div class="bn-cert-halo" aria-hidden="true"></div>
+          <div class="bn-cert" aria-label="Certificado Holandés Nawar">
+            <div class="bn-cert-sheen" aria-hidden="true"></div>
+            <div class="bn-cert-border">
+              <span class="bn-corner bn-corner--tl" aria-hidden="true"></span>
+              <span class="bn-corner bn-corner--tr" aria-hidden="true"></span>
+              <span class="bn-corner bn-corner--bl" aria-hidden="true"></span>
+              <span class="bn-corner bn-corner--br" aria-hidden="true"></span>
+
+              <div class="bn-cert-head">
+                <img src={LOGO} alt="Holandés Nawar" class="bn-cert-logo" width="120" height="30" />
               </div>
-              <div class="bn-cert-level">A1</div>
-              <div class="bn-cert-seal-wrap">
-                <span class="bn-cert-seal-ring" aria-hidden="true"></span>
-                <div class="bn-cert-seal">
-                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <p class="bn-cert-kicker">— CERTIFICADO DE FINALIZACIÓN —</p>
+              <p class="bn-cert-course">Formación Neerlandés A0 → A1</p>
+              <p class="bn-cert-grant">Se otorga a</p>
+              <div class="bn-cert-nameline">
+                <span class="bn-cert-name">Tu nombre</span>
+              </div>
+              <p class="bn-cert-text">por completar con éxito el programa completo del Método Holandés Nawar</p>
+              <div class="bn-cert-foot">
+                <div class="bn-cert-sig">
+                  <span class="bn-cert-sigline"></span>
+                  <span class="bn-cert-siglabel">Director académico</span>
+                </div>
+                <div class="bn-cert-level">A1</div>
+                <div class="bn-cert-seal-wrap">
+                  <span class="bn-cert-seal-ring" aria-hidden="true"></span>
+                  <div class="bn-cert-seal">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <p class="bn-cert-caption"><span class="bn-cert-num">BONUS 5</span> <strong>Certificado Holandés Nawar</strong> al completar la formación — tu nivel, demostrado.</p>
-      </div>
-
-      <!-- Resto de bonus -->
-      <div class="bn-list-col">
-        {bonus.map((b, i) => (
-          <div class={`bn-item sr${i > 0 ? ` d${i}` : ''}`}>
-            <span class="bn-item-chip">
-              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d={b.icon}/></svg>
-            </span>
-            <div>
-              <span class="bn-item-num">{b.num}</span>
-              <h3 class="bn-item-title">{b.title}</h3>
-              <p class="bn-item-desc">{b.desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+        <div class="bn-text">
+          <span class="bn-num">Bonus 05</span>
+          <h3 class="bn-name">Certificado oficial Holandés Nawar</h3>
+          <p class="bn-desc">Al completar todos los módulos recibes tu certificado personalizado con tu nombre, que acredita tu paso de A0 a A1. Tu nivel, demostrado y listo para compartir.</p>
+        </div>
+      </article>
 
     </div>
   </div>
 </section>
 
 <style>
+/* ══════════════════════════════════════════════════════════════
+   Sección
+══════════════════════════════════════════════════════════════ */
+.bn-section { background: #F0F4FF; position: relative; overflow: hidden; padding: 96px 0; }
+.bn-header { text-align: center; max-width: 720px; margin: 0 auto 64px; }
+.bn-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.12;
+  color: #101336; margin-top: 18px;
+}
+.bn-accent { color: #025dc7; }
+.bn-sub { font-size: clamp(14px, 1.4vw, 17px); color: #5A6480; line-height: 1.6; margin-top: 14px; }
+
+/* ── Filas: visual + texto, alternando lado ── */
+.bn-rows { display: flex; flex-direction: column; gap: 30px; max-width: 1000px; margin: 0 auto; }
+.bn-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #E4EAF8;
+  border-radius: 26px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(29,0,132,0.04);
+}
+.bn-row--flip .bn-visual { order: 2; }
+.bn-row--flip .bn-text   { order: 1; }
+
+.bn-visual { position: relative; min-width: 0; }
+.bn-text   { min-width: 0; }
+
+.bn-num {
+  display: inline-block;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #025dc7;
+  background: #E8F0FF;
+  border-radius: 7px;
+  padding: 5px 11px;
+  margin-bottom: 14px;
+}
+.bn-name {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(19px, 2.1vw, 24px);
+  font-weight: 600; letter-spacing: -0.018em; line-height: 1.22;
+  color: #101336; margin-bottom: 12px;
+}
+.bn-desc { font-size: 15px; color: #5A6480; line-height: 1.68; }
+
+/* ══════════════════════════════════════════════════════════════
+   Maquetas — planas, sin brillos de color
+══════════════════════════════════════════════════════════════ */
+.bn-mock {
+  border-radius: 18px;
+  padding: 20px;
+  display: flex; flex-direction: column; gap: 11px;
+}
+.bn-mock--dark {
+  background: #1D0084;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: #fff;
+}
+.bn-mock--light { background: #F7F9FF; border: 1px solid #E4EAF8; }
+
+/* Bonus 1 — clase en vivo */
+.bn-live-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.bn-live-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 9.5px; font-weight: 800; letter-spacing: 0.12em;
+  color: #ffd9d9; background: rgba(255,86,86,0.16);
+  border: 1px solid rgba(255,86,86,0.34);
+  padding: 4px 10px; border-radius: 100px;
+}
+.bn-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff5656; flex-shrink: 0; }
+.bn-live-when { font-size: 11.5px; color: rgba(255,255,255,0.62); font-weight: 600; white-space: nowrap; }
+.bn-live-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 16px; font-weight: 700; color: #fff; line-height: 1.3;
+}
+.bn-live-teacher { font-size: 12.5px; color: rgba(255,255,255,0.62); margin-top: -5px; }
+.bn-live-people { display: flex; align-items: center; }
+.bn-face {
+  width: 27px; height: 27px; border-radius: 50%;
+  background: #3f6ff0; border: 2px solid #1D0084;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 10.5px; font-weight: 700; color: #fff;
+  margin-right: -7px; flex-shrink: 0;
+}
+.bn-face--more { background: rgba(255,255,255,0.16); font-size: 9.5px; width: 30px; }
+.bn-live-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 3px; }
+.bn-live-btn {
+  font-size: 12.5px; font-weight: 700; color: #1D0084;
+  background: #4da3ff; padding: 8px 15px; border-radius: 9px;
+}
+.bn-live-rec {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11.5px; color: rgba(255,255,255,0.62); font-weight: 600;
+}
+
+/* Bonus 2 — comunidad */
+.bn-chat-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.bn-chat-name { font-family: 'Poppins', system-ui, sans-serif; font-size: 13px; font-weight: 700; color: #101336; }
+.bn-chat-online {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; color: #16a34a; white-space: nowrap;
+}
+.bn-online-dot { width: 6px; height: 6px; border-radius: 50%; background: #16a34a; flex-shrink: 0; }
+.bn-bubble {
+  font-size: 12.5px; line-height: 1.5; color: #3A4460;
+  padding: 9px 12px; border-radius: 12px; max-width: 88%;
+}
+.bn-bubble em { font-style: normal; font-weight: 700; color: #025dc7; }
+.bn-bubble-who { display: block; font-size: 10px; font-weight: 700; color: #8A93AB; margin-bottom: 2px; }
+.bn-bubble--in { background: #fff; border: 1px solid #E4EAF8; border-bottom-left-radius: 4px; align-self: flex-start; }
+.bn-bubble--out { background: #1D0084; color: rgba(255,255,255,0.92); border-bottom-right-radius: 4px; align-self: flex-end; }
+.bn-bubble--out .bn-bubble-who { color: rgba(255,255,255,0.55); }
+.bn-bubble--out em { color: #7dbcff; }
+
+/* Bonus 3 — ejercicios */
+.bn-ex-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.bn-ex-tag {
+  font-size: 9.5px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #025dc7; background: #E8F0FF; padding: 4px 10px; border-radius: 100px; white-space: nowrap;
+}
+.bn-ex-count { font-size: 11px; font-weight: 600; color: #8A93AB; white-space: nowrap; }
+.bn-ex-q { font-family: 'Poppins', system-ui, sans-serif; font-size: 15px; font-weight: 700; color: #101336; }
+.bn-ex-opts { display: flex; flex-direction: column; gap: 7px; }
+.bn-opt {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  font-size: 12.5px; font-weight: 500; color: #5A6480;
+  background: #fff; border: 1px solid #E4EAF8;
+  padding: 9px 12px; border-radius: 10px;
+}
+.bn-opt--ok {
+  color: #15803d; font-weight: 700;
+  background: rgba(22,163,74,0.07); border-color: rgba(22,163,74,0.30);
+}
+.bn-ex-bar { height: 5px; background: #E4EAF8; border-radius: 100px; overflow: hidden; }
+.bn-ex-bar span { display: block; height: 100%; background: #4da3ff; border-radius: 100px; }
+.bn-ex-note { font-size: 11px; color: #8A93AB; }
+
+/* Bonus 4 — soporte */
+.bn-sup-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.bn-sup-tag { font-size: 9.5px; font-weight: 800; letter-spacing: 0.12em; color: rgba(255,255,255,0.6); }
+.bn-sup-state { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: #6ee7a0; white-space: nowrap; }
+.bn-sup-state .bn-online-dot { background: #6ee7a0; }
+.bn-sup-q {
+  font-size: 13px; line-height: 1.5; color: #fff;
+  background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.14);
+  padding: 11px 13px; border-radius: 12px; border-bottom-right-radius: 4px;
+}
+.bn-sup-a {
+  font-size: 12.5px; line-height: 1.55; color: rgba(255,255,255,0.85);
+  background: rgba(77,163,255,0.14); border: 1px solid rgba(77,163,255,0.30);
+  padding: 11px 13px; border-radius: 12px; border-bottom-left-radius: 4px;
+}
+.bn-sup-a em { font-style: normal; font-weight: 700; color: #9ecdff; }
+.bn-sup-who { display: block; font-size: 10px; font-weight: 700; color: #9ecdff; margin-bottom: 3px; letter-spacing: 0.04em; }
+.bn-sup-foot { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+/* ══ Certificado — estilos originales de nawar-web ══ */
 .bn-cert-num {
   display: inline-block;
   font-family: 'Poppins', system-ui, sans-serif;
@@ -111,26 +352,6 @@ const bonus = [
   padding: 3px 9px; border-radius: 6px; margin-right: 7px;
   vertical-align: 1px;
 }
-.bn-sub {
-  font-size: clamp(14px, 1.4vw, 17px);
-  color: #5A6480; line-height: 1.6; margin-top: 14px;
-}
-.bn-section { background: #F0F4FF; position: relative; overflow: hidden; padding: 96px 0; }
-.bn-header { text-align: center; max-width: 720px; margin: 0 auto 52px; }
-.bn-title {
-  font-family: 'Poppins', system-ui, sans-serif;
-  font-size: clamp(28px, 4vw, 46px);
-  font-weight: 600; letter-spacing: -0.022em; line-height: 1.12;
-  color: #101336; margin-top: 18px;
-}
-.bn-accent { color: #025dc7; }
-
-.bn-layout {
-  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  gap: 44px; align-items: center; max-width: 1010px; margin: 0 auto;
-}
-@media (max-width: 860px) { .bn-layout { grid-template-columns: 1fr; } }
-
 /* ── Certificado ── */
 .bn-cert-col { position: relative; }
 .bn-cert-halo {
@@ -166,7 +387,6 @@ const bonus = [
 .bn-corner--tr { top: 8px; right: 8px; border-top: 2px solid #4da3ff; border-right: 2px solid #4da3ff; border-top-right-radius: 6px; }
 .bn-corner--bl { bottom: 8px; left: 8px; border-bottom: 2px solid #4da3ff; border-left: 2px solid #4da3ff; border-bottom-left-radius: 6px; }
 .bn-corner--br { bottom: 8px; right: 8px; border-bottom: 2px solid #4da3ff; border-right: 2px solid #4da3ff; border-bottom-right-radius: 6px; }
-
 .bn-cert-logo { height: 34px; margin: 0 auto 18px; display: block; }
 .bn-cert-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.30em; color: #4da3ff; margin-bottom: 8px; }
 .bn-cert-course {
@@ -192,7 +412,9 @@ const bonus = [
   border: 1px solid rgba(255,255,255,0.22); border-radius: 999px;
   padding: 4px 13px; margin-bottom: 4px;
 }
-@media (max-width: 400px) { .bn-cert-level { display: none; } }
+@media (max-width: 400px) {
+ .bn-cert-level { display: none; }
+}
 .bn-cert-seal-wrap { position: relative; width: 56px; height: 56px; }
 .bn-cert-seal-ring {
   position: absolute; inset: -5px;
@@ -202,37 +424,31 @@ const bonus = [
   width: 56px; height: 56px; border-radius: 50%;
   background: linear-gradient(135deg, #4da3ff, #0b6df0);
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 8px 22px rgba(11,109,240,0.50), inset 0 1px 0 rgba(255,255,255,0.35);
+  box-shadow: none;
 }
 .bn-cert-caption { text-align: center; margin-top: 24px; font-size: 14.5px; color: #101336; position: relative; }
 
-/* ── Bonus items ── */
-.bn-list-col { display: flex; flex-direction: column; gap: 16px; }
-.bn-item {
-  display: flex; gap: 18px; align-items: flex-start;
-  background: #fff; border: 1px solid #E4EAF8; border-radius: 20px;
-  padding: 24px 26px;
-  box-shadow: 0 2px 10px rgba(29,0,132,0.04);
-  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), border-color 0.3s ease, box-shadow 0.3s ease;
+/* ── Fila del certificado: algo más de aire ── */
+.bn-row--cert { padding: 34px 30px; }
+
+/* ══════════════════════════════════════════════════════════════
+   Responsive
+══════════════════════════════════════════════════════════════ */
+@media (max-width: 860px) {
+  .bn-section { padding: 64px 0; }
+  .bn-header { margin-bottom: 40px; }
+  .bn-rows { gap: 20px; }
+  .bn-row {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 22px;
+    border-radius: 22px;
+  }
+  /* En una sola columna el visual siempre va primero */
+  .bn-row--flip .bn-visual { order: 1; }
+  .bn-row--flip .bn-text   { order: 2; }
+  .bn-mock { padding: 16px; }
+  .bn-bubble { max-width: 94%; }
+  .bn-row--cert { padding: 22px; }
 }
-.bn-item:hover {
-  transform: translateY(-5px);
-  border-color: rgba(2,93,199,0.30);
-  box-shadow: 0 20px 46px rgba(29,0,132,0.12);
-}
-.bn-item-chip {
-  flex-shrink: 0;
-  width: 46px; height: 46px; border-radius: 15px;
-  background: linear-gradient(135deg, #4da3ff, #0b6df0);
-  color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 8px 20px rgba(11,109,240,0.32);
-}
-.bn-item-num {
-  display: inline-block;
-  font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
-  color: #025dc7; margin-bottom: 4px;
-}
-.bn-item-title { font-family: 'Poppins', system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #101336; margin-bottom: 5px; }
-.bn-item-desc { font-size: 13.5px; color: #5A6480; line-height: 1.6; }
 </style>

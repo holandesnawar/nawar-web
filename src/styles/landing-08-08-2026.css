@@ -38,8 +38,18 @@
   --font-head:   'Poppins', system-ui, sans-serif;
   --font-body:   'Inter', system-ui, sans-serif;
 }
-/* ── Reset ──────────────────────────────────────────────────── */
-.l8 *, .l8 *::before, .l8 *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── Reset ──────────────────────────────────────────────────────
+   IMPORTANTE: va todo dentro de :where() a propósito.
+   `.l8 *` pesa lo mismo que `.porq-card` y esta hoja carga después
+   que nawar-sections.css, así que el reset le ganaba y dejaba sin
+   padding ni márgenes a todos los componentes de nawar-web que se
+   usan aquí (tarjetas solapadas, títulos cortados…).
+   Con :where() el reset pesa cero y cada componente manda sobre lo
+   suyo, igual que hace el preflight de Tailwind en el resto de la
+   web. No quitar el :where(). ─────────────────────────────────── */
+:where(.l8) *, :where(.l8) *::before, :where(.l8) *::after {
+  box-sizing: border-box; margin: 0; padding: 0;
+}
 .l8 {
   font-family: var(--font-body);
   color: var(--text);
@@ -47,10 +57,14 @@
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
-.l8 a { text-decoration: none; color: inherit; }
-.l8 img { max-width: 100%; display: block; }
-.l8 ul { list-style: none; }
-.l8 button { border: none; background: none; cursor: pointer; font-family: inherit; }
+:where(.l8) a { text-decoration: none; color: inherit; }
+:where(.l8) img { max-width: 100%; display: block; }
+:where(.l8) ul { list-style: none; }
+:where(.l8) button { border: none; background: none; cursor: pointer; font-family: inherit; }
+
+/* Sin palabras sueltas colgando al final de un título */
+.l8 h1, .l8 h2, .l8 h3, .l8 h4 { text-wrap: balance; }
+.l8 p, .l8 li { text-wrap: pretty; }
 /* ── Container ──────────────────────────────────────────────── */
 .l8 .container {
   max-width: 1120px;
@@ -2664,7 +2678,7 @@
   font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
   padding: 5px 12px; border-radius: 9999px;
   text-transform: uppercase;
-  box-shadow: 0 4px 18px rgba(77,163,255,0.40);
+  box-shadow: none;
   z-index: 2;
 }
 .l8 .np-comp-card-top { margin-bottom: 24px; position: relative; z-index: 1; }
@@ -2877,7 +2891,7 @@
   text-decoration: none;
   white-space: nowrap;
   transition: background .2s, transform .2s cubic-bezier(.22,1,.36,1);
-  box-shadow: 0 6px 22px rgba(77, 163, 255, 0.30);
+  box-shadow: none;
 }
 .l8nav-cta:hover { background: #6ab5ff; transform: scale(1.03); }
 .l8nav-cta:active { transform: scale(.98); }
@@ -3217,7 +3231,7 @@
   font-size: 10px; font-weight: 800; letter-spacing: 0.12em;
   padding: 5px 12px; border-radius: 9999px;
   text-transform: uppercase;
-  box-shadow: 0 4px 18px rgba(77, 163, 255, 0.45);
+  box-shadow: none;
   z-index: 2;
 }
 .l8 .price-tag {
@@ -3290,7 +3304,7 @@
   font-family: 'Poppins', system-ui, sans-serif;
   font-size: 16px; font-weight: 700;
   text-decoration: none;
-  box-shadow: 0 10px 34px rgba(77, 163, 255, 0.34);
+  box-shadow: none;
   transition: background .22s, transform .22s cubic-bezier(.22,1,.36,1);
   position: relative; z-index: 1;
 }
