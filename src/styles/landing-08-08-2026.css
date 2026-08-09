@@ -39,16 +39,27 @@
   --font-body:   'Inter', system-ui, sans-serif;
 }
 /* ── Reset ──────────────────────────────────────────────────────
-   IMPORTANTE: va todo dentro de :where() a propósito.
-   `.l8 *` pesa lo mismo que `.porq-card` y esta hoja carga después
-   que nawar-sections.css, así que el reset le ganaba y dejaba sin
-   padding ni márgenes a todos los componentes de nawar-web que se
-   usan aquí (tarjetas solapadas, títulos cortados…).
-   Con :where() el reset pesa cero y cada componente manda sobre lo
-   suyo, igual que hace el preflight de Tailwind en el resto de la
-   web. No quitar el :where(). ─────────────────────────────────── */
-:where(.l8) *, :where(.l8) *::before, :where(.l8) *::after {
-  box-sizing: border-box; margin: 0; padding: 0;
+   Dos cosas aquí son deliberadas y conviene no tocarlas.
+
+   1) Va dentro de @layer base. El CSS sin capa gana al CSS en capa
+      aunque tenga menos especificidad, así que este reset le anulaba
+      el px-6 y el mx-auto a los componentes que usan utilidades de
+      Tailwind: los testimonios salían a todo el ancho de la pantalla.
+      Dentro de la capa base queda por debajo de las utilidades.
+
+   2) Aun así se mantiene acotado a .l8. Fuera de la capa, `.l8 *`
+      pesaba lo mismo que `.porq-card` y, como esta hoja carga después
+      de nawar-sections.css, dejaba sin padding ni márgenes a los
+      componentes de nawar-web (tarjetas solapadas, títulos cortados).
+   ──────────────────────────────────────────────────────────────── */
+@layer base {
+  .l8 *, .l8 *::before, .l8 *::after {
+    box-sizing: border-box; margin: 0; padding: 0;
+  }
+  .l8 a { text-decoration: none; color: inherit; }
+  .l8 img { max-width: 100%; display: block; }
+  .l8 ul { list-style: none; }
+  .l8 button { border: none; background: none; cursor: pointer; font-family: inherit; }
 }
 .l8 {
   font-family: var(--font-body);
@@ -57,10 +68,6 @@
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
-:where(.l8) a { text-decoration: none; color: inherit; }
-:where(.l8) img { max-width: 100%; display: block; }
-:where(.l8) ul { list-style: none; }
-:where(.l8) button { border: none; background: none; cursor: pointer; font-family: inherit; }
 
 /* Sin palabras sueltas colgando al final de un título */
 .l8 h1, .l8 h2, .l8 h3, .l8 h4 { text-wrap: balance; }
