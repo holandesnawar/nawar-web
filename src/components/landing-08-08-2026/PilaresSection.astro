@@ -54,7 +54,9 @@ const pilares = [
 </section>
 
 <style>
-.pil-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
+/* Va pegada a PorQueNawar, que también es blanca: con 96 px arriba
+   quedaban 192 px de blanco entre las dos. */
+.pil-section { background: #fff; position: relative; overflow: hidden; padding: 40px 0 96px; }
 .pil-header { text-align: center; max-width: 760px; margin: 0 auto 56px; }
 .pil-title {
   font-family: 'Poppins', system-ui, sans-serif;
@@ -63,10 +65,10 @@ const pilares = [
   color: #101336; margin: 18px 0 16px;
 }
 .pil-accent { color: #025dc7; }
-.pil-sub { font-size: clamp(14px, 1.4vw, 17px); color: #5A6480; line-height: 1.6; }
+.pil-sub { font-size: clamp(14px, 1.4vw, 17px); color: #454F6B; line-height: 1.6; }
 
 .pil-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
-@media (max-width: 860px) { .pil-grid { grid-template-columns: 1fr; } }
+
 
 .pil-card {
   position: relative; overflow: hidden;
@@ -120,12 +122,12 @@ const pilares = [
   line-height: 1.28; margin-bottom: 12px;
 }
 .pil-card--dark .pil-card-title { color: #fff; }
-.pil-card-desc { position: relative; z-index: 1; font-size: 14.5px; color: #5A6480; line-height: 1.68; }
+.pil-card-desc { position: relative; z-index: 1; font-size: 14.5px; color: #454F6B; line-height: 1.68; }
 .pil-card--dark .pil-card-desc { color: rgba(255,255,255,0.70); }
-</style>
 
-<style>
 /* Icono suelto, más grande. En la tarjeta oscura pasa a azul claro. */
 .pil-chip svg { width: 34px; height: 34px; stroke-width: 1.6; }
 .pil-card--dark .pil-chip { color: #7dbcff; }
+
+@media (max-width: 860px) { .pil-grid { grid-template-columns: 1fr; } }
 </style>

@@ -1,5 +1,5 @@
 ---
-// Los 5 bonus de la cohorte fundadora.
+// Los 5 bonus que van dentro del precio.
 // Uno por fila, en orden 1 → 5, alternando visual y texto. Cada bonus
 // tiene su propia maqueta hecha con CSS (nada de iconos con brillo) y
 // el certificado cierra la sección como bonus 5.
@@ -13,7 +13,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
         <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Además, de regalo
       </span>
-      <h2 class="bn-title">Los 5 bonus de la <span class="bn-accent">cohorte fundadora</span></h2>
+      <h2 class="bn-title">Y además,<br /><span class="bn-accent">cinco bonus incluidos</span></h2>
       <p class="bn-sub">No pagas nada extra por ellos. Vienen dentro, y son los que hacen que no te quedes a medias.</p>
     </div>
 
@@ -191,7 +191,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
   color: #101336; margin-top: 18px;
 }
 .bn-accent { color: #025dc7; }
-.bn-sub { font-size: clamp(14px, 1.4vw, 17px); color: #5A6480; line-height: 1.6; margin-top: 14px; }
+.bn-sub { font-size: clamp(14px, 1.4vw, 17px); color: #454F6B; line-height: 1.6; margin-top: 14px; }
 
 /* ── Filas: visual + texto, alternando lado ── */
 .bn-rows { display: flex; flex-direction: column; gap: 30px; max-width: 1000px; margin: 0 auto; }
@@ -216,7 +216,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px;
 }
 .bn-val {
-  font-size: 12px; font-weight: 600; color: #5A6480;
+  font-size: 12px; font-weight: 600; color: #454F6B;
   background: #F0F4FF; border: 1px solid #E4EAF8;
   padding: 4px 11px; border-radius: 100px;
 }
@@ -237,7 +237,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
   font-weight: 600; letter-spacing: -0.018em; line-height: 1.22;
   color: #101336; margin-bottom: 12px;
 }
-.bn-desc { font-size: 15px; color: #5A6480; line-height: 1.68; }
+.bn-desc { font-size: 15px; color: #454F6B; line-height: 1.68; }
 
 /* ══════════════════════════════════════════════════════════════
    Maquetas — planas, sin brillos de color
@@ -320,7 +320,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 .bn-ex-opts { display: flex; flex-direction: column; gap: 7px; }
 .bn-opt {
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  font-size: 12.5px; font-weight: 500; color: #5A6480;
+  font-size: 12.5px; font-weight: 500; color: #454F6B;
   background: #fff; border: 1px solid #E4EAF8;
   padding: 9px 12px; border-radius: 10px;
 }
@@ -383,10 +383,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 }
 /* A 300 px de ancho un 16/9 deja 170 px de alto y el sello no cabría.
    Por debajo de ese tamaño el diploma crece con su contenido. */
-@media (max-width: 760px) {
-  .bn-cert { aspect-ratio: auto; }
-  .bn-cert-border { justify-content: flex-start; gap: 7px; }
-}
+
 .bn-cert:hover { transform: rotate(0deg) translateY(-5px); box-shadow: 0 44px 96px rgba(29,0,132,0.36), 0 6px 18px rgba(29,0,132,0.18); }
 .bn-cert-sheen {
   position: absolute; inset: 0; pointer-events: none; z-index: 2;
@@ -428,9 +425,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
   border: 1px solid rgba(255,255,255,0.22); border-radius: 999px;
   padding: 4px 13px; margin-bottom: 4px;
 }
-@media (max-width: 400px) {
- .bn-cert-level { display: none; }
-}
+
 .bn-cert-seal-wrap { position: relative; width: 56px; height: 56px; }
 .bn-cert-seal-ring {
   position: absolute; inset: -5px;
@@ -463,26 +458,8 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 /* ══════════════════════════════════════════════════════════════
    Responsive
 ══════════════════════════════════════════════════════════════ */
-@media (max-width: 860px) {
-  .bn-section { padding: 64px 0; }
-  .bn-header { margin-bottom: 40px; }
-  .bn-rows { gap: 20px; }
-  .bn-row {
-    grid-template-columns: 1fr;
-    gap: 22px;
-    padding: 22px;
-    border-radius: 22px;
-  }
-  /* En una sola columna el visual siempre va primero */
-  .bn-row--flip .bn-visual { order: 1; }
-  .bn-row--flip .bn-text   { order: 2; }
-  .bn-mock { padding: 16px; }
-  .bn-bubble { max-width: 94%; }
-  .bn-row--cert { padding: 22px; }
-}
-</style>
 
-<style>
+
 /* Interior del certificado apaisado: todo entra sin que el sello se
    corte por abajo. Se reparte en tres bloques y se aprietan tamaños. */
 .bn-cert-border {
@@ -506,6 +483,34 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 .bn-cert-level { font-size: clamp(9px, 1vw, 12px) !important; padding: 3px 10px !important; }
 .bn-cert-sigline { width: clamp(48px, 6vw, 88px) !important; }
 .bn-cert-siglabel { font-size: clamp(6.5px, 0.7vw, 8.5px) !important; }
+
+@media (max-width: 760px) {
+  .bn-cert { aspect-ratio: auto; }
+  .bn-cert-border { justify-content: flex-start; gap: 7px; }
+}
+
+@media (max-width: 400px) {
+ .bn-cert-level { display: none; }
+}
+
+@media (max-width: 860px) {
+  .bn-section { padding: 64px 0; }
+  .bn-header { margin-bottom: 40px; }
+  .bn-rows { gap: 20px; }
+  .bn-row {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 22px;
+    border-radius: 22px;
+  }
+  /* En una sola columna el visual siempre va primero */
+  .bn-row--flip .bn-visual { order: 1; }
+  .bn-row--flip .bn-text   { order: 2; }
+  .bn-mock { padding: 16px; }
+  .bn-bubble { max-width: 94%; }
+  .bn-row--cert { padding: 22px; }
+}
+
 @media (max-width: 760px) {
   .bn-cert-text { display: none; }
 }

@@ -206,10 +206,13 @@
   color: #e0f2ff;
   background: var(--brand-mid);
 }
+/* Mismo distintivo que .badge-light, .hero-badge y .guarantee-pill */
 .l8 .eyebrow-light {
-  color: var(--brand-mid);
-  background: rgba(2,93,199,.08);
-  border: 1px solid rgba(2,93,199,.18);
+  color: #1D0084;
+  background: linear-gradient(135deg, #d6effc 0%, #9fd5f5 100%);
+  border: none;
+  letter-spacing: .14em;
+  padding: 7px 16px;
 }
 .l8 .eyebrow-accent {
   color: #e0f2ff;
@@ -348,19 +351,21 @@
     gap: 48px;
   }
 }
+/* Mismo distintivo que las secciones claras (.badge-light), para que
+   el banner no vaya por libre. Sin icono: aquí la palomita sobraba. */
 .l8 .hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: .08em;
+  letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--brand-lt);
-  background: rgba(77,163,255,.12);
-  border: 1px solid rgba(77,163,255,.25);
-  padding: 6px 16px;
-  border-radius: 100px;
+  color: #1D0084;
+  background: linear-gradient(135deg, #d6effc 0%, #9fd5f5 100%);
+  border: none;
+  padding: 7px 16px;
+  border-radius: 9999px;
   margin-bottom: 24px;
 }
 .l8 .badge-dot {
@@ -374,22 +379,39 @@
   0%, 100% { opacity: 1; transform: scale(1); }
   50%       { opacity: .5; transform: scale(.7); }
 }
+/* El titular trae sus dos <br> escritos a mano y tiene que caer en
+   tres líneas exactas. Con el clamp de antes (36–68 px) la primera
+   línea, "El neerlandés que llevas", no cabía ni en el móvil ni en el
+   escritorio: en 390 px salían cinco líneas y en 1280 px, cinco
+   también, con cortes donde caía ("meses" / "posponiendo").
+
+   La medida real es font ≈ 0,0748 × ancho de la columna, y la columna
+   depende del layout: por debajo de 960 px es viewport − 48 px, y a
+   partir de ahí el banner es de dos columnas y la de texto vale
+   viewport − 532 px hasta que el contenedor topa en 588 px. De ahí
+   salen las dos fórmulas. */
 .l8 .hero-headline {
   font-family: var(--font-head);
-  font-size: clamp(36px, 5.5vw, 68px);
+  font-size: clamp(20px, calc(7.45vw - 3.6px), 68px);
   font-weight: 700;
-  line-height: 1.08;
+  line-height: 1.1;
   letter-spacing: -.03em;
   color: #fff;
   margin-bottom: 24px;
+}
+@media (min-width: 960px) {
+  .l8 .hero-headline { font-size: clamp(32px, calc(7.48vw - 39.8px), 45px); }
 }
 .l8 .hero-headline em {
   font-style: normal;
   color: var(--brand-lt);
 }
+@media (max-width: 640px) {
+  .l8 .hero-headline { letter-spacing: -.02em; line-height: 1.15; margin-bottom: 18px; }
+}
 .l8 .hero-sub {
   font-size: clamp(16px, 1.9vw, 19px);
-  color: rgba(255,255,255,.60);
+  color: rgba(255,255,255,.74);
   line-height: 1.7;
   margin-bottom: 36px;
   max-width: 500px;
@@ -1336,21 +1358,25 @@
   gap: 8px;
   margin-top: 28px;
 }
+/* Mismo distintivo que .badge-light y que el del banner: gradiente
+   claro, texto azul marino y la palomita en SVG (antes era un "✓"
+   suelto de texto, que cambia de forma según la fuente del sistema). */
 .l8 .guarantee-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--brand-mid);
-  background: #eef4ff;
-  border: 1px solid #c7deff;
-  padding: 6px 16px;
-  border-radius: 100px;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #1D0084;
+  background: linear-gradient(135deg, #d6effc 0%, #9fd5f5 100%);
+  border: none;
+  padding: 7px 16px;
+  border-radius: 9999px;
 }
+.l8 .guarantee-pill .check-icon { width: 12px; height: 12px; flex-shrink: 0; }
 .l8 .guarantee-fine {
   font-size: 13px;
-  color: #9ca3af;
+  color: #6B7488;
   margin-top: 20px;
 }
 /* ══════════════════════════════════════════════════════════════
@@ -3391,7 +3417,9 @@
   max-width: 1152px; margin: 0 auto; padding: 0 24px;
 }
 .l8 .text-gradient-white {
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%);
+  /* El extremo bajo estaba en 0.45 y la segunda línea de los titulares
+     se leía gris. 0.72 mantiene el degradado sin apagar el texto. */
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.72) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -3574,41 +3602,83 @@
 
 /* ══════════════════════════════════════════════════════════════
    TÍTULOS DE LAS SECCIONES CLARAS
-   Las secciones azules usan un degradado de blanco a blanco
-   translúcido y una segunda línea en azul claro, y quedan mucho
-   mejor que el color plano que tenían las claras. Aquí se aplica el
-   mismo tratamiento pero en oscuro: índigo que se desvanece + acento
-   en azul de marca.
+   Antes llevaban un degradado de índigo a índigo translúcido y se
+   veían apagados. Ahora van en azul marino de marca a color plano y
+   el remate de la frase lleva un subrayado ancho tipo rotulador,
+   como en nawar-plus.
+
+   Ojo con el subrayado: va como background-image sobre el <span> en
+   display:inline, NO como un ::after posicionado. Un inline-block no
+   parte de línea, y en móvil un acento largo se salía por la derecha.
+   Con background-image el rotulador se dibuja en cada línea del
+   fragmento y el texto sigue rompiendo donde le toca.
+   .es-title queda fuera a propósito: vive dentro de una caja azul
+   oscura y ya tiene su propio degradado en blanco.
+
+   Las clases van repetidas (.qi-title.qi-title) para subir la
+   especificidad a 0,3,0. Cada componente define su propio color de
+   título con la misma especificidad que .l8 .qi-title, y entonces
+   quien gana depende del orden en que Astro suelte los <style>, que
+   no controlamos. Repitiendo la clase esto gana siempre.
 ══════════════════════════════════════════════════════════════ */
-.l8 .pt-title,
-.l8 .qi-title,
-.l8 .bn-title,
-.l8 .cr-title,
-.l8 .mk-title,
-.l8 .es-title,
-.l8 .pil-title,
-.l8 .porq-title {
-  background: linear-gradient(178deg, #101336 0%, rgba(16, 19, 54, 0.62) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-/* El acento mantiene su azul: si no, el degradado se lo come */
-.l8 .pt-accent,
-.l8 .qi-accent,
-.l8 .bn-accent,
-.l8 .cr-accent,
-.l8 .mk-accent,
-.l8 .pil-accent,
-.l8 .porq-title span:not([class]) {
-  color: #025dc7;
-  -webkit-text-fill-color: #025dc7;
+.l8 .pt-title.pt-title,
+.l8 .qi-title.qi-title,
+.l8 .bn-title.bn-title,
+.l8 .cr-title.cr-title,
+.l8 .mk-title.mk-title,
+.l8 .pf-title.pf-title,
+.l8 .pil-title.pil-title,
+.l8 .porq-title.porq-title {
+  color: #1D0084;
+  -webkit-text-fill-color: #1D0084;
   background: none;
+}
+.l8 .pt-accent.pt-accent,
+.l8 .qi-accent.qi-accent,
+.l8 .bn-accent.bn-accent,
+.l8 .cr-accent.cr-accent,
+.l8 .mk-accent.mk-accent,
+.l8 .pf-accent.pf-accent,
+.l8 .pil-accent.pil-accent,
+.l8 .porq-title.porq-title span:not([class]) {
+  display: inline;
+  color: #1D0084;
+  -webkit-text-fill-color: #1D0084;
+  background-image: linear-gradient(
+    to top,
+    rgba(77, 163, 255, 0.34) 0.02em,
+    rgba(77, 163, 255, 0.34) 0.27em,
+    transparent 0.27em
+  );
+  background-clip: border-box;
+  -webkit-background-clip: border-box;
+  padding: 0 0.05em;
+  border-radius: 3px;
+}
+/* En móvil estos titulares arrancaban en 28 px y se iban a cuatro y
+   cinco líneas en 360 px. Se bajan todos a la vez para que ninguna
+   sección desentone con las demás. */
+@media (max-width: 640px) {
+  .l8 .pt-title.pt-title,
+  .l8 .qi-title.qi-title,
+  .l8 .bn-title.bn-title,
+  .l8 .cr-title.cr-title,
+  .l8 .mk-title.mk-title,
+  .l8 .pf-title.pf-title,
+  .l8 .pil-title.pil-title,
+  .l8 .porq-title.porq-title {
+    font-size: clamp(24px, 6.4vw, 30px);
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+  }
 }
 
 /* Los títulos que ya traen su propio <br> no deben re-equilibrarse:
    balance les mete un salto donde cabría todo en una línea. */
 .l8 .sv-title,
+.l8 .bn-title,
+.l8 .porq-title,
+.l8 .pil-title,
 .l8 .pr-title,
 .l8 .np-faq-title,
 .l8 .np-stats-title,

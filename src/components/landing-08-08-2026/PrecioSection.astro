@@ -12,7 +12,7 @@ const accesoIncluye = [
   'Comunidad privada de hispanohablantes',
   'Certificado Holandés Nawar al completar la formación',
 ]
-const bonusIncluye = 'Los 5 bonus de la cohorte fundadora, incluidos'
+const bonusIncluye = 'Los 5 bonus de la primera edición, incluidos'
 const precio = '397'
 const precioDespues = '497'
 const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
@@ -69,7 +69,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
               <div class="pr-card">
                 <span class="pr-card-badge">
                   <span class="pr-badge-dot"></span>
-                  <span class="pr-badge-long">COHORTE FUNDADORA · PLAZAS LIMITADAS</span>
+                  <span class="pr-badge-long">PRIMERA EDICIÓN · PLAZAS LIMITADAS</span>
                   <span class="pr-badge-short">PLAZAS LIMITADAS</span>
                 </span>
                 <h3 class="pr-card-name">Formación Neerlandés<br />A0 → A1</h3>
@@ -94,7 +94,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
                     <span class="pr-avatar">L</span>
                     <span class="pr-avatar pr-avatar--more">+</span>
                   </span>
-                  <span class="pr-social-text">Únete a la cohorte fundadora — plazas limitadas a 40 alumnos</span>
+                  <span class="pr-social-text">Únete a la primera edición — plazas limitadas a 40 alumnos</span>
                 </div>
 
                 <div class="pr-guarantee">
@@ -126,28 +126,41 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 
 <style>
 .pr-wrapper { background: #F0F4FF; padding: 64px 48px 96px; }
-@media (max-width: 640px) { .pr-wrapper { padding: 40px 16px 64px; } }
+
 .pr-outer { overflow: hidden; position: relative; border-radius: 32px; max-width: 1280px; margin: 0 auto; }
-.pr-section { background: #1D0084; position: relative; overflow: hidden; padding: 80px 0; }
+.pr-section { background: #1D0084; position: relative; overflow: hidden; padding: 64px 0 80px; }
 .pr-bg-glow {
   position: absolute; top: -15%; left: 50%; transform: translateX(-50%);
   width: 1000px; height: 650px;
   background: radial-gradient(ellipse at center, rgba(11,109,240,0.32) 0%, transparent 65%);
   pointer-events: none;
 }
-.pr-header { text-align: center; max-width: 760px; margin: 0 auto 56px; }
+.pr-header { text-align: center; max-width: 760px; margin: 0 auto 48px; }
+/* El <br> parte el título en dos, pero a 25 px la primera línea
+   ("Todo el camino hasta hablar,") no cabe en un móvil y se iba a
+   tres. Por debajo de 640 px baja lo justo para quedarse en dos. */
 .pr-title {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: clamp(28px, 4vw, 48px);
+  font-size: clamp(25px, 4vw, 48px);
   font-weight: 600; letter-spacing: -0.022em; line-height: 1.14;
-  margin-top: 18px;
+  margin-top: 14px;
+}
+@media (max-width: 640px) {
+  /* El calc no es capricho: la primera línea sólo cabe si la fuente
+     escala con el ancho útil (viewport − 80 px de márgenes), y esa
+     relación medida es font ≈ 0,0625 × ancho útil. Con un clamp de
+     vw a secas se pasaba y caía a tres líneas por debajo de 400 px. */
+  .pr-title {
+    font-size: clamp(17px, calc(6.15vw - 5px), 25px);
+    letter-spacing: -0.015em;
+  }
 }
 
 .pr-layout {
   display: grid; grid-template-columns: minmax(0, 1fr) 410px;
   gap: 36px; align-items: start; max-width: 1010px; margin: 0 auto;
 }
-@media (max-width: 900px) { .pr-layout { grid-template-columns: 1fr; } }
+
 
 /* ── Izquierda: incluye ── */
 .pr-includes {
@@ -195,7 +208,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 
 /* ── Derecha: tarjeta de precio ── */
 .pr-card-col { position: sticky; top: 96px; }
-@media (max-width: 900px) { .pr-card-col { position: static; } }
+
 .pr-card-halo {
   position: absolute; inset: -14% -12%;
   background: radial-gradient(ellipse at center, rgba(77,163,255,0.28) 0%, transparent 62%);
@@ -207,8 +220,12 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   background: linear-gradient(160deg, #4da3ff 0%, rgba(77,163,255,0.18) 35%, rgba(77,163,255,0.10) 65%, #0b6df0 100%);
   box-shadow: 0 40px 90px rgba(0,0,0,0.40);
 }
+/* Acabado de la tarjeta Plus de nawar-plus: cristal sobre el azul, no
+   una tarjeta blanca, que se veía barata sobre el fondo oscuro. */
 .pr-card {
-  background: #fff; border-radius: 26px; padding: 32px 30px 28px;
+  background: linear-gradient(160deg, rgba(11,109,240,0.22) 0%, rgba(77,163,255,0.08) 100%);
+  border: 1.5px solid rgba(77,163,255,0.50);
+  border-radius: 26px; padding: 32px 30px 28px;
   text-align: left; position: relative; overflow: hidden;
 }
 .pr-card::before {
@@ -233,7 +250,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 .pr-card-name {
   position: relative;
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 22px; font-weight: 700; color: #101336; line-height: 1.25;
+  font-size: 22px; font-weight: 700; color: #fff; line-height: 1.25;
   margin-bottom: 20px;
 }
 .pr-price-row { position: relative; display: flex; align-items: flex-end; gap: 12px; }
@@ -241,13 +258,13 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   font-family: 'Poppins', system-ui, sans-serif;
   font-size: 58px; font-weight: 700; line-height: 1;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #1D0084 30%, #025dc7 100%);
+  background: linear-gradient(135deg, #ffffff 20%, #7dbcff 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: #1D0084;
 }
 .pr-price-meta { display: flex; flex-direction: column; padding-bottom: 6px; }
-.pr-price-old { font-size: 17px; color: #9CA3AF; text-decoration: line-through; font-weight: 600; }
-.pr-price-note { font-size: 12px; color: #5A6480; font-weight: 600; }
+.pr-price-old { font-size: 17px; color: rgba(255,255,255,0.48); text-decoration: line-through; font-weight: 600; }
+.pr-price-note { font-size: 12px; color: rgba(255,255,255,0.62); font-weight: 600; }
 .pr-price-sub { position: relative; font-size: 12.5px; color: #8A93AB; margin: 10px 0 22px; }
 
 .pr-cta {
@@ -278,43 +295,78 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 }
 .pr-avatar:first-child { margin-left: 0; }
 .pr-avatar--more { background: #1D0084; }
-.pr-social-text { font-size: 11.5px; color: #5A6480; line-height: 1.4; }
+.pr-social-text { font-size: 11.5px; color: rgba(255,255,255,0.70); line-height: 1.4; }
 
 .pr-guarantee {
   position: relative;
   display: flex; gap: 11px; align-items: flex-start;
-  background: #F0F5FF; border-radius: 14px; padding: 13px 15px;
-  font-size: 12.5px; color: #0a1656; line-height: 1.5;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px; padding: 13px 15px;
+  font-size: 12.5px; color: rgba(255,255,255,0.86); line-height: 1.5;
   margin-bottom: 16px;
 }
 /* Icono de la garantía, también sin caja */
 .pr-guarantee-chip {
   flex-shrink: 0; width: 26px; height: 26px; border-radius: 0;
   background: none;
-  color: #025dc7;
+  color: #7dbcff;
   display: flex; align-items: center; justify-content: center;
 }
 .pr-guarantee-chip svg { width: 26px; height: 26px; stroke: currentColor !important; }
 
+/* "Pago seguro con" ocupa su propia línea: en 410 px de tarjeta no
+   cabía junto a los cuatro métodos y Bancontact se caía solo a una
+   tercera fila. */
 .pr-payments {
   position: relative;
   display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
   font-size: 11px; color: #8A93AB;
 }
-.pr-pay-secure { display: inline-flex; align-items: center; gap: 5px; font-weight: 600; }
-.pr-pay-pill {
-  background: #F7F9FF;
-  border: 1px solid #E4EAF8; border-radius: 8px; padding: 4px 10px;
-  font-size: 10.5px; font-weight: 600; color: #5A6480;
+.pr-pay-secure {
+  display: inline-flex; align-items: center; gap: 5px;
+  width: 100%; margin-bottom: 2px;
+  font-weight: 600; color: rgba(255,255,255,0.55);
 }
-</style>
+.pr-pay-pill {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.16); border-radius: 8px; padding: 4px 10px;
+  font-size: 10.5px; font-weight: 600; color: rgba(255,255,255,0.75);
+}
 
-<style>
 /* ── Móvil: centrado y sin roturas ────────────────────────────
    La tarjeta se diseñó para escritorio, alineada a la izquierda.
    En pantallas estrechas la pastilla partía en dos con el punto
    descolocado, el precio quedaba apretado y los métodos de pago
    se iban a la izquierda en dos filas sueltas. ─────────────── */
+
+
+/* ── Ajustes pedidos en la revisión ─────────────────────────── */
+
+/* Ya no hay halo: la tarjeta no necesita reservar hueco arriba */
+.pr-card-col { padding-top: 0; }
+
+/* Checks de la lista: solo el tick, sin círculo de fondo */
+.pr-check { background: none; border: none; width: 18px; height: 18px; }
+.pr-check svg { width: 15px; height: 15px; stroke: #4da3ff !important; stroke-width: 3 !important; }
+.pr-gift { background: none; border: none; }
+.pr-gift svg { stroke: #4da3ff !important; width: 15px; height: 15px; }
+
+.pr-guarantee { align-items: center; }
+
+/* Precio: centrado y con el importe anterior al lado */
+.pr-price-row { justify-content: center; align-items: baseline; gap: 12px; }
+.pr-price-meta { flex-direction: row; align-items: baseline; gap: 9px; padding-bottom: 0; }
+.pr-card-name { text-align: center; }
+.pr-card-badge { align-self: center; }
+.pr-card { display: flex; flex-direction: column; }
+.pr-cta { margin-top: 22px; }
+
+@media (max-width: 640px) { .pr-wrapper { padding: 40px 16px 64px; } }
+
+@media (max-width: 900px) { .pr-layout { grid-template-columns: 1fr; } }
+
+@media (max-width: 900px) { .pr-card-col { position: static; } }
+
 @media (max-width: 560px) {
   .pr-card { padding: 26px 20px 24px; text-align: center; }
 
@@ -360,35 +412,11 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
      el texto sea legible, pero el bloque centrado */
   .pr-social, .pr-guarantee { text-align: left; }
 
-  /* Métodos de pago: una sola fila centrada */
-  .pr-payments { justify-content: center; row-gap: 8px; }
+  /* Métodos de pago: una sola fila centrada. Las cuatro pastillas
+     suman 287 px con el tamaño de escritorio y la tarjeta sólo da
+     264 px, así que aquí van un punto más apretadas. */
+  .pr-payments { justify-content: center; row-gap: 8px; gap: 5px; }
   .pr-pay-secure { width: 100%; justify-content: center; margin-bottom: 2px; }
+  .pr-pay-pill { padding: 4px 7px; font-size: 9.5px; }
 }
-</style>
-
-<style>
-/* ── Ajustes pedidos en la revisión ─────────────────────────── */
-
-/* Ya no hay halo: la tarjeta no necesita reservar hueco arriba */
-.pr-card-col { padding-top: 0; }
-
-/* Checks de la lista: círculo azul lleno con el tick en blanco */
-.pr-check {
-  background: #4da3ff;
-  border: none;
-}
-.pr-check svg { stroke: #0a1656 !important; }
-
-/* Regalo con el mismo criterio */
-.pr-gift { background: #4da3ff; border: none; }
-
-.pr-guarantee { align-items: center; }
-
-/* Precio: centrado y con el importe anterior al lado */
-.pr-price-row { justify-content: center; align-items: baseline; gap: 12px; }
-.pr-price-meta { flex-direction: row; align-items: baseline; gap: 9px; padding-bottom: 0; }
-.pr-card-name { text-align: center; }
-.pr-card-badge { align-self: center; }
-.pr-card { display: flex; flex-direction: column; }
-.pr-cta { margin-top: 22px; }
 </style>

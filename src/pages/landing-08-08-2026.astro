@@ -488,10 +488,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       <div class="hero-inner">
 
         <div data-anim="fade-up">
-          <div class="hero-badge">
-            <span class="badge-dot"></span>
-            Formación activa — Plazas limitadas
-          </div>
+          <div class="hero-badge">Plazas abiertas</div>
           <h1 class="hero-headline">
             <span class="text-gradient-white">El neerlandés que llevas</span><br />
             <span class="text-gradient-white">meses posponiendo</span><br />
@@ -655,12 +652,17 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     <PilaresSection />
     <MetodoFunciona />
 
-    {/* ── 5. Qué incluye + el stack de valor ── */}
-    <QueIncluye />
-    <StackValor />
+    {/* ── 5. La prueba de que el método funciona ── */}
+    <TestimonialsSection />
 
-    {/* ── 6. Los bonus, cada uno con su valor ── */}
+    {/* ── 6. Qué incluye ── */}
+    <QueIncluye />
+
+    {/* ── 7. Primero los cinco bonus, uno a uno... ── */}
     <BonusSection />
+
+    {/* ── ...y solo después la suma de todo ── */}
+    <StackValor />
 
     <!-- ══════════════════════════════════════════════════════════
          GARANTÍA — el riesgo lo asumimos nosotros
@@ -671,29 +673,27 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
           <div class="guarantee-badge-wrap">
             <svg class="nw-icon" aria-hidden="true"><use href="#i-shield-check"/></svg>
           </div>
-          <div class="eyebrow eyebrow-light">Sin riesgo. Totalmente.</div>
-          <h2 class="section-title dark">Pruébala 15 días.<br />Si no es para ti, te devuelvo el dinero.</h2>
+          <div class="eyebrow eyebrow-light">Garantía total</div>
+          <h2 class="section-title dark">Pruébala 15 días.<br />Si no es para ti, te devolvemos el dinero.</h2>
           <p class="guarantee-lead">
             Entra, mira los módulos, haz los ejercicios, métete en una clase en directo y pregunta en la comunidad.
-            Si en <strong>15 días</strong> sientes que no es lo que esperabas, escribes un email y te devuelvo el
+            Si en <strong>15 días</strong> sientes que no es lo que esperabas, escribes un email y te devolvemos el
             importe íntegro. Sin formularios, sin burocracia y sin preguntas incómodas.
           </p>
           <div class="guarantee-pills">
-            <span class="guarantee-pill">✓ Devolución en 48h</span>
-            <span class="guarantee-pill">✓ Sin formularios</span>
-            <span class="guarantee-pill">✓ Sin preguntas</span>
-            <span class="guarantee-pill">✓ Dinero completo</span>
+            {['Devolución en 48h', 'Sin formularios', 'Sin preguntas', 'Dinero completo'].map((t) => (
+              <span class="guarantee-pill">
+                <svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                {t}
+              </span>
+            ))}
           </div>
           <p class="guarantee-fine">
-            El riesgo lo asumo yo. Lo único que arriesgas tú es seguir otro año más sin hablar neerlandés.
+            El riesgo lo asumimos nosotros. Lo único que arriesgas tú es seguir otro año más sin hablar neerlandés.
           </p>
         </div>
       </div>
     </section>
-
-
-    {/* ── 8. Prueba social ── */}
-    <TestimonialsSection />
 
     {/* ── 9. Para quién sí y para quién no ── */}
     <ParaTiSection />

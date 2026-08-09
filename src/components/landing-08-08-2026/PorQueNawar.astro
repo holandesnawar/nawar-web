@@ -2,7 +2,9 @@
 interface Props { data?: any }
 const { data } = Astro.props
 const badge = data?.badge ?? 'Por qué existe Nawar'
-const title = data?.title ?? 'El método que nadie\nte había ofrecido'
+// El <span> sin clase es el que se lleva el subrayado de rotulador
+// (ver "TÍTULOS DE LAS SECCIONES CLARAS" en la hoja de la landing).
+const title = data?.title ?? 'El método que nadie\n<span>te había ofrecido</span>'
 const subtitle = data?.subtitle ?? 'Las academias tradicionales no están pensadas para ti. Nawar nació para cambiar eso: neerlandés desde el español, con método real y comunidad que te acompaña.'
 const leftTitle = data?.leftCardTitle ?? 'El 90% de los estudiantes abandona sin hablar ni una frase'
 const leftItems = data?.leftCardItems ?? [

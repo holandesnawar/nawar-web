@@ -23,7 +23,7 @@ const carrusel = [...profesores, ...profesores]
         <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Quién te va a enseñar
       </span>
-      <h2 class="pf-title">No es una app. <span class="pf-accent">Son profesores de verdad</span></h2>
+      <h2 class="pf-title">No es una app. Son <span class="pf-accent">profesores de verdad</span></h2>
       <p class="pf-sub">Cada módulo tiene su profesor asignado, y todos entienden de dónde partes porque hablan tu idioma.</p>
     </div>
   </div>
@@ -56,7 +56,9 @@ const carrusel = [...profesores, ...profesores]
 </section>
 
 <style>
-.pf-section { background: #F0F4FF; position: relative; overflow: hidden; padding: 96px 0; }
+/* Misma historia que Pilares: MarcaSection lleva este mismo azul
+   claro justo encima. */
+.pf-section { background: #F0F4FF; position: relative; overflow: hidden; padding: 40px 0 96px; }
 .pf-header { text-align: center; max-width: 720px; margin: 0 auto 48px; }
 .pf-title {
   font-family: 'Poppins', system-ui, sans-serif;
@@ -65,7 +67,7 @@ const carrusel = [...profesores, ...profesores]
   color: #101336; margin: 18px 0 16px;
 }
 .pf-accent { color: #025dc7; }
-.pf-sub { font-size: clamp(14px, 1.4vw, 17px); color: #5A6480; line-height: 1.6; }
+.pf-sub { font-size: clamp(14px, 1.4vw, 17px); color: #454F6B; line-height: 1.6; }
 
 /* ── Carrusel ── */
 .pf-viewport {
@@ -132,7 +134,7 @@ const carrusel = [...profesores, ...profesores]
   color: #025dc7; margin-top: 4px;
 }
 .pf-frase {
-  font-size: 14px; color: #5A6480; line-height: 1.6;
+  font-size: 14px; color: #454F6B; line-height: 1.6;
   margin: 14px 0 16px; flex: 1;
 }
 .pf-ciudad {
@@ -142,7 +144,7 @@ const carrusel = [...profesores, ...profesores]
 }
 
 @media (max-width: 860px) {
-  .pf-section { padding: 64px 0; }
+  .pf-section { padding: 28px 0 64px; }
   .pf-header { margin-bottom: 32px; }
   .pf-card { width: 250px; padding: 20px 18px 18px; }
   .pf-track { animation-duration: 34s; }

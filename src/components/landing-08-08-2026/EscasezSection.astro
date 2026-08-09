@@ -2,13 +2,16 @@
 // Escasez y urgencia — solo con lo que ya se afirma en la página.
 //
 // ⚠️ Aquí NO hay ningún contador falso ni ninguna cifra inventada. Las
-// tres razones son las que ya aparecen en la sección de precio: 40
-// plazas, precio fundador que sube a 497 € y la cohorte arranca junta.
-// Si añades una fecha de cierre real, ponla en `cierre` y aparecerá.
-// Escasez que no es verdad quema la marca, así que mejor quedarse corto.
+// tres razones son las que ya se sostienen en el resto de la página:
+// 40 plazas, un profesor por módulo en directo y un grupo que empieza
+// a la vez. Si añades una fecha de cierre real, ponla en `cierre` y
+// aparecerá. Escasez que no es verdad quema la marca, así que mejor
+// quedarse corto.
+//
+// Fuera queda a propósito el "precio fundador que sube a 497 €": es una
+// promesa a futuro que habría que cumplir, y no la vamos a afirmar.
 const plazas = 40
 const precio = 397
-const precioDespues = 497
 const cierre = ''   // ej.: '14 de septiembre'
 const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 
@@ -20,14 +23,14 @@ const razones = [
     icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z',
   },
   {
-    dato: `${precio} € → ${precioDespues} €`,
-    title: 'El precio fundador no vuelve',
-    desc: `Entras a ${precio} € por ser de la primera cohorte. A partir de la siguiente, la formación pasa a ${precioDespues} €.`,
-    icon: 'M13 10V3L4 14h7v7l9-11h-7z',
+    dato: 'Clases en directo',
+    title: 'Hay un profesor detrás, no un vídeo',
+    desc: 'Cada módulo tiene su profesor y su clase semanal en directo. El aforo de esa sala es el que manda.',
+    icon: 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
   },
   {
     dato: 'Se empieza junto',
-    title: 'La cohorte arranca a la vez',
+    title: 'El grupo arranca a la vez',
     desc: 'Todos avanzáis por el mismo punto del temario. Por eso no se puede entrar a mitad de camino.',
     icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
   },
@@ -40,7 +43,7 @@ const razones = [
       <div class="es-head">
         <span class="es-badge">
           <span class="es-badge-dot"></span>
-          Cohorte fundadora
+          Primera edición
         </span>
         <h2 class="es-title">Por qué esto no va a estar siempre</h2>
         {cierre && <p class="es-cierre">Las inscripciones se cierran el <strong>{cierre}</strong>.</p>}
