@@ -3534,3 +3534,84 @@
 @media (max-width: 640px) {
   .l8 .guarantee-second { padding: 20px 18px; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   AJUSTES DE LAS DOS BARRAS FIJAS
+══════════════════════════════════════════════════════════════ */
+/* Navbar: logo a la izquierda y contador a la derecha, sin botón */
+.l8nav-inner { grid-template-columns: auto 1fr; }
+.l8 .l8nav-timer { justify-self: end; align-items: flex-end; }
+.l8 .l8nav-timer-label { text-align: right; }
+@media (max-width: 560px) {
+  .l8nav-inner { grid-template-columns: auto 1fr; gap: 10px; }
+  .l8 .l8nav-timer-label { font-size: 8px; }
+  .l8 .l8nav-timer-value { font-size: 13px; }
+}
+@media (max-width: 360px) {
+  .l8 .l8nav-timer-label { display: block; font-size: 7.5px; }
+}
+
+/* Barra inferior: precio tachado + precio bueno a la izquierda */
+.l8 .mobile-sticky { justify-content: space-between; gap: 14px; }
+.l8 .mobile-sticky-price {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 9px;
+}
+.l8 .mobile-sticky-price s {
+  display: inline;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,.45);
+  text-decoration-color: rgba(255,107,107,.75);
+  line-height: 1;
+}
+.l8 .mobile-sticky-price strong { font-size: 22px; line-height: 1; }
+@media (max-width: 360px) {
+  .l8 .mobile-sticky-price strong { font-size: 19px; }
+  .l8 .mobile-sticky-price s { font-size: 12.5px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TÍTULOS DE LAS SECCIONES CLARAS
+   Las secciones azules usan un degradado de blanco a blanco
+   translúcido y una segunda línea en azul claro, y quedan mucho
+   mejor que el color plano que tenían las claras. Aquí se aplica el
+   mismo tratamiento pero en oscuro: índigo que se desvanece + acento
+   en azul de marca.
+══════════════════════════════════════════════════════════════ */
+.l8 .pt-title,
+.l8 .qi-title,
+.l8 .bn-title,
+.l8 .cr-title,
+.l8 .mk-title,
+.l8 .es-title,
+.l8 .pil-title,
+.l8 .porq-title {
+  background: linear-gradient(178deg, #101336 0%, rgba(16, 19, 54, 0.62) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+/* El acento mantiene su azul: si no, el degradado se lo come */
+.l8 .pt-accent,
+.l8 .qi-accent,
+.l8 .bn-accent,
+.l8 .cr-accent,
+.l8 .mk-accent,
+.l8 .pil-accent,
+.l8 .porq-title span:not([class]) {
+  color: #025dc7;
+  -webkit-text-fill-color: #025dc7;
+  background: none;
+}
+
+/* Los títulos que ya traen su propio <br> no deben re-equilibrarse:
+   balance les mete un salto donde cabría todo en una línea. */
+.l8 .sv-title,
+.l8 .pr-title,
+.l8 .np-faq-title,
+.l8 .np-stats-title,
+.l8 .np-letter-heading,
+.l8 .hero-headline,
+.l8 .final-cta h2 { text-wrap: initial; }

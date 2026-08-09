@@ -56,9 +56,11 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
               <th scope="row">
                 <span class="sv-item">{r.item}</span>
                 <span class="sv-detalle">{r.detalle}</span>
-                {r.nota && <span class="sv-nota">{r.nota}</span>}
               </th>
-              <td class="sv-valor">{eur(r.valor)}&nbsp;€</td>
+              <td class="sv-valor">
+                {eur(r.valor)}&nbsp;€
+                {r.nota && <span class="sv-nota">{r.nota}</span>}
+              </td>
             </tr>
           ))}
           {bonus.map((r, i) => (
@@ -66,9 +68,11 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
               <th scope="row">
                 <span class="sv-item"><span class="sv-tag">Bonus {String(i + 1).padStart(2, '0')}</span>{r.item}</span>
                 <span class="sv-detalle">{r.detalle}</span>
-                {r.nota && <span class="sv-nota">{r.nota}</span>}
               </th>
-              <td class="sv-valor">{eur(r.valor)}&nbsp;€</td>
+              <td class="sv-valor">
+                {eur(r.valor)}&nbsp;€
+                {r.nota && <span class="sv-nota">{r.nota}</span>}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -133,10 +137,13 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   font-size: 15.5px; font-weight: 600; color: #fff; line-height: 1.4;
 }
 .sv-detalle { display: block; font-size: 13px; color: rgba(255,255,255,0.58); line-height: 1.5; margin-top: 4px; }
+/* La nota va bajo el importe, no bajo el texto: así la fila no crece
+   una tercera línea y no parece que el párrafo se duplique. */
 .sv-nota {
-  display: inline-block; font-size: 11.5px; color: #9ecdff;
-  background: rgba(77,163,255,0.12); border: 1px solid rgba(77,163,255,0.28);
-  padding: 3px 9px; border-radius: 100px; margin-top: 7px;
+  display: block; font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.50);
+  white-space: normal; text-align: right;
+  line-height: 1.4; margin-top: 5px; max-width: 190px; margin-left: auto;
 }
 .sv-tag {
   display: inline-block;

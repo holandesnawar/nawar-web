@@ -83,13 +83,18 @@ const pasos = [
 .cr-step:last-child { padding-right: 0; }
 
 .cr-marker { display: flex; align-items: center; gap: 0; }
+.cr-line { border-radius: 100px; }
+/* Sin círculo de fondo: el número manda, con degradado de marca. */
 .cr-dot {
   flex-shrink: 0;
-  width: 46px; height: 46px; border-radius: 50%;
-  background: #1D0084; color: #fff;
-  display: inline-flex; align-items: center; justify-content: center;
+  display: inline-flex; align-items: baseline;
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 14px; font-weight: 800; letter-spacing: 0.02em;
+  font-size: 40px; font-weight: 800; letter-spacing: -0.04em; line-height: 1;
+  background: linear-gradient(170deg, #1D0084 0%, #4da3ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding-right: 14px;
 }
 .cr-line { flex: 1; height: 2px; background: linear-gradient(to right, rgba(2,93,199,0.30), rgba(2,93,199,0.06)); }
 .cr-step:last-child .cr-line { display: none; }
@@ -114,7 +119,7 @@ const pasos = [
   .cr-step { flex-direction: row; gap: 18px; padding-right: 0; padding-bottom: 26px; }
   .cr-step:last-child { padding-bottom: 0; }
   .cr-marker { flex-direction: column; align-self: stretch; }
-  .cr-dot { width: 42px; height: 42px; font-size: 13px; }
+  .cr-dot { font-size: 32px; padding-right: 0; padding-bottom: 8px; }
   .cr-line {
     width: 2px; height: auto; flex: 1; margin-top: 8px;
     background: linear-gradient(to bottom, rgba(2,93,199,0.30), rgba(2,93,199,0.06));

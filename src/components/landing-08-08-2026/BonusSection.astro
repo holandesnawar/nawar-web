@@ -369,7 +369,9 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 }
 .bn-cert {
   position: relative;
-  background: #1D0084; border-radius: 24px; padding: 15px;
+  /* Formato apaisado, como un diploma de verdad */
+  aspect-ratio: 16 / 9;
+  background: #1D0084; border-radius: 24px; padding: 12px;
   box-shadow: 0 34px 80px rgba(29,0,132,0.30), 0 4px 14px rgba(29,0,132,0.16);
   transform: rotate(-1.2deg);
   transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
@@ -378,6 +380,12 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
     radial-gradient(circle 480px at 100% 0%, rgba(11,109,240,0.42) 0%, transparent 65%),
     radial-gradient(circle 380px at 0% 100%, rgba(11,109,240,0.20) 0%, transparent 65%);
   background-size: 28px 28px, auto, auto;
+}
+/* A 300 px de ancho un 16/9 deja 170 px de alto y el sello no cabría.
+   Por debajo de ese tamaño el diploma crece con su contenido. */
+@media (max-width: 760px) {
+  .bn-cert { aspect-ratio: auto; }
+  .bn-cert-border { justify-content: flex-start; gap: 7px; }
 }
 .bn-cert:hover { transform: rotate(0deg) translateY(-5px); box-shadow: 0 44px 96px rgba(29,0,132,0.36), 0 6px 18px rgba(29,0,132,0.18); }
 .bn-cert-sheen {
@@ -436,8 +444,21 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 }
 .bn-cert-caption { text-align: center; margin-top: 24px; font-size: 14.5px; color: #101336; position: relative; }
 
-/* ── Fila del certificado: algo más de aire ── */
-.bn-row--cert { padding: 34px 30px; }
+/* ── Fila del certificado ──────────────────────────────────────
+   Ocupa la fila entera en vez de media: en formato apaisado 16/9 el
+   diploma necesita ancho, y a media columna el sello se salía por
+   abajo. Además así luce, que es de lo que se trata. */
+.bn-row--cert {
+  grid-template-columns: 1fr;
+  padding: 34px 30px 30px;
+  gap: 26px;
+}
+.bn-row--cert .bn-visual { order: 1; max-width: 720px; width: 100%; margin: 0 auto; }
+.bn-row--cert .bn-text {
+  order: 2; text-align: center;
+  max-width: 620px; margin: 0 auto;
+}
+.bn-row--cert .bn-numrow { justify-content: center; }
 
 /* ══════════════════════════════════════════════════════════════
    Responsive
@@ -458,5 +479,34 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
   .bn-mock { padding: 16px; }
   .bn-bubble { max-width: 94%; }
   .bn-row--cert { padding: 22px; }
+}
+</style>
+
+<style>
+/* Interior del certificado apaisado: todo entra sin que el sello se
+   corte por abajo. Se reparte en tres bloques y se aprietan tamaños. */
+.bn-cert-border {
+  height: 100%;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: clamp(12px, 2.2vw, 22px) clamp(16px, 2.6vw, 30px) !important;
+  gap: 4px;
+}
+.bn-cert-head { margin-bottom: 0 !important; }
+.bn-cert-logo { height: clamp(18px, 2vw, 26px) !important; }
+.bn-cert-kicker { font-size: clamp(7px, 0.75vw, 9px) !important; margin: 4px 0 !important; letter-spacing: .18em !important; }
+.bn-cert-course { font-size: clamp(13px, 1.5vw, 19px) !important; margin: 0 !important; }
+.bn-cert-grant { font-size: clamp(8px, 0.85vw, 10px) !important; margin: 2px 0 0 !important; }
+.bn-cert-nameline { margin: 0 !important; padding-bottom: 4px !important; }
+.bn-cert-name { font-size: clamp(16px, 2vw, 25px) !important; }
+.bn-cert-text { font-size: clamp(8.5px, 0.9vw, 11px) !important; margin: 2px 0 0 !important; }
+.bn-cert-foot { margin-top: 0 !important; padding-top: 0 !important; align-items: flex-end; }
+.bn-cert-seal { width: clamp(30px, 3.6vw, 44px) !important; height: clamp(30px, 3.6vw, 44px) !important; }
+.bn-cert-seal svg { width: 55% !important; height: 55% !important; }
+.bn-cert-seal-ring { inset: -5px !important; }
+.bn-cert-level { font-size: clamp(9px, 1vw, 12px) !important; padding: 3px 10px !important; }
+.bn-cert-sigline { width: clamp(48px, 6vw, 88px) !important; }
+.bn-cert-siglabel { font-size: clamp(6.5px, 0.7vw, 8.5px) !important; }
+@media (max-width: 760px) {
+  .bn-cert-text { display: none; }
 }
 </style>

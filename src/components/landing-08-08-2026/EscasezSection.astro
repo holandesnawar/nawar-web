@@ -73,20 +73,27 @@ const razones = [
 
 <style>
 .es-section { background: #fff; position: relative; overflow: hidden; padding: 40px 0 96px; }
+/* Antes era una caja gris con tres cajas blancas dentro y quedaba
+   apagada. Ahora la sección respira sobre el azul de marca y las tres
+   razones son tarjetas de cristal, como el resto de bloques oscuros. */
 .es-box {
   max-width: 1000px; margin: 0 auto;
-  background: #F0F4FF;
-  border: 1px solid rgba(2,93,199,0.14);
-  border-radius: 28px;
-  padding: 44px 40px;
+  background: #1D0084;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px),
+    radial-gradient(circle 620px at 50% 0%, rgba(11,109,240,0.40) 0%, transparent 65%);
+  background-size: 26px 26px, auto;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 30px;
+  padding: 54px 44px;
+  overflow: hidden;
 }
 .es-head { text-align: center; max-width: 640px; margin: 0 auto 36px; }
 .es-badge {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
-  color: #b8420f; background: rgba(232,110,40,0.10);
-  border: 1px solid rgba(232,110,40,0.28);
-  padding: 6px 15px; border-radius: 9999px; margin-bottom: 16px;
+  color: #ffc9a8; background: rgba(232,110,40,0.18);
+  border: 1px solid rgba(232,110,40,0.42);
+  padding: 6px 15px; border-radius: 9999px; margin-bottom: 18px;
 }
 .es-badge-dot {
   width: 6px; height: 6px; border-radius: 50%; background: #e86e28; flex-shrink: 0;
@@ -96,49 +103,56 @@ const razones = [
 
 .es-title {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: clamp(24px, 3.2vw, 36px);
+  font-size: clamp(26px, 3.4vw, 40px);
   font-weight: 600; letter-spacing: -0.022em; line-height: 1.16;
-  color: #101336;
+  background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.55) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-.es-cierre { font-size: 15px; color: #5A6480; line-height: 1.6; margin-top: 12px; }
-.es-cierre strong { color: #101336; }
+.es-cierre { font-size: 15px; color: rgba(255,255,255,0.72); line-height: 1.6; margin-top: 12px; }
+.es-cierre strong { color: #fff; }
 
 .es-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
 .es-item {
-  background: #fff;
-  border: 1px solid #E4EAF8;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 20px;
-  padding: 24px 22px;
+  padding: 26px 24px;
   display: flex; flex-direction: column; gap: 8px;
+  transition: border-color .25s, background .25s, transform .25s;
 }
-.es-icon { color: #025dc7; margin-bottom: 6px; }
+.es-item:hover {
+  border-color: rgba(77,163,255,0.38);
+  background: rgba(255,255,255,0.08);
+  transform: translateY(-3px);
+}
+.es-icon { color: #7dbcff; width: 30px; height: 30px; margin-bottom: 8px; }
 .es-dato {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: #025dc7; line-height: 1.15;
+  font-size: 21px; font-weight: 700; letter-spacing: -0.02em; color: #4da3ff; line-height: 1.15;
 }
 .es-name {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 15.5px; font-weight: 600; color: #101336; line-height: 1.3;
+  font-size: 16px; font-weight: 600; color: #fff; line-height: 1.3;
 }
-.es-desc { font-size: 14px; color: #5A6480; line-height: 1.6; }
+.es-desc { font-size: 14px; color: rgba(255,255,255,0.68); line-height: 1.6; }
 
 .es-foot { text-align: center; margin-top: 34px; }
 .es-cta {
   display: inline-flex; align-items: center; gap: 9px;
   padding: 17px 30px; border-radius: 13px;
-  background: #1D0084; color: #fff;
+  background: #4da3ff; color: #1D0084;
   font-family: 'Poppins', system-ui, sans-serif;
   font-size: 16px; font-weight: 700;
   text-decoration: none;
   transition: background .22s, transform .22s cubic-bezier(.22,1,.36,1);
 }
-.es-cta:hover { background: #2a00b8; transform: scale(1.02); }
+.es-cta:hover { background: #6ab5ff; transform: scale(1.02); }
 .es-cta:active { transform: scale(.98); }
-.es-nota { font-size: 13px; color: #8A93AB; margin-top: 14px; }
+.es-nota { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 14px; }
 
 @media (max-width: 860px) {
   .es-section { padding: 24px 0 64px; }
-  .es-box { padding: 30px 22px; border-radius: 24px; }
+  .es-box { padding: 34px 22px; border-radius: 26px; }
   .es-grid { grid-template-columns: 1fr; }
   .es-cta { width: 100%; justify-content: center; }
 }

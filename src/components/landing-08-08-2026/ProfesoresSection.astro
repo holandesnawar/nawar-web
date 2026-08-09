@@ -1,0 +1,150 @@
+---
+// Los profesores — carrusel que se desplaza solo de derecha a izquierda.
+//
+// ⚠️ TODO ESTO ES DE RELLENO, solo para que veas el diseño. Los nombres,
+// las ciudades y las frases están inventados, y las fotos son avatares
+// dibujados con SVG, no personas reales.
+// Para ponerlo real: cambia `foto` por la URL de la imagen (queda
+// recortada en cuadrado) y ajusta nombre, rol y frase.
+const profesores = [
+  { nombre: 'Nombre Apellido', rol: 'Profesor · Módulos 1–3', ciudad: 'Ámsterdam', frase: 'Explico la gramática comparándola con el español. Cuando entiendes el porqué, ya no se olvida.', tono: ['#1D0084', '#4da3ff'] },
+  { nombre: 'Nombre Apellido', rol: 'Profesora · Pronunciación', ciudad: 'Róterdam', frase: 'Los sonidos que no existen en español se entrenan. No se sufren.', tono: ['#0b6df0', '#7dbcff'] },
+  { nombre: 'Nombre Apellido', rol: 'Profesor · Conversación', ciudad: 'Utrecht', frase: 'En clase se habla desde el primer día, aunque sea con tres palabras.', tono: ['#025dc7', '#9fd5f5'] },
+  { nombre: 'Nombre Apellido', rol: 'Profesora · Módulos 4–6', ciudad: 'La Haya', frase: 'Te corrijo el error y te explico de dónde viene, que es lo que hace que no se repita.', tono: ['#1D0084', '#7dbcff'] },
+  { nombre: 'Nombre Apellido', rol: 'Soporte académico', ciudad: 'Eindhoven', frase: 'Preguntas a cualquier hora y te respondo. Nadie se queda atascado.', tono: ['#0b6df0', '#4da3ff'] },
+]
+// Se duplica la lista para que el bucle no tenga costura
+const carrusel = [...profesores, ...profesores]
+---
+<section class="pf-section" data-navbar="light">
+  <div class="inner">
+    <div class="pf-header sr">
+      <span class="badge-light">
+        <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Quién te va a enseñar
+      </span>
+      <h2 class="pf-title">No es una app. <span class="pf-accent">Son profesores de verdad</span></h2>
+      <p class="pf-sub">Cada módulo tiene su profesor asignado, y todos entienden de dónde partes porque hablan tu idioma.</p>
+    </div>
+  </div>
+
+  <div class="pf-viewport">
+    <div class="pf-track">
+      {carrusel.map((p, i) => (
+        <article class="pf-card" aria-hidden={i >= profesores.length ? 'true' : undefined}>
+          <div class="pf-foto" style={`--a:${p.tono[0]};--b:${p.tono[1]}`}>
+            <svg viewBox="0 0 100 100" aria-hidden="true">
+              <circle cx="50" cy="38" r="17" fill="rgba(255,255,255,0.92)"/>
+              <path d="M14 100c0-19.9 16.1-36 36-36s36 16.1 36 36z" fill="rgba(255,255,255,0.92)"/>
+            </svg>
+            <span class="pf-foto-tag">Foto</span>
+          </div>
+          <p class="pf-nombre">{p.nombre}</p>
+          <p class="pf-rol">{p.rol}</p>
+          <p class="pf-frase">{p.frase}</p>
+          <p class="pf-ciudad">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            {p.ciudad}
+          </p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.pf-section { background: #F0F4FF; position: relative; overflow: hidden; padding: 96px 0; }
+.pf-header { text-align: center; max-width: 720px; margin: 0 auto 48px; }
+.pf-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.12;
+  color: #101336; margin: 18px 0 16px;
+}
+.pf-accent { color: #025dc7; }
+.pf-sub { font-size: clamp(14px, 1.4vw, 17px); color: #5A6480; line-height: 1.6; }
+
+/* ── Carrusel ── */
+.pf-viewport {
+  position: relative;
+  overflow: hidden;
+  /* Se difumina en los bordes para que no se corte en seco */
+  mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+}
+.pf-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  padding: 6px 20px;
+  animation: pf-slide 46s linear infinite;
+}
+.pf-viewport:hover .pf-track { animation-play-state: paused; }
+@keyframes pf-slide {
+  from { transform: translateX(0); }
+  /* La mitad justa: como la lista está duplicada, el salto no se ve */
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-track { animation: none; }
+  .pf-viewport { overflow-x: auto; }
+}
+
+.pf-card {
+  flex: 0 0 auto;
+  width: 290px;
+  background: #fff;
+  border: 1px solid #E4EAF8;
+  border-radius: 22px;
+  padding: 24px 22px 22px;
+  display: flex; flex-direction: column;
+  box-shadow: 0 2px 10px rgba(29,0,132,0.04);
+}
+
+.pf-foto {
+  position: relative;
+  width: 68px; height: 68px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(150deg, var(--a), var(--b));
+  margin-bottom: 16px;
+}
+.pf-foto svg { width: 100%; height: 100%; display: block; }
+.pf-foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Marca de "esto es un hueco para la foto" — quítala al poner las reales */
+.pf-foto-tag {
+  position: absolute; inset: auto 0 0 0;
+  background: rgba(16,19,54,0.55);
+  color: #fff; font-size: 8.5px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  text-align: center; padding: 2px 0;
+}
+
+.pf-nombre {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 17px; font-weight: 700; color: #101336; line-height: 1.25;
+}
+.pf-rol {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+  color: #025dc7; margin-top: 4px;
+}
+.pf-frase {
+  font-size: 14px; color: #5A6480; line-height: 1.6;
+  margin: 14px 0 16px; flex: 1;
+}
+.pf-ciudad {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12.5px; font-weight: 600; color: #8A93AB;
+  padding-top: 14px; border-top: 1px solid #EEF2FB;
+}
+
+@media (max-width: 860px) {
+  .pf-section { padding: 64px 0; }
+  .pf-header { margin-bottom: 32px; }
+  .pf-card { width: 250px; padding: 20px 18px 18px; }
+  .pf-track { animation-duration: 34s; }
+}
+</style>

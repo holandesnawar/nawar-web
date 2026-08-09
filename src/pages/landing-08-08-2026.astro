@@ -15,6 +15,7 @@ import ParaTiSection from '../components/landing-08-08-2026/ParaTiSection.astro'
 import PrecioSection from '../components/landing-08-08-2026/PrecioSection.astro'
 import StackValor from '../components/landing-08-08-2026/StackValor.astro'
 import MarcaSection from '../components/landing-08-08-2026/MarcaSection.astro'
+import ProfesoresSection from '../components/landing-08-08-2026/ProfesoresSection.astro'
 import CronogramaSection from '../components/landing-08-08-2026/CronogramaSection.astro'
 import EscasezSection from '../components/landing-08-08-2026/EscasezSection.astro'
 
@@ -460,13 +461,9 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
           <img src={LOGO} alt="Holandés con Nawar" width="150" height="38" />
         </a>
         <div class="l8nav-timer">
-          <div class="l8nav-timer-label">La oferta termina en</div>
+          <div class="l8nav-timer-label">Las plazas cierran en</div>
           <div class="l8nav-timer-value" id="l8-timer">7D 00H 00M 00S</div>
         </div>
-        <a href={CHECKOUT_URL} class="l8nav-cta">
-          Obtener acceso
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
-        </a>
       </div>
     </nav>
 
@@ -509,7 +506,6 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
               Quiero aprender neerlandés
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
             </a>
-            <a href="#oferta" class="btn btn-outline btn-lg">Ver qué incluye</a>
           </div>
           <div class="hero-trust">
             <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-video"/></svg><span>+10h de vídeo</span></div>
@@ -688,17 +684,8 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             <span class="guarantee-pill">✓ Sin preguntas</span>
             <span class="guarantee-pill">✓ Dinero completo</span>
           </div>
-          <div class="guarantee-second">
-            <span class="guarantee-second-tag">Y además</span>
-            <p class="guarantee-second-title">Garantía de resultado</p>
-            <p class="guarantee-second-text">
-              Completa los cuatro primeros módulos y entra a tres clases en directo. Si aun así no
-              eres capaz de mantener una conversación básica en neerlandés, te devuelvo el 100 %.
-              Haz el trabajo y el riesgo es mío.
-            </p>
-          </div>
           <p class="guarantee-fine">
-            Lo único que arriesgas tú es seguir otro año más sin hablar neerlandés.
+            El riesgo lo asumo yo. Lo único que arriesgas tú es seguir otro año más sin hablar neerlandés.
           </p>
         </div>
       </div>
@@ -713,6 +700,9 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
     {/* ── 10. Quién está detrás ── */}
     <MarcaSection />
+
+    {/* ── 10 bis. Los profesores ── */}
+    <ProfesoresSection />
 
     {/* ── 11. Qué pasa después de reservar ── */}
     <CronogramaSection />
@@ -805,13 +795,9 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
          BARRA STICKY MÓVIL
     ══════════════════════════════════════════════════════════ -->
     <div class="mobile-sticky" id="l8-sticky">
-      <div class="mobile-sticky-trust">
-        <svg width="13" height="13" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2l7 4v6c0 5-3.5 8.5-7 10C8.5 20.5 5 17 5 12V6l7-4z"/></svg>
-        <span>Pago seguro</span>
-      </div>
       <div class="mobile-sticky-price">
-        <s>€{VALOR_TOTAL}</s>
-        <strong>€{PRECIO}</strong>
+        <s>{VALOR_TOTAL}&nbsp;€</s>
+        <strong>{PRECIO}&nbsp;€</strong>
       </div>
       <a href={CHECKOUT_URL} class="btn btn-sticky">Obtener acceso</a>
     </div>

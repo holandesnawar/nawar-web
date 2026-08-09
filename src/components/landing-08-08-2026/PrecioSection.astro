@@ -12,7 +12,7 @@ const accesoIncluye = [
   'Comunidad privada de hispanohablantes',
   'Certificado Holandés Nawar al completar la formación',
 ]
-const bonusIncluye = 'Bonus fundador: guías premium + precio bloqueado + acceso anticipado'
+const bonusIncluye = 'Los 5 bonus de la cohorte fundadora, incluidos'
 const precio = '397'
 const precioDespues = '497'
 const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
@@ -65,7 +65,6 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 
           <!-- Derecha: tarjeta de precio con anillo de gradiente -->
           <div class="pr-card-col sr d1">
-            <div class="pr-card-halo" aria-hidden="true"></div>
             <div class="pr-card-ring">
               <div class="pr-card">
                 <span class="pr-card-badge">
@@ -82,7 +81,6 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
                     <span class="pr-price-note">pago único</span>
                   </span>
                 </div>
-                <p class="pr-price-sub">Precio fundador — subirá a {precioDespues}€ tras la primera cohorte.</p>
 
                 <a href={matriculaUrl} class="pr-cta">
                   Reservar mi plaza
@@ -159,13 +157,14 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   border-radius: 24px; padding: 30px 30px;
 }
 .pr-includes-head { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+/* Icono suelto, sin caja: más grande y en azul claro */
 .pr-includes-chip {
-  width: 38px; height: 38px; border-radius: 12px;
-  background: linear-gradient(135deg, #4da3ff, #0b6df0);
-  color: #fff;
+  width: 30px; height: 30px; border-radius: 0;
+  background: none;
+  color: #7dbcff;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: none;
 }
+.pr-includes-chip svg { width: 30px; height: 30px; stroke-width: 1.7; }
 .pr-includes-title {
   font-family: 'Poppins', system-ui, sans-serif;
   font-size: 19px; font-weight: 600; color: #fff;
@@ -288,12 +287,14 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   font-size: 12.5px; color: #0a1656; line-height: 1.5;
   margin-bottom: 16px;
 }
+/* Icono de la garantía, también sin caja */
 .pr-guarantee-chip {
-  flex-shrink: 0; width: 26px; height: 26px; border-radius: 9px;
-  background: linear-gradient(135deg, #4da3ff, #0b6df0);
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 0;
+  background: none;
+  color: #025dc7;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: none;
 }
+.pr-guarantee-chip svg { width: 26px; height: 26px; stroke: currentColor !important; }
 
 .pr-payments {
   position: relative;
@@ -363,4 +364,31 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   .pr-payments { justify-content: center; row-gap: 8px; }
   .pr-pay-secure { width: 100%; justify-content: center; margin-bottom: 2px; }
 }
+</style>
+
+<style>
+/* ── Ajustes pedidos en la revisión ─────────────────────────── */
+
+/* Ya no hay halo: la tarjeta no necesita reservar hueco arriba */
+.pr-card-col { padding-top: 0; }
+
+/* Checks de la lista: círculo azul lleno con el tick en blanco */
+.pr-check {
+  background: #4da3ff;
+  border: none;
+}
+.pr-check svg { stroke: #0a1656 !important; }
+
+/* Regalo con el mismo criterio */
+.pr-gift { background: #4da3ff; border: none; }
+
+.pr-guarantee { align-items: center; }
+
+/* Precio: centrado y con el importe anterior al lado */
+.pr-price-row { justify-content: center; align-items: baseline; gap: 12px; }
+.pr-price-meta { flex-direction: row; align-items: baseline; gap: 9px; padding-bottom: 0; }
+.pr-card-name { text-align: center; }
+.pr-card-badge { align-self: center; }
+.pr-card { display: flex; flex-direction: column; }
+.pr-cta { margin-top: 22px; }
 </style>

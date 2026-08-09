@@ -106,11 +106,11 @@ const pilares = [
 
 .pil-chip {
   position: relative; z-index: 1;
-  width: 52px; height: 52px; border-radius: 16px;
+  width: 34px; height: 34px; border-radius: 0;
   display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, #4da3ff, #0b6df0);
-  color: #fff;
-  box-shadow: none;
+  background: none;
+  /* Icono suelto: azul marca sobre tarjeta blanca */
+  color: #025dc7;
   margin-bottom: 22px;
 }
 .pil-card-title {
@@ -122,4 +122,10 @@ const pilares = [
 .pil-card--dark .pil-card-title { color: #fff; }
 .pil-card-desc { position: relative; z-index: 1; font-size: 14.5px; color: #5A6480; line-height: 1.68; }
 .pil-card--dark .pil-card-desc { color: rgba(255,255,255,0.70); }
+</style>
+
+<style>
+/* Icono suelto, más grande. En la tarjeta oscura pasa a azul claro. */
+.pil-chip svg { width: 34px; height: 34px; stroke-width: 1.6; }
+.pil-card--dark .pil-chip { color: #7dbcff; }
 </style>
