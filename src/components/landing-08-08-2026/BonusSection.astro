@@ -44,7 +44,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
           </div>
         </div>
         <div class="bn-text">
-          <span class="bn-num">Bonus 01</span>
+          <span class="bn-numrow"><span class="bn-num">Bonus 01</span><span class="bn-val">Valor <s>780 €</s> · incluido</span></span>
           <h3 class="bn-name">Clase semanal online en directo</h3>
           <p class="bn-desc">Cada semana una clase en vivo con un profesor interno de la formación, asignado según el módulo que estés cursando. Y si no puedes conectarte, queda grabada y siempre está a tu disposición.</p>
         </div>
@@ -73,7 +73,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
           </div>
         </div>
         <div class="bn-text">
-          <span class="bn-num">Bonus 02</span>
+          <span class="bn-numrow"><span class="bn-num">Bonus 02</span><span class="bn-val">Valor <s>120 €</s> · incluido</span></span>
           <h3 class="bn-name">Comunidad de hispanohablantes</h3>
           <p class="bn-desc">Un grupo privado de personas que están exactamente en tu misma situación. Os apoyáis, compartís dudas y avanzáis juntos en lugar de estudiar en solitario.</p>
         </div>
@@ -100,7 +100,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
           </div>
         </div>
         <div class="bn-text">
-          <span class="bn-num">Bonus 03</span>
+          <span class="bn-numrow"><span class="bn-num">Bonus 03</span><span class="bn-val">Valor <s>90 €</s> · incluido</span></span>
           <h3 class="bn-name">Ejercicios y lecciones extra</h3>
           <p class="bn-desc">Material adicional al temario principal para repasar y practicar todo lo que quieras, tantas veces como necesites hasta que te salga sin pensar.</p>
         </div>
@@ -123,7 +123,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
           </div>
         </div>
         <div class="bn-text">
-          <span class="bn-num">Bonus 04</span>
+          <span class="bn-numrow"><span class="bn-num">Bonus 04</span><span class="bn-val">Valor <s>150 €</s> · incluido</span></span>
           <h3 class="bn-name">Soporte y resolución de dudas</h3>
           <p class="bn-desc">Cuando algo no te cuadra, preguntas y te respondemos. Sin quedarte bloqueado una semana entera con la misma duda ni buscar respuestas sueltas por internet.</p>
         </div>
@@ -168,7 +168,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
           </div>
         </div>
         <div class="bn-text">
-          <span class="bn-num">Bonus 05</span>
+          <span class="bn-numrow"><span class="bn-num">Bonus 05</span><span class="bn-val">Valor <s>60 €</s> · incluido</span></span>
           <h3 class="bn-name">Certificado oficial Holandés Nawar</h3>
           <p class="bn-desc">Al completar todos los módulos recibes tu certificado personalizado con tu nombre, que acredita tu paso de A0 a A1. Tu nivel, demostrado y listo para compartir.</p>
         </div>
@@ -212,6 +212,15 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 .bn-visual { position: relative; min-width: 0; }
 .bn-text   { min-width: 0; }
 
+.bn-numrow {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px;
+}
+.bn-val {
+  font-size: 12px; font-weight: 600; color: #5A6480;
+  background: #F0F4FF; border: 1px solid #E4EAF8;
+  padding: 4px 11px; border-radius: 100px;
+}
+.bn-val s { color: #8A93AB; }
 .bn-num {
   display: inline-block;
   font-family: 'Poppins', system-ui, sans-serif;
@@ -221,7 +230,6 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
   background: #E8F0FF;
   border-radius: 7px;
   padding: 5px 11px;
-  margin-bottom: 14px;
 }
 .bn-name {
   font-family: 'Poppins', system-ui, sans-serif;

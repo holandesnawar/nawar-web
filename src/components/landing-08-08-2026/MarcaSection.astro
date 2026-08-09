@@ -1,0 +1,122 @@
+---
+// Quién está detrás — genera confianza antes del precio.
+//
+// ⚠️ El texto sale literalmente de /nuestra-vision, que está escrito en
+// primera persona y sin firmar. A propósito no he puesto ningún nombre
+// ni ninguna foto: no me los invento. Cuando quieras, añade tu foto y
+// tu nombre aquí y esta sección gana bastante.
+const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
+
+const hitos = [
+  { dato: '+600', label: 'hispanohablantes ya aprenden con el método' },
+  { dato: '100%', label: 'explicado desde el español, no desde el inglés' },
+  { dato: 'A0 → A1', label: 'la ruta completa, cerrada de principio a fin' },
+]
+---
+<section class="mk-section" data-navbar="light">
+  <div class="inner" style="position:relative;z-index:1;">
+    <div class="mk-layout">
+
+      <div class="mk-visual sr">
+        <div class="mk-card">
+          <img src={LOGO} alt="Holandés Nawar" class="mk-logo" width="150" height="38" />
+          <p class="mk-quote">
+            «El español y el neerlandés tienen mucho más en común de lo que parece.
+            Solo hacía falta alguien que lo enseñara desde el lugar correcto.»
+          </p>
+          <div class="mk-sign">
+            <span class="mk-sign-line"></span>
+            <span class="mk-sign-label">Fundador de Holandés Nawar</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-text sr d1">
+        <span class="badge-light">Quién está detrás</span>
+        <h2 class="mk-title">No es un curso de idiomas más. <span class="mk-accent">Nació de la misma frustración que tienes tú.</span></h2>
+        <p class="mk-p">
+          Empecé Nawar porque yo mismo viví la frustración de aprender neerlandés sin los
+          recursos correctos. Los métodos disponibles eran genéricos, pensados para cualquiera
+          menos para un hispanohablante.
+        </p>
+        <p class="mk-p">
+          Por eso construí Nawar desde cero: un método diseñado para quien piensa en español y
+          quiere vivir, trabajar e integrarse de verdad en los Países Bajos.
+        </p>
+
+        <ul class="mk-hitos">
+          {hitos.map((h) => (
+            <li>
+              <span class="mk-dato">{h.dato}</span>
+              <span class="mk-label">{h.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+.mk-section { background: #F0F4FF; position: relative; overflow: hidden; padding: 96px 0; }
+.mk-layout {
+  display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  gap: 52px; align-items: center; max-width: 1000px; margin: 0 auto;
+}
+@media (max-width: 880px) { .mk-layout { grid-template-columns: 1fr; gap: 32px; } }
+
+.mk-card {
+  background: #1D0084;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px),
+    radial-gradient(circle 420px at 100% 0%, rgba(11,109,240,0.42) 0%, transparent 65%);
+  background-size: 26px 26px, auto;
+  border-radius: 26px;
+  padding: 38px 34px;
+  display: flex; flex-direction: column; gap: 22px;
+}
+.mk-logo { height: 34px; width: auto; object-fit: contain; }
+.mk-quote {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(17px, 1.9vw, 20px);
+  font-weight: 500; line-height: 1.5; color: #fff;
+  letter-spacing: -0.012em;
+}
+.mk-sign { display: flex; flex-direction: column; gap: 8px; }
+.mk-sign-line { width: 68px; height: 1px; background: rgba(255,255,255,0.30); }
+.mk-sign-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+
+.mk-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(26px, 3.4vw, 40px);
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.16;
+  color: #101336; margin: 18px 0 18px;
+}
+.mk-accent { color: #025dc7; }
+.mk-p { font-size: 16px; color: #5A6480; line-height: 1.7; margin-bottom: 14px; }
+
+.mk-hitos {
+  list-style: none;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px;
+  margin-top: 30px; padding-top: 26px;
+  border-top: 1px solid rgba(2,93,199,0.14);
+}
+.mk-hitos li { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.mk-dato {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(20px, 2.4vw, 26px); font-weight: 700;
+  letter-spacing: -0.02em; color: #025dc7; line-height: 1;
+}
+.mk-label { font-size: 12.5px; color: #5A6480; line-height: 1.45; }
+
+@media (max-width: 880px) {
+  .mk-section { padding: 64px 0; }
+  .mk-card { padding: 30px 26px; }
+}
+@media (max-width: 560px) {
+  .mk-hitos { grid-template-columns: 1fr; gap: 14px; }
+}
+</style>

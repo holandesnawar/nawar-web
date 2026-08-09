@@ -3508,3 +3508,29 @@
   text-align: center;
   margin-top: 56px;
 }
+/* ── Garantía de resultado (se suma a la de 15 días) ────────── */
+.l8 .guarantee-second {
+  margin: 28px auto 0;
+  max-width: 620px;
+  text-align: left;
+  background: #fff;
+  border: 1.5px solid rgba(2,93,199,0.18);
+  border-radius: 20px;
+  padding: 24px 26px;
+}
+.l8 .guarantee-second-tag {
+  display: inline-block;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
+  color: #fff; background: #025dc7;
+  padding: 4px 11px; border-radius: 6px; margin-bottom: 12px;
+}
+.l8 .guarantee-second-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 19px; font-weight: 700; color: var(--brand);
+  margin-bottom: 8px;
+}
+.l8 .guarantee-second-text { font-size: 15px; color: #4B5568; line-height: 1.68; }
+@media (max-width: 640px) {
+  .l8 .guarantee-second { padding: 20px 18px; }
+}

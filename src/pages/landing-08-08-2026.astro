@@ -13,6 +13,10 @@ import QueIncluye from '../components/landing-08-08-2026/QueIncluye.astro'
 import BonusSection from '../components/landing-08-08-2026/BonusSection.astro'
 import ParaTiSection from '../components/landing-08-08-2026/ParaTiSection.astro'
 import PrecioSection from '../components/landing-08-08-2026/PrecioSection.astro'
+import StackValor from '../components/landing-08-08-2026/StackValor.astro'
+import MarcaSection from '../components/landing-08-08-2026/MarcaSection.astro'
+import CronogramaSection from '../components/landing-08-08-2026/CronogramaSection.astro'
+import EscasezSection from '../components/landing-08-08-2026/EscasezSection.astro'
 
 /* Copias propias de dos componentes de nawar-web: se veían rotos en
    móvil y hay que retocarlos sin alterar los que usa la web */
@@ -29,7 +33,10 @@ export const prerender = true
    ⚠️ Los valores del stack (VALOR_TOTAL y el campo `valor` de
       cada línea) son una propuesta. Cámbialos por los tuyos.
 ───────────────────────────────────────────────────────────── */
-const CHECKOUT_URL = 'https://buy.stripe.com/eVq28r7yVfZJdpI8Yd2cg05'
+/* Todos los CTA pasan por el formulario de matriculación: recoge los
+   datos y los pre-rellena en el checkout de Stripe, que es lo que
+   reduce los abandonos. Ya no se enlaza a Stripe directamente. */
+const CHECKOUT_URL = '/matricula-formacion-nawar-a0-a1'
 const PRECIO = '397'
 const VALOR_TOTAL = '497'
 const AHORRO = '100'
@@ -152,6 +159,14 @@ const faqs = [
   {
     q: '¿Cómo es la comunidad?',
     a: 'Un grupo de hispanohablantes aprendiendo neerlandés en la misma situación que tú. Es un espacio para compartir dudas, avances, motivación y práctica. No es un grupo silencioso: es una comunidad activa.',
+  },
+  {
+    q: '¿Me sirve para el inburgering o el examen NT2?',
+    a: 'Esta formación cubre el nivel A0 → A1, que es la base sobre la que se construye todo lo demás: la gramática, el vocabulario y las frases del día a día. Es el punto de partida para preparar el inburgering, pero no es un curso de preparación del examen en sí. Si tu objetivo es presentarte pronto, escríbenos y te decimos con franqueza si te encaja.',
+  },
+  {
+    q: '¿Puedo pagar a plazos?',
+    a: 'Sí. En el pago puedes elegir Klarna y fraccionar el importe. También aceptamos tarjeta, iDEAL y Bancontact, que son los métodos habituales en Países Bajos y Bélgica.',
   },
   {
     q: '¿Y si me arrepiento dentro de un mes?',
@@ -448,7 +463,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
           <div class="l8nav-timer-label">La oferta termina en</div>
           <div class="l8nav-timer-value" id="l8-timer">7D 00H 00M 00S</div>
         </div>
-        <a href={CHECKOUT_URL} class="l8nav-cta" target="_blank" rel="noopener">
+        <a href={CHECKOUT_URL} class="l8nav-cta">
           Obtener acceso
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
         </a>
@@ -490,7 +505,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             Sin rodeos. Sin métodos para angloparlantes. Sin aburrirte a las dos semanas.
           </p>
           <div class="hero-ctas">
-            <a href={CHECKOUT_URL} class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+            <a href={CHECKOUT_URL} class="btn btn-primary btn-lg">
               Quiero aprender neerlandés
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
             </a>
@@ -637,21 +652,19 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       </div>
     </section>
 
+    {/* ── 3. El enemigo común: por qué has fracasado antes ── */}
     <PorQueNawar />
 
+    {/* ── 4. La solución: el método, nombrado y en pilares ── */}
     <PilaresSection />
-
     <MetodoFunciona />
 
+    {/* ── 5. Qué incluye + el stack de valor ── */}
     <QueIncluye />
+    <StackValor />
 
+    {/* ── 6. Los bonus, cada uno con su valor ── */}
     <BonusSection />
-
-    <TestimonialsSection />
-
-    <ParaTiSection />
-
-    <PrecioSection />
 
     <!-- ══════════════════════════════════════════════════════════
          GARANTÍA — el riesgo lo asumimos nosotros
@@ -675,12 +688,40 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             <span class="guarantee-pill">✓ Sin preguntas</span>
             <span class="guarantee-pill">✓ Dinero completo</span>
           </div>
+          <div class="guarantee-second">
+            <span class="guarantee-second-tag">Y además</span>
+            <p class="guarantee-second-title">Garantía de resultado</p>
+            <p class="guarantee-second-text">
+              Completa los cuatro primeros módulos y entra a tres clases en directo. Si aun así no
+              eres capaz de mantener una conversación básica en neerlandés, te devuelvo el 100 %.
+              Haz el trabajo y el riesgo es mío.
+            </p>
+          </div>
           <p class="guarantee-fine">
-            El riesgo lo asumo yo. Lo único que arriesgas tú es seguir otro año más sin hablar neerlandés.
+            Lo único que arriesgas tú es seguir otro año más sin hablar neerlandés.
           </p>
         </div>
       </div>
     </section>
+
+
+    {/* ── 8. Prueba social ── */}
+    <TestimonialsSection />
+
+    {/* ── 9. Para quién sí y para quién no ── */}
+    <ParaTiSection />
+
+    {/* ── 10. Quién está detrás ── */}
+    <MarcaSection />
+
+    {/* ── 11. Qué pasa después de reservar ── */}
+    <CronogramaSection />
+
+    {/* ── 12. Precio ── */}
+    <PrecioSection />
+
+    {/* ── 13. Escasez y urgencia, solo con lo que es verdad ── */}
+    <EscasezSection />
 
     <!-- ══════════════════════════════════════════════════════════
          FAQ — diseño limpio, sin tarjetas (nawar-plus)
@@ -731,7 +772,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             lo que cuestan seis clases sueltas.
           </p>
           <div class="final-cta-btns">
-            <a href={CHECKOUT_URL} class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+            <a href={CHECKOUT_URL} class="btn btn-primary btn-lg">
               Empezar ahora por €{PRECIO}
             </a>
           </div>
@@ -772,7 +813,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         <s>€{VALOR_TOTAL}</s>
         <strong>€{PRECIO}</strong>
       </div>
-      <a href={CHECKOUT_URL} class="btn btn-sticky" target="_blank" rel="noopener">Obtener acceso</a>
+      <a href={CHECKOUT_URL} class="btn btn-sticky">Obtener acceso</a>
     </div>
 
   </div>
