@@ -67,11 +67,6 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
           <div class="pr-card-col sr d1">
             <div class="pr-card-ring">
               <div class="pr-card">
-                <span class="pr-card-badge">
-                  <span class="pr-badge-dot"></span>
-                  <span class="pr-badge-long">PRIMERA EDICIÓN · PLAZAS LIMITADAS</span>
-                  <span class="pr-badge-short">PLAZAS LIMITADAS</span>
-                </span>
                 <h3 class="pr-card-name">Formación Neerlandés<br />A0 → A1</h3>
 
                 <div class="pr-price-row">
@@ -217,36 +212,20 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 .pr-card-ring {
   position: relative;
   padding: 2px; border-radius: 28px;
-  background: linear-gradient(160deg, #4da3ff 0%, rgba(77,163,255,0.18) 35%, rgba(77,163,255,0.10) 65%, #0b6df0 100%);
-  box-shadow: 0 40px 90px rgba(0,0,0,0.40);
+  background: linear-gradient(160deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.10) 40%, rgba(11,109,240,0.35) 100%);
+  box-shadow: 0 40px 90px rgba(6, 0, 60, 0.42);
 }
-/* Acabado de la tarjeta Plus de nawar-plus: cristal sobre el azul, no
-   una tarjeta blanca, que se veía barata sobre el fondo oscuro. */
+/* Los azules de la tarjeta Plus de nawar-plus: azul lleno, no cristal
+   translúcido sobre el fondo. El translúcido cogía el morado de la
+   sección por debajo y se apagaba. */
 .pr-card {
-  background: linear-gradient(160deg, rgba(11,109,240,0.22) 0%, rgba(77,163,255,0.08) 100%);
-  border: 1.5px solid rgba(77,163,255,0.50);
+  background:
+    radial-gradient(circle 420px at 82% -20%, rgba(255,255,255,0.28) 0%, transparent 60%),
+    linear-gradient(163deg, #5ea6f7 0%, #3d84ea 46%, #2a67d4 100%);
+  border: 1px solid rgba(255,255,255,0.30);
   border-radius: 26px; padding: 32px 30px 28px;
   text-align: left; position: relative; overflow: hidden;
 }
-.pr-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 220px;
-  background: radial-gradient(circle 420px at 85% -40%, rgba(77,163,255,0.14) 0%, transparent 65%);
-  pointer-events: none;
-}
-.pr-card-badge {
-  position: relative;
-  display: inline-flex; align-items: center; gap: 7px;
-  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
-  color: #0a1656; background: #4da3ff; border-radius: 999px;
-  padding: 6px 14px; margin-bottom: 18px;
-  box-shadow: none;
-}
-.pr-badge-short { display: none; }
-.pr-badge-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: #0a1656;
-  animation: pr-pulse 1.8s ease-in-out infinite;
-}
-@keyframes pr-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 .pr-card-name {
   position: relative;
   font-family: 'Poppins', system-ui, sans-serif;
@@ -258,26 +237,25 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   font-family: 'Poppins', system-ui, sans-serif;
   font-size: 58px; font-weight: 700; line-height: 1;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #ffffff 20%, #7dbcff 100%);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: #1D0084;
+  color: #fff; -webkit-text-fill-color: #fff;
+  text-shadow: 0 2px 18px rgba(6, 0, 60, 0.22);
 }
 .pr-price-meta { display: flex; flex-direction: column; padding-bottom: 6px; }
-.pr-price-old { font-size: 17px; color: rgba(255,255,255,0.48); text-decoration: line-through; font-weight: 600; }
-.pr-price-note { font-size: 12px; color: rgba(255,255,255,0.62); font-weight: 600; }
+.pr-price-old { font-size: 17px; color: rgba(255,255,255,0.62); text-decoration: line-through; font-weight: 600; }
+.pr-price-note { font-size: 12px; color: rgba(255,255,255,0.78); font-weight: 600; }
 .pr-price-sub { position: relative; font-size: 12.5px; color: #8A93AB; margin: 10px 0 22px; }
 
 .pr-cta {
   position: relative;
   display: flex; align-items: center; justify-content: center; gap: 10px;
-  width: 100%; padding: 16px 20px; border-radius: 14px;
-  background: #4da3ff; color: #0a1656;
+  width: 100%; padding: 17px 20px; border-radius: 14px;
+  background: #fff; color: #1a4fb5;
   font-family: 'Poppins', system-ui, sans-serif;
   font-size: 16px; font-weight: 700; text-decoration: none;
   box-shadow: none;
   transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
-.pr-cta:hover { background: #5eb4ff; transform: translateY(-2px); box-shadow: none; }
+.pr-cta:hover { background: #eaf3ff; transform: translateY(-2px); box-shadow: none; }
 
 .pr-social {
   position: relative;
@@ -294,22 +272,22 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   margin-left: -7px;
 }
 .pr-avatar:first-child { margin-left: 0; }
-.pr-avatar--more { background: #1D0084; }
-.pr-social-text { font-size: 11.5px; color: rgba(255,255,255,0.70); line-height: 1.4; }
+.pr-avatar--more { background: #1a4fb5; }
+.pr-social-text { font-size: 11.5px; color: rgba(255,255,255,0.86); line-height: 1.4; }
 
 .pr-guarantee {
   position: relative;
   display: flex; gap: 11px; align-items: flex-start;
-  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.26);
   border-radius: 14px; padding: 13px 15px;
-  font-size: 12.5px; color: rgba(255,255,255,0.86); line-height: 1.5;
+  font-size: 12.5px; color: rgba(255,255,255,0.95); line-height: 1.5;
   margin-bottom: 16px;
 }
 /* Icono de la garantía, también sin caja */
 .pr-guarantee-chip {
   flex-shrink: 0; width: 26px; height: 26px; border-radius: 0;
   background: none;
-  color: #7dbcff;
+  color: #fff;
   display: flex; align-items: center; justify-content: center;
 }
 .pr-guarantee-chip svg { width: 26px; height: 26px; stroke: currentColor !important; }
@@ -328,9 +306,9 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   font-weight: 600; color: rgba(255,255,255,0.55);
 }
 .pr-pay-pill {
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.16); border-radius: 8px; padding: 4px 10px;
-  font-size: 10.5px; font-weight: 600; color: rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.30); border-radius: 8px; padding: 4px 10px;
+  font-size: 10.5px; font-weight: 600; color: #fff;
 }
 
 /* ── Móvil: centrado y sin roturas ────────────────────────────
@@ -357,7 +335,6 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 .pr-price-row { justify-content: center; align-items: baseline; gap: 12px; }
 .pr-price-meta { flex-direction: row; align-items: baseline; gap: 9px; padding-bottom: 0; }
 .pr-card-name { text-align: center; }
-.pr-card-badge { align-self: center; }
 .pr-card { display: flex; flex-direction: column; }
 .pr-cta { margin-top: 22px; }
 
@@ -369,22 +346,6 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 
 @media (max-width: 560px) {
   .pr-card { padding: 26px 20px 24px; text-align: center; }
-
-  /* Pastilla: en móvil se usa la versión corta, así entra en una
-     línea sin encogerla hasta lo ilegible ni partirla en dos. */
-  .pr-card-badge {
-    display: inline-flex;
-    align-items: center;
-    max-width: 100%;
-    font-size: 9.5px;
-    letter-spacing: 0.08em;
-    padding: 7px 13px;
-    line-height: 1.2;
-    white-space: nowrap;
-  }
-  .pr-badge-dot { flex-shrink: 0; }
-  .pr-badge-long  { display: none; }
-  .pr-badge-short { display: inline; }
 
   /* Ojo: el salto de línea del título se deja tal cual. Ocultarlo
      con display:none pegaba las palabras ("NeerlandésA0"). */

@@ -136,7 +136,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   display: block;
   font-size: 15.5px; font-weight: 600; color: #fff; line-height: 1.4;
 }
-.sv-detalle { display: block; font-size: 13px; color: rgba(255,255,255,0.58); line-height: 1.5; margin-top: 4px; }
+.sv-detalle { display: block; font-size: 13px; color: rgba(255,255,255,0.74); line-height: 1.5; margin-top: 4px; }
 /* La nota va bajo el importe, no bajo el texto: así la fila no crece
    una tercera línea y no parece que el párrafo se duplique. */
 .sv-nota {
@@ -155,7 +155,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 }
 .sv-valor {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.82);
+  font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.92);
   text-align: right; white-space: nowrap; padding-left: 20px !important;
   font-variant-numeric: tabular-nums;
 }
@@ -166,10 +166,12 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   font-family: 'Poppins', system-ui, sans-serif;
   font-weight: 700;
 }
-.sv-total th { font-size: 16px; color: #fff; }
+/* La fila del total es la que ancla el precio: se lee antes que nada
+   y en 16 px se perdía entre las de arriba. */
+.sv-total th { font-size: 21px; color: #fff; letter-spacing: -0.015em; }
 .sv-total td {
-  text-align: right; font-size: 28px; letter-spacing: -0.02em;
-  color: rgba(255,255,255,0.55); font-variant-numeric: tabular-nums;
+  text-align: right; font-size: 34px; letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.68); font-variant-numeric: tabular-nums;
 }
 .sv-strike {
   text-decoration: line-through;
@@ -219,7 +221,8 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   .sv-table th, .sv-table td { padding: 15px 0; }
   .sv-item { font-size: 14.5px; }
   .sv-valor { font-size: 15px; padding-left: 14px !important; }
-  .sv-total td { font-size: 24px; }
+  .sv-total th { font-size: 17px; }
+  .sv-total td { font-size: 27px; }
   .sv-hoy { flex-direction: column; align-items: stretch; gap: 18px; }
   .sv-hoy-right { align-items: stretch; }
   .sv-ahorro { justify-content: center; }

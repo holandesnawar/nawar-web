@@ -351,8 +351,9 @@
     gap: 48px;
   }
 }
-/* Mismo distintivo que las secciones claras (.badge-light), para que
-   el banner no vaya por libre. Sin icono: aquí la palomita sobraba. */
+/* El mismo distintivo que lleva "Te presentamos" en el bloque del
+   método (.badge-dark), palomita incluida: los dos van sobre azul
+   oscuro y tienen que verse iguales. */
 .l8 .hero-badge {
   display: inline-flex;
   align-items: center;
@@ -361,10 +362,10 @@
   font-weight: 700;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: #1D0084;
-  background: linear-gradient(135deg, #d6effc 0%, #9fd5f5 100%);
-  border: none;
-  padding: 7px 16px;
+  color: #e0f2ff;
+  background: #025dc7;
+  border: 1px solid rgba(77,163,255,0.2);
+  padding: 6px 16px;
   border-radius: 9999px;
   margin-bottom: 24px;
 }
@@ -1791,6 +1792,25 @@
 /* Hero: barra de confianza */
 .l8 .hero-trust .trust-item { gap: 8px; }
 .l8 .hero-trust .trust-item .nw-icon { width: 17px; height: 17px; }
+
+/* La tira de garantías tiene que caber en una fila. La columna de
+   texto del banner mide 588 px fijos a partir de 1120 px, y con los
+   tamaños de antes las cuatro entradas sumaban unos 640: la cuarta
+   se caía sola a una segunda línea y parecía roto. Entre 960 y
+   1180 px la columna es aún más estrecha, así que se aprieta más. */
+@media (min-width: 960px) {
+  .l8 .hero-trust { gap: 7px; padding: 12px 14px; flex-wrap: nowrap; }
+  .l8 .hero-trust .trust-item { gap: 6px; font-size: 12.5px; white-space: nowrap; }
+  .l8 .hero-trust .trust-item .nw-icon { width: 15px; height: 15px; }
+  .l8 .hero-trust .trust-sep { margin: 0 1px; }
+  /* y menos aire muerto debajo del banner */
+  .l8 .hero-inner { padding-bottom: 64px; }
+}
+@media (min-width: 960px) and (max-width: 1180px) {
+  .l8 .hero-trust { gap: 5px; padding: 11px 11px; }
+  .l8 .hero-trust .trust-item { gap: 5px; font-size: 11.5px; }
+  .l8 .hero-trust .trust-item .nw-icon { width: 14px; height: 14px; }
+}
 /* Pain cards */
 .l8 .pain-icon {
   font-size: 0;
@@ -2177,11 +2197,17 @@
   box-shadow: 0 0 8px #4da3ff;
   animation: pulse-dot 1.6s ease-in-out infinite;
 }
+/* Era texto suelto en azul claro y desentonaba con el resto de
+   distintivos de fondo azul. Ahora es la misma pastilla que
+   .badge-dark, que es la que usan el método, el precio y el banner. */
 .l8 .np-eyebrow-small {
-  display: inline-block;
+  display: inline-flex; align-items: center; gap: 8px;
   font-size: 11px; font-weight: 700;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  color: #4da3ff;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: #e0f2ff;
+  background: #025dc7;
+  border: 1px solid rgba(77,163,255,0.2);
+  padding: 6px 16px; border-radius: 9999px;
   margin-bottom: 18px;
 }
 /* ════════════════════════════════════════════
@@ -3566,13 +3592,18 @@
 /* ══════════════════════════════════════════════════════════════
    AJUSTES DE LAS DOS BARRAS FIJAS
 ══════════════════════════════════════════════════════════════ */
-/* Navbar: logo a la izquierda y contador a la derecha, sin botón */
-.l8nav-inner { grid-template-columns: auto 1fr; }
-.l8 .l8nav-timer { justify-self: end; align-items: flex-end; }
-.l8 .l8nav-timer-label { text-align: right; }
-@media (max-width: 560px) {
+/* Navbar: logo a la izquierda, contador en el centro y CTA a la
+   derecha. En movil el CTA desaparece: la barra inferior fija ya
+   lleva uno, y con los tres bloques a la vez el contador se quedaba
+   sin sitio y el boton se salia por la derecha. */
+.l8nav-inner { grid-template-columns: 1fr auto 1fr; }
+.l8 .l8nav-timer { justify-self: center; align-items: center; }
+.l8 .l8nav-timer-label { text-align: center; }
+@media (max-width: 860px) {
   .l8nav-inner { grid-template-columns: auto 1fr; gap: 10px; }
-  .l8 .l8nav-timer-label { font-size: 8px; }
+  .l8 .l8nav-cta { display: none; }
+  .l8 .l8nav-timer { justify-self: end; align-items: flex-end; }
+  .l8 .l8nav-timer-label { text-align: right; font-size: 8px; }
   .l8 .l8nav-timer-value { font-size: 13px; }
 }
 @media (max-width: 360px) {
@@ -3646,14 +3677,14 @@
   -webkit-text-fill-color: #1D0084;
   background-image: linear-gradient(
     to top,
-    rgba(77, 163, 255, 0.34) 0.02em,
-    rgba(77, 163, 255, 0.34) 0.27em,
-    transparent 0.27em
+    rgba(122, 185, 255, 0.45) 0em,
+    rgba(122, 185, 255, 0.45) 0.24em,
+    transparent 0.24em
   );
   background-clip: border-box;
   -webkit-background-clip: border-box;
-  padding: 0 0.05em;
-  border-radius: 3px;
+  padding: 0 0.08em;
+  border-radius: 5px;
 }
 /* En móvil estos titulares arrancaban en 28 px y se iban a cuatro y
    cinco líneas en 360 px. Se bajan todos a la vez para que ninguna
@@ -3685,3 +3716,101 @@
 .l8 .np-letter-heading,
 .l8 .hero-headline,
 .l8 .final-cta h2 { text-wrap: initial; }
+
+/* ══════════════════════════════════════════════════════════════
+   BANDA CTA INTERMEDIA
+   Va justo debajo de "Todo lo que recibes". Fondo azul de marca
+   sobre la sección blanca, para que corte y se vea.
+══════════════════════════════════════════════════════════════ */
+/* La banda hereda el blanco de "Todo lo que recibes" y se le recorta
+   el aire de arriba a esa sección: 96 + 96 dejaban un vacío enorme. */
+.l8 .qi-section.qi-section { padding-bottom: 56px; }
+.l8 .l8-cta-band { background: #fff; padding: 0 0 88px; }
+.l8 .l8-cta-band-inner {
+  max-width: 820px; margin: 0 auto; text-align: center;
+  background: #1D0084;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px),
+    radial-gradient(circle 520px at 50% 0%, rgba(11,109,240,0.42) 0%, transparent 65%);
+  background-size: 26px 26px, auto;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 26px;
+  padding: 40px 32px 34px;
+}
+.l8 .l8-cta-band-text {
+  font-family: var(--font-head);
+  font-size: clamp(18px, 2.2vw, 23px);
+  font-weight: 600; line-height: 1.35; letter-spacing: -.02em;
+  color: #fff; margin-bottom: 22px;
+}
+.l8 .l8-cta-band-text strong { color: #4da3ff; font-weight: 700; }
+.l8 .l8-cta-band-btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 17px 30px; border-radius: 13px;
+  background: #4da3ff; color: #1D0084;
+  font-family: var(--font-head);
+  font-size: 16px; font-weight: 700; text-decoration: none;
+  transition: background .22s, transform .22s cubic-bezier(.22,1,.36,1);
+}
+.l8 .l8-cta-band-btn:hover { background: #6ab5ff; transform: scale(1.02); }
+.l8 .l8-cta-band-btn:active { transform: scale(.98); }
+.l8 .l8-cta-band-note { font-size: 13px; color: rgba(255,255,255,0.68); margin-top: 14px; }
+@media (max-width: 640px) {
+  .l8 .l8-cta-band { padding-bottom: 64px; }
+  .l8 .l8-cta-band-inner { padding: 30px 20px 26px; border-radius: 22px; }
+  .l8 .l8-cta-band-btn { width: 100%; justify-content: center; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LEGIBILIDAD SOBRE FONDO AZUL
+   Los textos secundarios de las secciones oscuras estaban entre el
+   55 % y el 78 % de blanco y se leían grises. Aquí suben todos a la
+   vez, y con ellos un escalón de grosor —uno solo, de 400 a 500—
+   para que el texto claro sobre azul no se vea deslavazado.
+   Los títulos y los <strong> no se tocan: ya iban en blanco pleno.
+══════════════════════════════════════════════════════════════ */
+.l8 .np-faq-a p {
+  color: rgba(255,255,255,0.95);
+  font-weight: 500;
+}
+.l8 .np-letter-aside,
+.l8 .np-stat-label,
+.l8 .l8-anchor-note,
+.l8 .final-cta p,
+.l8 .consequences-intro,
+.l8 .consequences-list li div,
+.l8 .vs-good li,
+.l8 .mf-sub,
+.l8 .es-desc,
+.l8 .es-nota,
+.l8 .sv-detalle,
+.l8 .hero-sub {
+  color: rgba(255,255,255,0.90);
+  font-weight: 500;
+}
+/* La columna "sin neerlandés" va a propósito un punto por debajo:
+   es el lado que no queremos que brille. */
+.l8 .vs-bad li { color: rgba(255,255,255,0.72); }
+.l8 .vs-bad .vs-label { color: rgba(255,255,255,0.62); }
+.l8 .footer-links a { color: rgba(255,255,255,.62); }
+.l8 .footer-copy { color: rgba(255,255,255,.48); }
+
+/* ── "El coste de seguir igual" ────────────────────────────────
+   La sección viene tal cual de nawar-landing, donde ocupaba el ancho
+   entero. Aquí cae detrás de la carta, que ya deja 140 px de azul por
+   debajo, y el titular vive en media rejilla de 522 px: a 48 px la
+   primera línea no entraba y el <br> se quedaba en decorativo. */
+.l8 .consequences { padding: 24px 0 72px; }
+.l8 .consequences .section-title {
+  font-size: clamp(26px, 3.4vw, 42px);
+  text-wrap: initial;
+}
+@media (max-width: 767px) {
+  .l8 .consequences { padding: 8px 0 56px; }
+  .l8 .consequences .section-title { font-size: clamp(24px, 6.4vw, 32px); }
+}
+
+/* La carta, el coste de seguir igual y los números son tres bloques
+   azules seguidos. Con sus paddings originales quedaban 164 y 168 px
+   de azul liso entre uno y otro. */
+.l8 .np-letter { padding-bottom: 72px; }
+.l8 .np-stats { padding-top: 40px; }

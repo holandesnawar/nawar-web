@@ -130,7 +130,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
       </article>
 
       <!-- ── BONUS 5 — Certificado ── -->
-      <article class="bn-row bn-row--cert sr">
+      <article class="bn-row sr">
         <div class="bn-visual">
           <div class="bn-cert-halo" aria-hidden="true"></div>
           <div class="bn-cert" aria-label="Certificado Holandés Nawar">
@@ -369,28 +369,35 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 }
 .bn-cert {
   position: relative;
-  /* Formato apaisado, como un diploma de verdad */
-  aspect-ratio: 16 / 9;
-  background: #1D0084; border-radius: 24px; padding: 12px;
-  box-shadow: 0 34px 80px rgba(29,0,132,0.30), 0 4px 14px rgba(29,0,132,0.16);
-  transform: rotate(-1.2deg);
-  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
+  background: #1D0084; border-radius: 20px; padding: 10px;
   overflow: hidden;
   background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px),
     radial-gradient(circle 480px at 100% 0%, rgba(11,109,240,0.42) 0%, transparent 65%),
     radial-gradient(circle 380px at 0% 100%, rgba(11,109,240,0.20) 0%, transparent 65%);
   background-size: 28px 28px, auto, auto;
 }
-/* A 300 px de ancho un 16/9 deja 170 px de alto y el sello no cabría.
-   Por debajo de ese tamaño el diploma crece con su contenido. */
-
-.bn-cert:hover { transform: rotate(0deg) translateY(-5px); box-shadow: 0 44px 96px rgba(29,0,132,0.36), 0 6px 18px rgba(29,0,132,0.18); }
+/* Al pasar el cursor no se mueve el diploma, se mueve el color: una
+   mancha azul que se desplaza por dentro y un brillo que lo cruza. */
+.bn-cert::after {
+  content: ''; position: absolute; inset: -45%; z-index: 0; pointer-events: none;
+  background: radial-gradient(circle at 32% 28%, rgba(77,163,255,0.55) 0%, transparent 55%);
+  opacity: .5;
+  transform: translate3d(-7%, -7%, 0);
+  transition: transform 1.1s cubic-bezier(0.22,1,0.36,1), opacity 0.6s ease;
+}
+.bn-row:hover .bn-cert::after { transform: translate3d(16%, 13%, 0) scale(1.12); opacity: .95; }
 .bn-cert-sheen {
   position: absolute; inset: 0; pointer-events: none; z-index: 2;
-  background: linear-gradient(115deg, transparent 42%, rgba(255,255,255,0.055) 50%, transparent 58%);
+  background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,0.16) 50%, transparent 62%);
+  transform: translateX(-130%);
+  transition: transform 1s cubic-bezier(0.22,1,0.36,1);
+}
+.bn-row:hover .bn-cert-sheen { transform: translateX(130%); }
+@media (prefers-reduced-motion: reduce) {
+  .bn-cert::after, .bn-cert-sheen { transition: none; }
 }
 .bn-cert-border {
-  position: relative;
+  position: relative; z-index: 1;
   border: 1px solid rgba(255,255,255,0.24); border-radius: 16px;
   box-shadow: inset 0 0 0 4px rgba(255,255,255,0.04);
   padding: 36px 32px 28px; text-align: center;
@@ -414,7 +421,11 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
   letter-spacing: 0.01em;
 }
 .bn-cert-text { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.55; max-width: 300px; margin: 0 auto 26px; }
-.bn-cert-foot { display: flex; align-items: flex-end; justify-content: space-between; }
+.bn-cert-foot {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  /* El sello llegaba a tocar la esquina decorativa de abajo */
+  padding: 0 4px 6px;
+}
 .bn-cert-sig { text-align: left; }
 .bn-cert-sigline { display: block; width: 110px; border-bottom: 1px solid rgba(255,255,255,0.35); margin-bottom: 5px; }
 .bn-cert-siglabel { font-size: 10px; color: rgba(255,255,255,0.45); }
@@ -439,34 +450,19 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 }
 .bn-cert-caption { text-align: center; margin-top: 24px; font-size: 14.5px; color: #101336; position: relative; }
 
-/* ── Fila del certificado ──────────────────────────────────────
-   Ocupa la fila entera en vez de media: en formato apaisado 16/9 el
-   diploma necesita ancho, y a media columna el sello se salía por
-   abajo. Además así luce, que es de lo que se trata. */
-.bn-row--cert {
-  grid-template-columns: 1fr;
-  padding: 34px 30px 30px;
-  gap: 26px;
-}
-.bn-row--cert .bn-visual { order: 1; max-width: 720px; width: 100%; margin: 0 auto; }
-.bn-row--cert .bn-text {
-  order: 2; text-align: center;
-  max-width: 620px; margin: 0 auto;
-}
-.bn-row--cert .bn-numrow { justify-content: center; }
 
 /* ══════════════════════════════════════════════════════════════
    Responsive
 ══════════════════════════════════════════════════════════════ */
 
 
-/* Interior del certificado apaisado: todo entra sin que el sello se
-   corte por abajo. Se reparte en tres bloques y se aprietan tamaños. */
+/* Interior del diploma. Ya no hay 16/9 que respetar: el bloque ocupa
+   media columna como los demás bonus y crece con su contenido, así
+   que sólo hace falta apretar los tamaños. */
 .bn-cert-border {
-  height: 100%;
-  display: flex; flex-direction: column; justify-content: space-between;
-  padding: clamp(12px, 2.2vw, 22px) clamp(16px, 2.6vw, 30px) !important;
-  gap: 4px;
+  display: flex; flex-direction: column;
+  padding: clamp(14px, 2.2vw, 22px) clamp(16px, 2.6vw, 26px) !important;
+  gap: 6px;
 }
 .bn-cert-head { margin-bottom: 0 !important; }
 .bn-cert-logo { height: clamp(18px, 2vw, 26px) !important; }
@@ -485,8 +481,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 .bn-cert-siglabel { font-size: clamp(6.5px, 0.7vw, 8.5px) !important; }
 
 @media (max-width: 760px) {
-  .bn-cert { aspect-ratio: auto; }
-  .bn-cert-border { justify-content: flex-start; gap: 7px; }
+  .bn-cert-border { gap: 7px; }
 }
 
 @media (max-width: 400px) {
@@ -508,7 +503,6 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
   .bn-row--flip .bn-text   { order: 2; }
   .bn-mock { padding: 16px; }
   .bn-bubble { max-width: 94%; }
-  .bn-row--cert { padding: 22px; }
 }
 
 @media (max-width: 760px) {

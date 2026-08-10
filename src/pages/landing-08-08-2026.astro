@@ -464,6 +464,10 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
           <div class="l8nav-timer-label">Las plazas cierran en</div>
           <div class="l8nav-timer-value" id="l8-timer">7D 00H 00M 00S</div>
         </div>
+        <a href={CHECKOUT_URL} class="l8nav-cta">
+          Obtener acceso
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
+        </a>
       </div>
     </nav>
 
@@ -488,7 +492,10 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       <div class="hero-inner">
 
         <div data-anim="fade-up">
-          <div class="hero-badge">Plazas abiertas</div>
+          <div class="hero-badge">
+            <svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Plazas abiertas
+          </div>
           <h1 class="hero-headline">
             <span class="text-gradient-white">El neerlandés que llevas</span><br />
             <span class="text-gradient-white">meses posponiendo</span><br />
@@ -595,9 +602,9 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       <div class="np-letter-glow" aria-hidden="true"></div>
       <div class="np-letter-inner">
         <div class="np-letter-sticky">
-          <span class="np-eyebrow-small">Seamos honestos</span>
+          <span class="np-eyebrow-small"><svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Seamos honestos</span>
           <h2 class="np-letter-heading">
-            Sabemos que<br />
+            <span class="text-gradient-white">Sabemos que</span><br />
             <span style="color:#4da3ff;">esto te suena.</span>
           </h2>
           <p class="np-letter-aside">
@@ -617,13 +624,82 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     </section>
 
     <!-- ══════════════════════════════════════════════════════════
+         EL COSTE DE SEGUIR IGUAL
+         Copiada tal cual de nawar-landing (misma maquetación, mismo
+         texto y mismo CSS, que ya venía en la hoja). Lo único que
+         cambia son los iconos: allí eran emojis y aquí van los del
+         sprite de marca, como en el resto de la página.
+    ══════════════════════════════════════════════════════════ -->
+    <section class="consequences">
+      <div class="container">
+        <div class="consequences-inner" data-anim="fade-up">
+          <div>
+            <div class="eyebrow eyebrow-dark">El coste de seguir igual</div>
+            <h2 class="section-title white">
+              Lo peor no es lo que<br />ya has perdido.
+            </h2>
+            <p class="consequences-intro">
+              Es lo que seguirás perdiendo cada mes que pospones aprender neerlandés de verdad.
+            </p>
+            <ul class="consequences-list">
+              <li>
+                <span class="cons-icon"><svg class="nw-icon nw-icon--dark" aria-hidden="true"><use href="#i-hourglass"/></svg></span>
+                <div><strong>Más tiempo perdido.</strong> Cada semana sin avanzar es una semana más de dependencia y bloqueo.</div>
+              </li>
+              <li>
+                <span class="cons-icon"><svg class="nw-icon nw-icon--dark" aria-hidden="true"><use href="#i-chart-up"/></svg></span>
+                <div><strong>Oportunidades que se escapan.</strong> Trabajo, ascensos, contratos — todo depende del idioma.</div>
+              </li>
+              <li>
+                <span class="cons-icon"><svg class="nw-icon nw-icon--dark" aria-hidden="true"><use href="#i-speech-off"/></svg></span>
+                <div><strong>Exclusión social constante.</strong> Quedarte fuera de conversaciones, reuniones, momentos con vecinos.</div>
+              </li>
+              <li>
+                <span class="cons-icon"><svg class="nw-icon nw-icon--dark" aria-hidden="true"><use href="#i-shield-alert"/></svg></span>
+                <div><strong>Más inseguridad acumulada.</strong> Cuanto más lo aplazas, más cuesta retomarlo.</div>
+              </li>
+              <li>
+                <span class="cons-icon"><svg class="nw-icon nw-icon--dark" aria-hidden="true"><use href="#i-passport"/></svg></span>
+                <div><strong>Integración a medias.</strong> Vivir en Países Bajos sin el idioma es vivir de visitante.</div>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div class="vs-block vs-bad">
+              <div class="vs-label">Sin neerlandés</div>
+              <ul>
+                <li>✗ Depender del inglés para todo</li>
+                <li>✗ No entender a tus vecinos, colegas, jefes</li>
+                <li>✗ Sentirte ajeno en tu propio barrio</li>
+                <li>✗ Perder oportunidades laborales</li>
+                <li>✗ Seguir con métodos que no funcionan</li>
+                <li>✗ Inseguridad en cada interacción</li>
+              </ul>
+            </div>
+            <div class="vs-block vs-good">
+              <div class="vs-label">Con esta formación</div>
+              <ul>
+                <li>✓ Comunicarte con confianza desde el principio</li>
+                <li>✓ Entender y hacerte entender</li>
+                <li>✓ Integrarte de verdad donde vives</li>
+                <li>✓ Avanzar con un camino claro y estructurado</li>
+                <li>✓ Practicar y medir tu progreso real</li>
+                <li>✓ Hablar neerlandés sin bloqueos</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
          LOS NÚMEROS — ancla de precio
     ══════════════════════════════════════════════════════════ -->
     <section class="np-stats">
       <div class="np-stats-grid-bg" aria-hidden="true"></div>
       <div class="inner" style="position:relative;z-index:1;">
         <div class="np-stats-header sr">
-          <span class="np-eyebrow-small">Los números que nadie te cuenta</span>
+          <span class="np-eyebrow-small"><svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Los números que nadie te cuenta</span>
           <h2 class="np-stats-title">
             <span class="text-gradient-white">Aprender neerlandés no es caro.</span><br />
             <span style="color:#4da3ff;">El sistema sí lo es.</span>
@@ -657,6 +733,22 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
     {/* ── 6. Qué incluye ── */}
     <QueIncluye />
+
+    {/* Punto de salida a mitad de página: quien ya se ha convencido
+        con la lista de lo que recibe no tiene por qué seguir bajando
+        hasta el bloque de precio para poder entrar. */}
+    <section class="l8-cta-band">
+      <div class="inner">
+        <div class="l8-cta-band-inner sr">
+          <p class="l8-cta-band-text">Todo esto entra en la formación, por <strong>{PRECIO}&nbsp;€</strong> en un solo pago.</p>
+          <a href={CHECKOUT_URL} class="l8-cta-band-btn">
+            Quiero mi plaza
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
+          </a>
+          <p class="l8-cta-band-note">Pago único · 15 días de garantía · Acceso inmediato</p>
+        </div>
+      </div>
+    </section>
 
     {/* ── 7. Primero los cinco bonus, uno a uno... ── */}
     <BonusSection />
@@ -719,7 +811,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     <section class="np-faq" id="faq">
       <div class="inner">
         <div class="np-faq-header sr">
-          <span class="np-eyebrow-small">Preguntas frecuentes</span>
+          <span class="np-eyebrow-small"><svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Preguntas frecuentes</span>
           <h2 class="np-faq-title">
             <span class="text-gradient-white">Antes de apuntarte,</span><br />
             <span style="color:#4da3ff;">resuelve tus dudas.</span>
