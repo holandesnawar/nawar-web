@@ -11,6 +11,16 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 // parecida a la de los otros cuatro visuales.
 const SOPORTE_IMG = 'https://docs.holandesnawar.com/img/consulta.jpg'
 
+// Bonus 03: tres capturas en abanico, una encima de otra. El PRIMER
+// enlace es el que va delante y se ve entero; los otros dos asoman
+// por detrás. Si se deja la lista vacía (o con un número distinto de
+// tres), vuelve el mockup dibujado en CSS.
+const EJERCICIOS_IMGS = [
+  'https://docs.holandesnawar.com/img/ejercicios2.jpg',
+  'https://docs.holandesnawar.com/img/ejercicios1.jpg',
+  'https://docs.holandesnawar.com/img/ejerc3.jpg',
+]
+
 ---
 <section class="bn-section" data-navbar="light">
   <div class="inner" style="position:relative;z-index:1;">
@@ -89,6 +99,15 @@ const SOPORTE_IMG = 'https://docs.holandesnawar.com/img/consulta.jpg'
       <!-- ── BONUS 3 — Ejercicios y lecciones extra ── -->
       <article class="bn-row sr">
         <div class="bn-visual">
+          {EJERCICIOS_IMGS.length === 3 ? (
+            <div class="bn-fan" aria-hidden="true">
+              <figure class="bn-fan-card bn-fan-a"><img src={EJERCICIOS_IMGS[1]} alt="" loading="lazy" decoding="async" /></figure>
+              <figure class="bn-fan-card bn-fan-b"><img src={EJERCICIOS_IMGS[2]} alt="" loading="lazy" decoding="async" /></figure>
+              <figure class="bn-fan-card bn-fan-c">
+                <img src={EJERCICIOS_IMGS[0]} alt="Ejercicios extra de la academia Holandés Nawar" loading="lazy" decoding="async" />
+              </figure>
+            </div>
+          ) : (
           <div class="bn-mock bn-mock--light">
             <div class="bn-ex-top">
               <span class="bn-ex-tag">Práctica extra</span>
@@ -105,6 +124,7 @@ const SOPORTE_IMG = 'https://docs.holandesnawar.com/img/consulta.jpg'
             <div class="bn-ex-bar"><span style="width:52%"></span></div>
             <p class="bn-ex-note">Repite las veces que quieras</p>
           </div>
+          )}
         </div>
         <div class="bn-text">
           <span class="bn-numrow"><span class="bn-num">Bonus 03</span><span class="bn-val">Valor <s>90 €</s> · incluido</span></span>
@@ -192,6 +212,42 @@ const SOPORTE_IMG = 'https://docs.holandesnawar.com/img/consulta.jpg'
 </section>
 
 <style>
+/* ── Abanico de capturas (bonus 03) ───────────────────────────
+   Tres tarjetas apiladas y giradas. Los giros y los desplazamientos
+   están calculados para que, sumando el vuelo que añade la rotación,
+   ninguna esquina se salga de la fila: la fila sólo deja 30 px de
+   respiro y una tarjeta girada 6° ocupa por los lados casi un 6 % más
+   de lo que mide.
+   Las capturas se recortan desde arriba porque es donde está el
+   enunciado del ejercicio; abajo suele haber botones y relleno. */
+.bn-fan { position: relative; width: 100%; aspect-ratio: 16 / 11; }
+.bn-fan-card {
+  position: absolute;
+  top: 11%; left: 7%; width: 86%; height: 78%;
+  margin: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #E4EAF8;
+  background: #fff;
+  box-shadow: 0 8px 26px rgba(29, 0, 132, 0.10);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.bn-fan-card img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+  display: block;
+}
+.bn-fan-a { transform: rotate(-7.5deg) translate(-5.5%, 1%); z-index: 1; }
+.bn-fan-b { transform: rotate(7.5deg)  translate(5.5%, 2%);  z-index: 2; }
+.bn-fan-c { transform: rotate(-1.2deg) translate(0, -3%); z-index: 3; }
+/* Al pasar el cursor el abanico se abre un poco */
+.bn-row:hover .bn-fan-a { transform: rotate(-9deg) translate(-7%, 1%); }
+.bn-row:hover .bn-fan-b { transform: rotate(9deg)  translate(7%, 2%); }
+.bn-row:hover .bn-fan-c { transform: rotate(-1.2deg) translate(0, -5%); }
+@media (prefers-reduced-motion: reduce) {
+  .bn-fan-card { transition: none; }
+}
+
 /* Captura real en lugar del mockup. Sin aspect-ratio a propósito: la
    imagen manda su propia altura y así no se recorta nada de la
    consulta. El marco es el mismo de los otros visuales —radio de 16,
