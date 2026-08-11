@@ -272,8 +272,8 @@ const EJERCICIOS_IMGS = [
    tamaño de pantalla, y los valores cubren capturas de proporción
    1,2 a 1,8 —que es el rango en el que puede caer una captura de
    pantalla— sin que ninguna esquina se salga de la fila. */
-.bn-fan { position: relative; padding: 23% 0 0 15%; }
-.bn-fan-stack { position: relative; width: 78%; }
+.bn-fan { position: relative; padding: 24% 0 0 16%; }
+.bn-fan-stack { position: relative; width: 82%; }
 .bn-fan-front,
 .bn-fan-back {
   margin: 0;
@@ -293,13 +293,30 @@ const EJERCICIOS_IMGS = [
   object-fit: cover; object-position: left center;
   display: block;
 }
+/* El abanico se abre al llegar scrolleando, no al pasar el cursor:
+   en el móvil no hay cursor y las dos de detrás no llegaban a verse.
+   La fila lleva .sr y el observador del layout le pone .vis. */
 .bn-fan-a { transform: rotate(-18deg); z-index: 1; }
 .bn-fan-b { transform: rotate(-9deg);  z-index: 2; }
-/* Al pasar el cursor el abanico se abre un poco más */
-.bn-row:hover .bn-fan-a { transform: rotate(-21deg); }
-.bn-row:hover .bn-fan-b { transform: rotate(-10.5deg); }
+.bn-row.vis .bn-fan-a { animation: bn-fan-a 1s cubic-bezier(0.22,1,0.36,1) 0.15s both; }
+.bn-row.vis .bn-fan-b { animation: bn-fan-b 1s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
+@keyframes bn-fan-a { from { transform: rotate(-3deg); } to { transform: rotate(-18deg); } }
+@keyframes bn-fan-b { from { transform: rotate(-1.5deg); } to { transform: rotate(-9deg); } }
 @media (prefers-reduced-motion: reduce) {
   .bn-fan-front, .bn-fan-back { transition: none; }
+  .bn-row.vis .bn-fan-a, .bn-row.vis .bn-fan-b { animation: none; }
+}
+/* En el móvil la columna es estrecha y las capturas se quedaban en
+   nada. Las tarjetas crecen (82 % → 90 %) y a cambio el abanico se
+   abre menos, que es lo que permite recortar el hueco de la
+   izquierda sin que la esquina se salga. */
+@media (max-width: 860px) {
+  .bn-fan { padding: 21% 0 0 11%; }
+  .bn-fan-stack { width: 90%; }
+  .bn-fan-a { transform: rotate(-13deg); }
+  .bn-fan-b { transform: rotate(-6.5deg); }
+  @keyframes bn-fan-a { from { transform: rotate(-2deg); } to { transform: rotate(-13deg); } }
+  @keyframes bn-fan-b { from { transform: rotate(-1deg); } to { transform: rotate(-6.5deg); } }
 }
 
 /* Captura real en lugar del mockup, recortada a 16/10. Con ese marco
@@ -365,14 +382,15 @@ const EJERCICIOS_IMGS = [
 }
 .bn-val s { color: #8A93AB; }
 /* Iba a 11 px con 0,16 em de espaciado y costaba leer "Bonus 01".
-   Sube de tamaño, baja el espaciado y gana contraste. */
+   El azul vivo tampoco pegaba con los fondos de la página, así que
+   ahora es el mismo índigo de marca con un punto del azul medio. */
 .bn-num {
   display: inline-block;
   font-family: 'Poppins', system-ui, sans-serif;
   font-size: 14px; font-weight: 800; letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #fff;
-  background: #025dc7;
+  background: linear-gradient(135deg, #1D0084 0%, #26139c 55%, #123a9e 100%);
   border-radius: 8px;
   padding: 6px 13px;
 }
@@ -521,25 +539,37 @@ const EJERCICIOS_IMGS = [
     radial-gradient(circle 380px at 0% 100%, rgba(11,109,240,0.20) 0%, transparent 65%);
   background-size: 28px 28px, auto, auto;
 }
-/* Al pasar el cursor no se mueve el diploma, se mueve el color: una
-   mancha azul que se desplaza por dentro y un brillo que lo cruza. */
+/* El diploma no se mueve; lo que se mueve es el color: una mancha
+   azul que va y viene por dentro y un brillo que lo cruza.
+   Van en bucle y no colgando de :hover, porque en el móvil el hover
+   no existe y allí el efecto no se veía nunca. Arrancan al entrar en
+   pantalla: la fila lleva .sr y el observador del layout le pone
+   .vis, así que la animación empieza justo al llegar scrolleando. */
 .bn-cert::after {
   content: ''; position: absolute; inset: -45%; z-index: 0; pointer-events: none;
   background: radial-gradient(circle at 32% 28%, rgba(77,163,255,0.55) 0%, transparent 55%);
   opacity: .5;
   transform: translate3d(-7%, -7%, 0);
-  transition: transform 1.1s cubic-bezier(0.22,1,0.36,1), opacity 0.6s ease;
 }
-.bn-row:hover .bn-cert::after { transform: translate3d(16%, 13%, 0) scale(1.12); opacity: .95; }
+.bn-row.vis .bn-cert::after { animation: bn-cert-glow 7s ease-in-out infinite alternate; }
+@keyframes bn-cert-glow {
+  from { transform: translate3d(-7%, -7%, 0)  scale(1);    opacity: .45; }
+  to   { transform: translate3d(16%, 13%, 0)  scale(1.12); opacity: .95; }
+}
 .bn-cert-sheen {
   position: absolute; inset: 0; pointer-events: none; z-index: 2;
   background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,0.16) 50%, transparent 62%);
   transform: translateX(-130%);
-  transition: transform 1s cubic-bezier(0.22,1,0.36,1);
 }
-.bn-row:hover .bn-cert-sheen { transform: translateX(130%); }
+.bn-row.vis .bn-cert-sheen { animation: bn-cert-sheen 6.5s ease-in-out 0.6s infinite; }
+@keyframes bn-cert-sheen {
+  0%   { transform: translateX(-130%); }
+  45%  { transform: translateX(130%); }
+  100% { transform: translateX(130%); }
+}
 @media (prefers-reduced-motion: reduce) {
-  .bn-cert::after, .bn-cert-sheen { transition: none; }
+  .bn-row.vis .bn-cert::after,
+  .bn-row.vis .bn-cert-sheen { animation: none; }
 }
 .bn-cert-border {
   position: relative; z-index: 1;
