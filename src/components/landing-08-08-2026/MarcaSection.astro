@@ -32,11 +32,8 @@ const hitos = [
             entiende, todo cambia.»
           </p>
           <div class="mk-sign">
-            <span class="mk-sign-avatar" aria-hidden="true">RN</span>
-            <span class="mk-sign-who">
-              <span class="mk-sign-role">Fundador de Holandés Nawar</span>
-              <span class="mk-sign-name">Rida Nawar</span>
-            </span>
+            <span class="mk-sign-role">Fundador de Holandés Nawar</span>
+            <span class="mk-sign-name">Rida Nawar</span>
           </div>
         </div>
       </div>
@@ -99,21 +96,12 @@ const hitos = [
   font-weight: 500; line-height: 1.5; color: #fff;
   letter-spacing: -0.012em;
 }
-/* La firma: iniciales, cargo encima y nombre debajo. Antes era una
-   rayita y una línea de texto en gris y no firmaba nada. */
+/* La firma: cargo encima y nombre debajo, alineados al borde de la
+   tarjeta. Antes llevaba delante un círculo con las iniciales. */
 .mk-sign {
-  display: flex; align-items: center; gap: 14px;
+  display: flex; flex-direction: column; gap: 2px;
   padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.16);
 }
-.mk-sign-avatar {
-  flex-shrink: 0;
-  width: 46px; height: 46px; border-radius: 50%;
-  background: linear-gradient(140deg, #4da3ff, #0b6df0);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 15px; font-weight: 700; letter-spacing: 0.03em; color: #fff;
-}
-.mk-sign-who { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .mk-sign-role {
   font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
   color: #7dbcff;
@@ -142,10 +130,10 @@ const hitos = [
 .mk-dato {
   font-family: 'Poppins', system-ui, sans-serif;
   font-size: clamp(20px, 2.4vw, 26px); font-weight: 700;
-  letter-spacing: -0.02em; color: #025dc7; line-height: 1;
+  letter-spacing: -0.02em; color: #1D0084; line-height: 1;
 }
 .mk-label { font-size: 12.5px; color: #454F6B; line-height: 1.45; }
-.mk-redes { display: inline-flex; align-items: center; gap: 9px; margin-top: 7px; color: #025dc7; }
+.mk-redes { display: inline-flex; align-items: center; gap: 9px; margin-top: 7px; color: #1D0084; }
 .mk-redes svg { display: block; }
 
 @media (max-width: 880px) {

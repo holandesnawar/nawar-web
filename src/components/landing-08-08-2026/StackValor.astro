@@ -92,7 +92,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
         <div class="sv-hoy-right">
           <span class="sv-ahorro">Te ahorras {eur(ahorro)}&nbsp;€</span>
           <a href={matriculaUrl} class="sv-cta">
-            Quiero mi plaza — {eur(precio)}&nbsp;€
+            Quiero mi plaza
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </a>
         </div>
@@ -145,13 +145,14 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   white-space: normal; text-align: right;
   line-height: 1.4; margin-top: 5px; max-width: 190px; margin-left: auto;
 }
+/* A 9,5 px con 0,13 em de espaciado no se leía qué bonus era */
 .sv-tag {
   display: inline-block;
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 9.5px; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase;
-  color: #1D0084; background: #4da3ff;
-  padding: 3px 8px; border-radius: 5px; margin-right: 9px;
-  vertical-align: 2px;
+  font-size: 12.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #0a1656; background: #4da3ff;
+  padding: 4px 10px; border-radius: 6px; margin-right: 10px;
+  vertical-align: 1px;
 }
 .sv-valor {
   font-family: 'Poppins', system-ui, sans-serif;
@@ -168,7 +169,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 }
 /* La fila del total es la que ancla el precio: se lee antes que nada
    y en 16 px se perdía entre las de arriba. */
-.sv-total th { font-size: 21px; color: #fff; letter-spacing: -0.015em; }
+.sv-total th { font-size: 34px; color: #fff; letter-spacing: -0.02em; }
 .sv-total td {
   text-align: right; font-size: 34px; letter-spacing: -0.02em;
   color: rgba(255,255,255,0.68); font-variant-numeric: tabular-nums;
@@ -221,7 +222,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   .sv-table th, .sv-table td { padding: 15px 0; }
   .sv-item { font-size: 14.5px; }
   .sv-valor { font-size: 15px; padding-left: 14px !important; }
-  .sv-total th { font-size: 17px; }
+  .sv-total th { font-size: 25px; }
   .sv-total td { font-size: 27px; }
   .sv-hoy { flex-direction: column; align-items: stretch; gap: 18px; }
   .sv-hoy-right { align-items: stretch; }

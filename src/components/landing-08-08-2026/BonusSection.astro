@@ -13,7 +13,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
         <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Además, de regalo
       </span>
-      <h2 class="bn-title">Y además,<br /><span class="bn-accent">cinco bonus incluidos</span></h2>
+      <h2 class="bn-title">Cinco <span class="bn-accent">bonus incluidos</span></h2>
       <p class="bn-sub">No pagas nada extra por ellos. Vienen dentro, y son los que hacen que no te quedes a medias.</p>
     </div>
 
@@ -216,20 +216,22 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px;
 }
 .bn-val {
-  font-size: 12px; font-weight: 600; color: #454F6B;
-  background: #F0F4FF; border: 1px solid #E4EAF8;
-  padding: 4px 11px; border-radius: 100px;
+  font-size: 13px; font-weight: 600; color: #333D5C;
+  background: #F0F4FF; border: 1px solid #DCE5F7;
+  padding: 5px 12px; border-radius: 100px;
 }
 .bn-val s { color: #8A93AB; }
+/* Iba a 11 px con 0,16 em de espaciado y costaba leer "Bonus 01".
+   Sube de tamaño, baja el espaciado y gana contraste. */
 .bn-num {
   display: inline-block;
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 11px; font-weight: 800; letter-spacing: 0.16em;
+  font-size: 14px; font-weight: 800; letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #025dc7;
-  background: #E8F0FF;
-  border-radius: 7px;
-  padding: 5px 11px;
+  color: #fff;
+  background: #025dc7;
+  border-radius: 8px;
+  padding: 6px 13px;
 }
 .bn-name {
   font-family: 'Poppins', system-ui, sans-serif;

@@ -65,7 +65,12 @@
   font-family: var(--font-body);
   color: var(--text);
   background: #1D0084;
-  overflow-x: hidden;
+  /* clip y no hidden: overflow-x:hidden convierte a .l8 en contenedor
+     de scroll, y entonces cualquier position:sticky de dentro deja de
+     anclarse a la ventana y no se pega nunca (le pasaba a la columna
+     de "Seamos honestos"). clip recorta igual pero no crea scroller. */
+  overflow-x: clip;
+  overflow-y: visible;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -1810,6 +1815,25 @@
   .l8 .hero-trust { gap: 5px; padding: 11px 11px; }
   .l8 .hero-trust .trust-item { gap: 5px; font-size: 11.5px; }
   .l8 .hero-trust .trust-item .nw-icon { width: 14px; height: 14px; }
+}
+/* Por debajo de 960 px la tira caía a 3 + 1 y "Clases en directo" se
+   quedaba sola con medio renglón vacío a la derecha. En 2×2 el bloque
+   queda cuadrado y sin huecos; las barritas separadoras sobran ahí. */
+@media (max-width: 959px) {
+  .l8 .hero-trust {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 16px;
+    padding: 15px 18px;
+    width: fit-content;
+    max-width: 100%;
+  }
+  .l8 .hero-trust .trust-sep { display: none; }
+  .l8 .hero-trust .trust-item { min-width: 0; }
+}
+@media (max-width: 400px) {
+  .l8 .hero-trust { gap: 11px 12px; padding: 14px 14px; }
+  .l8 .hero-trust .trust-item { font-size: 12.5px; }
 }
 /* Pain cards */
 .l8 .pain-icon {
@@ -3599,15 +3623,25 @@
 .l8nav-inner { grid-template-columns: 1fr auto 1fr; }
 .l8 .l8nav-timer { justify-self: center; align-items: center; }
 .l8 .l8nav-timer-label { text-align: center; }
+/* La etiqueta iba al 55 % de blanco y se perdía */
+.l8 .l8nav-timer-label { color: rgba(255,255,255,0.88); }
 @media (max-width: 860px) {
-  .l8nav-inner { grid-template-columns: auto 1fr; gap: 10px; }
+  .l8nav-inner { grid-template-columns: auto 1fr; gap: 10px; height: 66px; }
   .l8 .l8nav-cta { display: none; }
+  .l8 .l8nav-logo img { height: 34px; }
   .l8 .l8nav-timer { justify-self: end; align-items: flex-end; }
-  .l8 .l8nav-timer-label { text-align: right; font-size: 8px; }
-  .l8 .l8nav-timer-value { font-size: 13px; }
+  .l8 .l8nav-timer-label { text-align: right; font-size: 9.5px; letter-spacing: .09em; }
+  .l8 .l8nav-timer-value { font-size: 16px; }
+}
+@media (max-width: 560px) {
+  .l8 .l8nav-logo img { height: 31px; }
+  .l8 .l8nav-timer-label { font-size: 9px; }
+  .l8 .l8nav-timer-value { font-size: 15px; }
 }
 @media (max-width: 360px) {
-  .l8 .l8nav-timer-label { display: block; font-size: 7.5px; }
+  .l8 .l8nav-logo img { height: 27px; }
+  .l8 .l8nav-timer-label { display: block; font-size: 8px; }
+  .l8 .l8nav-timer-value { font-size: 13.5px; }
 }
 
 /* Barra inferior: precio tachado + precio bueno a la izquierda */
@@ -3722,41 +3756,23 @@
    Va justo debajo de "Todo lo que recibes". Fondo azul de marca
    sobre la sección blanca, para que corte y se vea.
 ══════════════════════════════════════════════════════════════ */
-/* La banda hereda el blanco de "Todo lo que recibes" y se le recorta
-   el aire de arriba a esa sección: 96 + 96 dejaban un vacío enorme. */
-.l8 .qi-section.qi-section { padding-bottom: 56px; }
+/* Sólo el botón, sin caja ni texto alrededor, justo debajo de los dos
+   niveles. Hereda el blanco de "Todo lo que recibes". */
+.l8 .qi-section.qi-section { padding-bottom: 40px; }
 .l8 .l8-cta-band { background: #fff; padding: 0 0 88px; }
-.l8 .l8-cta-band-inner {
-  max-width: 820px; margin: 0 auto; text-align: center;
-  background: #1D0084;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px),
-    radial-gradient(circle 520px at 50% 0%, rgba(11,109,240,0.42) 0%, transparent 65%);
-  background-size: 26px 26px, auto;
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 26px;
-  padding: 40px 32px 34px;
-}
-.l8 .l8-cta-band-text {
-  font-family: var(--font-head);
-  font-size: clamp(18px, 2.2vw, 23px);
-  font-weight: 600; line-height: 1.35; letter-spacing: -.02em;
-  color: #fff; margin-bottom: 22px;
-}
-.l8 .l8-cta-band-text strong { color: #4da3ff; font-weight: 700; }
+.l8 .l8-cta-band-inner { text-align: center; }
 .l8 .l8-cta-band-btn {
   display: inline-flex; align-items: center; gap: 9px;
-  padding: 17px 30px; border-radius: 13px;
-  background: #4da3ff; color: #1D0084;
+  padding: 17px 32px; border-radius: 13px;
+  background: #025dc7; color: #fff;
   font-family: var(--font-head);
   font-size: 16px; font-weight: 700; text-decoration: none;
   transition: background .22s, transform .22s cubic-bezier(.22,1,.36,1);
 }
-.l8 .l8-cta-band-btn:hover { background: #6ab5ff; transform: scale(1.02); }
+.l8 .l8-cta-band-btn:hover { background: #0b6df0; transform: scale(1.02); }
 .l8 .l8-cta-band-btn:active { transform: scale(.98); }
-.l8 .l8-cta-band-note { font-size: 13px; color: rgba(255,255,255,0.68); margin-top: 14px; }
 @media (max-width: 640px) {
   .l8 .l8-cta-band { padding-bottom: 64px; }
-  .l8 .l8-cta-band-inner { padding: 30px 20px 26px; border-radius: 22px; }
   .l8 .l8-cta-band-btn { width: 100%; justify-content: center; }
 }
 
@@ -3814,3 +3830,57 @@
    de azul liso entre uno y otro. */
 .l8 .np-letter { padding-bottom: 72px; }
 .l8 .np-stats { padding-top: 40px; }
+
+/* ── "Seamos honestos": la columna de la izquierda ─────────────
+   Estaba puesta como sticky pero no se pegaba nunca: la sección
+   lleva overflow:hidden y eso la convierte en contenedor de scroll,
+   así que Chrome no la ancla y encima le aplica el top:120px como
+   desplazamiento fijo — la columna salía 120 px más abajo que la
+   derecha y bajaba con el scroll.
+   overflow:clip recorta igual el resplandor pero NO crea contenedor
+   de scroll, así que el sticky vuelve a funcionar. */
+.l8 .np-letter { overflow: clip; }
+.l8 .np-letter-sticky { top: 96px; }
+/* La entradilla se leía pequeña al lado de un titular de 64 px */
+.l8 .np-letter-aside { font-size: 17px; line-height: 1.7; max-width: 360px; }
+@media (max-width: 899px) {
+  .l8 .np-letter-aside { font-size: 15.5px; max-width: 100%; }
+}
+
+/* ── "El coste de seguir igual": columnas al revés ──────────────
+   El titular a la derecha y las dos listas a la izquierda. En móvil
+   se mantiene el orden natural: primero el titular. */
+@media (min-width: 768px) {
+  .l8 .consequences-inner > div:first-child { order: 2; }
+  .l8 .consequences-inner > div:last-child  { order: 1; }
+}
+
+/* ── "Los números que nadie te cuenta" ─────────────────────────
+   El fondo bajaba a #0c0040, casi negro, y se salía del azul de
+   marca. Se sube al índigo de la casa con el mismo degradado. */
+.l8 .np-stats {
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 0%, rgba(77,163,255,0.16) 0%, transparent 60%),
+    linear-gradient(180deg, #24009e 0%, #1D0084 50%, #24009e 100%);
+}
+
+/* Más aire encima de las preguntas frecuentes: el título salía
+   pegado al bloque anterior. */
+.l8 .np-faq { padding-top: 88px; }
+@media (max-width: 640px) { .l8 .np-faq { padding-top: 64px; } }
+
+/* El titular lleva su <br>, pero a 48 px "Aprender neerlandés no es
+   caro." no cabía en los 760 px de la cabecera y salía en tres
+   líneas en vez de dos. */
+.l8 .np-stats-title { font-size: clamp(26px, 3.4vw, 42px); }
+@media (max-width: 640px) { .l8 .np-stats-title { font-size: clamp(23px, 6.1vw, 30px); } }
+
+/* Dos titulares más que se pasaban del ancho de su columna y
+   convertían sus dos líneas escritas a mano en cuatro. */
+.l8 .np-letter-heading { font-size: clamp(30px, 4.4vw, 54px); }
+@media (max-width: 640px) {
+  .l8 .np-letter-heading { font-size: clamp(26px, 6.8vw, 34px); }
+  /* clase repetida: el componente define .sv-title con la misma
+     especificidad y el orden de los <style> de Astro no es fiable */
+  .l8 .sv-title.sv-title { font-size: clamp(22px, 5.8vw, 30px); line-height: 1.2; }
+}

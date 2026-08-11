@@ -17,7 +17,10 @@ import StackValor from '../components/landing-08-08-2026/StackValor.astro'
 import MarcaSection from '../components/landing-08-08-2026/MarcaSection.astro'
 import ProfesoresSection from '../components/landing-08-08-2026/ProfesoresSection.astro'
 import CronogramaSection from '../components/landing-08-08-2026/CronogramaSection.astro'
-import EscasezSection from '../components/landing-08-08-2026/EscasezSection.astro'
+// Fuera de la página a petición de Rida: la escasez de "primera
+// edición" no va a ser verdad siempre. El componente se queda en
+// src/components/landing-08-08-2026/ por si vuelve.
+// import EscasezSection from '../components/landing-08-08-2026/EscasezSection.astro'
 
 /* Copias propias de dos componentes de nawar-web: se veían rotos en
    móvil y hay que retocarlos sin alterar los que usa la web */
@@ -62,7 +65,7 @@ const stats = [
 
 /* Stack de valor — el corazón de la oferta */
 const stack = [
-  { nombre: 'Formación completa A0 → A1', detalle: '7 módulos y +10 h de vídeo estructurado, explicado desde el español', valor: '€800', bonus: false },
+  { nombre: 'Formación completa A0 → A1', detalle: '7 módulos y +15 h de vídeo estructurado, explicado desde el español', valor: '€800', bonus: false },
   { nombre: 'Plataforma con ejercicios interactivos', detalle: 'Feedback inmediato, vocabulario con audio nativo, diálogos y seguimiento de tu progreso', valor: '€150', bonus: false },
   { nombre: 'Clase semanal en directo', detalle: 'Con profesor interno según tu módulo. Todas quedan grabadas', valor: '€780', bonus: true },
   { nombre: 'Comunidad privada de hispanohablantes', detalle: 'Gente en tu misma situación, no aprendes solo', valor: '€120', bonus: true },
@@ -184,7 +187,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
 <Layout
   title={`Formación Nawar A0-A1 — Aprende neerlandés de verdad`}
-  description="La formación de neerlandés diseñada para hispanohablantes. +10 h de vídeo, ejercicios online, clase semanal en directo, comunidad y certificado. Acceso completo por 397 €."
+  description="La formación de neerlandés diseñada para hispanohablantes. +15 h de vídeo, ejercicios online, clase semanal en directo, comunidad y certificado. Acceso completo por 397 €."
   keywords="curso neerlandés online, formación neerlandés hispanohablantes, aprender holandés desde el español, inburgering, neerlandés A0 A1"
   noindex={true}
 >
@@ -512,7 +515,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             </a>
           </div>
           <div class="hero-trust">
-            <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-video"/></svg><span>+10h de vídeo</span></div>
+            <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-video"/></svg><span>+15h de vídeo</span></div>
             <div class="trust-sep"></div>
             <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-mobile"/></svg><span>Ejercicios online</span></div>
             <div class="trust-sep"></div>
@@ -583,7 +586,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
     <section class="trust-bar">
       <div class="container trust-bar-inner">
-        <div class="trust-bar-item"><strong>+10 horas</strong><span>de vídeo estructurado</span></div>
+        <div class="trust-bar-item"><strong>+15 horas</strong><span>de vídeo estructurado</span></div>
         <div class="trust-bar-div"></div>
         <div class="trust-bar-item"><strong>Principiantes</strong><span>desde cero</span></div>
         <div class="trust-bar-div"></div>
@@ -740,12 +743,10 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     <section class="l8-cta-band">
       <div class="inner">
         <div class="l8-cta-band-inner sr">
-          <p class="l8-cta-band-text">Todo esto entra en la formación, por <strong>{PRECIO}&nbsp;€</strong> en un solo pago.</p>
           <a href={CHECKOUT_URL} class="l8-cta-band-btn">
             Quiero mi plaza
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
           </a>
-          <p class="l8-cta-band-note">Pago único · 15 días de garantía · Acceso inmediato</p>
         </div>
       </div>
     </section>
@@ -780,9 +781,6 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
               </span>
             ))}
           </div>
-          <p class="guarantee-fine">
-            El riesgo lo asumimos nosotros. Lo único que arriesgas tú es seguir otro año más sin hablar neerlandés.
-          </p>
         </div>
       </div>
     </section>
@@ -802,8 +800,6 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     {/* ── 12. Precio ── */}
     <PrecioSection />
 
-    {/* ── 13. Escasez y urgencia, solo con lo que es verdad ── */}
-    <EscasezSection />
 
     <!-- ══════════════════════════════════════════════════════════
          FAQ — diseño limpio, sin tarjetas (nawar-plus)
