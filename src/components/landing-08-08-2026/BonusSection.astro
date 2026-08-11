@@ -9,7 +9,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 // Se pinta con su proporción natural (no se recorta) para que se lea
 // la consulta entera; a lo ancho de media columna queda de una altura
 // parecida a la de los otros cuatro visuales.
-const SOPORTE_IMG = 'https://docs.holandesnawar.com/img/consulta.jpg'
+const SOPORTE_IMG = 'https://docs.holandesnawar.com/img/consultas.jpg'
 
 // Bonus 03: tres capturas en abanico, una encima de otra. El PRIMER
 // enlace es el que va delante y se ve entero; los otros dos asoman
@@ -18,7 +18,7 @@ const SOPORTE_IMG = 'https://docs.holandesnawar.com/img/consulta.jpg'
 // Bonus 05: el certificado de verdad. Tiene que ser una imagen
 // (jpg/png/webp); un PDF no se puede pintar en un <img>. Con la
 // constante vacía se sigue viendo el diploma dibujado en CSS.
-const CERTIFICADO_IMG = ''
+const CERTIFICADO_IMG = 'https://docs.holandesnawar.com/img/CERTIFICAAT%20VAN%20AFRONDING.png'
 
 const EJERCICIOS_IMGS = [
   'https://docs.holandesnawar.com/img/ejercicios2.jpg',
@@ -230,16 +230,28 @@ const EJERCICIOS_IMGS = [
    dibujado: la mancha azul que se desplaza y el brillo que cruza.
    Sobre un documento claro la mancha no puede ir en opaco, así que
    se funde en soft-light: tiñe sin tapar lo que pone. */
-.bn-cert--foto { padding: 0; background: #fff; }
-.bn-cert--foto img { position: relative; z-index: 1; width: 100%; height: auto; display: block; }
-.bn-cert--foto::after {
+/* Clase repetida para ganarle a .bn-cert, que se define más abajo con
+   la misma especificidad: sin esto la foto se quedaba con el marco
+   azul de 10 px del diploma dibujado. */
+.bn-cert.bn-cert--foto { padding: 0; background: #fff; background-image: none; }
+/* width:auto + los dos topes: así entra igual de bien si el
+   certificado viene apaisado (llena el ancho) que si viene vertical
+   (lo limita el alto y se centra), sin deformarlo ni recortarlo y sin
+   que la fila se dispare de alto. */
+.bn-cert.bn-cert--foto img {
+  position: relative; z-index: 1; display: block;
+  width: auto; height: auto;
+  max-width: 100%; max-height: 430px;
+  margin: 0 auto;
+}
+.bn-cert.bn-cert--foto::after {
   z-index: 2;
   mix-blend-mode: soft-light;
   background: radial-gradient(circle at 32% 28%, rgba(77,163,255,0.95) 0%, transparent 58%);
   opacity: .55;
 }
-.bn-row:hover .bn-cert--foto::after { opacity: .8; }
-.bn-cert--foto .bn-cert-sheen { z-index: 3; }
+.bn-row:hover .bn-cert.bn-cert--foto::after { opacity: .8; }
+.bn-cert.bn-cert--foto .bn-cert-sheen { z-index: 3; }
 
 /* ── Abanico de capturas (bonus 03) ───────────────────────────
    Baraja anclada por la esquina de abajo a la izquierda: la de
@@ -290,20 +302,23 @@ const EJERCICIOS_IMGS = [
   .bn-fan-front, .bn-fan-back { transition: none; }
 }
 
-/* Captura real en lugar del mockup. Sin aspect-ratio a propósito: la
-   imagen manda su propia altura y así no se recorta nada de la
-   consulta. El marco es el mismo de los otros visuales —radio de 16,
-   borde de 1 px y sin sombra exterior— y los márgenes los pone la
-   fila, que no se toca. */
+/* Captura real en lugar del mockup, recortada a 16/10. Con ese marco
+   la fila queda en unos 270 px, que es lo que miden sus vecinas; con
+   la proporción natural de la captura se quedaba en 226 y cantaba.
+   Se ancla arriba a la izquierda, que es donde empieza el contenido
+   de una captura de pantalla: lo que se pierde es el borde derecho y
+   el relleno de abajo. */
 .bn-shot {
   margin: 0;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #E4EAF8;
   background: #F0F4FF;
+  aspect-ratio: 16 / 10;
 }
 .bn-shot img {
-  width: 100%; height: auto;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: left top;
   display: block;
 }
 
