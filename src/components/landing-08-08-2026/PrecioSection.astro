@@ -329,8 +329,12 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 .pr-card-col { padding-top: 0; }
 
 /* Checks de la lista: solo el tick, sin círculo de fondo */
-.pr-check { background: none; border: none; width: 18px; height: 18px; }
-.pr-check svg { width: 15px; height: 15px; stroke: #4da3ff !important; stroke-width: 3 !important; }
+/* Palomita de la casa, igual que en el home y en el resto de listas */
+.pr-check {
+  width: 22px; height: 22px; border-radius: 50%; margin-top: 0;
+  background: transparent; border: 2px solid #4da3ff; color: #4da3ff;
+}
+.pr-check svg { width: 12px; height: 12px; stroke: currentColor !important; stroke-width: 2.6 !important; }
 .pr-gift { background: none; border: none; }
 .pr-gift svg { stroke: #4da3ff !important; width: 15px; height: 15px; }
 

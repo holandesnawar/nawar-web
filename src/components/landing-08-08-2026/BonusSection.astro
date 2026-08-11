@@ -4,6 +4,13 @@
 // tiene su propia maqueta hecha con CSS (nada de iconos con brillo) y
 // el certificado cierra la sección como bonus 5.
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
+// Captura real de una consulta respondida, para el bonus 04. En cuanto
+// esté subida (cloudfront, como el logo) se pega aquí la URL y sustituye
+// al mockup dibujado en CSS. Si está vacía, se sigue viendo el mockup.
+// La imagen se recorta centrada en un 16/10, así que el bloque no crece
+// ni se descuadra respecto a los otros cuatro bonus.
+const SOPORTE_IMG = ''
+
 ---
 <section class="bn-section" data-navbar="light">
   <div class="inner" style="position:relative;z-index:1;">
@@ -109,6 +116,11 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
       <!-- ── BONUS 4 — Soporte ── -->
       <article class="bn-row bn-row--flip sr">
         <div class="bn-visual">
+          {SOPORTE_IMG ? (
+            <figure class="bn-shot">
+              <img src={SOPORTE_IMG} alt="Consulta de un alumno respondida por el equipo Nawar dentro de la academia" loading="lazy" decoding="async" />
+            </figure>
+          ) : (
           <div class="bn-mock bn-mock--dark">
             <div class="bn-sup-top">
               <span class="bn-sup-tag">TU CONSULTA</span>
@@ -121,6 +133,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
             </div>
             <p class="bn-sup-foot">Respondido en menos de 24 h</p>
           </div>
+          )}
         </div>
         <div class="bn-text">
           <span class="bn-numrow"><span class="bn-num">Bonus 04</span><span class="bn-val">Valor <s>150 €</s> · incluido</span></span>
@@ -179,6 +192,22 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 </section>
 
 <style>
+/* Captura real en lugar del mockup: se recorta centrada a 16/10 para
+   que ocupe exactamente lo mismo que los demás visuales. */
+.bn-shot {
+  margin: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #E4EAF8;
+  background: #F0F4FF;
+  aspect-ratio: 16 / 10;
+}
+.bn-shot img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block;
+}
+
 /* ══════════════════════════════════════════════════════════════
    Sección
 ══════════════════════════════════════════════════════════════ */

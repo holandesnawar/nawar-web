@@ -3761,19 +3761,9 @@
 .l8 .qi-section.qi-section { padding-bottom: 40px; }
 .l8 .l8-cta-band { background: #fff; padding: 0 0 88px; }
 .l8 .l8-cta-band-inner { text-align: center; }
-.l8 .l8-cta-band-btn {
-  display: inline-flex; align-items: center; gap: 9px;
-  padding: 17px 32px; border-radius: 13px;
-  background: #025dc7; color: #fff;
-  font-family: var(--font-head);
-  font-size: 16px; font-weight: 700; text-decoration: none;
-  transition: background .22s, transform .22s cubic-bezier(.22,1,.36,1);
-}
-.l8 .l8-cta-band-btn:hover { background: #0b6df0; transform: scale(1.02); }
-.l8 .l8-cta-band-btn:active { transform: scale(.98); }
 @media (max-width: 640px) {
   .l8 .l8-cta-band { padding-bottom: 64px; }
-  .l8 .l8-cta-band-btn { width: 100%; justify-content: center; }
+  .l8 .l8-cta-band .btn { width: 100%; }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -3884,3 +3874,55 @@
      especificidad y el orden de los <style> de Astro no es fiable */
   .l8 .sv-title.sv-title { font-size: clamp(22px, 5.8vw, 30px); line-height: 1.2; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   PALOMITAS DE LA CASA
+   Una sola forma para todas: círculo hueco de 22 px con borde de
+   2 px y el tick dentro, igual que .hero-check del home. Antes había
+   tres variantes distintas —círculo relleno translúcido, círculo con
+   borde de 1 px y tick suelto sin nada— y cantaba.
+   Las cruces usan la misma forma en rojo.
+   Se quedan fuera a propósito las palomitas que van DENTRO de una
+   pastilla (.badge-light, .badge-dark, .guarantee-pill): ahí el tick
+   es parte del distintivo, no un elemento de lista.
+   Las de ParaTiSection y PrecioSection van en sus propios <style>:
+   ahí el componente define la misma clase con la misma especificidad
+   y quien gana depende del orden en que Astro suelte las hojas.
+══════════════════════════════════════════════════════════════ */
+.l8 .porq-icon-check,
+.l8 .porq-list--bad .porq-icon-x,
+.l8 .vs-mark {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid #4da3ff;
+  color: #4da3ff;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+  padding: 0;
+}
+.l8 .porq-icon-check svg,
+.l8 .vs-mark svg {
+  width: 12px; height: 12px;
+  stroke: currentColor !important;
+  stroke-width: 2.6 !important;
+}
+/* Sobre fondo claro el azul de marca lee mejor que el azul claro */
+.l8 .porq-list--bad .porq-icon-x,
+.l8 .vs-bad .vs-mark {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+.l8 .porq-list--bad .porq-icon-x svg,
+.l8 .vs-bad .vs-mark svg {
+  width: 11px; height: 11px;
+  stroke: currentColor !important;
+  stroke-width: 2.8 !important;
+}
+
+/* Las dos listas de "El coste de seguir igual" llevaban ✓ y ✗ como
+   caracteres de texto, que cambian de forma según la fuente. */
+.l8 .vs-block li { align-items: flex-start; gap: 11px; }
+.l8 .vs-block .vs-mark { width: 19px; height: 19px; }
+.l8 .vs-block .vs-mark svg { width: 10px; height: 10px; }

@@ -112,10 +112,15 @@ const noItems = [
   font-size: 16px; font-weight: 600; line-height: 1.5; color: #ffffff;
 }
 .pt-list--no li { color: #1D0084; }
+/* Palomita de la casa: círculo hueco con borde de 2 px, igual que en
+   el home y que el resto de listas de la página. */
 .pt-icon {
-  flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+  background: transparent;
   display: flex; align-items: center; justify-content: center; margin-top: 1px;
 }
-.pt-icon--check { background: rgba(77,163,255,0.20); border: 1px solid rgba(77,163,255,0.40); }
-.pt-icon--x { background: rgba(220,38,38,0.08); border: 1px solid rgba(220,38,38,0.25); }
+.pt-icon svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.6; }
+.pt-icon--check { border: 2px solid #4da3ff; color: #4da3ff; }
+.pt-icon--x { border: 2px solid #dc2626; color: #dc2626; }
+.pt-icon--x svg { width: 11px; height: 11px; stroke-width: 2.8; }
 </style>

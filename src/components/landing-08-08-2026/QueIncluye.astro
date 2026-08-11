@@ -76,7 +76,7 @@ const tools = [
         <div class="qi-browser-body">
           <div class="qi-mock-side">
             <div class="qi-mock-logo">
-              <svg width="18" height="18" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
             </div>
             <div class="qi-mock-nav"><span></span><span></span><span></span><span></span></div>
           </div>
@@ -201,13 +201,18 @@ const tools = [
 }
 .qi-mock-side { width: 130px; padding: 20px 16px; border-right: 1px solid rgba(255,255,255,0.08); }
 
+/* Icono suelto, sin la caja azul, como el resto de iconos de la
+   página. El svg trae width/height en el atributo, así que el tamaño
+   se fuerza desde aquí. */
 .qi-mock-logo {
-  width: 42px; height: 42px; border-radius: 12px;
-  background: linear-gradient(135deg, #4da3ff, #0b6df0);
+  width: 40px; height: 40px; border-radius: 0;
+  background: none;
   box-shadow: none;
-  display: flex; align-items: center; justify-content: center;
+  color: #7dbcff;
+  display: flex; align-items: center; justify-content: flex-start;
   margin-bottom: 20px;
 }
+.qi-mock-logo svg { width: 32px; height: 32px; stroke: currentColor; stroke-width: 1.7; }
 .qi-mock-nav { display: flex; flex-direction: column; gap: 12px; }
 .qi-mock-nav span { height: 9px; border-radius: 4px; background: rgba(255,255,255,0.18); }
 .qi-mock-nav span:nth-child(1) { width: 90%; background: rgba(77,163,255,0.55); }
