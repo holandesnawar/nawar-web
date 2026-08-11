@@ -4,12 +4,12 @@
 // tiene su propia maqueta hecha con CSS (nada de iconos con brillo) y
 // el certificado cierra la sección como bonus 5.
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
-// Captura real de una consulta respondida, para el bonus 04. En cuanto
-// esté subida (cloudfront, como el logo) se pega aquí la URL y sustituye
-// al mockup dibujado en CSS. Si está vacía, se sigue viendo el mockup.
-// La imagen se recorta centrada en un 16/10, así que el bloque no crece
-// ni se descuadra respecto a los otros cuatro bonus.
-const SOPORTE_IMG = ''
+// Captura real de una consulta respondida. Si se vacía esta constante,
+// vuelve a verse el mockup dibujado en CSS que había antes.
+// Se pinta con su proporción natural (no se recorta) para que se lea
+// la consulta entera; a lo ancho de media columna queda de una altura
+// parecida a la de los otros cuatro visuales.
+const SOPORTE_IMG = 'https://docs.holandesnawar.com/img/consulta.jpg'
 
 ---
 <section class="bn-section" data-navbar="light">
@@ -192,19 +192,20 @@ const SOPORTE_IMG = ''
 </section>
 
 <style>
-/* Captura real en lugar del mockup: se recorta centrada a 16/10 para
-   que ocupe exactamente lo mismo que los demás visuales. */
+/* Captura real en lugar del mockup. Sin aspect-ratio a propósito: la
+   imagen manda su propia altura y así no se recorta nada de la
+   consulta. El marco es el mismo de los otros visuales —radio de 16,
+   borde de 1 px y sin sombra exterior— y los márgenes los pone la
+   fila, que no se toca. */
 .bn-shot {
   margin: 0;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #E4EAF8;
   background: #F0F4FF;
-  aspect-ratio: 16 / 10;
 }
 .bn-shot img {
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: center;
+  width: 100%; height: auto;
   display: block;
 }
 
