@@ -15,6 +15,11 @@ const SOPORTE_IMG = 'https://docs.holandesnawar.com/img/consulta.jpg'
 // enlace es el que va delante y se ve entero; los otros dos asoman
 // por detrás. Si se deja la lista vacía (o con un número distinto de
 // tres), vuelve el mockup dibujado en CSS.
+// Bonus 05: el certificado de verdad. Tiene que ser una imagen
+// (jpg/png/webp); un PDF no se puede pintar en un <img>. Con la
+// constante vacía se sigue viendo el diploma dibujado en CSS.
+const CERTIFICADO_IMG = ''
+
 const EJERCICIOS_IMGS = [
   'https://docs.holandesnawar.com/img/ejercicios2.jpg',
   'https://docs.holandesnawar.com/img/ejercicios1.jpg',
@@ -100,12 +105,14 @@ const EJERCICIOS_IMGS = [
       <article class="bn-row sr">
         <div class="bn-visual">
           {EJERCICIOS_IMGS.length === 3 ? (
-            <div class="bn-fan" aria-hidden="true">
-              <figure class="bn-fan-card bn-fan-a"><img src={EJERCICIOS_IMGS[1]} alt="" loading="lazy" decoding="async" /></figure>
-              <figure class="bn-fan-card bn-fan-b"><img src={EJERCICIOS_IMGS[2]} alt="" loading="lazy" decoding="async" /></figure>
-              <figure class="bn-fan-card bn-fan-c">
-                <img src={EJERCICIOS_IMGS[0]} alt="Ejercicios extra de la academia Holandés Nawar" loading="lazy" decoding="async" />
-              </figure>
+            <div class="bn-fan">
+              <div class="bn-fan-stack">
+                <figure class="bn-fan-back bn-fan-a" aria-hidden="true"><img src={EJERCICIOS_IMGS[1]} alt="" loading="lazy" decoding="async" /></figure>
+                <figure class="bn-fan-back bn-fan-b" aria-hidden="true"><img src={EJERCICIOS_IMGS[2]} alt="" loading="lazy" decoding="async" /></figure>
+                <figure class="bn-fan-front">
+                  <img src={EJERCICIOS_IMGS[0]} alt="Ejercicios extra de la academia Holandés Nawar" loading="lazy" decoding="async" />
+                </figure>
+              </div>
             </div>
           ) : (
           <div class="bn-mock bn-mock--light">
@@ -166,6 +173,12 @@ const EJERCICIOS_IMGS = [
       <article class="bn-row sr">
         <div class="bn-visual">
           <div class="bn-cert-halo" aria-hidden="true"></div>
+          {CERTIFICADO_IMG ? (
+            <figure class="bn-cert bn-cert--foto">
+              <div class="bn-cert-sheen" aria-hidden="true"></div>
+              <img src={CERTIFICADO_IMG} alt="Certificado de finalización de la Formación Neerlandés A0 → A1" loading="lazy" decoding="async" />
+            </figure>
+          ) : (
           <div class="bn-cert" aria-label="Certificado Holandés Nawar">
             <div class="bn-cert-sheen" aria-hidden="true"></div>
             <div class="bn-cert-border">
@@ -199,6 +212,7 @@ const EJERCICIOS_IMGS = [
               </div>
             </div>
           </div>
+          )}
         </div>
         <div class="bn-text">
           <span class="bn-numrow"><span class="bn-num">Bonus 05</span><span class="bn-val">Valor <s>60 €</s> · incluido</span></span>
@@ -212,40 +226,68 @@ const EJERCICIOS_IMGS = [
 </section>
 
 <style>
+/* El certificado de verdad, con el mismo juego de color que el
+   dibujado: la mancha azul que se desplaza y el brillo que cruza.
+   Sobre un documento claro la mancha no puede ir en opaco, así que
+   se funde en soft-light: tiñe sin tapar lo que pone. */
+.bn-cert--foto { padding: 0; background: #fff; }
+.bn-cert--foto img { position: relative; z-index: 1; width: 100%; height: auto; display: block; }
+.bn-cert--foto::after {
+  z-index: 2;
+  mix-blend-mode: soft-light;
+  background: radial-gradient(circle at 32% 28%, rgba(77,163,255,0.95) 0%, transparent 58%);
+  opacity: .55;
+}
+.bn-row:hover .bn-cert--foto::after { opacity: .8; }
+.bn-cert--foto .bn-cert-sheen { z-index: 3; }
+
 /* ── Abanico de capturas (bonus 03) ───────────────────────────
-   Tres tarjetas apiladas y giradas. Los giros y los desplazamientos
-   están calculados para que, sumando el vuelo que añade la rotación,
-   ninguna esquina se salga de la fila: la fila sólo deja 30 px de
-   respiro y una tarjeta girada 6° ocupa por los lados casi un 6 % más
-   de lo que mide.
-   Las capturas se recortan desde arriba porque es donde está el
-   enunciado del ejercicio; abajo suele haber botones y relleno. */
-.bn-fan { position: relative; width: 100%; aspect-ratio: 16 / 11; }
-.bn-fan-card {
-  position: absolute;
-  top: 11%; left: 7%; width: 86%; height: 78%;
+   Baraja anclada por la esquina de abajo a la izquierda: la de
+   delante va recta y las dos de detrás se abren hacia arriba y a la
+   derecha girando sobre ese mismo punto.
+
+   La de delante NO se recorta: va en el flujo con height:auto, así
+   que se ve entera y es la que manda la altura de la pila. Las otras
+   dos se calcan encima con inset:0 y ésas sí se recortan, anclando
+   por la izquierda —que es el lado que interesa leer—.
+
+   Los dos huecos del contenedor son geometría, no estética. Al girar
+   sobre la esquina de abajo a la izquierda, la tarjeta sube por la
+   derecha (de ahí el padding de arriba) y a la vez su esquina de
+   arriba a la izquierda se va hacia fuera por la izquierda (de ahí
+   el padding de ese lado). Los dos van en % del ancho, igual que la
+   propia tarjeta, así que la geometría se mantiene a cualquier
+   tamaño de pantalla, y los valores cubren capturas de proporción
+   1,2 a 1,8 —que es el rango en el que puede caer una captura de
+   pantalla— sin que ninguna esquina se salga de la fila. */
+.bn-fan { position: relative; padding: 23% 0 0 15%; }
+.bn-fan-stack { position: relative; width: 78%; }
+.bn-fan-front,
+.bn-fan-back {
   margin: 0;
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid #E4EAF8;
   background: #fff;
-  box-shadow: 0 8px 26px rgba(29, 0, 132, 0.10);
+  box-shadow: 0 8px 26px rgba(29, 0, 132, 0.12);
+  transform-origin: left bottom;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.bn-fan-card img {
+.bn-fan-front { position: relative; z-index: 3; }
+.bn-fan-front img { width: 100%; height: auto; display: block; }
+.bn-fan-back { position: absolute; inset: 0; }
+.bn-fan-back img {
   width: 100%; height: 100%;
-  object-fit: cover; object-position: top center;
+  object-fit: cover; object-position: left center;
   display: block;
 }
-.bn-fan-a { transform: rotate(-7.5deg) translate(-5.5%, 1%); z-index: 1; }
-.bn-fan-b { transform: rotate(7.5deg)  translate(5.5%, 2%);  z-index: 2; }
-.bn-fan-c { transform: rotate(-1.2deg) translate(0, -3%); z-index: 3; }
-/* Al pasar el cursor el abanico se abre un poco */
-.bn-row:hover .bn-fan-a { transform: rotate(-9deg) translate(-7%, 1%); }
-.bn-row:hover .bn-fan-b { transform: rotate(9deg)  translate(7%, 2%); }
-.bn-row:hover .bn-fan-c { transform: rotate(-1.2deg) translate(0, -5%); }
+.bn-fan-a { transform: rotate(-18deg); z-index: 1; }
+.bn-fan-b { transform: rotate(-9deg);  z-index: 2; }
+/* Al pasar el cursor el abanico se abre un poco más */
+.bn-row:hover .bn-fan-a { transform: rotate(-21deg); }
+.bn-row:hover .bn-fan-b { transform: rotate(-10.5deg); }
 @media (prefers-reduced-motion: reduce) {
-  .bn-fan-card { transition: none; }
+  .bn-fan-front, .bn-fan-back { transition: none; }
 }
 
 /* Captura real en lugar del mockup. Sin aspect-ratio a propósito: la
