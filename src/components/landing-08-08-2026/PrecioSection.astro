@@ -161,12 +161,21 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 
 
 /* ── Izquierda: incluye ── */
+/* El mismo cristal de nawar-plus que la tarjeta de al lado y que el
+   desglose de valor, para que las tres piezas de la oferta vayan a
+   juego. Antes era un blanco al 5 % y se veía gris al lado. */
 .pr-includes {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.10);
-  backdrop-filter: blur(6px);
-  border-radius: 24px; padding: 30px 30px;
+  position: relative; overflow: hidden;
+  background: linear-gradient(160deg, rgba(11,109,240,0.20) 0%, rgba(77,163,255,0.08) 100%);
+  border: 1.5px solid rgba(77,163,255,0.50);
+  border-radius: 26px; padding: 30px 30px;
 }
+.pr-includes::before {
+  content: ''; position: absolute; z-index: 0; pointer-events: none;
+  top: -140px; left: -140px; width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(77,163,255,0.26) 0%, transparent 65%);
+}
+.pr-includes-head, .pr-list { position: relative; z-index: 1; }
 .pr-includes-head { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
 /* Icono suelto, sin caja: más grande y en azul claro */
 .pr-includes-chip {
@@ -212,12 +221,10 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   background: radial-gradient(ellipse at center, rgba(77,163,255,0.28) 0%, transparent 62%);
   pointer-events: none;
 }
-.pr-card-ring {
-  position: relative;
-  padding: 2px; border-radius: 28px;
-  background: linear-gradient(160deg, rgba(255,255,255,0.45) 0%, rgba(77,163,255,0.22) 42%, rgba(11,109,240,0.55) 100%);
-  box-shadow: 0 40px 90px rgba(4, 0, 40, 0.50);
-}
+/* Sin anillo: en nawar-plus la tarjeta es sólo el cristal con su
+   borde de 1,5 px, y el marco de degradado que había aquí encima le
+   robaba el acabado. Se queda de envoltorio para no tocar el HTML. */
+.pr-card-ring { position: relative; padding: 0; border-radius: 26px; }
 /* Copiado literal de .np-comp-plus de nawar-plus, que es la tarjeta
    que Rida quería: cristal azul translúcido, no un azul macizo.
    Lo que fallaba en los intentos anteriores no era el color de la

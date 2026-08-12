@@ -244,36 +244,47 @@ const EJERCICIOS_IMGS = [
   max-width: 100%; max-height: 430px;
   margin: 0 auto;
 }
+/* Sobre el diploma dibujado, que era azul oscuro, valía una mancha
+   azul en soft-light. Sobre la foto, que es un documento casi blanco,
+   soft-light no se veía: apenas cambia nada sobre blanco. Con
+   multiply el mismo azul sí tiñe, y el brillo que lo cruza pasa a ser
+   azul en vez de blanco por el mismo motivo.
+   Sigue en bucle (para el móvil, que no tiene ratón) y además se
+   aviva al pasar el cursor, que es como estaba y como le gustaba. */
 .bn-cert.bn-cert--foto::after {
   z-index: 2;
-  mix-blend-mode: soft-light;
-  background: radial-gradient(circle at 32% 28%, rgba(77,163,255,0.95) 0%, transparent 58%);
-  opacity: .55;
+  mix-blend-mode: multiply;
+  background: radial-gradient(circle at 32% 28%, rgba(150,198,255,0.92) 0%, rgba(255,255,255,0) 58%);
+  opacity: .8;
 }
-.bn-row:hover .bn-cert.bn-cert--foto::after { opacity: .8; }
-.bn-cert.bn-cert--foto .bn-cert-sheen { z-index: 3; }
+.bn-row:hover .bn-cert.bn-cert--foto::after { opacity: 1; }
+.bn-cert.bn-cert--foto .bn-cert-sheen {
+  z-index: 3;
+  mix-blend-mode: multiply;
+  background: linear-gradient(115deg, rgba(255,255,255,0) 38%, rgba(150,198,255,0.55) 50%, rgba(255,255,255,0) 62%);
+}
+/* Al pasar el cursor, una pasada rápida del brillo además del bucle */
+.bn-row:hover .bn-cert.bn-cert--foto .bn-cert-sheen {
+  animation: bn-cert-sheen 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-/* ── Abanico de capturas (bonus 03) ───────────────────────────
-   Baraja anclada por la esquina de abajo a la izquierda: la de
-   delante va recta y las dos de detrás se abren hacia arriba y a la
-   derecha girando sobre ese mismo punto.
+/* ── Baraja de capturas (bonus 03) ────────────────────────────
+   El abanico no funcionaba: con tres tarjetas del mismo tamaño y el
+   mismo sitio, girar sobre una esquina sólo dejaba asomar un pico de
+   las de detrás, y para abrirlo más había que encogerlas.
 
-   La de delante NO se recorta: va en el flujo con height:auto, así
-   que se ve entera y es la que manda la altura de la pila. Las otras
-   dos se calcan encima con inset:0 y ésas sí se recortan, anclando
-   por la izquierda —que es el lado que interesa leer—.
+   Esto es una baraja que se turna: las tres van apiladas con un
+   escalón, y cada una pasa por delante durante unos segundos. Así se
+   ven las tres enteras, una detrás de otra, sin salir del mismo hueco
+   y sin que ninguna tenga que hacerse pequeña.
 
-   Los dos huecos del contenedor son geometría, no estética. Al girar
-   sobre la esquina de abajo a la izquierda, la tarjeta sube por la
-   derecha (de ahí el padding de arriba) y a la vez su esquina de
-   arriba a la izquierda se va hacia fuera por la izquierda (de ahí
-   el padding de ese lado). Los dos van en % del ancho, igual que la
-   propia tarjeta, así que la geometría se mantiene a cualquier
-   tamaño de pantalla, y los valores cubren capturas de proporción
-   1,2 a 1,8 —que es el rango en el que puede caer una captura de
-   pantalla— sin que ninguna esquina se salga de la fila. */
-.bn-fan { position: relative; padding: 31% 0 0 13%; }
-.bn-fan-stack { position: relative; width: 92%; }
+   La de delante va en el flujo y es la que fija la altura del bloque;
+   las otras dos se calcan encima con inset:0. Las tres comparten el
+   mismo ciclo, desfasado un tercio, y el salto de delante a detrás va
+   tapado con la opacidad a 0 durante esa fracción para que no se vea
+   el corte. */
+.bn-fan { position: relative; padding: 7% 11% 0 0; }
+.bn-fan-stack { position: relative; width: 100%; }
 .bn-fan-front,
 .bn-fan-back {
   margin: 0;
@@ -281,87 +292,67 @@ const EJERCICIOS_IMGS = [
   overflow: hidden;
   border: 1px solid #E4EAF8;
   background: #fff;
-  box-shadow: 0 8px 26px rgba(29, 0, 132, 0.12);
-  transform-origin: left bottom;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 10px 30px rgba(29, 0, 132, 0.13);
+  transform-origin: center;
 }
 .bn-fan-front { position: relative; z-index: 3; }
 .bn-fan-front img { width: 100%; height: auto; display: block; }
 .bn-fan-back { position: absolute; inset: 0; }
 .bn-fan-back img {
   width: 100%; height: 100%;
-  object-fit: cover; object-position: left center;
+  object-fit: cover; object-position: left top;
   display: block;
 }
-/* El abanico se mueve solo, no al pasar el cursor: en el móvil no hay
-   cursor. Y no es una apertura de una sola vez, sino un vaivén lento
-   en bucle, porque .vis se añade en cuanto asoma un 6 % de la fila
-   —o sea, con el bloque todavía casi fuera de pantalla— y una
-   animación de un segundo terminaba antes de que llegaras a mirarlo.
-   Así siempre está abriéndose o cerrándose cuando lo miras.
+/* Posiciones de reposo, por si no llega a arrancar la animación */
+.bn-fan-front { transform: translate(0, 0) scale(1); }
+.bn-fan-b { transform: translate(5%, -7%) scale(0.95); z-index: 2; }
+.bn-fan-a { transform: translate(10%, -14%) scale(0.90); z-index: 1; }
 
-   Las tarjetas de detrás también suben un poco (translateY) además de
-   girar: sólo con el giro asomaba una esquina y no se entendía que
-   fueran tres capturas distintas.
+.bn-row.vis .bn-fan-front { animation: bn-deck 13.5s cubic-bezier(0.4,0,0.2,1) infinite; }
+.bn-row.vis .bn-fan-b     { animation: bn-deck 13.5s cubic-bezier(0.4,0,0.2,1) -4.5s infinite; }
+.bn-row.vis .bn-fan-a     { animation: bn-deck 13.5s cubic-bezier(0.4,0,0.2,1) -9s infinite; }
 
-   El hueco de la izquierda está ajustado a las capturas reales, que
-   son apaisadas (proporción ~2,6). Cuanto más plana es la captura
-   menos se va hacia fuera la esquina al girar, y ese margen es el que
-   se le ha quitado al hueco para que las tarjetas salgan más grandes.
-   Si algún día se cambian por capturas mucho más cuadradas hay que
-   subir ese 13 % (con una de proporción 1,2 haría falta un 25 %). */
-.bn-fan-a { transform: translateY(-7%) rotate(-24deg); z-index: 1; }
-.bn-fan-b { transform: translateY(-3.5%) rotate(-12deg); z-index: 2; }
-.bn-row.vis .bn-fan-a { animation: bn-fan-a 5.5s cubic-bezier(0.4,0,0.2,1) infinite alternate; }
-.bn-row.vis .bn-fan-b { animation: bn-fan-b 5.5s cubic-bezier(0.4,0,0.2,1) 0.12s infinite alternate; }
-@keyframes bn-fan-a {
-  from { transform: translateY(-2%) rotate(-11deg); }
-  to   { transform: translateY(-7%) rotate(-24deg); }
-}
-@keyframes bn-fan-b {
-  from { transform: translateY(-1%) rotate(-5.5deg); }
-  to   { transform: translateY(-3.5%) rotate(-12deg); }
+@keyframes bn-deck {
+  /* delante */
+  0%,  27%  { transform: translate(0, 0) scale(1);          opacity: 1; z-index: 3; }
+  /* se retira: baja un poco y se desvanece */
+  32%       { transform: translate(-3%, 9%) scale(0.98);    opacity: 0; z-index: 3; }
+  /* reaparece al fondo de la pila */
+  34%       { transform: translate(10%, -14%) scale(0.90);  opacity: 1; z-index: 1; }
+  61%       { transform: translate(10%, -14%) scale(0.90);  opacity: 1; z-index: 1; }
+  /* sube al medio */
+  67%, 94%  { transform: translate(5%, -7%) scale(0.95);    opacity: 1; z-index: 2; }
+  /* y vuelve a delante */
+  100%      { transform: translate(0, 0) scale(1);          opacity: 1; z-index: 3; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .bn-fan-front, .bn-fan-back { transition: none; }
-  .bn-row.vis .bn-fan-a, .bn-row.vis .bn-fan-b { animation: none; }
+  .bn-row.vis .bn-fan-front,
+  .bn-row.vis .bn-fan-b,
+  .bn-row.vis .bn-fan-a { animation: none; }
 }
-/* En el móvil la columna es estrecha y las capturas se quedaban en
-   nada. Las tarjetas crecen (82 % → 90 %) y a cambio el abanico se
-   abre menos, que es lo que permite recortar el hueco de la
-   izquierda sin que la esquina se salga. */
 @media (max-width: 860px) {
-  .bn-fan { padding: 25% 0 0 10%; }
-  .bn-fan-stack { width: 96%; }
-  .bn-fan-a { transform: translateY(-6%) rotate(-17deg); }
-  .bn-fan-b { transform: translateY(-3%) rotate(-8.5deg); }
-  @keyframes bn-fan-a {
-    from { transform: translateY(-2%) rotate(-8deg); }
-    to   { transform: translateY(-6%) rotate(-17deg); }
-  }
-  @keyframes bn-fan-b {
-    from { transform: translateY(-1%) rotate(-4deg); }
-    to   { transform: translateY(-3%) rotate(-8.5deg); }
-  }
+  .bn-fan { padding: 6% 9% 0 0; }
 }
 
-/* Captura real en lugar del mockup, recortada a 16/10. Con ese marco
-   la fila queda en unos 270 px, que es lo que miden sus vecinas; con
-   la proporción natural de la captura se quedaba en 226 y cantaba.
-   Se ancla arriba a la izquierda, que es donde empieza el contenido
-   de una captura de pantalla: lo que se pierde es el borde derecho y
-   el relleno de abajo. */
+/* Captura real en lugar del mockup. La imagen trae alrededor el marco
+   gris de la pantalla de detrás, y lo que interesa es sólo la tarjeta
+   blanca de la consulta. Como no se puede recortar el archivo desde
+   aquí, se recorta por CSS: la caja va a 16/10 y la imagen se amplía
+   un 18 % desde el centro, que es lo que hace falta para que el marco
+   gris se quede fuera por los cuatro lados. Si al verlo se comiera
+   algo de la tarjeta blanca, basta con bajar ese scale. */
 .bn-shot {
   margin: 0;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #E4EAF8;
-  background: #F0F4FF;
+  background: #fff;
   aspect-ratio: 16 / 10;
 }
 .bn-shot img {
   width: 100%; height: 100%;
-  object-fit: cover; object-position: left top;
+  object-fit: cover; object-position: center;
+  transform: scale(1.18);
   display: block;
 }
 
