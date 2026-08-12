@@ -124,10 +124,13 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 
 .pr-outer { overflow: hidden; position: relative; border-radius: 32px; max-width: 1280px; margin: 0 auto; }
 .pr-section { background: #1D0084; position: relative; overflow: hidden; padding: 64px 0 80px; }
+/* Igual que .np-comp-glow de nawar-plus: azul claro y centrado en la
+   sección, no el azul vivo pegado arriba. Es lo que hace que el índigo
+   deje de verse plano y la tarjeta de cristal tenga algo que reflejar. */
 .pr-bg-glow {
-  position: absolute; top: -15%; left: 50%; transform: translateX(-50%);
-  width: 1000px; height: 650px;
-  background: radial-gradient(ellipse at center, rgba(11,109,240,0.32) 0%, transparent 65%);
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 1000px; height: 660px; border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(77,163,255,0.20) 0%, transparent 65%);
   pointer-events: none;
 }
 .pr-header { text-align: center; max-width: 760px; margin: 0 auto 48px; }
@@ -215,21 +218,24 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   background: linear-gradient(160deg, rgba(255,255,255,0.45) 0%, rgba(77,163,255,0.22) 42%, rgba(11,109,240,0.55) 100%);
   box-shadow: 0 40px 90px rgba(4, 0, 40, 0.50);
 }
-/* El azul de siempre, no un azul claro: fondo índigo de marca y por
-   encima luces blancas metidas hacia dentro (inset) que hacen de
-   sombra interior y levantan la tarjeta del fondo de la sección. */
+/* Copiado literal de .np-comp-plus de nawar-plus, que es la tarjeta
+   que Rida quería: cristal azul translúcido, no un azul macizo.
+   Lo que fallaba en los intentos anteriores no era el color de la
+   tarjeta sino la luz de detrás: en nawar-plus la sección lleva un
+   resplandor grande en azul claro centrado, y sin él este cristal
+   chupa el índigo de debajo y se apaga. El resplandor de la sección
+   está ahora igualado (ver .pr-bg-glow). */
 .pr-card {
-  background:
-    radial-gradient(circle 460px at 78% -25%, rgba(255,255,255,0.22) 0%, transparent 62%),
-    radial-gradient(circle 380px at 0% 108%, rgba(77,163,255,0.28) 0%, transparent 62%),
-    linear-gradient(165deg, #2c17a6 0%, #1D0084 52%, #170068 100%);
-  border: 1px solid rgba(255,255,255,0.22);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.38),
-    inset 0 22px 44px -26px rgba(255,255,255,0.34),
-    inset 0 -26px 52px -30px rgba(77,163,255,0.32);
+  background: linear-gradient(160deg, rgba(11,109,240,0.20) 0%, rgba(77,163,255,0.08) 100%);
+  border: 1.5px solid rgba(77,163,255,0.50);
   border-radius: 26px; padding: 32px 30px 28px;
   text-align: left; position: relative; overflow: hidden;
+}
+/* El mismo halo de esquina que .np-comp-card-glow */
+.pr-card::before {
+  content: ''; position: absolute; z-index: 0; pointer-events: none;
+  top: -120px; right: -120px; width: 380px; height: 380px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(77,163,255,0.32) 0%, transparent 65%);
 }
 .pr-card-name {
   position: relative;
@@ -283,7 +289,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 .pr-guarantee {
   position: relative;
   display: flex; gap: 11px; align-items: flex-start;
-  background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.20);
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14);
   border-radius: 14px; padding: 13px 15px;
   font-size: 12.5px; color: rgba(255,255,255,0.95); line-height: 1.5;
   margin-bottom: 16px;
@@ -311,8 +317,8 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   font-weight: 600; color: rgba(255,255,255,0.55);
 }
 .pr-pay-pill {
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.24); border-radius: 8px; padding: 4px 10px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; padding: 4px 10px;
   font-size: 10.5px; font-weight: 600; color: #fff;
 }
 
