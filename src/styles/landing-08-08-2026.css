@@ -3761,9 +3761,24 @@
 .l8 .qi-section.qi-section { padding-bottom: 40px; }
 .l8 .l8-cta-band { background: #fff; padding: 0 0 88px; }
 .l8 .l8-cta-band-inner { text-align: center; }
+/* Mismas medidas y mismos colores que .sv-cta, .es-cta, .pr-cta y el
+   del navbar: azul claro de marca con la letra en azul marino. Es el
+   botón de la casa; .btn-primary, que es el del banner, lleva la letra
+   en blanco y aquí desentonaba. */
+.l8 .l8-cta-band-btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 17px 30px; border-radius: 13px;
+  background: #4da3ff; color: #1D0084;
+  font-family: var(--font-head);
+  font-size: 16px; font-weight: 700;
+  text-decoration: none;
+  transition: background .22s, transform .22s cubic-bezier(.22,1,.36,1);
+}
+.l8 .l8-cta-band-btn:hover { background: #6ab5ff; transform: scale(1.02); }
+.l8 .l8-cta-band-btn:active { transform: scale(.98); }
 @media (max-width: 640px) {
   .l8 .l8-cta-band { padding-bottom: 64px; }
-  .l8 .l8-cta-band .btn { width: 100%; }
+  .l8 .l8-cta-band-btn { width: 100%; justify-content: center; }
 }
 
 /* ══════════════════════════════════════════════════════════════

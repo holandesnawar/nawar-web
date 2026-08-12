@@ -18,7 +18,7 @@ const SOPORTE_IMG = 'https://docs.holandesnawar.com/img/consultas.jpg'
 // Bonus 05: el certificado de verdad. Tiene que ser una imagen
 // (jpg/png/webp); un PDF no se puede pintar en un <img>. Con la
 // constante vacía se sigue viendo el diploma dibujado en CSS.
-const CERTIFICADO_IMG = 'https://docs.holandesnawar.com/img/CERTIFICAAT%20VAN%20AFRONDING.png'
+const CERTIFICADO_IMG = 'https://docs.holandesnawar.com/img/Certificado%20de%20Finalizacio%CC%81n.png'
 
 const EJERCICIOS_IMGS = [
   'https://docs.holandesnawar.com/img/ejercicios2.jpg',
@@ -272,8 +272,8 @@ const EJERCICIOS_IMGS = [
    tamaño de pantalla, y los valores cubren capturas de proporción
    1,2 a 1,8 —que es el rango en el que puede caer una captura de
    pantalla— sin que ninguna esquina se salga de la fila. */
-.bn-fan { position: relative; padding: 24% 0 0 16%; }
-.bn-fan-stack { position: relative; width: 82%; }
+.bn-fan { position: relative; padding: 31% 0 0 13%; }
+.bn-fan-stack { position: relative; width: 92%; }
 .bn-fan-front,
 .bn-fan-back {
   margin: 0;
@@ -293,15 +293,35 @@ const EJERCICIOS_IMGS = [
   object-fit: cover; object-position: left center;
   display: block;
 }
-/* El abanico se abre al llegar scrolleando, no al pasar el cursor:
-   en el móvil no hay cursor y las dos de detrás no llegaban a verse.
-   La fila lleva .sr y el observador del layout le pone .vis. */
-.bn-fan-a { transform: rotate(-18deg); z-index: 1; }
-.bn-fan-b { transform: rotate(-9deg);  z-index: 2; }
-.bn-row.vis .bn-fan-a { animation: bn-fan-a 1s cubic-bezier(0.22,1,0.36,1) 0.15s both; }
-.bn-row.vis .bn-fan-b { animation: bn-fan-b 1s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
-@keyframes bn-fan-a { from { transform: rotate(-3deg); } to { transform: rotate(-18deg); } }
-@keyframes bn-fan-b { from { transform: rotate(-1.5deg); } to { transform: rotate(-9deg); } }
+/* El abanico se mueve solo, no al pasar el cursor: en el móvil no hay
+   cursor. Y no es una apertura de una sola vez, sino un vaivén lento
+   en bucle, porque .vis se añade en cuanto asoma un 6 % de la fila
+   —o sea, con el bloque todavía casi fuera de pantalla— y una
+   animación de un segundo terminaba antes de que llegaras a mirarlo.
+   Así siempre está abriéndose o cerrándose cuando lo miras.
+
+   Las tarjetas de detrás también suben un poco (translateY) además de
+   girar: sólo con el giro asomaba una esquina y no se entendía que
+   fueran tres capturas distintas.
+
+   El hueco de la izquierda está ajustado a las capturas reales, que
+   son apaisadas (proporción ~2,6). Cuanto más plana es la captura
+   menos se va hacia fuera la esquina al girar, y ese margen es el que
+   se le ha quitado al hueco para que las tarjetas salgan más grandes.
+   Si algún día se cambian por capturas mucho más cuadradas hay que
+   subir ese 13 % (con una de proporción 1,2 haría falta un 25 %). */
+.bn-fan-a { transform: translateY(-7%) rotate(-24deg); z-index: 1; }
+.bn-fan-b { transform: translateY(-3.5%) rotate(-12deg); z-index: 2; }
+.bn-row.vis .bn-fan-a { animation: bn-fan-a 5.5s cubic-bezier(0.4,0,0.2,1) infinite alternate; }
+.bn-row.vis .bn-fan-b { animation: bn-fan-b 5.5s cubic-bezier(0.4,0,0.2,1) 0.12s infinite alternate; }
+@keyframes bn-fan-a {
+  from { transform: translateY(-2%) rotate(-11deg); }
+  to   { transform: translateY(-7%) rotate(-24deg); }
+}
+@keyframes bn-fan-b {
+  from { transform: translateY(-1%) rotate(-5.5deg); }
+  to   { transform: translateY(-3.5%) rotate(-12deg); }
+}
 @media (prefers-reduced-motion: reduce) {
   .bn-fan-front, .bn-fan-back { transition: none; }
   .bn-row.vis .bn-fan-a, .bn-row.vis .bn-fan-b { animation: none; }
@@ -311,12 +331,18 @@ const EJERCICIOS_IMGS = [
    abre menos, que es lo que permite recortar el hueco de la
    izquierda sin que la esquina se salga. */
 @media (max-width: 860px) {
-  .bn-fan { padding: 21% 0 0 11%; }
-  .bn-fan-stack { width: 90%; }
-  .bn-fan-a { transform: rotate(-13deg); }
-  .bn-fan-b { transform: rotate(-6.5deg); }
-  @keyframes bn-fan-a { from { transform: rotate(-2deg); } to { transform: rotate(-13deg); } }
-  @keyframes bn-fan-b { from { transform: rotate(-1deg); } to { transform: rotate(-6.5deg); } }
+  .bn-fan { padding: 25% 0 0 10%; }
+  .bn-fan-stack { width: 96%; }
+  .bn-fan-a { transform: translateY(-6%) rotate(-17deg); }
+  .bn-fan-b { transform: translateY(-3%) rotate(-8.5deg); }
+  @keyframes bn-fan-a {
+    from { transform: translateY(-2%) rotate(-8deg); }
+    to   { transform: translateY(-6%) rotate(-17deg); }
+  }
+  @keyframes bn-fan-b {
+    from { transform: translateY(-1%) rotate(-4deg); }
+    to   { transform: translateY(-3%) rotate(-8.5deg); }
+  }
 }
 
 /* Captura real en lugar del mockup, recortada a 16/10. Con ese marco
