@@ -526,8 +526,11 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
   font-size: 16px; font-weight: 600; color: #1D0084; line-height: 1.5;
 }
 .porq-list--bad .porq-icon-x {
-  flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
-  background: rgba(220,38,38,0.10); display: flex; align-items: center; justify-content: center;
+  /* Mismo dibujo que el check del hero, en rojo: círculo hueco con borde de
+     2px. Antes era un círculo relleno translúcido y no casaba con el resto. */
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+  background: transparent; border: 2px solid #dc2626;
+  display: flex; align-items: center; justify-content: center;
   margin-top: 1px;
 }
 
@@ -548,8 +551,9 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
   font-size: 16px; font-weight: 600; color: #ffffff; line-height: 1.5;
 }
 .porq-icon-check {
-  flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
-  background: rgba(77,163,255,0.20); border: 1px solid rgba(77,163,255,0.40);
+  /* El check de marca: el mismo del hero (círculo hueco, borde 2px #4da3ff). */
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+  background: transparent; border: 2px solid #4da3ff;
   display: flex; align-items: center; justify-content: center;
   margin-top: 1px;
 }
@@ -852,8 +856,9 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
   font-size: 14px; font-weight: 500; color: #fff;
 }
 .proceso-check {
-  flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
-  background: rgba(77,163,255,0.18); border: 1px solid rgba(77,163,255,0.40);
+  /* Igual que el del hero. */
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+  background: transparent; border: 2px solid #4da3ff;
   display: flex; align-items: center; justify-content: center;
 }
 
