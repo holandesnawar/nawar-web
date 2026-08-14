@@ -948,6 +948,59 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     items.forEach((el) => obs.observe(el))
   })()
 
+  /* ── Puerta 1: los botones ────────────────────────────────
+     Esta página es estática, así que el estado de la matrícula se
+     resuelve en cliente. Por defecto los botones se quedan como
+     están —abiertos—, y sólo si /api/plazas dice que está cerrada se
+     reescriben para llevar a la lista de espera. Si la llamada falla
+     no se toca nada: cerrar por un timeout sería dejar de vender, y
+     la matrícula redirige igualmente por servidor.
+
+     Se buscan por destino y no por una clase: así entran todos los
+     que hay hoy (banner, navbar, barra fija, banda intermedia, stack
+     y tarjeta de precio) y los que se añadan mañana. */
+  ;(function initPuertas() {
+    const DESTINO = '/matricula-formacion-nawar-a0-a1'
+    const ESPERA = '/lista-de-espera'
+
+    function textoDe(a: HTMLAnchorElement): Text | null {
+      // Solo el texto: los <svg> de la flecha se quedan donde están.
+      for (const n of Array.from(a.childNodes)) {
+        if (n.nodeType === Node.TEXT_NODE && (n.textContent ?? '').trim()) return n as Text
+      }
+      return null
+    }
+
+    function cerrar() {
+      document.querySelectorAll<HTMLAnchorElement>(`a[href="${DESTINO}"]`).forEach((a) => {
+        a.href = ESPERA
+        const t = textoDe(a)
+        // La barra fija de abajo es estrecha y no traga la frase entera.
+        const corto = a.closest('.mobile-sticky') || a.classList.contains('l8nav-cta')
+        if (t) t.textContent = corto ? 'Lista de espera' : 'Apúntate a la lista de espera'
+      })
+      // Con las puertas cerradas el precio tachado y el "quedan X" sobran.
+      document.querySelectorAll<HTMLElement>('[data-plazas-quedan]').forEach((el) => {
+        el.hidden = true
+      })
+    }
+
+    fetch('/api/plazas', { headers: { accept: 'application/json' } })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (!d) return
+        if (d.abierta === false) return cerrar()
+        // Escasez de verdad: sale de los cobros, no es un número inventado.
+        if (typeof d.quedan === 'number' && d.quedan > 0) {
+          document.querySelectorAll<HTMLElement>('[data-plazas-quedan]').forEach((el) => {
+            el.textContent = d.quedan === 1 ? 'Queda 1 plaza' : `Quedan ${d.quedan} plazas`
+            el.hidden = false
+          })
+        }
+      })
+      .catch(() => {})
+  })()
+
   /* ── Acordeón de FAQ ─────────────────────────────────────── */
   ;(function initFAQ() {
     const items = document.querySelectorAll('.faq-item')

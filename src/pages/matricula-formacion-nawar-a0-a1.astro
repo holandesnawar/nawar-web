@@ -1,7 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import { getEstadoPlazas, RUTA_LISTA_ESPERA } from '../lib/plazas'
 
 export const prerender = false
+
+// ── Puerta 2: el enlace que ya circula ──
+// El enlace de la matrícula va dentro de correos ya enviados y se reenvía por
+// WhatsApp, así que cambiar el botón de la landing no basta. Con las puertas
+// cerradas, quien llegue aquí acaba en la lista de espera y punto: sin página
+// intermedia ni cartel de "plazas agotadas".
+const plazas = await getEstadoPlazas()
+if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
 ---
 
 <Layout
@@ -14,6 +23,7 @@ export const prerender = false
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>
     </svg>
     <span id="errText"></span>
+    <a id="errLink" class="mx-toast-link" href="/lista-de-espera">Apúntate a la lista de espera</a>
     <button class="mx-toast-close" type="button" id="errClose" aria-label="Cerrar">×</button>
   </div>
 
@@ -326,6 +336,13 @@ export const prerender = false
   }
   .mx-toast.show { display: flex; }
   .mx-toast span { flex: 1; }
+  /* Solo aparece cuando el aviso es "puertas cerradas" */
+  .mx-toast-link {
+    display: none; flex-shrink: 0;
+    color: #fff; font-weight: 700; text-decoration: underline;
+    text-underline-offset: 3px; white-space: nowrap;
+  }
+  .mx-toast-link.show { display: inline; }
   .mx-toast-close {
     background: transparent; border: none; color: #fff;
     font-size: 20px; font-weight: 700; line-height: 1;
@@ -360,8 +377,11 @@ export const prerender = false
     if (spinner) spinner.style.display = on ? 'block' : 'none'
   }
 
-  function showToast(msg: string) {
+  const toastLink = document.getElementById('errLink')
+
+  function showToast(msg: string, conEnlace = false) {
     if (toastText) toastText.textContent = msg
+    toastLink?.classList.toggle('show', conEnlace)
     toast?.classList.add('show')
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -413,6 +433,17 @@ export const prerender = false
         body: JSON.stringify(payload),
       })
       const data = await res.json().catch(() => null)
+      // 403 = puertas cerradas mientras tenía el formulario abierto. Se enseña
+      // el motivo que manda el servidor y una salida, no un "error inesperado".
+      if (res.status === 403) {
+        showToast(
+          (data && data.detail) ||
+            'Las plazas de esta convocatoria están completas. Apúntate a la lista de espera y te avisamos de la próxima.',
+          true
+        )
+        setLoading(false)
+        return
+      }
       if (!res.ok || !data || !data.payment_url) {
         showToast((data && data.detail) || 'No se pudo crear la matrícula. Vuelve a intentarlo en un momento.')
         setLoading(false)

@@ -89,7 +89,10 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
                     <span class="pr-avatar">L</span>
                     <span class="pr-avatar pr-avatar--more">+</span>
                   </span>
-                  <span class="pr-social-text">Únete a la primera edición — plazas limitadas a 40 alumnos</span>
+                  <span class="pr-social-text">
+                    Únete a la primera edición — plazas limitadas a 40 alumnos
+                    <strong class="pr-quedan" data-plazas-quedan hidden></strong>
+                  </span>
                 </div>
 
                 <div class="pr-guarantee">
@@ -292,6 +295,10 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 .pr-avatar:first-child { margin-left: 0; }
 .pr-avatar--more { background: #0b6df0; }
 .pr-social-text { font-size: 11.5px; color: rgba(255,255,255,0.86); line-height: 1.4; }
+/* Lo rellena el script de la landing con el número real de plazas libres que
+   devuelve la academia. Si no hay tope o no se pudo consultar, no aparece:
+   es escasez de verdad o no es nada. */
+.pr-quedan { display: block; margin-top: 3px; color: #7dbcff; font-weight: 700; }
 
 .pr-guarantee {
   position: relative;
