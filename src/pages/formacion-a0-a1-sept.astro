@@ -15,7 +15,12 @@ import ParaTiSection from '../components/landing-08-08-2026/ParaTiSection.astro'
 import PrecioSection from '../components/landing-08-08-2026/PrecioSection.astro'
 import StackValor from '../components/landing-08-08-2026/StackValor.astro'
 import MarcaSection from '../components/landing-08-08-2026/MarcaSection.astro'
-import ProfesoresSection from '../components/landing-08-08-2026/ProfesoresSection.astro'
+// Fuera de la página hasta tener datos reales: los cinco profesores
+// son de relleno (se llaman todos "Nombre Apellido", las frases están
+// inventadas y las fotos son avatares dibujados). El componente se
+// queda en src/components/landing-08-08-2026/ para volver a meterlo en
+// cuanto haya nombres, frases y fotos de verdad.
+// import ProfesoresSection from '../components/landing-08-08-2026/ProfesoresSection.astro'
 import CronogramaSection from '../components/landing-08-08-2026/CronogramaSection.astro'
 // Fuera de la página a petición de Rida: la escasez de "primera
 // edición" no va a ser verdad siempre. El componente se queda en
@@ -790,9 +795,6 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
     {/* ── 10. Quién está detrás ── */}
     <MarcaSection />
-
-    {/* ── 10 bis. Los profesores ── */}
-    <ProfesoresSection />
 
     {/* ── 11. Qué pasa después de reservar ── */}
     <CronogramaSection />
