@@ -1,0 +1,412 @@
+---
+// Sección final de precio — dos columnas: "Tu acceso incluye" + tarjeta de precio premium.
+// Tarjeta con anillo de gradiente + halo, prueba social, pills de pago refinadas.
+const accesoIncluye = [
+  'Programa completo Neerlandés A0 → A1 (8 meses de camino)',
+  'Clases en vivo semanales con el equipo Nawar',
+  'Todas las clases grabadas, disponibles para siempre',
+  'Plataforma interactiva: flashcards, lectura, escucha y ejercicios',
+  'Repaso inteligente que recuerda tus fallos hasta que los dominas',
+  'Libros, presentaciones y materiales descargables',
+  'Soporte y consultas respondidas por el equipo',
+  'Comunidad privada de hispanohablantes',
+  'Certificado Holandés Nawar al completar la formación',
+]
+const bonusIncluye = 'Los 5 bonus de la primera edición, incluidos'
+const precio = '397'
+const precioDespues = '497'
+const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
+---
+<div class="pr-wrapper" id="precio">
+  <div class="pr-outer" data-navbar="dark">
+    <section class="pr-section">
+      <div class="pr-bg-glow" aria-hidden="true"></div>
+      <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.5;"></div>
+      <div class="inner" style="position:relative;z-index:1;">
+
+        <div class="pr-header sr">
+          <span class="badge-dark">
+            <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Reserva tu plaza
+          </span>
+          <h2 class="pr-title">
+            <span class="text-gradient-white">Todo el camino hasta hablar,</span><br />
+            <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;">en un solo pago</span>
+          </h2>
+        </div>
+
+        <div class="pr-layout">
+
+          <!-- Izquierda: tu acceso incluye -->
+          <div class="pr-includes sr">
+            <div class="pr-includes-head">
+              <span class="pr-includes-chip">
+                <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
+              </span>
+              <h3 class="pr-includes-title">Tu acceso incluye</h3>
+            </div>
+            <ul class="pr-list">
+              {accesoIncluye.map((item) => (
+                <li>
+                  <span class="pr-check">
+                    <svg width="11" height="11" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  </span>
+                  {item}
+                </li>
+              ))}
+              <li class="pr-list-bonus">
+                <span class="pr-gift">
+                  <svg width="12" height="12" fill="none" stroke="#0a1656" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+                </span>
+                <span><strong>{bonusIncluye}</strong></span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Derecha: tarjeta de precio con anillo de gradiente -->
+          <div class="pr-card-col sr d1">
+            <div class="pr-card-ring">
+              <div class="pr-card">
+                <h3 class="pr-card-name">Formación Neerlandés<br />A0 → A1</h3>
+
+                <div class="pr-price-row">
+                  <span class="pr-price">{precio}€</span>
+                  <span class="pr-price-meta">
+                    <span class="pr-price-old">{precioDespues}€</span>
+                    <span class="pr-price-note">pago único</span>
+                  </span>
+                </div>
+
+                <a href={matriculaUrl} class="pr-cta">
+                  Reservar mi plaza
+                  <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+
+                <div class="pr-social">
+                  <span class="pr-avatars" aria-hidden="true">
+                    <span class="pr-avatar">M</span>
+                    <span class="pr-avatar">J</span>
+                    <span class="pr-avatar">L</span>
+                    <span class="pr-avatar pr-avatar--more">+</span>
+                  </span>
+                  <span class="pr-social-text">
+                    Únete a la primera edición — plazas limitadas a 40 alumnos
+                    <strong class="pr-quedan" data-plazas-quedan hidden></strong>
+                  </span>
+                </div>
+
+                <div class="pr-guarantee">
+                  <span class="pr-guarantee-chip">
+                    <svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                  </span>
+                  <span><strong>Garantía de 15 días.</strong> Si no es para ti, te devolvemos el 100%.</span>
+                </div>
+
+                <div class="pr-payments">
+                  <span class="pr-pay-secure">
+                    <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    Pago seguro con
+                  </span>
+                  <span class="pr-pay-pill">Tarjeta</span>
+                  <span class="pr-pay-pill">iDEAL</span>
+                  <span class="pr-pay-pill">Klarna</span>
+                  <span class="pr-pay-pill">Bancontact</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<style>
+.pr-wrapper { background: #F0F4FF; padding: 64px 48px 96px; }
+
+.pr-outer { overflow: hidden; position: relative; border-radius: 32px; max-width: 1280px; margin: 0 auto; }
+.pr-section { background: #1D0084; position: relative; overflow: hidden; padding: 64px 0 80px; }
+/* Igual que .np-comp-glow de nawar-plus: azul claro y centrado en la
+   sección, no el azul vivo pegado arriba. Es lo que hace que el índigo
+   deje de verse plano y la tarjeta de cristal tenga algo que reflejar. */
+.pr-bg-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 1000px; height: 660px; border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(77,163,255,0.20) 0%, transparent 65%);
+  pointer-events: none;
+}
+.pr-header { text-align: center; max-width: 760px; margin: 0 auto 48px; }
+/* El <br> parte el título en dos, pero a 25 px la primera línea
+   ("Todo el camino hasta hablar,") no cabe en un móvil y se iba a
+   tres. Por debajo de 640 px baja lo justo para quedarse en dos. */
+.pr-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(25px, 4vw, 48px);
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.14;
+  margin-top: 14px;
+}
+@media (max-width: 640px) {
+  /* El calc no es capricho: la primera línea sólo cabe si la fuente
+     escala con el ancho útil (viewport − 80 px de márgenes), y esa
+     relación medida es font ≈ 0,0625 × ancho útil. Con un clamp de
+     vw a secas se pasaba y caía a tres líneas por debajo de 400 px. */
+  .pr-title {
+    font-size: clamp(17px, calc(6.15vw - 5px), 25px);
+    letter-spacing: -0.015em;
+  }
+}
+
+.pr-layout {
+  display: grid; grid-template-columns: minmax(0, 1fr) 410px;
+  gap: 36px; align-items: start; max-width: 1010px; margin: 0 auto;
+}
+
+
+/* ── Izquierda: incluye ── */
+/* El mismo cristal de nawar-plus que la tarjeta de al lado y que el
+   desglose de valor, para que las tres piezas de la oferta vayan a
+   juego. Antes era un blanco al 5 % y se veía gris al lado. */
+.pr-includes {
+  position: relative; overflow: hidden;
+  background: linear-gradient(160deg, rgba(11,109,240,0.20) 0%, rgba(77,163,255,0.08) 100%);
+  border: 1.5px solid rgba(77,163,255,0.50);
+  border-radius: 26px; padding: 30px 30px;
+}
+.pr-includes::before {
+  content: ''; position: absolute; z-index: 0; pointer-events: none;
+  top: -140px; left: -140px; width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(77,163,255,0.26) 0%, transparent 65%);
+}
+.pr-includes-head, .pr-list { position: relative; z-index: 1; }
+.pr-includes-head { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+/* Icono suelto, sin caja: más grande y en azul claro */
+.pr-includes-chip {
+  width: 30px; height: 30px; border-radius: 0;
+  background: none;
+  color: #7dbcff;
+  display: flex; align-items: center; justify-content: center;
+}
+.pr-includes-chip svg { width: 30px; height: 30px; stroke-width: 1.7; }
+.pr-includes-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 19px; font-weight: 600; color: #fff;
+}
+.pr-list { display: flex; flex-direction: column; gap: 13px; }
+.pr-list li {
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 14.5px; line-height: 1.55; color: rgba(255,255,255,0.82);
+}
+.pr-check {
+  flex-shrink: 0; width: 21px; height: 21px; border-radius: 50%; margin-top: 1px;
+  background: rgba(77,163,255,0.16); border: 1px solid rgba(77,163,255,0.40);
+  display: flex; align-items: center; justify-content: center;
+}
+.pr-list-bonus {
+  margin-top: 6px; padding: 13px 14px;
+  background: rgba(77,163,255,0.12);
+  border: 1px solid rgba(77,163,255,0.30);
+  border-radius: 14px;
+  color: #fff !important;
+}
+.pr-list-bonus strong { font-weight: 600; }
+.pr-gift {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 7px; margin-top: 1px;
+  background: #4da3ff;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── Derecha: tarjeta de precio ── */
+.pr-card-col { position: sticky; top: 96px; }
+
+.pr-card-halo {
+  position: absolute; inset: -14% -12%;
+  background: radial-gradient(ellipse at center, rgba(77,163,255,0.28) 0%, transparent 62%);
+  pointer-events: none;
+}
+/* Sin anillo: en nawar-plus la tarjeta es sólo el cristal con su
+   borde de 1,5 px, y el marco de degradado que había aquí encima le
+   robaba el acabado. Se queda de envoltorio para no tocar el HTML. */
+.pr-card-ring { position: relative; padding: 0; border-radius: 26px; }
+/* Copiado literal de .np-comp-plus de nawar-plus, que es la tarjeta
+   que Rida quería: cristal azul translúcido, no un azul macizo.
+   Lo que fallaba en los intentos anteriores no era el color de la
+   tarjeta sino la luz de detrás: en nawar-plus la sección lleva un
+   resplandor grande en azul claro centrado, y sin él este cristal
+   chupa el índigo de debajo y se apaga. El resplandor de la sección
+   está ahora igualado (ver .pr-bg-glow). */
+.pr-card {
+  background: linear-gradient(160deg, rgba(11,109,240,0.20) 0%, rgba(77,163,255,0.08) 100%);
+  border: 1.5px solid rgba(77,163,255,0.50);
+  border-radius: 26px; padding: 32px 30px 28px;
+  text-align: left; position: relative; overflow: hidden;
+}
+/* El mismo halo de esquina que .np-comp-card-glow */
+.pr-card::before {
+  content: ''; position: absolute; z-index: 0; pointer-events: none;
+  top: -120px; right: -120px; width: 380px; height: 380px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(77,163,255,0.32) 0%, transparent 65%);
+}
+.pr-card-name {
+  position: relative;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 22px; font-weight: 700; color: #fff; line-height: 1.25;
+  margin-bottom: 20px;
+}
+.pr-price-row { position: relative; display: flex; align-items: flex-end; gap: 12px; }
+.pr-price {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 58px; font-weight: 700; line-height: 1;
+  letter-spacing: -0.02em;
+  color: #fff; -webkit-text-fill-color: #fff;
+  text-shadow: 0 2px 18px rgba(6, 0, 60, 0.22);
+}
+.pr-price-meta { display: flex; flex-direction: column; padding-bottom: 6px; }
+.pr-price-old { font-size: 17px; color: rgba(255,255,255,0.62); text-decoration: line-through; font-weight: 600; }
+.pr-price-note { font-size: 12px; color: rgba(255,255,255,0.78); font-weight: 600; }
+.pr-price-sub { position: relative; font-size: 12.5px; color: #8A93AB; margin: 10px 0 22px; }
+
+.pr-cta {
+  position: relative;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 17px 20px; border-radius: 14px;
+  background: #4da3ff; color: #0a1656;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 16px; font-weight: 700; text-decoration: none;
+  box-shadow: none;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.pr-cta:hover { background: #6ab5ff; transform: translateY(-2px); box-shadow: none; }
+
+.pr-social {
+  position: relative;
+  display: flex; align-items: center; gap: 10px;
+  margin: 16px 0 16px;
+}
+.pr-avatars { display: flex; }
+.pr-avatar {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(135deg, #4da3ff, #0b6df0);
+  border: 2px solid #fff;
+  color: #fff; font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-left: -7px;
+}
+.pr-avatar:first-child { margin-left: 0; }
+.pr-avatar--more { background: #0b6df0; }
+.pr-social-text { font-size: 11.5px; color: rgba(255,255,255,0.86); line-height: 1.4; }
+/* Lo rellena el script de la landing con el número real de plazas libres que
+   devuelve la academia. Si no hay tope o no se pudo consultar, no aparece:
+   es escasez de verdad o no es nada. */
+.pr-quedan { display: block; margin-top: 3px; color: #7dbcff; font-weight: 700; }
+
+.pr-guarantee {
+  position: relative;
+  display: flex; gap: 11px; align-items: flex-start;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 14px; padding: 13px 15px;
+  font-size: 12.5px; color: rgba(255,255,255,0.95); line-height: 1.5;
+  margin-bottom: 16px;
+}
+/* Icono de la garantía, también sin caja */
+.pr-guarantee-chip {
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 0;
+  background: none;
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.pr-guarantee-chip svg { width: 26px; height: 26px; stroke: currentColor !important; }
+
+/* "Pago seguro con" ocupa su propia línea: en 410 px de tarjeta no
+   cabía junto a los cuatro métodos y Bancontact se caía solo a una
+   tercera fila. */
+.pr-payments {
+  position: relative;
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  font-size: 11px; color: #8A93AB;
+}
+.pr-pay-secure {
+  display: inline-flex; align-items: center; gap: 5px;
+  width: 100%; margin-bottom: 2px;
+  font-weight: 600; color: rgba(255,255,255,0.55);
+}
+.pr-pay-pill {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; padding: 4px 10px;
+  font-size: 10.5px; font-weight: 600; color: #fff;
+}
+
+/* ── Móvil: centrado y sin roturas ────────────────────────────
+   La tarjeta se diseñó para escritorio, alineada a la izquierda.
+   En pantallas estrechas la pastilla partía en dos con el punto
+   descolocado, el precio quedaba apretado y los métodos de pago
+   se iban a la izquierda en dos filas sueltas. ─────────────── */
+
+
+/* ── Ajustes pedidos en la revisión ─────────────────────────── */
+
+/* Ya no hay halo: la tarjeta no necesita reservar hueco arriba */
+.pr-card-col { padding-top: 0; }
+
+/* Checks de la lista: solo el tick, sin círculo de fondo */
+/* Palomita de la casa, igual que en el home y en el resto de listas */
+.pr-check {
+  width: 22px; height: 22px; border-radius: 50%; margin-top: 0;
+  background: transparent; border: 2px solid #4da3ff; color: #4da3ff;
+}
+.pr-check svg { width: 12px; height: 12px; stroke: currentColor !important; stroke-width: 2.6 !important; }
+.pr-gift { background: none; border: none; }
+.pr-gift svg { stroke: #4da3ff !important; width: 15px; height: 15px; }
+
+.pr-guarantee { align-items: center; }
+
+/* Precio: centrado y con el importe anterior al lado */
+.pr-price-row { justify-content: center; align-items: baseline; gap: 12px; }
+.pr-price-meta { flex-direction: row; align-items: baseline; gap: 9px; padding-bottom: 0; }
+.pr-card-name { text-align: center; }
+.pr-card { display: flex; flex-direction: column; }
+.pr-cta { margin-top: 22px; }
+
+@media (max-width: 640px) { .pr-wrapper { padding: 40px 16px 64px; } }
+
+@media (max-width: 900px) { .pr-layout { grid-template-columns: 1fr; } }
+
+@media (max-width: 900px) { .pr-card-col { position: static; } }
+
+@media (max-width: 560px) {
+  .pr-card { padding: 26px 20px 24px; text-align: center; }
+
+  /* Ojo: el salto de línea del título se deja tal cual. Ocultarlo
+     con display:none pegaba las palabras ("NeerlandésA0"). */
+  .pr-card-name { font-size: 22px; }
+
+  /* Precio: cifra y detalle en una línea, centrados y sin apretar */
+  .pr-price-row {
+    justify-content: center;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .pr-price { font-size: 54px; }
+  .pr-price-meta {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
+    padding-bottom: 0;
+  }
+  .pr-price-sub { margin: 12px auto 20px; max-width: 30ch; }
+
+  .pr-cta { width: 100%; justify-content: center; }
+
+  /* Prueba social y garantía: alineadas a la izquierda para que
+     el texto sea legible, pero el bloque centrado */
+  .pr-social, .pr-guarantee { text-align: left; }
+
+  /* Métodos de pago: una sola fila centrada. Las cuatro pastillas
+     suman 287 px con el tamaño de escritorio y la tarjeta sólo da
+     264 px, así que aquí van un punto más apretadas. */
+  .pr-payments { justify-content: center; row-gap: 8px; gap: 5px; }
+  .pr-pay-secure { width: 100%; justify-content: center; margin-bottom: 2px; }
+  .pr-pay-pill { padding: 4px 7px; font-size: 9.5px; }
+}
+</style>

@@ -1,0 +1,243 @@
+---
+// Stack de valor — la sección central de una oferta tipo 100M Offers.
+// Cada componente lleva su valor individual y el total se ancla muy por
+// encima del precio.
+//
+// ⚠️ Los importes son una propuesta, no un dato cerrado. Dos están
+// derivados de precios reales que ya se citan en la página (un nivel en
+// una academia de NL cuesta ~800 € y una clase suelta ~65 €); el resto
+// son estimaciones razonables. Revísalos antes de publicar.
+//
+// Ojo al editar: cada concepto aparece UNA sola vez. Los cinco bonus
+// están aquí dentro con el mismo importe que muestra la sección de
+// bonus, para que el total cuadre y no se cuente nada dos veces.
+const nucleo = [
+  { item: 'Programa completo Neerlandés A0 → A1', detalle: '8 meses de camino estructurado, con acceso de por vida', valor: 800, nota: 'lo que cuesta un solo nivel en una academia de NL' },
+  { item: 'Plataforma interactiva', detalle: 'Flashcards, lectura, escucha con audio nativo y ejercicios', valor: 150 },
+  { item: 'Repaso inteligente', detalle: 'Recuerda tus fallos y te los devuelve hasta que los dominas', valor: 90 },
+  { item: 'Libros y materiales descargables', detalle: 'Presentaciones, guías y PDFs de cada lección', valor: 120 },
+]
+const bonus = [
+  { item: 'Clase semanal en directo', detalle: '12 clases con profesor, todas grabadas', valor: 780, nota: '12 × 65 € que cuesta una clase suelta' },
+  { item: 'Comunidad privada de hispanohablantes', detalle: 'Gente en tu misma situación, no aprendes solo', valor: 120 },
+  { item: 'Ejercicios y lecciones extra', detalle: 'Material adicional para repasar sin límite', valor: 90 },
+  { item: 'Soporte y resolución de dudas', detalle: 'Preguntas y te responde el equipo', valor: 150 },
+  { item: 'Certificado oficial Holandés Nawar', detalle: 'Personalizado, al completar la formación', valor: 60 },
+]
+
+const total = [...nucleo, ...bonus].reduce((a, b) => a + b.valor, 0)
+const precio = 397
+const ahorro = total - precio
+const eur = (n: number) => n.toLocaleString('es-ES')
+const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
+---
+<section class="sv-section" data-navbar="dark" id="valor">
+  <div class="sv-glow" aria-hidden="true"></div>
+  <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.45;"></div>
+  <div class="inner" style="position:relative;z-index:1;">
+
+    <div class="sv-header sr">
+      <span class="badge-dark">
+        <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Lo que vale de verdad
+      </span>
+      <h2 class="sv-title">
+        <span class="text-gradient-white">Suma todo lo que te llevas.</span><br />
+        <span class="sv-accent">Después mira el precio.</span>
+      </h2>
+    </div>
+
+    <div class="sv-card sr">
+      <table class="sv-table">
+        <caption class="sv-caption">Desglose del valor de la formación</caption>
+        <tbody>
+          {nucleo.map((r) => (
+            <tr>
+              <th scope="row">
+                <span class="sv-item">{r.item}</span>
+                <span class="sv-detalle">{r.detalle}</span>
+              </th>
+              <td class="sv-valor">
+                {eur(r.valor)}&nbsp;€
+                {r.nota && <span class="sv-nota">{r.nota}</span>}
+              </td>
+            </tr>
+          ))}
+          {bonus.map((r, i) => (
+            <tr class="sv-bonus">
+              <th scope="row">
+                <span class="sv-item"><span class="sv-tag">Bonus {String(i + 1).padStart(2, '0')}</span>{r.item}</span>
+                <span class="sv-detalle">{r.detalle}</span>
+              </th>
+              <td class="sv-valor">
+                {eur(r.valor)}&nbsp;€
+                {r.nota && <span class="sv-nota">{r.nota}</span>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr class="sv-total">
+            <th scope="row">Valor total</th>
+            <td><span class="sv-strike">{eur(total)}&nbsp;€</span></td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="sv-hoy">
+        <div class="sv-hoy-left">
+          <p class="sv-hoy-label">Tu inversión hoy</p>
+          <p class="sv-hoy-precio">{eur(precio)}&nbsp;€ <span>pago único</span></p>
+        </div>
+        <div class="sv-hoy-right">
+          <span class="sv-ahorro">Te ahorras {eur(ahorro)}&nbsp;€</span>
+          <a href={matriculaUrl} class="sv-cta">
+            Quiero mi plaza
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.sv-section { background: #1D0084; position: relative; overflow: hidden; padding: 96px 0; }
+/* Copiado de .np-comp-glow de nawar-plus. El azul vivo (#0b6df0)
+   pegado arriba tiraba a morado sobre el índigo y dejaba el resto de
+   la sección plano; el azul claro (#4da3ff) centrado ilumina el
+   bloque entero y es lo que da el aire de cristal. */
+.sv-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 1000px; height: 660px; border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(77,163,255,0.20) 0%, transparent 65%);
+  pointer-events: none;
+}
+.sv-header { text-align: center; max-width: 760px; margin: 0 auto 48px; }
+.sv-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.14;
+  margin-top: 18px;
+}
+.sv-accent { color: #4da3ff; -webkit-text-fill-color: #4da3ff; }
+
+.sv-card {
+  position: relative; overflow: hidden;
+  max-width: 820px; margin: 0 auto;
+  background: linear-gradient(160deg, rgba(11,109,240,0.20) 0%, rgba(77,163,255,0.08) 100%);
+  border: 1.5px solid rgba(77,163,255,0.50);
+  border-radius: 26px;
+  padding: 14px 30px 30px;
+}
+.sv-card::before {
+  content: ''; position: absolute; z-index: 0; pointer-events: none;
+  top: -140px; right: -140px; width: 420px; height: 420px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(77,163,255,0.28) 0%, transparent 65%);
+}
+.sv-table, .sv-hoy { position: relative; z-index: 1; }
+
+.sv-table { width: 100%; border-collapse: collapse; text-align: left; }
+.sv-caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.sv-table th, .sv-table td { vertical-align: top; padding: 17px 0; font-weight: 400; }
+.sv-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.09); }
+
+.sv-item {
+  display: block;
+  font-size: 15.5px; font-weight: 600; color: #fff; line-height: 1.4;
+}
+.sv-detalle { display: block; font-size: 13px; color: rgba(255,255,255,0.74); line-height: 1.5; margin-top: 4px; }
+/* La nota va bajo el importe, no bajo el texto: así la fila no crece
+   una tercera línea y no parece que el párrafo se duplique. */
+.sv-nota {
+  display: block; font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.50);
+  white-space: normal; text-align: right;
+  line-height: 1.4; margin-top: 5px; max-width: 190px; margin-left: auto;
+}
+/* A 9,5 px con 0,13 em de espaciado no se leía qué bonus era */
+.sv-tag {
+  display: inline-block;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 12.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #0a1656; background: #4da3ff;
+  padding: 4px 10px; border-radius: 6px; margin-right: 10px;
+  vertical-align: 1px;
+}
+.sv-valor {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.92);
+  text-align: right; white-space: nowrap; padding-left: 20px !important;
+  font-variant-numeric: tabular-nums;
+}
+.sv-bonus .sv-valor { color: #4da3ff; }
+
+.sv-total th, .sv-total td {
+  padding-top: 22px !important;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 700;
+}
+/* La fila del total es la que ancla el precio: se lee antes que nada
+   y en 16 px se perdía entre las de arriba. */
+.sv-total th { font-size: 34px; color: #fff; letter-spacing: -0.02em; }
+.sv-total td {
+  text-align: right; font-size: 34px; letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.68); font-variant-numeric: tabular-nums;
+}
+.sv-strike {
+  text-decoration: line-through;
+  text-decoration-color: rgba(255,107,107,0.85);
+  text-decoration-thickness: 2.5px;
+}
+
+/* ── Bloque de precio de hoy ── */
+.sv-hoy {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+  margin-top: 26px; padding-top: 26px;
+  border-top: 1.5px dashed rgba(77,163,255,0.38);
+}
+.sv-hoy-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #4da3ff; margin-bottom: 6px;
+}
+.sv-hoy-precio {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(38px, 5vw, 52px); font-weight: 700; line-height: 1;
+  letter-spacing: -0.03em; color: #fff;
+}
+.sv-hoy-precio span { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.6); letter-spacing: 0; }
+.sv-hoy-right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.sv-ahorro {
+  display: inline-flex; align-items: center;
+  font-size: 13px; font-weight: 700; color: #7ee2a8;
+  background: rgba(45,200,120,0.12); border: 1px solid rgba(45,200,120,0.32);
+  padding: 6px 14px; border-radius: 100px;
+}
+.sv-cta {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 16px 26px; border-radius: 13px;
+  background: #4da3ff; color: #1D0084;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 15.5px; font-weight: 700;
+  text-decoration: none;
+  transition: background .22s, transform .22s cubic-bezier(.22,1,.36,1);
+}
+.sv-cta:hover { background: #6ab5ff; transform: scale(1.02); }
+.sv-cta:active { transform: scale(.98); }
+
+@media (max-width: 720px) {
+  .sv-section { padding: 64px 0; }
+  .sv-card { padding: 6px 20px 24px; border-radius: 22px; }
+  .sv-table th, .sv-table td { padding: 15px 0; }
+  .sv-item { font-size: 14.5px; }
+  .sv-valor { font-size: 15px; padding-left: 14px !important; }
+  .sv-total th { font-size: 25px; }
+  .sv-total td { font-size: 27px; }
+  .sv-hoy { flex-direction: column; align-items: stretch; gap: 18px; }
+  .sv-hoy-right { align-items: stretch; }
+  .sv-ahorro { justify-content: center; }
+  .sv-cta { justify-content: center; }
+}
+</style>

@@ -1,0 +1,703 @@
+---
+// Los 5 bonus que van dentro del precio.
+// Uno por fila, en orden 1 → 5, alternando visual y texto. Cada bonus
+// tiene su propia maqueta hecha con CSS (nada de iconos con brillo) y
+// el certificado cierra la sección como bonus 5.
+const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
+// Captura real de una consulta respondida. Si se vacía esta constante,
+// vuelve a verse el mockup dibujado en CSS que había antes.
+// Se pinta con su proporción natural (no se recorta) para que se lea
+// la consulta entera; a lo ancho de media columna queda de una altura
+// parecida a la de los otros cuatro visuales.
+const SOPORTE_IMG = 'https://docs.holandesnawar.com/img/consultas.jpg'
+
+// Bonus 03: tres capturas en abanico, una encima de otra. El PRIMER
+// enlace es el que va delante y se ve entero; los otros dos asoman
+// por detrás. Si se deja la lista vacía (o con un número distinto de
+// tres), vuelve el mockup dibujado en CSS.
+// Bonus 05: el certificado de verdad. Tiene que ser una imagen
+// (jpg/png/webp); un PDF no se puede pintar en un <img>. Con la
+// constante vacía se sigue viendo el diploma dibujado en CSS.
+const CERTIFICADO_IMG = 'https://docs.holandesnawar.com/img/Certificado%20de%20Finalizacio%CC%81n.png'
+
+const EJERCICIOS_IMGS = [
+  'https://docs.holandesnawar.com/img/ejercicios2.jpg',
+  'https://docs.holandesnawar.com/img/ejercicios1.jpg',
+  'https://docs.holandesnawar.com/img/ejerc3.jpg',
+]
+
+---
+<section class="bn-section" data-navbar="light">
+  <div class="inner" style="position:relative;z-index:1;">
+
+    <div class="bn-header sr">
+      <span class="badge-light">
+        <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Además, de regalo
+      </span>
+      <h2 class="bn-title">Cinco <span class="bn-accent">bonus incluidos</span></h2>
+      <p class="bn-sub">No pagas nada extra por ellos. Vienen dentro, y son los que hacen que no te quedes a medias.</p>
+    </div>
+
+    <div class="bn-rows">
+
+      <!-- ── BONUS 1 — Clase semanal en directo ── -->
+      <article class="bn-row sr">
+        <div class="bn-visual">
+          <div class="bn-mock bn-mock--dark">
+            <div class="bn-live-top">
+              <span class="bn-live-tag"><span class="bn-live-dot"></span>EN DIRECTO</span>
+              <span class="bn-live-when">jueves · 19:00</span>
+            </div>
+            <p class="bn-live-title">Les 4 — Getallen en leeftijd</p>
+            <p class="bn-live-teacher">Con tu profesor del módulo 4</p>
+            <div class="bn-live-people">
+              <span class="bn-face">M</span><span class="bn-face">J</span>
+              <span class="bn-face">L</span><span class="bn-face">A</span>
+              <span class="bn-face bn-face--more">+18</span>
+            </div>
+            <div class="bn-live-foot">
+              <span class="bn-live-btn">Entrar a la clase</span>
+              <span class="bn-live-rec">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg>
+                Se graba
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="bn-text">
+          <span class="bn-numrow"><span class="bn-num">Bonus 01</span><span class="bn-val">Valor <s>780 €</s> · incluido</span></span>
+          <h3 class="bn-name">Clase semanal online en directo</h3>
+          <p class="bn-desc">Cada semana una clase en vivo con un profesor interno de la formación, asignado según el módulo que estés cursando. Y si no puedes conectarte, queda grabada y siempre está a tu disposición.</p>
+        </div>
+      </article>
+
+      <!-- ── BONUS 2 — Comunidad ── -->
+      <article class="bn-row bn-row--flip sr">
+        <div class="bn-visual">
+          <div class="bn-mock bn-mock--light">
+            <div class="bn-chat-top">
+              <span class="bn-chat-name">Comunidad Nawar</span>
+              <span class="bn-chat-online"><span class="bn-online-dot"></span>34 en línea</span>
+            </div>
+            <div class="bn-bubble bn-bubble--in">
+              <span class="bn-bubble-who">Lucía</span>
+              ¿Alguien sabe cuándo se usa <em>er</em>? Me lío un poco
+            </div>
+            <div class="bn-bubble bn-bubble--out">
+              <span class="bn-bubble-who">Manuel</span>
+              A mí me pasaba igual. Mira la lección 6, ahí lo explica con ejemplos
+            </div>
+            <div class="bn-bubble bn-bubble--in">
+              <span class="bn-bubble-who">Carlos</span>
+              Justo lo pregunté en la clase del jueves
+            </div>
+          </div>
+        </div>
+        <div class="bn-text">
+          <span class="bn-numrow"><span class="bn-num">Bonus 02</span><span class="bn-val">Valor <s>120 €</s> · incluido</span></span>
+          <h3 class="bn-name">Comunidad de hispanohablantes</h3>
+          <p class="bn-desc">Un grupo privado de personas que están exactamente en tu misma situación. Os apoyáis, compartís dudas y avanzáis juntos en lugar de estudiar en solitario.</p>
+        </div>
+      </article>
+
+      <!-- ── BONUS 3 — Ejercicios y lecciones extra ── -->
+      <article class="bn-row sr">
+        <div class="bn-visual">
+          {EJERCICIOS_IMGS.length === 3 ? (
+            <div class="bn-fan">
+              <div class="bn-fan-stack">
+                <figure class="bn-fan-back bn-fan-a" aria-hidden="true"><img src={EJERCICIOS_IMGS[1]} alt="" loading="lazy" decoding="async" /></figure>
+                <figure class="bn-fan-back bn-fan-b" aria-hidden="true"><img src={EJERCICIOS_IMGS[2]} alt="" loading="lazy" decoding="async" /></figure>
+                <figure class="bn-fan-front">
+                  <img src={EJERCICIOS_IMGS[0]} alt="Ejercicios extra de la academia Holandés Nawar" loading="lazy" decoding="async" />
+                </figure>
+              </div>
+            </div>
+          ) : (
+          <div class="bn-mock bn-mock--light">
+            <div class="bn-ex-top">
+              <span class="bn-ex-tag">Práctica extra</span>
+              <span class="bn-ex-count">4 de 8</span>
+            </div>
+            <p class="bn-ex-q">¿Cómo se dice «yo vivo»?</p>
+            <div class="bn-ex-opts">
+              <span class="bn-opt">Ik heet</span>
+              <span class="bn-opt bn-opt--ok">Ik woon
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </span>
+              <span class="bn-opt">Ik werk</span>
+            </div>
+            <div class="bn-ex-bar"><span style="width:52%"></span></div>
+            <p class="bn-ex-note">Repite las veces que quieras</p>
+          </div>
+          )}
+        </div>
+        <div class="bn-text">
+          <span class="bn-numrow"><span class="bn-num">Bonus 03</span><span class="bn-val">Valor <s>90 €</s> · incluido</span></span>
+          <h3 class="bn-name">Ejercicios y lecciones extra</h3>
+          <p class="bn-desc">Material adicional al temario principal para repasar y practicar todo lo que quieras, tantas veces como necesites hasta que te salga sin pensar.</p>
+        </div>
+      </article>
+
+      <!-- ── BONUS 4 — Soporte ── -->
+      <article class="bn-row bn-row--flip sr">
+        <div class="bn-visual">
+          {SOPORTE_IMG ? (
+            <figure class="bn-shot">
+              <img src={SOPORTE_IMG} alt="Consulta de un alumno respondida por el equipo Nawar dentro de la academia" loading="lazy" decoding="async" />
+            </figure>
+          ) : (
+          <div class="bn-mock bn-mock--dark">
+            <div class="bn-sup-top">
+              <span class="bn-sup-tag">TU CONSULTA</span>
+              <span class="bn-sup-state"><span class="bn-online-dot"></span>Respondida</span>
+            </div>
+            <div class="bn-sup-q">No entiendo por qué el verbo se va al final en esta frase</div>
+            <div class="bn-sup-a">
+              <span class="bn-sup-who">Equipo Nawar</span>
+              Porque es una subordinada con <em>omdat</em>. Te lo explico paso a paso y te dejo tres ejemplos más.
+            </div>
+            <p class="bn-sup-foot">Respondido en menos de 24 h</p>
+          </div>
+          )}
+        </div>
+        <div class="bn-text">
+          <span class="bn-numrow"><span class="bn-num">Bonus 04</span><span class="bn-val">Valor <s>150 €</s> · incluido</span></span>
+          <h3 class="bn-name">Soporte y resolución de dudas</h3>
+          <p class="bn-desc">Cuando algo no te cuadra, preguntas y te respondemos. Sin quedarte bloqueado una semana entera con la misma duda ni buscar respuestas sueltas por internet.</p>
+        </div>
+      </article>
+
+      <!-- ── BONUS 5 — Certificado ── -->
+      <article class="bn-row sr">
+        <div class="bn-visual">
+          <div class="bn-cert-halo" aria-hidden="true"></div>
+          {CERTIFICADO_IMG ? (
+            <figure class="bn-cert bn-cert--foto">
+              <div class="bn-cert-sheen" aria-hidden="true"></div>
+              <img src={CERTIFICADO_IMG} alt="Certificado de finalización de la Formación Neerlandés A0 → A1" loading="lazy" decoding="async" />
+            </figure>
+          ) : (
+          <div class="bn-cert" aria-label="Certificado Holandés Nawar">
+            <div class="bn-cert-sheen" aria-hidden="true"></div>
+            <div class="bn-cert-border">
+              <span class="bn-corner bn-corner--tl" aria-hidden="true"></span>
+              <span class="bn-corner bn-corner--tr" aria-hidden="true"></span>
+              <span class="bn-corner bn-corner--bl" aria-hidden="true"></span>
+              <span class="bn-corner bn-corner--br" aria-hidden="true"></span>
+
+              <div class="bn-cert-head">
+                <img src={LOGO} alt="Holandés Nawar" class="bn-cert-logo" width="120" height="30" />
+              </div>
+              <p class="bn-cert-kicker">— CERTIFICADO DE FINALIZACIÓN —</p>
+              <p class="bn-cert-course">Formación Neerlandés A0 → A1</p>
+              <p class="bn-cert-grant">Se otorga a</p>
+              <div class="bn-cert-nameline">
+                <span class="bn-cert-name">Tu nombre</span>
+              </div>
+              <p class="bn-cert-text">por completar con éxito el programa completo del Método Holandés Nawar</p>
+              <div class="bn-cert-foot">
+                <div class="bn-cert-sig">
+                  <span class="bn-cert-sigline"></span>
+                  <span class="bn-cert-siglabel">Director académico</span>
+                </div>
+                <div class="bn-cert-level">A1</div>
+                <div class="bn-cert-seal-wrap">
+                  <span class="bn-cert-seal-ring" aria-hidden="true"></span>
+                  <div class="bn-cert-seal">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          )}
+        </div>
+        <div class="bn-text">
+          <span class="bn-numrow"><span class="bn-num">Bonus 05</span><span class="bn-val">Valor <s>60 €</s> · incluido</span></span>
+          <h3 class="bn-name">Certificado oficial Holandés Nawar</h3>
+          <p class="bn-desc">Al completar todos los módulos recibes tu certificado personalizado con tu nombre, que acredita tu paso de A0 a A1. Tu nivel, demostrado y listo para compartir.</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<style>
+/* El certificado de verdad, con el mismo juego de color que el
+   dibujado: la mancha azul que se desplaza y el brillo que cruza.
+   Sobre un documento claro la mancha no puede ir en opaco, así que
+   se funde en soft-light: tiñe sin tapar lo que pone. */
+/* Clase repetida para ganarle a .bn-cert, que se define más abajo con
+   la misma especificidad: sin esto la foto se quedaba con el marco
+   azul de 10 px del diploma dibujado. */
+.bn-cert.bn-cert--foto { padding: 0; background: #fff; background-image: none; }
+/* width:auto + los dos topes: así entra igual de bien si el
+   certificado viene apaisado (llena el ancho) que si viene vertical
+   (lo limita el alto y se centra), sin deformarlo ni recortarlo y sin
+   que la fila se dispare de alto. */
+.bn-cert.bn-cert--foto img {
+  position: relative; z-index: 1; display: block;
+  width: auto; height: auto;
+  max-width: 100%; max-height: 430px;
+  margin: 0 auto;
+}
+/* Sobre el diploma dibujado, que era azul oscuro, valía una mancha
+   azul en soft-light. Sobre la foto, que es un documento casi blanco,
+   soft-light no se veía: apenas cambia nada sobre blanco. Con
+   multiply el mismo azul sí tiñe, y el brillo que lo cruza pasa a ser
+   azul en vez de blanco por el mismo motivo.
+   Sigue en bucle (para el móvil, que no tiene ratón) y además se
+   aviva al pasar el cursor, que es como estaba y como le gustaba. */
+.bn-cert.bn-cert--foto::after {
+  z-index: 2;
+  mix-blend-mode: multiply;
+  background: radial-gradient(circle at 32% 28%, rgba(150,198,255,0.92) 0%, rgba(255,255,255,0) 58%);
+  opacity: .8;
+}
+.bn-row:hover .bn-cert.bn-cert--foto::after { opacity: 1; }
+.bn-cert.bn-cert--foto .bn-cert-sheen {
+  z-index: 3;
+  mix-blend-mode: multiply;
+  background: linear-gradient(115deg, rgba(255,255,255,0) 38%, rgba(150,198,255,0.55) 50%, rgba(255,255,255,0) 62%);
+}
+/* Al pasar el cursor, una pasada rápida del brillo además del bucle */
+.bn-row:hover .bn-cert.bn-cert--foto .bn-cert-sheen {
+  animation: bn-cert-sheen 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Baraja de capturas (bonus 03) ────────────────────────────
+   El abanico no funcionaba: con tres tarjetas del mismo tamaño y el
+   mismo sitio, girar sobre una esquina sólo dejaba asomar un pico de
+   las de detrás, y para abrirlo más había que encogerlas.
+
+   Esto es una baraja que se turna: las tres van apiladas con un
+   escalón, y cada una pasa por delante durante unos segundos. Así se
+   ven las tres enteras, una detrás de otra, sin salir del mismo hueco
+   y sin que ninguna tenga que hacerse pequeña.
+
+   La de delante va en el flujo y es la que fija la altura del bloque;
+   las otras dos se calcan encima con inset:0. Las tres comparten el
+   mismo ciclo, desfasado un tercio, y el salto de delante a detrás va
+   tapado con la opacidad a 0 durante esa fracción para que no se vea
+   el corte. */
+.bn-fan { position: relative; padding: 7% 11% 0 0; }
+.bn-fan-stack { position: relative; width: 100%; }
+.bn-fan-front,
+.bn-fan-back {
+  margin: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #E4EAF8;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(29, 0, 132, 0.13);
+  transform-origin: center;
+}
+.bn-fan-front { position: relative; z-index: 3; }
+.bn-fan-front img { width: 100%; height: auto; display: block; }
+.bn-fan-back { position: absolute; inset: 0; }
+.bn-fan-back img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: left top;
+  display: block;
+}
+/* Posiciones de reposo, por si no llega a arrancar la animación */
+.bn-fan-front { transform: translate(0, 0) scale(1); }
+.bn-fan-b { transform: translate(5%, -7%) scale(0.95); z-index: 2; }
+.bn-fan-a { transform: translate(10%, -14%) scale(0.90); z-index: 1; }
+
+.bn-row.vis .bn-fan-front { animation: bn-deck 13.5s cubic-bezier(0.4,0,0.2,1) infinite; }
+.bn-row.vis .bn-fan-b     { animation: bn-deck 13.5s cubic-bezier(0.4,0,0.2,1) -4.5s infinite; }
+.bn-row.vis .bn-fan-a     { animation: bn-deck 13.5s cubic-bezier(0.4,0,0.2,1) -9s infinite; }
+
+@keyframes bn-deck {
+  /* delante */
+  0%,  27%  { transform: translate(0, 0) scale(1);          opacity: 1; z-index: 3; }
+  /* se retira: baja un poco y se desvanece */
+  32%       { transform: translate(-3%, 9%) scale(0.98);    opacity: 0; z-index: 3; }
+  /* reaparece al fondo de la pila */
+  34%       { transform: translate(10%, -14%) scale(0.90);  opacity: 1; z-index: 1; }
+  61%       { transform: translate(10%, -14%) scale(0.90);  opacity: 1; z-index: 1; }
+  /* sube al medio */
+  67%, 94%  { transform: translate(5%, -7%) scale(0.95);    opacity: 1; z-index: 2; }
+  /* y vuelve a delante */
+  100%      { transform: translate(0, 0) scale(1);          opacity: 1; z-index: 3; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bn-row.vis .bn-fan-front,
+  .bn-row.vis .bn-fan-b,
+  .bn-row.vis .bn-fan-a { animation: none; }
+}
+@media (max-width: 860px) {
+  .bn-fan { padding: 6% 9% 0 0; }
+}
+
+/* Captura real en lugar del mockup. La imagen trae alrededor el marco
+   gris de la pantalla de detrás, y lo que interesa es sólo la tarjeta
+   blanca de la consulta. Como no se puede recortar el archivo desde
+   aquí, se recorta por CSS: la caja va a 16/10 y la imagen se amplía
+   un 18 % desde el centro, que es lo que hace falta para que el marco
+   gris se quede fuera por los cuatro lados. Si al verlo se comiera
+   algo de la tarjeta blanca, basta con bajar ese scale. */
+.bn-shot {
+  margin: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #E4EAF8;
+  background: #fff;
+  aspect-ratio: 16 / 10;
+}
+.bn-shot img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  transform: scale(1.18);
+  display: block;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Sección
+══════════════════════════════════════════════════════════════ */
+.bn-section { background: #F0F4FF; position: relative; overflow: hidden; padding: 96px 0; }
+.bn-header { text-align: center; max-width: 720px; margin: 0 auto 64px; }
+.bn-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.12;
+  color: #101336; margin-top: 18px;
+}
+.bn-accent { color: #025dc7; }
+.bn-sub { font-size: clamp(14px, 1.4vw, 17px); color: #454F6B; line-height: 1.6; margin-top: 14px; }
+
+/* ── Filas: visual + texto, alternando lado ── */
+.bn-rows { display: flex; flex-direction: column; gap: 30px; max-width: 1000px; margin: 0 auto; }
+.bn-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #E4EAF8;
+  border-radius: 26px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(29,0,132,0.04);
+}
+.bn-row--flip .bn-visual { order: 2; }
+.bn-row--flip .bn-text   { order: 1; }
+
+.bn-visual { position: relative; min-width: 0; }
+.bn-text   { min-width: 0; }
+
+.bn-numrow {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px;
+}
+.bn-val {
+  font-size: 13px; font-weight: 600; color: #333D5C;
+  background: #F0F4FF; border: 1px solid #DCE5F7;
+  padding: 5px 12px; border-radius: 100px;
+}
+.bn-val s { color: #8A93AB; }
+/* Iba a 11 px con 0,16 em de espaciado y costaba leer "Bonus 01".
+   El azul vivo tampoco pegaba con los fondos de la página, así que
+   ahora es el mismo índigo de marca con un punto del azul medio. */
+.bn-num {
+  display: inline-block;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 14px; font-weight: 800; letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, #1D0084 0%, #26139c 55%, #123a9e 100%);
+  border-radius: 8px;
+  padding: 6px 13px;
+}
+.bn-name {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(19px, 2.1vw, 24px);
+  font-weight: 600; letter-spacing: -0.018em; line-height: 1.22;
+  color: #101336; margin-bottom: 12px;
+}
+.bn-desc { font-size: 15px; color: #454F6B; line-height: 1.68; }
+
+/* ══════════════════════════════════════════════════════════════
+   Maquetas — planas, sin brillos de color
+══════════════════════════════════════════════════════════════ */
+.bn-mock {
+  border-radius: 18px;
+  padding: 20px;
+  display: flex; flex-direction: column; gap: 11px;
+}
+.bn-mock--dark {
+  background: #1D0084;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: #fff;
+}
+.bn-mock--light { background: #F7F9FF; border: 1px solid #E4EAF8; }
+
+/* Bonus 1 — clase en vivo */
+.bn-live-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.bn-live-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 9.5px; font-weight: 800; letter-spacing: 0.12em;
+  color: #ffd9d9; background: rgba(255,86,86,0.16);
+  border: 1px solid rgba(255,86,86,0.34);
+  padding: 4px 10px; border-radius: 100px;
+}
+.bn-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff5656; flex-shrink: 0; }
+.bn-live-when { font-size: 11.5px; color: rgba(255,255,255,0.62); font-weight: 600; white-space: nowrap; }
+.bn-live-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 16px; font-weight: 700; color: #fff; line-height: 1.3;
+}
+.bn-live-teacher { font-size: 12.5px; color: rgba(255,255,255,0.62); margin-top: -5px; }
+.bn-live-people { display: flex; align-items: center; }
+.bn-face {
+  width: 27px; height: 27px; border-radius: 50%;
+  background: #3f6ff0; border: 2px solid #1D0084;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 10.5px; font-weight: 700; color: #fff;
+  margin-right: -7px; flex-shrink: 0;
+}
+.bn-face--more { background: rgba(255,255,255,0.16); font-size: 9.5px; width: 30px; }
+.bn-live-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 3px; }
+.bn-live-btn {
+  font-size: 12.5px; font-weight: 700; color: #1D0084;
+  background: #4da3ff; padding: 8px 15px; border-radius: 9px;
+}
+.bn-live-rec {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11.5px; color: rgba(255,255,255,0.62); font-weight: 600;
+}
+
+/* Bonus 2 — comunidad */
+.bn-chat-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.bn-chat-name { font-family: 'Poppins', system-ui, sans-serif; font-size: 13px; font-weight: 700; color: #101336; }
+.bn-chat-online {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; color: #16a34a; white-space: nowrap;
+}
+.bn-online-dot { width: 6px; height: 6px; border-radius: 50%; background: #16a34a; flex-shrink: 0; }
+.bn-bubble {
+  font-size: 12.5px; line-height: 1.5; color: #3A4460;
+  padding: 9px 12px; border-radius: 12px; max-width: 88%;
+}
+.bn-bubble em { font-style: normal; font-weight: 700; color: #025dc7; }
+.bn-bubble-who { display: block; font-size: 10px; font-weight: 700; color: #8A93AB; margin-bottom: 2px; }
+.bn-bubble--in { background: #fff; border: 1px solid #E4EAF8; border-bottom-left-radius: 4px; align-self: flex-start; }
+.bn-bubble--out { background: #1D0084; color: rgba(255,255,255,0.92); border-bottom-right-radius: 4px; align-self: flex-end; }
+.bn-bubble--out .bn-bubble-who { color: rgba(255,255,255,0.55); }
+.bn-bubble--out em { color: #7dbcff; }
+
+/* Bonus 3 — ejercicios */
+.bn-ex-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.bn-ex-tag {
+  font-size: 9.5px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #025dc7; background: #E8F0FF; padding: 4px 10px; border-radius: 100px; white-space: nowrap;
+}
+.bn-ex-count { font-size: 11px; font-weight: 600; color: #8A93AB; white-space: nowrap; }
+.bn-ex-q { font-family: 'Poppins', system-ui, sans-serif; font-size: 15px; font-weight: 700; color: #101336; }
+.bn-ex-opts { display: flex; flex-direction: column; gap: 7px; }
+.bn-opt {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  font-size: 12.5px; font-weight: 500; color: #454F6B;
+  background: #fff; border: 1px solid #E4EAF8;
+  padding: 9px 12px; border-radius: 10px;
+}
+.bn-opt--ok {
+  color: #15803d; font-weight: 700;
+  background: rgba(22,163,74,0.07); border-color: rgba(22,163,74,0.30);
+}
+.bn-ex-bar { height: 5px; background: #E4EAF8; border-radius: 100px; overflow: hidden; }
+.bn-ex-bar span { display: block; height: 100%; background: #4da3ff; border-radius: 100px; }
+.bn-ex-note { font-size: 11px; color: #8A93AB; }
+
+/* Bonus 4 — soporte */
+.bn-sup-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.bn-sup-tag { font-size: 9.5px; font-weight: 800; letter-spacing: 0.12em; color: rgba(255,255,255,0.6); }
+.bn-sup-state { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: #6ee7a0; white-space: nowrap; }
+.bn-sup-state .bn-online-dot { background: #6ee7a0; }
+.bn-sup-q {
+  font-size: 13px; line-height: 1.5; color: #fff;
+  background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.14);
+  padding: 11px 13px; border-radius: 12px; border-bottom-right-radius: 4px;
+}
+.bn-sup-a {
+  font-size: 12.5px; line-height: 1.55; color: rgba(255,255,255,0.85);
+  background: rgba(77,163,255,0.14); border: 1px solid rgba(77,163,255,0.30);
+  padding: 11px 13px; border-radius: 12px; border-bottom-left-radius: 4px;
+}
+.bn-sup-a em { font-style: normal; font-weight: 700; color: #9ecdff; }
+.bn-sup-who { display: block; font-size: 10px; font-weight: 700; color: #9ecdff; margin-bottom: 3px; letter-spacing: 0.04em; }
+.bn-sup-foot { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+/* ══ Certificado — estilos originales de nawar-web ══ */
+.bn-cert-num {
+  display: inline-block;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.14em;
+  color: #fff; background: linear-gradient(135deg, #4da3ff, #0b6df0);
+  padding: 3px 9px; border-radius: 6px; margin-right: 7px;
+  vertical-align: 1px;
+}
+/* ── Certificado ── */
+.bn-cert-col { position: relative; }
+.bn-cert-halo {
+  position: absolute; inset: -12% -14%;
+  background: radial-gradient(ellipse at center, rgba(11,109,240,0.14) 0%, transparent 62%);
+  pointer-events: none;
+}
+.bn-cert {
+  position: relative;
+  background: #1D0084; border-radius: 20px; padding: 10px;
+  overflow: hidden;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px),
+    radial-gradient(circle 480px at 100% 0%, rgba(11,109,240,0.42) 0%, transparent 65%),
+    radial-gradient(circle 380px at 0% 100%, rgba(11,109,240,0.20) 0%, transparent 65%);
+  background-size: 28px 28px, auto, auto;
+}
+/* El diploma no se mueve; lo que se mueve es el color: una mancha
+   azul que va y viene por dentro y un brillo que lo cruza.
+   Van en bucle y no colgando de :hover, porque en el móvil el hover
+   no existe y allí el efecto no se veía nunca. Arrancan al entrar en
+   pantalla: la fila lleva .sr y el observador del layout le pone
+   .vis, así que la animación empieza justo al llegar scrolleando. */
+.bn-cert::after {
+  content: ''; position: absolute; inset: -45%; z-index: 0; pointer-events: none;
+  background: radial-gradient(circle at 32% 28%, rgba(77,163,255,0.55) 0%, transparent 55%);
+  opacity: .5;
+  transform: translate3d(-7%, -7%, 0);
+}
+.bn-row.vis .bn-cert::after { animation: bn-cert-glow 7s ease-in-out infinite alternate; }
+@keyframes bn-cert-glow {
+  from { transform: translate3d(-7%, -7%, 0)  scale(1);    opacity: .45; }
+  to   { transform: translate3d(16%, 13%, 0)  scale(1.12); opacity: .95; }
+}
+.bn-cert-sheen {
+  position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,0.16) 50%, transparent 62%);
+  transform: translateX(-130%);
+}
+.bn-row.vis .bn-cert-sheen { animation: bn-cert-sheen 6.5s ease-in-out 0.6s infinite; }
+@keyframes bn-cert-sheen {
+  0%   { transform: translateX(-130%); }
+  45%  { transform: translateX(130%); }
+  100% { transform: translateX(130%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bn-row.vis .bn-cert::after,
+  .bn-row.vis .bn-cert-sheen { animation: none; }
+}
+.bn-cert-border {
+  position: relative; z-index: 1;
+  border: 1px solid rgba(255,255,255,0.24); border-radius: 16px;
+  box-shadow: inset 0 0 0 4px rgba(255,255,255,0.04);
+  padding: 36px 32px 28px; text-align: center;
+}
+.bn-corner { position: absolute; width: 16px; height: 16px; opacity: 0.75; }
+.bn-corner--tl { top: 8px; left: 8px; border-top: 2px solid #4da3ff; border-left: 2px solid #4da3ff; border-top-left-radius: 6px; }
+.bn-corner--tr { top: 8px; right: 8px; border-top: 2px solid #4da3ff; border-right: 2px solid #4da3ff; border-top-right-radius: 6px; }
+.bn-corner--bl { bottom: 8px; left: 8px; border-bottom: 2px solid #4da3ff; border-left: 2px solid #4da3ff; border-bottom-left-radius: 6px; }
+.bn-corner--br { bottom: 8px; right: 8px; border-bottom: 2px solid #4da3ff; border-right: 2px solid #4da3ff; border-bottom-right-radius: 6px; }
+.bn-cert-logo { height: 34px; margin: 0 auto 18px; display: block; }
+.bn-cert-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.30em; color: #4da3ff; margin-bottom: 8px; }
+.bn-cert-course {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 19px; font-weight: 600; color: #fff; margin-bottom: 18px;
+}
+.bn-cert-grant { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.40); margin-bottom: 10px; }
+.bn-cert-nameline { border-bottom: 1px solid rgba(255,255,255,0.30); max-width: 260px; margin: 0 auto 8px; padding-bottom: 7px; }
+.bn-cert-name {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 24px; font-style: italic; color: rgba(255,255,255,0.94);
+  letter-spacing: 0.01em;
+}
+.bn-cert-text { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.55; max-width: 300px; margin: 0 auto 26px; }
+.bn-cert-foot {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  /* El sello llegaba a tocar la esquina decorativa de abajo */
+  padding: 0 4px 6px;
+}
+.bn-cert-sig { text-align: left; }
+.bn-cert-sigline { display: block; width: 110px; border-bottom: 1px solid rgba(255,255,255,0.35); margin-bottom: 5px; }
+.bn-cert-siglabel { font-size: 10px; color: rgba(255,255,255,0.45); }
+.bn-cert-level {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.22); border-radius: 999px;
+  padding: 4px 13px; margin-bottom: 4px;
+}
+
+.bn-cert-seal-wrap { position: relative; width: 56px; height: 56px; }
+.bn-cert-seal-ring {
+  position: absolute; inset: -5px;
+  border: 1px dashed rgba(77,163,255,0.55); border-radius: 50%;
+}
+.bn-cert-seal {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, #4da3ff, #0b6df0);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: none;
+}
+.bn-cert-caption { text-align: center; margin-top: 24px; font-size: 14.5px; color: #101336; position: relative; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   Responsive
+══════════════════════════════════════════════════════════════ */
+
+
+/* Interior del diploma. Ya no hay 16/9 que respetar: el bloque ocupa
+   media columna como los demás bonus y crece con su contenido, así
+   que sólo hace falta apretar los tamaños. */
+.bn-cert-border {
+  display: flex; flex-direction: column;
+  padding: clamp(14px, 2.2vw, 22px) clamp(16px, 2.6vw, 26px) !important;
+  gap: 6px;
+}
+.bn-cert-head { margin-bottom: 0 !important; }
+.bn-cert-logo { height: clamp(18px, 2vw, 26px) !important; }
+.bn-cert-kicker { font-size: clamp(7px, 0.75vw, 9px) !important; margin: 4px 0 !important; letter-spacing: .18em !important; }
+.bn-cert-course { font-size: clamp(13px, 1.5vw, 19px) !important; margin: 0 !important; }
+.bn-cert-grant { font-size: clamp(8px, 0.85vw, 10px) !important; margin: 2px 0 0 !important; }
+.bn-cert-nameline { margin: 0 !important; padding-bottom: 4px !important; }
+.bn-cert-name { font-size: clamp(16px, 2vw, 25px) !important; }
+.bn-cert-text { font-size: clamp(8.5px, 0.9vw, 11px) !important; margin: 2px 0 0 !important; }
+.bn-cert-foot { margin-top: 0 !important; padding-top: 0 !important; align-items: flex-end; }
+.bn-cert-seal { width: clamp(30px, 3.6vw, 44px) !important; height: clamp(30px, 3.6vw, 44px) !important; }
+.bn-cert-seal svg { width: 55% !important; height: 55% !important; }
+.bn-cert-seal-ring { inset: -5px !important; }
+.bn-cert-level { font-size: clamp(9px, 1vw, 12px) !important; padding: 3px 10px !important; }
+.bn-cert-sigline { width: clamp(48px, 6vw, 88px) !important; }
+.bn-cert-siglabel { font-size: clamp(6.5px, 0.7vw, 8.5px) !important; }
+
+@media (max-width: 760px) {
+  .bn-cert-border { gap: 7px; }
+}
+
+@media (max-width: 400px) {
+ .bn-cert-level { display: none; }
+}
+
+@media (max-width: 860px) {
+  .bn-section { padding: 64px 0; }
+  .bn-header { margin-bottom: 40px; }
+  .bn-rows { gap: 20px; }
+  .bn-row {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 22px;
+    border-radius: 22px;
+  }
+  /* En una sola columna el visual siempre va primero */
+  .bn-row--flip .bn-visual { order: 1; }
+  .bn-row--flip .bn-text   { order: 2; }
+  .bn-mock { padding: 16px; }
+  .bn-bubble { max-width: 94%; }
+}
+
+@media (max-width: 760px) {
+  .bn-cert-text { display: none; }
+}
+</style>

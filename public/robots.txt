@@ -9,5 +9,7 @@ Disallow: /api/
 # de redes sociales (que ignoran robots.txt) generen preview en DMs
 Disallow: /ebook-a0-a1
 Disallow: /ebook-a0-a1/
+Disallow: /formacion-a0-a1-sept
+Disallow: /formacion-a0-a1-sept/
 
 Sitemap: https://www.holandesnawar.com/sitemap-index.xml

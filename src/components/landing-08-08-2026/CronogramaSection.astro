@@ -1,0 +1,129 @@
+---
+// Qué pasa después de pagar — baja el miedo al "¿y ahora qué?".
+//
+// ⚠️ Los pasos no llevan fechas concretas a propósito: no sé cuándo
+// arranca el grupo. Cuando tengas la fecha, cámbiala en el paso 3 y
+// en el 4 y la sección gana mucha fuerza.
+const pasos = [
+  {
+    n: '01',
+    cuando: 'Hoy',
+    title: 'Reservas tu plaza',
+    desc: 'Rellenas un formulario corto y pasas al pago seguro. Un solo pago, sin permanencia.',
+  },
+  {
+    n: '02',
+    cuando: 'En minutos',
+    title: 'Recibes tu acceso',
+    desc: 'Te llega el email con tus datos para entrar a la academia. Puedes empezar el primer módulo esa misma noche.',
+  },
+  {
+    n: '03',
+    cuando: 'Tu primera semana',
+    title: 'Entras a tu primera clase en directo',
+    desc: 'Te unes al grupo, conoces a tu profesor y a los demás alumnos, y practicas desde el primer día.',
+  },
+  {
+    n: '04',
+    cuando: 'A partir de ahí',
+    title: 'Tus primeras conversaciones reales',
+    desc: 'Con 20–30 minutos al día avanzas unidad a unidad hasta pedir cita, hacer la compra y presentarte en neerlandés.',
+  },
+]
+---
+<section class="cr-section" data-navbar="light">
+  <div class="inner" style="position:relative;z-index:1;">
+
+    <div class="cr-header sr">
+      <span class="badge-light">
+        <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Qué pasa después
+      </span>
+      <h2 class="cr-title">Desde que reservas hasta tu <span class="cr-accent">primera conversación</span></h2>
+      <p class="cr-sub">Sin sorpresas y sin letra pequeña. Esto es exactamente lo que ocurre cuando entras.</p>
+    </div>
+
+    <ol class="cr-steps">
+      {pasos.map((p, i) => (
+        <li class={`cr-step sr${i > 0 ? ` d${i}` : ''}`}>
+          <div class="cr-marker" aria-hidden="true">
+            <span class="cr-dot">{p.n}</span>
+            <span class="cr-line"></span>
+          </div>
+          <div class="cr-body">
+            <span class="cr-when">{p.cuando}</span>
+            <h3 class="cr-name">{p.title}</h3>
+            <p class="cr-desc">{p.desc}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+  </div>
+</section>
+
+<style>
+.cr-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
+.cr-header { text-align: center; max-width: 720px; margin: 0 auto 56px; }
+.cr-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.12;
+  color: #101336; margin: 18px 0 16px;
+}
+.cr-accent { color: #025dc7; }
+.cr-sub { font-size: clamp(14px, 1.4vw, 17px); color: #454F6B; line-height: 1.6; }
+
+.cr-steps {
+  list-style: none;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0;
+  max-width: 1000px; margin: 0 auto;
+}
+.cr-step { display: flex; flex-direction: column; gap: 18px; padding-right: 24px; min-width: 0; }
+.cr-step:last-child { padding-right: 0; }
+
+.cr-marker { display: flex; align-items: center; gap: 0; }
+.cr-line { border-radius: 100px; }
+/* Sin círculo de fondo: el número manda, con degradado de marca. */
+.cr-dot {
+  flex-shrink: 0;
+  display: inline-flex; align-items: baseline;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 40px; font-weight: 800; letter-spacing: -0.04em; line-height: 1;
+  background: linear-gradient(170deg, #1D0084 0%, #4da3ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding-right: 14px;
+}
+.cr-line { flex: 1; height: 2px; background: linear-gradient(to right, rgba(2,93,199,0.30), rgba(2,93,199,0.06)); }
+.cr-step:last-child .cr-line { display: none; }
+
+.cr-when {
+  display: inline-block;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase;
+  color: #025dc7; margin-bottom: 8px;
+}
+.cr-name {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 18px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.28;
+  color: #101336; margin-bottom: 9px;
+}
+.cr-desc { font-size: 14.5px; color: #454F6B; line-height: 1.65; }
+
+/* ── Móvil: la línea pasa a ser vertical ── */
+@media (max-width: 900px) {
+  .cr-section { padding: 64px 0; }
+  .cr-header { margin-bottom: 36px; }
+  .cr-steps { grid-template-columns: 1fr; gap: 0; max-width: 560px; }
+  .cr-step { flex-direction: row; gap: 18px; padding-right: 0; padding-bottom: 26px; }
+  .cr-step:last-child { padding-bottom: 0; }
+  .cr-marker { flex-direction: column; align-self: stretch; }
+  .cr-dot { font-size: 32px; padding-right: 0; padding-bottom: 8px; }
+  .cr-line {
+    width: 2px; height: auto; flex: 1; margin-top: 8px;
+    background: linear-gradient(to bottom, rgba(2,93,199,0.30), rgba(2,93,199,0.06));
+  }
+  .cr-body { padding-top: 2px; }
+}
+</style>

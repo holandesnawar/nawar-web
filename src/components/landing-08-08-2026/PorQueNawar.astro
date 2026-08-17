@@ -1,0 +1,70 @@
+---
+interface Props { data?: any }
+const { data } = Astro.props
+const badge = data?.badge ?? 'Por qué existe Nawar'
+// El <span> sin clase es el que se lleva el subrayado de rotulador
+// (ver "TÍTULOS DE LAS SECCIONES CLARAS" en la hoja de la landing).
+const title = data?.title ?? 'El método que nadie\n<span>te había ofrecido</span>'
+const subtitle = data?.subtitle ?? 'Las academias tradicionales no están pensadas para ti. Nawar nació para cambiar eso: neerlandés desde el español, con método real y comunidad que te acompaña.'
+const leftTitle = data?.leftCardTitle ?? 'El 90% de los estudiantes abandona sin hablar ni una frase'
+const leftItems = data?.leftCardItems ?? [
+  'Clases genéricas diseñadas para angloparlantes',
+  'Profesores que no hablan ni entienden español',
+  'Precios elevados sin garantías ni resultados claros',
+  'Sin comunidad: aprendes solo y te abandonas a mitad',
+  'Memorización de reglas sin contexto cultural real',
+]
+const rightTitle = data?.rightCardTitle ?? 'En Nawar avanzas desde cero con una ruta clara pensada para hispanohablantes'
+const rightItems = data?.rightCardItems ?? [
+  'Método creado específicamente para hispanohablantes',
+  'Profesores que hablan español y entienden tu punto de partida',
+  'Garantía 15 días: si no te convence, te devolvemos el dinero',
+  'Comunidad activa: no aprendes solo, avanzas con otros',
+  'Clases en vivo con contexto real y cultura neerlandesa',
+]
+---
+<section class="porq-section" data-navbar="light">
+  <div class="inner" style="position:relative;z-index:1;">
+
+    <div class="porq-header sr">
+      <span class="badge-light">{badge}</span>
+      <h2 class="porq-title" set:html={title.replace(/\n/g, '<br>')} />
+      <p class="porq-sub">{subtitle}</p>
+    </div>
+
+    <div class="porq-cards">
+
+      <!-- Tarjeta izquierda: academias tradicionales -->
+      <div class="porq-card porq-card--light sr">
+        <h3 class="porq-card-title porq-card-title--light">{leftTitle}</h3>
+        <ul class="porq-list porq-list--bad">
+          {leftItems.map((item: string) => (
+            <li>
+              <span class="porq-icon-x">
+                <svg width="10" height="10" fill="none" stroke="#dc2626" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              </span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Tarjeta derecha: Nawar -->
+      <div class="porq-card porq-card--dark sr d1">
+        <div class="porq-card-bg-glow" aria-hidden="true"></div>
+        <h3 class="porq-card-title porq-card-title--dark">{rightTitle}</h3>
+        <ul class="porq-list porq-list--good">
+          {rightItems.map((item: string) => (
+            <li>
+              <span class="porq-icon-check">
+                <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>

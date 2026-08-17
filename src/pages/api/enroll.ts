@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro'
+import { getEstadoPlazas, MENSAJE_CERRADO } from '../../lib/plazas'
 
 export const prerender = false
 
@@ -105,6 +106,16 @@ async function syncToCRM(
 // ── Route handler ──────────────────────────────────────────────────────────────
 
 export const POST: APIRoute = async ({ request }) => {
+  // ── Puerta 3: red de seguridad ──
+  // Para quien tuviera el formulario ya abierto en el móvil cuando cerramos.
+  // Va lo primero, antes de tocar systeme.io o la academia: con las puertas
+  // cerradas no se crea contacto ni se pide PaymentIntent.
+  const plazas = await getEstadoPlazas()
+  if (!plazas.abierta) {
+    console.log('[enroll] matrícula cerrada, rechazando')
+    return json({ detail: MENSAJE_CERRADO }, 403)
+  }
+
   const body = await request.json().catch(() => null)
 
   const email     = (body?.email      ?? '').toString().trim().toLowerCase()

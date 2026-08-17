@@ -1,0 +1,146 @@
+---
+// Quién está detrás — genera confianza antes del precio.
+//
+// ⚠️ Falta la foto de Rida. Cuando la tengas, va en .mk-sign en lugar
+// de las iniciales y esta sección gana bastante.
+const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
+
+// Iconos de marca de las redes (paths de los logos oficiales)
+const redes = [
+  { nombre: 'Instagram', d: 'M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.17.4.37 1 .42 2.2.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.05 1.2-.25 1.8-.42 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.17-1 .37-2.2.42-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.05-1.8-.25-2.2-.42-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.17-.4-.37-1-.42-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.05-1.2.25-1.8.42-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.17 1-.37 2.2-.42C8.4 2.2 8.8 2.2 12 2.2zm0 3.24A6.56 6.56 0 1 0 18.56 12 6.56 6.56 0 0 0 12 5.44zm0 10.82A4.26 4.26 0 1 1 16.26 12 4.26 4.26 0 0 1 12 16.26zm6.82-10.96a1.53 1.53 0 1 1-1.53-1.53 1.53 1.53 0 0 1 1.53 1.53z' },
+  { nombre: 'TikTok', d: 'M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 1 1-1.79-2.46V9.79a5.77 5.77 0 1 0 4.88 5.7V9.01a7.35 7.35 0 0 0 4.28 1.38V7.3a4.28 4.28 0 0 1-3.22-1.48z' },
+  { nombre: 'Facebook', d: 'M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.5-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.44-4.92 8.44-9.94z' },
+]
+
+const hitos = [
+  { dato: '+30 mil', label: 'estudiantes en redes sociales', social: true },
+  { dato: '100%', label: 'explicado desde el español, no desde el inglés' },
+  { dato: 'A0 → A1', label: 'la ruta completa, cerrada de principio a fin' },
+]
+---
+<section class="mk-section" data-navbar="light">
+  <div class="inner" style="position:relative;z-index:1;">
+    <div class="mk-layout">
+
+      <div class="mk-visual sr">
+        <div class="mk-card">
+          <img src={LOGO} alt="Holandés Nawar" class="mk-logo" width="150" height="38" />
+          <p class="mk-quote">
+            «Creo que aprender neerlandés no debería ser una barrera. Para vivir,
+            trabajar e integrarte en Países Bajos, el idioma es la clave. Pero nadie
+            lo enseñaba desde el español. Con el método correcto, con quien lo
+            entiende, todo cambia.»
+          </p>
+          <div class="mk-sign">
+            <span class="mk-sign-role">Fundador de Holandés Nawar</span>
+            <span class="mk-sign-name">Rida Nawar</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-text sr d1">
+        <span class="badge-light">Quién está detrás</span>
+        <h2 class="mk-title">No es un curso de idiomas más. Nació de la misma frustración <span class="mk-accent">que tienes tú.</span></h2>
+        <p class="mk-p">
+          Empecé Nawar porque yo mismo viví la frustración de aprender neerlandés sin los
+          recursos correctos. Los métodos disponibles eran genéricos, pensados para cualquiera
+          menos para un hispanohablante.
+        </p>
+        <p class="mk-p">
+          Por eso construí Nawar desde cero: un método diseñado para quien piensa en español y
+          quiere vivir, trabajar e integrarse de verdad en los Países Bajos.
+        </p>
+
+        <ul class="mk-hitos">
+          {hitos.map((h) => (
+            <li>
+              <span class="mk-dato">{h.dato}</span>
+              <span class="mk-label">{h.label}</span>
+              {h.social && (
+                <span class="mk-redes">
+                  {redes.map((r) => (
+                    <svg viewBox="0 0 24 24" width="15" height="15" role="img" aria-label={r.nombre}><path fill="currentColor" d={r.d}/></svg>
+                  ))}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+.mk-section { background: #F0F4FF; position: relative; overflow: hidden; padding: 96px 0; }
+.mk-layout {
+  display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  gap: 52px; align-items: center; max-width: 1000px; margin: 0 auto;
+}
+@media (max-width: 880px) { .mk-layout { grid-template-columns: 1fr; gap: 32px; } }
+
+.mk-card {
+  background: #1D0084;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px),
+    radial-gradient(circle 420px at 100% 0%, rgba(11,109,240,0.42) 0%, transparent 65%);
+  background-size: 26px 26px, auto;
+  border-radius: 26px;
+  padding: 38px 34px;
+  display: flex; flex-direction: column; gap: 22px;
+}
+.mk-logo { height: 34px; width: auto; object-fit: contain; }
+.mk-quote {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(17px, 1.9vw, 20px);
+  font-weight: 500; line-height: 1.5; color: #fff;
+  letter-spacing: -0.012em;
+}
+/* La firma: cargo encima y nombre debajo, alineados al borde de la
+   tarjeta. Antes llevaba delante un círculo con las iniciales. */
+.mk-sign {
+  display: flex; flex-direction: column; gap: 2px;
+  padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.16);
+}
+.mk-sign-role {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #7dbcff;
+}
+.mk-sign-name {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 18px; font-weight: 600; color: #fff; letter-spacing: -0.01em;
+}
+
+.mk-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(26px, 3.4vw, 40px);
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.16;
+  color: #101336; margin: 18px 0 18px;
+}
+.mk-accent { color: #025dc7; }
+.mk-p { font-size: 16px; color: #454F6B; line-height: 1.7; margin-bottom: 14px; }
+
+.mk-hitos {
+  list-style: none;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px;
+  margin-top: 30px; padding-top: 26px;
+  border-top: 1px solid rgba(2,93,199,0.14);
+}
+.mk-hitos li { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.mk-dato {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(20px, 2.4vw, 26px); font-weight: 700;
+  letter-spacing: -0.02em; color: #1D0084; line-height: 1;
+}
+.mk-label { font-size: 12.5px; color: #454F6B; line-height: 1.45; }
+.mk-redes { display: inline-flex; align-items: center; gap: 9px; margin-top: 7px; color: #1D0084; }
+.mk-redes svg { display: block; }
+
+@media (max-width: 880px) {
+  .mk-section { padding: 64px 0; }
+  .mk-card { padding: 30px 26px; }
+}
+@media (max-width: 560px) {
+  .mk-hitos { grid-template-columns: 1fr; gap: 14px; }
+}
+</style>
