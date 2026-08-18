@@ -46,6 +46,13 @@ const incluye = [
     icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z',
   },
 ]
+// El mockup de navegador dibujado a mano se apaga: decía lo mismo que
+// la foto real del producto que hay debajo y dos veces la misma idea
+// resta. El código se queda entero —ponlo en true y vuelve—.
+const MOSTRAR_MOCKUP = false
+// Fondo blanco en la propia imagen, por eso la sección va en blanco.
+const FOTO_PRODUCTO = 'https://docs.holandesnawar.com/img/Formacio%CC%81n%20Canva%20(1).png'
+
 const tools = [
   { label: 'Flashcards', icon: 'M7 7h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V9a2 2 0 012-2z M9 3h8a2 2 0 012 2v10' },
   { label: 'Lezen', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
@@ -61,11 +68,12 @@ const tools = [
         <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Todo lo que recibes
       </span>
-      <h2 class="qi-title">Qué incluye <span class="qi-accent">el programa</span></h2>
-      <p class="qi-sub">Una formación completa: no un curso suelto, sino todo lo que necesitas para llegar a hablar.</p>
+      <h2 class="qi-title">¿Qué incluye la <span class="qi-accent">formación Nawar</span>?</h2>
+      <p class="qi-sub">Un programa completo de nivel A0-A1: 10 módulos, +15 horas de contenido y 360 lecciones. Todo estructurado para que avances con lógica y progresión, sin resistencias.</p>
     </div>
 
     <!-- Visual grande: la academia real, en un navegador -->
+    {MOSTRAR_MOCKUP && (
     <div class="qi-visual sr" aria-hidden="true">
       <div class="qi-visual-glow"></div>
       <div class="qi-browser">
@@ -127,6 +135,17 @@ const tools = [
         <div><p>Repaso inteligente</p><p>de lo que fallaste</p></div>
       </div>
     </div>
+    )}
+
+    <!-- La foto real de todo lo que entra, en sus pantallas -->
+    <figure class="qi-foto sr">
+      <img
+        src={FOTO_PRODUCTO}
+        alt="Certificado, clases en directo, clases grabadas, comunidad, ejercicios y soporte de la formación Nawar A0-A1"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
 
     <!-- Grid de lo incluido -->
     <div class="qi-grid">
@@ -148,6 +167,17 @@ const tools = [
 
 <style>
 .qi-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
+/* La imagen viene con su propio fondo blanco, así que la sección va en
+   blanco para que no se vea el borde. La caja fija la proporción y la
+   imagen va contenida: entre como entre no se recorta y no da el salto
+   de maquetación de cargar sin medidas. */
+.qi-foto {
+  max-width: 1080px; margin: 0 auto 56px;
+  aspect-ratio: 16 / 9;
+  display: flex; align-items: center; justify-content: center;
+}
+.qi-foto img { width: 100%; height: 100%; object-fit: contain; display: block; }
+@media (max-width: 860px) { .qi-foto { margin-bottom: 36px; } }
 .qi-header { text-align: center; max-width: 760px; margin: 0 auto 48px; }
 .qi-title {
   font-family: 'Poppins', system-ui, sans-serif;

@@ -4027,6 +4027,8 @@
 .l8 .guarantee .section-title,
 .l8 .cr-title.cr-title,
 .l8 .ai-title.ai-title,
+.l8 .pn-title.pn-title,
+.l8 .cu-title.cu-title,
 .l8 .np-faq-title.np-faq-title,
 .l8 .final-cta h2 {
   font-family: var(--font-head);
@@ -4065,7 +4067,6 @@
    de 16 px sobraría antes del contenido. */
 .l8 .np-stats-title.np-stats-title,
 .l8 .pr-title.pr-title,
-.l8 .ai-title.ai-title,
 .l8 .np-faq-title.np-faq-title { margin-bottom: 0; }
 
 /* El titular del coste iba en blanco plano, mientras que los dos de
@@ -4336,3 +4337,19 @@
   letter-spacing: -0.022em;
   margin: 0;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   LAS PIEZAS NUEVAS, DENTRO DE LAS DOS MEDIDAS DE TEXTO
+   Clases repetidas: cada componente define lo suyo con la misma
+   especificidad que ".l8 .x", y quien gana depende del orden en que
+   Astro emita las hojas, que no controlamos.
+══════════════════════════════════════════════════════════════ */
+.l8 .pn-lead.pn-lead,
+.l8 .pn-texto.pn-texto,
+.l8 .pn-cierre.pn-cierre,
+.l8 .pn-card-text.pn-card-text,
+.l8 .ai-lead.ai-lead { font-size: 17px; line-height: 1.65; }
+.l8 .cu-desc.cu-desc,
+.l8 .ai-list li { font-size: 14.5px; line-height: 1.65; }
+/* Y el hueco de la cabecera, igual que en el resto de secciones */
+.l8 .pn-header, .l8 .cu-header { margin-bottom: 48px; }

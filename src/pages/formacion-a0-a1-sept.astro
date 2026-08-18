@@ -25,6 +25,8 @@ import MarcaSection from '../components/landing-08-08-2026/MarcaSection.astro'
 // cuanto haya nombres, frases y fotos de verdad.
 // import ProfesoresSection from '../components/landing-08-08-2026/ProfesoresSection.astro'
 import CronogramaSection from '../components/landing-08-08-2026/CronogramaSection.astro'
+import PresentacionNawar from '../components/landing-08-08-2026/PresentacionNawar.astro'
+import CadaUnidad from '../components/landing-08-08-2026/CadaUnidad.astro'
 // Vuelve, sin el distintivo de "primera edición" que era lo que no
 // iba a ser verdad siempre. Ahora habla de la convocatoria y del
 // aforo de la clase en directo, que sí aguanta edición tras edición.
@@ -714,12 +716,21 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     {/* ── 6. Y la prueba de que funciona, justo detrás: son
            hispanohablantes contando su resultado. ── */}
     <TestimonialsSection />
+    {/* Primero quiénes somos y por qué esto no es otro curso más, y
+        después el método: explicar un sistema a quien ya ha abandonado
+        tres cursos, sin reconocer antes por qué los abandonó, suena a
+        lo mismo de siempre. */}
+    <PresentacionNawar />
+
     <MetodoFunciona />
 
 
 
     {/* ── 8. Qué incluye ── */}
     <QueIncluye />
+
+    {/* El zoom de una sola unidad, justo después del conjunto */}
+    <CadaUnidad />
 
     {/* Punto de salida a mitad de página: quien ya se ha convencido
         con la lista de lo que recibe no tiene por qué seguir bajando

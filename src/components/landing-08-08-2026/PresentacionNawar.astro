@@ -1,0 +1,156 @@
+---
+// Te presentamos Holandés Nawar — quiénes somos y por qué esto no es
+// otro curso más.
+//
+// Va justo antes de "Así funciona": primero se presenta la escuela y
+// se nombra la objeción de fondo —"ya he empezado cursos y los he
+// dejado"—, y sólo después se explica el método. Al revés no funciona:
+// explicar un sistema a alguien que ya ha abandonado tres cursos sin
+// antes reconocer por qué los abandonó suena a lo mismo de siempre.
+//
+// La estructura es la del mockup que pasó Rida: titular con rotulador
+// sobre la objeción, el porqué en una tarjeta destacada, y debajo la
+// promesa concreta.
+const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
+---
+<section class="pn-section" data-navbar="light">
+  <div class="inner">
+
+    <div class="pn-header sr">
+      <span class="badge-light">
+        <svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Te presentamos
+      </span>
+      <h2 class="pn-title">Holandés <span class="pn-accent">Nawar</span></h2>
+      <p class="pn-lead">
+        La escuela online para hablar neerlandés con fluidez, buena comprensión y pronunciación.
+      </p>
+    </div>
+
+    <div class="pn-grid">
+
+      <div class="pn-col sr">
+        <h3 class="pn-pregunta">¿Cuántos cursos has empezado <span class="pn-accent-2">y abandonado?</span></h3>
+        <p class="pn-texto">
+          No es un reproche. Es que la mayoría de cursos de neerlandés están diseñados
+          <strong>para que compres, no para que aprendas</strong>. Te dan acceso a contenido y te dejan solo.
+        </p>
+      </div>
+
+      <div class="pn-col sr">
+        <div class="pn-card">
+          <p class="pn-card-text">
+            <span class="pn-destacado">Holandés Nawar es diferente.</span>
+            Porque sabemos que ver vídeos no es suficiente. Que sin práctica no hay avance.
+            Que sin alguien que te corrija, los errores se convierten en hábitos invisibles.
+            Que sin comunidad, la motivación cae. Y que sin continuidad, el neerlandés se olvida.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pn-foot sr">
+      <p class="pn-cierre">
+        <strong>Holandés Nawar</strong> es un sistema de aprendizaje estructurado por niveles, con práctica
+        real del idioma, corrección progresiva, soporte para cuando te bloqueas, acompañamiento semanal,
+        clases en directo y una comunidad activa que avanza contigo.
+      </p>
+      <a href={matriculaUrl} class="pn-cta">
+        Unirme a Nawar
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.pn-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
+
+.pn-header { text-align: center; max-width: 720px; margin: 0 auto 56px; }
+.pn-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.14;
+  color: #1D0084;
+  margin: 0;
+}
+.pn-lead { font-size: 17px; line-height: 1.6; color: #454F6B; margin-top: 16px; }
+
+.pn-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 44px;
+  align-items: center;
+  max-width: 1080px; margin: 0 auto;
+}
+.pn-pregunta {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.18;
+  color: #1D0084;
+  margin-bottom: 18px;
+}
+.pn-texto { font-size: 17px; line-height: 1.65; color: #454F6B; }
+.pn-texto strong { color: #101336; font-weight: 700; }
+
+/* La tarjeta del mockup: borde marcado y sombra desplazada, para que
+   se lea como una nota pegada encima y no como una tarjeta más. La
+   sombra va en el índigo de marca y no en negro, que era lo que
+   desentonaba con el resto de tarjetas de la página. */
+.pn-card {
+  background: #fff;
+  border: 2px solid #1D0084;
+  border-radius: 24px;
+  padding: 32px 30px;
+  box-shadow: 10px 10px 0 rgba(29, 0, 132, 0.12);
+}
+.pn-card-text { font-size: 17px; line-height: 1.7; color: #101336; }
+/* El rotulador de la casa, aquí en su versión maciza para la frase
+   que sostiene toda la sección. */
+.pn-destacado {
+  font-weight: 700;
+  background-image: linear-gradient(
+    to top,
+    rgba(122, 185, 255, 0.55) 0em,
+    rgba(122, 185, 255, 0.55) 0.95em,
+    transparent 0.95em
+  );
+  padding: 0 0.12em;
+  border-radius: 4px;
+}
+
+/* El subrayado de rotulador, igual que en el resto de titulares */
+.pn-accent, .pn-accent-2 {
+  display: inline;
+  background-image: linear-gradient(
+    to top,
+    rgba(122, 185, 255, 0.45) 0em,
+    rgba(122, 185, 255, 0.45) 0.24em,
+    transparent 0.24em
+  );
+  padding: 0 0.08em;
+  border-radius: 5px;
+}
+
+.pn-foot { max-width: 780px; margin: 56px auto 0; text-align: center; }
+.pn-cierre { font-size: 17px; line-height: 1.7; color: #454F6B; margin-bottom: 30px; }
+.pn-cierre strong { color: #101336; font-weight: 700; }
+.pn-cta {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 17px 30px; border-radius: 13px;
+  background: #4da3ff; color: #1D0084;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 16px; font-weight: 700; text-decoration: none;
+  transition: background .22s, transform .22s cubic-bezier(.22,1,.36,1);
+}
+.pn-cta:hover { background: #6ab5ff; transform: scale(1.02); }
+.pn-cta:active { transform: scale(.98); }
+
+@media (max-width: 860px) {
+  .pn-section { padding: 64px 0; }
+  .pn-header { margin-bottom: 36px; }
+  .pn-grid { grid-template-columns: 1fr; gap: 28px; }
+  .pn-card { padding: 26px 22px; border-radius: 20px; box-shadow: 7px 7px 0 rgba(29,0,132,0.12); }
+  .pn-foot { margin-top: 40px; }
+  .pn-cta { width: 100%; justify-content: center; }
+}
+</style>

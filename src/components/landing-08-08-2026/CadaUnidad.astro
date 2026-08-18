@@ -1,0 +1,102 @@
+---
+// Cada unidad incluye — el zoom de una sola lección.
+//
+// "Qué incluye la formación" cuenta el conjunto: módulos, horas,
+// lecciones. Esto cuenta la unidad, que es lo que de verdad se
+// consume cada semana. Sin este bloque el programa se entiende como
+// un catálogo de vídeos; con él se entiende como una rutina.
+//
+// Los tres puntos son los que se ven en la plataforma —vídeo,
+// presentación descargable y ejercicios de las cuatro destrezas—, no
+// una lista aspiracional.
+const partes = [
+  {
+    title: 'Videoclase de gramática',
+    desc: 'Explicada en español, con ejemplos reales y las trampas que se le atragantan a un hispanohablante.',
+    icon: 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
+  },
+  {
+    title: 'Presentación en PDF',
+    desc: 'Todo el contenido de la unidad descargable, para repasar sin volver a ver el vídeo entero.',
+    icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+  },
+  {
+    title: 'Ejercicios y flashcards',
+    desc: 'Lezen, luisteren, schrijven y spreken, más el repaso que te devuelve lo que fallaste.',
+    icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
+  },
+]
+---
+<section class="cu-section" data-navbar="light">
+  <div class="inner">
+
+    <h2 class="cu-title sr">Cada unidad incluye:</h2>
+
+    <div class="cu-grid">
+      {partes.map((p) => (
+        <article class="cu-item sr">
+          <span class="cu-icon-box">
+            <svg class="cu-icon" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d={p.icon}/>
+            </svg>
+          </span>
+          <div>
+            <h3 class="cu-name">{p.title}</h3>
+            <p class="cu-desc">{p.desc}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+.cu-section { background: #F0F4FF; position: relative; overflow: hidden; padding: 80px 0; }
+.cu-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.14;
+  color: #1D0084; text-align: center;
+  margin: 0 0 40px;
+}
+
+.cu-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px; max-width: 1080px; margin: 0 auto;
+}
+.cu-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: #fff;
+  border: 1px solid #E4EAF8;
+  border-radius: 20px;
+  padding: 24px 22px;
+  box-shadow: 0 2px 10px rgba(29,0,132,0.04);
+  transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+.cu-item:hover {
+  border-color: rgba(2,93,199,0.30);
+  box-shadow: 0 16px 38px rgba(29,0,132,0.10);
+  transform: translateY(-3px);
+}
+/* Icono al lado y no encima: aquí la frase es corta y el bloque se lee
+   de un vistazo en una sola línea de lectura, como en el mockup. */
+.cu-icon-box {
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 13px;
+  background: #F0F4FF; color: #025dc7;
+}
+.cu-icon { width: 21px; height: 21px; }
+.cu-name {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 16px; font-weight: 600; color: #101336; line-height: 1.3;
+  margin-bottom: 5px;
+}
+.cu-desc { font-size: 14.5px; color: #454F6B; line-height: 1.65; }
+
+@media (max-width: 860px) {
+  .cu-section { padding: 56px 0; }
+  .cu-grid { grid-template-columns: 1fr; }
+  .cu-title { margin-bottom: 28px; }
+}
+</style>
