@@ -341,12 +341,17 @@
 .l8 .hero-inner {
   position: relative;
   width: 100%;
-  max-width: 1120px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: calc(var(--nav-h) + 80px) 24px 96px;
   display: grid;
-  grid-template-columns: 1fr 420px;
-  gap: 64px;
+  /* El titular no puede pasar de cierto tamaño sin partirse en cuatro
+     líneas, y ese tope sale del ancho de esta columna. Para que quepa
+     más grande, la columna crece: el banner se ensancha 80 px y el
+     mockup y el hueco ceden 84 px entre los dos. De 588 a 696 px de
+     columna, que son 45 → 52 px de titular. */
+  grid-template-columns: 1fr 400px;
+  gap: 56px;
   align-items: center;
 }
 @media (max-width: 959px) {
@@ -406,7 +411,7 @@
   margin-bottom: 24px;
 }
 @media (min-width: 960px) {
-  .l8 .hero-headline { font-size: clamp(32px, calc(7.48vw - 39.8px), 45px); }
+  .l8 .hero-headline { font-size: clamp(32px, calc(7.48vw - 39.8px), 52px); }
 }
 .l8 .hero-headline em {
   font-style: normal;
@@ -3691,6 +3696,7 @@
 .l8 .bn-title.bn-title,
 .l8 .cr-title.cr-title,
 .l8 .mk-title.mk-title,
+.l8 .mf-title.mf-title,
 .l8 .pf-title.pf-title,
 .l8 .pil-title.pil-title,
 .l8 .porq-title.porq-title {
@@ -3703,6 +3709,7 @@
 .l8 .bn-accent.bn-accent,
 .l8 .cr-accent.cr-accent,
 .l8 .mk-accent.mk-accent,
+.l8 .mf-accent.mf-accent,
 .l8 .pf-accent.pf-accent,
 .l8 .pil-accent.pil-accent,
 .l8 .porq-title.porq-title span:not([class]) {
@@ -3729,6 +3736,7 @@
   .l8 .bn-title.bn-title,
   .l8 .cr-title.cr-title,
   .l8 .mk-title.mk-title,
+  .l8 .mf-title.mf-title,
   .l8 .pf-title.pf-title,
   .l8 .pil-title.pil-title,
   .l8 .porq-title.porq-title {
