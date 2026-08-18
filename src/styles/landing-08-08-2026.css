@@ -4353,3 +4353,170 @@
 .l8 .ai-list li { font-size: 14.5px; line-height: 1.65; }
 /* Y el hueco de la cabecera, igual que en el resto de secciones */
 .l8 .pn-header, .l8 .cu-header { margin-bottom: 48px; }
+
+/* ══════════════════════════════════════════════════════════════
+   ▓▓ REVISIÓN DE CASA — 18/08 ▓▓
+   Cinco arreglos pedidos sobre capturas de móvil. Todo va con la
+   clase repetida (".l8 .x.x") porque la hoja de cada componente
+   define lo mismo con la misma especificidad y quién gana depende
+   del orden en que Astro emita las hojas, que no controlamos.
+══════════════════════════════════════════════════════════════ */
+
+/* ── 1. UN SOLO MARGEN PARA TODAS LAS SECCIONES ────────────────
+   Medido sobre la página: a 1280 px los márgenes de arriba iban de
+   24 a 120 px y los de abajo de 40 a 110. Cada sección se había
+   escrito por su cuenta, así que al bajar la página el aire entre
+   bloques se abría y se cerraba sin motivo. De aquí en adelante
+   todas respiran igual: 96 px arriba y abajo, 64 en móvil.
+
+   Fuera quedan a propósito el hero (pega arriba), la barra de
+   confianza (es una franja fina), la franja del botón (va cosida a
+   la sección de encima, ver más abajo) y el pie. */
+.l8 .np-letter.np-letter,
+.l8 .consequences.consequences,
+.l8 .np-stats.np-stats,
+.l8 .porq-section.porq-section,
+.l8 .mk-section.mk-section,
+.l8 .pil-section.pil-section,
+.l8 .pn-section.pn-section,
+.l8 .qi-section.qi-section,
+.l8 .cu-section.cu-section,
+.l8 .bn-section.bn-section,
+.l8 .pt-section.pt-section,
+.l8 .guarantee.guarantee,
+.l8 .es-section.es-section,
+.l8 .cr-section.cr-section,
+.l8 .ai-section.ai-section,
+.l8 .np-faq.np-faq,
+.l8 .final-cta.final-cta {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
+@media (max-width: 860px) {
+  .l8 .np-letter.np-letter,
+  .l8 .consequences.consequences,
+  .l8 .np-stats.np-stats,
+  .l8 .porq-section.porq-section,
+  .l8 .mk-section.mk-section,
+  .l8 .pil-section.pil-section,
+  .l8 .pn-section.pn-section,
+  .l8 .qi-section.qi-section,
+  .l8 .cu-section.cu-section,
+  .l8 .bn-section.bn-section,
+  .l8 .pt-section.pt-section,
+  .l8 .guarantee.guarantee,
+  .l8 .es-section.es-section,
+  .l8 .cr-section.cr-section,
+  .l8 .ai-section.ai-section,
+  .l8 .np-faq.np-faq,
+  .l8 .final-cta.final-cta {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+}
+/* La franja del botón no es una sección: es el cierre de la de
+   encima. Comparte su fondo y no abre margen arriba, para que las
+   dos juntas sumen los mismos 96 px que las demás. */
+.l8 .l8-cta-band.l8-cta-band { background: #F0F4FF; padding: 0; }
+.l8 .cu-section.cu-section { padding-bottom: 44px; }
+@media (max-width: 860px) {
+  .l8 .cu-section.cu-section { padding-bottom: 32px; }
+}
+
+/* Cuando dos secciones seguidas comparten fondo, el límite entre las
+   dos desaparece y los 96 px de una se suman a los 96 de la otra: se
+   lee como un agujero de casi 200 px, que era justo la queja. Una
+   línea de un píxel —la misma de los bordes de las tarjetas— devuelve
+   el límite sin cambiar el color de ninguna sección. */
+.l8 .np-letter.np-letter,
+.l8 .porq-section.porq-section,
+.l8 .qi-section.qi-section,
+.l8 .bn-section.bn-section,
+.l8 .ai-section.ai-section { border-top: 1px solid #EEF2FB; }
+
+/* ── 2 y 5. LOS ICONOS NO LLEVAN FONDO ─────────────────────────
+   En toda la web el icono va suelto sobre la tarjeta. Las cajitas
+   azules de estas tres secciones eran nuevas y desentonaban con
+   "Todo lo que recibes", los pilares y el resto. Sin caja y algo
+   más grandes, que es como se ven en el resto de la página. */
+.l8 .cons-icon.cons-icon,
+.l8 .es-icon-box.es-icon-box,
+.l8 .cu-icon-box.cu-icon-box {
+  background: none;
+  width: auto; height: auto;
+  border-radius: 0;
+  margin-bottom: 2px;
+  color: #025dc7;
+}
+.l8 .cons-icon .nw-icon,
+.l8 .es-icon-box .es-icon,
+.l8 .cu-icon-box .cu-icon { width: 30px; height: 30px; }
+/* El de "cada unidad" va al lado del texto y necesita su hueco */
+.l8 .cu-icon-box.cu-icon-box { flex-shrink: 0; margin-top: 2px; }
+
+/* ── 3. LOS NÚMEROS DEL MÉTODO ─────────────────────────────────
+   El cuadrado índigo macizo con el número en blanco pesaba
+   demasiado al lado de tarjetas blancas: parecía un agujero. Se da
+   la vuelta, azul claro de marca con el número en azul marino, que
+   es el par de color de todos los botones de la página. */
+.l8 .mf-step-num.mf-step-num {
+  background: #4da3ff;
+  background-image: none;
+  color: #1D0084;
+}
+
+/* ── 4. LAS PALOMITAS, SIN PALOMITA ────────────────────────────
+   El distintivo de encima de cada titular llevaba una palomita
+   delante de la frase. No dice nada —no hay nada que marcar como
+   hecho— y repetida quince veces cansa. El SVG se queda en el
+   marcado por si vuelve. */
+.l8 .badge-light .check-icon,
+.l8 .badge-dark .check-icon,
+.l8 .np-eyebrow-small .check-icon,
+.l8 .eyebrow .check-icon,
+.l8 .hero-badge .check-icon { display: none; }
+
+/* ── 6. LAS DESCRIPCIONES, MÁS LEGIBLES ────────────────────────
+   Todo el texto de apoyo iba en #454F6B a peso 400: sobre blanco
+   se leía apagado y las secciones perdían fuerza. Sube a un gris
+   mucho más cerrado y a peso 500. Lo destacado dentro sube a 700 y
+   al azul marino, que es lo que hace que la frase tenga relieve en
+   vez de ser un bloque plano. */
+.l8 .ai-lead.ai-lead, .l8 .bn-sub.bn-sub, .l8 .bn-desc.bn-desc,
+.l8 .cu-desc.cu-desc, .l8 .cr-sub.cr-sub, .l8 .cr-desc.cr-desc,
+.l8 .es-lead.es-lead, .l8 .es-cierre.es-cierre, .l8 .es-desc.es-desc,
+.l8 .mk-p.mk-p, .l8 .mf-sub.mf-sub, .l8 .mf-step-desc.mf-step-desc,
+.l8 .pt-sub.pt-sub, .l8 .pil-sub.pil-sub, .l8 .pil-card-desc.pil-card-desc,
+.l8 .pn-lead.pn-lead, .l8 .pn-texto.pn-texto, .l8 .pn-cierre.pn-cierre,
+.l8 .pn-card-text.pn-card-text, .l8 .qi-sub.qi-sub,
+.l8 .qi-item-desc.qi-item-desc, .l8 .np-letter-aside.np-letter-aside,
+.l8 .consequences-intro.consequences-intro,
+.l8 .consequences-list li div, .l8 .np-stat-label.np-stat-label,
+.l8 .ai-list li, .l8 .porq-list li, .l8 .guarantee-lead.guarantee-lead,
+.l8 .ai-sub.ai-sub, .l8 .cu-name.cu-name,
+.l8 .porq-sub.porq-sub, .l8 .mk-label.mk-label {
+  color: #252C42;
+  font-weight: 500;
+}
+.l8 .cu-name.cu-name, .l8 .ai-sub.ai-sub { color: #101336; font-weight: 600; }
+.l8 .pn-texto strong, .l8 .pn-cierre strong, .l8 .pn-card-text strong,
+.l8 .consequences-list li strong, .l8 .mf-step-desc strong,
+.l8 .guarantee-lead strong, .l8 .es-cierre strong,
+.l8 .ai-bonus strong, .l8 .qi-item-desc strong {
+  color: #101336;
+  font-weight: 700;
+}
+/* Y lo mismo en los fondos oscuros, donde el blanco al 55-65 % se
+   leía tan lavado como el gris sobre blanco. */
+.l8 .final-cta p, .l8 .pr-social-text, .l8 .np-faq-a,
+.l8 .ai-nota, .l8 .ai-precio-nota { color: rgba(255,255,255,0.82); }
+.l8 .final-cta p { font-weight: 500; }
+
+/* En móvil el icono y el título se apilan, y ahí "align-items: center"
+   los centraba: los títulos cortos quedaban centrados y los largos
+   pegados a la izquierda, así que la columna bailaba paso a paso. Esta
+   regla va después de la que centra en escritorio, que es la que le
+   estaba ganando dentro de la media query. */
+@media (max-width: 639px) {
+  .l8 .mf-step-head.mf-step-head { align-items: flex-start; }
+}
