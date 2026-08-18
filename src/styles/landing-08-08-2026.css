@@ -4324,3 +4324,15 @@
 /* Y el titular necesita ancho: con 624 px de caja la segunda línea
    partía "El momento es ahora." en dos. */
 .l8 .final-cta .content { max-width: 780px; }
+
+/* La sección de plazas vuelve a la página y su titular tiene que
+   entrar en la misma escala que los otros quince. Clase repetida
+   porque el componente define lo suyo con la misma especificidad. */
+.l8 .es-title.es-title {
+  font-family: var(--font-head);
+  font-size: clamp(26px, 4vw, 46px);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.022em;
+  margin: 0;
+}

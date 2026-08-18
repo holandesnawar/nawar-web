@@ -25,10 +25,10 @@ import MarcaSection from '../components/landing-08-08-2026/MarcaSection.astro'
 // cuanto haya nombres, frases y fotos de verdad.
 // import ProfesoresSection from '../components/landing-08-08-2026/ProfesoresSection.astro'
 import CronogramaSection from '../components/landing-08-08-2026/CronogramaSection.astro'
-// Fuera de la página a petición de Rida: la escasez de "primera
-// edición" no va a ser verdad siempre. El componente se queda en
-// src/components/landing-08-08-2026/ por si vuelve.
-// import EscasezSection from '../components/landing-08-08-2026/EscasezSection.astro'
+// Vuelve, sin el distintivo de "primera edición" que era lo que no
+// iba a ser verdad siempre. Ahora habla de la convocatoria y del
+// aforo de la clase en directo, que sí aguanta edición tras edición.
+import EscasezSection from '../components/landing-08-08-2026/EscasezSection.astro'
 
 /* Copias propias de dos componentes de nawar-web: se veían rotos en
    móvil y hay que retocarlos sin alterar los que usa la web */
@@ -782,10 +782,15 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       </div>
     </section>
 
-    {/* ── 13. Y qué pasa justo después de pagar ── */}
+    {/* ── 13. Por qué ahora y no más adelante ──
+         Va justo aquí y no antes: cuando ya sabe qué es, si le sirve y
+         que no arriesga nada, la última objeción es "lo hago luego". */}
+    <EscasezSection />
+
+    {/* ── 14. Y qué pasa justo después de pagar ── */}
     <CronogramaSection />
 
-    {/* ── 14. Recordatorio de todo lo que entra, y salida ── */}
+    {/* ── 15. Recordatorio de todo lo que entra, y salida ── */}
     <AccesoIncluye />
 
     <!-- ══════════════════════════════════════════════════════════

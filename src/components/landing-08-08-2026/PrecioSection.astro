@@ -24,7 +24,11 @@ const bonus = [
 const valorTotal = [...nucleo, ...bonus].reduce((a, b) => a + b.valor, 0)
 const precio = '397'
 const ahorro = valorTotal - Number(precio)
-const eur = (n: number) => n.toLocaleString('es-ES')
+// A mano y no con toLocaleString: el Node que compila no siempre trae
+// los datos de idioma, y cuando no los trae devuelve "2360" en vez de
+// "2.360" sin avisar. Con el punto de los miles la cifra tachada se lee
+// de un vistazo, que es justo para lo que está.
+const eur = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 ---
 <div class="pr-wrapper" id="precio">
@@ -111,7 +115,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
                     <span class="pr-avatar pr-avatar--more">+</span>
                   </span>
                   <span class="pr-social-text">
-                    Únete a la primera edición — plazas limitadas a 40 alumnos
+                    <strong class="pr-plazas">Solo 40 plazas</strong> en esta convocatoria
                     <strong class="pr-quedan" data-plazas-quedan hidden></strong>
                   </span>
                 </div>
@@ -417,7 +421,11 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 }
 .pr-avatar:first-child { margin-left: 0; }
 .pr-avatar--more { background: #0b6df0; }
-.pr-social-text { font-size: 11.5px; color: rgba(255,255,255,0.86); line-height: 1.4; }
+.pr-social-text { font-size: 12.5px; color: rgba(255,255,255,0.86); line-height: 1.4; }
+/* El dato de las plazas iba en la misma letra gris de 11,5 px que el
+   resto del pie de la tarjeta y no lo leía nadie. En el punto de
+   decisión es lo único de esa línea que importa. */
+.pr-plazas { color: #fff; font-weight: 700; }
 /* Lo rellena el script de la landing con el número real de plazas libres que
    devuelve la academia. Si no hay tope o no se pudo consultar, no aparece:
    es escasez de verdad o no es nada. */
