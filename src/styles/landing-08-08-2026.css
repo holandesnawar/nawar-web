@@ -2959,10 +2959,10 @@
   font-size: 16px;
   font-weight: 800;
   letter-spacing: 0.05em;
-  color: #4da3ff;
+  color: #fff;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  text-shadow: 0 0 18px rgba(77, 163, 255, 0.45);
+  text-shadow: 0 0 18px rgba(77, 163, 255, 0.35);
 }
 
 .l8nav-cta {
@@ -4097,3 +4097,230 @@
 /* "Aprender neerlandés no es caro." se pasaba por poco de los 760 px
    de su cabecera y partía en tres líneas una frase escrita para dos. */
 .l8 .np-stats-header { max-width: 880px; }
+
+/* ══════════════════════════════════════════════════════════════
+   LAS TRES SECCIONES HEREDADAS, AL LENGUAJE DE LA PÁGINA
+   "Seamos honestos", "El coste de seguir igual" y "Los números"
+   venían de nawar-plus y de nawar-landing y nunca se rehicieron:
+   eran las únicas con fondo azul oscuro, cristal translúcido y
+   distintivo propio. Por eso desentonaban y por eso la página se
+   veía tan azul —ocho de veinte secciones—. Aquí pasan a fondo
+   claro y a las mismas piezas que el resto: distintivo claro,
+   titular en azul marino con subrayado, y tarjetas blancas con
+   borde y sombra suave.
+
+   El azul oscuro se reserva ahora para los cinco momentos que lo
+   merecen: el banner, los testimonios, la oferta, las preguntas y
+   el cierre.
+══════════════════════════════════════════════════════════════ */
+
+/* ── Seamos honestos ── */
+.l8 .np-letter { background: #fff; }
+.l8 .np-letter-glow { display: none; }
+.l8 .np-letter-heading.np-letter-heading { color: #1D0084; -webkit-text-fill-color: #1D0084; }
+.l8 .np-letter-aside { color: #454F6B; font-weight: 400; }
+.l8 .np-letter-item {
+  background: #fff;
+  border: 1px solid #E4EAF8;
+  box-shadow: 0 2px 10px rgba(29, 0, 132, 0.04);
+  transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+.l8 .np-letter-item:hover {
+  border-color: rgba(2, 93, 199, 0.30);
+  box-shadow: 0 16px 38px rgba(29, 0, 132, 0.10);
+  transform: translateY(-3px);
+}
+.l8 .np-letter-num { color: #025dc7; }
+.l8 .np-letter-text { color: #101336; }
+
+/* ── El coste de seguir igual ── */
+.l8 .consequences { background: #F0F4FF; }
+.l8 .consequences::before { display: none; }
+.l8 .consequences .section-title {
+  background: none;
+  -webkit-text-fill-color: #1D0084;
+  color: #1D0084;
+}
+.l8 .consequences-intro { color: #454F6B; font-weight: 400; }
+.l8 .consequences-list li div { color: #454F6B; font-weight: 400; }
+.l8 .consequences-list li strong { color: #101336; }
+
+/* ── Los números que nadie te cuenta ── */
+.l8 .np-stats {
+  background: #fff;
+  border-top: none;
+  border-bottom: none;
+}
+.l8 .np-stats::before,
+.l8 .np-stats-grid-bg { display: none; }
+.l8 .np-stats-title.np-stats-title { color: #1D0084; -webkit-text-fill-color: #1D0084; }
+.l8 .np-stat-card {
+  background: #fff;
+  border: 1px solid #E4EAF8;
+  box-shadow: 0 2px 10px rgba(29, 0, 132, 0.04);
+  transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+.l8 .np-stat-card:hover {
+  border-color: rgba(2, 93, 199, 0.30);
+  box-shadow: 0 16px 38px rgba(29, 0, 132, 0.10);
+  transform: translateY(-4px);
+}
+.l8 .np-stat-num {
+  color: #025dc7;
+  background: none;
+  -webkit-text-fill-color: #025dc7;
+}
+.l8 .np-stat-line { background: #025dc7; opacity: .35; }
+.l8 .np-stat-label { color: #454F6B; font-weight: 400; }
+
+/* Los subrayados de rotulador de estos tres titulares */
+.l8 .np-letter-accent,
+.l8 .np-stats-accent,
+.l8 .cons-accent {
+  display: inline;
+  color: #1D0084;
+  -webkit-text-fill-color: #1D0084;
+  background-image: linear-gradient(
+    to top,
+    rgba(122, 185, 255, 0.45) 0em,
+    rgba(122, 185, 255, 0.45) 0.24em,
+    transparent 0.24em
+  );
+  padding: 0 0.08em;
+  border-radius: 5px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   EL COSTE DE SEGUIR IGUAL — CABECERA CENTRADA Y TARJETAS
+   La sección venía de cuando tenía dos columnas: al quitar la
+   comparación "sin neerlandés / con esta formación" se quedó un
+   solo bloque de texto pegado a la izquierda con media pantalla
+   vacía a la derecha, y cinco frases sueltas una debajo de otra.
+   Leído desde arriba parecía un borrador entre dos secciones ya
+   terminadas.
+
+   Ahora sigue el patrón del resto de la página: cabecera centrada
+   y contenido en tarjetas blancas. Van en fila envolvente y no en
+   rejilla fija porque son cinco: con tres columnas la última fila
+   dejaba un hueco a la derecha, y así las dos que sobran quedan
+   centradas y parece intencionado.
+══════════════════════════════════════════════════════════════ */
+.l8 .consequences-inner { max-width: 1080px; }
+.l8 .consequences-inner > div { text-align: center; }
+.l8 .consequences-intro {
+  max-width: 620px;
+  margin-inline: auto;
+  margin-bottom: 44px;
+}
+
+.l8 .consequences-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  text-align: left;
+}
+.l8 .consequences-list li {
+  flex: 0 1 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid #E4EAF8;
+  border-radius: 20px;
+  padding: 26px 24px;
+  box-shadow: 0 2px 10px rgba(29, 0, 132, 0.04);
+  transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+.l8 .consequences-list li:hover {
+  border-color: rgba(2, 93, 199, 0.30);
+  box-shadow: 0 16px 38px rgba(29, 0, 132, 0.10);
+  transform: translateY(-3px);
+}
+/* El icono ya no flota junto al texto: va en su propia caja, como
+   en "Todo lo que recibes" y en los pilares. */
+.l8 .cons-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; height: 44px;
+  border-radius: 13px;
+  background: #F0F4FF;
+  margin-top: 0;
+}
+.l8 .cons-icon .nw-icon { width: 21px; height: 21px; }
+.l8 .consequences-list li div { font-size: 14.5px; line-height: 1.65; }
+.l8 .consequences-list li strong {
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+@media (max-width: 720px) {
+  .l8 .consequences-list li { flex: 1 1 100%; padding: 22px 20px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   EMPIEZA HOY — EL CIERRE, EN LA MISMA CAJA QUE LA OFERTA
+   Tenía un tramado de puntos encima del fondo y un resplandor azul
+   de 1000 px que le tapaba medio ancho. Con el texto suelto sobre
+   ese fondo la sección se leía como una plantilla, no como el
+   final de la página.
+
+   El tramado se va y el resplandor baja. El contenido entra en el
+   mismo cristal que la tarjeta del precio —el único fondo oscuro
+   que ya funcionaba— para que el cierre remate visualmente lo que
+   la oferta abrió.
+══════════════════════════════════════════════════════════════ */
+.l8 .final-cta .dots-dark { display: none; }
+.l8 .final-cta { padding-block: 88px 96px; }
+.l8 .final-cta-glow {
+  width: 760px; height: 520px;
+  background: radial-gradient(ellipse at center, rgba(11,109,240,.28) 0%, transparent 68%);
+}
+.l8 .final-cta .content {
+  max-width: 720px;
+  padding: 52px 48px 44px;
+  border-radius: 30px;
+  background: linear-gradient(160deg, rgba(11,109,240,0.20) 0%, rgba(77,163,255,0.08) 100%);
+  border: 1.5px solid rgba(77,163,255,0.50);
+  overflow: hidden;
+}
+/* El halo de esquina de la tarjeta del precio, para que las dos
+   piezas de cristal de la página sean reconociblemente la misma. */
+.l8 .final-cta .content::before {
+  content: '';
+  position: absolute;
+  top: -190px; right: -190px;
+  width: 380px; height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(77,163,255,0.32) 0%, transparent 70%);
+  pointer-events: none;
+}
+.l8 .final-cta .content > * { position: relative; }
+.l8 .final-cta p {
+  color: rgba(255,255,255,.72);
+  max-width: 540px;
+  margin-inline: auto;
+  margin-bottom: 32px;
+}
+.l8 .final-cta-fine { color: rgba(255,255,255,.55); }
+@media (max-width: 720px) {
+  .l8 .final-cta { padding-block: 56px 64px; }
+  .l8 .final-cta .content { padding: 34px 22px 30px; border-radius: 24px; }
+}
+
+/* La letra pequeña del cierre es un <p> y la regla que unificó las
+   entradillas a 17 px se la llevó por delante: la garantía se leía
+   igual de grande que el párrafo de arriba. */
+.l8 .final-cta .final-cta-fine.final-cta-fine {
+  font-size: 13.5px;
+  margin-bottom: 0;
+  max-width: none;
+}
+/* Y el titular necesita ancho: con 624 px de caja la segunda línea
+   partía "El momento es ahora." en dos. */
+.l8 .final-cta .content { max-width: 780px; }
