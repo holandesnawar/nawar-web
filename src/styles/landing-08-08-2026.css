@@ -3766,7 +3766,7 @@
 ══════════════════════════════════════════════════════════════ */
 /* Sólo el botón, sin caja ni texto alrededor, justo debajo de los dos
    niveles. Hereda el blanco de "Todo lo que recibes". */
-.l8 .qi-section.qi-section { padding-bottom: 40px; }
+.l8 .qi-section.qi-section { padding-top: 40px; padding-bottom: 40px; }
 .l8 .l8-cta-band { background: #fff; padding: 0 0 88px; }
 .l8 .l8-cta-band-inner { text-align: center; }
 /* Mismas medidas y mismos colores que .sv-cta, .es-cta, .pr-cta y el

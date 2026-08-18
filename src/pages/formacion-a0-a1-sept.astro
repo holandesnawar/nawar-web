@@ -732,14 +732,25 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     {/* ── 3. El enemigo común: por qué has fracasado antes ── */}
     <PorQueNawar />
 
-    {/* ── 4. La solución: el método, nombrado y en pilares ── */}
+    {/* ── 4. Quién hay detrás de esa alternativa. Va aquí y no al
+           final: la autoridad se enseña antes de pedir dinero, y
+           además enlaza con el origen que acaba de contar la sección
+           anterior. ── */}
+    <MarcaSection />
+
+    {/* ── 5. La solución: el método, nombrado y en pilares ── */}
     <PilaresSection />
     <MetodoFunciona />
 
     {/* ── 5. La prueba de que el método funciona ── */}
     <TestimonialsSection />
 
-    {/* ── 6. Qué incluye ── */}
+    {/* ── 7. Filtro antes de la oferta. Detrás del precio sólo
+           servía para reabrir la duda de quien ya estaba convencido;
+           aquí selecciona y da pertenencia. ── */}
+    <ParaTiSection />
+
+    {/* ── 8. Qué incluye ── */}
     <QueIncluye />
 
     {/* Punto de salida a mitad de página: quien ya se ha convencido
@@ -761,6 +772,18 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
     {/* ── ...y solo después la suma de todo ── */}
     <StackValor />
+
+    {/* ── 11. Y en cuanto se ha dicho lo que vale, lo que cuesta.
+           Antes esto estaba cinco secciones más abajo y la página
+           cerraba dos veces: una aquí con el total y otra allí con la
+           tarjeta. Ahora la oferta va de un tirón y cierra una vez. ── */}
+    <PrecioSection />
+
+
+
+
+
+
 
     <!-- ══════════════════════════════════════════════════════════
          GARANTÍA — el riesgo lo asumimos nosotros
@@ -790,18 +813,8 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       </div>
     </section>
 
-    {/* ── 9. Para quién sí y para quién no ── */}
-    <ParaTiSection />
-
-    {/* ── 10. Quién está detrás ── */}
-    <MarcaSection />
-
-    {/* ── 11. Qué pasa después de reservar ── */}
+    {/* ── 13. Y qué pasa justo después de pagar ── */}
     <CronogramaSection />
-
-    {/* ── 12. Precio ── */}
-    <PrecioSection />
-
 
     <!-- ══════════════════════════════════════════════════════════
          FAQ — diseño limpio, sin tarjetas (nawar-plus)

@@ -14,7 +14,12 @@ const accesoIncluye = [
 ]
 const bonusIncluye = 'Los 5 bonus de la primera edición, incluidos'
 const precio = '397'
-const precioDespues = '497'
+// El ancla ya no es un "precio que subirá a 497 €" —esa promesa se quitó
+// de la página porque habría que cumplirla— sino el total del desglose
+// que va justo encima, que sale de precios reales.
+const valorTotal = 2360
+const ahorro = valorTotal - Number(precio)
+const eur = (n: number) => n.toLocaleString('es-ES')
 const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 ---
 <div class="pr-wrapper" id="precio">
@@ -72,10 +77,12 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
                 <div class="pr-price-row">
                   <span class="pr-price">{precio}€</span>
                   <span class="pr-price-meta">
-                    <span class="pr-price-old">{precioDespues}€</span>
+                    <span class="pr-price-old">{eur(valorTotal)}€</span>
                     <span class="pr-price-note">pago único</span>
                   </span>
                 </div>
+
+                <span class="pr-ahorro">Te ahorras {eur(ahorro)}&nbsp;€</span>
 
                 <a href={matriculaUrl} class="pr-cta">
                   Reservar mi plaza
@@ -123,10 +130,14 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 </div>
 
 <style>
-.pr-wrapper { background: #F0F4FF; padding: 64px 48px 96px; }
-
-.pr-outer { overflow: hidden; position: relative; border-radius: 32px; max-width: 1280px; margin: 0 auto; }
-.pr-section { background: #1D0084; position: relative; overflow: hidden; padding: 64px 0 80px; }
+/* Antes era una tarjeta oscura flotando sobre azul claro, y entre el
+   desglose de valor —que también es oscuro— y ésta quedaba una franja
+   clara que partía la oferta en dos. Ahora las dos secciones son el
+   mismo bloque azul seguido: se suma lo que vale y, sin respirar, se
+   dice lo que cuesta. */
+.pr-wrapper { background: #1D0084; padding: 0; }
+.pr-outer { overflow: hidden; position: relative; border-radius: 0; max-width: 100%; margin: 0; }
+.pr-section { background: #1D0084; position: relative; overflow: hidden; padding: 24px 0 96px; }
 /* Igual que .np-comp-glow de nawar-plus: azul claro y centrado en la
    sección, no el azul vivo pegado arriba. Es lo que hace que el índigo
    deje de verse plano y la tarjeta de cristal tenga algo que reflejar. */
@@ -263,6 +274,15 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 }
 .pr-price-meta { display: flex; flex-direction: column; padding-bottom: 6px; }
 .pr-price-old { font-size: 17px; color: rgba(255,255,255,0.62); text-decoration: line-through; font-weight: 600; }
+/* Recoge el total de la sección de arriba: 2.360 € tachados, 397 € y
+   la diferencia. Los tres números van juntos, que es donde pegan. */
+.pr-ahorro {
+  position: relative;
+  display: inline-flex; align-items: center; align-self: center; margin: 14px 0 0;
+  font-size: 13px; font-weight: 700; color: #7ee2a8;
+  background: rgba(45,200,120,0.12); border: 1px solid rgba(45,200,120,0.32);
+  padding: 6px 14px; border-radius: 100px;
+}
 .pr-price-note { font-size: 12px; color: rgba(255,255,255,0.78); font-weight: 600; }
 .pr-price-sub { position: relative; font-size: 12.5px; color: #8A93AB; margin: 10px 0 22px; }
 
@@ -367,7 +387,9 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 .pr-card { display: flex; flex-direction: column; }
 .pr-cta { margin-top: 22px; }
 
-@media (max-width: 640px) { .pr-wrapper { padding: 40px 16px 64px; } }
+/* El envoltorio ya no pinta nada: es el mismo azul que la sección de
+   arriba y su relleno sólo abriría un hueco en la costura. */
+@media (max-width: 640px) { .pr-wrapper { padding: 0; } .pr-section { padding: 16px 0 64px; } }
 
 @media (max-width: 900px) { .pr-layout { grid-template-columns: 1fr; } }
 

@@ -138,8 +138,10 @@ const pasos = [
    interior está pasado a la paleta clara. */
 .mf-wrapper { background: #fff; padding: 0; }
 .mf-outer { position: relative; max-width: 100%; margin: 0; border-radius: 0; }
-.mf-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
-@media (max-width: 640px) { .mf-section { padding: 64px 0; } }
+/* Va detrás de Pilares, que también es blanca: sin recortar el aire de
+   arriba quedaban 192 px de blanco liso entre las dos. */
+.mf-section { background: #fff; position: relative; overflow: hidden; padding: 40px 0 96px; }
+@media (max-width: 640px) { .mf-section { padding: 28px 0 64px; } }
 /* El resplandor se queda, muy suave, para que el blanco no sea plano */
 .mf-bg-glow {
   position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
