@@ -124,17 +124,14 @@ const FOTO_PACK = 'https://docs.holandesnawar.com/img/Formacio%CC%81n%20desde%20
   max-width: 1080px; margin: 0 auto;
 }
 
-.ai-lista-col {
-  background: #fff;
-  border: 1px solid #E4EAF8;
-  border-radius: 26px;
-  padding: 32px 34px;
-  box-shadow: 0 2px 10px rgba(29,0,132,0.04);
-}
+/* Sin tarjeta: era blanca sobre blanco, así que sólo aportaba un
+   borde y un margen interior que estrechaba las dos columnas. La
+   lista se lee directamente sobre el fondo de la sección. */
+.ai-lista-col { padding: 4px 0 0; }
 .ai-sub {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 20px; font-weight: 600; color: #101336;
-  letter-spacing: -0.02em; margin-bottom: 22px;
+  font-size: 23px; font-weight: 600; color: #101336;
+  letter-spacing: -0.02em; margin-bottom: 24px;
 }
 /* Dos columnas: nueve puntos en una sola obligaban a recorrer media
    pantalla para llegar al botón que tienen al lado. */
@@ -144,8 +141,8 @@ const FOTO_PACK = 'https://docs.holandesnawar.com/img/Formacio%CC%81n%20desde%20
   gap: 14px 28px;
 }
 .ai-list li {
-  display: flex; align-items: flex-start; gap: 11px;
-  font-size: 14.5px; line-height: 1.6; color: #454F6B;
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 16px; line-height: 1.6; color: #1B2138;
 }
 /* La palomita de la casa: círculo hueco de 22 px con borde de 2 px */
 .ai-check {
@@ -158,9 +155,9 @@ const FOTO_PACK = 'https://docs.holandesnawar.com/img/Formacio%CC%81n%20desde%20
 
 .ai-bonus {
   display: flex; align-items: center; gap: 11px;
-  margin-top: 24px; padding-top: 22px;
-  border-top: 1px solid #EEF2FB;
-  font-size: 14.5px; line-height: 1.5; color: #1D0084;
+  margin-top: 26px; padding-top: 24px;
+  border-top: 1px solid #E4EAF8;
+  font-size: 16px; line-height: 1.5; color: #1D0084;
 }
 .ai-bonus strong { font-weight: 700; }
 .ai-gift { flex-shrink: 0; width: 22px; height: 22px; color: #025dc7; }
@@ -223,7 +220,6 @@ const FOTO_PACK = 'https://docs.holandesnawar.com/img/Formacio%CC%81n%20desde%20
 @media (max-width: 760px) {
   .ai-section { padding: 64px 0; }
   .ai-foto { margin-bottom: 36px; }
-  .ai-lista-col { padding: 26px 22px; border-radius: 22px; }
   .ai-list { grid-template-columns: 1fr; }
   .ai-cta-card { padding: 28px 22px; border-radius: 22px; }
 }

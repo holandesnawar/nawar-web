@@ -1,0 +1,139 @@
+---
+// Lo que cambia cuando hablas neerlandés.
+//
+// Va justo después de "el coste de seguir igual", y ese es el motivo
+// de que exista: la sección de arriba enumera lo que pierdes y deja
+// al lector abajo. Si de ahí saltamos a los precios de las academias,
+// la página encadena tres bloques de mal rollo. Aquí se le da la
+// vuelta y se enseña el otro lado del mismo día a día.
+//
+// No habla de la formación: habla de la vida. Los módulos, las horas
+// y la plataforma vienen mucho más abajo. Aquí sólo está el porqué.
+//
+// El titular evita la promesa de plazo del mockup de referencia
+// ("cambia tu inglés en 1 semana"). Nosotros ya decimos ocho meses en
+// la oferta y no vamos a prometer nada más corto en un titular.
+import { ICONOS } from './iconos-vivos'
+
+const beneficios = [
+  {
+    icono: 'trabajo',
+    title: 'Entrar a entrevistas en neerlandés',
+    desc: 'Dejar de descartar ofertas porque piden el idioma. Y sentarte a la mesa con la misma calma con la que lo harías en español.',
+  },
+  {
+    icono: 'responder',
+    title: 'Entender y responder al momento',
+    desc: 'En la reunión, en el médico, en la puerta de casa. Sin pedir que te lo repitan en inglés y sin traducir en tu cabeza.',
+  },
+  {
+    icono: 'gestiones',
+    title: 'Hacer tus gestiones tú solo',
+    desc: 'El banco, la gemeente, el colegio, el seguro. Tus papeles dejan de depender de que alguien pueda acompañarte.',
+  },
+  {
+    icono: 'gente',
+    title: 'Dejar de estar de visita',
+    desc: 'Entrar en la conversación de la oficina, entender el chiste del vecino y contestar. Estar dentro, no al lado.',
+  },
+  {
+    icono: 'moverte',
+    title: 'Moverte por el país con soltura',
+    desc: 'Trenes, tiendas, colegios, ventanillas. Cualquier situación del día, sin el traductor del móvil abierto.',
+  },
+  {
+    icono: 'confianza',
+    title: 'Ser tú también en neerlandés',
+    desc: 'Hablar sin ensayar la frase antes. Equivocarte y seguir. Sonar a ti, y no a alguien pidiendo perdón por su acento.',
+  },
+]
+---
+<section class="lc-section" data-navbar="light">
+  <div class="inner">
+
+    <div class="lc-header sr">
+      <span class="badge-light">
+        <svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        El otro lado
+      </span>
+      <h2 class="lc-title">No aprendes neerlandés por aprender.<br /><span class="lc-accent">Lo aprendes para esto.</span></h2>
+      <p class="lc-lead">
+        Esto es lo que cambia en tu día a día el día que dejas de necesitar traductor:
+      </p>
+    </div>
+
+    <div class="lc-grid">
+      {beneficios.map((b) => (
+        <article class="lc-item sr">
+          <span class="lc-icono"><Fragment set:html={ICONOS[b.icono]} /></span>
+          <h3 class="lc-name">{b.title}</h3>
+          <p class="lc-desc">{b.desc}</p>
+        </article>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+.lc-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
+
+.lc-header { text-align: center; max-width: 760px; margin: 0 auto 48px; }
+.lc-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.14;
+  color: #1D0084;
+  margin: 0;
+}
+.lc-accent {
+  display: inline;
+  background-image: linear-gradient(
+    to top,
+    rgba(122, 185, 255, 0.45) 0em,
+    rgba(122, 185, 255, 0.45) 0.24em,
+    transparent 0.24em
+  );
+  padding: 0 0.08em;
+  border-radius: 5px;
+}
+.lc-lead { font-size: 17px; line-height: 1.6; color: #252C42; font-weight: 500; margin-top: 16px; }
+
+.lc-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px; max-width: 1080px; margin: 0 auto;
+}
+.lc-item {
+  background: #fff;
+  border: 1px solid #E4EAF8;
+  border-radius: 22px;
+  padding: 30px 28px;
+  box-shadow: 0 2px 10px rgba(29,0,132,0.04);
+  transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+.lc-item:hover {
+  border-color: rgba(2,93,199,0.30);
+  box-shadow: 0 16px 38px rgba(29,0,132,0.10);
+  transform: translateY(-4px);
+}
+/* La ilustración manda: 52 px, sin caja detrás y con aire debajo. */
+.lc-icono { display: block; width: 52px; height: 52px; margin-bottom: 18px; }
+.lc-icono :global(svg) { width: 100%; height: 100%; display: block; }
+.lc-item:hover .lc-icono { transform: scale(1.06); }
+.lc-icono { transition: transform .25s cubic-bezier(.22,1,.36,1); }
+
+.lc-name {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 18px; font-weight: 600; color: #101336; line-height: 1.28;
+  letter-spacing: -0.015em;
+  margin-bottom: 9px;
+}
+.lc-desc { font-size: 15px; color: #252C42; font-weight: 500; line-height: 1.6; }
+
+@media (max-width: 940px) { .lc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) {
+  .lc-section { padding: 64px 0; }
+  .lc-grid { grid-template-columns: 1fr; gap: 16px; }
+  .lc-item { padding: 26px 22px; }
+  .lc-icono { width: 46px; height: 46px; margin-bottom: 14px; }
+}
+</style>

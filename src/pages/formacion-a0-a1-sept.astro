@@ -27,6 +27,8 @@ import MarcaSection from '../components/landing-08-08-2026/MarcaSection.astro'
 import CronogramaSection from '../components/landing-08-08-2026/CronogramaSection.astro'
 import PresentacionNawar from '../components/landing-08-08-2026/PresentacionNawar.astro'
 import CadaUnidad from '../components/landing-08-08-2026/CadaUnidad.astro'
+import LoQueCambia from '../components/landing-08-08-2026/LoQueCambia.astro'
+import { ICONOS } from '../components/landing-08-08-2026/iconos-vivos'
 // Vuelve, sin el distintivo de "primera edición" que era lo que no
 // iba a ser verdad siempre. Ahora habla de la convocatoria y del
 // aforo de la clase en directo, que sí aguanta edición tras edición.
@@ -526,13 +528,15 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             </a>
           </div>
           <div class="hero-trust">
-            <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-video"/></svg><span>+15h de vídeo</span></div>
+            {/* Sin --dark: esa variante invierte los tonos para leerse
+                sobre azul marino y el banner ahora es blanco. */}
+            <div class="trust-item"><svg class="nw-icon nw-icon--xs" aria-hidden="true"><use href="#i-video"/></svg><span>+15h de vídeo</span></div>
             <div class="trust-sep"></div>
-            <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-mobile"/></svg><span>Ejercicios online</span></div>
+            <div class="trust-item"><svg class="nw-icon nw-icon--xs" aria-hidden="true"><use href="#i-mobile"/></svg><span>Ejercicios online</span></div>
             <div class="trust-sep"></div>
-            <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-users"/></svg><span>Comunidad activa</span></div>
+            <div class="trust-item"><svg class="nw-icon nw-icon--xs" aria-hidden="true"><use href="#i-users"/></svg><span>Comunidad activa</span></div>
             <div class="trust-sep"></div>
-            <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-live"/></svg><span>Clases en directo</span></div>
+            <div class="trust-item"><svg class="nw-icon nw-icon--xs" aria-hidden="true"><use href="#i-live"/></svg><span>Clases en directo</span></div>
           </div>
         </div>
 
@@ -595,6 +599,9 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       <div class="hero-scroll-hint" aria-hidden="true">↓</div>
     </section>
 
+    {/* Fuera por ahora a petición de Rida. El marcado se queda entero:
+        quita el `false &&` y vuelve. */}
+    {false && (
     <section class="trust-bar">
       <div class="container trust-bar-inner">
         <div class="trust-bar-item"><strong>+15 horas</strong><span>de vídeo estructurado</span></div>
@@ -608,6 +615,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         <div class="trust-bar-item"><strong>Clase semanal</strong><span>en directo</span></div>
       </div>
     </section>
+    )}
 
     <!-- ══════════════════════════════════════════════════════════
          LA CARTA — el dolor, numerado
@@ -654,23 +662,23 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             </p>
             <ul class="consequences-list">
               <li>
-                <span class="cons-icon"><svg class="nw-icon" aria-hidden="true"><use href="#i-hourglass"/></svg></span>
+                <span class="cons-icon"><Fragment set:html={ICONOS.tiempo} /></span>
                 <div><strong>Más tiempo perdido.</strong> Cada semana sin avanzar es una semana más de dependencia y bloqueo.</div>
               </li>
               <li>
-                <span class="cons-icon"><svg class="nw-icon" aria-hidden="true"><use href="#i-chart-up"/></svg></span>
+                <span class="cons-icon"><Fragment set:html={ICONOS.oportunidad} /></span>
                 <div><strong>Oportunidades que se escapan.</strong> Trabajo, ascensos, contratos: todo depende del idioma.</div>
               </li>
               <li>
-                <span class="cons-icon"><svg class="nw-icon" aria-hidden="true"><use href="#i-speech-off"/></svg></span>
+                <span class="cons-icon"><Fragment set:html={ICONOS.conversacion} /></span>
                 <div><strong>Exclusión social constante.</strong> Quedarte fuera de conversaciones, reuniones, momentos con vecinos.</div>
               </li>
               <li>
-                <span class="cons-icon"><svg class="nw-icon" aria-hidden="true"><use href="#i-shield-alert"/></svg></span>
+                <span class="cons-icon"><Fragment set:html={ICONOS.inseguridad} /></span>
                 <div><strong>Más inseguridad acumulada.</strong> Cuanto más lo aplazas, más cuesta retomarlo.</div>
               </li>
               <li>
-                <span class="cons-icon"><svg class="nw-icon" aria-hidden="true"><use href="#i-passport"/></svg></span>
+                <span class="cons-icon"><Fragment set:html={ICONOS.pasaporte} /></span>
                 <div><strong>Integración a medias.</strong> Vivir en Países Bajos sin el idioma es vivir de visitante.</div>
               </li>
             </ul>
@@ -678,6 +686,11 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         </div>
       </div>
     </section>
+
+    {/* El otro lado del mismo día a día. Va aquí porque la sección de
+        arriba deja al lector abajo, y de ahí saltábamos directos a los
+        precios de las academias: tres bloques seguidos de mal rollo. */}
+    <LoQueCambia />
 
     <!-- ══════════════════════════════════════════════════════════
          LOS NÚMEROS — ancla de precio
@@ -884,8 +897,12 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     <!-- ══════════════════════════════════════════════════════════
          BARRA STICKY MÓVIL
     ══════════════════════════════════════════════════════════ -->
+    {/* El precio salió de aquí: enseñado fuera de contexto, sin el
+        valor ni la garantía al lado, competía con el propio botón y
+        hacía de spoiler durante media página. El bloque se queda en
+        el marcado, oculto, y con él el script que lo revelaba. */}
     <div class="mobile-sticky" id="l8-sticky">
-      <div class="mobile-sticky-price is-oculto" id="l8-sticky-precio">
+      <div class="mobile-sticky-price is-oculto" id="l8-sticky-precio" hidden>
         <s>{VALOR_TOTAL}&nbsp;€</s>
         <strong>{PRECIO}&nbsp;€</strong>
       </div>

@@ -4029,6 +4029,7 @@
 .l8 .ai-title.ai-title,
 .l8 .pn-title.pn-title,
 .l8 .cu-title.cu-title,
+.l8 .lc-title.lc-title,
 .l8 .np-faq-title.np-faq-title,
 .l8 .final-cta h2 {
   font-family: var(--font-head);
@@ -4379,6 +4380,7 @@
 .l8 .mk-section.mk-section,
 .l8 .pil-section.pil-section,
 .l8 .pn-section.pn-section,
+.l8 .lc-section.lc-section,
 .l8 .qi-section.qi-section,
 .l8 .cu-section.cu-section,
 .l8 .bn-section.bn-section,
@@ -4400,6 +4402,7 @@
   .l8 .mk-section.mk-section,
   .l8 .pil-section.pil-section,
   .l8 .pn-section.pn-section,
+  .l8 .lc-section.lc-section,
   .l8 .qi-section.qi-section,
   .l8 .cu-section.cu-section,
   .l8 .bn-section.bn-section,
@@ -4432,6 +4435,7 @@
 .l8 .porq-section.porq-section,
 .l8 .qi-section.qi-section,
 .l8 .bn-section.bn-section,
+.l8 .np-stats.np-stats,
 .l8 .ai-section.ai-section { border-top: 1px solid #EEF2FB; }
 
 /* ── 2 y 5. LOS ICONOS NO LLEVAN FONDO ─────────────────────────
@@ -4448,9 +4452,12 @@
   margin-bottom: 2px;
   color: #025dc7;
 }
-.l8 .cons-icon .nw-icon,
 .l8 .es-icon-box .es-icon,
 .l8 .cu-icon-box .cu-icon { width: 30px; height: 30px; }
+/* "El coste de seguir igual" estrena las ilustraciones: ahí van más
+   grandes que un icono de interfaz porque son dibujos, no símbolos. */
+.l8 .cons-icon.cons-icon { display: block; width: 52px; height: 52px; margin-bottom: 16px; }
+.l8 .cons-icon svg { width: 100%; height: 100%; display: block; }
 /* El de "cada unidad" va al lado del texto y necesita su hueco */
 .l8 .cu-icon-box.cu-icon-box { flex-shrink: 0; margin-top: 2px; }
 
@@ -4492,7 +4499,7 @@
 .l8 .qi-item-desc.qi-item-desc, .l8 .np-letter-aside.np-letter-aside,
 .l8 .consequences-intro.consequences-intro,
 .l8 .consequences-list li div, .l8 .np-stat-label.np-stat-label,
-.l8 .ai-list li, .l8 .porq-list li, .l8 .guarantee-lead.guarantee-lead,
+.l8 .ai-list li, .l8 .porq-list--bad li, .l8 .guarantee-lead.guarantee-lead,
 .l8 .ai-sub.ai-sub, .l8 .cu-name.cu-name,
 .l8 .porq-sub.porq-sub, .l8 .mk-label.mk-label {
   color: #252C42;
@@ -4508,7 +4515,7 @@
 }
 /* Y lo mismo en los fondos oscuros, donde el blanco al 55-65 % se
    leía tan lavado como el gris sobre blanco. */
-.l8 .final-cta p, .l8 .pr-social-text, .l8 .np-faq-a,
+.l8 .final-cta p, .l8 .np-faq-a,
 .l8 .ai-nota, .l8 .ai-precio-nota { color: rgba(255,255,255,0.82); }
 .l8 .final-cta p { font-weight: 500; }
 
@@ -4519,4 +4526,142 @@
    estaba ganando dentro de la media query. */
 @media (max-width: 639px) {
   .l8 .mf-step-head.mf-step-head { align-items: flex-start; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ▓▓ SEGUNDA REVISIÓN DE CASA — 19/08 ▓▓
+══════════════════════════════════════════════════════════════ */
+
+/* ── "Todo lo que recibes": las ocho tarjetas, más grandes ─────
+   Con cuatro columnas cada tarjeta tiene 250 px y dentro iban un
+   icono de 30, un título de 15 y una descripción de 13. A tamaño
+   real se leía como letra pequeña dentro de una caja grande. Baja
+   a tres columnas para que quepa más letra y sube todo un punto. */
+.l8 .qi-grid.qi-grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1024px) { .l8 .qi-grid.qi-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px)  { .l8 .qi-grid.qi-grid { grid-template-columns: 1fr; } }
+.l8 .qi-item.qi-item { padding: 28px 26px 26px; }
+.l8 .qi-item-chip.qi-item-chip { width: 36px; height: 36px; }
+.l8 .qi-item-chip svg { width: 100%; height: 100%; }
+.l8 .qi-item-title.qi-item-title { font-size: 17px; margin-bottom: 7px; }
+.l8 .qi-item-desc.qi-item-desc { font-size: 15px; line-height: 1.6; }
+
+/* ── Los botones, con más presencia ────────────────────────────
+   No cambia ni el color ni la forma: sube la letra de 16 a 17 px y
+   de 700 a 800 —Poppins la trae—, y se abre un poco el espaciado.
+   Sobre el azul claro, el peso extra es lo que hace que el botón
+   deje de leerse como una pastilla y se lea como una llamada. */
+.l8 .pn-cta, .l8 .es-cta, .l8 .ai-cta, .l8 .pr-cta,
+.l8 .sv-cta, .l8 .l8-cta-band-btn, .l8 .btn-lg, .l8 .btn-sticky {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.005em;
+}
+.l8 .l8nav-cta { font-weight: 800; }
+
+/* ── Barra inferior: sólo el botón, centrado ───────────────────
+   El precio se ha quitado del marcado, así que la barra deja de
+   ser "precio a un lado, botón al otro" y el botón toma el centro
+   con el ancho de la columna de lectura. */
+.l8 .mobile-sticky.mobile-sticky { justify-content: center; }
+.l8 .mobile-sticky .btn-sticky {
+  width: 100%; max-width: 420px;
+  justify-content: center;
+  padding-top: 15px; padding-bottom: 15px;
+}
+
+/* ── El nombre de la tarjeta de precio, en una línea ───────────
+   Iba partido a mano con un <br>, y en móvil dejaba "A0 → A1" solo
+   en la segunda línea. Ahora es una frase y el tamaño se adapta. */
+/* "Formación Neerlandés A0 → A1" no cabía de ninguna manera en los
+   280 px útiles de la tarjeta en móvil. Pasa a "Formación Nawar",
+   que además es como se llama el producto en el resto de la página,
+   y con eso entra en una línea sin encoger la letra. */
+.l8 .pr-card-name.pr-card-name {
+  font-size: clamp(18px, 4.4vw, 24px);
+  line-height: 1.25;
+  white-space: nowrap;
+}
+@media (max-width: 380px) {
+  .l8 .pr-card-name.pr-card-name { font-size: 16.5px; }
+}
+.l8 .pr-card-arrow { white-space: nowrap; }
+
+/* ══════════════════════════════════════════════════════════════
+   EL BANNER, EN CLARO
+   La página abría con una pantalla entera de azul marino y a partir
+   de la segunda sección era blanca: el salto era brusco y, sobre
+   todo, arrancaba pesada. Ahora abre en blanco como el resto y el
+   azul se queda donde hace falta —el titular, el mockup y los
+   destellos—, que es justo la inversión del esquema anterior.
+
+   El marcado no cambia: las auroras, la trama de puntos, las
+   partículas y la viñeta siguen ahí, sólo que ahora tiñen de azul
+   clarito un fondo blanco en vez de aclarar uno oscuro.
+══════════════════════════════════════════════════════════════ */
+.l8 .hero.hero { background: #fff; }
+/* El lienzo del documento lo pinta el layout compartido con un estilo
+   en línea, y ese layout lo usan todas las páginas de la web. Como
+   esta hoja sólo la carga esta landing, aquí sí se puede pisar: sin
+   esto, al rebotar el scroll arriba asomaba el azul marino por encima
+   de un banner ya blanco. El !important es contra el estilo en línea,
+   no contra otra regla. */
+html, body { background: #fff !important; }
+/* Las tres auroras eran manchas de azul saturado sobre marino. Sobre
+   blanco hay que bajarlas mucho o el banner se vuelve una acuarela. */
+.l8 .hero .np-hero-aurora { opacity: .10; }
+.l8 .hero .np-hero-grid-bg { opacity: .30; }
+/* Puntos claros sobre blanco, y viñeta blanca en vez de negra */
+.l8 .hero .hero-dots.hero-dots {
+  opacity: 1;
+  background-image: radial-gradient(circle, rgba(29,0,132,0.10) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+.l8 .hero .np-hero-vignette {
+  background: radial-gradient(ellipse 90% 70% at 50% 40%, transparent 40%, rgba(255,255,255,0.85) 100%);
+}
+/* Las partículas eran puntos blancos: invisibles sobre blanco */
+.l8 .hero .np-particle { background: rgba(11,109,240,0.45); }
+
+/* El distintivo pasa al claro de la casa */
+.l8 .hero-badge.hero-badge {
+  color: #1D0084;
+  background: #DCEAFE;
+  border: 1px solid rgba(2,93,199,0.18);
+}
+/* El titular: azul marino, con la última línea en el azul vivo. El
+   degradado a blanco de .text-gradient-white no pinta nada aquí. */
+.l8 .hero-headline.hero-headline { color: #1D0084; }
+.l8 .hero-headline .text-gradient-white {
+  background: none;
+  -webkit-text-fill-color: #1D0084;
+  color: #1D0084;
+}
+.l8 .hero-headline em { color: #0b6df0; }
+.l8 .hero-sub.hero-sub { color: #252C42; font-weight: 500; }
+
+/* La caja de confianza deja de ser cristal sobre oscuro */
+.l8 .hero-trust.hero-trust {
+  background: #F7F9FF;
+  border: 1px solid #E4EAF8;
+  box-shadow: 0 2px 10px rgba(29,0,132,0.04);
+}
+.l8 .hero .trust-item { color: #252C42; font-weight: 500; }
+.l8 .hero .trust-sep { background: #D8E2F5; }
+.l8 .hero-scroll-hint { color: rgba(29,0,132,.28); }
+
+/* El mockup se queda oscuro a propósito: es la pantalla del producto
+   y sobre blanco es lo único que tiene que pesar. */
+.l8 .hero .platform-mockup {
+  box-shadow: 0 30px 70px rgba(29,0,132,0.20), 0 2px 8px rgba(29,0,132,0.10);
+}
+
+/* El banner ya no es la única sección oscura de arriba, así que la
+   barra fija tiene que poder leerse sobre blanco desde el principio.
+   Se queda en azul marino macizo —es la barra de la oferta y tiene
+   que destacar—, pero pierde la transparencia, que sobre blanco la
+   dejaba lavada. */
+.l8nav {
+  background: rgba(24, 0, 110, 0.94);
+  border-bottom: 1px solid rgba(77, 163, 255, 0.28);
 }
