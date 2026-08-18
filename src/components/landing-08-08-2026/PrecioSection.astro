@@ -1,23 +1,28 @@
 ---
-// Sección final de precio — dos columnas: "Tu acceso incluye" + tarjeta de precio premium.
-// Tarjeta con anillo de gradiente + halo, prueba social, pills de pago refinadas.
-const accesoIncluye = [
-  'Programa completo Neerlandés A0 → A1 (8 meses de camino)',
-  'Clases en vivo semanales con el equipo Nawar',
-  'Todas las clases grabadas, disponibles para siempre',
-  'Plataforma interactiva: flashcards, lectura, escucha y ejercicios',
-  'Repaso inteligente que recuerda tus fallos hasta que los dominas',
-  'Libros, presentaciones y materiales descargables',
-  'Soporte y consultas respondidas por el equipo',
-  'Comunidad privada de hispanohablantes',
-  'Certificado Holandés Nawar al completar la formación',
+// La oferta, en una sola sección y dos columnas: a la izquierda el
+// desglose de lo que vale, a la derecha la tarjeta con lo que cuesta.
+// ── Desglose de valor ─────────────────────────────────────────
+// Estaba en su propia sección, justo encima. Ahora vive en la columna
+// izquierda de ésta: era la misma lista que "Tu acceso incluye" pero
+// con precios, así que la página contaba dos veces lo mismo en dos
+// tarjetas oscuras seguidas. Una sola sección: a la izquierda lo que
+// vale, a la derecha lo que cuesta.
+const nucleo = [
+  { item: 'Programa completo Neerlandés A0 → A1', detalle: '8 meses de camino estructurado, con acceso de por vida', valor: 800, nota: 'lo que cuesta un solo nivel en una academia de NL' },
+  { item: 'Plataforma interactiva', detalle: 'Flashcards, lectura, escucha con audio nativo y ejercicios', valor: 150 },
+  { item: 'Repaso inteligente', detalle: 'Recuerda tus fallos y te los devuelve hasta que los dominas', valor: 90 },
+  { item: 'Libros y materiales descargables', detalle: 'Presentaciones, guías y PDFs de cada lección', valor: 120 },
 ]
-const bonusIncluye = 'Los 5 bonus de la primera edición, incluidos'
+const bonus = [
+  { item: 'Clase semanal en directo', detalle: '12 clases con profesor, todas grabadas', valor: 780, nota: '12 × 65 € que cuesta una clase suelta' },
+  { item: 'Comunidad privada de hispanohablantes', detalle: 'Gente en tu misma situación, no aprendes solo', valor: 120 },
+  { item: 'Ejercicios y lecciones extra', detalle: 'Material adicional para repasar sin límite', valor: 90 },
+  { item: 'Soporte y resolución de dudas', detalle: 'Preguntas y te responde el equipo', valor: 150 },
+  { item: 'Certificado oficial Holandés Nawar', detalle: 'Personalizado, al completar la formación', valor: 60 },
+]
+
+const valorTotal = [...nucleo, ...bonus].reduce((a, b) => a + b.valor, 0)
 const precio = '397'
-// El ancla ya no es un "precio que subirá a 497 €" —esa promesa se quitó
-// de la página porque habría que cumplirla— sino el total del desglose
-// que va justo encima, que sale de precios reales.
-const valorTotal = 2360
 const ahorro = valorTotal - Number(precio)
 const eur = (n: number) => n.toLocaleString('es-ES')
 const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
@@ -32,40 +37,49 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
         <div class="pr-header sr">
           <span class="badge-dark">
             <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Reserva tu plaza
+            Lo que vale de verdad
           </span>
           <h2 class="pr-title">
-            <span class="text-gradient-white">Todo el camino hasta hablar,</span><br />
-            <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;">en un solo pago</span>
+            <span class="text-gradient-white">Suma todo lo que te llevas.</span><br />
+            <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;">Después mira el precio.</span>
           </h2>
         </div>
 
         <div class="pr-layout">
 
-          <!-- Izquierda: tu acceso incluye -->
+          <!-- Izquierda: el desglose de lo que vale -->
           <div class="pr-includes sr">
-            <div class="pr-includes-head">
-              <span class="pr-includes-chip">
-                <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
-              </span>
-              <h3 class="pr-includes-title">Tu acceso incluye</h3>
-            </div>
-            <ul class="pr-list">
-              {accesoIncluye.map((item) => (
-                <li>
-                  <span class="pr-check">
-                    <svg width="11" height="11" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                  </span>
-                  {item}
-                </li>
-              ))}
-              <li class="pr-list-bonus">
-                <span class="pr-gift">
-                  <svg width="12" height="12" fill="none" stroke="#0a1656" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
-                </span>
-                <span><strong>{bonusIncluye}</strong></span>
-              </li>
-            </ul>
+            <table class="sv-table">
+              <caption class="sv-caption">Desglose del valor de la formación</caption>
+              <tbody>
+                {nucleo.map((r) => (
+                  <tr>
+                    <th scope="row">
+                      <span class="sv-item">{r.item}</span>
+                      <span class="sv-detalle">{r.detalle}</span>
+                      {r.nota && <span class="sv-nota">{r.nota}</span>}
+                    </th>
+                    <td class="sv-valor">{eur(r.valor)}&nbsp;€</td>
+                  </tr>
+                ))}
+                {bonus.map((r, i) => (
+                  <tr class="sv-bonus">
+                    <th scope="row">
+                      <span class="sv-item"><span class="sv-tag">Bonus {String(i + 1).padStart(2, '0')}</span>{r.item}</span>
+                      <span class="sv-detalle">{r.detalle}</span>
+                      {r.nota && <span class="sv-nota">{r.nota}</span>}
+                    </th>
+                    <td class="sv-valor">{eur(r.valor)}&nbsp;€</td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr class="sv-total">
+                  <th scope="row">Valor total</th>
+                  <td><span class="sv-strike">{eur(valorTotal)}&nbsp;€</span></td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
 
           <!-- Derecha: tarjeta de precio con anillo de gradiente -->
@@ -137,7 +151,9 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
    dice lo que cuesta. */
 .pr-wrapper { background: #1D0084; padding: 0; }
 .pr-outer { overflow: hidden; position: relative; border-radius: 0; max-width: 100%; margin: 0; }
-.pr-section { background: #1D0084; position: relative; overflow: hidden; padding: 24px 0 96px; }
+/* Ya no continúa el bloque azul del desglose (que ahora vive dentro):
+   viene detrás de los bonus, que son claros, así que recupera su aire. */
+.pr-section { background: #1D0084; position: relative; overflow: hidden; padding: 96px 0; }
 /* Igual que .np-comp-glow de nawar-plus: azul claro y centrado en la
    sección, no el azul vivo pegado arriba. Es lo que hace que el índigo
    deje de verse plano y la tarjeta de cristal tenga algo que reflejar. */
@@ -168,8 +184,95 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   }
 }
 
+
+/* ══════════════════════════════════════════════════════════════
+   Desglose de valor (columna izquierda)
+   Traído tal cual de StackValor.astro, que era su propia sección.
+   Se queda con sus clases sv-* para que si algún día vuelve a
+   separarse no haya que renombrar nada.
+══════════════════════════════════════════════════════════════ */
+.sv-table { width: 100%; border-collapse: collapse; text-align: left; }
+.sv-caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.sv-table th, .sv-table td { vertical-align: top; padding: 17px 0; font-weight: 400; }
+.sv-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.09); }
+
+.sv-item {
+  display: block;
+  font-size: 15.5px; font-weight: 600; color: #fff; line-height: 1.4;
+}
+.sv-detalle { display: block; font-size: 13px; color: rgba(255,255,255,0.74); line-height: 1.5; margin-top: 4px; }
+/* La nota va bajo el importe, no bajo el texto: así la fila no crece
+   una tercera línea y no parece que el párrafo se duplique. */
+.sv-nota {
+  display: block; font-size: 11.5px; font-weight: 500;
+  color: rgba(255,255,255,0.58);
+  white-space: normal; text-align: left;
+  line-height: 1.45; margin-top: 5px;
+}
+/* A 9,5 px con 0,13 em de espaciado no se leía qué bonus era */
+.sv-tag {
+  display: inline-block;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 12.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #0a1656; background: #4da3ff;
+  padding: 4px 10px; border-radius: 6px; margin-right: 10px;
+  vertical-align: 1px;
+}
+.sv-valor {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.92);
+  text-align: right; white-space: nowrap; padding-left: 20px !important;
+  font-variant-numeric: tabular-nums;
+}
+.sv-bonus .sv-valor { color: #4da3ff; }
+
+.sv-total th, .sv-total td {
+  padding-top: 22px !important;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 700;
+}
+/* La fila del total es la que ancla el precio: se lee antes que nada
+   y en 16 px se perdía entre las de arriba. */
+.sv-total th { font-size: 34px; color: #fff; letter-spacing: -0.02em; }
+.sv-total td {
+  text-align: right; font-size: 34px; letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.68); font-variant-numeric: tabular-nums;
+}
+.sv-strike {
+  text-decoration: line-through;
+  text-decoration-color: rgba(255,107,107,0.85);
+  text-decoration-thickness: 2.5px;
+}
+
+
+/* Móvil: la tabla venía de una sección a 820 px y aquí se queda en el
+   ancho de la pantalla. Sin apretar, el nombre de cada línea salía en
+   cuatro renglones y "Valor total" se partía en dos. La nota de
+   contexto pasa debajo del concepto, que es donde hay sitio, en vez de
+   debajo del importe. */
+@media (max-width: 720px) {
+  .pr-includes { padding: 24px 20px; }
+  .sv-table th, .sv-table td { padding: 15px 0; }
+  .sv-item { font-size: 14.5px; }
+  .sv-valor { font-size: 15px; padding-left: 12px !important; }
+  .pr-includes .sv-nota {
+    max-width: 100%; text-align: left; margin-left: 0;
+    font-size: 11.5px;
+  }
+  .sv-total th { font-size: 22px; white-space: nowrap; }
+  .sv-total td { font-size: 24px; }
+  .sv-tag { font-size: 11px; padding: 3px 8px; margin-right: 8px; }
+}
+
+/* La tarjeta se queda pegada mientras se recorre el desglose, que es
+   largo: así el precio no se pierde de vista y la columna derecha no
+   se queda vacía por abajo. Funciona porque .l8 usa overflow:clip y no
+   hidden, que convertía todo en contenedor de scroll. */
+@media (min-width: 901px) {
+  .pr-card-col { position: sticky; top: 96px; align-self: start; }
+}
 .pr-layout {
-  display: grid; grid-template-columns: minmax(0, 1fr) 410px;
+  display: grid; grid-template-columns: minmax(0, 1fr) 400px;
   gap: 36px; align-items: start; max-width: 1010px; margin: 0 auto;
 }
 
@@ -389,7 +492,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 
 /* El envoltorio ya no pinta nada: es el mismo azul que la sección de
    arriba y su relleno sólo abriría un hueco en la costura. */
-@media (max-width: 640px) { .pr-wrapper { padding: 0; } .pr-section { padding: 16px 0 64px; } }
+@media (max-width: 640px) { .pr-wrapper { padding: 0; } .pr-section { padding: 64px 0; } }
 
 @media (max-width: 900px) { .pr-layout { grid-template-columns: 1fr; } }
 

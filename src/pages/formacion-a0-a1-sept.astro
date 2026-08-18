@@ -13,7 +13,10 @@ import QueIncluye from '../components/landing-08-08-2026/QueIncluye.astro'
 import BonusSection from '../components/landing-08-08-2026/BonusSection.astro'
 import ParaTiSection from '../components/landing-08-08-2026/ParaTiSection.astro'
 import PrecioSection from '../components/landing-08-08-2026/PrecioSection.astro'
-import StackValor from '../components/landing-08-08-2026/StackValor.astro'
+// El desglose de valor ya no es una sección aparte: vive dentro de
+// PrecioSection, en su columna izquierda. El componente se queda en el
+// repo por si algún día vuelve a separarse.
+// import StackValor from '../components/landing-08-08-2026/StackValor.astro'
 import MarcaSection from '../components/landing-08-08-2026/MarcaSection.astro'
 // Fuera de la página hasta tener datos reales: los cinco profesores
 // son de relleno (se llaman todos "Nombre Apellido", las frases están
@@ -47,7 +50,7 @@ export const prerender = true
    reduce los abandonos. Ya no se enlaza a Stripe directamente. */
 const CHECKOUT_URL = '/matricula-formacion-nawar-a0-a1'
 const PRECIO = '397'
-const VALOR_TOTAL = '497'
+const VALOR_TOTAL = '2.360'
 const AHORRO = '100'
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
 
@@ -633,10 +636,12 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
     <!-- ══════════════════════════════════════════════════════════
          EL COSTE DE SEGUIR IGUAL
-         Copiada tal cual de nawar-landing (misma maquetación, mismo
-         texto y mismo CSS, que ya venía en la hoja). Lo único que
-         cambia son los iconos: allí eran emojis y aquí van los del
-         sprite de marca, como en el resto de la página.
+         Viene de nawar-landing. Allí era de dos columnas, con dos
+         listas "sin neerlandés / con esta formación" a la derecha;
+         esas dos cajas se han quitado —repetían en forma de lista lo
+         que el texto de la izquierda ya cuenta mejor— y la sección se
+         queda a una columna. Los iconos son los del sprite de marca y
+         no los emojis del original.
     ══════════════════════════════════════════════════════════ -->
     <section class="consequences">
       <div class="container">
@@ -671,30 +676,6 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
                 <div><strong>Integración a medias.</strong> Vivir en Países Bajos sin el idioma es vivir de visitante.</div>
               </li>
             </ul>
-          </div>
-          <div>
-            <div class="vs-block vs-bad">
-              <div class="vs-label">Sin neerlandés</div>
-              <ul>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span> Depender del inglés para todo</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span> No entender a tus vecinos, colegas, jefes</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span> Sentirte ajeno en tu propio barrio</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span> Perder oportunidades laborales</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span> Seguir con métodos que no funcionan</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span> Inseguridad en cada interacción</li>
-              </ul>
-            </div>
-            <div class="vs-block vs-good">
-              <div class="vs-label">Con esta formación</div>
-              <ul>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Comunicarte con confianza desde el principio</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Entender y hacerte entender</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Integrarte de verdad donde vives</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Avanzar con un camino claro y estructurado</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Practicar y medir tu progreso real</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Hablar neerlandés sin bloqueos</li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
@@ -769,9 +750,6 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
     {/* ── 7. Primero los cinco bonus, uno a uno... ── */}
     <BonusSection />
-
-    {/* ── ...y solo después la suma de todo ── */}
-    <StackValor />
 
     {/* ── 11. Y en cuanto se ha dicho lo que vale, lo que cuesta.
            Antes esto estaba cinco secciones más abajo y la página
@@ -898,7 +876,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
          BARRA STICKY MÓVIL
     ══════════════════════════════════════════════════════════ -->
     <div class="mobile-sticky" id="l8-sticky">
-      <div class="mobile-sticky-price">
+      <div class="mobile-sticky-price" id="l8-sticky-precio" hidden>
         <s>{VALOR_TOTAL}&nbsp;€</s>
         <strong>{PRECIO}&nbsp;€</strong>
       </div>
@@ -961,6 +939,29 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
     )
     items.forEach((el) => obs.observe(el))
+  })()
+
+  /* ── El precio de la barra fija no se enseña de entrada ────
+     Iba visible desde el banner y destripaba la cifra antes de haber
+     contado nada de lo que incluye. Ahora aparece al llegar a la
+     sección de precio y, una vez fuera, ya se queda: el observador se
+     desconecta en cuanto dispara. */
+  ;(function initPrecioBarra() {
+    const precio = document.getElementById('l8-sticky-precio')
+    const seccion = document.getElementById('precio')
+    if (!precio || !seccion) return
+    if (!('IntersectionObserver' in window)) { precio.hidden = false; return }
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return
+          precio.hidden = false
+          obs.disconnect()
+        })
+      },
+      { threshold: 0, rootMargin: '0px 0px -25% 0px' }
+    )
+    obs.observe(seccion)
   })()
 
   /* ── Puerta 1: los botones ────────────────────────────────

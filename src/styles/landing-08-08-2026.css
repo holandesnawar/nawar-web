@@ -3949,3 +3949,81 @@
 .l8 .vs-block li { align-items: flex-start; gap: 11px; }
 .l8 .vs-block .vs-mark { width: 19px; height: 19px; }
 .l8 .vs-block .vs-mark svg { width: 10px; height: 10px; }
+
+/* ══════════════════════════════════════════════════════════════
+   ESCALA DE TEXTO: DOS TAMAÑOS Y NO MÁS
+   Cada sección se fue escribiendo por su cuenta y acabaron
+   conviviendo seis tamaños de cuerpo distintos: las entradillas a
+   16 y 17 px, y las descripciones de tarjeta a 13, 14, 14,5 y 15.
+   Las de 13 costaban de leer y el conjunto no parecía la misma
+   página. Aquí quedan sólo dos:
+
+     · Entradilla de sección  17 px / 1,6
+     · Descripción de tarjeta 14,5 px / 1,65
+
+   Las clases van repetidas para ganarle a la hoja de cada
+   componente, que define lo mismo con la misma especificidad y el
+   orden en que Astro las suelta no lo controlamos.
+══════════════════════════════════════════════════════════════ */
+.l8 .porq-sub.porq-sub,
+.l8 .pil-sub.pil-sub,
+.l8 .mf-sub.mf-sub,
+.l8 .pt-sub.pt-sub,
+.l8 .qi-sub.qi-sub,
+.l8 .bn-sub.bn-sub,
+.l8 .cr-sub.cr-sub,
+.l8 .mk-p.mk-p {
+  font-size: 17px;
+  line-height: 1.6;
+  font-weight: 400;
+  color: #454F6B;
+}
+.l8 .pil-card-desc.pil-card-desc,
+.l8 .mf-step-desc.mf-step-desc,
+.l8 .qi-item-desc.qi-item-desc,
+.l8 .bn-desc.bn-desc,
+.l8 .cr-desc.cr-desc,
+.l8 .pf-frase.pf-frase {
+  font-size: 14.5px;
+  line-height: 1.65;
+  font-weight: 400;
+  color: #454F6B;
+}
+/* Las mismas dos medidas sobre azul, sólo cambia el color */
+.l8 .consequences-intro,
+.l8 .np-letter-aside {
+  font-size: 17px; line-height: 1.6;
+}
+.l8 .consequences-list li div,
+.l8 .np-stat-label,
+.l8 .sv-detalle.sv-detalle {
+  font-size: 14.5px; line-height: 1.65;
+}
+
+/* El icono va al lado del título y le come 43 px de los 230 que tiene
+   la tarjeta, así que el título se quedaba en 187 px mientras la
+   descripción de debajo usaba los 230: por eso el paso 2 salía en tres
+   líneas estrechas con un pasillo vacío a la derecha y los demás no
+   —son títulos más cortos y no llegaban a partirse—.
+   En móvil el icono se pone encima y el título recupera el ancho. */
+.l8 .mf-step-title { flex: 1; min-width: 0; }
+@media (max-width: 640px) {
+  .l8 .mf-step-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+/* Los títulos de tarjeta no se equilibran.
+   text-wrap:balance reparte el texto en líneas iguales, y en una
+   tarjeta estrecha eso deja el título ocupando la mitad del ancho con
+   un pasillo vacío a la derecha: el paso 2 del método usaba 129 px de
+   los 230 disponibles y se iba a tres líneas. */
+.l8 .mf-step-title,
+.l8 .qi-item-title,
+.l8 .bn-name,
+.l8 .pil-card-title,
+.l8 .cr-name,
+.l8 .sv-item { text-wrap: pretty; }
+
+/* Al quitar las dos listas de "sin neerlandés / con esta formación",
+   la sección se quedó con un solo hijo en una rejilla de dos columnas
+   y el texto ocupaba media pantalla con la otra media vacía. */
+.l8 .consequences-inner { grid-template-columns: 1fr; max-width: 760px; margin-inline: auto; }
