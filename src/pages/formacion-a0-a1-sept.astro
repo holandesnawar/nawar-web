@@ -33,6 +33,7 @@ import CronogramaSection from '../components/landing-08-08-2026/CronogramaSectio
 /* Copias propias de dos componentes de nawar-web: se veían rotos en
    móvil y hay que retocarlos sin alterar los que usa la web */
 import PorQueNawar from '../components/landing-08-08-2026/PorQueNawar.astro'
+import AccesoIncluye from '../components/landing-08-08-2026/AccesoIncluye.astro'
 import TestimonialsSection from '../components/landing-08-08-2026/TestimonialsSection.astro'
 
 export const prerender = true
@@ -703,10 +704,6 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             </div>
           ))}
         </div>
-        <p class="l8-anchor-note sr">
-          Un solo nivel en una academia te cuesta <strong>800 €</strong>. Dos clases sueltas, <strong>130 €</strong>.
-          La formación completa, con clase semanal en directo, comunidad y certificado, cuesta <strong>397 €</strong> una sola vez.
-        </p>
       </div>
     </section>
 
@@ -794,6 +791,9 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     {/* ── 13. Y qué pasa justo después de pagar ── */}
     <CronogramaSection />
 
+    {/* ── 14. Recordatorio de todo lo que entra, y salida ── */}
+    <AccesoIncluye />
+
     <!-- ══════════════════════════════════════════════════════════
          FAQ — diseño limpio, sin tarjetas (nawar-plus)
     ══════════════════════════════════════════════════════════ -->
@@ -876,7 +876,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
          BARRA STICKY MÓVIL
     ══════════════════════════════════════════════════════════ -->
     <div class="mobile-sticky" id="l8-sticky">
-      <div class="mobile-sticky-price" id="l8-sticky-precio" hidden>
+      <div class="mobile-sticky-price is-oculto" id="l8-sticky-precio">
         <s>{VALOR_TOTAL}&nbsp;€</s>
         <strong>{PRECIO}&nbsp;€</strong>
       </div>
@@ -950,12 +950,12 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     const precio = document.getElementById('l8-sticky-precio')
     const seccion = document.getElementById('precio')
     if (!precio || !seccion) return
-    if (!('IntersectionObserver' in window)) { precio.hidden = false; return }
+    if (!('IntersectionObserver' in window)) { precio.classList.remove('is-oculto'); return }
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
           if (!e.isIntersecting) return
-          precio.hidden = false
+          precio.classList.remove('is-oculto')
           obs.disconnect()
         })
       },

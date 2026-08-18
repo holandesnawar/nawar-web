@@ -1,0 +1,129 @@
+---
+// Recapitulación antes de las preguntas frecuentes.
+//
+// Esta lista vivía dentro de la sección de precio, al lado de la
+// tarjeta. Salió de ahí porque repetía punto por punto el desglose de
+// valor que tiene al lado —los mismos nueve conceptos, con precio— y
+// dos tarjetas oscuras seguidas contando lo mismo restaban.
+//
+// Aquí sí suma: llega después de la oferta, la garantía y el
+// cronograma, y sirve de recordatorio de todo lo que entra justo antes
+// de que la página pase a resolver dudas. Sin precio y sin desglose:
+// sólo qué te llevas y un botón.
+const accesoIncluye = [
+  'Programa completo Neerlandés A0 → A1 (8 meses de camino)',
+  'Clases en vivo semanales con el equipo Nawar',
+  'Todas las clases grabadas, disponibles para siempre',
+  'Plataforma interactiva: flashcards, lectura, escucha y ejercicios',
+  'Repaso inteligente que recuerda tus fallos hasta que los dominas',
+  'Libros, presentaciones y materiales descargables',
+  'Soporte y consultas respondidas por el equipo',
+  'Comunidad privada de hispanohablantes',
+  'Certificado Holandés Nawar al completar la formación',
+]
+const bonusIncluye = 'Los 5 bonus de la primera edición, incluidos'
+const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
+---
+<section class="ai-section" data-navbar="light">
+  <div class="inner">
+
+    <div class="ai-header sr">
+      <span class="badge-light">
+        <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Reserva tu plaza
+      </span>
+      <h2 class="ai-title">Todo el camino hasta hablar,<br /><span class="ai-accent">en un solo pago</span></h2>
+    </div>
+
+    <div class="ai-card sr">
+      <ul class="ai-list">
+        {accesoIncluye.map((item) => (
+          <li>
+            <span class="ai-check">
+              <svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            {item}
+          </li>
+        ))}
+      </ul>
+      <p class="ai-bonus">
+        <span class="ai-gift" aria-hidden="true">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+        </span>
+        <strong>{bonusIncluye}</strong>
+      </p>
+    </div>
+
+    <div class="ai-foot sr">
+      <a href={matriculaUrl} class="ai-cta">
+        Quiero mi plaza
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+      <p class="ai-nota">Pago único · 15 días de garantía · Acceso inmediato</p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.ai-section { background: #F0F4FF; position: relative; overflow: hidden; padding: 96px 0; }
+.ai-header { text-align: center; max-width: 720px; margin: 0 auto 48px; }
+
+.ai-card {
+  max-width: 860px; margin: 0 auto;
+  background: #fff;
+  border: 1px solid #E4EAF8;
+  border-radius: 26px;
+  padding: 34px 36px;
+  box-shadow: 0 2px 10px rgba(29,0,132,0.04);
+}
+/* Dos columnas en escritorio: nueve puntos en una sola columna
+   obligaban a recorrer media pantalla para llegar al botón. */
+.ai-list {
+  list-style: none;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 32px;
+}
+@media (max-width: 760px) { .ai-list { grid-template-columns: 1fr; } }
+.ai-list li {
+  display: flex; align-items: flex-start; gap: 11px;
+  font-size: 14.5px; line-height: 1.65; color: #454F6B;
+}
+/* La palomita de la casa: círculo hueco de 22 px con borde de 2 px */
+.ai-check {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+  background: transparent; border: 2px solid #025dc7; color: #025dc7;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+.ai-check svg { width: 12px; height: 12px; }
+
+.ai-bonus {
+  display: flex; align-items: center; gap: 11px;
+  margin-top: 24px; padding-top: 22px;
+  border-top: 1px solid #EEF2FB;
+  font-size: 14.5px; line-height: 1.5; color: #1D0084;
+}
+.ai-bonus strong { font-weight: 700; }
+.ai-gift { flex-shrink: 0; width: 22px; height: 22px; color: #025dc7; }
+.ai-gift svg { width: 22px; height: 22px; }
+
+.ai-foot { text-align: center; margin-top: 36px; }
+.ai-cta {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 17px 30px; border-radius: 13px;
+  background: #4da3ff; color: #1D0084;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 16px; font-weight: 700; text-decoration: none;
+  transition: background .22s, transform .22s cubic-bezier(.22,1,.36,1);
+}
+.ai-cta:hover { background: #6ab5ff; transform: scale(1.02); }
+.ai-cta:active { transform: scale(.98); }
+.ai-nota { font-size: 13px; color: #6B7488; margin-top: 14px; }
+
+@media (max-width: 760px) {
+  .ai-section { padding: 64px 0; }
+  .ai-card { padding: 26px 22px; border-radius: 22px; }
+  .ai-cta { width: 100%; justify-content: center; }
+}
+</style>

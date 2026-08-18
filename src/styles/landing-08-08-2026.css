@@ -3694,6 +3694,7 @@
 .l8 .pt-title.pt-title,
 .l8 .qi-title.qi-title,
 .l8 .bn-title.bn-title,
+.l8 .ai-title.ai-title,
 .l8 .cr-title.cr-title,
 .l8 .mk-title.mk-title,
 .l8 .mf-title.mf-title,
@@ -3707,6 +3708,7 @@
 .l8 .pt-accent.pt-accent,
 .l8 .qi-accent.qi-accent,
 .l8 .bn-accent.bn-accent,
+.l8 .ai-accent.ai-accent,
 .l8 .cr-accent.cr-accent,
 .l8 .mk-accent.mk-accent,
 .l8 .mf-accent.mf-accent,
@@ -3727,28 +3729,12 @@
   padding: 0 0.08em;
   border-radius: 5px;
 }
-/* En móvil estos titulares arrancaban en 28 px y se iban a cuatro y
-   cinco líneas en 360 px. Se bajan todos a la vez para que ninguna
-   sección desentone con las demás. */
-@media (max-width: 640px) {
-  .l8 .pt-title.pt-title,
-  .l8 .qi-title.qi-title,
-  .l8 .bn-title.bn-title,
-  .l8 .cr-title.cr-title,
-  .l8 .mk-title.mk-title,
-  .l8 .mf-title.mf-title,
-  .l8 .pf-title.pf-title,
-  .l8 .pil-title.pil-title,
-  .l8 .porq-title.porq-title {
-    font-size: clamp(24px, 6.4vw, 30px);
-    line-height: 1.18;
-    letter-spacing: -0.018em;
-  }
-}
+
 
 /* Los títulos que ya traen su propio <br> no deben re-equilibrarse:
    balance les mete un salto donde cabría todo en una línea. */
 .l8 .sv-title,
+.l8 .ai-title,
 .l8 .bn-title,
 .l8 .porq-title,
 .l8 .pil-title,
@@ -3882,21 +3868,7 @@
 .l8 .np-faq { padding-top: 88px; }
 @media (max-width: 640px) { .l8 .np-faq { padding-top: 64px; } }
 
-/* El titular lleva su <br>, pero a 48 px "Aprender neerlandés no es
-   caro." no cabía en los 760 px de la cabecera y salía en tres
-   líneas en vez de dos. */
-.l8 .np-stats-title { font-size: clamp(26px, 3.4vw, 42px); }
-@media (max-width: 640px) { .l8 .np-stats-title { font-size: clamp(23px, 6.1vw, 30px); } }
 
-/* Dos titulares más que se pasaban del ancho de su columna y
-   convertían sus dos líneas escritas a mano en cuatro. */
-.l8 .np-letter-heading { font-size: clamp(30px, 4.4vw, 54px); }
-@media (max-width: 640px) {
-  .l8 .np-letter-heading { font-size: clamp(26px, 6.8vw, 34px); }
-  /* clase repetida: el componente define .sv-title con la misma
-     especificidad y el orden de los <style> de Astro no es fiable */
-  .l8 .sv-title.sv-title { font-size: clamp(22px, 5.8vw, 30px); line-height: 1.2; }
-}
 
 /* ══════════════════════════════════════════════════════════════
    PALOMITAS DE LA CASA
@@ -4027,3 +3999,101 @@
    la sección se quedó con un solo hijo en una rejilla de dos columnas
    y el texto ocupaba media pantalla con la otra media vacía. */
 .l8 .consequences-inner { grid-template-columns: 1fr; max-width: 760px; margin-inline: auto; }
+
+/* ══════════════════════════════════════════════════════════════
+   UNA SOLA ESCALA PARA LOS TÍTULOS DE SECCIÓN
+   Medido sobre la página: a 1280 px convivían trece tamaños —40,
+   42, 42, 46, 46, 48, 48, 48, 48, 50, 51, 54 y 56 px— con pesos 600
+   y 700 y siete interlineados distintos. Cada sección se había
+   escrito por su cuenta y al bajar por la página el título crecía y
+   encogía sin motivo.
+
+   A partir de aquí todos comparten medida, peso e interlineado. La
+   jerarquía la dan el distintivo y el contenido, no seis píxeles de
+   diferencia. Va con la clase repetida para ganarle a la hoja de
+   cada componente, que define lo mismo con la misma especificidad.
+══════════════════════════════════════════════════════════════ */
+.l8 .np-letter-heading.np-letter-heading,
+.l8 .consequences .section-title,
+.l8 .np-stats-title.np-stats-title,
+.l8 .porq-title.porq-title,
+.l8 .mk-title.mk-title,
+.l8 .pil-title.pil-title,
+.l8 .mf-title.mf-title,
+.l8 .pt-title.pt-title,
+.l8 .qi-title.qi-title,
+.l8 .bn-title.bn-title,
+.l8 .pr-title.pr-title,
+.l8 .guarantee .section-title,
+.l8 .cr-title.cr-title,
+.l8 .ai-title.ai-title,
+.l8 .np-faq-title.np-faq-title,
+.l8 .final-cta h2 {
+  font-family: var(--font-head);
+  font-size: clamp(26px, 4vw, 46px);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.022em;
+}
+
+/* ── Y un solo ritmo en las cabeceras ──────────────────────────
+   El hueco entre la pastilla y el título, y entre el título y lo que
+   viene debajo, iba de 14 a 24 px según la sección. */
+.l8 .badge-light,
+.l8 .badge-dark,
+.l8 .np-eyebrow-small,
+.l8 .eyebrow { margin-bottom: 18px; }
+
+/* Clases repetidas: cada componente pone su propio margen con la misma
+   especificidad, y de ahí que unas cabeceras dejaran 36 px entre la
+   pastilla y el título y otras 18. */
+.l8 .porq-title.porq-title, .l8 .mk-title.mk-title,
+.l8 .pil-title.pil-title, .l8 .mf-title.mf-title,
+.l8 .pt-title.pt-title, .l8 .qi-title.qi-title,
+.l8 .bn-title.bn-title, .l8 .cr-title.cr-title,
+.l8 .pr-title.pr-title, .l8 .ai-title.ai-title,
+.l8 .np-stats-title.np-stats-title, .l8 .np-faq-title.np-faq-title {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+.l8 .porq-header, .l8 .mk-text, .l8 .pil-header, .l8 .mf-header,
+.l8 .pt-header, .l8 .qi-header, .l8 .bn-header, .l8 .cr-header,
+.l8 .pr-header, .l8 .ai-header, .l8 .np-stats-header, .l8 .np-faq-header {
+  margin-bottom: 48px;
+}
+/* Estas dos no llevan entradilla debajo del título, así que el hueco
+   de 16 px sobraría antes del contenido. */
+.l8 .np-stats-title.np-stats-title,
+.l8 .pr-title.pr-title,
+.l8 .ai-title.ai-title,
+.l8 .np-faq-title.np-faq-title { margin-bottom: 0; }
+
+/* El titular del coste iba en blanco plano, mientras que los dos de
+   arriba (la carta y los números) llevan el degradado de blanco a
+   blanco translúcido. Ahora los tres van igual. */
+.l8 .consequences .section-title {
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.72) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Los números de los pasos del método: el índigo macizo se veía como
+   un agujero negro sobre la tarjeta blanca. Va con la mezcla de los
+   fondos de marca, índigo a azul. */
+.l8 .mf-step-num {
+  background: linear-gradient(135deg, #1D0084 0%, #2a17a6 45%, #0b6df0 100%);
+}
+/* Y el título de cada paso, pegado a la izquierda como su descripción */
+.l8 .mf-step-head { align-items: center; }
+.l8 .mf-step-title { text-align: left; }
+
+/* El precio de la barra se esconde con visibility y no con [hidden]:
+   con hidden el elemento desaparece de la maquetación y el botón se
+   iba al hueco de la izquierda. Así el sitio queda reservado y el
+   botón no se mueve cuando el precio aparece. */
+.l8 .mobile-sticky-price.is-oculto { visibility: hidden; }
+
+/* "Aprender neerlandés no es caro." se pasaba por poco de los 760 px
+   de su cabecera y partía en tres líneas una frase escrita para dos. */
+.l8 .np-stats-header { max-width: 880px; }
