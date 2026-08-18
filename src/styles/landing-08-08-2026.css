@@ -4029,7 +4029,7 @@
 .l8 .ai-title.ai-title,
 .l8 .pn-title.pn-title,
 .l8 .cu-title.cu-title,
-.l8 .lc-title.lc-title,
+.l8 .otr-title.otr-title,
 .l8 .np-faq-title.np-faq-title,
 .l8 .final-cta h2 {
   font-family: var(--font-head);
@@ -4380,7 +4380,7 @@
 .l8 .mk-section.mk-section,
 .l8 .pil-section.pil-section,
 .l8 .pn-section.pn-section,
-.l8 .lc-section.lc-section,
+.l8 .otr-section.otr-section,
 .l8 .qi-section.qi-section,
 .l8 .cu-section.cu-section,
 .l8 .bn-section.bn-section,
@@ -4402,7 +4402,7 @@
   .l8 .mk-section.mk-section,
   .l8 .pil-section.pil-section,
   .l8 .pn-section.pn-section,
-  .l8 .lc-section.lc-section,
+  .l8 .otr-section.otr-section,
   .l8 .qi-section.qi-section,
   .l8 .cu-section.cu-section,
   .l8 .bn-section.bn-section,
@@ -4552,11 +4552,14 @@
    Sobre el azul claro, el peso extra es lo que hace que el botón
    deje de leerse como una pastilla y se lea como una llamada. */
 .l8 .pn-cta, .l8 .es-cta, .l8 .ai-cta, .l8 .pr-cta,
-.l8 .sv-cta, .l8 .l8-cta-band-btn, .l8 .btn-lg, .l8 .btn-sticky {
+.l8 .sv-cta, .l8 .l8-cta-band-btn, .l8 .btn-lg {
   font-size: 17px;
   font-weight: 800;
   letter-spacing: 0.005em;
 }
+/* El de la barra fija no: ahí el botón ya es la única pieza y a 800
+   se veía apelmazado. */
+.l8 .btn-sticky.btn-sticky { font-size: 16px; font-weight: 700; }
 .l8 .l8nav-cta { font-weight: 800; }
 
 /* ── Barra inferior: sólo el botón, centrado ───────────────────
@@ -4587,81 +4590,76 @@
 }
 .l8 .pr-card-arrow { white-space: nowrap; }
 
+
 /* ══════════════════════════════════════════════════════════════
-   EL BANNER, EN CLARO
-   La página abría con una pantalla entera de azul marino y a partir
-   de la segunda sección era blanca: el salto era brusco y, sobre
-   todo, arrancaba pesada. Ahora abre en blanco como el resto y el
-   azul se queda donde hace falta —el titular, el mockup y los
-   destellos—, que es justo la inversión del esquema anterior.
-
-   El marcado no cambia: las auroras, la trama de puntos, las
-   partículas y la viñeta siguen ahí, sólo que ahora tiñen de azul
-   clarito un fondo blanco en vez de aclarar uno oscuro.
+   EL BANNER, CON EL DISEÑO DEL HOME DE NAWAR-WEB
+   Vuelve al azul de marca —el blanco no funcionaba— y de paso se
+   rehace con las piezas del banner del home, que es el que sirve de
+   referencia: dos manchas de azul y la trama de puntos en vez de
+   cinco capas superpuestas, viñetas con palomita hueca en vez de la
+   tira de garantías apretada, y las dos etiquetas flotantes sobre
+   el mockup. Mismo esqueleto de dos columnas, pero con el texto a la
+   izquierda: en móvil la columna que va primera en el marcado es la
+   que se lee primera, y en una página de venta eso tiene que ser el
+   titular, no la captura.
 ══════════════════════════════════════════════════════════════ */
-.l8 .hero.hero { background: #fff; }
-/* El lienzo del documento lo pinta el layout compartido con un estilo
-   en línea, y ese layout lo usan todas las páginas de la web. Como
-   esta hoja sólo la carga esta landing, aquí sí se puede pisar: sin
-   esto, al rebotar el scroll arriba asomaba el azul marino por encima
-   de un banner ya blanco. El !important es contra el estilo en línea,
-   no contra otra regla. */
-html, body { background: #fff !important; }
-/* Las tres auroras eran manchas de azul saturado sobre marino. Sobre
-   blanco hay que bajarlas mucho o el banner se vuelve una acuarela. */
-.l8 .hero .np-hero-aurora { opacity: .10; }
-.l8 .hero .np-hero-grid-bg { opacity: .30; }
-/* Puntos claros sobre blanco, y viñeta blanca en vez de negra */
-.l8 .hero .hero-dots.hero-dots {
-  opacity: 1;
-  background-image: radial-gradient(circle, rgba(29,0,132,0.10) 1px, transparent 1px);
-  background-size: 26px 26px;
+.l8 .hero .hero-glow1 {
+  position: absolute; top: -120px; right: -80px;
+  width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(11,109,240,0.40) 0%, transparent 65%);
+  pointer-events: none;
 }
-.l8 .hero .np-hero-vignette {
-  background: radial-gradient(ellipse 90% 70% at 50% 40%, transparent 40%, rgba(255,255,255,0.85) 100%);
-}
-/* Las partículas eran puntos blancos: invisibles sobre blanco */
-.l8 .hero .np-particle { background: rgba(11,109,240,0.45); }
-
-/* El distintivo pasa al claro de la casa */
-.l8 .hero-badge.hero-badge {
-  color: #1D0084;
-  background: #DCEAFE;
-  border: 1px solid rgba(2,93,199,0.18);
-}
-/* El titular: azul marino, con la última línea en el azul vivo. El
-   degradado a blanco de .text-gradient-white no pinta nada aquí. */
-.l8 .hero-headline.hero-headline { color: #1D0084; }
-.l8 .hero-headline .text-gradient-white {
-  background: none;
-  -webkit-text-fill-color: #1D0084;
-  color: #1D0084;
-}
-.l8 .hero-headline em { color: #0b6df0; }
-.l8 .hero-sub.hero-sub { color: #252C42; font-weight: 500; }
-
-/* La caja de confianza deja de ser cristal sobre oscuro */
-.l8 .hero-trust.hero-trust {
-  background: #F7F9FF;
-  border: 1px solid #E4EAF8;
-  box-shadow: 0 2px 10px rgba(29,0,132,0.04);
-}
-.l8 .hero .trust-item { color: #252C42; font-weight: 500; }
-.l8 .hero .trust-sep { background: #D8E2F5; }
-.l8 .hero-scroll-hint { color: rgba(29,0,132,.28); }
-
-/* El mockup se queda oscuro a propósito: es la pantalla del producto
-   y sobre blanco es lo único que tiene que pesar. */
-.l8 .hero .platform-mockup {
-  box-shadow: 0 30px 70px rgba(29,0,132,0.20), 0 2px 8px rgba(29,0,132,0.10);
+.l8 .hero .hero-glow2 {
+  position: absolute; bottom: -200px; left: -100px;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(11,109,240,0.18) 0%, transparent 65%);
+  pointer-events: none;
 }
 
-/* El banner ya no es la única sección oscura de arriba, así que la
-   barra fija tiene que poder leerse sobre blanco desde el principio.
-   Se queda en azul marino macizo —es la barra de la oferta y tiene
-   que destacar—, pero pierde la transparencia, que sobre blanco la
-   dejaba lavada. */
-.l8nav {
-  background: rgba(24, 0, 110, 0.94);
-  border-bottom: 1px solid rgba(77, 163, 255, 0.28);
+/* Viñetas: las del home, en blanco y con la palomita hueca de 22 px */
+.l8 .hero-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px;
+  display: flex; flex-direction: column; gap: 13px;
 }
+.l8 .hero-bullets li {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 16px; font-weight: 600; color: #fff; line-height: 1.45;
+}
+.l8 .hero-check {
+  flex-shrink: 0;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: transparent; border: 2px solid #4da3ff; color: #4da3ff;
+  display: flex; align-items: center; justify-content: center;
+}
+.l8 .hero-ctas { margin-bottom: 0; flex-direction: column; align-items: flex-start; gap: 12px; }
+.l8 .hero-nota { font-size: 13px; color: rgba(255,255,255,0.62); }
+
+/* Las etiquetas flotantes necesitan un contenedor posicionado y algo
+   de aire alrededor del mockup para no salirse de la columna. */
+.l8 .hero-mockup-col { position: relative; }
+/* En las esquinas y fuera de la tarjeta, como .fb-top/.fb-bot del
+   home: dentro tapaban la cabecera y la ficha de vocabulario.
+   El vuelo lo da el margen interior de la columna y no un desfase
+   negativo: colgando por fuera, a 1024 px la etiqueta de arriba se
+   salía del contenedor y la sección la recortaba. */
+.l8 .hero-mockup-col { padding: 0 28px; }
+.l8 .hero-fb-top { top: -34px; right: 0; }
+.l8 .hero-fb-bot { bottom: -30px; left: 0; }
+@media (max-width: 959px) {
+  .l8 .hero-fb-top { top: -26px; right: 0; }
+  .l8 .hero-fb-bot { bottom: -24px; left: 0; }
+  .l8 .hero-ctas { align-items: stretch; }
+  .l8 .hero-ctas .btn-lg { justify-content: center; }
+  .l8 .hero-nota { text-align: center; }
+}
+@media (max-width: 420px) {
+  /* A esta anchura las etiquetas taparían media captura */
+  .l8 .hero-fb-top, .l8 .hero-fb-bot { display: none; }
+}
+
+/* Entre 960 y 1180 px la columna del mockup son 400 px justos y la
+   etiqueta de arriba se salía del contenedor: la sección recorta y
+   quedaba cortada por la derecha. Se estrecha la columna para que las
+   dos etiquetas tengan sitio. */

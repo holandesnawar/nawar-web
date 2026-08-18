@@ -79,18 +79,20 @@ export const ICONOS: Record<string, string> = {
 
   /* ── Lo que cambia cuando hablas ──────────────────────────── */
 
-  // Apretón de manos: entrar a entrevistas y trabajar.
-  // La primera versión intentaba dibujar dos manos reales y a 52 px se
-  // veía como una mancha azul. Geometría simétrica y simple: dos
-  // antebrazos, el agarre en el centro y los puños en índigo.
+  // Una puerta que se abre: entrar a entrevistas.
+  //
+  // Aquí hubo dos intentos de apretón de manos y los dos fracasaron:
+  // a 52 px dos manos entrelazadas son una mancha, y con la geometría
+  // simplificada el resultado se leía como una pesa de gimnasio. La
+  // puerta con la flecha entrando se entiende a la primera y además
+  // dice literalmente lo que dice el título.
   trabajo: wrap(`
-    <rect x="1" y="28" width="30" height="14" rx="7" fill="#4da3ff"/>
-    <rect x="33" y="28" width="30" height="14" rx="7" fill="#4da3ff"/>
-    <rect x="1" y="26" width="11" height="18" rx="5.5" fill="#1D0084"/>
-    <rect x="52" y="26" width="11" height="18" rx="5.5" fill="#1D0084"/>
-    <path d="M22 25h20a6.5 6.5 0 016.5 6.5v7A6.5 6.5 0 0142 45H22a6.5 6.5 0 01-6.5-6.5v-7A6.5 6.5 0 0122 25z" fill="#0b6df0"/>
-    <path d="M26 31v8M32 29v12M38 31v8" stroke="#fff" stroke-width="3.2" stroke-linecap="round" opacity=".9"/>
-    ${destello(32, 11, 7)}
+    <rect x="22" y="3" width="36" height="58" rx="7" fill="#1D0084"/>
+    <rect x="27" y="8" width="26" height="48" rx="4.5" fill="#0b6df0"/>
+    <circle cx="47" cy="32" r="3" fill="#fff"/>
+    <path d="M4 32h14" stroke="#4da3ff" stroke-width="6" stroke-linecap="round"/>
+    <path d="M13 24l8 8-8 8" stroke="#4da3ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    ${destello(12, 12, 6)}
   `),
 
   // Burbujas con rayo: entender y responder al momento

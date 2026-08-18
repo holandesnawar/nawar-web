@@ -48,26 +48,26 @@ const beneficios = [
   },
 ]
 ---
-<section class="lc-section" data-navbar="light">
+<section class="otr-section" data-navbar="light">
   <div class="inner">
 
-    <div class="lc-header sr">
+    <div class="otr-header sr">
       <span class="badge-light">
         <svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         El otro lado
       </span>
-      <h2 class="lc-title">No aprendes neerlandés por aprender.<br /><span class="lc-accent">Lo aprendes para esto.</span></h2>
-      <p class="lc-lead">
-        Esto es lo que cambia en tu día a día el día que dejas de necesitar traductor:
+      <h2 class="otr-title">No aprendes neerlandés por aprender.<br /><span class="otr-accent">Lo aprendes para esto.</span></h2>
+      <p class="otr-lead">
+        Esto es lo que cambia el día que dejas de necesitar traductor:
       </p>
     </div>
 
-    <div class="lc-grid">
+    <div class="otr-grid">
       {beneficios.map((b) => (
-        <article class="lc-item sr">
-          <span class="lc-icono"><Fragment set:html={ICONOS[b.icono]} /></span>
-          <h3 class="lc-name">{b.title}</h3>
-          <p class="lc-desc">{b.desc}</p>
+        <article class="otr-item sr">
+          <span class="otr-icono"><Fragment set:html={ICONOS[b.icono]} /></span>
+          <h3 class="otr-name">{b.title}</h3>
+          <p class="otr-desc">{b.desc}</p>
         </article>
       ))}
     </div>
@@ -76,16 +76,16 @@ const beneficios = [
 </section>
 
 <style>
-.lc-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
+.otr-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
 
-.lc-header { text-align: center; max-width: 760px; margin: 0 auto 48px; }
-.lc-title {
+.otr-header { text-align: center; max-width: 760px; margin: 0 auto 48px; }
+.otr-title {
   font-family: 'Poppins', system-ui, sans-serif;
   font-weight: 600; letter-spacing: -0.022em; line-height: 1.14;
   color: #1D0084;
   margin: 0;
 }
-.lc-accent {
+.otr-accent {
   display: inline;
   background-image: linear-gradient(
     to top,
@@ -96,13 +96,13 @@ const beneficios = [
   padding: 0 0.08em;
   border-radius: 5px;
 }
-.lc-lead { font-size: 17px; line-height: 1.6; color: #252C42; font-weight: 500; margin-top: 16px; }
+.otr-lead { font-size: 17px; line-height: 1.6; color: #252C42; font-weight: 500; margin-top: 16px; }
 
-.lc-grid {
+.otr-grid {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px; max-width: 1080px; margin: 0 auto;
 }
-.lc-item {
+.otr-item {
   background: #fff;
   border: 1px solid #E4EAF8;
   border-radius: 22px;
@@ -110,30 +110,30 @@ const beneficios = [
   box-shadow: 0 2px 10px rgba(29,0,132,0.04);
   transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
 }
-.lc-item:hover {
+.otr-item:hover {
   border-color: rgba(2,93,199,0.30);
   box-shadow: 0 16px 38px rgba(29,0,132,0.10);
   transform: translateY(-4px);
 }
 /* La ilustración manda: 52 px, sin caja detrás y con aire debajo. */
-.lc-icono { display: block; width: 52px; height: 52px; margin-bottom: 18px; }
-.lc-icono :global(svg) { width: 100%; height: 100%; display: block; }
-.lc-item:hover .lc-icono { transform: scale(1.06); }
-.lc-icono { transition: transform .25s cubic-bezier(.22,1,.36,1); }
+.otr-icono { display: block; width: 52px; height: 52px; margin-bottom: 18px; }
+.otr-icono :global(svg) { width: 100%; height: 100%; display: block; }
+.otr-item:hover .otr-icono { transform: scale(1.06); }
+.otr-icono { transition: transform .25s cubic-bezier(.22,1,.36,1); }
 
-.lc-name {
+.otr-name {
   font-family: 'Poppins', system-ui, sans-serif;
   font-size: 18px; font-weight: 600; color: #101336; line-height: 1.28;
   letter-spacing: -0.015em;
   margin-bottom: 9px;
 }
-.lc-desc { font-size: 15px; color: #252C42; font-weight: 500; line-height: 1.6; }
+.otr-desc { font-size: 15px; color: #252C42; font-weight: 500; line-height: 1.6; }
 
-@media (max-width: 940px) { .lc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 940px) { .otr-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) {
-  .lc-section { padding: 64px 0; }
-  .lc-grid { grid-template-columns: 1fr; gap: 16px; }
-  .lc-item { padding: 26px 22px; }
-  .lc-icono { width: 46px; height: 46px; margin-bottom: 14px; }
+  .otr-section { padding: 64px 0; }
+  .otr-grid { grid-template-columns: 1fr; gap: 16px; }
+  .otr-item { padding: 26px 22px; }
+  .otr-icono { width: 46px; height: 46px; margin-bottom: 14px; }
 }
 </style>

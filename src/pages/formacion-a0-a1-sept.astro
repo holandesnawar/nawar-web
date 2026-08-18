@@ -491,19 +491,13 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
          HERO — envoltorio cinematográfico + estructura que vende
     ══════════════════════════════════════════════════════════ -->
     <section class="hero" id="hero">
-      <div class="np-hero-aurora np-hero-aurora-1" aria-hidden="true"></div>
-      <div class="np-hero-aurora np-hero-aurora-2" aria-hidden="true"></div>
-      <div class="np-hero-aurora np-hero-aurora-3" aria-hidden="true"></div>
-      <div class="np-hero-grid-bg" aria-hidden="true"></div>
-      <div class="hero-dots dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:.45"></div>
-      <div class="np-hero-particles" aria-hidden="true">
-        <span class="np-particle"></span><span class="np-particle"></span>
-        <span class="np-particle"></span><span class="np-particle"></span>
-        <span class="np-particle"></span><span class="np-particle"></span>
-        <span class="np-particle"></span><span class="np-particle"></span>
-        <span class="np-particle"></span><span class="np-particle"></span>
-      </div>
-      <div class="np-hero-vignette" aria-hidden="true"></div>
+      {/* Las mismas dos manchas y la misma trama que el banner del home
+          de nawar-web. Antes había cinco capas encima —tres auroras, una
+          rejilla, diez partículas y una viñeta— y entre todas ensuciaban
+          el azul sin aportar nada que se viera. */}
+      <div class="hero-glow1" aria-hidden="true"></div>
+      <div class="hero-glow2" aria-hidden="true"></div>
+      <div class="hero-dots dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></div>
 
       <div class="hero-inner">
 
@@ -521,26 +515,35 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             La primera formación de neerlandés diseñada específicamente para hispanohablantes.
             Sin rodeos. Sin métodos para angloparlantes. Sin aburrirte a las dos semanas.
           </p>
+          {/* Las tres viñetas del banner del home, con su palomita hueca
+              en azul claro. Sustituyen a la tira de cuatro garantías
+              apretadas en una caja de cristal: decían lo mismo en letra
+              de 13 px y se leían como un pie de página. */}
+          <ul class="hero-bullets">
+            <li>
+              <span class="hero-check"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+              Desde cero: 10 módulos, +15 h de vídeo y 360 lecciones
+            </li>
+            <li>
+              <span class="hero-check"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+              Clase en directo cada semana, y todas quedan grabadas
+            </li>
+            <li>
+              <span class="hero-check"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+              Explicado desde el español, sin pasar por el inglés
+            </li>
+          </ul>
+
           <div class="hero-ctas">
             <a href={CHECKOUT_URL} class="btn btn-primary btn-lg">
               Quiero aprender neerlandés
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
             </a>
-          </div>
-          <div class="hero-trust">
-            {/* Sin --dark: esa variante invierte los tonos para leerse
-                sobre azul marino y el banner ahora es blanco. */}
-            <div class="trust-item"><svg class="nw-icon nw-icon--xs" aria-hidden="true"><use href="#i-video"/></svg><span>+15h de vídeo</span></div>
-            <div class="trust-sep"></div>
-            <div class="trust-item"><svg class="nw-icon nw-icon--xs" aria-hidden="true"><use href="#i-mobile"/></svg><span>Ejercicios online</span></div>
-            <div class="trust-sep"></div>
-            <div class="trust-item"><svg class="nw-icon nw-icon--xs" aria-hidden="true"><use href="#i-users"/></svg><span>Comunidad activa</span></div>
-            <div class="trust-sep"></div>
-            <div class="trust-item"><svg class="nw-icon nw-icon--xs" aria-hidden="true"><use href="#i-live"/></svg><span>Clases en directo</span></div>
+            <p class="hero-nota">Pago único · 15 días de garantía · Solo 40 plazas</p>
           </div>
         </div>
 
-        <div data-anim="fade-left">
+        <div data-anim="fade-left" class="hero-mockup-col">
           <div class="platform-mockup">
             <div class="mockup-header">
               <div class="mockup-dots"><span></span><span></span><span></span></div>
@@ -592,6 +595,16 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
                 <div class="vocab-example">"Mijn naam is Anna."</div>
               </div>
             </div>
+          </div>
+          {/* Las dos etiquetas del banner del home: sacan el mockup del
+              plano y cuentan dos cosas que el texto no repite. */}
+          <div class="float-badge hero-fb-top">
+            <span style="font-size:18px;">🎥</span>
+            <div><p>Clase en directo</p><p>cada semana, con el equipo</p></div>
+          </div>
+          <div class="float-badge hero-fb-bot">
+            <span style="font-size:18px;">🎓</span>
+            <div><p>Certificado Nawar</p><p>al terminar la formación</p></div>
           </div>
         </div>
 
