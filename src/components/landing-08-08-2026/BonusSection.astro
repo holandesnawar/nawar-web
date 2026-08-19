@@ -18,7 +18,7 @@ const SOPORTE_IMG = 'https://docs.holandesnawar.com/img/consultas.jpg'
 // Bonus 05: el certificado de verdad. Tiene que ser una imagen
 // (jpg/png/webp); un PDF no se puede pintar en un <img>. Con la
 // constante vacía se sigue viendo el diploma dibujado en CSS.
-const CERTIFICADO_IMG = 'https://docs.holandesnawar.com/img/Certificado%20de%20Finalizacio%CC%81n%20(2).png'
+const CERTIFICADO_IMG = 'https://docs.holandesnawar.com/img/Certificado%20de%20Finalizacio%CC%81n%20(3).png'
 
 const EJERCICIOS_IMGS = [
   'https://docs.holandesnawar.com/img/ejercicios2.jpg',
@@ -261,7 +261,10 @@ const EJERCICIOS_IMGS = [
 .bn-cert.bn-cert--foto .bn-cert-sheen {
   z-index: 3;
   mix-blend-mode: multiply;
-  background: linear-gradient(115deg, rgba(255,255,255,0) 38%, rgba(150,198,255,0.55) 50%, rgba(255,255,255,0) 62%);
+  /* Banda más ancha (30-70 en vez de 38-62) y más cargada: sobre un
+     certificado casi blanco, un 55 % de azul en una franja estrecha
+     se cruzaba la imagen sin que diera tiempo a verlo. */
+  background: linear-gradient(115deg, rgba(255,255,255,0) 30%, rgba(140,192,255,0.72) 50%, rgba(255,255,255,0) 70%);
 }
 /* Al pasar el cursor, una pasada rápida del brillo además del bucle */
 .bn-row:hover .bn-cert.bn-cert--foto .bn-cert-sheen {
@@ -568,7 +571,7 @@ const EJERCICIOS_IMGS = [
   opacity: .5;
   transform: translate3d(-7%, -7%, 0);
 }
-.bn-row.vis .bn-cert::after { animation: bn-cert-glow 7s ease-in-out infinite alternate; }
+.bn-row.vis .bn-cert::after { animation: bn-cert-glow 4.5s ease-in-out infinite alternate; }
 @keyframes bn-cert-glow {
   from { transform: translate3d(-7%, -7%, 0)  scale(1);    opacity: .45; }
   to   { transform: translate3d(16%, 13%, 0)  scale(1.12); opacity: .95; }
@@ -578,10 +581,15 @@ const EJERCICIOS_IMGS = [
   background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,0.16) 50%, transparent 62%);
   transform: translateX(-130%);
 }
-.bn-row.vis .bn-cert-sheen { animation: bn-cert-sheen 6.5s ease-in-out 0.6s infinite; }
+/* De una pasada cada 6,5 s a una cada 3,6 s, y la pasada ocupa más
+   parte del ciclo (el 44 % en vez del 45 % de un ciclo casi doble):
+   antes el brillo cruzaba en menos de tres segundos y luego se
+   quedaba casi cuatro parado fuera de cuadro, así que en la práctica
+   casi nunca coincidía con que estuvieras mirando. */
+.bn-row.vis .bn-cert-sheen { animation: bn-cert-sheen 3.6s ease-in-out 0.4s infinite; }
 @keyframes bn-cert-sheen {
   0%   { transform: translateX(-130%); }
-  45%  { transform: translateX(130%); }
+  44%  { transform: translateX(130%); }
   100% { transform: translateX(130%); }
 }
 @media (prefers-reduced-motion: reduce) {
