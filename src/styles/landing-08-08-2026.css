@@ -4812,3 +4812,54 @@
   .l8 .ai-header.ai-header { text-align: center; }
   .l8 .ai-lead.ai-lead { margin-inline: auto; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   EL TITULAR NUEVO, REMEDIDO
+   Las dos fórmulas de tamaño estaban calibradas para el titular
+   anterior, cuya línea más larga eran 24 caracteres. La de ahora
+   son 34 ("Te lo estaban enseñando en inglés.") y con las medidas
+   viejas las dos frases partían: cuatro líneas en todos los anchos.
+   Y este titular sólo funciona a dos líneas, porque son dos frases
+   —la afirmación y la vuelta— y cada una tiene que caer entera.
+
+   Medido en Poppins 700 con -0.03em: la línea larga ocupa 18,83 ×
+   el tamaño de letra. Con un 2 % de margen, el tamaño que la hace
+   caber es ancho de columna / 19,2. De ahí salen los dos clamp.
+
+   La columna de texto se ensancha para que quepa más letra: el
+   contenedor pasa de 1200 a 1280 px y la captura cede 20 px de
+   ancho y 8 de hueco. Con eso el titular llega a 44 px en vez de
+   quedarse en 36. */
+.l8 .hero-inner.hero-inner {
+  max-width: 1280px;
+  grid-template-columns: 1fr 380px;
+  gap: 48px;
+}
+.l8 .hero-headline.hero-headline {
+  font-size: clamp(24px, calc(6.6vw - 5px), 37px);
+}
+@media (min-width: 960px) {
+  .l8 .hero-headline.hero-headline {
+    font-size: clamp(24px, calc(5.21vw - 24.8px), 42px);
+  }
+}
+/* Y por debajo de 960 vuelve a una sola columna. Va aquí, después y
+   con la clase repetida, porque la regla de arriba que ensancha el
+   contenedor le ganaba a la media query anterior y a 768 px seguía
+   reservando los 380 px de la captura, que ahí ni se ve. */
+@media (max-width: 959px) {
+  .l8 .hero-inner.hero-inner { grid-template-columns: 1fr; max-width: 880px; }
+}
+
+/* Cada frase, su propio bloque. Con un <br> entre las dos, el
+   navegador reparte los cortes de todo el titular a la vez y en móvil
+   dejaba "mal." solo en una línea. En bloques separados, cada frase
+   equilibra sus propias líneas. */
+.l8 .hero-headline > span,
+.l8 .hero-headline > em {
+  display: block;
+  text-wrap: balance;
+}
+/* La columna de texto es ahora más ancha, y la entradilla se quedaba
+   en 500 px partiéndose en cinco renglones cortos. */
+.l8 .hero-sub.hero-sub { max-width: 580px; }
