@@ -358,13 +358,25 @@ const EJERCICIOS_IMGS = [
    detrás, y había que recortarlo por CSS: caja de 16/10, cover y un
    scale del 118 % para echar el marco fuera. La nueva ya viene
    encuadrada, así que se muestra entera y manda ella: sin proporción
-   fija, sin recorte y sin zoom. */
+   fija, sin recorte y sin zoom.
+
+   Y sin fondo. Aquí había dos fondos, no uno: el de la propia captura
+   y el de esta caja, que era una tarjeta blanca con borde sobre una
+   sección azul clara. La caja se queda transparente y la imagen se
+   mezcla en multiply, que sobre un fondo claro deja pasar el color de
+   la sección allí donde la captura es blanca. El blanco desaparece y
+   sólo queda la conversación.
+
+   Si el fondo de la captura no fuera blanco sino un color macizo,
+   multiply lo teñiría en vez de quitarlo: en ese caso la imagen hay
+   que exportarla con transparencia. */
 .bn-shot {
   margin: 0;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid #E4EAF8;
-  background: #fff;
+  border-radius: 0;
+  border: none;
+  background: none;
+  overflow: visible;
+  mix-blend-mode: multiply;
 }
 .bn-shot img {
   width: 100%; height: auto;
