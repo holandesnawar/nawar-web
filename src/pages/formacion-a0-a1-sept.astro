@@ -543,6 +543,12 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
           </div>
         </div>
 
+        {/* La captura de la plataforma sale del banner: con las tres
+            viñetas debajo del titular ya se cuenta lo que hace falta, y
+            la maqueta pedía media pantalla para enseñar algo que la
+            sección "Así funciona" enseña mejor y con más sitio. El
+            bloque se queda entero: quita el `false &&` y vuelve. */}
+        {false && (
         <div data-anim="fade-left" class="hero-mockup-col">
           <div class="platform-mockup">
             <div class="mockup-header">
@@ -607,6 +613,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             <div><p>Certificado Nawar</p><p>al terminar la formación</p></div>
           </div>
         </div>
+        )}
 
       </div>
       <div class="hero-scroll-hint" aria-hidden="true">↓</div>
@@ -705,10 +712,12 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         precios de las academias: tres bloques seguidos de mal rollo. */}
     <LoQueCambia />
 
-    <!-- ══════════════════════════════════════════════════════════
-         LOS NÚMEROS — ancla de precio
-    ══════════════════════════════════════════════════════════ -->
-    <section class="np-stats">
+    {/* Fuera por ahora a petición de Rida: "aprender neerlandés no es
+        caro, el sistema sí lo es". El anclaje de precio ya lo hace la
+        tabla de valor de la sección de la oferta. Se queda entero:
+        quita el `false &&` y vuelve. */}
+    {false && (
+        <section class="np-stats">
       <div class="np-stats-grid-bg" aria-hidden="true"></div>
       <div class="inner" style="position:relative;z-index:1;">
         <div class="np-stats-header sr">
@@ -726,6 +735,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         </div>
       </div>
     </section>
+    )}
 
     {/* ── 3. El enemigo común: por qué has fracasado antes ── */}
     <PorQueNawar />
@@ -790,6 +800,8 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
 
 
+
+        )}
 
     <!-- ══════════════════════════════════════════════════════════
          GARANTÍA — el riesgo lo asumimos nosotros

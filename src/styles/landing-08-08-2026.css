@@ -4551,8 +4551,9 @@
    de 700 a 800 —Poppins la trae—, y se abre un poco el espaciado.
    Sobre el azul claro, el peso extra es lo que hace que el botón
    deje de leerse como una pastilla y se lea como una llamada. */
-.l8 .pn-cta, .l8 .es-cta, .l8 .ai-cta, .l8 .pr-cta,
-.l8 .sv-cta, .l8 .l8-cta-band-btn, .l8 .btn-lg {
+.l8 .pn-cta.pn-cta, .l8 .es-cta.es-cta, .l8 .ai-cta.ai-cta,
+.l8 .pr-cta.pr-cta, .l8 .sv-cta.sv-cta,
+.l8 .l8-cta-band-btn.l8-cta-band-btn, .l8 .btn-lg {
   font-size: 17px;
   font-weight: 800;
   letter-spacing: 0.005em;
@@ -4663,3 +4664,101 @@
    etiqueta de arriba se salía del contenedor: la sección recorta y
    quedaba cortada por la derecha. Se estrecha la columna para que las
    dos etiquetas tengan sitio. */
+
+/* ══════════════════════════════════════════════════════════════
+   ▓▓ TERCERA REVISIÓN DE CASA — 20/08 ▓▓
+══════════════════════════════════════════════════════════════ */
+
+/* ── Los botones sobre fondo claro, con la letra en blanco ─────
+   Sobre azul oscuro el botón va en #4da3ff con la letra en azul
+   marino y funciona. Sobre blanco ese mismo par se apaga: el azul
+   claro casi no despega del fondo. Aquí el botón baja al azul vivo
+   de marca y la letra sube a blanco. No vale dejar #4da3ff con
+   letra blanca: son 2,2:1 de contraste y no se lee. Con #0b6df0 son
+   4,2:1, que ya pasa el mínimo para texto grande. */
+.l8 .pn-cta.pn-cta, .l8 .es-cta.es-cta,
+.l8 .ai-cta.ai-cta, .l8 .l8-cta-band-btn.l8-cta-band-btn {
+  background: #0b6df0;
+  color: #fff;
+}
+.l8 .pn-cta.pn-cta:hover, .l8 .es-cta.es-cta:hover,
+.l8 .ai-cta.ai-cta:hover, .l8 .l8-cta-band-btn.l8-cta-band-btn:hover { background: #025dc7; }
+
+/* El del banner baja un punto de peso: es el primero que se ve y a
+   800 pesaba más que el titular que tiene encima. */
+.l8 .hero-ctas .btn-lg { font-weight: 700; }
+
+/* ── El banner, a una sola columna ─────────────────────────────
+   Sin la captura, la rejilla de dos columnas dejaba el texto en la
+   mitad izquierda y media pantalla vacía. Pasa a columna única
+   centrada, con las tres viñetas en fila. */
+.l8 .hero-inner.hero-inner {
+  grid-template-columns: 1fr;
+  max-width: 880px;
+  text-align: center;
+  justify-items: center;
+}
+.l8 .hero-sub.hero-sub { margin-inline: auto; }
+/* En fila no caben las tres y se parten en tres renglones centrados,
+   con el margen izquierdo dentado. Van en columna, alineadas a la
+   izquierda entre ellas y el bloque entero centrado en la página. */
+.l8 .hero-bullets.hero-bullets {
+  flex-direction: column;
+  align-items: flex-start;
+  width: fit-content;
+  margin: 0 auto 36px;
+  text-align: left;
+  gap: 13px;
+}
+.l8 .hero-ctas.hero-ctas { align-items: center; }
+@media (max-width: 720px) {
+  .l8 .hero-bullets li { font-size: 15px; }
+  .l8 .hero-ctas.hero-ctas { align-self: stretch; }
+}
+
+/* ── Los números del método, sin pastilla ──────────────────────
+   El cuadrado de color detrás competía con el icono de la tarjeta
+   que tiene al lado y con la línea que los une. Sin fondo, el
+   número solo y mucho más grande: es lo único que tiene que hacer
+   ahí, marcar el orden. */
+.l8 .mf-step-num.mf-step-num {
+  background: none;
+  background-image: none;
+  color: #4da3ff;
+  width: 44px; height: 44px;
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* ── La cabecera de la oferta, a la izquierda ──────────────────
+   Centrada no casaba con el bloque que tiene justo debajo, que va
+   alineado a la izquierda. La imagen sí se queda centrada: es una
+   pieza suelta y a la izquierda quedaba descolgada. */
+.l8 .ai-header.ai-header {
+  text-align: left;
+  max-width: 1080px;
+  margin-inline: auto;
+}
+.l8 .ai-lead.ai-lead { max-width: 660px; }
+@media (max-width: 760px) {
+  .l8 .ai-header.ai-header { text-align: left; }
+}
+
+/* ── La barra de arriba, con el cristal de la de abajo ─────────
+   Las dos son la misma pieza y tenían dos cristales distintos: la
+   de arriba en índigo al 62 % y la de abajo en gris muy oscuro al
+   35 %. Ahora comparten receta. */
+.l8nav {
+  background: rgba(20, 22, 28, 0.52);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  backdrop-filter: saturate(140%) blur(18px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 -1px 0 rgba(255, 255, 255, 0.10);
+}
+/* Y la de abajo sube al mismo 52 %. Al 35 % las dos barras se ven
+   iguales sobre azul oscuro, pero sobre las secciones blancas el
+   cristal se lava y el contador en blanco deja de leerse. La receta
+   es la misma en las dos; sólo sube la carga. */
+.l8 .mobile-sticky.mobile-sticky { background: rgba(20, 22, 28, 0.52); }
