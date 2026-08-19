@@ -4676,13 +4676,17 @@
    de marca y la letra sube a blanco. No vale dejar #4da3ff con
    letra blanca: son 2,2:1 de contraste y no se lee. Con #0b6df0 son
    4,2:1, que ya pasa el mínimo para texto grande. */
+/* Probado el azul vivo con letra blanca y descartado: vuelve el par
+   de siempre, azul claro con la letra en azul marino. Es el mismo
+   botón en toda la página, sobre claro y sobre oscuro, y con el
+   bloque pálido destaca más sobre blanco que un azul macizo. */
 .l8 .pn-cta.pn-cta, .l8 .es-cta.es-cta,
 .l8 .ai-cta.ai-cta, .l8 .l8-cta-band-btn.l8-cta-band-btn {
-  background: #0b6df0;
-  color: #fff;
+  background: #4da3ff;
+  color: #1D0084;
 }
 .l8 .pn-cta.pn-cta:hover, .l8 .es-cta.es-cta:hover,
-.l8 .ai-cta.ai-cta:hover, .l8 .l8-cta-band-btn.l8-cta-band-btn:hover { background: #025dc7; }
+.l8 .ai-cta.ai-cta:hover, .l8 .l8-cta-band-btn.l8-cta-band-btn:hover { background: #6ab5ff; }
 
 /* El del banner baja un punto de peso: es el primero que se ve y a
    800 pesaba más que el titular que tiene encima. */
@@ -4762,3 +4766,33 @@
    cristal se lava y el contador en blanco deja de leerse. La receta
    es la misma en las dos; sólo sube la carga. */
 .l8 .mobile-sticky.mobile-sticky { background: rgba(20, 22, 28, 0.52); }
+
+/* ══════════════════════════════════════════════════════════════
+   ▓▓ CUARTA REVISIÓN DE CASA — 20/08 ▓▓
+══════════════════════════════════════════════════════════════ */
+
+/* ── Los números del método, del color del icono de al lado ────
+   Iban en el azul claro y el icono de la tarjeta en el azul medio:
+   dos azules a diez píxeles de distancia y ninguno mandaba. */
+.l8 .mf-step-num.mf-step-num { color: #025dc7; }
+
+/* ── El bloque de las 40 plazas, al azul de marca ──────────────
+   El dato de cada tarjeta iba en el azul medio, que en esa
+   sección quedaba como un tercer azul sin sitio. Al índigo de
+   marca, que es el de todos los titulares de la página. */
+.l8 .es-dato.es-dato { color: #1D0084; }
+
+/* ── El cierre de la oferta ────────────────────────────────────
+   "Empieza hoy" en negro y la promesa en el azul, seguidas y sin
+   salto de línea a mano: partirla obligaba a un renglón corto y
+   dejaba el subrayado colgando. */
+.l8 .ai-negro { color: #101336; -webkit-text-fill-color: #101336; }
+.l8 .ai-title.ai-title { text-wrap: pretty; }
+
+/* ── El banner, alineado a la izquierda ────────────────────────
+   Todo a la izquierda menos el botón, que se queda centrado como
+   único punto de fuga de la columna. */
+.l8 .hero-inner.hero-inner { text-align: left; justify-items: stretch; }
+.l8 .hero-sub.hero-sub { margin-left: 0; }
+.l8 .hero-bullets.hero-bullets { margin-left: 0; }
+.l8 .hero-ctas.hero-ctas { align-items: center; align-self: center; }
