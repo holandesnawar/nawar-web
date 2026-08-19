@@ -4892,3 +4892,89 @@
   font-size: 15px;
   border-radius: 11px;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   ▓▓ FUERA LAS APARICIONES POR SCROLL ▓▓
+
+   La página entera se pintaba en blanco y cada bloque iba
+   apareciendo al llegar scrolleando, con el mismo desvanecido hacia
+   arriba en las veinte secciones. Aparte de repetitivo tiene dos
+   problemas de fondo: obliga a esperar a que algo aparezca para
+   poder leerlo, y si el JavaScript falla o tarda, media página se
+   queda invisible.
+
+   De aquí en adelante todo está visible desde el primer momento. La
+   única entrada que queda es la del banner, que se ve nada más
+   cargar y no depende del scroll.
+
+   Los observadores siguen puestos a propósito: son los que ponen
+   .vis, y de .vis cuelgan los bucles del bonus —la baraja de
+   capturas, el brillo del certificado—, que sí interesa que
+   arranquen al llegar a esa sección y no antes.
+══════════════════════════════════════════════════════════════ */
+.l8 .sr, .l8 .sr-s, .l8 .sr-bi,
+.l8 .sr.vis, .l8 .sr-s.vis, .l8 .sr-bi.vis,
+.l8 [data-anim], .l8 [data-anim].visible {
+  opacity: 1;
+  transform: none;
+  animation: none;
+  transition: none;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Y LA ENTRADA DEL BANNER, QUE SÍ SE QUEDA
+   Entra sola al cargar, sin esperar a nada: el texto viene de la
+   izquierda escalonado pieza a pieza, la captura del lado contrario
+   y las dos etiquetas rematan con un pequeño rebote. En vez del
+   desvanecido hacia arriba de siempre, el movimiento va de fuera
+   hacia dentro, que es lo que hace que se lea como una escena que
+   se monta y no como algo que tardó en cargar.
+══════════════════════════════════════════════════════════════ */
+@keyframes l8-entra-izq {
+  from { opacity: 0; transform: translate3d(-44px, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes l8-entra-der {
+  from { opacity: 0; transform: translate3d(52px, 0, 0) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes l8-entra-pop {
+  from { opacity: 0; transform: translate3d(0, 10px, 0) scale(0.88); }
+  60%  { opacity: 1; transform: translate3d(0, 0, 0)   scale(1.04); }
+  to   { opacity: 1; transform: none; }
+}
+
+.l8 .hero-badge,
+.l8 .hero-headline,
+.l8 .hero-sub,
+.l8 .hero-bullets,
+.l8 .hero-ctas {
+  animation: l8-entra-izq 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.l8 .hero-badge    { animation-delay: 0.05s; }
+.l8 .hero-headline { animation-delay: 0.14s; }
+.l8 .hero-sub      { animation-delay: 0.26s; }
+.l8 .hero-bullets  { animation-delay: 0.36s; }
+.l8 .hero-ctas     { animation-delay: 0.46s; }
+
+.l8 .hero-mockup-col {
+  animation: l8-entra-der 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
+}
+.l8 .hero-fb-top { animation: l8-entra-pop 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.85s both; }
+.l8 .hero-fb-bot { animation: l8-entra-pop 0.6s cubic-bezier(0.22, 1, 0.36, 1) 1s both; }
+
+/* Las viñetas entran una a una dentro de su propio bloque */
+.l8 .hero-bullets li {
+  animation: l8-entra-izq 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.l8 .hero-bullets li:nth-child(1) { animation-delay: 0.40s; }
+.l8 .hero-bullets li:nth-child(2) { animation-delay: 0.48s; }
+.l8 .hero-bullets li:nth-child(3) { animation-delay: 0.56s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .l8 .hero-badge, .l8 .hero-headline, .l8 .hero-sub,
+  .l8 .hero-bullets, .l8 .hero-bullets li, .l8 .hero-ctas,
+  .l8 .hero-mockup-col, .l8 .hero-fb-top, .l8 .hero-fb-bot {
+    animation: none;
+  }
+}
