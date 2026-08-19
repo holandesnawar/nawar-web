@@ -26,7 +26,10 @@ const bonusIncluye = 'Los 5 bonus de esta convocatoria, incluidos'
 const precio = '397'
 const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 // Fondo blanco en la propia imagen: por eso la sección va en blanco.
+// La versión de móvil viene recompuesta aparte; el <picture> se encarga
+// de que sólo se descargue una de las dos.
 const FOTO_PACK = 'https://docs.holandesnawar.com/img/Formacio%CC%81n%20desde%20Canva.png'
+const FOTO_PACK_MOVIL = 'https://docs.holandesnawar.com/img/todo.movil.png'
 ---
 <section class="ai-section" data-navbar="light">
   <div class="inner">
@@ -41,12 +44,15 @@ const FOTO_PACK = 'https://docs.holandesnawar.com/img/Formacio%CC%81n%20desde%20
     </div>
 
     <figure class="ai-foto sr">
-      <img
-        src={FOTO_PACK}
-        alt="Todo lo que incluye la formación Nawar A0-A1: certificado, clases, plataforma y comunidad"
-        loading="lazy"
-        decoding="async"
-      />
+      <picture>
+        <source media="(max-width: 768px)" srcset={FOTO_PACK_MOVIL} />
+        <img
+          src={FOTO_PACK}
+          alt="Todo lo que incluye la formación Nawar A0-A1: certificado, clases, plataforma y comunidad"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
     </figure>
 
     <div class="ai-grid">

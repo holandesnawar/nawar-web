@@ -4863,3 +4863,32 @@
 /* La columna de texto es ahora más ancha, y la entradilla se quedaba
    en 500 px partiéndose en cinco renglones cortos. */
 .l8 .hero-sub.hero-sub { max-width: 580px; }
+
+/* ══════════════════════════════════════════════════════════════
+   LAS IMÁGENES DE MÓVIL, Y LA BARRA DE ABAJO MÁS FINA
+══════════════════════════════════════════════════════════════ */
+
+/* Las dos versiones de móvil vienen recompuestas en vertical, así que
+   la caja de 16/9 con la imagen contenida las dejaría en una franja
+   diminuta en medio de un montón de blanco. Por debajo de 768 px la
+   proporción la pone la propia imagen. */
+@media (max-width: 768px) {
+  .l8 .qi-foto.qi-foto,
+  .l8 .ai-foto.ai-foto { aspect-ratio: auto; display: block; }
+  .l8 .qi-foto img,
+  .l8 .ai-foto img { width: 100%; height: auto; }
+}
+/* El <picture> no debe romper el centrado ni el tamaño del <img> */
+.l8 .qi-foto picture,
+.l8 .ai-foto picture { display: contents; }
+
+/* ── La barra de abajo, más fina y con el botón más contenido ───
+   Ocupaba 12 px de aire arriba y abajo con un botón de 15, o sea 78
+   px de pantalla en un móvil. Se queda en 8 + 12, unos 58. */
+.l8 .mobile-sticky.mobile-sticky { padding: 8px 14px; }
+.l8 .mobile-sticky .btn-sticky {
+  max-width: 380px;
+  padding-top: 12px; padding-bottom: 12px;
+  font-size: 15px;
+  border-radius: 11px;
+}

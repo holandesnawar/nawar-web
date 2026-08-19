@@ -9,7 +9,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 // Se pinta con su proporción natural (no se recorta) para que se lea
 // la consulta entera; a lo ancho de media columna queda de una altura
 // parecida a la de los otros cuatro visuales.
-const SOPORTE_IMG = 'https://docs.holandesnawar.com/img/consultas.jpg'
+const SOPORTE_IMG = 'https://docs.holandesnawar.com/img/soporte%20y%20resolucion.png'
 
 // Bonus 03: tres capturas en abanico, una encima de otra. El PRIMER
 // enlace es el que va delante y se ve entero; los otros dos asoman
@@ -173,13 +173,24 @@ const EJERCICIOS_IMGS = [
       <article class="bn-row sr">
         <div class="bn-visual">
           <div class="bn-cert-halo" aria-hidden="true"></div>
-          {CERTIFICADO_IMG ? (
-            <figure class="bn-cert bn-cert--foto">
+          {/* Si la foto del certificado no carga —la URL cambia, el
+              archivo se renombra— el <img> se queda a cero de alto y el
+              bloque entero se veía como un hueco blanco, que es lo que
+              pasó al cambiar de imagen. Ahora el diploma dibujado va
+              siempre en el marcado, oculto, y sale en cuanto la foto
+              falla. Peor que la foto, pero nunca un agujero. */}
+          {CERTIFICADO_IMG && (
+            <figure class="bn-cert bn-cert--foto" id="bn-cert-foto">
               <div class="bn-cert-sheen" aria-hidden="true"></div>
-              <img src={CERTIFICADO_IMG} alt="Certificado de finalización de la Formación Neerlandés A0 → A1" loading="lazy" decoding="async" />
+              <img
+                src={CERTIFICADO_IMG}
+                alt="Certificado de finalización de la Formación Neerlandés A0 → A1"
+                loading="lazy" decoding="async"
+                onerror="this.closest('#bn-cert-foto').remove(); document.getElementById('bn-cert-dibujo').hidden = false;"
+              />
             </figure>
-          ) : (
-          <div class="bn-cert" aria-label="Certificado Holandés Nawar">
+          )}
+          <div class="bn-cert" id="bn-cert-dibujo" hidden={!!CERTIFICADO_IMG} aria-label="Certificado Holandés Nawar">
             <div class="bn-cert-sheen" aria-hidden="true"></div>
             <div class="bn-cert-border">
               <span class="bn-corner bn-corner--tl" aria-hidden="true"></span>
@@ -212,7 +223,6 @@ const EJERCICIOS_IMGS = [
               </div>
             </div>
           </div>
-          )}
         </div>
         <div class="bn-text">
           <span class="bn-numrow"><span class="bn-num">Bonus 05</span><span class="bn-val">Valor <s>60 €</s> · incluido</span></span>
@@ -344,18 +354,20 @@ const EJERCICIOS_IMGS = [
    un 18 % desde el centro, que es lo que hace falta para que el marco
    gris se quede fuera por los cuatro lados. Si al verlo se comiera
    algo de la tarjeta blanca, basta con bajar ese scale. */
+/* La captura anterior traía alrededor el marco gris de la pantalla de
+   detrás, y había que recortarlo por CSS: caja de 16/10, cover y un
+   scale del 118 % para echar el marco fuera. La nueva ya viene
+   encuadrada, así que se muestra entera y manda ella: sin proporción
+   fija, sin recorte y sin zoom. */
 .bn-shot {
   margin: 0;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #E4EAF8;
   background: #fff;
-  aspect-ratio: 16 / 10;
 }
 .bn-shot img {
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: center;
-  transform: scale(1.18);
+  width: 100%; height: auto;
   display: block;
 }
 
