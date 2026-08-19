@@ -159,10 +159,21 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
    mismo bloque azul seguido: se suma lo que vale y, sin respirar, se
    dice lo que cuesta. */
 .pr-wrapper { background: #1D0084; padding: 0; }
-.pr-outer { overflow: hidden; position: relative; border-radius: 0; max-width: 100%; margin: 0; }
+/* clip y no hidden, con hidden delante como respaldo para navegadores
+   viejos. Es la razón por la que la tarjeta de la derecha no se
+   quedaba pegada al hacer scroll aunque tuviera position:sticky
+   declarado: un ancestro con overflow:hidden se convierte en el
+   contenedor de scroll más cercano, y como ese contenedor no scrollea,
+   el sticky no se activa nunca. Con clip se recorta igual pero no se
+   crea contenedor. */
+.pr-outer {
+  overflow: hidden;
+  overflow: clip;
+  position: relative; border-radius: 0; max-width: 100%; margin: 0;
+}
 /* Ya no continúa el bloque azul del desglose (que ahora vive dentro):
    viene detrás de los bonus, que son claros, así que recupera su aire. */
-.pr-section { background: #1D0084; position: relative; overflow: hidden; padding: 96px 0; }
+.pr-section { background: #1D0084; position: relative; overflow: hidden; overflow: clip; padding: 96px 0; }
 /* Igual que .np-comp-glow de nawar-plus: azul claro y centrado en la
    sección, no el azul vivo pegado arriba. Es lo que hace que el índigo
    deje de verse plano y la tarjeta de cristal tenga algo que reflejar. */

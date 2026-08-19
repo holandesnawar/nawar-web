@@ -4692,17 +4692,15 @@
    800 pesaba más que el titular que tiene encima. */
 .l8 .hero-ctas .btn-lg { font-weight: 700; }
 
-/* ── El banner, a una sola columna ─────────────────────────────
-   Sin la captura, la rejilla de dos columnas dejaba el texto en la
-   mitad izquierda y media pantalla vacía. Pasa a columna única
-   centrada, con las tres viñetas en fila. */
-.l8 .hero-inner.hero-inner {
-  grid-template-columns: 1fr;
-  max-width: 880px;
-  text-align: center;
-  justify-items: center;
+/* ── El banner ─────────────────────────────────────────────────
+   Dos columnas en escritorio, con la captura a la derecha. Por
+   debajo de 960 px la captura se oculta y queda una sola columna:
+   ahí empujaba el botón fuera de la primera pantalla. */
+.l8 .hero-inner.hero-inner { max-width: 1200px; }
+@media (max-width: 959px) {
+  .l8 .hero-mockup-col { display: none; }
+  .l8 .hero-inner.hero-inner { grid-template-columns: 1fr; max-width: 880px; }
 }
-.l8 .hero-sub.hero-sub { margin-inline: auto; }
 /* En fila no caben las tres y se parten en tres renglones centrados,
    con el margen izquierdo dentado. Van en columna, alineadas a la
    izquierda entre ellas y el bloque entero centrado en la página. */
@@ -4796,3 +4794,21 @@
 .l8 .hero-sub.hero-sub { margin-left: 0; }
 .l8 .hero-bullets.hero-bullets { margin-left: 0; }
 .l8 .hero-ctas.hero-ctas { align-items: center; align-self: center; }
+
+/* ══════════════════════════════════════════════════════════════
+   ▓▓ QUINTA REVISIÓN — LO QUE SÓLO SE VE EN ESCRITORIO ▓▓
+══════════════════════════════════════════════════════════════ */
+
+/* El botón, centrado dentro de su columna y no en la página: el
+   texto va a la izquierda y el botón es el único punto de fuga. */
+.l8 .hero-ctas.hero-ctas { align-items: center; align-self: auto; }
+.l8 .hero-nota { text-align: center; }
+
+/* ── El cierre de la oferta, centrado en escritorio ────────────
+   A la izquierda funciona en móvil, donde la columna es el ancho
+   de la pantalla. En escritorio la cabecera queda descolgada de la
+   imagen que tiene debajo, que sí va centrada. */
+@media (min-width: 861px) {
+  .l8 .ai-header.ai-header { text-align: center; }
+  .l8 .ai-lead.ai-lead { margin-inline: auto; }
+}

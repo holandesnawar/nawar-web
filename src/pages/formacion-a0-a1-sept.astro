@@ -543,12 +543,11 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
           </div>
         </div>
 
-        {/* La captura de la plataforma sale del banner: con las tres
-            viñetas debajo del titular ya se cuenta lo que hace falta, y
-            la maqueta pedía media pantalla para enseñar algo que la
-            sección "Así funciona" enseña mejor y con más sitio. El
-            bloque se queda entero: quita el `false &&` y vuelve. */}
-        {false && (
+        {/* La captura vuelve, pero sólo en escritorio: ahí hay una
+            columna entera esperándola y sin ella el banner se quedaba
+            vacío por la derecha. En móvil sigue fuera —se la ocultan
+            los estilos, no un condicional— porque debajo del titular
+            empujaba el botón fuera de la primera pantalla. */}
         <div data-anim="fade-left" class="hero-mockup-col">
           <div class="platform-mockup">
             <div class="mockup-header">
@@ -613,7 +612,6 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             <div><p>Certificado Nawar</p><p>al terminar la formación</p></div>
           </div>
         </div>
-        )}
 
       </div>
       <div class="hero-scroll-hint" aria-hidden="true">↓</div>
