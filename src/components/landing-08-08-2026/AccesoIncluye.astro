@@ -36,7 +36,10 @@ const FOTO_PACK_MOVIL = 'https://docs.holandesnawar.com/img/Landing/todo.movil.e
 
     <div class="ai-header sr">
       <p class="ai-oferta">Oferta por tiempo limitado</p>
-      <h2 class="ai-title"><span class="ai-negro">Empieza hoy.</span> <span class="ai-accent">Tu neerlandés cambia esta misma semana</span>.</h2>
+      <h2 class="ai-title">
+        <span class="ai-negro">Empieza hoy.</span>
+        <span class="ai-linea"><span class="ai-accent">Tu neerlandés cambia esta misma semana.</span></span>
+      </h2>
       <p class="ai-lead">
         Estás a punto de entrar en la formación de neerlandés más completa para hispanohablantes:
         método, práctica, soporte y acompañamiento para que en 16 semanas hables.
@@ -113,6 +116,14 @@ const FOTO_PACK_MOVIL = 'https://docs.holandesnawar.com/img/Landing/todo.movil.e
   color: #101336;
   margin: 0;
 }
+/* "Empieza hoy." en su propia línea: iba pegado a la frase de al lado
+   y el corte caía donde le tocara al ancho de la pantalla. La segunda
+   frase va en su propio bloque para que el navegador reparta sus
+   líneas sin contar con la primera, y con el punto dentro del
+   rotulador: fuera se quedaba descolgado detrás del hueco que deja el
+   subrayado. */
+.ai-negro { display: block; }
+.ai-linea { display: block; text-wrap: balance; }
 .ai-lead { font-size: 17px; line-height: 1.6; color: #454F6B; margin-top: 16px; }
 
 /* La imagen trae su propio fondo blanco, de ahí la sección en blanco.

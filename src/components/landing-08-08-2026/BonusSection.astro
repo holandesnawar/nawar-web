@@ -446,7 +446,18 @@ const carita = (tono: string) =>
 /* ══════════════════════════════════════════════════════════════
    Sección
 ══════════════════════════════════════════════════════════════ */
-.bn-section { background: #F0F4FF; position: relative; overflow: hidden; padding: 96px 0; }
+/* En blanco, y no en el azul clarito de antes, por las ilustraciones:
+   vienen con su fondo blanco dentro del archivo y sobre el azul se
+   veía el recuadro de cada una.
+   El apaño de mezclarlas en multiply aquí no servía: el .inner de
+   esta sección lleva z-index, y eso crea un grupo de composición
+   propio; dentro de ese grupo la mezcla no ve el fondo de la sección,
+   sólo el de la caja —que es transparente—, así que el blanco se
+   quedaba tal cual. Con la sección en blanco no hace falta ninguna
+   mezcla: el fondo del archivo y el de la sección son el mismo color.
+   La línea de arriba la pone .bn-section en landing-08-08-2026.css,
+   para que no se junte sin frontera con el bloque blanco anterior. */
+.bn-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
 .bn-header { text-align: center; max-width: 720px; margin: 0 auto 64px; }
 .bn-title {
   font-family: 'Poppins', system-ui, sans-serif;
@@ -483,11 +494,9 @@ const carita = (tono: string) =>
 .bn-text   { min-width: 0; }
 
 /* Las ilustraciones van sin marco: ni tarjeta, ni borde, ni sombra.
-   Traen su propio fondo blanco y la sección es azul clarito, así que
-   se mezclan en multiply: sobre un fondo claro el blanco desaparece
-   y sólo queda el dibujo. Si alguna llega con transparencia de
-   verdad, multiply no le hace nada y se ve igual. */
-.bn-foto { margin: 0; mix-blend-mode: multiply; }
+   Traen su propio fondo blanco y la sección también es blanca, así
+   que no se ve dónde acaba el archivo y empieza la página. */
+.bn-foto { margin: 0; }
 .bn-foto img { width: 100%; height: auto; display: block; }
 /* Las maquetas dibujadas son el plan B de cada foto: van en el
    marcado siempre, ocultas. Sin esto no se esconderían, porque
@@ -522,9 +531,8 @@ const carita = (tono: string) =>
   font-weight: 600; letter-spacing: -0.022em; line-height: 1.16;
   color: #101336; margin-bottom: 16px;
 }
-/* La segunda mitad del titular en el azul de marca, como en el resto
-   de titulares de la página */
-.bn-name-hl { color: #025dc7; }
+/* La segunda mitad del titular, en el índigo de marca */
+.bn-name-hl { color: #1D0084; }
 .bn-desc { font-size: 17px; color: #454F6B; line-height: 1.72; max-width: 540px; }
 
 /* ══════════════════════════════════════════════════════════════

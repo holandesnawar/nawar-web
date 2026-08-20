@@ -5048,10 +5048,16 @@
     0 2px 6px rgba(29, 0, 132, 0.05),
     0 12px 28px rgba(29, 0, 132, 0.07);
   border-color: rgba(122, 185, 255, 0.95);
-  transform: scale(1.022);
+  /* La tarjeta se levanta hacia la esquina contraria a la línea, en
+     bloque. Antes era un scale, y al ampliar la tarjeta se ampliaba
+     también la letra de dentro: el texto se recomponía a mitad de la
+     transición y el conjunto parecía blando. Desplazándola entera no
+     se toca ni un tamaño de letra —todo se mueve lo mismo y a la vez—
+     y el hueco contra la línea crece igual. */
+  transform: translate(-4px, -4px);
 }
 /* Este se desplaza de lado, no hacia arriba: va en una lista con línea */
-.l8 .mf-step.mf-step:hover .mf-step-body.mf-step-body { transform: translateX(4px) scale(1.012); }
+.l8 .mf-step.mf-step:hover .mf-step-body.mf-step-body { transform: translate(4px, -4px); }
 
 /* La tarjeta oscura de los pilares tiene su propia sombra, más
    cargada porque va sobre azul marino. Mismo tratamiento: dos capas
