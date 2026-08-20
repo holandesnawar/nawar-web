@@ -4799,10 +4799,15 @@
    ▓▓ QUINTA REVISIÓN — LO QUE SÓLO SE VE EN ESCRITORIO ▓▓
 ══════════════════════════════════════════════════════════════ */
 
-/* El botón, centrado dentro de su columna y no en la página: el
-   texto va a la izquierda y el botón es el único punto de fuga. */
-.l8 .hero-ctas.hero-ctas { align-items: center; align-self: auto; }
-.l8 .hero-nota { text-align: center; }
+/* El botón y su letra pequeña se alinean con el resto de la columna.
+   Centrados quedaban flotando en medio de un texto que va todo a la
+   izquierda, sin nada que los sostuviera por los lados. */
+.l8 .hero-ctas.hero-ctas { align-items: flex-start; align-self: auto; }
+.l8 .hero-nota { text-align: left; }
+@media (max-width: 720px) {
+  .l8 .hero-ctas.hero-ctas { align-items: stretch; }
+  .l8 .hero-nota { text-align: center; }
+}
 
 /* ── El cierre de la oferta, centrado en escritorio ────────────
    A la izquierda funciona en móvil, donde la columna es el ancho
@@ -4831,16 +4836,20 @@
    ancho y 8 de hueco. Con eso el titular llega a 44 px en vez de
    quedarse en 36. */
 .l8 .hero-inner.hero-inner {
-  max-width: 1280px;
-  grid-template-columns: 1fr 380px;
+  max-width: 1320px;
+  grid-template-columns: 1fr 430px;
   gap: 48px;
 }
 .l8 .hero-headline.hero-headline {
   font-size: clamp(24px, calc(6.6vw - 5px), 37px);
 }
+/* Al ensanchar la captura de 380 a 430 px, la columna de texto pierde
+   50 y la fórmula hay que rehacerla: contenedor 1320 menos 48 de
+   margen, menos 430 de captura, menos 48 de hueco = 794 px de texto.
+   Dividido entre los 19,2 que ocupa la línea larga, 41 px de tope. */
 @media (min-width: 960px) {
   .l8 .hero-headline.hero-headline {
-    font-size: clamp(24px, calc(5.21vw - 24.8px), 42px);
+    font-size: clamp(24px, calc(5.21vw - 27.4px), 41px);
   }
 }
 /* Y por debajo de 960 vuelve a una sola columna. Va aquí, después y
@@ -5012,13 +5021,22 @@
 .l8 .mf-step-body.mf-step-body, .l8 .np-letter-item.np-letter-item,
 .l8 .np-stat-card.np-stat-card, .l8 .consequences-list li {
   box-shadow:
+    0 0 0 0 rgba(122, 185, 255, 0),
     0 1px 2px rgba(29, 0, 132, 0.04),
     0 4px 12px rgba(29, 0, 132, 0.04);
   transition:
-    border-color .4s cubic-bezier(0.33, 1, 0.68, 1),
-    box-shadow   .4s cubic-bezier(0.33, 1, 0.68, 1),
-    transform    .4s cubic-bezier(0.33, 1, 0.68, 1);
+    border-color .38s cubic-bezier(0.33, 1, 0.68, 1),
+    box-shadow   .38s cubic-bezier(0.33, 1, 0.68, 1),
+    transform    .38s cubic-bezier(0.33, 1, 0.68, 1);
 }
+/* Y al pasar el ratón, la línea gorda desplazada en el azul claro del
+   subrayado de los titulares, junto con un zoom corto. Es el mismo
+   recurso de la tarjeta de "Holandés Nawar es diferente", que ahí va
+   fija y en índigo; aquí aparece sólo al pasar y en el azul de marca.
+
+   La capa de la línea existe también en reposo, a cero de tamaño y
+   transparente: si no estuviera, el número de capas cambiaría entre
+   los dos estados y el navegador no podría interpolar. */
 .l8 .otr-item.otr-item:hover, .l8 .cu-item.cu-item:hover,
 .l8 .es-item.es-item:hover, .l8 .qi-item.qi-item:hover,
 .l8 .pil-card.pil-card:hover,
@@ -5026,13 +5044,14 @@
 .l8 .np-letter-item.np-letter-item:hover,
 .l8 .np-stat-card.np-stat-card:hover, .l8 .consequences-list li:hover {
   box-shadow:
-    0 2px 6px rgba(29, 0, 132, 0.06),
-    0 14px 32px rgba(29, 0, 132, 0.10);
-  border-color: rgba(2, 93, 199, 0.28);
-  transform: translateY(-3px);
+    8px 8px 0 0 rgba(122, 185, 255, 0.85),
+    0 2px 6px rgba(29, 0, 132, 0.05),
+    0 12px 28px rgba(29, 0, 132, 0.07);
+  border-color: rgba(122, 185, 255, 0.95);
+  transform: scale(1.022);
 }
 /* Este se desplaza de lado, no hacia arriba: va en una lista con línea */
-.l8 .mf-step.mf-step:hover .mf-step-body.mf-step-body { transform: translateX(4px); }
+.l8 .mf-step.mf-step:hover .mf-step-body.mf-step-body { transform: translateX(4px) scale(1.012); }
 
 /* La tarjeta oscura de los pilares tiene su propia sombra, más
    cargada porque va sobre azul marino. Mismo tratamiento: dos capas
@@ -5057,8 +5076,10 @@
   .l8 .np-stat-card.np-stat-card:hover,
   .l8 .consequences-list li:hover {
     box-shadow:
+      0 0 0 0 rgba(122, 185, 255, 0),
       0 1px 2px rgba(29, 0, 132, 0.04),
       0 4px 12px rgba(29, 0, 132, 0.04);
+    border-color: #E4EAF8;
     transform: none;
   }
 }
