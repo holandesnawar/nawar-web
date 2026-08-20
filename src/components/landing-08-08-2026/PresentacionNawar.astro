@@ -12,6 +12,10 @@
 // sobre la objeción, el porqué en una tarjeta destacada, y debajo la
 // promesa concreta.
 const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
+// La ilustración de la objeción. En ordenador va a la izquierda, con
+// la pregunta a su derecha; en móvil cae debajo del titular y la
+// entradilla, que es el orden en que está en el marcado.
+const FOTO_CURSOS = 'https://docs.holandesnawar.com/img/Landing/cuantos.cursos.has.empezado.png'
 ---
 <section class="pn-section" data-navbar="light">
   <div class="inner">
@@ -29,6 +33,17 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 
     <div class="pn-grid">
 
+      {FOTO_CURSOS && (
+        <figure class="pn-foto sr">
+          <img
+            src={FOTO_CURSOS}
+            alt="Cursos de neerlandés empezados y abandonados"
+            loading="lazy" decoding="async"
+            onerror="this.closest('figure').remove();"
+          />
+        </figure>
+      )}
+
       <div class="pn-col sr">
         <h3 class="pn-pregunta">¿Cuántos cursos has empezado <span class="pn-accent-2">y abandonado?</span></h3>
         <p class="pn-texto">
@@ -37,17 +52,15 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
         </p>
       </div>
 
-      <div class="pn-col sr">
-        <div class="pn-card">
-          <p class="pn-card-text">
-            <span class="pn-destacado">Holandés Nawar es diferente.</span>
-            Porque sabemos que ver vídeos no es suficiente. Que sin práctica no hay avance.
-            Que sin alguien que te corrija, los errores se convierten en hábitos invisibles.
-            Que sin comunidad, la motivación cae. Y que sin continuidad, el neerlandés se olvida.
-          </p>
-        </div>
-      </div>
+    </div>
 
+    <div class="pn-card sr">
+      <p class="pn-card-text">
+        <span class="pn-destacado">Holandés Nawar es diferente.</span>
+        Porque sabemos que ver vídeos no es suficiente. Que sin práctica no hay avance.
+        Que sin alguien que te corrija, los errores se convierten en hábitos invisibles.
+        Que sin comunidad, la motivación cae. Y que sin continuidad, el neerlandés se olvida.
+      </p>
     </div>
 
     <div class="pn-foot sr">
@@ -102,7 +115,16 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   border-radius: 24px;
   padding: 32px 30px;
   box-shadow: 10px 10px 0 rgba(29, 0, 132, 0.12);
+  /* La tarjeta salió de la columna derecha —ahí va ahora la pregunta,
+     con la ilustración a su izquierda— y cruza la sección entera. */
+  max-width: 900px;
+  margin: 48px auto 0;
 }
+
+/* La ilustración trae su propio fondo blanco y la sección es blanca:
+   no necesita ni caja ni recorte. */
+.pn-foto { margin: 0; }
+.pn-foto img { width: 100%; height: auto; display: block; }
 .pn-card-text { font-size: 17px; line-height: 1.7; color: #101336; }
 /* El rotulador de la casa, aquí en su versión maciza para la frase
    que sostiene toda la sección. */
@@ -149,7 +171,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   .pn-section { padding: 64px 0; }
   .pn-header { margin-bottom: 36px; }
   .pn-grid { grid-template-columns: 1fr; gap: 28px; }
-  .pn-card { padding: 26px 22px; border-radius: 20px; box-shadow: 7px 7px 0 rgba(29,0,132,0.12); }
+  .pn-card { padding: 26px 22px; border-radius: 20px; box-shadow: 7px 7px 0 rgba(29,0,132,0.12); margin-top: 28px; }
   .pn-foot { margin-top: 40px; }
   .pn-cta { width: 100%; justify-content: center; }
 }

@@ -5083,3 +5083,20 @@
     transform: none;
   }
 }
+
+/* ── El botón del banner en pantallas de 360 px ────────────────
+   El botón lleva white-space: nowrap, y a ese ancho su mínimo eran
+   352 px contra los 312 que mide la columna. Como es un hijo de la
+   rejilla, ese mínimo mandaba: empujaba el titular, la entradilla y
+   las viñetas 16 px fuera de la pantalla, donde la sección los
+   recortaba por la derecha. Con un punto menos de cuerpo y menos
+   relleno cabe entero sin partir la frase en dos líneas.
+   Sólo aquí: el botón es global y se usa en otras páginas. */
+@media (max-width: 400px) {
+  .l8 .hero-ctas .btn-lg.btn-lg {
+    font-size: 15px;
+    padding-left: 16px;
+    padding-right: 16px;
+    gap: 7px;
+  }
+}
