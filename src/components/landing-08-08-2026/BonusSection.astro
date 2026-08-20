@@ -24,6 +24,10 @@ const SOPORTE_IMG  = 'https://docs.holandesnawar.com/img/Landing/bonus.soporte.p
 // constante vacía se sigue viendo el diploma dibujado en CSS.
 const CERTIFICADO_IMG = 'https://docs.holandesnawar.com/img/Landing/bonus.cert.png'
 
+// Bonus 03. La ilustración manda; si se vacía esta constante vuelve
+// la baraja de tres capturas de abajo, y si esa lista no tiene tres
+// entradas, el mockup dibujado.
+const EJERCICIOS_IMG = 'https://docs.holandesnawar.com/img/Landing/ejercicios.png'
 const EJERCICIOS_IMGS = [
   'https://docs.holandesnawar.com/img/ejercicios2.jpg',
   'https://docs.holandesnawar.com/img/ejercicios1.jpg',
@@ -151,6 +155,17 @@ const carita = (tono: string) =>
       <!-- ── BONUS 3 — Ejercicios y lecciones extra ── -->
       <article class="bn-row bn-row--flip sr">
         <div class="bn-visual">
+          {EJERCICIOS_IMG && (
+            <figure class="bn-foto">
+              <img
+                src={EJERCICIOS_IMG}
+                alt="Ejercicios y lecciones extra de la academia Holandés Nawar"
+                loading="lazy" decoding="async"
+                onerror="this.closest('figure').remove(); document.getElementById('bn-ejercicios-alt').hidden = false;"
+              />
+            </figure>
+          )}
+          <div id="bn-ejercicios-alt" hidden={!!EJERCICIOS_IMG}>
           {EJERCICIOS_IMGS.length === 3 ? (
             <div class="bn-fan">
               <div class="bn-fan-stack">
@@ -179,6 +194,7 @@ const carita = (tono: string) =>
             <p class="bn-ex-note">Repite las veces que quieras</p>
           </div>
           )}
+          </div>
         </div>
         <div class="bn-text">
           <span class="bn-numrow"><span class="bn-num">Bonus 03</span><span class="bn-val">Valor <s>90 €</s> · incluido</span></span>
@@ -231,14 +247,20 @@ const carita = (tono: string) =>
               siempre en el marcado, oculto, y sale en cuanto la foto
               falla. Peor que la foto, pero nunca un agujero. */}
           {CERTIFICADO_IMG && (
-            <figure class="bn-cert bn-cert--foto" id="bn-cert-foto">
-              <div class="bn-cert-sheen" aria-hidden="true"></div>
+            <figure class="bn-cert bn-cert--foto" id="bn-cert-foto" style={`--cert-img: url("${CERTIFICADO_IMG}")`}>
               <img
                 src={CERTIFICADO_IMG}
                 alt="Certificado de finalización de la Formación Neerlandés A0 → A1"
                 loading="lazy" decoding="async"
                 onerror="this.closest('#bn-cert-foto').remove(); document.getElementById('bn-cert-dibujo').hidden = false;"
               />
+              {/* El brillo, recortado con la propia imagen de máscara:
+                  así sólo se ve donde el certificado tiene tinta y no
+                  sobre el fondo del archivo. */}
+              <div class="bn-cert-fx" aria-hidden="true">
+                <span class="bn-cert-fx-glow"></span>
+                <span class="bn-cert-fx-sheen"></span>
+              </div>
             </figure>
           )}
           <div class="bn-cert" id="bn-cert-dibujo" hidden={!!CERTIFICADO_IMG} aria-label="Certificado Holandés Nawar">
@@ -319,26 +341,51 @@ const carita = (tono: string) =>
    soft-light no se veía: apenas cambia nada sobre blanco. Con
    multiply el mismo azul sí tiñe, y el brillo que lo cruza pasa a ser
    azul en vez de blanco por el mismo motivo.
-   Sigue en bucle (para el móvil, que no tiene ratón) y además se
-   aviva al pasar el cursor, que es como estaba y como le gustaba. */
-.bn-cert.bn-cert--foto::after {
-  z-index: 2;
+
+   Y va recortado con la propia imagen de máscara. Antes las dos capas
+   de color cubrían la caja entera: sobre el diploma dibujado daba
+   igual, porque la caja ERA el diploma, pero con una foto el color
+   pintaba también el fondo del archivo y delataba su rectángulo.
+   Con la máscara el brillo sólo existe donde la imagen tiene tinta.
+
+   Para que se note del todo, el PNG tiene que venir con el fondo
+   transparente: si trae un fondo blanco macizo, la máscara lo da por
+   bueno —para ella es imagen— y vuelve a verse el rectángulo. */
+.bn-cert.bn-cert--foto::after { display: none; }
+.bn-cert-fx {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  overflow: hidden;
+  /* La mezcla va aquí, en el elemento enmascarado, y no en los hijos:
+     la máscara crea grupo de composición propio, y desde dentro los
+     hijos no verían la imagen que hay debajo. */
   mix-blend-mode: multiply;
+  -webkit-mask-image: var(--cert-img);
+          mask-image: var(--cert-img);
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+}
+.bn-cert-fx-glow, .bn-cert-fx-sheen { position: absolute; display: block; }
+.bn-cert-fx-glow {
+  inset: -45%;
   background: radial-gradient(circle at 32% 28%, rgba(150,198,255,0.92) 0%, rgba(255,255,255,0) 58%);
   opacity: .8;
+  transform: translate3d(-7%, -7%, 0);
 }
-.bn-row:hover .bn-cert.bn-cert--foto::after { opacity: 1; }
-.bn-cert.bn-cert--foto .bn-cert-sheen {
-  z-index: 3;
-  mix-blend-mode: multiply;
-  /* Banda más ancha (30-70 en vez de 38-62) y más cargada: sobre un
-     certificado casi blanco, un 55 % de azul en una franja estrecha
-     se cruzaba la imagen sin que diera tiempo a verlo. */
+.bn-row.vis .bn-cert-fx-glow { animation: bn-cert-glow 4.5s ease-in-out infinite alternate; }
+.bn-row:hover .bn-cert-fx-glow { opacity: 1; }
+.bn-cert-fx-sheen {
+  inset: 0;
+  /* Banda ancha (30-70) y cargada: sobre un certificado casi blanco,
+     un 55 % de azul en una franja estrecha cruzaba la imagen sin que
+     diera tiempo a verlo. */
   background: linear-gradient(115deg, rgba(255,255,255,0) 30%, rgba(140,192,255,0.72) 50%, rgba(255,255,255,0) 70%);
+  transform: translateX(-130%);
 }
-/* Al pasar el cursor, una pasada rápida del brillo además del bucle */
-.bn-row:hover .bn-cert.bn-cert--foto .bn-cert-sheen {
-  animation: bn-cert-sheen 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+.bn-row.vis .bn-cert-fx-sheen { animation: bn-cert-sheen 3.6s ease-in-out 0.4s infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .bn-row.vis .bn-cert-fx-glow, .bn-row.vis .bn-cert-fx-sheen { animation: none; }
 }
 
 /* ── Baraja de capturas (bonus 03) ────────────────────────────

@@ -75,7 +75,10 @@ const FOTO_CURSOS = 'https://docs.holandesnawar.com/img/Landing/cuantos.cursos.h
 </section>
 
 <style>
-.pn-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
+/* clip y no hidden: hidden convertiría la sección en contenedor de
+   scroll y la foto de la izquierda dejaría de quedarse fija. El
+   hidden va delante como respaldo para navegadores sin clip. */
+.pn-section { background: #fff; position: relative; overflow: hidden; overflow: clip; padding: 96px 0; }
 
 /* La foto a la izquierda y todo lo demás en la columna de la derecha:
    arriba del todo el titular y debajo, en la misma columna, la
@@ -85,19 +88,27 @@ const FOTO_CURSOS = 'https://docs.holandesnawar.com/img/Landing/cuantos.cursos.h
    después la foto y al final el resto. */
 .pn-layout {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
   grid-template-rows: auto 1fr;
+  /* La celda de arriba a la izquierda va vacía: la foto arranca a la
+     altura de "¿Cuántos cursos has empezado...", no del titular. */
   grid-template-areas:
-    "foto cabecera"
+    ".    cabecera"
     "foto cuerpo";
-  column-gap: 52px;
-  row-gap: 24px;
-  max-width: 1120px; margin: 0 auto;
+  column-gap: 48px;
+  row-gap: 28px;
+  max-width: 1180px; margin: 0 auto;
 }
 /* Clase repetida: el ritmo común de cabeceras de la página le pone
    48 px por debajo, y aquí el hueco lo pone la rejilla. */
 .pn-header.pn-header { grid-area: cabecera; margin-bottom: 0; }
-.pn-foto   { grid-area: foto; align-self: center; }
+/* Se queda clavada mientras la columna de la derecha sigue subiendo.
+   Para que un sticky funcione, ningún antepasado puede tener
+   overflow hidden —eso lo convierte en contenedor de scroll y lo
+   anula—; por eso .pn-section usa clip, que recorta igual pero no
+   crea contenedor de scroll. Los 96 px son el hueco de la barra de
+   arriba con el contador. */
+.pn-foto   { grid-area: foto; align-self: start; position: sticky; top: 96px; }
 .pn-cuerpo { grid-area: cuerpo; }
 .pn-title {
   font-family: 'Poppins', system-ui, sans-serif;
@@ -134,7 +145,15 @@ const FOTO_CURSOS = 'https://docs.holandesnawar.com/img/Landing/cuantos.cursos.h
 /* La ilustración trae su propio fondo blanco y la sección es blanca:
    no necesita ni caja ni recorte. */
 .pn-foto { margin: 0; }
-.pn-foto img { width: 100%; height: auto; display: block; }
+/* El tope de alto es lo que hace que la foto se quede fija de verdad:
+   un sticky sólo se mueve dentro de su celda, y si la imagen mide
+   casi lo mismo que la columna de al lado apenas le quedan unos
+   píxeles de recorrido y parece que sube con el resto. Con este tope
+   siempre le sobran unos 150 px de columna por los que quedarse. */
+.pn-foto img {
+  width: 100%; height: auto; display: block;
+  max-height: 540px; object-fit: contain;
+}
 .pn-card-text { font-size: 17px; line-height: 1.7; color: #101336; }
 /* El rotulador de la casa, aquí en su versión maciza para la frase
    que sostiene toda la sección. */
@@ -192,6 +211,8 @@ const FOTO_CURSOS = 'https://docs.holandesnawar.com/img/Landing/cuantos.cursos.h
       "cuerpo";
     row-gap: 28px;
   }
+  /* En una sola columna no hay nada a lo que quedarse fija */
+  .pn-foto { position: static; }
   .pn-header.pn-header { text-align: center; margin-bottom: 0; }
   .pn-card { padding: 26px 22px; border-radius: 20px; box-shadow: 7px 7px 0 rgba(29,0,132,0.12); margin-top: 24px; }
   .pn-cta { width: 100%; justify-content: center; }

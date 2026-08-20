@@ -4420,10 +4420,14 @@
 /* La franja del botón no es una sección: es el cierre de la de
    encima. Comparte su fondo y no abre margen arriba, para que las
    dos juntas sumen los mismos 96 px que las demás. */
-.l8 .l8-cta-band.l8-cta-band { background: #F0F4FF; padding: 0; }
+/* Arriba nada, abajo lo que le toca a cualquier sección: al ponerle
+   padding: 0 el botón se quedaba pegado al final del bloque azul y la
+   sección parecía cortada justo debajo de él. */
+.l8 .l8-cta-band.l8-cta-band { background: #F0F4FF; padding: 0 0 88px; }
 .l8 .cu-section.cu-section { padding-bottom: 44px; }
 @media (max-width: 860px) {
   .l8 .cu-section.cu-section { padding-bottom: 32px; }
+  .l8 .l8-cta-band.l8-cta-band { padding-bottom: 64px; }
 }
 
 /* Cuando dos secciones seguidas comparten fondo, el límite entre las
@@ -5106,3 +5110,23 @@
     gap: 7px;
   }
 }
+
+/* ── "¿Qué incluye la formación Nawar?" ────────────────────────
+   El titular se partía en dos líneas y la cabecera se leía como dos
+   párrafos seguidos. Con la cabecera más ancha y un cuerpo mayor
+   cabe entero en una línea a partir de tablet; por debajo se deja
+   partir, que si no habría que bajarlo a 26 px para que entrase.
+
+   Y la entradilla, un punto más oscura y con las cifras en negrita:
+   son el argumento de la sección y se perdían dentro del párrafo.
+
+   Sin white-space: nowrap a propósito: con la cabecera a 1040 px la
+   frase entra en una línea por sí sola, y si algún día la tipografía
+   no cargara y la de repuesto midiera más, partiría en dos líneas en
+   vez de salirse de la pantalla. */
+@media (min-width: 1000px) {
+  .l8 .qi-header.qi-header { max-width: 1040px; }
+  .l8 .qi-title.qi-title { font-size: 52px; }
+}
+.l8 .qi-sub.qi-sub { color: #252C42; }
+.l8 .qi-sub.qi-sub strong { color: #101336; font-weight: 700; }
