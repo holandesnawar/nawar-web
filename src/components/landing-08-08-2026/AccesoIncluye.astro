@@ -35,7 +35,10 @@ const FOTO_PACK_MOVIL = 'https://docs.holandesnawar.com/img/Landing/todo.movil.p
   <div class="inner">
 
     <div class="ai-header sr">
-      <p class="ai-oferta">Oferta por tiempo limitado</p>
+      <span class="badge-light">
+        <svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Oferta por tiempo limitado
+      </span>
       <h2 class="ai-title">
         <span class="ai-negro">Empieza hoy.</span>
         <span class="ai-linea"><span class="ai-accent">Tu neerlandés cambia esta misma semana.</span></span>
@@ -102,8 +105,9 @@ const FOTO_PACK_MOVIL = 'https://docs.holandesnawar.com/img/Landing/todo.movil.p
 .ai-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
 
 .ai-header { text-align: center; max-width: 820px; margin: 0 auto 40px; }
-/* La línea manuscrita del mockup. Va en cursiva y en el azul medio, no
-   en rojo de rebajas: dice "esto no está abierto siempre" sin gritar. */
+/* Era una línea manuscrita en cursiva, la única de la página con ese
+   tratamiento. Ahora es la palomita azul cielo de siempre, como en el
+   resto de secciones. El CSS se queda por si vuelve. */
 .ai-oferta {
   font-family: 'Poppins', system-ui, sans-serif;
   font-size: 15px; font-style: italic; font-weight: 400;

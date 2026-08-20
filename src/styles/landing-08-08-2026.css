@@ -5279,3 +5279,31 @@
   letter-spacing: -0.028em;
   line-height: 1.1;
 }
+
+/* ── Los últimos retoques ─────────────────────────────────────── */
+
+/* El titular del cierre perdió el degradado blanco al pasar a dos
+   líneas: el degradado va de blanco a 0,72 a lo largo de TODA la
+   caja del texto, así que con una línea se veía blanco y con dos la
+   segunda caía en el extremo apagado y se leía gris. Repitiendo el
+   fondo cada línea, cada renglón recibe el degradado entero, que es
+   como se veía en preguntas frecuentes cuando el titular ocupaba una
+   sola línea. */
+.l8 .final-cta .fc-cabecera .text-gradient-white {
+  /* 0,88 en vez de 0,72 en el extremo bajo: a 56 px el degradado se
+     nota mucho más que en un titular pequeño, y lo que buscamos es
+     un brillo, no una segunda línea apagada. */
+  background-image: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.88) 100%);
+  background-size: 100% 1.1em;
+  background-repeat: repeat-y;
+}
+
+/* El título de preguntas frecuentes, en el índigo de marca y no en
+   el negro azulado del cuerpo de texto. */
+.l8 .np-faq-title.np-faq-title { color: #1D0084; }
+
+/* Los botones de letra blanca, un punto menos gruesos: a 700 pesaban
+   más que los titulares que tienen al lado. Los de letra azul marino
+   sobre azul claro se quedan como están, que sobre un fondo claro el
+   mismo peso se lee más fino. */
+.l8 .btn-primary, .l8 .hero-ctas .btn-lg.btn-lg { font-weight: 600; }

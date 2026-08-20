@@ -90,10 +90,10 @@ const FOTO_CURSOS = 'https://docs.holandesnawar.com/img/Landing/cuantos.cursos.h
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
   grid-template-rows: auto 1fr;
-  /* La celda de arriba a la izquierda va vacía: la foto arranca a la
-     altura de "¿Cuántos cursos has empezado...", no del titular. */
+  /* La foto ocupa las dos filas: arranca arriba del todo, a la altura
+     del titular, y desde ahí se queda fija. */
   grid-template-areas:
-    ".    cabecera"
+    "foto cabecera"
     "foto cuerpo";
   column-gap: 48px;
   row-gap: 28px;
