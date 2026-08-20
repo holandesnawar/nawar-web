@@ -3944,6 +3944,11 @@
 .l8 .qi-sub.qi-sub,
 .l8 .bn-sub.bn-sub,
 .l8 .cr-sub.cr-sub,
+/* El texto de cada bonus iba con las descripciones pequeñas de las
+   tarjetas de tres en tres. Desde que cada bonus ocupa media página
+   es una descripción de sección como las demás, y a 14,5 px se leía
+   diminuto al lado de un titular de 40. */
+.l8 .bn-desc.bn-desc,
 .l8 .mk-p.mk-p {
   font-size: 17px;
   line-height: 1.6;
@@ -3953,7 +3958,6 @@
 .l8 .pil-card-desc.pil-card-desc,
 .l8 .mf-step-desc.mf-step-desc,
 .l8 .qi-item-desc.qi-item-desc,
-.l8 .bn-desc.bn-desc,
 .l8 .cr-desc.cr-desc,
 .l8 .pf-frase.pf-frase {
   font-size: 14.5px;
@@ -4840,20 +4844,22 @@
    ancho y 8 de hueco. Con eso el titular llega a 44 px en vez de
    quedarse en 36. */
 .l8 .hero-inner.hero-inner {
-  max-width: 1320px;
+  max-width: 1360px;
   grid-template-columns: 1fr 430px;
-  gap: 48px;
+  gap: 44px;
 }
 .l8 .hero-headline.hero-headline {
   font-size: clamp(24px, calc(6.6vw - 5px), 37px);
 }
-/* Al ensanchar la captura de 380 a 430 px, la columna de texto pierde
-   50 y la fórmula hay que rehacerla: contenedor 1320 menos 48 de
-   margen, menos 430 de captura, menos 48 de hueco = 794 px de texto.
-   Dividido entre los 19,2 que ocupa la línea larga, 41 px de tope. */
+/* La fórmula: el ancho de la columna de texto entre los 19,2 que
+   ocupa la línea larga del titular. Contenedor 1360 menos 48 de
+   margen, menos 430 de captura, menos 44 de hueco = 838 px de texto,
+   que dan 43 px de tope. La pendiente es la misma —el ancho de la
+   columna crece con la pantalla— y sólo sube el techo, que es lo que
+   hace el titular un punto más grande sin pasar a tres líneas. */
 @media (min-width: 960px) {
   .l8 .hero-headline.hero-headline {
-    font-size: clamp(24px, calc(5.21vw - 27.4px), 41px);
+    font-size: clamp(24px, calc(5.21vw - 27.2px), 43px);
   }
 }
 /* Y por debajo de 960 vuelve a una sola columna. Va aquí, después y
@@ -5130,3 +5136,146 @@
 }
 .l8 .qi-sub.qi-sub { color: #252C42; }
 .l8 .qi-sub.qi-sub strong { color: #101336; font-weight: 700; }
+
+/* Y la entradilla, un punto por debajo: el titular ha subido y las
+   dos medidas estaban demasiado juntas. */
+.l8 .hero-sub.hero-sub { font-size: clamp(15.5px, 1.75vw, 17.5px); }
+
+/* ══════════════════════════════════════════════════════════════
+   LAS PREGUNTAS FRECUENTES, EN CLARO Y EN TARJETAS
+══════════════════════════════════════════════════════════════
+   Iban en índigo, con las preguntas separadas por líneas finas: se
+   leían peor que el resto de la página y no se parecían a nada de lo
+   que hay por encima. Ahora cada pregunta es una tarjeta blanca con
+   el borde en el azul cielo de marca y la sombra desplazada, que es
+   el recurso que ya usan la tarjeta del método y el hover de los
+   bloques. El oscuro no se pierde: se va al cierre de la página, que
+   es donde tiene que pesar.
+══════════════════════════════════════════════════════════════ */
+.l8 .np-faq.np-faq {
+  background: #F0F4FF;
+  border-top: 1px solid #E4EAF8;
+}
+.l8 .np-faq-title.np-faq-title { color: #101336; }
+/* El rotulador de la casa, igual que en el resto de titulares */
+.l8 .np-faq-accent {
+  display: inline;
+  background-image: linear-gradient(
+    to top,
+    rgba(122, 185, 255, 0.45) 0em,
+    rgba(122, 185, 255, 0.45) 0.24em,
+    transparent 0.24em
+  );
+  padding: 0 0.08em;
+  border-radius: 5px;
+}
+.l8 .np-faq-list.np-faq-list { gap: 14px; max-width: 820px; }
+.l8 .np-faq-item.np-faq-item {
+  background: #fff;
+  border: 2px solid #7ab9ff;
+  border-radius: 16px;
+  box-shadow: 5px 5px 0 rgba(29, 0, 132, 0.10);
+  transition:
+    border-color .3s cubic-bezier(0.33, 1, 0.68, 1),
+    box-shadow   .3s cubic-bezier(0.33, 1, 0.68, 1);
+}
+.l8 .np-faq-item.np-faq-item:first-of-type { border-top: 2px solid #7ab9ff; }
+.l8 .np-faq-item.np-faq-item:hover { box-shadow: 7px 7px 0 rgba(122, 185, 255, 0.55); }
+.l8 .np-faq-item[open].np-faq-item {
+  border-color: #4da3ff;
+  box-shadow: 7px 7px 0 rgba(122, 185, 255, 0.55);
+}
+.l8 .np-faq-q.np-faq-q { color: #101336; padding: 20px 22px; }
+.l8 .np-faq-q.np-faq-q:hover { color: #025dc7; }
+.l8 .np-faq-icon.np-faq-icon { color: #025dc7; }
+.l8 .np-faq-a.np-faq-a { padding: 0 22px 20px; }
+.l8 .np-faq-a.np-faq-a p { color: #252C42; font-size: 16px; font-weight: 500; }
+
+/* ══════════════════════════════════════════════════════════════
+   EL CIERRE: LOS DOS FUTUROS
+══════════════════════════════════════════════════════════════
+   Dos tarjetas en blanco sobre el índigo, la de seguir igual y la de
+   haber hecho el camino. Es el mismo recurso de la sección de "el
+   coste de seguir igual", pero aquí en una sola pantalla y justo
+   antes del botón: la decisión, puesta al lado de su alternativa.
+══════════════════════════════════════════════════════════════ */
+.l8 .final-cta .fc-cabecera { margin-bottom: 36px; }
+.l8 .final-cta .fc-cabecera h2 > span,
+.l8 .final-cta .fc-cabecera h2 > em {
+  display: block;
+  font-style: normal;
+  text-wrap: balance;
+}
+.l8 .final-cta .fc-cabecera h2 > em { color: #4da3ff; }
+.l8 .final-cta .fc-cabecera p { margin-bottom: 0; }
+.l8 .fc-futuros {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 940px;
+  margin: 0 auto 40px;
+  text-align: left;
+}
+.l8 .fc-futuro {
+  background: #fff;
+  border-radius: 20px;
+  padding: 26px 24px;
+}
+/* Bordes y sombras desplazadas, como la tarjeta del método: la de
+   seguir igual en gris apagado, la de Nawar en el azul de marca. */
+.l8 .fc-futuro--igual {
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 7px 7px 0 rgba(8, 12, 45, 0.45);
+}
+.l8 .fc-futuro--nawar {
+  border: 2px solid #4da3ff;
+  box-shadow: 7px 7px 0 rgba(77, 163, 255, 0.45);
+}
+.l8 .fc-tag {
+  display: inline-block;
+  font-family: var(--font-head);
+  font-size: 11.5px; font-weight: 800; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 14px; border-radius: 100px;
+  margin-bottom: 14px;
+}
+.l8 .fc-tag--igual { background: #101336; color: #fff; }
+.l8 .fc-tag--nawar { background: #4da3ff; color: #0a1656; }
+.l8 .fc-futuro .fc-p {
+  font-size: 16px; line-height: 1.62; font-weight: 500;
+  color: #252C42; margin: 0;
+}
+.l8 .fc-futuro .fc-p strong { color: #101336; font-weight: 700; }
+
+@media (max-width: 720px) {
+  .l8 .fc-futuros { grid-template-columns: 1fr; gap: 16px; margin-bottom: 32px; }
+  .l8 .fc-futuro { padding: 22px 20px; border-radius: 18px; }
+  .l8 .fc-futuro--igual { box-shadow: 5px 5px 0 rgba(8, 12, 45, 0.45); }
+  .l8 .fc-futuro--nawar { box-shadow: 5px 5px 0 rgba(77, 163, 255, 0.45); }
+}
+
+/* El logo del pie, sin medidas forzadas: las de antes (120×30) eran
+   las del logo de la barra de arriba y deformaban este archivo. */
+.l8 .footer-logo img { height: 38px; width: auto; display: block; }
+
+/* Con los dos futuros en tarjeta blanca, el cristal que rodeaba el
+   titular y el botón sobraba: eran dos cajas más compitiendo con las
+   dos que llevan el mensaje. El titular y el botón van sueltos sobre
+   el fondo, y el titular sube a la escala que tenía el de preguntas
+   frecuentes, que es el que Rida quería aquí. */
+.l8 .final-cta .content.content {
+  max-width: 880px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+.l8 .final-cta .content.content::before { display: none; }
+.l8 .final-cta h2.h2, .l8 .final-cta h2 {
+  font-size: clamp(30px, 4.6vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.1;
+}

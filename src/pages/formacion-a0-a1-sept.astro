@@ -58,6 +58,11 @@ const PRECIO = '397'
 const VALOR_TOTAL = '2.360'
 const AHORRO = '100'
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
+/* El del pie va aparte: el de arriba se veía torcido ahí abajo. Este
+   se pinta sin width ni height fijos —los de antes forzaban 120×30 y
+   deformaban cualquier archivo con otra proporción— y manda el alto
+   por CSS. */
+const LOGO_FOOTER = 'https://docs.holandesnawar.com/img/Nawar.png'
 
 /* Dolores — carta con lista numerada */
 const dolores = [
@@ -842,13 +847,13 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     <!-- ══════════════════════════════════════════════════════════
          FAQ — diseño limpio, sin tarjetas (nawar-plus)
     ══════════════════════════════════════════════════════════ -->
-    <section class="np-faq" id="faq">
+    <section class="np-faq" id="faq" data-navbar="light">
       <div class="inner">
         <div class="np-faq-header sr">
-          <span class="np-eyebrow-small"><svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Preguntas frecuentes</span>
+          <span class="badge-light"><svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Preguntas frecuentes</span>
           <h2 class="np-faq-title">
-            <span class="text-gradient-white">Antes de apuntarte,</span><br />
-            <span style="color:#4da3ff;">resuelve tus dudas.</span>
+            <span>Antes de apuntarte,</span><br />
+            <span class="np-faq-accent">resuelve tus dudas.</span>
           </h2>
         </div>
 
@@ -876,16 +881,40 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:.4"></div>
       <div class="final-cta-divider" aria-hidden="true"></div>
       <div class="container" style="position:relative">
-        <div class="content" data-anim="fade-up">
+        <div class="content fc-cabecera">
           <div class="eyebrow eyebrow-accent" style="display:inline-flex;margin-bottom:24px">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" style="flex-shrink:0"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Empieza hoy
           </div>
-          <h2>Llevas demasiado tiempo esperando.<br />El momento es <em style="color:var(--brand-lt);font-style:normal">ahora.</em></h2>
+          <h2>
+            <span class="text-gradient-white">Nosotros vamos a seguir enseñando neerlandés.</span>
+            <em>¿Y tú? ¿Dónde estarás dentro de 16 semanas?</em>
+          </h2>
           <p>
-            Cada semana que pasa sin neerlandés es una semana más de dependencia, bloqueo e inseguridad.
-            Tienes delante 16 semanas de camino guiado por menos de lo que cuestan siete clases sueltas.
+            Las 16 semanas van a pasar igual. Lo único que cambia es dónde te dejan.
           </p>
+        </div>
+
+        <div class="fc-futuros">
+          <article class="fc-futuro fc-futuro--igual">
+            <span class="fc-tag fc-tag--igual">Dentro de 16 semanas</span>
+            <p class="fc-p">
+              <strong>Puede que sigas contestando en inglés en la panadería.</strong>
+              Que sigas llevando a alguien contigo a la gemeente. Que sigas entendiendo la
+              mitad de la reunión y asintiendo al resto.
+            </p>
+          </article>
+          <article class="fc-futuro fc-futuro--nawar">
+            <span class="fc-tag fc-tag--nawar">O puede que…</span>
+            <p class="fc-p">
+              <strong>Entiendas a tu vecino y le contestes sin traducir.</strong>
+              Que hagas tus gestiones tú solo. Que sueltes tu primera frase larga en
+              neerlandés y no te tiemble la voz.
+            </p>
+          </article>
+        </div>
+
+        <div class="content">
           <div class="final-cta-btns">
             <a href={CHECKOUT_URL} class="btn btn-primary btn-lg">
               Empezar ahora por €{PRECIO}
@@ -905,7 +934,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     <footer class="footer">
       <div class="container footer-inner">
         <a href="#hero" class="footer-logo">
-          <img src={LOGO} alt="Holandés con Nawar" width="120" height="30" />
+          <img src={LOGO_FOOTER} alt="Holandés Nawar" loading="lazy" decoding="async" />
         </a>
         <div class="footer-links">
           <a href="/politica-de-privacidad">Política de privacidad</a>
