@@ -1,12 +1,6 @@
 # Guía de uso y estudio
 ### Formación Nawar A0 → A1 · Módulo 0
 
-> **Cómo usar este borrador.** Está escrito para que lo pegues tal cual en el
-> documento del Módulo 0 y vayas ajustando. Todo lo que va entre corchetes
-> `[así]` son datos que no tengo: día y hora de la clase, canal de soporte,
-> nombres de las secciones de tu plataforma. El resto es método, y ahí sí
-> cambia lo que quieras: es tu escuela y tu forma de enseñar.
-
 ---
 
 ## Antes de nada
@@ -43,13 +37,15 @@ piezas:
 | **Oefening** | Ejercicios | Comprobar que lo has entendido |
 | **Repaso** | Lo que fallaste, cuando toca | Que no se te olvide |
 
-**Una clase en directo a la semana**, los [día] a las [hora] (hora de
-Países Bajos), con un profesor del equipo. Se graba siempre.
+**Una clase en directo a la semana**, los jueves a las 19:00 (hora de Países
+Bajos), con un profesor del equipo. Se graba siempre.
 
-**La comunidad**, para las dudas del día a día y para no estudiar solo.
+**La comunidad**, para las dudas del día a día y para no estudiar solo. Tienes
+el enlace para entrar aquí mismo, en el Módulo 0.
 
-**El soporte**, en [canal], para cuando algo no te cuadra y necesitas que
-alguien te lo explique otra vez de otra manera.
+**El soporte**, en el apartado de consultas de la academia, para cuando algo
+no te cuadra y necesitas que alguien te lo explique otra vez de otra manera.
+Respondemos en menos de 24 horas laborables.
 
 ---
 
@@ -64,7 +60,7 @@ Una semana que funciona se parece a esto:
 - **Todos los días, los primeros 5 minutos:** el repaso que te salga. Antes
   de la lección nueva, no después. Si sólo tienes cinco minutos un día, haz
   el repaso y déjate la lección.
-- **[Día] a las [hora]:** la clase en directo, o su grabación esa misma
+- **Jueves a las 19:00:** la clase en directo, o su grabación esa misma
   semana.
 - **Un rato el fin de semana, opcional:** vuelve a los audios de la semana
   sin mirar el texto, sólo escuchando.
@@ -125,16 +121,23 @@ semana 16 sigas teniendo lo de la semana 2.
 
 ## 5. La clase en directo
 
-Es la única parte con horario y es la que más te va a mover. Sacarle partido
-es fácil si haces tres cosas:
+Es la única parte con horario y es la que más te va a mover. Es los **jueves
+a las 19:00** (hora de Países Bajos) y el enlace está en la academia; se abre
+diez minutos antes.
+
+Sacarle partido es fácil si haces tres cosas:
 
 - **Llega con una duda escrita.** Cualquiera. La peor clase es aquella a la
   que llegas sin nada que preguntar.
 - **Habla, aunque lo digas mal.** Todos los que están ahí empezaron de cero
   hace unas semanas y todos se equivocan en voz alta. Es literalmente para lo
   que está la clase.
-- **Si no puedes ir, ve la grabación esa misma semana**, no la acumules. Una
-  grabación de hace un mes ya no la ve nadie.
+- **Si no puedes ir, ve la grabación esa misma semana**, no la acumules. La
+  grabación queda en la academia al día siguiente. Una grabación de hace un
+  mes ya no la ve nadie.
+
+Y si tienes una duda concreta y sabes que no vas a poder conectarte, mándala
+antes por el apartado de consultas y se resuelve en la clase.
 
 ---
 
@@ -184,12 +187,13 @@ ejercicio y no sólo vídeo.
 
 ## 7. Cuando te bloquees
 
-Te vas a bloquear. A todo el mundo le pasa, normalmente entre la semana [X] y
-la [X], que es cuando lo fácil ya se acabó y todavía no hablas. Cuando llegue:
+Te vas a bloquear. A todo el mundo le pasa, normalmente entre la cuarta y la
+sexta semana, que es cuando lo fácil ya se acabó y todavía no hablas. Cuando
+llegue:
 
 - **Pregunta el mismo día.** No dejes la duda para el fin de semana: una duda
   sin resolver de gramática básica bloquea las tres lecciones siguientes.
-  Escribe a [canal de soporte] con la frase concreta.
+  Escríbenos por el apartado de consultas con la frase concreta.
 - **Baja el listón un día.** Cinco minutos de flashcards cuentan como día
   hecho. La racha vale más que la sesión.
 - **Vuelve a un audio de hace tres semanas.** Vas a entenderlo entero y no te
@@ -221,16 +225,16 @@ Un objetivo por día. Nada más:
 - [ ] **Día 3** — Lección 2 y presentarte en la comunidad.
 - [ ] **Día 4** — Lección 3 y el repaso que te salga.
 - [ ] **Día 5** — Lección 4 y escribir tu primera frase propia en neerlandés.
-- [ ] **[Día de la clase]** — Entrar a la clase en directo, aunque sólo sea a
-      escuchar.
+- [ ] **Jueves** — Entrar a la clase en directo, aunque sólo sea a escuchar.
 - [ ] **Fin de semana** — Volver a escuchar los audios de la semana, sin texto.
 
 Si terminas esta semana, terminas la formación. La primera es la que decide.
 
 ---
 
-**¿Dudas con cualquier cosa de esta guía?** Escríbenos a [canal] y te
-contestamos.
+**¿Dudas con cualquier cosa de esta guía?** Escríbenos por el apartado de
+consultas de la academia o a info@holandesnawar.com y te contestamos.
 
 Nos vemos en el Módulo 1.
+
 **Tot dan.**
