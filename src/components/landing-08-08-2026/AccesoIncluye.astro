@@ -1,0 +1,248 @@
+---
+// El cierre de la oferta, antes de las preguntas frecuentes.
+//
+// Esta lista vivía dentro de la sección de precio, al lado de la
+// tarjeta. Salió de ahí porque repetía punto por punto el desglose de
+// valor que tiene al lado —los mismos nueve conceptos, con precio— y
+// dos tarjetas oscuras seguidas contando lo mismo restaban.
+//
+// Aquí sí suma: llega después de la oferta, la garantía, las plazas y
+// el cronograma, y remata lo que entra justo antes de que la página
+// pase a resolver dudas. Sin desglose de valor: qué te llevas, cuánto
+// cuesta y un botón.
+const accesoIncluye = [
+  'Programa completo Neerlandés A0 → A1 (16 semanas de programa)',
+  'Clases en vivo semanales con el equipo Nawar',
+  'Todas las clases grabadas, disponibles para siempre',
+  'Plataforma interactiva: flashcards, lectura, escucha y ejercicios',
+  'Repaso inteligente que recuerda tus fallos hasta que los dominas',
+  'Libros, presentaciones y materiales descargables',
+  'Soporte y consultas respondidas por el equipo',
+  'Comunidad privada de hispanohablantes',
+  'Certificado Holandés Nawar al completar la formación',
+  'Prioridad para reservar el siguiente nivel A1 → A2 al terminar',
+]
+const bonusIncluye = 'Los 5 bonus de esta convocatoria, incluidos'
+const precio = '397'
+const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
+// Fondo blanco en la propia imagen: por eso la sección va en blanco.
+// La versión de móvil viene recompuesta aparte; el <picture> se encarga
+// de que sólo se descargue una de las dos.
+const FOTO_PACK = 'https://docs.holandesnawar.com/img/Landing/Todo.pc.png'
+const FOTO_PACK_MOVIL = 'https://docs.holandesnawar.com/img/Landing/todo.movil.png'
+---
+<section class="ai-section" data-navbar="light">
+  <div class="inner">
+
+    <div class="ai-header sr">
+      <span class="badge-light">
+        <svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Oferta por tiempo limitado
+      </span>
+      <h2 class="ai-title">
+        <span class="ai-negro">Empieza hoy.</span>
+        <span class="ai-linea"><span class="ai-accent">Tu neerlandés cambia esta misma semana.</span></span>
+      </h2>
+      <p class="ai-lead">
+        Estás a punto de entrar en la formación de neerlandés más completa para hispanohablantes:
+        método, práctica, soporte y acompañamiento para que en 16 semanas hables.
+      </p>
+    </div>
+
+    <figure class="ai-foto sr">
+      <picture>
+        <source media="(max-width: 768px)" srcset={FOTO_PACK_MOVIL} />
+        <img
+          src={FOTO_PACK}
+          alt="Todo lo que incluye la formación Nawar A0-A1: certificado, clases, plataforma y comunidad"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+    </figure>
+
+    <div class="ai-grid">
+
+      <div class="ai-lista-col sr">
+        <h3 class="ai-sub">Todo lo que te llevas</h3>
+        <ul class="ai-list">
+          {accesoIncluye.map((item) => (
+            <li>
+              <span class="ai-check">
+                <svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </span>
+              {item}
+            </li>
+          ))}
+        </ul>
+        <p class="ai-bonus">
+          <span class="ai-gift" aria-hidden="true">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+          </span>
+          <strong>{bonusIncluye}</strong>
+        </p>
+      </div>
+
+      <aside class="ai-cta-card sr">
+        <p class="ai-card-title">¿Preparado para <span class="ai-card-hl">hablar neerlandés</span>?</p>
+        <div class="ai-card-precio">
+          <span class="ai-precio">{precio}&nbsp;€</span>
+          <span class="ai-precio-nota">pago único</span>
+        </div>
+        <a href={matriculaUrl} class="ai-cta">
+          Reservar mi plaza
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+        <p class="ai-nota">15 días de garantía · Acceso inmediato · Solo 40 plazas</p>
+      </aside>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+.ai-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
+
+.ai-header { text-align: center; max-width: 820px; margin: 0 auto 40px; }
+/* Era una línea manuscrita en cursiva, la única de la página con ese
+   tratamiento. Ahora es la palomita azul cielo de siempre, como en el
+   resto de secciones. El CSS se queda por si vuelve. */
+.ai-oferta {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 15px; font-style: italic; font-weight: 400;
+  color: #101336;
+  margin-bottom: 12px;
+}
+.ai-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 600; letter-spacing: -0.022em; line-height: 1.14;
+  color: #101336;
+  margin: 0;
+}
+/* "Empieza hoy." en su propia línea: iba pegado a la frase de al lado
+   y el corte caía donde le tocara al ancho de la pantalla. La segunda
+   frase va en su propio bloque para que el navegador reparta sus
+   líneas sin contar con la primera, y con el punto dentro del
+   rotulador: fuera se quedaba descolgado detrás del hueco que deja el
+   subrayado. */
+.ai-negro { display: block; }
+.ai-linea { display: block; text-wrap: balance; }
+.ai-lead { font-size: 17px; line-height: 1.6; color: #454F6B; margin-top: 16px; }
+
+/* La imagen trae su propio fondo blanco, de ahí la sección en blanco.
+   Caja de proporción fija con la imagen contenida: entre como entre no
+   se recorta y no da el salto de cargar sin medidas. */
+.ai-foto {
+  max-width: 900px; margin: 0 auto 56px;
+  aspect-ratio: 16 / 9;
+  display: flex; align-items: center; justify-content: center;
+}
+.ai-foto img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+.ai-grid {
+  display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 32px; align-items: start;
+  max-width: 1080px; margin: 0 auto;
+}
+
+/* Sin tarjeta: era blanca sobre blanco, así que sólo aportaba un
+   borde y un margen interior que estrechaba las dos columnas. La
+   lista se lee directamente sobre el fondo de la sección. */
+.ai-lista-col { padding: 4px 0 0; }
+.ai-sub {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 23px; font-weight: 600; color: #101336;
+  letter-spacing: -0.02em; margin-bottom: 24px;
+}
+/* Dos columnas: nueve puntos en una sola obligaban a recorrer media
+   pantalla para llegar al botón que tienen al lado. */
+.ai-list {
+  list-style: none;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 28px;
+}
+.ai-list li {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 16px; line-height: 1.6; color: #1B2138;
+}
+/* La palomita de la casa: círculo hueco de 22 px con borde de 2 px */
+.ai-check {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+  background: transparent; border: 2px solid #025dc7; color: #025dc7;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+.ai-check svg { width: 12px; height: 12px; }
+
+.ai-bonus {
+  display: flex; align-items: center; gap: 11px;
+  margin-top: 26px; padding-top: 24px;
+  border-top: 1px solid #E4EAF8;
+  font-size: 16px; line-height: 1.5; color: #1D0084;
+}
+.ai-bonus strong { font-weight: 700; }
+.ai-gift { flex-shrink: 0; width: 22px; height: 22px; color: #025dc7; }
+.ai-gift svg { width: 22px; height: 22px; }
+
+/* El mini cierre de al lado: mismo cristal que la tarjeta de precio y
+   que el bloque final, para que las tres piezas de oferta se
+   reconozcan como la misma. */
+.ai-cta-card {
+  position: relative;
+  background: linear-gradient(160deg, rgba(11,109,240,0.20) 0%, rgba(77,163,255,0.08) 100%);
+  border: 1.5px solid rgba(77,163,255,0.50);
+  border-radius: 26px;
+  padding: 32px 28px;
+  text-align: center;
+  overflow: hidden;
+  background-color: #1D0084;
+}
+.ai-cta-card::before {
+  content: '';
+  position: absolute; top: -150px; right: -150px;
+  width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(77,163,255,0.32) 0%, transparent 70%);
+  pointer-events: none;
+}
+.ai-cta-card > * { position: relative; }
+.ai-card-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 21px; font-weight: 700; line-height: 1.28;
+  letter-spacing: -0.02em; color: #fff;
+  margin-bottom: 20px;
+}
+.ai-card-hl { color: #7dbcff; }
+.ai-card-precio {
+  display: flex; align-items: baseline; justify-content: center; gap: 9px;
+  margin-bottom: 22px;
+}
+.ai-precio {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 44px; font-weight: 800; letter-spacing: -0.03em; color: #fff;
+  line-height: 1;
+}
+.ai-precio-nota { font-size: 13px; color: rgba(255,255,255,0.72); }
+
+.ai-cta {
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  padding: 17px 26px; border-radius: 13px;
+  background: #4da3ff; color: #1D0084;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 16px; font-weight: 700; text-decoration: none;
+  transition: background .22s, transform .22s cubic-bezier(.22,1,.36,1);
+}
+.ai-cta:hover { background: #6ab5ff; transform: scale(1.02); }
+.ai-cta:active { transform: scale(.98); }
+.ai-nota { font-size: 12.5px; color: rgba(255,255,255,0.72); margin-top: 14px; line-height: 1.5; }
+
+@media (max-width: 940px) {
+  .ai-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .ai-section { padding: 64px 0; }
+  .ai-foto { margin-bottom: 36px; }
+  .ai-list { grid-template-columns: 1fr; }
+  .ai-cta-card { padding: 28px 22px; border-radius: 22px; }
+}
+</style>

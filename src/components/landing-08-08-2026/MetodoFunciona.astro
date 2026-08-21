@@ -17,7 +17,7 @@ const pasos = [
   {
     num: '3',
     title: 'Sigue las clases',
-    desc: 'Clase en vivo cada semana para practicar y resolver dudas — y todas quedan grabadas para verlas a tu ritmo.',
+    desc: 'Clase en vivo cada semana para practicar y resolver dudas. Todas quedan grabadas para verlas a tu ritmo.',
     icon: 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
   },
   {
@@ -29,22 +29,19 @@ const pasos = [
 ]
 ---
 <div class="mf-wrapper">
-  <div class="mf-outer" data-navbar="dark">
+  <div class="mf-outer" data-navbar="light">
     <section class="mf-section">
       <div class="mf-bg-glow" aria-hidden="true"></div>
       <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.5;"></div>
       <div class="inner" style="position:relative;z-index:1;">
 
         <div class="mf-header sr">
-          <span class="badge-dark">
+          <span class="badge-light">
             <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Te presentamos
+            El método, paso a paso
           </span>
-          <h2 class="mf-title">
-            <span class="text-gradient-white">El Método</span>
-            <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;"> Holandés Nawar</span>
-          </h2>
-          <p class="mf-sub">Así funciona, paso a paso. Un sistema que te lleva de la mano de A0 a A1.</p>
+          <h2 class="mf-title">Así funciona <span class="mf-accent">Holandés Nawar</span></h2>
+          <p class="mf-sub">Desde que entras hasta que hablas. Un sistema que te lleva de la mano de A0 a A1.</p>
         </div>
 
         <div class="mf-layout">
@@ -135,14 +132,21 @@ const pasos = [
 </div>
 
 <style>
-.mf-wrapper { background: #F0F4FF; padding: 64px 48px 80px; }
-@media (max-width: 640px) { .mf-wrapper { padding: 40px 16px 56px; } }
-.mf-outer { overflow: hidden; position: relative; border-radius: 32px; max-width: 1280px; margin: 0 auto; }
-.mf-section { background: #1D0084; position: relative; overflow: hidden; padding: 80px 0; }
+/* Antes era una tarjeta azul oscuro con esquinas redondeadas flotando
+   sobre un fondo azul claro. Ahora es una sección blanca corriente,
+   como "Por qué existe Nawar" o "Todo lo que recibes", y todo el
+   interior está pasado a la paleta clara. */
+.mf-wrapper { background: #fff; padding: 0; }
+.mf-outer { position: relative; max-width: 100%; margin: 0; border-radius: 0; }
+/* Va detrás de Pilares, que también es blanca: sin recortar el aire de
+   arriba quedaban 192 px de blanco liso entre las dos. */
+.mf-section { background: #fff; position: relative; overflow: hidden; padding: 40px 0 96px; }
+@media (max-width: 640px) { .mf-section { padding: 28px 0 64px; } }
+/* El resplandor se queda, muy suave, para que el blanco no sea plano */
 .mf-bg-glow {
   position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
   width: 900px; height: 600px;
-  background: radial-gradient(ellipse at center, rgba(11,109,240,0.30) 0%, transparent 65%);
+  background: radial-gradient(ellipse at center, rgba(11,109,240,0.07) 0%, transparent 65%);
   pointer-events: none;
 }
 .mf-header { text-align: center; max-width: 780px; margin: 0 auto 56px; }
@@ -152,7 +156,7 @@ const pasos = [
   font-weight: 600; letter-spacing: -0.022em; line-height: 1.12;
   margin: 18px 0 16px;
 }
-.mf-sub { font-size: clamp(14px, 1.4vw, 17px); color: rgba(255,255,255,0.65); line-height: 1.6; }
+.mf-sub { font-size: clamp(14px, 1.4vw, 17px); color: #454F6B; line-height: 1.6; }
 
 .mf-layout {
   display: grid; grid-template-columns: minmax(0, 1fr) 380px;
@@ -167,42 +171,47 @@ const pasos = [
 .mf-step:last-child .mf-step-line { display: none; }
 .mf-step-line {
   position: absolute; left: 21px; top: 46px; bottom: 0; width: 2px;
-  background: linear-gradient(to bottom, rgba(77,163,255,0.45), rgba(77,163,255,0.08));
+  background: linear-gradient(to bottom, rgba(2,93,199,0.32), rgba(2,93,199,0.06));
 }
 .mf-step-num {
   flex-shrink: 0; width: 44px; height: 44px; border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, rgba(77,163,255,0.25), rgba(11,109,240,0.15));
-  border: 1px solid rgba(77,163,255,0.40);
-  color: #4da3ff; font-family: 'Poppins', system-ui, sans-serif;
+  background: #1D0084;
+  border: none;
+  color: #fff; font-family: 'Poppins', system-ui, sans-serif;
   font-size: 18px; font-weight: 700; position: relative; z-index: 1;
 }
 .mf-step-body {
-  flex: 1; background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.10);
+  flex: 1; background: #fff;
+  border: 1px solid #E4EAF8;
   border-radius: 18px; padding: 20px 24px;
-  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  box-shadow: 0 2px 10px rgba(29,0,132,0.04);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
-.mf-step:hover .mf-step-body { border-color: rgba(77,163,255,0.40); background: rgba(255,255,255,0.07); transform: translateX(4px); }
+.mf-step:hover .mf-step-body { border-color: rgba(2,93,199,0.30); box-shadow: 0 16px 38px rgba(29,0,132,0.10); transform: translateX(4px); }
 .mf-step-head { display: flex; align-items: center; gap: 11px; margin-bottom: 8px; }
-/* Icono suelto, sin caja. Va sobre tarjeta oscura → azul claro. */
+/* Icono suelto, sin caja. Ahora va sobre tarjeta blanca → azul de marca. */
 .mf-step-chip {
   flex-shrink: 0; width: 30px; height: 30px; border-radius: 0;
   display: flex; align-items: center; justify-content: center;
-  background: none; color: #7dbcff;
+  background: none; color: #025dc7;
 }
 .mf-step-chip svg { width: 30px; height: 30px; stroke-width: 1.6; }
-.mf-step-title { font-family: 'Poppins', system-ui, sans-serif; font-size: 17px; font-weight: 600; color: #fff; line-height: 1.3; }
-.mf-step-desc { font-size: 14.5px; color: rgba(255,255,255,0.90); font-weight: 500; line-height: 1.65; }
+.mf-step-title { font-family: 'Poppins', system-ui, sans-serif; font-size: 17px; font-weight: 600; color: #101336; line-height: 1.3; }
+.mf-step-desc { font-size: 14.5px; color: #454F6B; font-weight: 400; line-height: 1.65; }
 
 /* ── Mockup plataforma ── */
 .mf-mock { position: relative; }
+/* El mockup era cristal sobre oscuro; sobre blanco se convierte en la
+   tarjeta azul de marca, que además lo separa del fondo. */
 .mf-mock-inner {
-  background: rgba(255,255,255,0.06);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.14);
+  background: #1D0084;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px),
+    radial-gradient(circle 420px at 100% 0%, rgba(11,109,240,0.42) 0%, transparent 65%);
+  background-size: 26px 26px, auto;
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 24px; padding: 22px;
-  box-shadow: 0 40px 90px rgba(0,0,0,0.40);
+  box-shadow: 0 30px 70px rgba(29,0,132,0.22);
 }
 .mf-mock-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
 .mf-mock-hi { font-family: 'Poppins', system-ui, sans-serif; font-size: 15px; font-weight: 600; color: #fff; }

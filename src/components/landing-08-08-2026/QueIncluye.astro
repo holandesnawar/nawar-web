@@ -1,10 +1,13 @@
 ---
-// Qué incluye el programa — mockup navegador rico + items con chips SVG + niveles.
+// Qué incluye el programa — mockup navegador rico + items con chips SVG.
+// El bloque de niveles (A0→A1 disponible / A1→A2 próximamente) salió de
+// aquí: abría el melón de "hay otro nivel después" justo antes de los
+// bonus. Su CSS se queda por si vuelve.
 // Acabado nivel home: chips con gradiente, float badges, profundidad, nada de emojis planos.
 const incluye = [
   {
     title: 'Programa completo A0 → A1',
-    desc: '8 meses de camino estructurado, unidad a unidad.',
+    desc: '16 semanas de programa estructurado, unidad a unidad.',
     icon: 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7',
   },
   {
@@ -42,7 +45,26 @@ const incluye = [
     desc: 'Avanza con otros hispanohablantes que van a tu ritmo.',
     icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z',
   },
+  /* El noveno cierra la rejilla de tres en tres: con ocho quedaba un
+     hueco vacío en la última fila. Y no es relleno, es el certificado
+     que ya prometemos en el bonus y en el recordatorio final. */
+  {
+    title: 'Certificado Holandés Nawar',
+    desc: 'Personalizado, al completar la formación.',
+    icon: 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z',
+  },
 ]
+// El mockup de navegador dibujado a mano se apaga: decía lo mismo que
+// la foto real del producto que hay debajo y dos veces la misma idea
+// resta. El código se queda entero —ponlo en true y vuelve—.
+const MOSTRAR_MOCKUP = false
+// Fondo blanco en la propia imagen, por eso la sección va en blanco.
+// Dos versiones: la ancha, con las etiquetas alrededor de las pantallas,
+// y la recompuesta para móvil. Van en un <picture>, así que el navegador
+// descarga sólo la que le toca.
+const FOTO_PRODUCTO = 'https://docs.holandesnawar.com/img/Landing/todo.pc.explic.png'
+const FOTO_PRODUCTO_MOVIL = 'https://docs.holandesnawar.com/img/Landing/todo.movil.expl.png'
+
 const tools = [
   { label: 'Flashcards', icon: 'M7 7h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V9a2 2 0 012-2z M9 3h8a2 2 0 012 2v10' },
   { label: 'Lezen', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
@@ -58,11 +80,12 @@ const tools = [
         <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Todo lo que recibes
       </span>
-      <h2 class="qi-title">Qué incluye <span class="qi-accent">el programa</span></h2>
-      <p class="qi-sub">Una formación completa: no un curso suelto, sino todo lo que necesitas para llegar a hablar.</p>
+      <h2 class="qi-title">¿Qué incluye la <span class="qi-accent">formación Nawar</span>?</h2>
+      <p class="qi-sub">Un programa completo de nivel A0-A1: <strong>10 módulos</strong>, <strong>+15 horas de contenido</strong> y <strong>360 lecciones</strong>. Todo estructurado para que avances con lógica y progresión, sin resistencias.</p>
     </div>
 
     <!-- Visual grande: la academia real, en un navegador -->
+    {MOSTRAR_MOCKUP && (
     <div class="qi-visual sr" aria-hidden="true">
       <div class="qi-visual-glow"></div>
       <div class="qi-browser">
@@ -124,6 +147,20 @@ const tools = [
         <div><p>Repaso inteligente</p><p>de lo que fallaste</p></div>
       </div>
     </div>
+    )}
+
+    <!-- La foto real de todo lo que entra, en sus pantallas -->
+    <figure class="qi-foto sr">
+      <picture>
+        <source media="(max-width: 768px)" srcset={FOTO_PRODUCTO_MOVIL} />
+        <img
+          src={FOTO_PRODUCTO}
+          alt="Certificado, clases en directo, clases grabadas, comunidad, ejercicios y soporte de la formación Nawar A0-A1"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+    </figure>
 
     <!-- Grid de lo incluido -->
     <div class="qi-grid">
@@ -140,26 +177,22 @@ const tools = [
       ))}
     </div>
 
-    <!-- Niveles -->
-    <div class="qi-levels sr">
-      <div class="qi-level qi-level--now">
-        <div class="qi-level-glow" aria-hidden="true"></div>
-        <span class="qi-level-tag"><span class="qi-tag-dot"></span>DISPONIBLE AHORA</span>
-        <h3 class="qi-level-title">Nivel A0 → A1</h3>
-        <p class="qi-level-desc">De cero absoluto a mantener tus primeras conversaciones reales: presentarte, tu familia, compras, trabajo y vida diaria en neerlandés.</p>
-      </div>
-      <div class="qi-level qi-level--next">
-        <span class="qi-level-tag qi-level-tag--soon">PRÓXIMAMENTE</span>
-        <h3 class="qi-level-title">Nivel A1 → A2</h3>
-        <p class="qi-level-desc">La continuación natural del camino. Los alumnos de esta primera edición acceden antes y con precio preferente.</p>
-      </div>
-    </div>
-
   </div>
 </section>
 
 <style>
 .qi-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
+/* La imagen viene con su propio fondo blanco, así que la sección va en
+   blanco para que no se vea el borde. La caja fija la proporción y la
+   imagen va contenida: entre como entre no se recorta y no da el salto
+   de maquetación de cargar sin medidas. */
+.qi-foto {
+  max-width: 1080px; margin: 0 auto 56px;
+  aspect-ratio: 16 / 9;
+  display: flex; align-items: center; justify-content: center;
+}
+.qi-foto img { width: 100%; height: 100%; object-fit: contain; display: block; }
+@media (max-width: 860px) { .qi-foto { margin-bottom: 36px; } }
 .qi-header { text-align: center; max-width: 760px; margin: 0 auto 48px; }
 .qi-title {
   font-family: 'Poppins', system-ui, sans-serif;

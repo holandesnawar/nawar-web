@@ -12,7 +12,7 @@
 // están aquí dentro con el mismo importe que muestra la sección de
 // bonus, para que el total cuadre y no se cuente nada dos veces.
 const nucleo = [
-  { item: 'Programa completo Neerlandés A0 → A1', detalle: '8 meses de camino estructurado, con acceso de por vida', valor: 800, nota: 'lo que cuesta un solo nivel en una academia de NL' },
+  { item: 'Programa completo Neerlandés A0 → A1', detalle: '16 semanas de programa estructurado, con acceso de por vida', valor: 800, nota: 'lo que cuesta un solo nivel en una academia de NL' },
   { item: 'Plataforma interactiva', detalle: 'Flashcards, lectura, escucha con audio nativo y ejercicios', valor: 150 },
   { item: 'Repaso inteligente', detalle: 'Recuerda tus fallos y te los devuelve hasta que los dominas', valor: 90 },
   { item: 'Libros y materiales descargables', detalle: 'Presentaciones, guías y PDFs de cada lección', valor: 120 },
@@ -84,26 +84,16 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
         </tfoot>
       </table>
 
-      <div class="sv-hoy">
-        <div class="sv-hoy-left">
-          <p class="sv-hoy-label">Tu inversión hoy</p>
-          <p class="sv-hoy-precio">{eur(precio)}&nbsp;€ <span>pago único</span></p>
-        </div>
-        <div class="sv-hoy-right">
-          <span class="sv-ahorro">Te ahorras {eur(ahorro)}&nbsp;€</span>
-          <a href={matriculaUrl} class="sv-cta">
-            Quiero mi plaza
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-          </a>
-        </div>
-      </div>
+      <p class="sv-puente">
+        Y no cuesta ni una décima parte de eso. <span>Sigue bajando.</span>
+      </p>
     </div>
 
   </div>
 </section>
 
 <style>
-.sv-section { background: #1D0084; position: relative; overflow: hidden; padding: 96px 0; }
+.sv-section { background: #1D0084; position: relative; overflow: hidden; padding: 96px 0 48px; }
 /* Copiado de .np-comp-glow de nawar-plus. El azul vivo (#0b6df0)
    pegado arriba tiraba a morado sobre el índigo y dejaba el resto de
    la sección plano; el azul claro (#4da3ff) centrado ilumina el
@@ -192,6 +182,19 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 }
 
 /* ── Bloque de precio de hoy ── */
+/* Esta sección ya no da el precio ni lleva botón: sólo suma lo que
+   vale. El precio lo da la sección siguiente, que va pegada. Antes se
+   daba aquí Y allí, y la página cerraba dos veces con cinco secciones
+   en medio, así que ningún cierre remataba. */
+.sv-puente {
+  margin-top: 26px; padding-top: 26px;
+  border-top: 1.5px dashed rgba(77,163,255,0.38);
+  text-align: center;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(17px, 2vw, 21px); font-weight: 600;
+  letter-spacing: -0.015em; color: #fff;
+}
+.sv-puente span { color: #4da3ff; }
 .sv-hoy {
   display: flex; align-items: center; justify-content: space-between;
   gap: 24px; flex-wrap: wrap;

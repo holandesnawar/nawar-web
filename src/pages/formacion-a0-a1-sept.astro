@@ -13,7 +13,10 @@ import QueIncluye from '../components/landing-08-08-2026/QueIncluye.astro'
 import BonusSection from '../components/landing-08-08-2026/BonusSection.astro'
 import ParaTiSection from '../components/landing-08-08-2026/ParaTiSection.astro'
 import PrecioSection from '../components/landing-08-08-2026/PrecioSection.astro'
-import StackValor from '../components/landing-08-08-2026/StackValor.astro'
+// El desglose de valor ya no es una sección aparte: vive dentro de
+// PrecioSection, en su columna izquierda. El componente se queda en el
+// repo por si algún día vuelve a separarse.
+// import StackValor from '../components/landing-08-08-2026/StackValor.astro'
 import MarcaSection from '../components/landing-08-08-2026/MarcaSection.astro'
 // Fuera de la página hasta tener datos reales: los cinco profesores
 // son de relleno (se llaman todos "Nombre Apellido", las frases están
@@ -22,14 +25,19 @@ import MarcaSection from '../components/landing-08-08-2026/MarcaSection.astro'
 // cuanto haya nombres, frases y fotos de verdad.
 // import ProfesoresSection from '../components/landing-08-08-2026/ProfesoresSection.astro'
 import CronogramaSection from '../components/landing-08-08-2026/CronogramaSection.astro'
-// Fuera de la página a petición de Rida: la escasez de "primera
-// edición" no va a ser verdad siempre. El componente se queda en
-// src/components/landing-08-08-2026/ por si vuelve.
-// import EscasezSection from '../components/landing-08-08-2026/EscasezSection.astro'
+import PresentacionNawar from '../components/landing-08-08-2026/PresentacionNawar.astro'
+import CadaUnidad from '../components/landing-08-08-2026/CadaUnidad.astro'
+import LoQueCambia from '../components/landing-08-08-2026/LoQueCambia.astro'
+import { ICONOS } from '../components/landing-08-08-2026/iconos-vivos'
+// Vuelve, sin el distintivo de "primera edición" que era lo que no
+// iba a ser verdad siempre. Ahora habla de la convocatoria y del
+// aforo de la clase en directo, que sí aguanta edición tras edición.
+import EscasezSection from '../components/landing-08-08-2026/EscasezSection.astro'
 
 /* Copias propias de dos componentes de nawar-web: se veían rotos en
    móvil y hay que retocarlos sin alterar los que usa la web */
 import PorQueNawar from '../components/landing-08-08-2026/PorQueNawar.astro'
+import AccesoIncluye from '../components/landing-08-08-2026/AccesoIncluye.astro'
 import TestimonialsSection from '../components/landing-08-08-2026/TestimonialsSection.astro'
 
 export const prerender = true
@@ -47,13 +55,18 @@ export const prerender = true
    reduce los abandonos. Ya no se enlaza a Stripe directamente. */
 const CHECKOUT_URL = '/matricula-formacion-nawar-a0-a1'
 const PRECIO = '397'
-const VALOR_TOTAL = '497'
+const VALOR_TOTAL = '2.360'
 const AHORRO = '100'
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
+/* El del pie va aparte: el de arriba se veía torcido ahí abajo. Este
+   se pinta sin width ni height fijos —los de antes forzaban 120×30 y
+   deformaban cualquier archivo con otra proporción— y manda el alto
+   por CSS. */
+const LOGO_FOOTER = 'https://docs.holandesnawar.com/img/Nawar.png'
 
 /* Dolores — carta con lista numerada */
 const dolores = [
-  'llevas meses —o años— diciéndote que esta semana sí empiezas con el neerlandés',
+  'llevas meses, o años, diciéndote que esta semana sí empiezas con el neerlandés',
   'escuchas holandés a tu alrededor y sientes que nunca llegará el día en que lo entiendas',
   'en el trabajo te pierdes conversaciones importantes porque no tienes el nivel',
   'en el médico, el ayuntamiento o el banco siempre dependes de alguien para comunicarte',
@@ -191,7 +204,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 ---
 
 <Layout
-  title={`Formación Nawar A0-A1 — Aprende neerlandés de verdad`}
+  title={`Formación Nawar A0-A1 | Aprende neerlandés de verdad`}
   description="La formación de neerlandés diseñada para hispanohablantes. +15 h de vídeo, ejercicios online, clase semanal en directo, comunidad y certificado. Acceso completo por 397 €."
   keywords="curso neerlandés online, formación neerlandés hispanohablantes, aprender holandés desde el español, inburgering, neerlandés A0 A1"
   noindex={true}
@@ -483,54 +496,71 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
          HERO — envoltorio cinematográfico + estructura que vende
     ══════════════════════════════════════════════════════════ -->
     <section class="hero" id="hero">
-      <div class="np-hero-aurora np-hero-aurora-1" aria-hidden="true"></div>
-      <div class="np-hero-aurora np-hero-aurora-2" aria-hidden="true"></div>
-      <div class="np-hero-aurora np-hero-aurora-3" aria-hidden="true"></div>
-      <div class="np-hero-grid-bg" aria-hidden="true"></div>
-      <div class="hero-dots dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:.45"></div>
-      <div class="np-hero-particles" aria-hidden="true">
-        <span class="np-particle"></span><span class="np-particle"></span>
-        <span class="np-particle"></span><span class="np-particle"></span>
-        <span class="np-particle"></span><span class="np-particle"></span>
-        <span class="np-particle"></span><span class="np-particle"></span>
-        <span class="np-particle"></span><span class="np-particle"></span>
-      </div>
-      <div class="np-hero-vignette" aria-hidden="true"></div>
+      {/* Las mismas dos manchas y la misma trama que el banner del home
+          de nawar-web. Antes había cinco capas encima —tres auroras, una
+          rejilla, diez partículas y una viñeta— y entre todas ensuciaban
+          el azul sin aportar nada que se viera. */}
+      <div class="hero-glow1" aria-hidden="true"></div>
+      <div class="hero-glow2" aria-hidden="true"></div>
+      <div class="hero-dots dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></div>
 
       <div class="hero-inner">
 
-        <div data-anim="fade-up">
+        <div class="hero-texto-col">
           <div class="hero-badge">
             <svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Plazas abiertas
           </div>
+          {/* El titular anterior —"el neerlandés que llevas meses
+              posponiendo"— le echaba la culpa al lector por posponer.
+              Éste hace lo contrario: primero le quita de encima lo que
+              piensa y no dice ("yo no valgo para los idiomas") y en la
+              segunda línea pone el problema fuera, en el método. Y de
+              paso es nuestro diferencial dicho como acusación en vez de
+              como característica, que es algo que ninguna otra escuela
+              de neerlandés puede decir. */}
           <h1 class="hero-headline">
-            <span class="text-gradient-white">El neerlandés que llevas</span><br />
-            <span class="text-gradient-white">meses posponiendo</span><br />
-            <em>empieza hoy.</em>
+            <span class="text-gradient-white">El neerlandés no se te da mal.</span>
+            <em>Te lo estaban enseñando en inglés.</em>
           </h1>
           <p class="hero-sub">
             La primera formación de neerlandés diseñada específicamente para hispanohablantes.
-            Sin rodeos. Sin métodos para angloparlantes. Sin aburrirte a las dos semanas.
+            De A0 a A1 en 16 semanas, con profesores nativos y un grupo de 40 personas que empieza contigo.
           </p>
+          {/* Las tres viñetas del banner del home, con su palomita hueca
+              en azul claro. Sustituyen a la tira de cuatro garantías
+              apretadas en una caja de cristal: decían lo mismo en letra
+              de 13 px y se leían como un pie de página. */}
+          <ul class="hero-bullets">
+            <li>
+              <span class="hero-check"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+              Desde cero: 10 módulos, +15 h de vídeo y 360 lecciones
+            </li>
+            <li>
+              <span class="hero-check"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+              Clase en directo cada semana, y todas quedan grabadas
+            </li>
+            <li>
+              <span class="hero-check"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+              Explicado desde el español, sin pasar por el inglés
+            </li>
+          </ul>
+
           <div class="hero-ctas">
             <a href={CHECKOUT_URL} class="btn btn-primary btn-lg">
               Quiero aprender neerlandés
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
             </a>
-          </div>
-          <div class="hero-trust">
-            <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-video"/></svg><span>+15h de vídeo</span></div>
-            <div class="trust-sep"></div>
-            <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-mobile"/></svg><span>Ejercicios online</span></div>
-            <div class="trust-sep"></div>
-            <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-users"/></svg><span>Comunidad activa</span></div>
-            <div class="trust-sep"></div>
-            <div class="trust-item"><svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-live"/></svg><span>Clases en directo</span></div>
+            <p class="hero-nota">Pago único · 15 días de garantía · Solo 40 plazas</p>
           </div>
         </div>
 
-        <div data-anim="fade-left">
+        {/* La captura vuelve, pero sólo en escritorio: ahí hay una
+            columna entera esperándola y sin ella el banner se quedaba
+            vacío por la derecha. En móvil sigue fuera —se la ocultan
+            los estilos, no un condicional— porque debajo del titular
+            empujaba el botón fuera de la primera pantalla. */}
+        <div class="hero-mockup-col">
           <div class="platform-mockup">
             <div class="mockup-header">
               <div class="mockup-dots"><span></span><span></span><span></span></div>
@@ -583,12 +613,25 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
               </div>
             </div>
           </div>
+          {/* Las dos etiquetas del banner del home: sacan el mockup del
+              plano y cuentan dos cosas que el texto no repite. */}
+          <div class="float-badge hero-fb-top">
+            <span style="font-size:18px;">🎥</span>
+            <div><p>Clase en directo</p><p>cada semana, con el equipo</p></div>
+          </div>
+          <div class="float-badge hero-fb-bot">
+            <span style="font-size:18px;">🎓</span>
+            <div><p>Certificado Nawar</p><p>al terminar la formación</p></div>
+          </div>
         </div>
 
       </div>
       <div class="hero-scroll-hint" aria-hidden="true">↓</div>
     </section>
 
+    {/* Fuera por ahora a petición de Rida. El marcado se queda entero:
+        quita el `false &&` y vuelve. */}
+    {false && (
     <section class="trust-bar">
       <div class="container trust-bar-inner">
         <div class="trust-bar-item"><strong>+15 horas</strong><span>de vídeo estructurado</span></div>
@@ -602,6 +645,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         <div class="trust-bar-item"><strong>Clase semanal</strong><span>en directo</span></div>
       </div>
     </section>
+    )}
 
     <!-- ══════════════════════════════════════════════════════════
          LA CARTA — el dolor, numerado
@@ -610,11 +654,8 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       <div class="np-letter-glow" aria-hidden="true"></div>
       <div class="np-letter-inner">
         <div class="np-letter-sticky">
-          <span class="np-eyebrow-small"><svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Seamos honestos</span>
-          <h2 class="np-letter-heading">
-            <span class="text-gradient-white">Sabemos que</span><br />
-            <span style="color:#4da3ff;">esto te suena.</span>
-          </h2>
+          <span class="badge-light"><svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Seamos honestos</span>
+          <h2 class="np-letter-heading">Sabemos que<br /><span class="np-letter-accent">esto te suena.</span></h2>
           <p class="np-letter-aside">
             Es la misma historia en cada hispanohablante que llega aquí. No es culpa tuya:
             el problema es el método con el que lo has intentado.
@@ -633,85 +674,65 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
     <!-- ══════════════════════════════════════════════════════════
          EL COSTE DE SEGUIR IGUAL
-         Copiada tal cual de nawar-landing (misma maquetación, mismo
-         texto y mismo CSS, que ya venía en la hoja). Lo único que
-         cambia son los iconos: allí eran emojis y aquí van los del
-         sprite de marca, como en el resto de la página.
+         Viene de nawar-landing. Allí era de dos columnas, con dos
+         listas "sin neerlandés / con esta formación" a la derecha;
+         esas dos cajas se han quitado —repetían en forma de lista lo
+         que el texto de la izquierda ya cuenta mejor— y la sección se
+         queda a una columna. Los iconos son los del sprite de marca y
+         no los emojis del original.
     ══════════════════════════════════════════════════════════ -->
     <section class="consequences">
       <div class="container">
         <div class="consequences-inner" data-anim="fade-up">
           <div>
-            <div class="eyebrow eyebrow-dark">El coste de seguir igual</div>
-            <h2 class="section-title white">
-              Lo peor no es lo que<br />ya has perdido.
-            </h2>
+            <span class="badge-light"><svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>El coste de seguir igual</span>
+            <h2 class="section-title">Lo peor no es lo que<br /><span class="cons-accent">ya has perdido.</span></h2>
             <p class="consequences-intro">
               Es lo que seguirás perdiendo cada mes que pospones aprender neerlandés de verdad.
             </p>
             <ul class="consequences-list">
               <li>
-                <span class="cons-icon"><svg class="nw-icon nw-icon--dark" aria-hidden="true"><use href="#i-hourglass"/></svg></span>
+                <span class="cons-icon"><Fragment set:html={ICONOS.tiempo} /></span>
                 <div><strong>Más tiempo perdido.</strong> Cada semana sin avanzar es una semana más de dependencia y bloqueo.</div>
               </li>
               <li>
-                <span class="cons-icon"><svg class="nw-icon nw-icon--dark" aria-hidden="true"><use href="#i-chart-up"/></svg></span>
-                <div><strong>Oportunidades que se escapan.</strong> Trabajo, ascensos, contratos — todo depende del idioma.</div>
+                <span class="cons-icon"><Fragment set:html={ICONOS.oportunidad} /></span>
+                <div><strong>Oportunidades que se escapan.</strong> Trabajo, ascensos, contratos: todo depende del idioma.</div>
               </li>
               <li>
-                <span class="cons-icon"><svg class="nw-icon nw-icon--dark" aria-hidden="true"><use href="#i-speech-off"/></svg></span>
+                <span class="cons-icon"><Fragment set:html={ICONOS.conversacion} /></span>
                 <div><strong>Exclusión social constante.</strong> Quedarte fuera de conversaciones, reuniones, momentos con vecinos.</div>
               </li>
               <li>
-                <span class="cons-icon"><svg class="nw-icon nw-icon--dark" aria-hidden="true"><use href="#i-shield-alert"/></svg></span>
+                <span class="cons-icon"><Fragment set:html={ICONOS.inseguridad} /></span>
                 <div><strong>Más inseguridad acumulada.</strong> Cuanto más lo aplazas, más cuesta retomarlo.</div>
               </li>
               <li>
-                <span class="cons-icon"><svg class="nw-icon nw-icon--dark" aria-hidden="true"><use href="#i-passport"/></svg></span>
+                <span class="cons-icon"><Fragment set:html={ICONOS.pasaporte} /></span>
                 <div><strong>Integración a medias.</strong> Vivir en Países Bajos sin el idioma es vivir de visitante.</div>
               </li>
             </ul>
-          </div>
-          <div>
-            <div class="vs-block vs-bad">
-              <div class="vs-label">Sin neerlandés</div>
-              <ul>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span> Depender del inglés para todo</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span> No entender a tus vecinos, colegas, jefes</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span> Sentirte ajeno en tu propio barrio</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span> Perder oportunidades laborales</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span> Seguir con métodos que no funcionan</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span> Inseguridad en cada interacción</li>
-              </ul>
-            </div>
-            <div class="vs-block vs-good">
-              <div class="vs-label">Con esta formación</div>
-              <ul>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Comunicarte con confianza desde el principio</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Entender y hacerte entender</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Integrarte de verdad donde vives</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Avanzar con un camino claro y estructurado</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Practicar y medir tu progreso real</li>
-                <li><span class="vs-mark"><svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Hablar neerlandés sin bloqueos</li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════════════════════
-         LOS NÚMEROS — ancla de precio
-    ══════════════════════════════════════════════════════════ -->
-    <section class="np-stats">
+    {/* El otro lado del mismo día a día. Va aquí porque la sección de
+        arriba deja al lector abajo, y de ahí saltábamos directos a los
+        precios de las academias: tres bloques seguidos de mal rollo. */}
+    <LoQueCambia />
+
+    {/* Fuera por ahora a petición de Rida: "aprender neerlandés no es
+        caro, el sistema sí lo es". El anclaje de precio ya lo hace la
+        tabla de valor de la sección de la oferta. Se queda entero:
+        quita el `false &&` y vuelve. */}
+    {false && (
+        <section class="np-stats">
       <div class="np-stats-grid-bg" aria-hidden="true"></div>
       <div class="inner" style="position:relative;z-index:1;">
         <div class="np-stats-header sr">
-          <span class="np-eyebrow-small"><svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Los números que nadie te cuenta</span>
-          <h2 class="np-stats-title">
-            <span class="text-gradient-white">Aprender neerlandés no es caro.</span><br />
-            <span style="color:#4da3ff;">El sistema sí lo es.</span>
-          </h2>
+          <span class="badge-light"><svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Los números que nadie te cuenta</span>
+          <h2 class="np-stats-title">Aprender neerlandés no es caro.<br /><span class="np-stats-accent">El sistema sí lo es.</span></h2>
         </div>
         <div class="np-stats-grid">
           {stats.map((s, i) => (
@@ -722,25 +743,40 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             </div>
           ))}
         </div>
-        <p class="l8-anchor-note sr">
-          Un solo nivel en una academia te cuesta <strong>800 €</strong>. Dos clases sueltas, <strong>130 €</strong>.
-          La formación completa, con clase semanal en directo, comunidad y certificado, cuesta <strong>397 €</strong> una sola vez.
-        </p>
       </div>
     </section>
+    )}
 
     {/* ── 3. El enemigo común: por qué has fracasado antes ── */}
     <PorQueNawar />
 
-    {/* ── 4. La solución: el método, nombrado y en pilares ── */}
+    {/* ── 4. Quién hay detrás de esa alternativa. Va aquí y no al
+           final: la autoridad se enseña antes de pedir dinero, y
+           además enlaza con el origen que acaba de contar la sección
+           anterior. ── */}
+    <MarcaSection />
+
+    {/* ── 5. Por qué funciona: el método, nombrado y en pilares ── */}
     <PilaresSection />
+
+    {/* ── 6. Y la prueba de que funciona, justo detrás: son
+           hispanohablantes contando su resultado. ── */}
+    <TestimonialsSection />
+    {/* Primero quiénes somos y por qué esto no es otro curso más, y
+        después el método: explicar un sistema a quien ya ha abandonado
+        tres cursos, sin reconocer antes por qué los abandonó, suena a
+        lo mismo de siempre. */}
+    <PresentacionNawar />
+
     <MetodoFunciona />
 
-    {/* ── 5. La prueba de que el método funciona ── */}
-    <TestimonialsSection />
 
-    {/* ── 6. Qué incluye ── */}
+
+    {/* ── 8. Qué incluye ── */}
     <QueIncluye />
+
+    {/* El zoom de una sola unidad, justo después del conjunto */}
+    <CadaUnidad />
 
     {/* Punto de salida a mitad de página: quien ya se ha convencido
         con la lista de lo que recibe no tiene por qué seguir bajando
@@ -759,8 +795,15 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     {/* ── 7. Primero los cinco bonus, uno a uno... ── */}
     <BonusSection />
 
-    {/* ── ...y solo después la suma de todo ── */}
-    <StackValor />
+    {/* ── 11. Y en cuanto se ha dicho lo que vale, lo que cuesta.
+           Antes esto estaba cinco secciones más abajo y la página
+           cerraba dos veces: una aquí con el total y otra allí con la
+           tarjeta. Ahora la oferta va de un tirón y cierra una vez. ── */}
+    <PrecioSection />
+
+    {/* ── 12. Filtro después del precio: quien ha visto la cifra y se
+           reconoce aquí, se queda. ── */}
+    <ParaTiSection />
 
     <!-- ══════════════════════════════════════════════════════════
          GARANTÍA — el riesgo lo asumimos nosotros
@@ -790,29 +833,27 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       </div>
     </section>
 
-    {/* ── 9. Para quién sí y para quién no ── */}
-    <ParaTiSection />
+    {/* ── 13. Por qué ahora y no más adelante ──
+         Va justo aquí y no antes: cuando ya sabe qué es, si le sirve y
+         que no arriesga nada, la última objeción es "lo hago luego". */}
+    <EscasezSection />
 
-    {/* ── 10. Quién está detrás ── */}
-    <MarcaSection />
-
-    {/* ── 11. Qué pasa después de reservar ── */}
+    {/* ── 14. Y qué pasa justo después de pagar ── */}
     <CronogramaSection />
 
-    {/* ── 12. Precio ── */}
-    <PrecioSection />
-
+    {/* ── 15. Recordatorio de todo lo que entra, y salida ── */}
+    <AccesoIncluye />
 
     <!-- ══════════════════════════════════════════════════════════
          FAQ — diseño limpio, sin tarjetas (nawar-plus)
     ══════════════════════════════════════════════════════════ -->
-    <section class="np-faq" id="faq">
+    <section class="np-faq" id="faq" data-navbar="light">
       <div class="inner">
         <div class="np-faq-header sr">
-          <span class="np-eyebrow-small"><svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Preguntas frecuentes</span>
+          <span class="badge-light"><svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Preguntas frecuentes</span>
           <h2 class="np-faq-title">
-            <span class="text-gradient-white">Antes de apuntarte,</span><br />
-            <span style="color:#4da3ff;">resuelve tus dudas.</span>
+            <span>Antes de apuntarte,</span><br />
+            <span class="np-faq-accent">resuelve tus dudas.</span>
           </h2>
         </div>
 
@@ -840,20 +881,43 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:.4"></div>
       <div class="final-cta-divider" aria-hidden="true"></div>
       <div class="container" style="position:relative">
-        <div class="content" data-anim="fade-up">
+        <div class="content fc-cabecera">
           <div class="eyebrow eyebrow-accent" style="display:inline-flex;margin-bottom:24px">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" style="flex-shrink:0"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Empieza hoy
           </div>
-          <h2>Llevas demasiado tiempo esperando.<br />El momento es <em style="color:var(--brand-lt);font-style:normal">ahora.</em></h2>
+          <h2>
+            <span class="text-gradient-white">Nosotros vamos a seguir enseñando neerlandés.</span>
+            <em>¿Y tú? ¿Dónde estarás dentro de 16 semanas?</em>
+          </h2>
           <p>
-            Cada semana que pasa sin neerlandés es una semana más de dependencia, bloqueo e inseguridad.
-            Tienes delante la formación más clara, más estructurada y más pensada para ti — por menos de
-            lo que cuestan seis clases sueltas.
+            Las 16 semanas van a pasar igual. Lo único que cambia es dónde te dejan.
           </p>
+        </div>
+
+        <div class="fc-futuros">
+          <article class="fc-futuro fc-futuro--igual">
+            <span class="fc-tag fc-tag--igual">Dentro de 16 semanas</span>
+            <p class="fc-p">
+              <strong>Puede que sigas contestando en inglés en la panadería.</strong>
+              Que sigas llevando a alguien contigo a la gemeente. Que sigas entendiendo la
+              mitad de la reunión y asintiendo al resto.
+            </p>
+          </article>
+          <article class="fc-futuro fc-futuro--nawar">
+            <span class="fc-tag fc-tag--nawar">O puede que…</span>
+            <p class="fc-p">
+              <strong>Entiendas a tu vecino y le contestes sin traducir.</strong>
+              Que hagas tus gestiones tú solo. Que sueltes tu primera frase larga en
+              neerlandés y no te tiemble la voz.
+            </p>
+          </article>
+        </div>
+
+        <div class="content">
           <div class="final-cta-btns">
             <a href={CHECKOUT_URL} class="btn btn-primary btn-lg">
-              Empezar ahora por €{PRECIO}
+              Unirme ahora
             </a>
           </div>
           <p class="final-cta-fine">
@@ -870,7 +934,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     <footer class="footer">
       <div class="container footer-inner">
         <a href="#hero" class="footer-logo">
-          <img src={LOGO} alt="Holandés con Nawar" width="120" height="30" />
+          <img src={LOGO_FOOTER} alt="Holandés Nawar" loading="lazy" decoding="async" />
         </a>
         <div class="footer-links">
           <a href="/politica-de-privacidad">Política de privacidad</a>
@@ -884,8 +948,12 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     <!-- ══════════════════════════════════════════════════════════
          BARRA STICKY MÓVIL
     ══════════════════════════════════════════════════════════ -->
+    {/* El precio salió de aquí: enseñado fuera de contexto, sin el
+        valor ni la garantía al lado, competía con el propio botón y
+        hacía de spoiler durante media página. El bloque se queda en
+        el marcado, oculto, y con él el script que lo revelaba. */}
     <div class="mobile-sticky" id="l8-sticky">
-      <div class="mobile-sticky-price">
+      <div class="mobile-sticky-price is-oculto" id="l8-sticky-precio" hidden>
         <s>{VALOR_TOTAL}&nbsp;€</s>
         <strong>{PRECIO}&nbsp;€</strong>
       </div>
@@ -948,6 +1016,29 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
     )
     items.forEach((el) => obs.observe(el))
+  })()
+
+  /* ── El precio de la barra fija no se enseña de entrada ────
+     Iba visible desde el banner y destripaba la cifra antes de haber
+     contado nada de lo que incluye. Ahora aparece al llegar a la
+     sección de precio y, una vez fuera, ya se queda: el observador se
+     desconecta en cuanto dispara. */
+  ;(function initPrecioBarra() {
+    const precio = document.getElementById('l8-sticky-precio')
+    const seccion = document.getElementById('precio')
+    if (!precio || !seccion) return
+    if (!('IntersectionObserver' in window)) { precio.classList.remove('is-oculto'); return }
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return
+          precio.classList.remove('is-oculto')
+          obs.disconnect()
+        })
+      },
+      { threshold: 0, rootMargin: '0px 0px -25% 0px' }
+    )
+    obs.observe(seccion)
   })()
 
   /* ── Puerta 1: los botones ────────────────────────────────
