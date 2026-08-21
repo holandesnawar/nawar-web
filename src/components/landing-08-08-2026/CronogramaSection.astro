@@ -74,10 +74,14 @@ const pasos = [
 .cr-accent { color: #025dc7; }
 .cr-sub { font-size: clamp(14px, 1.4vw, 17px); color: #454F6B; line-height: 1.6; }
 
+/* Sin tope propio: los cuatro pasos ocupan el mismo ancho que el
+   resto de la página. Con 1000 px dentro de un contenedor de 1104 se
+   quedaba metido hacia dentro y no cuadraba con las secciones de
+   arriba y de abajo. */
 .cr-steps {
   list-style: none;
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0;
-  max-width: 1000px; margin: 0 auto;
+  margin: 0 auto;
 }
 .cr-step { display: flex; flex-direction: column; gap: 18px; padding-right: 24px; min-width: 0; }
 .cr-step:last-child { padding-right: 0; }
