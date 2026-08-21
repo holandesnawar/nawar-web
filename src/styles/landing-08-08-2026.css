@@ -4843,23 +4843,31 @@
    contenedor pasa de 1200 a 1280 px y la captura cede 20 px de
    ancho y 8 de hueco. Con eso el titular llega a 44 px en vez de
    quedarse en 36. */
+/* Mismo ancho que .inner, que es el de todas las demás secciones:
+   1152 con 24 de margen a cada lado. Iba a 1360 y el banner empezaba
+   208 px más a la izquierda que todo lo que tiene debajo. */
 .l8 .hero-inner.hero-inner {
-  max-width: 1360px;
+  max-width: 1152px;
   grid-template-columns: 1fr 430px;
   gap: 44px;
 }
 .l8 .hero-headline.hero-headline {
   font-size: clamp(24px, calc(6.6vw - 5px), 37px);
 }
-/* La fórmula: el ancho de la columna de texto entre los 19,2 que
-   ocupa la línea larga del titular. Contenedor 1360 menos 48 de
-   margen, menos 430 de captura, menos 44 de hueco = 838 px de texto,
-   que dan 43 px de tope. La pendiente es la misma —el ancho de la
-   columna crece con la pantalla— y sólo sube el techo, que es lo que
-   hace el titular un punto más grande sin pasar a tres líneas. */
+/* Y con el contenedor a 1152 hay que rehacer el tamaño del titular.
+   La columna de texto queda en 1152 - 48 de margen - 430 de captura
+   - 44 de hueco = 630 px.
+
+   Medido en el navegador, la primera frase ocupa 16,15 veces el
+   cuerpo de letra y la segunda 18,83. En 630 px caben las dos en una
+   línea sólo bajando a 33 px, y un titular de 33 se queda por debajo
+   de los titulares de sección, que van a 46. Así que manda la primera
+   frase: 630 / 16,47 (los 16,15 más un 2 % de aire) = 38 px de tope,
+   y la segunda reparte sus dos líneas con text-wrap: balance. Tres
+   líneas, que es como estaba el banner antes de ensancharlo. */
 @media (min-width: 960px) {
   .l8 .hero-headline.hero-headline {
-    font-size: clamp(24px, calc(5.21vw - 27.2px), 43px);
+    font-size: clamp(24px, calc(6.07vw - 31.7px), 38px);
   }
 }
 /* Y por debajo de 960 vuelve a una sola columna. Va aquí, después y
@@ -5290,10 +5298,11 @@
    como se veía en preguntas frecuentes cuando el titular ocupaba una
    sola línea. */
 .l8 .final-cta .fc-cabecera .text-gradient-white {
-  /* 0,88 en vez de 0,72 en el extremo bajo: a 56 px el degradado se
-     nota mucho más que en un titular pequeño, y lo que buscamos es
-     un brillo, no una segunda línea apagada. */
-  background-image: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.88) 100%);
+  /* El degradado se queda en el de la casa (blanco → 0,72), que es el
+     que tenía el titular de preguntas frecuentes. Lo único que cambia
+     es que se repite en cada renglón: así las dos líneas se ven
+     igual, en vez de que la segunda caiga entera en el extremo
+     apagado. */
   background-size: 100% 1.1em;
   background-repeat: repeat-y;
 }
@@ -5307,3 +5316,20 @@
    sobre azul claro se quedan como están, que sobre un fondo claro el
    mismo peso se lee más fino. */
 .l8 .btn-primary, .l8 .hero-ctas .btn-lg.btn-lg { font-weight: 600; }
+
+/* ── Todos los botones al mismo peso ───────────────────────────
+   El del banner está en 600 y el resto en 700 u 800. Al lado de un
+   titular de sección los de 700 se ven gordos, y además hacen que la
+   página tenga dos botones distintos según dónde mires. Uno solo.
+   Clases repetidas porque cada botón trae su peso en su componente,
+   que se emite después de esta hoja. */
+.l8 .pn-cta.pn-cta,
+.l8 .es-cta.es-cta,
+.l8 .ai-cta.ai-cta,
+.l8 .pr-cta.pr-cta,
+.l8 .l8-cta-band-btn.l8-cta-band-btn,
+.l8 .btn-sticky.btn-sticky,
+.l8 .l8nav-cta.l8nav-cta,
+.l8 .final-cta .btn.btn {
+  font-weight: 600;
+}
