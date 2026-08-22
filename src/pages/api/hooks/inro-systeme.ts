@@ -97,8 +97,19 @@ function json(data: object, status = 200) {
   })
 }
 
+/**
+ * Lee un campo del cuerpo, descartando las plantillas sin sustituir.
+ *
+ * En Inrō el cuerpo se escribe con variables (`{{ ... }}`) que la plataforma
+ * reemplaza al vuelo. Si una se escribe mal, o el contacto no tiene ese dato,
+ * lo que llega aquí es el texto de la plantilla en crudo. Guardar eso en el CRM
+ * sería peor que no guardar nada: dejaría contactos con un `{{ contact.username }}`
+ * de nombre de usuario y nadie se enteraría. Así que se tira.
+ */
 function texto(v: unknown): string {
-  return typeof v === 'string' ? v.trim() : ''
+  if (typeof v !== 'string') return ''
+  const limpio = v.trim()
+  return limpio.includes('{{') || limpio.includes('}}') ? '' : limpio
 }
 
 export const POST: APIRoute = async ({ request }) => {
