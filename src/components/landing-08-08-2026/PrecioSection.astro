@@ -471,6 +471,13 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
    devuelve la academia. Si no hay tope o no se pudo consultar, no aparece:
    es escasez de verdad o no es nada. */
 .pr-quedan { display: block; margin-top: 3px; color: #7dbcff; font-weight: 700; }
+/* Un display:block de autor le gana al display:none que el navegador
+   le pone al atributo hidden. Sin esta línea, el día que el script
+   cierre las puertas después de haber pintado el número, el "quedan
+   X plazas" se quedaría en pantalla en una página que dice que está
+   cerrada. Hoy no llega a pasar por el orden del script, pero es un
+   cepo esperando a que alguien cambie ese orden. */
+.pr-quedan[hidden] { display: none; }
 
 /* "Pago seguro con" ocupa su propia línea: en 410 px de tarjeta no
    cabía junto a los cuatro métodos y Bancontact se caía solo a una

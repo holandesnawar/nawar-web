@@ -1,13 +1,20 @@
 import type { APIRoute } from 'astro'
 import { getEstadoPlazas, MENSAJE_CERRADO } from '../../lib/plazas'
+import { ESCUELA_URL } from '../../lib/escuela'
 
 export const prerender = false
 
 // Backend de la academia: crea un PaymentIntent y devuelve la URL de NUESTRO
 // checkout embebido (Stripe Elements dentro de la academia), no el de Stripe.
-// payment_url = academia.holandesnawar.nl/auth/matricula-formacion-nawar-a0-a1?ei=&cs=&pk=
+// payment_url = app.holandesnawar.com/auth/matricula-formacion-nawar-a0-a1?ei=&cs=&pk=
+// Esa URL la construye la academia con su propia variable de dominio, así que
+// viene sola con el host correcto; aquí sólo mandamos la petición.
 // La academia debe servir la rama que tiene este endpoint (adoring-dijkstra).
-const ACADEMIA_ENROLL_URL = 'https://academia.holandesnawar.nl/api/v1/payments/enroll-intent'
+//
+// A mano y no confiando en el redirect del dominio viejo: esto es un POST, y
+// un POST contra un 301 se reenvía como GET, así que la matrícula llegaría
+// vacía al otro lado en vez de fallar limpio.
+const ACADEMIA_ENROLL_URL = `${ESCUELA_URL}/api/v1/payments/enroll-intent`
 
 // systeme.io — CRM centralizado (mismo que usa la lista de espera).
 const SYSTEME_BASE = 'https://api.systeme.io/api'
