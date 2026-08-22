@@ -5,25 +5,81 @@ export const prerender = false
 const SYSTEME_BASE = 'https://api.systeme.io/api'
 const TAG_NAME     = 'Lista de espera'
 
+/**
+ * Id de la etiqueta "Lista de espera" en systeme.io.
+ *
+ * Se pone a mano (sale en la URL de la etiqueta en el panel de systeme) porque
+ * buscarla por NOMBRE es frágil: basta con que systeme cambie el formato de su
+ * listado, lo pagine distinto o limite `itemsPerPage` para que deje de
+ * encontrarse — y entonces el contacto se crea pero se queda SIN etiquetar, que
+ * es justo lo que pasó. El endpoint de matrícula (enroll.ts) ya usa ids fijos y
+ * por eso nunca ha fallado.
+ *
+ * Se puede sobreescribir con la variable de entorno SYSTEME_WAITLIST_TAG_ID.
+ */
+const TAG_ID_LISTA_ESPERA = 0 // 0 = sin configurar → se busca por nombre
+
+/** Lee una variable de entorno tanto en desarrollo como en Vercel. */
+function env(name: string): string | undefined {
+  return (
+    ((import.meta as any).env?.[name] as string | undefined) ||
+    (typeof process !== 'undefined' ? process.env[name] : undefined)
+  )
+}
+
+/** Compara nombres de etiqueta sin que estorben acentos raros ni espacios. */
+function normalizeName(value: unknown): string {
+  return String(value ?? '')
+    .normalize('NFC')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase()
+}
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-async function findTagId(tagName: string, headers: Record<string, string>): Promise<number | null> {
+async function findTagId(
+  tagName: string,
+  headers: Record<string, string>,
+  debug: SyncDebug
+): Promise<number | null> {
+  // 1) El id configurado manda: ni una llamada de más, ni nada que se rompa.
+  const fromEnv = Number(env('SYSTEME_WAITLIST_TAG_ID') ?? '')
+  const fixedId = Number.isFinite(fromEnv) && fromEnv > 0 ? fromEnv : TAG_ID_LISTA_ESPERA
+  if (fixedId > 0) return fixedId
+
+  // 2) Respaldo: buscarla por nombre, paginando de verdad y dejando dicho en
+  //    los logs QUÉ ha fallado (antes se devolvía null en silencio).
+  const target = normalizeName(tagName)
+  const seen: string[] = []
   try {
-    const res = await fetch(`${SYSTEME_BASE}/tags?itemsPerPage=100`, { headers })
-    if (!res.ok) return null
-    const data = await res.json().catch(() => null)
-    const tags: any[] = data?.items ?? []
-    const match = tags.find((t: any) => t.name?.toLowerCase() === tagName.toLowerCase())
-    if (match) return match.id
-    if (tags.length === 100) {
-      const res2 = await fetch(`${SYSTEME_BASE}/tags?itemsPerPage=100&page=2`, { headers })
-      if (res2.ok) {
-        const data2 = await res2.json().catch(() => null)
-        const m2 = (data2?.items ?? []).find((t: any) => t.name?.toLowerCase() === tagName.toLowerCase())
-        if (m2) return m2.id
+    for (let page = 1; page <= 5; page++) {
+      const res = await fetch(`${SYSTEME_BASE}/tags?itemsPerPage=50&page=${page}`, { headers })
+      if (!res.ok) {
+        const body = await res.text().catch(() => '')
+        debug.tagLookupStatus = res.status
+        debug.tagLookupBody = body.slice(0, 200)
+        console.error('[waitlist] listado de etiquetas falló:', res.status, body.slice(0, 200))
+        return null
       }
+      const data = await res.json().catch(() => null)
+      // systeme ha devuelto la lista en varios formatos según la versión.
+      const items: any[] = Array.isArray(data) ? data : (data?.items ?? data?.data ?? [])
+      if (!Array.isArray(items) || items.length === 0) break
+
+      for (const t of items) {
+        if (t?.name) seen.push(String(t.name))
+        if (normalizeName(t?.name) === target && t?.id) return Number(t.id)
+      }
+      if (items.length < 50) break // última página
     }
+    debug.tagsSeen = seen.slice(0, 15)
+    console.error(
+      '[waitlist] etiqueta no encontrada:', tagName,
+      '— etiquetas vistas:', seen.slice(0, 15).join(' | ') || '(ninguna)'
+    )
   } catch (e) {
+    debug.error = (e as Error).message
     console.error('[waitlist] findTagId error:', e)
   }
   return null
@@ -31,6 +87,9 @@ async function findTagId(tagName: string, headers: Record<string, string>): Prom
 
 type SyncDebug = {
   createStatus?: number
+  tagLookupStatus?: number
+  tagLookupBody?: string
+  tagsSeen?: string[]
   createBody?: string
   contactId?: number | null
   tagId?: number | null
@@ -64,7 +123,7 @@ async function syncToCRM(
     // Crear o encontrar contacto y buscar tag en paralelo
     const [createRes, tagId] = await Promise.all([
       fetch(`${SYSTEME_BASE}/contacts`, { method: 'POST', headers, body: JSON.stringify(body) }),
-      findTagId(tagName, headers),
+      findTagId(tagName, headers, debug),
     ])
     debug.createStatus = createRes.status
     debug.tagId = tagId
@@ -131,13 +190,127 @@ async function syncToCRM(
       if (tr.ok) console.log('[waitlist] tag added:', tagName, 'to', contactId)
       else if (tr.status !== 409) console.error('[waitlist] tag error:', tr.status)
     } else {
-      if (!contactId) console.error('[waitlist] no contactId for:', email)
-      if (!tagId)     console.error('[waitlist] tag not found:', tagName)
+      if (!contactId) console.error('[waitlist] sin contactId para:', email)
+      // El contacto SÍ está creado; lo único que falta es la etiqueta. Se avisa
+      // así de claro para no volver a leerlo como "no se guardó nada".
+      if (contactId && !tagId) {
+        console.error(
+          '[waitlist] contacto', contactId, 'creado SIN etiqueta —',
+          'pon SYSTEME_WAITLIST_TAG_ID en Vercel con el id de "' + tagName + '"'
+        )
+      }
     }
   } catch (e) {
     debug.error = (e as Error).message
     console.error('[waitlist] syncToCRM error:', e)
   }
+}
+
+// ── Aviso cuando un alta NO llega al CRM ──────────────────────────────────────
+
+/**
+ * Manda un correo al equipo con el alta que no se ha podido guardar.
+ *
+ * Existe porque la web SIEMPRE le dice al visitante "¡registrado con éxito!"
+ * (no vamos a enseñarle un error por un problema nuestro), así que si el CRM
+ * falla nadie se entera. Pasó: entre junio y agosto de 2026 caducó la clave de
+ * systeme y se perdieron dos meses de altas en silencio.
+ *
+ * Va por Resend, la misma casa que ya manda los correos de la academia.
+ */
+async function alertFailedSignup(details: {
+  email: string
+  firstName: string
+  lastName: string
+  phone: string
+  tagName: string
+  page: string
+  reason: string
+}): Promise<void> {
+  const key = env('RESEND_API_KEY')
+  const to = env('ALERT_EMAIL_TO') || 'holandesnawar@gmail.com'
+  const from = env('ALERT_EMAIL_FROM') || 'Holandés Nawar <noreply@mail.holandesnawar.com>'
+
+  if (!key) {
+    console.error('[waitlist] RESEND_API_KEY no configurada: no se puede avisar del alta perdida')
+    return
+  }
+
+  const cuando = new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid' })
+  const fila = (etiqueta: string, valor: string) =>
+    valor
+      ? `<tr><td style="padding:4px 12px 4px 0;color:#5A6480;">${etiqueta}</td>
+           <td style="padding:4px 0;color:#0a1656;font-weight:600;">${escapeHtml(valor)}</td></tr>`
+      : ''
+
+  const html = `
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:520px;">
+      <h2 style="color:#1D0084;font-size:18px;margin:0 0 6px;">Un alta no ha llegado al CRM</h2>
+      <p style="color:#5A6480;font-size:14px;line-height:1.6;margin:0 0 16px;">
+        Esta persona se apuntó en la web y vio el mensaje de confirmación, pero
+        <strong>no se ha podido guardar en systeme.io</strong>. Apúntala a mano y
+        revisa el motivo.
+      </p>
+      <table style="font-size:14px;border-collapse:collapse;">
+        ${fila('Email', details.email)}
+        ${fila('Nombre', [details.firstName, details.lastName].filter(Boolean).join(' '))}
+        ${fila('Teléfono', details.phone)}
+        ${fila('Se apuntó en', details.page)}
+        ${fila('Etiqueta que tocaba', details.tagName)}
+        ${fila('Cuándo', cuando)}
+      </table>
+      <p style="margin:16px 0 0;padding:10px 12px;background:#F0F5FF;border-radius:8px;
+                color:#0a1656;font-size:13px;line-height:1.5;">
+        <strong>Motivo técnico:</strong> ${escapeHtml(details.reason)}
+      </p>
+    </div>
+  `
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        subject: `⚠️ Alta perdida en la web: ${details.email}`,
+        html,
+      }),
+    })
+    if (!res.ok) {
+      console.error('[waitlist] no se pudo avisar por email:', res.status, (await res.text()).slice(0, 200))
+    } else {
+      console.log('[waitlist] aviso de alta perdida enviado a', to)
+    }
+  } catch (e) {
+    console.error('[waitlist] error avisando del alta perdida:', e)
+  }
+}
+
+function escapeHtml(value: string): string {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+/** En qué página estaba el visitante al apuntarse. */
+function sourcePage(request: Request, body: any): string {
+  const explicit = (body?.source ?? body?.page ?? '').toString().trim()
+  if (explicit) return explicit
+  const referer = request.headers.get('referer') || ''
+  return referer || '(desconocida)'
+}
+
+/** Resumen legible de por qué no se guardó. */
+function failureReason(debug: SyncDebug): string {
+  if (debug.error) return debug.error
+  const partes: string[] = []
+  if (debug.createStatus) partes.push(`crear contacto → ${debug.createStatus}`)
+  if (debug.createBody) partes.push(debug.createBody)
+  if (debug.searchStatus) partes.push(`buscar contacto → ${debug.searchStatus}`)
+  return partes.join(' · ') || 'systeme.io no devolvió ningún contacto'
 }
 
 // ── Route handler ─────────────────────────────────────────────────────────────
@@ -173,11 +346,10 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   // Doble acceso: import.meta.env (dev) + process.env (serverless Vercel)
-  const apiKey =
-    (import.meta.env.SYSTEME_API_KEY as string | undefined) ||
-    (typeof process !== 'undefined' ? process.env.SYSTEME_API_KEY : undefined)
+  const apiKey = env('SYSTEME_API_KEY')
+  const page = sourcePage(request, body)
 
-  console.log('[waitlist] received:', { email, tagName, hasKey: !!apiKey })
+  console.log('[waitlist] received:', { email, tagName, page, hasKey: !!apiKey })
 
   const debug: SyncDebug = {}
   if (apiKey) {
@@ -193,8 +365,23 @@ export const POST: APIRoute = async ({ request }) => {
       console.error('[waitlist] sync failed:', e)
     }
   } else {
-    debug.error = 'SYSTEME_API_KEY not set'
-    console.error('[waitlist] SYSTEME_API_KEY not set — skipping CRM sync for:', email)
+    debug.error = 'SYSTEME_API_KEY no configurada'
+    console.error('[waitlist] SYSTEME_API_KEY no configurada — alta sin guardar:', email)
+  }
+
+  // Si no hay contacto, el alta se ha perdido: avisar YA, con todo lo que hace
+  // falta para apuntarla a mano. Se espera al envío a propósito: en Vercel la
+  // función se congela al responder y una promesa suelta se quedaría sin salir.
+  if (!debug.contactId) {
+    await alertFailedSignup({
+      email,
+      firstName,
+      lastName,
+      phone,
+      tagName,
+      page,
+      reason: failureReason(debug),
+    })
   }
 
   return json({

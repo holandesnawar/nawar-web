@@ -5,6 +5,13 @@ import landing from '../data/landing.json'
 import NavbarLanding from '../components/NavbarLanding'
 import HeroNuevo from '../components/HeroNuevo.astro'
 import GuidePopup from '../components/GuidePopup.astro'
+import PilaresSection from '../components/PilaresSection.astro'
+import MetodoFunciona from '../components/MetodoFunciona.astro'
+import QueIncluye from '../components/QueIncluye.astro'
+import BonusSection from '../components/BonusSection.astro'
+import ParaTiSection from '../components/ParaTiSection.astro'
+import PrecioSection from '../components/PrecioSection.astro'
+import EmpienzaHoy from '../components/EmpienzaHoy.astro'
 // PainPointsSection eliminada temporalmente — para restaurar: import PainPointsSection from '../components/PainPointsSection.astro'
 import StickyComparisonSection from '../components/StickyComparisonSection'
 import TestimonialsSection from '../components/TestimonialsSection.astro'
@@ -38,16 +45,23 @@ const faq          = (landing as any).faq          ?? null
   <NavbarLanding client:load />
   <GuidePopup />
 
+  {/* ── Estructura de venta de la formación ──
+      Hero (lo que somos) → lo que te han enseñado vs Nawar → 3 pilares →
+      el Método (así funciona) → qué incluye → bonus + certificado →
+      testimonios → ¿es para ti? → empieza hoy → precio → FAQ → blog. */}
   <HeroNuevo data={hero} />
   <PorQueNawar data={porQueNawar} />
-  {/* <BenefitsSection data={benefits} /> — oculta hasta que la formación esté lista */}
-  <ProcesoSection data={proceso} />
-  <ValorNuevo data={valor} />
-  <StickyComparisonSection items={comparison} client:load />
-  <ParaQuienSection data={paraQuien} />
-  {/* <PainPointsSection painPoints={painPoints} /> — eliminada temporalmente */}
-  <BlogNuevo />
-  <FAQNuevo data={faq} />
+  <PilaresSection />
+  <MetodoFunciona />
+  <QueIncluye />
+  <BonusSection />
   <TestimonialsSection testimonials={testimonials} />
+  <ParaTiSection />
+  <EmpienzaHoy />
+  <PrecioSection />
+  <FAQNuevo data={faq} />
+  <BlogNuevo />
   <FooterNuevo />
+  {/* Secciones anteriores fuera de la nueva estructura (siguen en el repo):
+      ProcesoSection, ValorNuevo, StickyComparisonSection, ParaQuienSection */}
 </Layout>
