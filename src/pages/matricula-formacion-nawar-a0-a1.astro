@@ -94,37 +94,11 @@ if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
           </div>
         </div>
 
-        <div class="mx-row">
-          <div class="mx-field">
-            <label class="mx-label" for="country">País</label>
-            <div class="mx-select-wrap">
-              <select id="country" name="country" class="mx-select">
-                <option value="NL">Países Bajos</option>
-                <option value="ES">España</option>
-                <option value="BE">Bélgica</option>
-                <option value="DE">Alemania</option>
-                <option value="FR">Francia</option>
-                <option value="IT">Italia</option>
-                <option value="PT">Portugal</option>
-                <option value="MX">México</option>
-                <option value="AR">Argentina</option>
-                <option value="CO">Colombia</option>
-                <option value="CL">Chile</option>
-                <option value="PE">Perú</option>
-                <option value="US">Estados Unidos</option>
-                <option value="GB">Reino Unido</option>
-                <option value="OTRO">Otro</option>
-              </select>
-              <svg class="mx-select-arrow" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </div>
-          </div>
-          <div class="mx-field">
-            <label class="mx-label" for="city">Ciudad</label>
-            <input id="city" name="city" type="text" class="mx-input" placeholder="Tu ciudad" autocomplete="address-level2" />
-          </div>
-        </div>
+        {/* Aquí vivían País y Ciudad. Se quitaron: no los leía nadie —se
+            escribían en la fila de matrícula y en los metadatos de Stripe y ahí
+            se quedaban, sin que ninguna pantalla, correo ni estadística los
+            usara— así que eran dos campos de fricción a cambio de nada. El país
+            de la tarjeta ya lo pide Stripe en el paso 2, que es donde importa. */}
 
         <div class="mx-btn-wrap">
           <button id="submit" type="submit" class="mx-btn">
@@ -274,25 +248,8 @@ if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
   .mx-err { display: none; font-size: 12px; color: rgba(255, 120, 120, 0.9); font-weight: 500; }
   .mx-err.visible { display: block; }
 
-  /* Select — solo línea inferior */
-  .mx-select-wrap { position: relative; }
-  .mx-select {
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1.5px solid rgba(255, 255, 255, 0.28);
-    border-radius: 0;
-    padding: 10px 24px 10px 0;
-    color: #fff; font-size: 16px; font-family: inherit;
-    outline: none; appearance: none; -webkit-appearance: none;
-    cursor: pointer; transition: border-color 0.2s; color-scheme: dark;
-  }
-  .mx-select option { background: #1a0099; color: #fff; }
-  .mx-select:focus { border-bottom-color: #4da3ff; }
-  .mx-select-arrow {
-    position: absolute; right: 2px; top: 50%; transform: translateY(-50%);
-    pointer-events: none; color: rgba(255, 255, 255, 0.45);
-  }
+  /* El estilo del desplegable se fue con el campo País: ya no queda ningún
+     <select> en el formulario. */
 
   /* ── Botón ── */
   .mx-btn-wrap {
@@ -421,8 +378,6 @@ if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
       last_name: (document.getElementById('last_name') as HTMLInputElement).value.trim(),
       email: (document.getElementById('email') as HTMLInputElement).value.trim().toLowerCase(),
       phone: (document.getElementById('phone') as HTMLInputElement).value.trim(),
-      country: (document.getElementById('country') as HTMLSelectElement).value,
-      city: (document.getElementById('city') as HTMLInputElement).value.trim(),
       website: (document.getElementById('mx-honeypot') as HTMLInputElement | null)?.value ?? '',
     }
 
