@@ -69,7 +69,7 @@ export const prerender = true;
         if(!payload.first_name||!payload.last_name||!payload.email){showError('Rellena nombre, apellidos y email para continuar.');return}
         btn.disabled=true;btn.textContent='Preparando tu pago…';
         try{
-          var res=await fetch('https://academia.holandesnawar.nl/api/v1/payments/enroll',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+          var res=await fetch('https://app.holandesnawar.com/api/v1/payments/enroll',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
           var data=await res.json();
           if(!res.ok||!data||!data.checkout_url){showError((data&&data.detail)||'No se pudo crear la matrícula.');btn.disabled=false;btn.textContent='Continuar al pago →';return}
           window.location.href=data.checkout_url;
