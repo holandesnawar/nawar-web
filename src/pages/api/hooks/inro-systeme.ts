@@ -72,6 +72,15 @@ const ETIQUETA_POR_DEFECTO = 'Lista de espera'
 const EMAIL_RE = /^[^\s@,;]+@[^\s@,;.]+(\.[^\s@,;.]+)+$/
 
 /**
+ * Nombre de la cabecera que lleva el secreto compartido.
+ *
+ * Coincide con el de la variable de entorno a propósito: es como está puesto en
+ * el escenario de Inrō y así solo hay un nombre que recordar. Las cabeceras HTTP
+ * son insensibles a mayúsculas, así que da igual cómo la escriba Inrō.
+ */
+const CABECERA_SECRETO = 'NAWAR_WEBHOOK_SECRET'
+
+/**
  * Compara dos secretos sin filtrar por dónde dejan de parecerse.
  *
  * Se comparan los hashes, no los textos: así los dos búferes miden siempre lo
@@ -122,7 +131,7 @@ export const POST: APIRoute = async ({ request }) => {
     console.error(JSON.stringify({ evt: 'inro_systeme', resultado: 'sin_secreto_configurado' }))
     return json({ ok: false, error: 'no autorizado' }, 401)
   }
-  const secretoRecibido = request.headers.get('X-Nawar-Secret') ?? ''
+  const secretoRecibido = request.headers.get(CABECERA_SECRETO) ?? ''
   if (!igualEnTiempoConstante(secretoRecibido, secretoEsperado)) {
     console.warn(JSON.stringify({ evt: 'inro_systeme', resultado: 'secreto_invalido' }))
     return json({ ok: false, error: 'no autorizado' }, 401)
