@@ -20,7 +20,9 @@
  * el lado cerrado, en cambio, sería dejar de vender por un timeout.
  */
 
-const ENDPOINT = 'https://academia.holandesnawar.nl/api/v1/payments/plazas'
+import { ESCUELA_URL } from './escuela'
+
+const ENDPOINT = `${ESCUELA_URL}/api/v1/payments/plazas`
 const TIMEOUT_MS = 2500
 const CACHE_MS = 60_000
 
