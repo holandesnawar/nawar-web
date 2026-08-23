@@ -952,7 +952,11 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         valor ni la garantía al lado, competía con el propio botón y
         hacía de spoiler durante media página. El bloque se queda en
         el marcado, oculto, y con él el script que lo revelaba. */}
-    <div class="mobile-sticky" id="l8-sticky">
+    {/* Nace escondida: mientras se ve el banner ya hay un botón en
+        pantalla y dos a la vez agobian. Sale sola al pasar el hero.
+        Si el script no llegara a ejecutarse se queda sin salir, y no
+        es grave: el mismo enlace está ocho veces más abajo. */}
+    <div class="mobile-sticky hidden" id="l8-sticky">
       <div class="mobile-sticky-price is-oculto" id="l8-sticky-precio" hidden>
         <s>{VALOR_TOTAL}&nbsp;€</s>
         <strong>{PRECIO}&nbsp;€</strong>
@@ -1143,16 +1147,50 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     update()
   })()
 
-  /* ── Barra sticky móvil: se esconde sobre la oferta ──────── */
+  /* ── Barra sticky móvil ───────────────────────────────────
+     Dos motivos para esconderla, y basta con uno para que se vaya:
+
+       1. Se está viendo el banner. Ahí ya hay un botón grande en
+          pantalla y dos llamadas a la vez agobian nada más entrar.
+          Sale cuando el banner termina de pasar.
+       2. Se está viendo la oferta. Compite con la tarjeta de precio,
+          que es la que tiene el contexto: el valor, la garantía y el
+          botón de verdad.
+
+     Un observador por cada cosa y un solo sitio donde se decide, para
+     que no se peleen entre ellos: si el banner dice "escóndete" y la
+     oferta dice "sal", gana esconderse. ─────────────────────────── */
   ;(function initMobileSticky() {
     const bar = document.getElementById('l8-sticky')
-    const offer = document.getElementById('oferta')
-    if (!bar || !offer) return
-    const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => bar.classList.toggle('hidden', e.isIntersecting)),
-      { threshold: 0.1 }
-    )
-    obs.observe(offer)
+    if (!bar) return
+    const hero = document.getElementById('hero')
+    // #precio, no #oferta: ese id no existe en la página desde alguna
+    // reordenación, y como el script antiguo hacía "if (!offer) return",
+    // la barra no sólo no se escondía sobre la oferta: no se escondía
+    // nunca. Por eso se veían dos botones nada más entrar.
+    const offer = document.getElementById('precio')
+
+    let enBanner = !!hero
+    let enOferta = false
+    const pintar = () => bar.classList.toggle('hidden', enBanner || enOferta)
+
+    const mirar = (el: HTMLElement | null, alVer: (visible: boolean) => void) => {
+      if (!el) return
+      new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => alVer(e.isIntersecting))
+          pintar()
+        },
+        { threshold: 0 }
+      ).observe(el)
+    }
+
+    // El banner se da por pasado en cuanto sale entero de la pantalla,
+    // de ahí el threshold 0: con 0.1 la barra aparecía todavía con el
+    // botón del banner a la vista.
+    mirar(hero, (v) => (enBanner = v))
+    mirar(offer, (v) => (enOferta = v))
+    pintar()
   })()
 
   /* ── Scroll suave con margen para el nav fijo ────────────── */
