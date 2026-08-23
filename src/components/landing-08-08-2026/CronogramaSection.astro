@@ -101,7 +101,12 @@ const pasos = [
   padding-right: 14px;
 }
 .cr-line { flex: 1; height: 2px; background: linear-gradient(to right, rgba(2,93,199,0.30), rgba(2,93,199,0.06)); }
-.cr-step:last-child .cr-line { display: none; }
+/* La cuarta línea también se pinta. Escondiéndola, la regla
+   01——02——03——04 acababa justo detrás del "04" y dejaba doscientos
+   píxeles vacíos a la derecha: la fila está centrada de verdad, pero
+   el ojo la veía cargada a la izquierda. Con la cuarta, que se
+   desvanece igual que las otras, el conjunto queda simétrico. */
+.cr-step:last-child .cr-line { display: block; }
 
 .cr-when {
   display: inline-block;
@@ -122,6 +127,9 @@ const pasos = [
   .cr-steps { grid-template-columns: 1fr; gap: 0; max-width: 560px; }
   .cr-step { flex-direction: row; gap: 18px; padding-right: 0; padding-bottom: 26px; }
   .cr-step:last-child { padding-bottom: 0; }
+  /* En vertical la cuarta línea sí sobra: colgaría de "04" sin nada
+     debajo. El desequilibrio que arregla en escritorio aquí no existe. */
+  .cr-step:last-child .cr-line { display: none; }
   .cr-marker { flex-direction: column; align-self: stretch; }
   .cr-dot { font-size: 32px; padding-right: 0; padding-bottom: 8px; }
   .cr-line {

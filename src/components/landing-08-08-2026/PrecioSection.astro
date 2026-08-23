@@ -90,7 +90,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
           <div class="pr-card-col sr d1">
             <div class="pr-card-ring">
               <div class="pr-card">
-                <h3 class="pr-card-name">Formación Nawar A0 <span class="pr-card-arrow">→</span> A1</h3>
+                <p class="pr-card-name">Formación Nawar A0 <span class="pr-card-arrow">→</span> A1</p>
 
                 <div class="pr-price-row">
                   <span class="pr-price">{precio}€</span>
@@ -135,7 +135,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
                 <div class="pr-payments">
                   <span class="pr-pay-secure">
                     <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                    Pago seguro con
+                    Pago seguro
                   </span>
                   <span class="pr-logos">
                     <span class="pr-logo pr-logo--visa">VISA</span>
@@ -151,7 +151,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
                   </span>
                   <span class="pr-pay-plazos">
                     <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h4m-4 3h10a3 3 0 003-3V9a3 3 0 00-3-3H7a3 3 0 00-3 3v6a3 3 0 003 3z"/></svg>
-                    También a plazos con Klarna
+                    Pago fraccionable con Klarna
                   </span>
                 </div>
               </div>
@@ -396,12 +396,20 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   top: -120px; right: -120px; width: 380px; height: 380px; border-radius: 50%;
   background: radial-gradient(circle, rgba(77,163,255,0.32) 0%, transparent 65%);
 }
+/* Era un titular de 22 px en blanco y competía con el precio, que es
+   lo único que esta tarjeta tiene que decir. El nombre del producto
+   hace falta —una tarjeta de precio sin decir de qué es se lee mal—
+   pero como antetítulo: pequeño, en versalitas y en el azul claro,
+   igual que las etiquetas del resto de la página. */
 .pr-card-name {
   position: relative;
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 22px; font-weight: 700; color: #fff; line-height: 1.25;
-  margin-bottom: 20px;
+  font-size: 11.5px; font-weight: 700; line-height: 1.3;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: #7dbcff;
+  margin-bottom: 14px;
 }
+.pr-card-arrow { letter-spacing: 0; }
 .pr-price-row { position: relative; display: flex; align-items: flex-end; gap: 12px; }
 .pr-price {
   font-family: 'Poppins', system-ui, sans-serif;
@@ -449,8 +457,10 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 .pr-reasseg {
   position: relative;
   list-style: none;
-  margin: 0 0 18px;
-  padding-top: 18px;
+  /* 28 px de aire entre el botón y la línea: pegada al botón parecía
+     que le salía por detrás en vez de separar dos bloques. */
+  margin: 28px 0 18px;
+  padding-top: 20px;
   /* Misma línea que la del pie de pagos: a 0,14 sobre el cristal azul
      no se veía y la lista parecía flotar debajo del botón. */
   border-top: 1px solid rgba(255,255,255,0.28);
@@ -493,9 +503,10 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
    color, que es como se reconocen de un vistazo. */
 .pr-payments {
   position: relative;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  text-align: center;
   font-size: 11px;
-  margin-top: 4px;
+  margin-top: 8px;
   padding-top: 20px;
   border-top: 1px solid rgba(255,255,255,0.28);
 }
@@ -504,7 +515,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   font-size: 11.5px; font-weight: 600; letter-spacing: 0.02em;
   color: rgba(255,255,255,0.72);
 }
-.pr-logos { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.pr-logos { display: flex; align-items: center; justify-content: center; gap: 7px; flex-wrap: wrap; }
 .pr-logo {
   display: inline-flex; align-items: center; justify-content: center;
   height: 26px; padding: 0 9px;

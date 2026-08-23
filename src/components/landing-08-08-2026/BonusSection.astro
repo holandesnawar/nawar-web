@@ -22,7 +22,17 @@ const SOPORTE_IMG  = 'https://docs.holandesnawar.com/img/Landing/bonus.soporte.p
 // Bonus 05: el certificado de verdad. Tiene que ser una imagen
 // (jpg/png/webp); un PDF no se puede pintar en un <img>. Con la
 // constante vacía se sigue viendo el diploma dibujado en CSS.
-const CERTIFICADO_IMG = 'https://docs.holandesnawar.com/img/Landing/bonus.cert.png'
+const CERTIFICADO_IMG = 'https://docs.holandesnawar.com/img/Certificado.web.base.png'
+// El fondo va debajo y el certificado encima, girado para que encaje
+// con la perspectiva del fondo. Los cuatro números de abajo son lo
+// único que hay que tocar para cuadrarlos: no he podido ver las dos
+// imágenes desde aquí —el proxy bloquea el dominio— así que son una
+// primera aproximación.
+const CERT_FONDO = 'https://docs.holandesnawar.com/img/Landing/fondo.certificado.png'
+const CERT_GIRO = '-7deg'   // inclinación del papel
+const CERT_ANCHO = '62%'    // ancho del papel respecto al fondo
+const CERT_X = '50%'        // centro horizontal dentro del fondo
+const CERT_Y = '50%'        // centro vertical dentro del fondo
 
 // Bonus 03. La ilustración manda; si se vacía esta constante vuelve
 // la baraja de tres capturas de abajo, y si esa lista no tiene tres
@@ -247,20 +257,36 @@ const carita = (tono: string) =>
               siempre en el marcado, oculto, y sale en cuanto la foto
               falla. Peor que la foto, pero nunca un agujero. */}
           {CERTIFICADO_IMG && (
-            <figure class="bn-cert bn-cert--foto" id="bn-cert-foto" style={`--cert-img: url("${CERTIFICADO_IMG}")`}>
+            <figure
+              class="bn-cert bn-cert--foto"
+              id="bn-cert-foto"
+              style={`--cert-img: url("${CERTIFICADO_IMG}"); --cert-giro: ${CERT_GIRO}; --cert-ancho: ${CERT_ANCHO}; --cert-x: ${CERT_X}; --cert-y: ${CERT_Y}`}
+            >
+              {/* Dos piezas: el fondo manda las medidas del bloque y el
+                  certificado va encima, girado. El brillo vive dentro
+                  del papel, así que se inclina con él y no toca el
+                  fondo: el efecto es sólo del certificado. */}
               <img
-                src={CERTIFICADO_IMG}
-                alt="Certificado de finalización de la Formación Neerlandés A0 → A1"
+                class="bn-cert-fondo"
+                src={CERT_FONDO}
+                alt=""
                 loading="lazy" decoding="async"
-                onerror="this.closest('#bn-cert-foto').remove(); document.getElementById('bn-cert-dibujo').hidden = false;"
+                onerror="this.closest('#bn-cert-foto').classList.add('sin-fondo'); this.remove();"
               />
-              {/* El brillo, recortado con la propia imagen de máscara:
-                  así sólo se ve donde el certificado tiene tinta y no
-                  sobre el fondo del archivo. */}
-              <div class="bn-cert-fx" aria-hidden="true">
-                <span class="bn-cert-fx-glow"></span>
-                <span class="bn-cert-fx-sheen"></span>
-              </div>
+              <span class="bn-cert-papel">
+                <img
+                  src={CERTIFICADO_IMG}
+                  alt="Certificado de finalización de la Formación Neerlandés A0 → A1"
+                  loading="lazy" decoding="async"
+                  onerror="this.closest('#bn-cert-foto').remove(); document.getElementById('bn-cert-dibujo').hidden = false;"
+                />
+                {/* El brillo, recortado con la propia imagen de máscara:
+                    así sólo se ve donde el certificado tiene tinta. */}
+                <span class="bn-cert-fx" aria-hidden="true">
+                  <span class="bn-cert-fx-glow"></span>
+                  <span class="bn-cert-fx-sheen"></span>
+                </span>
+              </span>
             </figure>
           )}
           <div class="bn-cert" id="bn-cert-dibujo" hidden={!!CERTIFICADO_IMG} aria-label="Certificado Holandés Nawar">
@@ -323,19 +349,37 @@ const carita = (tono: string) =>
   padding: 0;
   background: none;
   background-image: none;
-  width: fit-content;
+  width: 100%;
   margin: 0 auto;
+  position: relative;
+  overflow: visible;
+}
+/* El fondo manda el tamaño del bloque */
+.bn-cert-fondo { width: 100%; height: auto; display: block; }
+/* El papel, encima y girado. Si el fondo no cargara, la clase
+   sin-fondo lo devuelve al flujo para que el bloque no se quede
+   vacío. */
+.bn-cert-papel {
+  position: absolute;
+  left: var(--cert-x, 50%);
+  top: var(--cert-y, 50%);
+  width: var(--cert-ancho, 62%);
+  transform: translate(-50%, -50%) rotate(var(--cert-giro, -7deg));
+  display: block;
+  filter: drop-shadow(0 18px 32px rgba(8, 12, 45, 0.35));
+}
+.bn-cert-papel img { width: 100%; height: auto; display: block; }
+.bn-cert--foto.sin-fondo .bn-cert-papel {
+  position: static;
+  width: 100%;
+  transform: none;
 }
 /* width:auto + los dos topes: así entra igual de bien si el
    certificado viene apaisado (llena el ancho) que si viene vertical
    (lo limita el alto y se centra), sin deformarlo ni recortarlo y sin
    que la fila se dispare de alto. */
-.bn-cert.bn-cert--foto img {
-  position: relative; z-index: 1; display: block;
-  width: auto; height: auto;
-  max-width: 100%; max-height: 480px;
-  margin: 0 auto;
-}
+/* Ya no hay una sola imagen: el tope de alto lo pone el conjunto. */
+.bn-cert.bn-cert--foto { max-height: none; }
 /* Sobre el diploma dibujado, que era azul oscuro, valía una mancha
    azul en soft-light. Sobre la foto, que es un documento casi blanco,
    soft-light no se veía: apenas cambia nada sobre blanco. Con
