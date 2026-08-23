@@ -5333,3 +5333,39 @@
 .l8 .final-cta .btn.btn {
   font-weight: 600;
 }
+
+/* ── La entrada de la barra de abajo ───────────────────────────
+   Ya no está siempre: nace escondida y sale cuando el banner acaba
+   de pasar (el porqué, en el script de la página). Como ahora la
+   aparición se ve, merece la pena que se vea bien.
+
+   Entra en dos tiempos: primero sube la barra con una curva que
+   frena al final, y 60 ms después llega el botón, que además crece
+   desde un 96 %. Ese desfase mínimo es lo que hace que parezca una
+   pieza montada y no un bloque que aparece de golpe. */
+.l8 .mobile-sticky.mobile-sticky {
+  transition:
+    opacity .3s ease,
+    transform .45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.l8 .mobile-sticky.mobile-sticky.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(110%);
+}
+.l8 .mobile-sticky .btn-sticky {
+  transition:
+    transform .45s cubic-bezier(0.22, 1, 0.36, 1) .06s,
+    opacity .28s ease .06s,
+    background .22s;
+}
+.l8 .mobile-sticky.hidden .btn-sticky {
+  transform: translateY(8px) scale(0.96);
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .l8 .mobile-sticky.mobile-sticky,
+  .l8 .mobile-sticky .btn-sticky { transition: opacity .2s ease; }
+  .l8 .mobile-sticky.mobile-sticky.hidden,
+  .l8 .mobile-sticky.hidden .btn-sticky { transform: none; }
+}
