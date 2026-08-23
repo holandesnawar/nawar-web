@@ -524,8 +524,8 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             <em>Te lo estaban enseñando en inglés.</em>
           </h1>
           <p class="hero-sub">
-            La primera formación de neerlandés diseñada específicamente para hispanohablantes.
-            De A0 a A1 en 16 semanas, con profesores nativos y un grupo de 40 personas que empieza contigo.
+            La primera formación de neerlandés diseñada <strong>específicamente para
+            hispanohablantes</strong>. De A0 a A1 en <strong>16 semanas</strong>, con profesores nativos.
           </p>
           {/* Las tres viñetas del banner del home, con su palomita hueca
               en azul claro. Sustituyen a la tira de cuatro garantías
@@ -546,12 +546,31 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             </li>
           </ul>
 
+          {/* El botón y su letra pequeña van dentro de una columna que
+              mide lo que mide el botón, para que la garantía quede
+              centrada bajo él y no bajo la columna entera. Y al lado,
+              la nota a mano con la flecha, que en móvil no cabe y se
+              esconde. */}
           <div class="hero-ctas">
-            <a href={CHECKOUT_URL} class="btn btn-primary btn-lg">
-              Quiero aprender neerlandés
-              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
-            </a>
-            <p class="hero-nota">Pago único · 15 días de garantía · Solo 40 plazas</p>
+            <div class="hero-cta-fila">
+              <div class="hero-cta-col">
+                <a href={CHECKOUT_URL} class="btn btn-primary btn-lg">
+                  Quiero aprender neerlandés
+                  <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
+                </a>
+                <p class="hero-nota">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  Garantía de 15 días
+                </p>
+              </div>
+              <span class="hero-empieza" aria-hidden="true">
+                <span class="hero-empieza-txt">empieza hoy</span>
+                <svg class="hero-empieza-flecha" viewBox="0 0 64 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M58 4C57 20 47 34 30 40" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M38 41l-9 1 3-9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </div>
           </div>
         </div>
 
@@ -688,7 +707,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             <span class="badge-light"><svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>El coste de seguir igual</span>
             <h2 class="section-title">Lo peor no es lo que<br /><span class="cons-accent">ya has perdido.</span></h2>
             <p class="consequences-intro">
-              Es lo que seguirás perdiendo cada mes que pospones aprender neerlandés de verdad.
+              Es lo que seguirás perdiendo cada mes que pospones <strong>aprender neerlandés de verdad</strong>.
             </p>
             <ul class="consequences-list">
               <li>
@@ -785,7 +804,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       <div class="inner">
         <div class="l8-cta-band-inner sr">
           <a href={CHECKOUT_URL} class="l8-cta-band-btn">
-            Quiero mi plaza
+            Reservar mi acceso
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
           </a>
         </div>

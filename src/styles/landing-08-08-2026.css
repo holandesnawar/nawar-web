@@ -4589,13 +4589,12 @@
    280 px útiles de la tarjeta en móvil. Pasa a "Formación Nawar",
    que además es como se llama el producto en el resto de la página,
    y con eso entra en una línea sin encoger la letra. */
+/* Ya no es un titular sino el antetítulo de la tarjeta, así que el
+   tamaño lo pone el componente y aquí sólo queda el nowrap: con el
+   espaciado de versalitas, partirlo en dos líneas quedaría raro. */
 .l8 .pr-card-name.pr-card-name {
-  font-size: clamp(18px, 4.4vw, 24px);
-  line-height: 1.25;
+  line-height: 1.3;
   white-space: nowrap;
-}
-@media (max-width: 380px) {
-  .l8 .pr-card-name.pr-card-name { font-size: 16.5px; }
 }
 .l8 .pr-card-arrow { white-space: nowrap; }
 
@@ -5368,4 +5367,90 @@
   .l8 .mobile-sticky .btn-sticky { transition: opacity .2s ease; }
   .l8 .mobile-sticky.mobile-sticky.hidden,
   .l8 .mobile-sticky.hidden .btn-sticky { transform: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   EL BLOQUE DEL BOTÓN DEL BANNER
+══════════════════════════════════════════════════════════════ */
+
+/* La letra pequeña iba debajo de la columna entera, así que quedaba
+   descolgada a la izquierda del botón. Ahora las dos cosas van en una
+   caja que mide lo que mide el botón, y dentro se centra. */
+.l8 .hero-cta-fila {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.l8 .hero-cta-col {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.l8 .hero-nota.hero-nota {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 13.5px; font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
+  text-align: center;
+}
+.l8 .hero-nota svg { color: #7dbcff; flex-shrink: 0; }
+
+/* La nota a mano con su flecha. La letra en blanco y la flecha en el
+   azul claro de marca, que es lo que pidió Rida. Va en Caveat, que se
+   suma a la petición de fuentes que la web ya hacía. */
+.l8 .hero-empieza {
+  display: inline-flex; align-items: flex-start; gap: 2px;
+  margin-bottom: 26px;
+  flex-shrink: 0;
+}
+.l8 .hero-empieza-txt {
+  font-family: 'Caveat', 'Segoe Script', cursive;
+  font-size: 27px; font-weight: 700; line-height: 1;
+  color: #fff;
+  transform: rotate(-7deg);
+  white-space: nowrap;
+  padding-top: 4px;
+}
+/* Sin espejo: el trazo ya está dibujado cayendo hacia la izquierda,
+   que es donde está el botón. Con scaleX(-1) apuntaba al vacío. */
+.l8 .hero-empieza-flecha {
+  width: 42px; height: 34px;
+  color: #4da3ff;
+  margin-top: 12px;
+}
+/* En móvil el botón ocupa el ancho entero y la nota no cabe al lado */
+@media (max-width: 720px) {
+  .l8 .hero-cta-fila { width: 100%; }
+  .l8 .hero-cta-col { width: 100%; }
+  .l8 .hero-empieza { display: none; }
+}
+
+/* El titular crece un punto más: la captura cede 34 px de ancho y 4
+   de hueco, así que la columna de texto pasa de 630 a 668 px y el
+   tope sube de 38 a 40. La fórmula es la misma: el ancho de columna
+   entre las 16,47 veces el cuerpo que ocupa la primera frase. */
+.l8 .hero-inner.hero-inner {
+  grid-template-columns: 1fr 396px;
+  gap: 40px;
+}
+@media (min-width: 960px) {
+  .l8 .hero-headline.hero-headline {
+    font-size: clamp(24px, calc(6.07vw - 29.7px), 40px);
+  }
+}
+
+/* ── Más aire bajo los titulares de sección ────────────────────
+   Entre el título y su entradilla había 16 px en todas. En pantalla
+   grande, con titulares de 46-52 px, ese hueco los deja pegados.
+   En móvil se queda como estaba, que ahí sí bastaba. */
+@media (min-width: 861px) {
+  .l8 .porq-title.porq-title, .l8 .mk-title.mk-title,
+  .l8 .pil-title.pil-title, .l8 .mf-title.mf-title,
+  .l8 .pt-title.pt-title, .l8 .qi-title.qi-title,
+  .l8 .bn-title.bn-title, .l8 .cr-title.cr-title,
+  .l8 .ai-title.ai-title, .l8 .otr-title.otr-title,
+  .l8 .cu-title.cu-title, .l8 .es-title.es-title,
+  .l8 .consequences .section-title {
+    margin-bottom: 26px;
+  }
 }
