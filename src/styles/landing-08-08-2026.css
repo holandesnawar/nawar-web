@@ -4589,12 +4589,16 @@
    280 px útiles de la tarjeta en móvil. Pasa a "Formación Nawar",
    que además es como se llama el producto en el resto de la página,
    y con eso entra en una línea sin encoger la letra. */
-/* Ya no es un titular sino el antetítulo de la tarjeta, así que el
-   tamaño lo pone el componente y aquí sólo queda el nowrap: con el
-   espaciado de versalitas, partirlo en dos líneas quedaría raro. */
+/* Ya no es un titular sino el antetítulo de la tarjeta: el tamaño lo
+   pone el componente.
+
+   Sin nowrap, y a propósito. Un nowrap dentro de una rejilla no se
+   limita a no partir la frase: fija el ancho mínimo de la columna, y
+   si ese mínimo no cabe en la pantalla arrastra a toda la sección.
+   Es lo que rompió la tarjeta en móvil. Si alguna vez parte en dos
+   líneas se ve raro un segundo; con nowrap se rompe la página. */
 .l8 .pr-card-name.pr-card-name {
   line-height: 1.3;
-  white-space: nowrap;
 }
 .l8 .pr-card-arrow { white-space: nowrap; }
 

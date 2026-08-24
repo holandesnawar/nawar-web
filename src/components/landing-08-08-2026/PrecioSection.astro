@@ -573,7 +573,7 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
    arriba y su relleno sólo abriría un hueco en la costura. */
 @media (max-width: 640px) { .pr-wrapper { padding: 0; } .pr-section { padding: 64px 0; } }
 
-@media (max-width: 900px) { .pr-layout { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .pr-layout { grid-template-columns: minmax(0, 1fr); } }
 
 @media (max-width: 900px) { .pr-card-col { position: static; } }
 
@@ -582,7 +582,11 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 
   /* Ojo: el salto de línea del título se deja tal cual. Ocultarlo
      con display:none pegaba las palabras ("NeerlandésA0"). */
-  .pr-card-name { font-size: 22px; }
+  /* El 22 px de aquí era del titular antiguo. Con el antetítulo en
+     versalitas y el nowrap de la hoja de la landing, la frase medía
+     415 px y empujaba la tarjeta a 457 en una pantalla de 390: la
+     sección entera se salía y sólo no se veía porque .pr-section la
+     recorta con overflow: clip. */
 
   /* Precio: cifra y detalle en una línea, centrados y sin apretar */
   .pr-price-row {
