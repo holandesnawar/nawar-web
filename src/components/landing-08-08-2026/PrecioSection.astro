@@ -110,10 +110,17 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
                 <ul class="pr-reasseg">
                   <li>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                    <span>
-                      <strong>Solo 40 plazas</strong> en esta convocatoria
-                      <strong class="pr-quedan" data-plazas-quedan hidden></strong>
-                    </span>
+                    {/* Aquí iba un "Quedan X plazas" que rellenaba el
+                        script con lo que devolviera la academia. Fuera:
+                        aparecía o no según lo que contestara el
+                        endpoint en ese momento, así que dos personas
+                        veían cosas distintas en la misma tarjeta, y una
+                        cifra de escasez que parpadea vale menos que no
+                        ponerla. La línea de arriba ya dice que son 40.
+                        Para recuperarlo basta con devolver el <strong>
+                        con data-plazas-quedan: el script y su estilo
+                        siguen en su sitio. */}
+                    <span><strong>Solo 40 plazas</strong> en esta convocatoria</span>
                   </li>
                   <li>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
