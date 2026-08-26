@@ -76,7 +76,7 @@ const DENTRO = [
       <!-- Confirmación -->
       <div class="gr-header">
         <span class="gr-check" aria-hidden="true">
-          <svg width="26" height="26" fill="none" stroke="#4da3ff" stroke-width="2.6" viewBox="0 0 24 24">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
           </svg>
         </span>
@@ -183,11 +183,13 @@ const DENTRO = [
     gap: 14px;
     margin-bottom: 40px;
   }
+  /* Mismo check que los del home: círculo hueco, borde e icono en #4da3ff. */
   .gr-check {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 54px; height: 54px; border-radius: 9999px;
-    background: rgba(77,163,255,0.12);
-    border: 1px solid rgba(77,163,255,0.3);
+    width: 44px; height: 44px; border-radius: 50%;
+    background: transparent;
+    border: 2px solid #4da3ff;
+    color: #4da3ff;
     margin-bottom: 4px;
   }
   .gr-title {
@@ -207,23 +209,23 @@ const DENTRO = [
   .gr-lead {
     font-family: var(--font-inter), system-ui, sans-serif;
     font-size: 17px; line-height: 1.65;
-    color: rgba(255,255,255,0.72);
+    color: #ffffff;
     margin: 0; max-width: 560px;
   }
 
   /* ── Qué pasa ahora ── */
   .gr-next {
     width: 100%;
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid rgba(77,163,255,0.28);
     border-radius: 16px;
-    background: rgba(255,255,255,0.04);
+    background: rgba(77,163,255,0.08);
     padding: 6px 20px;
     margin-bottom: 26px;
   }
   .gr-next-row {
     display: flex; align-items: baseline; gap: 16px;
     padding: 14px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(77,163,255,0.2);
   }
   .gr-next-row:last-child { border-bottom: 0; }
   .gr-next-label {
@@ -236,7 +238,7 @@ const DENTRO = [
   .gr-next-value {
     font-family: var(--font-inter), system-ui, sans-serif;
     font-size: 15.5px; line-height: 1.5;
-    color: rgba(255,255,255,0.9);
+    color: #ffffff;
   }
 
   /* ── El aviso del spam ── */
@@ -258,7 +260,7 @@ const DENTRO = [
   .gr-spam-text {
     font-family: var(--font-inter), system-ui, sans-serif;
     font-size: 14.5px; line-height: 1.6;
-    color: rgba(255,255,255,0.75);
+    color: rgba(255,255,255,0.92);
     margin: 0;
   }
   .gr-spam-text strong { color: #fff; font-weight: 600; }
@@ -282,7 +284,7 @@ const DENTRO = [
   .gr-item-text {
     font-family: var(--font-inter), system-ui, sans-serif;
     font-size: 14.5px; line-height: 1.6;
-    color: rgba(255,255,255,0.68);
+    color: rgba(255,255,255,0.88);
     margin: 0;
   }
 
@@ -292,9 +294,9 @@ const DENTRO = [
     display: inline-flex; align-items: center;
     font-family: var(--font-inter), system-ui, sans-serif;
     font-size: 14.5px; font-weight: 600;
-    color: rgba(255,255,255,0.6);
+    color: rgba(255,255,255,0.95);
     text-decoration: none;
-    border-bottom: 1px solid rgba(255,255,255,0.25);
+    border-bottom: 1px solid rgba(255,255,255,0.5);
     padding-bottom: 2px;
     transition: color .2s, border-color .2s;
   }
