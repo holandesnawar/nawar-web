@@ -1,0 +1,311 @@
+---
+/**
+ * Página de confirmación del "avísame" de la formación.
+ *
+ * Aterriza aquí quien pulsa el botón del correo de aviso. Es el momento de más
+ * atención que vamos a tener con esa persona: acaba de decir "esto me
+ * interesa". Por eso NO es un simple "gracias" — confirma, dice qué pasa
+ * ahora, cuenta qué hay dentro y pide lo único que de verdad hace falta que
+ * haga hoy: que nos meta en sus contactos para que los correos no caigan en
+ * spam justo la semana que se abre el carrito.
+ *
+ * Va sin indexar: es una página de embudo, no de captación.
+ *
+ * ── Lo que se cambia cada convocatoria, todo junto aquí arriba ──
+ */
+import Layout from '../layouts/Layout.astro'
+import '../styles/nawar-sections.css'
+
+export const prerender = true
+
+/** Cuándo se abren las plazas. Se enseña tal cual, así que escríbelo natural. */
+const FECHA_APERTURA = 'la primera semana de septiembre'
+/** Cuántas plazas tiene la convocatoria. */
+const PLAZAS = 40
+/** El remitente de los correos de venta. TIENE que ser el que usa systeme.io,
+ *  o el consejo de "añádenos a contactos" no sirve de nada. */
+const REMITENTE = 'info@holandesnawar.com'
+
+const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
+
+const DENTRO = [
+  {
+    icono: '🎥',
+    titulo: 'El camino completo, de cero a tu primera conversación',
+    texto: 'Diez módulos en orden, con vídeo, resumen, vocabulario y ejercicios. Sin saltos y sin buscar por dónde seguir.',
+  },
+  {
+    icono: '🗣️',
+    titulo: 'Una clase en vivo cada semana',
+    texto: 'Con un profe, en grupo y en directo. Es donde se te suelta la lengua, que es lo que no da ningún curso grabado.',
+  },
+  {
+    icono: '🇳🇱',
+    titulo: 'Explicado desde el español',
+    texto: 'Sin pasar por el inglés. Las cosas que a un hispanohablante le cuestan se explican como lo que son, no como las cuenta un libro neerlandés.',
+  },
+  {
+    icono: '💬',
+    titulo: 'Comunidad y dudas resueltas',
+    texto: 'Preguntas cuando te atascas y te contesta alguien de verdad, no un foro muerto.',
+  },
+  {
+    icono: '📜',
+    titulo: 'Certificado al terminar',
+    texto: 'Con tu nombre y un código de verificación.',
+  },
+]
+---
+
+<Layout
+  title="Ya estás en la lista — Holandés Nawar"
+  description="Te avisaremos en cuanto se abran las plazas de la Formación Nawar A0-A1."
+  noindex={true}
+>
+  <div class="gr-page">
+    <div class="gr-glow1" aria-hidden="true"></div>
+    <div class="gr-glow2" aria-hidden="true"></div>
+    <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.4;"></div>
+
+    <div class="gr-shell">
+
+      <a href="/" class="gr-logo-link">
+        <img src={LOGO} alt="Holandés Nawar" class="gr-logo" />
+      </a>
+
+      <!-- Confirmación -->
+      <div class="gr-header">
+        <span class="gr-check" aria-hidden="true">
+          <svg width="26" height="26" fill="none" stroke="#4da3ff" stroke-width="2.6" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
+        </span>
+        <h1 class="gr-title"><span class="gr-title-gradient">Hecho. Te avisamos.</span></h1>
+        <p class="gr-lead">
+          Cuando se abran las plazas te escribimos con el enlace para entrar.
+          Serás de los primeros en saberlo.
+        </p>
+      </div>
+
+      <!-- Qué pasa ahora -->
+      <div class="gr-next">
+        <div class="gr-next-row">
+          <span class="gr-next-label">Cuándo</span>
+          <span class="gr-next-value">{FECHA_APERTURA}</span>
+        </div>
+        <div class="gr-next-row">
+          <span class="gr-next-label">Plazas</span>
+          <span class="gr-next-value">{PLAZAS} en esta convocatoria</span>
+        </div>
+        <div class="gr-next-row">
+          <span class="gr-next-label">Qué recibes</span>
+          <span class="gr-next-value">Un correo con el enlace, nada más abrir</span>
+        </div>
+      </div>
+
+      <!-- Lo único que hace falta que hagas hoy -->
+      <div class="gr-spam">
+        <div class="gr-spam-icon" aria-hidden="true">📩</div>
+        <div>
+          <p class="gr-spam-title">Guarda nuestro correo en tus contactos</p>
+          <p class="gr-spam-text">
+            Añade <strong>{REMITENTE}</strong> a tu libreta de direcciones. Es
+            un minuto y es lo que evita que el correo de la apertura se te vaya
+            a spam justo el día que importa.
+          </p>
+        </div>
+      </div>
+
+      <!-- Qué hay dentro -->
+      <div class="gr-inside">
+        <h2 class="gr-inside-title">Mientras tanto, esto es lo que vas a encontrar dentro</h2>
+        <ul class="gr-list">
+          {DENTRO.map((item) => (
+            <li class="gr-item">
+              <span class="gr-item-icon" aria-hidden="true">{item.icono}</span>
+              <div>
+                <p class="gr-item-title">{item.titulo}</p>
+                <p class="gr-item-text">{item.texto}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="gr-footer">
+        <a href="/" class="gr-back">Volver al inicio</a>
+      </div>
+
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* Mismo lenguaje que el home y que la lista de espera: azul de marca,
+     dos manchas de luz y la trama de puntos. */
+  .gr-page {
+    min-height: 100vh;
+    background: #1D0084;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 52px 32px 96px;
+  }
+  .gr-glow1 {
+    position: absolute; top: -140px; left: 50%; transform: translateX(-50%);
+    width: 960px; height: 560px;
+    background: radial-gradient(ellipse at center, rgba(11,109,240,0.5) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .gr-glow2 {
+    position: absolute; bottom: -60px; right: -80px;
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse at center, rgba(77,163,255,0.16) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .gr-shell {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 700px;
+    display: flex; flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .gr-logo-link { display: inline-block; margin-bottom: 44px; }
+  .gr-logo { height: 38px; width: auto; object-fit: contain; }
+
+  /* ── Confirmación ── */
+  .gr-header {
+    width: 100%;
+    display: flex; flex-direction: column; align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+  .gr-check {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 54px; height: 54px; border-radius: 9999px;
+    background: rgba(77,163,255,0.12);
+    border: 1px solid rgba(77,163,255,0.3);
+    margin-bottom: 4px;
+  }
+  .gr-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: clamp(36px, 5.2vw, 54px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.08;
+    margin: 0;
+  }
+  .gr-title-gradient {
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .gr-lead {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 17px; line-height: 1.65;
+    color: rgba(255,255,255,0.72);
+    margin: 0; max-width: 560px;
+  }
+
+  /* ── Qué pasa ahora ── */
+  .gr-next {
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.04);
+    padding: 6px 20px;
+    margin-bottom: 26px;
+  }
+  .gr-next-row {
+    display: flex; align-items: baseline; gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .gr-next-row:last-child { border-bottom: 0; }
+  .gr-next-label {
+    flex: 0 0 96px;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #4da3ff;
+  }
+  .gr-next-value {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 15.5px; line-height: 1.5;
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* ── El aviso del spam ── */
+  .gr-spam {
+    width: 100%;
+    display: flex; gap: 14px; align-items: flex-start;
+    border: 1px solid rgba(77,163,255,0.28);
+    border-radius: 16px;
+    background: rgba(77,163,255,0.08);
+    padding: 18px 20px;
+    margin-bottom: 46px;
+  }
+  .gr-spam-icon { font-size: 22px; line-height: 1.2; flex-shrink: 0; }
+  .gr-spam-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: 15.5px; font-weight: 700; color: #fff;
+    margin: 0 0 4px;
+  }
+  .gr-spam-text {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: rgba(255,255,255,0.75);
+    margin: 0;
+  }
+  .gr-spam-text strong { color: #fff; font-weight: 600; }
+
+  /* ── Qué hay dentro ── */
+  .gr-inside { width: 100%; }
+  .gr-inside-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: 20px; font-weight: 700; color: #fff;
+    letter-spacing: -0.02em;
+    margin: 0 0 22px;
+  }
+  .gr-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 18px; }
+  .gr-item { display: flex; gap: 14px; align-items: flex-start; }
+  .gr-item-icon { font-size: 20px; line-height: 1.3; flex-shrink: 0; width: 26px; }
+  .gr-item-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: 15.5px; font-weight: 600; color: #fff;
+    margin: 0 0 3px; line-height: 1.35;
+  }
+  .gr-item-text {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: rgba(255,255,255,0.68);
+    margin: 0;
+  }
+
+  /* ── Pie ── */
+  .gr-footer { margin-top: 46px; }
+  .gr-back {
+    display: inline-flex; align-items: center;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 14.5px; font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.25);
+    padding-bottom: 2px;
+    transition: color .2s, border-color .2s;
+  }
+  .gr-back:hover { color: #fff; border-color: rgba(255,255,255,0.6); }
+
+  /* ── Móvil ── */
+  @media (max-width: 640px) {
+    .gr-page { padding: 36px 20px 72px; }
+    .gr-logo-link { margin-bottom: 32px; }
+    .gr-next-row { flex-direction: column; gap: 4px; padding: 12px 0; }
+    .gr-next-label { flex: none; }
+    .gr-spam { flex-direction: column; gap: 10px; }
+  }
+</style>
