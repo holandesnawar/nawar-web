@@ -14,7 +14,7 @@ const accesoIncluye = [
   'Programa completo Neerlandés A0 → A1 (16 semanas de programa)',
   'Clases en vivo semanales con el equipo Nawar',
   'Todas las clases grabadas, disponibles para siempre',
-  'Plataforma interactiva: flashcards, lectura, escucha y ejercicios',
+  'Escuela interactiva: flashcards, lectura, escucha y ejercicios',
   'Repaso inteligente que recuerda tus fallos hasta que los dominas',
   'Libros, presentaciones y materiales descargables',
   'Soporte y consultas respondidas por el equipo',
@@ -41,7 +41,7 @@ const FOTO_PACK_MOVIL = 'https://docs.holandesnawar.com/img/Landing/todoo.movil.
       </span>
       <h2 class="ai-title">
         <span class="ai-negro">Empieza hoy.</span>
-        <span class="ai-linea"><span class="ai-accent">Tu neerlandés cambia esta misma semana.</span></span>
+        <span class="ai-linea"><span class="ai-accent">Tu neerlandés cambia esta semana.</span></span>
       </h2>
       <p class="ai-lead">
         Estás a punto de entrar en la formación de neerlandés más completa para hispanohablantes:
@@ -54,7 +54,7 @@ const FOTO_PACK_MOVIL = 'https://docs.holandesnawar.com/img/Landing/todoo.movil.
         <source media="(max-width: 768px)" srcset={FOTO_PACK_MOVIL} />
         <img
           src={FOTO_PACK}
-          alt="Todo lo que incluye la formación Nawar A0-A1: certificado, clases, plataforma y comunidad"
+          alt="Todo lo que incluye la formación Nawar A0-A1: certificado, clases, escuela y comunidad"
           loading="lazy"
           decoding="async"
         />
@@ -84,7 +84,10 @@ const FOTO_PACK_MOVIL = 'https://docs.holandesnawar.com/img/Landing/todoo.movil.
       </div>
 
       <aside class="ai-cta-card sr">
-        <p class="ai-card-title">¿Preparado para <span class="ai-card-hl">hablar neerlandés</span>?</p>
+        {/* Los dos signos de interrogación van dentro del azul claro:
+            fuera, el de cierre se quedaba en blanco justo detrás de la
+            palabra azul y cantaba. */}
+        <p class="ai-card-title"><span class="ai-card-hl">¿</span>Preparado para <span class="ai-card-hl">hablar neerlandés?</span></p>
         <div class="ai-card-precio">
           <span class="ai-precio">{precio}&nbsp;€</span>
           <span class="ai-precio-nota">pago único</span>

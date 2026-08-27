@@ -5496,3 +5496,55 @@
     margin-bottom: 26px;
   }
 }
+
+
+/* ══════════════════════════════════════════════════════════════
+   ▓▓ SEXTA REVISIÓN — 27/08 ▓▓
+══════════════════════════════════════════════════════════════ */
+
+/* ── El titular de la oferta, un punto menos ───────────────────
+   Iba al mismo tamaño que el resto de titulares de sección (hasta
+   46 px), pero éste tiene dos frases en dos líneas y con "Empieza
+   hoy." sola arriba el bloque se comía la mitad de la pantalla.
+   Baja el techo a 40 px y con él el suelo: la cabecera sigue siendo
+   la más grande de la sección sin gritar. */
+.l8 .ai-title.ai-title {
+  font-size: clamp(25px, 3.4vw, 40px);
+}
+
+/* ── "empieza hoy" en escritorio, apuntando de verdad al botón ──
+   Estaba en el orden texto → flecha, así que la flecha quedaba en el
+   extremo derecho del grupo y su punta —que cae hacia abajo y a la
+   izquierda— señalaba el hueco de debajo del propio texto, no el
+   botón, que está más a la izquierda todavía.
+   Con row-reverse la flecha pasa a ir pegada al botón y el texto se
+   queda detrás: la curva sale del texto, baja y la punta cae justo en
+   el botón, que es el gesto de toda la vida.
+   Y la distancia: alineado por arriba en vez de por el centro, para
+   que la punta caiga a la altura del botón y no de la letra pequeña
+   que hay debajo.
+   Nada de esto toca al móvil, que tiene su propio bloque más abajo
+   —ahí la nota va encima del botón— y por eso la media query va a
+   partir de 721 px. */
+@media (min-width: 721px) {
+  /* Los huecos van justos a propósito: entre 960 y 1000 px la columna
+     de texto se queda en 530 y el botón, la flecha y la nota suman
+     exactamente eso. Con 12 y 4 px la nota llegaba a rozar el borde
+     de la columna. */
+  .l8 .hero-cta-fila {
+    align-items: flex-start;
+    gap: 9px;
+  }
+  .l8 .hero-empieza {
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    gap: 3px;
+    margin-bottom: 0;
+  }
+  /* Un poco más grande que los 42×34 de partida: al lado de una letra
+     de 27 px la flecha se quedaba en un garabato. La punta está a
+     ~4/5 del alto de su caja, así que con este margen cae a la altura
+     del centro del botón. */
+  .l8 .hero-empieza-flecha { width: 48px; height: 39px; margin-top: 0; }
+  .l8 .hero-empieza-txt { padding-top: 0; }
+}
