@@ -9,7 +9,7 @@
 // vale, a la derecha lo que cuesta.
 const nucleo = [
   { item: 'Programa completo Neerlandés A0 → A1', detalle: '16 semanas de programa estructurado, con 6 meses de acceso', valor: 800, nota: 'lo que cuesta un solo nivel en una academia de NL' },
-  { item: 'Plataforma interactiva', detalle: 'Flashcards, lectura, escucha con audio nativo y ejercicios', valor: 150 },
+  { item: 'Escuela interactiva', detalle: 'Flashcards, lectura, escucha con audio nativo y ejercicios', valor: 150 },
   { item: 'Repaso inteligente', detalle: 'Recuerda tus fallos y te los devuelve hasta que los dominas', valor: 90 },
   { item: 'Libros y materiales descargables', detalle: 'Presentaciones, guías y PDFs de cada lección', valor: 120 },
 ]
@@ -20,6 +20,18 @@ const bonus = [
   { item: 'Soporte y resolución de dudas', detalle: 'Preguntas y te responde el equipo', valor: 150 },
   { item: 'Certificado oficial Holandés Nawar', detalle: 'Personalizado, al completar la formación', valor: 60 },
 ]
+
+// El logo de iDEAL, el de verdad. Los demás están dibujados a mano
+// aquí al lado —la V de VISA, los dos círculos de Mastercard—, pero
+// éste tiene una forma que no se imita con texto.
+//
+// ⚠️ Este enlace es una miniatura de la caché de imágenes de Google,
+// no un archivo nuestro: esas direcciones caducan sin avisar. En
+// cuanto puedas, súbelo a docs.holandesnawar.com/img/Landing/ como el
+// resto y cambia esta línea. Mientras tanto, si el enlace muere el
+// onerror devuelve el chip de texto de siempre y no se ve un hueco.
+// Vaciando la constante también vuelve el texto.
+const IDEAL_LOGO = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4C7eZMNi3ybAuLupOcv_-jPwzJ_s_xL6hxEgiq4CxHHLe88haMW3Plcg&s=10'
 
 const valorTotal = [...nucleo, ...bonus].reduce((a, b) => a + b.valor, 0)
 const precio = '397'
@@ -152,7 +164,17 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
                         <circle cx="24.5" cy="12" r="8.5" fill="#F79E1B" fill-opacity="0.92"/>
                       </svg>
                     </span>
-                    <span class="pr-logo pr-logo--ideal">iDEAL</span>
+                    <span class={`pr-logo pr-logo--ideal${IDEAL_LOGO ? ' con-foto' : ''}`} aria-label="iDEAL">
+                      {IDEAL_LOGO
+                        ? <img
+                            src={IDEAL_LOGO}
+                            alt="iDEAL"
+                            loading="lazy" decoding="async"
+                            onerror="this.closest('.pr-logo').classList.add('sin-foto'); this.remove();"
+                          />
+                        : null}
+                      <span class="pr-logo-txt" aria-hidden="true">iDEAL</span>
+                    </span>
                     <span class="pr-logo pr-logo--klarna">Klarna</span>
                     <span class="pr-logo pr-logo--bcmc">Bancontact</span>
                   </span>
@@ -535,7 +557,16 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 .pr-logo--visa { color: #1434CB; font-style: italic; font-weight: 800; letter-spacing: 0.04em; }
 .pr-logo--mc { padding: 0 7px; }
 .pr-logo--mc svg { width: 30px; height: 18px; display: block; }
-.pr-logo--ideal { color: #CC0066; letter-spacing: -0.01em; }
+/* Cuando hay foto manda la foto y el texto se esconde; si la foto se
+   cae, el onerror pone .sin-foto y vuelve el chip escrito. El texto va
+   siempre en el marcado —no condicionado— para que el respaldo no
+   dependa de que llegue nada por JavaScript. */
+.pr-logo--ideal { color: #CC0066; letter-spacing: -0.01em; padding: 0 7px; }
+.pr-logo--ideal img { height: 15px; width: auto; display: block; }
+.pr-logo--ideal.con-foto .pr-logo-txt { display: none; }
+/* Después de la de arriba a propósito: cuando la foto falla el chip
+   lleva las dos clases y tiene que ganar ésta. */
+.pr-logo--ideal.sin-foto .pr-logo-txt { display: inline; }
 .pr-logo--klarna { background: #FFB3C7; color: #17120F; }
 .pr-logo--bcmc { color: #005498; font-size: 10px; }
 /* El plazo de Klarna, en su línea: es una condición de pago, no un
