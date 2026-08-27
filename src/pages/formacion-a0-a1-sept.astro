@@ -554,9 +554,10 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
           <div class="hero-ctas">
             <div class="hero-cta-fila">
               <div class="hero-cta-col">
+                {/* Sin flecha: la que cuenta es la de la nota a mano, que
+                    ya apunta al botón. Dos flechas seguidas se estorban. */}
                 <a href={CHECKOUT_URL} class="btn btn-primary btn-lg">
                   Quiero aprender neerlandés
-                  <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
                 </a>
                 <p class="hero-nota">
                   <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
