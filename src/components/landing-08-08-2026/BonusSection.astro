@@ -37,7 +37,7 @@ const CERT_Y = '50%'        // centro vertical dentro del fondo
 // Bonus 03. La ilustración manda; si se vacía esta constante vuelve
 // la baraja de tres capturas de abajo, y si esa lista no tiene tres
 // entradas, el mockup dibujado.
-const EJERCICIOS_IMG = 'https://docs.holandesnawar.com/img/Landing/ejercicioss.png'
+const EJERCICIOS_IMG = 'https://docs.holandesnawar.com/img/Landing/bonus.ejercicios.png'
 const EJERCICIOS_IMGS = [
   'https://docs.holandesnawar.com/img/ejercicios2.jpg',
   'https://docs.holandesnawar.com/img/ejercicios1.jpg',
@@ -354,19 +354,53 @@ const carita = (tono: string) =>
   position: relative;
   overflow: visible;
 }
-/* El fondo manda el tamaño del bloque */
-.bn-cert-fondo { width: 100%; height: auto; display: block; }
+/* El fondo manda el tamaño del bloque. Las esquinas a 20 px, las
+   mismas que el diploma dibujado y que el resto de bloques de la
+   página: la foto venía con las cuatro esquinas en pico. */
+.bn-cert-fondo {
+  width: 100%; height: auto; display: block;
+  border-radius: 20px;
+  transition: filter .35s ease;
+}
+
+/* ── El efecto al pasar el ratón ───────────────────────────────
+   Se movía la fila entera y con ella el texto de al lado, que es lo
+   que se quitó por inestable. Aquí sólo se mueve la ilustración: un
+   velo azul de marca sobre el fondo y el papel que se levanta un
+   punto con su sombra. El texto no se entera.
+
+   El velo va con z-index 0 y el papel con 1: sin eso el velo (que es
+   un ::before) se pintaría por encima del certificado y lo taparía. */
+.bn-cert.bn-cert--foto::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 0;
+  border-radius: 20px;
+  background: linear-gradient(150deg, rgba(11,109,240,0.34) 0%, rgba(77,163,255,0.12) 58%, transparent 100%);
+  opacity: 0;
+  transition: opacity .35s ease;
+  pointer-events: none;
+}
+.bn-cert.bn-cert--foto:hover::before { opacity: 1; }
+.bn-cert.bn-cert--foto:hover .bn-cert-fondo { filter: saturate(1.1) brightness(1.03); }
+.bn-cert.bn-cert--foto:hover .bn-cert-papel {
+  transform: translate(-50%, -50%) rotate(var(--cert-giro, -7deg)) scale(1.04);
+  filter: drop-shadow(0 26px 46px rgba(11,109,240,0.45));
+}
+@media (prefers-reduced-motion: reduce) {
+  .bn-cert.bn-cert--foto:hover .bn-cert-papel { transform: translate(-50%, -50%) rotate(var(--cert-giro, -7deg)); }
+}
 /* El papel, encima y girado. Si el fondo no cargara, la clase
    sin-fondo lo devuelve al flujo para que el bloque no se quede
    vacío. */
 .bn-cert-papel {
-  position: absolute;
+  position: absolute; z-index: 1;
   left: var(--cert-x, 50%);
   top: var(--cert-y, 50%);
   width: var(--cert-ancho, 62%);
   transform: translate(-50%, -50%) rotate(var(--cert-giro, -7deg));
   display: block;
   filter: drop-shadow(0 18px 32px rgba(8, 12, 45, 0.35));
+  transition: transform .45s cubic-bezier(.22,1,.36,1), filter .45s ease;
 }
 .bn-cert-papel img { width: 100%; height: auto; display: block; }
 .bn-cert--foto.sin-fondo .bn-cert-papel {

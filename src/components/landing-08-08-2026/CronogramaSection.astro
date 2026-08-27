@@ -78,13 +78,19 @@ const pasos = [
    resto de la página. Con 1000 px dentro de un contenedor de 1104 se
    quedaba metido hacia dentro y no cuadraba con las secciones de
    arriba y de abajo. */
+/* El hueco entre pasos va en el grid (column-gap), no como relleno
+   dentro de cada paso. Con padding-right en el paso y 0 en el último,
+   las tres primeras rayas medían 24 px menos que la cuarta: la fila
+   01——02——03——04 salía más larga por la derecha y por eso se veía
+   descentrada aunque la reja sí lo estuviera. Con el hueco fuera, las
+   cuatro columnas y las cuatro rayas miden exactamente lo mismo. */
 .cr-steps {
   list-style: none;
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 24px; row-gap: 0;
   margin: 0 auto;
 }
-.cr-step { display: flex; flex-direction: column; gap: 18px; padding-right: 24px; min-width: 0; }
-.cr-step:last-child { padding-right: 0; }
+.cr-step { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
 
 .cr-marker { display: flex; align-items: center; gap: 0; }
 .cr-line { border-radius: 100px; }
@@ -124,8 +130,8 @@ const pasos = [
 @media (max-width: 900px) {
   .cr-section { padding: 64px 0; }
   .cr-header { margin-bottom: 36px; }
-  .cr-steps { grid-template-columns: 1fr; gap: 0; max-width: 560px; }
-  .cr-step { flex-direction: row; gap: 18px; padding-right: 0; padding-bottom: 26px; }
+  .cr-steps { grid-template-columns: 1fr; column-gap: 0; max-width: 560px; }
+  .cr-step { flex-direction: row; gap: 18px; padding-bottom: 26px; }
   .cr-step:last-child { padding-bottom: 0; }
   /* En vertical la cuarta línea sí sobra: colgaría de "04" sin nada
      debajo. El desequilibrio que arregla en escritorio aquí no existe. */
