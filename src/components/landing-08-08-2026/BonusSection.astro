@@ -119,7 +119,7 @@ const carita = (tono: string) =>
         <div class="bn-text">
           <span class="bn-numrow"><span class="bn-num">Bonus 01</span></span>
           <h3 class="bn-name">Clase semanal <span class="bn-name-hl">online en directo</span></h3>
-          <p class="bn-desc">Cada semana una clase en vivo con un profesor interno de la formación, asignado según el módulo que estés cursando. Y si no puedes conectarte, queda grabada y siempre está a tu disposición.</p>
+          <p class="bn-desc">Cada semana una clase en vivo con un profesor interno de la formación, asignado según el módulo que estés cursando. Y si no puedes conectarte, queda grabada y la tienes a tu disposición.</p>
         </div>
       </article>
 
@@ -354,55 +354,43 @@ const carita = (tono: string) =>
   position: relative;
   overflow: visible;
 }
-/* El fondo manda el tamaño del bloque. Las esquinas a 20 px, las
-   mismas que el diploma dibujado y que el resto de bloques de la
-   página: la foto venía con las cuatro esquinas en pico. */
-.bn-cert-fondo {
-  width: 100%; height: auto; display: block;
-  border-radius: 20px;
-  transition: filter .35s ease;
-}
+/* El fondo manda el tamaño del bloque. Va tal cual, sin esquinas
+   redondeadas: los 20 px son sólo del certificado, que es lo que se
+   pidió. */
+.bn-cert-fondo { width: 100%; height: auto; display: block; }
 
-/* ── El efecto al pasar el ratón ───────────────────────────────
-   Se movía la fila entera y con ella el texto de al lado, que es lo
-   que se quitó por inestable. Aquí sólo se mueve la ilustración: un
-   velo azul de marca sobre el fondo y el papel que se levanta un
-   punto con su sombra. El texto no se entera.
-
-   El velo va con z-index 0 y el papel con 1: sin eso el velo (que es
-   un ::before) se pintaría por encima del certificado y lo taparía. */
-.bn-cert.bn-cert--foto::before {
-  content: '';
-  position: absolute; inset: 0; z-index: 0;
-  border-radius: 20px;
-  background: linear-gradient(150deg, rgba(11,109,240,0.34) 0%, rgba(77,163,255,0.12) 58%, transparent 100%);
-  opacity: 0;
-  transition: opacity .35s ease;
-  pointer-events: none;
-}
-.bn-cert.bn-cert--foto:hover::before { opacity: 1; }
-.bn-cert.bn-cert--foto:hover .bn-cert-fondo { filter: saturate(1.1) brightness(1.03); }
-.bn-cert.bn-cert--foto:hover .bn-cert-papel {
-  transform: translate(-50%, -50%) rotate(var(--cert-giro, -7deg)) scale(1.04);
-  filter: drop-shadow(0 26px 46px rgba(11,109,240,0.45));
-}
-@media (prefers-reduced-motion: reduce) {
-  .bn-cert.bn-cert--foto:hover .bn-cert-papel { transform: translate(-50%, -50%) rotate(var(--cert-giro, -7deg)); }
-}
+/* La perspectiva vive en el bloque y la inclinación en el papel: sin
+   perspective, rotateX/rotateY quedan planos y no se nota nada. */
+.bn-cert.bn-cert--foto { perspective: 1100px; }
 /* El papel, encima y girado. Si el fondo no cargara, la clase
    sin-fondo lo devuelve al flujo para que el bloque no se quede
    vacío. */
+/* Las dos inclinaciones van ANTES del giro del papel: así el vaivén
+   del ratón es respecto a la pantalla y no respecto a los -7° del
+   certificado, que lo dejaría torcido hacia donde no toca.
+   La transición larga es la de volver a su sitio al salir; mientras
+   el ratón está encima manda .inclinando, que va casi al momento
+   para que el papel siga al cursor sin ir por detrás. */
 .bn-cert-papel {
   position: absolute; z-index: 1;
   left: var(--cert-x, 50%);
   top: var(--cert-y, 50%);
   width: var(--cert-ancho, 62%);
-  transform: translate(-50%, -50%) rotate(var(--cert-giro, -7deg));
+  transform:
+    translate(-50%, -50%)
+    rotateX(var(--cert-rx, 0deg))
+    rotateY(var(--cert-ry, 0deg))
+    rotate(var(--cert-giro, -7deg));
   display: block;
   filter: drop-shadow(0 18px 32px rgba(8, 12, 45, 0.35));
-  transition: transform .45s cubic-bezier(.22,1,.36,1), filter .45s ease;
+  transition: transform .55s cubic-bezier(.22,1,.36,1), filter .45s ease;
 }
-.bn-cert-papel img { width: 100%; height: auto; display: block; }
+.bn-cert--foto.inclinando .bn-cert-papel {
+  transition: transform .12s linear, filter .45s ease;
+  filter: drop-shadow(0 26px 44px rgba(8, 12, 45, 0.45));
+}
+/* Las esquinas a 20 px, sólo aquí: es la imagen del certificado. */
+.bn-cert-papel img { width: 100%; height: auto; display: block; border-radius: 20px; }
 .bn-cert--foto.sin-fondo .bn-cert-papel {
   position: static;
   width: 100%;
@@ -433,6 +421,9 @@ const carita = (tono: string) =>
 .bn-cert-fx {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;
   overflow: hidden;
+  /* Mismas esquinas que la imagen de debajo: si no, el brillo se
+     pinta en los picos que el border-radius acaba de quitar. */
+  border-radius: 20px;
   /* La mezcla va aquí, en el elemento enmascarado, y no en los hijos:
      la máscara crea grupo de composición propio, y desde dentro los
      hijos no verían la imagen que hay debajo. */
@@ -1028,3 +1019,45 @@ const carita = (tono: string) =>
   .bn-cert-text { display: none; }
 }
 </style>
+
+<script>
+  /* El certificado se inclina siguiendo al ratón, tipo tarjeta 3D.
+     Se mueve el papel y nada más: ni la fila, ni el texto de al lado,
+     ni zoom. El giro se pasa por dos variables CSS que el papel ya
+     tiene metidas en su transform.
+
+     Sólo donde hay ratón de verdad —en táctil el hover no existe y
+     el efecto se quedaría pegado en el último toque— y respetando a
+     quien pide menos movimiento. */
+  const cert = document.getElementById('bn-cert-foto')
+  const conRaton = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+  const menosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  if (cert && conRaton && !menosMovimiento) {
+    const TOPE = 9 // grados a cada lado
+    let pendiente = 0
+
+    cert.addEventListener('pointermove', (e) => {
+      if (pendiente) return
+      // La posición se lee aquí y el pintado se aplaza al siguiente
+      // fotograma: leer la caja dentro del rAF obligaría al navegador
+      // a recalcular el diseño en cada movimiento del ratón.
+      const caja = cert.getBoundingClientRect()
+      const x = (e.clientX - caja.left) / caja.width - 0.5
+      const y = (e.clientY - caja.top) / caja.height - 0.5
+      pendiente = requestAnimationFrame(() => {
+        pendiente = 0
+        cert.classList.add('inclinando')
+        cert.style.setProperty('--cert-ry', (x * TOPE * 2).toFixed(2) + 'deg')
+        cert.style.setProperty('--cert-rx', (-y * TOPE * 2).toFixed(2) + 'deg')
+      })
+    })
+
+    cert.addEventListener('pointerleave', () => {
+      if (pendiente) { cancelAnimationFrame(pendiente); pendiente = 0 }
+      cert.classList.remove('inclinando')
+      cert.style.setProperty('--cert-ry', '0deg')
+      cert.style.setProperty('--cert-rx', '0deg')
+    })
+  }
+</script>
