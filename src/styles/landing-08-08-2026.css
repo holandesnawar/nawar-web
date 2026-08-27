@@ -5432,15 +5432,50 @@
 /* El titular crece un punto más: la captura cede 34 px de ancho y 4
    de hueco, así que la columna de texto pasa de 630 a 668 px y el
    tope sube de 38 a 40. La fórmula es la misma: el ancho de columna
-   entre las 16,47 veces el cuerpo que ocupa la primera frase. */
-.l8 .hero-inner.hero-inner {
-  grid-template-columns: 1fr 396px;
-  gap: 40px;
-}
+   entre las 16,47 veces el cuerpo que ocupa la primera frase.
+
+   DENTRO de la media query, y esto no es un detalle: sin ella esta
+   regla se aplicaba también en móvil y, como va después de la que
+   deja el banner en una sola columna, le ganaba. La captura está
+   oculta con display:none, pero su pista de 396 px se seguía
+   reservando igual, así que la columna de texto se quedaba en 294 px
+   y dejaba 72 px muertos a la derecha: el botón se veía descentrado
+   porque la columna entera lo estaba. */
 @media (min-width: 960px) {
+  .l8 .hero-inner.hero-inner {
+    grid-template-columns: 1fr 396px;
+    gap: 40px;
+  }
   .l8 .hero-headline.hero-headline {
     font-size: clamp(24px, calc(6.07vw - 29.7px), 40px);
   }
+}
+
+/* ── El banner en móvil ────────────────────────────────────────
+   El titular sube de 24 a 28 px de suelo. Sigue en cuatro líneas:
+   la segunda frase no necesitaría una quinta hasta los 36 px, así
+   que hay margen de sobra. */
+@media (max-width: 720px) {
+  .l8 .hero-headline.hero-headline {
+    font-size: clamp(28px, calc(6.6vw - 5px), 37px);
+  }
+  /* Y la nota a mano también sale aquí, encima del botón y pegada a
+     la derecha, que es donde la flecha —que cae hacia la izquierda—
+     apunta al botón. En la fila en columna hace falta el order para
+     que se ponga delante. */
+  .l8 .hero-cta-fila {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  .l8 .hero-empieza {
+    display: inline-flex;
+    order: -1;
+    align-self: flex-end;
+    margin: 0 8px 2px 0;
+  }
+  .l8 .hero-empieza-txt { font-size: 24px; }
+  .l8 .hero-empieza-flecha { width: 36px; height: 30px; margin-top: 8px; }
 }
 
 /* ── Más aire bajo los titulares de sección ────────────────────
