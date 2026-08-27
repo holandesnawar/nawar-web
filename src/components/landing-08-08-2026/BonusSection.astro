@@ -389,8 +389,8 @@ const carita = (tono: string) =>
   transition: transform .12s linear, filter .45s ease;
   filter: drop-shadow(0 26px 44px rgba(8, 12, 45, 0.45));
 }
-/* Las esquinas a 20 px, sólo aquí: es la imagen del certificado. */
-.bn-cert-papel img { width: 100%; height: auto; display: block; border-radius: 20px; }
+/* Las esquinas a 12 px, sólo aquí: es la imagen del certificado. */
+.bn-cert-papel img { width: 100%; height: auto; display: block; border-radius: 12px; }
 .bn-cert--foto.sin-fondo .bn-cert-papel {
   position: static;
   width: 100%;
@@ -423,7 +423,7 @@ const carita = (tono: string) =>
   overflow: hidden;
   /* Mismas esquinas que la imagen de debajo: si no, el brillo se
      pinta en los picos que el border-radius acaba de quitar. */
-  border-radius: 20px;
+  border-radius: 12px;
   /* La mezcla va aquí, en el elemento enmascarado, y no en los hijos:
      la máscara crea grupo de composición propio, y desde dentro los
      hijos no verían la imagen que hay debajo. */
