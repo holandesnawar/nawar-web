@@ -5472,10 +5472,13 @@
     display: inline-flex;
     order: -1;
     align-self: flex-end;
-    margin: 0 8px 2px 0;
+    /* Los 12 px de abajo son los que la suben: separan la nota del
+       botón en vez de dejarla pegada a él. */
+    margin: 0 8px 12px 0;
   }
   .l8 .hero-empieza-txt { font-size: 24px; }
-  .l8 .hero-empieza-flecha { width: 36px; height: 30px; margin-top: 8px; }
+  /* Y la flecha sube con el texto: iba 8 px por debajo de su línea. */
+  .l8 .hero-empieza-flecha { width: 36px; height: 30px; margin-top: 1px; }
 }
 
 /* ── Más aire bajo los titulares de sección ────────────────────
