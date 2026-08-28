@@ -5581,3 +5581,34 @@
 @media (max-width: 359px) {
   .l8 .footer-links { flex-wrap: wrap; }
 }
+
+/* ── Dos cosas que sólo se ven en el móvil ─────────────────────
+
+   1) El escudo de la línea fina del cierre. .nw-icon nace con
+   display:block porque casi siempre es un icono suelto y centrado
+   —el de la sección de garantía, sin ir más lejos—, pero aquí va
+   dentro de una frase: en bloque se quedaba en un renglón para él
+   solo, pegado a la izquierda, con el texto centrado debajo. En
+   línea vuelve a donde tiene que estar, junto a la primera palabra. */
+.l8 .final-cta-fine.final-cta-fine {
+  /* Era inline-flex con el icono como primer hijo. Al partirse el
+     texto en dos líneas el icono se quedaba en la izquierda del
+     bloque entero y centrado a media altura, separado de la frase.
+     Como párrafo normal vuelve a ser la primera cosa del renglón. */
+  display: block;
+  text-align: center;
+}
+.l8 .final-cta-fine .nw-icon {
+  display: inline-block;
+  vertical-align: -3px;
+  margin-right: 6px;
+}
+
+/* 2) La barra fija de abajo tapaba el copyright. Mide 64 px y el pie
+   acaba en el borde de la página, así que la última línea quedaba
+   detrás del cristal. El hueco sólo hace falta donde la barra existe
+   —a partir de 960 px está oculta— y suma el margen seguro de los
+   iPhone con barra de gestos. */
+@media (max-width: 959px) {
+  .l8 .footer { padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
+}
