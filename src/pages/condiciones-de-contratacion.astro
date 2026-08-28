@@ -14,10 +14,31 @@
  * de las otras tres páginas.
  *
  * BORRADOR: mientras esté en true sale un aviso arriba y la página
- * no se enlaza desde ningún sitio. Los datos que faltan van marcados
- * con la clase .pend, así que se localizan de un vistazo. En cuanto
- * Rida los confirme: rellenar, poner BORRADOR = false y añadir el
- * enlace en el pie de la landing y en el checkout.
+ * no se enlaza desde ningún sitio.
+ *
+ * Los datos ya están todos puestos (28/08/2026): titular, KVK, BTW,
+ * las 40 plazas como límite firme, las fechas de la convocatoria de
+ * septiembre, Stripe y sus métodos, IVA incluido, Klarna, la garantía
+ * y los plazos de respuesta. Ya no queda ningún `.pend` en el texto.
+ * Falta solo la decisión de publicarlo: poner BORRADOR = false y
+ * añadir el enlace en el pie de la landing y en el checkout.
+ *
+ * ⚠️ Dos decisiones de fondo que conviene no deshacer sin pensarlo:
+ *
+ *  - **La garantía de 15 días es incondicional.** Se valoró pedir
+ *    "haber entrado a la escuela" y se descartó: quien pide la
+ *    devolución casi siempre ha entrado, así que la condición no
+ *    filtra a nadie; y el único caso en el que sí actuaría —alguien
+ *    que pagó y nunca llegó a entrar— es justo el peor al que
+ *    negarle el dinero. Una garantía con letra pequeña deja de
+ *    quitar miedo, que es su único trabajo.
+ *
+ *  - **No se invoca la excepción del contenido digital.** La versión
+ *    anterior decía que en el pago se marca una casilla de renuncia
+ *    al desistimiento, y esa casilla NO existe en el checkout.
+ *    Describir un trámite que no ocurre es peor que no tenerlo, y
+ *    con una garantía de 15 días sin condiciones la renuncia no
+ *    aportaba nada.
  */
 import Layout from '../layouts/Layout.astro'
 import NavbarLanding from '../components/NavbarLanding'
@@ -27,7 +48,7 @@ import '../styles/nawar-sections.css'
 export const prerender = true
 
 const BORRADOR = true
-const ACTUALIZADO = '20 de agosto de 2026'
+const ACTUALIZADO = '28 de agosto de 2026'
 ---
 
 <Layout
@@ -50,10 +71,10 @@ const ACTUALIZADO = '20 de agosto de 2026'
 
       {BORRADOR && (
         <div class="legal-aviso">
-          <strong>Borrador pendiente de revisión.</strong>
-          Este documento está redactado pero todavía tiene datos por confirmar —van
-          marcados en el texto— y no ha pasado por un asesor legal. No se enlaza
-          desde ninguna parte de la web hasta que esté cerrado.
+          <strong>Borrador pendiente de publicar.</strong>
+          El documento está completo y con todos los datos confirmados, pero no ha
+          pasado por un asesor legal y todavía no se enlaza desde ninguna parte de
+          la web.
         </div>
       )}
 
@@ -62,10 +83,10 @@ const ACTUALIZADO = '20 de agosto de 2026'
         <h2>1. Quién vende</h2>
         <p>Las presentes condiciones regulan la contratación de la <strong>Formación Nawar A0 → A1</strong> (en adelante, «la formación») a través de <strong>www.holandesnawar.com</strong>.</p>
         <ul>
-          <li><strong>Titular:</strong> HOLANDÉS NAWAR <span class="pend">— falta la denominación exacta: ¿eenmanszaak, BV, otra?</span></li>
+          <li><strong>Titular:</strong> HOLANDÉS NAWAR, empresa individual (<em>eenmanszaak</em>) inscrita en la Cámara de Comercio de los Países Bajos.</li>
           <li><strong>Dirección:</strong> Kemphaan 11, Waspik, 5165 KH, Países Bajos</li>
-          <li><strong>Número de KVK:</strong> <span class="pend">pendiente</span></li>
-          <li><strong>Número de IVA (BTW):</strong> <span class="pend">pendiente</span></li>
+          <li><strong>Número de KVK:</strong> 89985958</li>
+          <li><strong>Número de IVA (BTW):</strong> NL004042623B02</li>
           <li><strong>Email de contacto:</strong> <a href="mailto:info@holandesnawar.com">info@holandesnawar.com</a></li>
         </ul>
         <p>Estas condiciones se aplican junto con los <a href="/terminos-y-condiciones">Términos y Condiciones</a> de uso del sitio y la <a href="/politica-de-privacidad">Política de Privacidad</a>. En lo relativo a la compra de la formación, si algo de aquellos textos contradijera lo que dice este documento, prevalece este.</p>
@@ -83,12 +104,13 @@ const ACTUALIZADO = '20 de agosto de 2026'
           <li>Prioridad para reservar plaza en el siguiente nivel (A1 → A2) cuando se abra.</li>
         </ul>
         <p>La formación es un servicio de contenido digital: no se envía ningún producto físico. El certificado de finalización es un documento propio de Holandés Nawar y <strong>no es un título oficial</strong> ni sustituye a los exámenes oficiales de neerlandés (inburgering, NT2 u otros).</p>
-        <p>Las plazas de cada convocatoria son limitadas <span class="pend">(40 plazas — confirmar si es un límite firme por convocatoria)</span>. La convocatoria a la que da acceso esta compra empieza el <span class="pend">pendiente: fecha de inicio</span> y la matrícula se cierra el <span class="pend">pendiente: fecha de cierre</span>.</p>
+        <p>Las plazas de cada convocatoria son limitadas: <strong>un máximo de 40 plazas por convocatoria</strong>. Es un límite firme; cuando se cubren, la matrícula se cierra hasta la convocatoria siguiente. Ese número es el aforo máximo y no una previsión del número de alumnos que habrá.</p>
+        <p>La matrícula de la convocatoria de septiembre de 2026 abre el <strong>martes 8 de septiembre de 2026</strong> y se cierra el <strong>domingo 13 de septiembre de 2026 a las 23:59</strong> (hora de los Países Bajos), o antes si se cubren las 40 plazas.</p>
 
         <h2>3. Cómo se contrata</h2>
         <ul>
           <li>El alumno selecciona la formación en la web y completa el formulario de matrícula con sus datos.</li>
-          <li>Realiza el pago a través de la pasarela <span class="pend">pendiente: pasarela y métodos de pago admitidos</span>. Holandés Nawar no almacena en ningún momento los datos de la tarjeta.</li>
+          <li>Realiza el pago a través de <strong>Stripe</strong>, que es quien procesa el cobro. Se admiten tarjeta de crédito y débito, iDEAL, Bancontact, Klarna, Apple Pay y Google Pay. Holandés Nawar no ve ni almacena en ningún momento los datos de la tarjeta. Los métodos disponibles pueden variar según el país y el dispositivo del alumno.</li>
           <li>Una vez confirmado el pago, el alumno recibe por email la confirmación de la compra, la factura y las instrucciones de acceso.</li>
           <li>El contrato se entiende perfeccionado en el momento en que se confirma el pago.</li>
         </ul>
@@ -96,9 +118,9 @@ const ACTUALIZADO = '20 de agosto de 2026'
 
         <h2>4. Precio y pago</h2>
         <ul>
-          <li>El precio de la formación es de <strong>397 €</strong>, en un <strong>pago único</strong> <span class="pend">— confirmar si el importe es con IVA incluido</span>.</li>
+          <li>El precio de la formación es de <strong>397 €, IVA incluido</strong>, en un <strong>pago único</strong>.</li>
           <li>El precio mostrado en la web es el precio final para el consumidor, sin gastos adicionales de gestión ni de envío.</li>
-          <li><span class="pend">Pendiente: ¿se ofrece pago a plazos? La página de preguntas frecuentes lo menciona y aquí hay que decir en cuántos plazos, con qué recargo si lo hubiera y con qué pasarela.</span></li>
+          <li><strong>Pago a plazos.</strong> En el momento del pago puedes elegir <strong>Klarna</strong> y fraccionar el importe o aplazarlo. Holandés Nawar no cobra ningún recargo por ello: las condiciones concretas —número de plazos, calendario y cualquier coste— las establece Klarna, están sujetas a su aprobación y se te muestran antes de confirmar. La relación de pago aplazado es entre el alumno y Klarna; Holandés Nawar recibe el importe completo desde el primer momento y el acceso se abre igual.</li>
           <li>La factura se emite y se envía por email a la dirección facilitada en la matrícula.</li>
         </ul>
         <p>Los precios de las convocatorias futuras pueden cambiar. El precio aplicable es siempre el que figuraba en la web en el momento de la compra.</p>
@@ -113,18 +135,17 @@ const ACTUALIZADO = '20 de agosto de 2026'
 
         <h2>6. Derecho de desistimiento</h2>
         <p>Como consumidor tienes derecho a desistir del contrato en un plazo de <strong>14 días naturales</strong> desde su celebración, sin necesidad de justificar tu decisión y sin penalización.</p>
-        <p><strong>Excepción para el contenido digital.</strong> La normativa europea prevé que este derecho se pierde cuando el suministro del contenido digital ha comenzado y el consumidor ha dado, antes de empezar, su <strong>consentimiento expreso</strong> para que empiece de inmediato reconociendo que con ello pierde el derecho de desistimiento.</p>
-        <p>Por eso, en el momento de la compra se te pide que marques esa casilla. Si la marcas y accedes a la escuela, pierdes el derecho de desistimiento de los 14 días. Si no la marcas, el acceso se te abre al terminar el plazo de 14 días y conservas ese derecho íntegro.</p>
-        <p>En cualquier caso, y por encima de lo anterior, se te aplica la garantía de devolución de 15 días de la cláusula siguiente, que es más amplia que el desistimiento legal.</p>
+        <p><strong>No aplicamos la excepción del contenido digital.</strong> La normativa europea permite que este derecho decaiga cuando el suministro del contenido digital ya ha comenzado con el consentimiento expreso del consumidor. Holandés Nawar renuncia a ampararse en esa excepción: aunque hayas entrado a la escuela y hayas visto parte del contenido, <strong>conservas íntegro tu derecho de desistimiento durante los 14 días</strong>. El acceso se abre de inmediato tras el pago, sin esperas y sin casillas que firmar.</p>
+        <p>Y por encima de lo anterior se te aplica la garantía de devolución de 15 días de la cláusula siguiente, que es más amplia que el desistimiento legal.</p>
         <p>Para ejercer el desistimiento basta con comunicarlo por email a <a href="mailto:info@holandesnawar.com">info@holandesnawar.com</a> con una declaración inequívoca. Se devolverá el importe pagado en un plazo máximo de 14 días naturales desde la comunicación, por el mismo medio de pago empleado en la compra.</p>
 
         <h2>7. Garantía de devolución de 15 días</h2>
         <p>Con independencia del derecho de desistimiento, Holandés Nawar ofrece una <strong>garantía de satisfacción de 15 días naturales</strong> desde la compra: si la formación no es lo que esperabas, escribes a <a href="mailto:info@holandesnawar.com">info@holandesnawar.com</a> dentro de ese plazo y se te devuelve el importe íntegro.</p>
         <ul>
-          <li><strong>Plazo:</strong> 15 días naturales <span class="pend">— confirmar si cuentan desde la compra o desde el inicio de la convocatoria</span>.</li>
-          <li><strong>Condiciones:</strong> <span class="pend">pendiente. ¿Es incondicional, o se pide haber entrado a la escuela / haber hecho el primer módulo? Lo que se ponga aquí es lo que hay que cumplir.</span></li>
+          <li><strong>Plazo:</strong> 15 días naturales contados <strong>desde la fecha de compra</strong>.</li>
+          <li><strong>Condiciones: ninguna.</strong> No hace falta justificar la decisión, ni haber visto un número mínimo de lecciones, ni haber asistido a ninguna clase. Basta con pedirlo dentro del plazo. Si quieres contarnos qué no ha encajado te lo agradeceremos, pero no es un requisito para que se te devuelva el dinero.</li>
           <li><strong>Cómo se solicita:</strong> por email, indicando el nombre y el email de la compra.</li>
-          <li><strong>Plazo de devolución:</strong> <span class="pend">pendiente</span> días desde la solicitud, por el mismo medio de pago.</li>
+          <li><strong>Plazo de devolución:</strong> se tramita en un plazo máximo de <strong>14 días naturales</strong> desde la solicitud, por el mismo medio de pago empleado en la compra. Una vez tramitada, el tiempo que tarda el importe en aparecer en tu cuenta depende de tu banco o de tu método de pago.</li>
         </ul>
         <p>Pasado ese plazo, y salvo lo previsto en la cláusula 6, no se admiten devoluciones, dado que se trata de contenido digital al que ya se ha accedido.</p>
 
@@ -149,7 +170,7 @@ const ACTUALIZADO = '20 de agosto de 2026'
         <p>Los datos facilitados se tratan conforme al Reglamento (UE) 2016/679 con la finalidad de gestionar la matrícula, dar acceso a la formación y atender al alumno. Puedes consultar el detalle, y cómo ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad, en la <a href="/politica-de-privacidad">Política de Privacidad</a>.</p>
 
         <h2>12. Atención al cliente y reclamaciones</h2>
-        <p>Para cualquier consulta, incidencia o reclamación relacionada con la compra: <a href="mailto:info@holandesnawar.com">info@holandesnawar.com</a>. Se responderá en un plazo máximo de <span class="pend">pendiente</span> días hábiles.</p>
+        <p>Para cualquier consulta, incidencia o reclamación relacionada con la compra: <a href="mailto:info@holandesnawar.com">info@holandesnawar.com</a>. Se responderá en un plazo máximo de <strong>5 días hábiles</strong>.</p>
 
         <h2>13. Ley aplicable y jurisdicción</h2>
         <p>Este contrato se rige por la legislación de los Países Bajos. No obstante, si contratas como consumidor con residencia habitual en otro Estado miembro de la Unión Europea, conservas la protección que te otorguen las disposiciones imperativas de tu país de residencia, y podrás acudir a los tribunales de tu domicilio.</p>
