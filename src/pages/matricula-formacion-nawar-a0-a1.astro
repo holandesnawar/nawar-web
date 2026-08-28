@@ -118,7 +118,12 @@ if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
           </button>
 
           <p class="mx-legal">
-            Al continuar confirmo que he leído y acepto los
+            {/* Las condiciones de contratación van AQUÍ y no solo en el pie: la
+                ley pide que el comprador pueda leerlas antes de pagar, y esta
+                es la última pantalla antes del cobro. */}
+            Al continuar confirmo que he leído y acepto las
+            <a href="/condiciones-de-contratacion" target="_blank" rel="noreferrer">Condiciones de contratación</a>,
+            los
             <a href="/terminos-y-condiciones" target="_blank" rel="noreferrer">Términos</a>
             y la
             <a href="/politica-de-privacidad" target="_blank" rel="noreferrer">Política de privacidad</a>.
