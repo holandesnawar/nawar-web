@@ -13,15 +13,17 @@
  * copia el bloque de estilos entero a propósito, para no tocar los
  * de las otras tres páginas.
  *
- * BORRADOR: mientras esté en true sale un aviso arriba y la página
- * no se enlaza desde ningún sitio.
+ * PUBLICADA el 28/08/2026 con todos los datos dentro: titular, KVK,
+ * BTW, las 40 plazas como límite firme, las fechas de la convocatoria
+ * de septiembre, Stripe y sus métodos, IVA incluido, Klarna, la
+ * garantía y los plazos de respuesta.
  *
- * Los datos ya están todos puestos (28/08/2026): titular, KVK, BTW,
- * las 40 plazas como límite firme, las fechas de la convocatoria de
- * septiembre, Stripe y sus métodos, IVA incluido, Klarna, la garantía
- * y los plazos de respuesta. Ya no queda ningún `.pend` en el texto.
- * Falta solo la decisión de publicarlo: poner BORRADOR = false y
- * añadir el enlace en el pie de la landing y en el checkout.
+ * Está enlazada desde el pie de la web y desde el formulario de
+ * matrícula, que es donde importa: el comprador tiene que poder leer
+ * las condiciones ANTES de pagar, no después.
+ *
+ * BORRADOR vuelve a true si algún día hay que retirarla: saca el
+ * aviso de arriba. Los datos por confirmar se marcan con `.pend`.
  *
  * ⚠️ Dos decisiones de fondo que conviene no deshacer sin pensarlo:
  *
@@ -47,7 +49,7 @@ import '../styles/nawar-sections.css'
 
 export const prerender = true
 
-const BORRADOR = true
+const BORRADOR = false
 const ACTUALIZADO = '28 de agosto de 2026'
 ---
 
