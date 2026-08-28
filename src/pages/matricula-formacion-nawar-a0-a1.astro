@@ -46,10 +46,9 @@ if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
 
       <!-- Header -->
       <header class="mx-header">
+        {/* Sin palomita: un check delante dice "hecho", y aquí no hay nada
+            hecho todavía — es el primero de dos pasos. */}
         <span class="mx-badge">
-          <svg class="mx-badge-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true">
-            <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
           Formación A0 → A1 · Plazas limitadas
         </span>
         <h1 class="mx-title"><span class="mx-title-gradient">Reserva tu plaza</span></h1>
@@ -88,11 +87,18 @@ if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
             <input id="email" name="email" type="email" class="mx-input" placeholder="tu@email.com" autocomplete="email" required />
             <span class="mx-err" data-for="email">Introduce un email válido</span>
           </div>
-          <div class="mx-field">
-            <label class="mx-label" for="phone">Teléfono <span class="mx-hint">— con prefijo</span></label>
-            <input id="phone" name="phone" type="tel" class="mx-input" placeholder="+34 600 12 34 56" autocomplete="tel" />
-          </div>
         </div>
+
+        {/* Aquí estaba el Teléfono, y se fue por el mismo motivo que País y
+            Ciudad: no lo lee nadie. En la escuela solo viaja a la ficha de
+            Stripe para rellenar un campo que Stripe ya pide él si lo necesita,
+            y en systeme.io la mayoría de los compradores son contactos que YA
+            existen (vienen de la lista de espera), donde el número no se
+            acaba escribiendo. O sea: un campo de fricción justo antes de
+            pagar a cambio de un dato que se pierde.
+            Si algún día hacen falta los teléfonos, el sitio es DESPUÉS de
+            pagar —en la escuela, con el alumno ya dentro— no antes.
+            `/api/enroll` sigue aceptando `phone` por si vuelve. */}
 
         {/* Aquí vivían País y Ciudad. Se quitaron: no los leía nadie —se
             escribían en la fila de matrícula y en los metadatos de Stripe y ahí
@@ -176,7 +182,6 @@ if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
     letter-spacing: 0.14em; text-transform: uppercase;
     margin-bottom: 6px;
   }
-  .mx-badge-icon { width: 12px; height: 12px; }
 
   /* ── Header ── */
   .mx-header {
@@ -377,7 +382,6 @@ if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
       first_name: (document.getElementById('first_name') as HTMLInputElement).value.trim(),
       last_name: (document.getElementById('last_name') as HTMLInputElement).value.trim(),
       email: (document.getElementById('email') as HTMLInputElement).value.trim().toLowerCase(),
-      phone: (document.getElementById('phone') as HTMLInputElement).value.trim(),
       website: (document.getElementById('mx-honeypot') as HTMLInputElement | null)?.value ?? '',
     }
 
