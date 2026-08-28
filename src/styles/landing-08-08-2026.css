@@ -5612,3 +5612,19 @@
 @media (max-width: 959px) {
   .l8 .footer { padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
 }
+
+/* ── El contador de la barra, cuando toca esconderlo ───────────
+   .l8nav-timer trae display:flex, y un display de la hoja de estilos
+   le gana al display:none que el navegador aplica por el atributo
+   hidden. Sin esta regla el bloque seguiría a la vista con los ceros
+   antes de que abra la convocatoria. Es la tercera vez que pasa en
+   esta página: pasó con .bn-mock y con .pr-quedan. */
+.l8 .l8nav-timer[hidden] { display: none; }
+/* Y con el contador escondido, cada pieza en su columna. La reja es
+   1fr auto 1fr y las tres cosas se colocaban por orden: al quitar el
+   contador del medio, el botón se corría a la columna central y
+   aparecía flotando en mitad de la barra. Con la columna escrita se
+   queda en su sitio esté el contador o no. */
+.l8 .l8nav-logo { grid-column: 1; }
+.l8 .l8nav-timer { grid-column: 2; }
+.l8 .l8nav-cta { grid-column: 3; }
