@@ -489,9 +489,12 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         <a href="#hero" class="l8nav-logo" aria-label="Inicio">
           <img src={LOGO} alt="Holandés con Nawar" width="150" height="38" />
         </a>
-        <div class="l8nav-timer">
+        {/* Oculto de salida: lo enseña el script cuando la
+            convocatoria ya ha abierto. Así nadie ve el "7D" de
+            relleno ni una cifra que no toca. */}
+        <div class="l8nav-timer" id="l8-timer-caja" hidden>
           <div class="l8nav-timer-label">Las plazas cierran en</div>
-          <div class="l8nav-timer-value" id="l8-timer">7D 00H 00M 00S</div>
+          <div class="l8nav-timer-value" id="l8-timer">0D 00H 00M 00S</div>
         </div>
         <a href={CHECKOUT_URL} class="l8nav-cta">
           Obtener acceso
@@ -996,29 +999,52 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 </Layout>
 
 <script>
-  /* ── Contador de 7 días: nav + tarjeta de precio ─────────── */
-  ;(function initCountdown() {
-    const KEY = 'nawar_offer_end_l8'
-    const WEEK = 7 * 24 * 60 * 60 * 1000
+  /* ── Contador de la convocatoria: fechas fijas ─────────────
+     Antes eran siete días por visitante guardados en localStorage:
+     cada persona veía su propia cuenta atrás y se le reiniciaba al
+     cambiar de navegador o al borrar los datos. Ahora es una sola
+     fecha para todo el mundo.
 
-    let end = parseInt(localStorage.getItem(KEY) || '', 10)
-    if (!end || isNaN(end) || end < Date.now()) {
-      end = Date.now() + WEEK
-      localStorage.setItem(KEY, String(end))
-    }
+     Las dos fechas llevan el desfase escrito (+02:00, que es la hora
+     de España en septiembre): así el momento es el mismo para quien
+     entre desde Ámsterdam, desde Madrid o desde México, sin depender
+     de la zona horaria del visitador.
+
+     ⚠️ Para otra convocatoria sólo hay que cambiar estas dos líneas.
+     Ojo con el desfase: de finales de octubre a finales de marzo
+     España va en +01:00, no en +02:00. */
+  ;(function initCountdown() {
+    const INICIO = Date.parse('2026-09-08T08:00:00+02:00')
+    const FIN = Date.parse('2026-09-13T23:59:59+02:00')
+
+    // Restos del contador viejo, para no dejar basura en el navegador
+    // de quien ya había pasado por aquí.
+    try { localStorage.removeItem('nawar_offer_end_l8') } catch (e) {}
 
     const pad = (n: number) => (n < 10 ? '0' : '') + n
+    const caja = document.getElementById('l8-timer-caja')
     const navEl = document.getElementById('l8-timer')
-    const priceEl = document.getElementById('l8-price-countdown')
 
     const tick = () => {
-      const diff = Math.max(0, end - Date.now())
+      const ahora = Date.now()
+      // Antes de que abra, el contador no se ve: no hay nada que
+      // contar y una cuenta atrás de dieciséis días no es la promesa.
+      // El marcado ya viene oculto, así que si este script fallara se
+      // queda escondido en vez de mostrar una cifra falsa.
+      if (ahora < INICIO) {
+        if (caja) caja.hidden = true
+        return
+      }
+      if (caja) caja.hidden = false
+
+      const diff = Math.max(0, FIN - ahora)
       const d = Math.floor(diff / 86400000)
       const h = Math.floor((diff % 86400000) / 3600000)
       const m = Math.floor((diff % 3600000) / 60000)
       const s = Math.floor((diff % 60000) / 1000)
       if (navEl) navEl.textContent = `${d}D ${pad(h)}H ${pad(m)}M ${pad(s)}S`
-      if (priceEl) priceEl.textContent = `${d}d ${pad(h)}h ${pad(m)}m ${pad(s)}s`
+      // Al llegar a cero se para y se queda en ceros: quien entre el
+      // lunes ve de un vistazo que llega tarde.
       if (diff === 0) clearInterval(iv)
     }
     const iv = setInterval(tick, 1000)
