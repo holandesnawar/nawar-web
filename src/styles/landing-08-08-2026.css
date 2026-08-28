@@ -5559,3 +5559,25 @@
 @media (max-width: 760px) {
   .l8 .ai-title.ai-title { line-height: 1.32; }
 }
+
+/* ── Los tres enlaces legales, en una sola línea en móvil ──────
+   A 13 px suman 349 px y en una pantalla de 360 caben 312, así que
+   "Contacto" se caía solo a un segundo renglón. Con 10,5 px y 9 px
+   de hueco entran los tres en 300. El nowrap es para que ninguno se
+   parta por dentro ("Política de / privacidad"), que sería peor que
+   el salto que se quiere quitar. */
+@media (max-width: 560px) {
+  .l8 .footer-links {
+    flex-wrap: nowrap;
+    gap: 9px;
+    justify-content: center;
+    width: 100%;
+  }
+  .l8 .footer-links a { font-size: 10.5px; white-space: nowrap; }
+}
+/* Por debajo de 360 px no hay tamaño de letra legible con el que
+   quepan los tres: en vez de sacarlos de la caja, se les deja volver
+   a partir. */
+@media (max-width: 359px) {
+  .l8 .footer-links { flex-wrap: wrap; }
+}
