@@ -152,10 +152,9 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
                 </ul>
 
                 <div class="pr-payments">
-                  <span class="pr-pay-secure">
-                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                    Pago seguro
-                  </span>
+                  {/* Aquí iba un "🔒 Pago seguro" encima de los logos. Fuera:
+                      los logos ya dicen eso solos, y la garantía y el pago
+                      único están dos líneas más arriba. */}
                   <span class="pr-logos">
                     <span class="pr-logo pr-logo--visa">VISA</span>
                     <span class="pr-logo pr-logo--mc" aria-label="Mastercard">
@@ -532,17 +531,12 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
    color, que es como se reconocen de un vistazo. */
 .pr-payments {
   position: relative;
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 15px;
   text-align: center;
   font-size: 11px;
   margin-top: 8px;
   padding-top: 20px;
   border-top: 1px solid rgba(255,255,255,0.28);
-}
-.pr-pay-secure {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 11.5px; font-weight: 600; letter-spacing: 0.02em;
-  color: rgba(255,255,255,0.72);
 }
 .pr-logos { display: flex; align-items: center; justify-content: center; gap: 7px; flex-wrap: wrap; }
 .pr-logo {
@@ -650,8 +644,16 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
   /* Métodos de pago: una sola fila centrada. Las cuatro pastillas
      suman 287 px con el tamaño de escritorio y la tarjeta sólo da
      264 px, así que aquí van un punto más apretadas. */
-  .pr-payments { justify-content: center; row-gap: 8px; gap: 5px; }
-  .pr-pay-secure { width: 100%; justify-content: center; margin-bottom: 2px; }
+  /* El gap de 5 px de antes era el que dejaba "Pago fraccionable con
+     Klarna" pegado a los logos. Ahora sólo hay dos piezas en la
+     columna y les cabe el aire de escritorio. */
+  .pr-payments { justify-content: center; gap: 14px; }
+  /* Y las cinco pastillas, un punto más apretadas: con el relleno de
+     escritorio suman 299 px y la tarjeta da 264, así que en pantallas
+     de 390 y menos "Bancontact" se caía sola a una segunda fila. */
+  .pr-logos { gap: 5px; }
+  .pr-logo { padding: 0 6px; font-size: 10.5px; }
+  .pr-logo--bcmc { font-size: 9.5px; }
   .pr-pay-pill { padding: 4px 7px; font-size: 9.5px; }
 }
 </style>

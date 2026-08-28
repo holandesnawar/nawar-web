@@ -5548,3 +5548,14 @@
   .l8 .hero-empieza-flecha { width: 48px; height: 39px; margin-top: 0; }
   .l8 .hero-empieza-txt { padding-top: 0; }
 }
+
+/* ── El titular de la oferta, con aire entre líneas en móvil ───
+   Va a 1,14 como todos los titulares de sección, pero éste es el
+   único que parte la frase subrayada en dos líneas: el rotulador de
+   la primera —que cuelga 0,24 em por debajo de la letra— acababa
+   tocando la mayúscula de la segunda y parecía que las dos líneas
+   se pisaban. En escritorio cada frase cabe en su renglón y no hace
+   falta. */
+@media (max-width: 760px) {
+  .l8 .ai-title.ai-title { line-height: 1.32; }
+}
