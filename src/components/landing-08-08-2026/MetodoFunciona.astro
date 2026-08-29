@@ -5,13 +5,13 @@ const pasos = [
   {
     num: '1',
     title: 'Completa tu matrícula',
-    desc: 'Rellenas el formulario, pasas al pago seguro y en minutos tienes tu acceso a la academia en el correo.',
+    desc: 'Rellenas el formulario, pasas al pago seguro y en minutos tienes tu acceso a la escuela en el correo.',
     icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
   },
   {
     num: '2',
     title: 'Avanza por las unidades del programa',
-    desc: 'Empiezas con dos módulos abiertos y cada semana se abre uno nuevo, con una semana de repaso cada dos módulos. Cada lección tiene su vídeo, resumen, flashcards, lectura, escucha y ejercicios: terminas, se marca tu check, y siempre sabes qué toca después.',
+    desc: 'Empiezas con dos módulos abiertos y el resto se van abriendo por calendario, con semanas de repaso entre medias. Cada lección tiene su vídeo, resumen, flashcards, lectura, escucha y ejercicios: terminas, se marca tu check, y siempre sabes qué toca después.',
     icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
   },
   {
@@ -138,10 +138,13 @@ const pasos = [
    interior está pasado a la paleta clara. */
 .mf-wrapper { background: #fff; padding: 0; }
 .mf-outer { position: relative; max-width: 100%; margin: 0; border-radius: 0; }
-/* Va detrás de Pilares, que también es blanca: sin recortar el aire de
-   arriba quedaban 192 px de blanco liso entre las dos. */
-.mf-section { background: #fff; position: relative; overflow: hidden; padding: 40px 0 96px; }
-@media (max-width: 640px) { .mf-section { padding: 28px 0 64px; } }
+/* El aire de arriba estaba recortado a 40 px porque esta sección iba
+   detrás de Pilares, blanca también, y quedaban 192 px de blanco liso
+   entre las dos. Desde que se metió "Te presentamos Nawar" en medio
+   eso ya no pasa, y el recorte sólo servía para que esta cabecera
+   arrancase más arriba que todas las demás. Los 96 px de siempre. */
+.mf-section { background: #fff; position: relative; overflow: hidden; padding: 96px 0; }
+@media (max-width: 640px) { .mf-section { padding: 64px 0; } }
 /* El resplandor se queda, muy suave, para que el blanco no sea plano */
 .mf-bg-glow {
   position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
