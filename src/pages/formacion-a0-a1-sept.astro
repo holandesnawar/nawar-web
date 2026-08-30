@@ -49,13 +49,18 @@ export const prerender = true
       antes de mandar tráfico a esta página.
    ⚠️ Los valores del stack (VALOR_TOTAL y el campo `valor` de
       cada línea) son una propuesta. Cámbialos por los tuyos.
+      VALOR_TOTAL se escribe a mano porque lo pinta la barra de
+      móvil, pero la suma de verdad la hace PrecioSection: si tocas
+      un `valor`, cuadra este número o dirán cosas distintas.
+      Las clases valen 1.040 € porque son 16 × los 65 € que la
+      propia página da como precio de una clase suelta.
 ───────────────────────────────────────────────────────────── */
 /* Todos los CTA pasan por el formulario de matriculación: recoge los
    datos y los pre-rellena en el checkout de Stripe, que es lo que
    reduce los abandonos. Ya no se enlaza a Stripe directamente. */
 const CHECKOUT_URL = '/matricula-formacion-nawar-a0-a1'
 const PRECIO = '397'
-const VALOR_TOTAL = '2.360'
+const VALOR_TOTAL = '2.620'
 const AHORRO = '100'
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
 /* El del pie va aparte: el de arriba se veía torcido ahí abajo. Este
