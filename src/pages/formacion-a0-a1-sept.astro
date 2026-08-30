@@ -487,12 +487,17 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         <a href="#hero" class="l8nav-logo" aria-label="Inicio">
           <img src={LOGO} alt="Holandés con Nawar" width="150" height="38" />
         </a>
-        {/* Oculto de salida: lo enseña el script cuando la
-            convocatoria ya ha abierto. Así nadie ve el "7D" de
-            relleno ni una cifra que no toca. */}
-        <div class="l8nav-timer" id="l8-timer-caja" hidden>
-          <div class="l8nav-timer-label">Solo 40 plazas · cierran en</div>
-          <div class="l8nav-timer-value" id="l8-timer">0D 00H 00M 00S</div>
+        {/* Dos estados. Antes de que abra la convocatoria, en el
+            centro de la barra va sólo "SOLO 40 PLAZAS": el dato de
+            las plazas tiene que verse desde hoy, y una cuenta atrás
+            todavía no. Cuando abre, esa misma línea pasa a ser la
+            etiqueta del contador y debajo aparecen los días.
+
+            El marcado sale con el estado de antes, que es el que no
+            miente si el script no llegara a ejecutarse. */}
+        <div class="l8nav-timer" id="l8-timer-caja">
+          <div class="l8nav-timer-label" id="l8-timer-label" hidden>Solo 40 plazas · cierran en</div>
+          <div class="l8nav-timer-value" id="l8-timer">Solo 40 plazas</div>
         </div>
         <a href={CHECKOUT_URL} class="l8nav-cta">
           Obtener acceso
@@ -1022,20 +1027,21 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     try { localStorage.removeItem('nawar_offer_end_l8') } catch (e) {}
 
     const pad = (n: number) => (n < 10 ? '0' : '') + n
-    const caja = document.getElementById('l8-timer-caja')
+    const etiqueta = document.getElementById('l8-timer-label')
     const navEl = document.getElementById('l8-timer')
 
     const tick = () => {
       const ahora = Date.now()
-      // Antes de que abra, el contador no se ve: no hay nada que
-      // contar y una cuenta atrás de dieciséis días no es la promesa.
-      // El marcado ya viene oculto, así que si este script fallara se
-      // queda escondido en vez de mostrar una cifra falsa.
+      // Antes de que abra sólo se ven las plazas: no hay nada que
+      // contar todavía, y una cuenta atrás de dieciséis días no es la
+      // promesa. Es también como sale el marcado, así que si este
+      // script fallara se queda en el estado que no miente.
       if (ahora < INICIO) {
-        if (caja) caja.hidden = true
+        if (etiqueta) etiqueta.hidden = true
+        if (navEl) navEl.textContent = 'Solo 40 plazas'
         return
       }
-      if (caja) caja.hidden = false
+      if (etiqueta) etiqueta.hidden = false
 
       const diff = Math.max(0, FIN - ahora)
       const d = Math.floor(diff / 86400000)

@@ -5613,13 +5613,16 @@
   .l8 .footer { padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
 }
 
-/* ── El contador de la barra, cuando toca esconderlo ───────────
-   .l8nav-timer trae display:flex, y un display de la hoja de estilos
-   le gana al display:none que el navegador aplica por el atributo
-   hidden. Sin esta regla el bloque seguiría a la vista con los ceros
-   antes de que abra la convocatoria. Es la tercera vez que pasa en
-   esta página: pasó con .bn-mock y con .pr-quedan. */
+/* ── Las dos piezas del centro de la barra, cuando toca ocultar
+   una de ellas ────────────────────────────────────────────────
+   La caja trae display:flex y la etiqueta se hereda como bloque; un
+   display de la hoja de estilos le gana al display:none que el
+   navegador aplica por el atributo hidden. Sin estas reglas la
+   etiqueta "· cierran en" seguiría a la vista antes de que abra la
+   convocatoria, sin ningún contador debajo. Es la tercera vez que
+   pasa en esta página: pasó con .bn-mock y con .pr-quedan. */
 .l8 .l8nav-timer[hidden] { display: none; }
+.l8 .l8nav-timer-label[hidden] { display: none; }
 /* Y con el contador escondido, cada pieza en su columna. La reja es
    1fr auto 1fr y las tres cosas se colocaban por orden: al quitar el
    contador del medio, el botón se corría a la columna central y
