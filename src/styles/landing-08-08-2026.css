@@ -5628,3 +5628,12 @@
 .l8 .l8nav-logo { grid-column: 1; }
 .l8 .l8nav-timer { grid-column: 2; }
 .l8 .l8nav-cta { grid-column: 3; }
+
+/* ── El titular del cierre, un par de tallas menos ─────────────
+   Iba a 56 px de tope, el más grande de la página, y sus dos frases
+   se comían tres renglones cada una en el móvil. A 40 px cada una
+   cae en su bloque y se leen como lo que son: dos frases, la blanca
+   y la azul. */
+.l8 .final-cta h2.h2, .l8 .final-cta h2 {
+  font-size: clamp(24px, 3.3vw, 40px);
+}

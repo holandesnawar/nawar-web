@@ -32,7 +32,8 @@ import { ICONOS } from '../components/landing-08-08-2026/iconos-vivos'
 // Vuelve, sin el distintivo de "primera edición" que era lo que no
 // iba a ser verdad siempre. Ahora habla de la convocatoria y del
 // aforo de la clase en directo, que sí aguanta edición tras edición.
-import EscasezSection from '../components/landing-08-08-2026/EscasezSection.astro'
+// El de las 40 plazas salió de la página; el componente se queda.
+// import EscasezSection from '../components/landing-08-08-2026/EscasezSection.astro'
 
 /* Copias propias de dos componentes de nawar-web: se veían rotos en
    móvil y hay que retocarlos sin alterar los que usa la web */
@@ -490,7 +491,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             convocatoria ya ha abierto. Así nadie ve el "7D" de
             relleno ni una cifra que no toca. */}
         <div class="l8nav-timer" id="l8-timer-caja" hidden>
-          <div class="l8nav-timer-label">Las plazas cierran en</div>
+          <div class="l8nav-timer-label">Solo 40 plazas · cierran en</div>
           <div class="l8nav-timer-value" id="l8-timer">0D 00H 00M 00S</div>
         </div>
         <a href={CHECKOUT_URL} class="l8nav-cta">
@@ -861,10 +862,12 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       </div>
     </section>
 
-    {/* ── 13. Por qué ahora y no más adelante ──
-         Va justo aquí y no antes: cuando ya sabe qué es, si le sirve y
-         que no arriesga nada, la última objeción es "lo hago luego". */}
-    <EscasezSection />
+    {/* ── 13. Aquí iba "Solo 40 plazas en esta convocatoria", una
+         sección entera para un solo dato. El dato se queda —está en
+         la barra de arriba, en la tarjeta de precio, en la nota del
+         cierre y en las preguntas frecuentes—, pero sin ocupar una
+         pantalla. El componente sigue en su sitio: basta con volver
+         a poner <EscasezSection /> aquí y su import arriba. */}
 
     {/* ── 14. Y qué pasa justo después de pagar ── */}
     <CronogramaSection />
