@@ -596,9 +596,14 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
                 <a href={CHECKOUT_URL} class="btn btn-primary btn-lg">
                   Quiero aprender neerlandés
                 </a>
+                {/* Aquí ponía "Garantía de 15 días". La garantía sigue
+                    contada entera en su propia sección y en dos
+                    preguntas frecuentes; lo que no estaba en ningún
+                    sitio de la primera pantalla era el número de
+                    plazas, que es lo que mueve a decidir hoy. */}
                 <p class="hero-nota">
                   <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                  Garantía de 15 días
+                  Solo 40 plazas
                 </p>
               </div>
               <span class="hero-empieza" aria-hidden="true">
@@ -1064,27 +1069,31 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
     const tick = () => {
       const ahora = Date.now()
-      // Antes de que abra sólo se ven las plazas: no hay nada que
-      // contar todavía, y una cuenta atrás de dieciséis días no es la
-      // promesa. Es también como sale el marcado, así que si este
-      // script fallara se queda en el estado que no miente.
-      if (ahora < INICIO) {
-        if (etiqueta) etiqueta.hidden = true
-        if (navEl) navEl.textContent = 'Solo 40 plazas'
-        if (etiquetaAbajo) etiquetaAbajo.hidden = true
-        if (abajoEl) abajoEl.textContent = 'Solo 40 plazas'
-        return
-      }
-      if (etiqueta) etiqueta.hidden = false
-      if (etiquetaAbajo) etiquetaAbajo.hidden = false
-
       const diff = Math.max(0, FIN - ahora)
       const d = Math.floor(diff / 86400000)
       const h = Math.floor((diff % 86400000) / 3600000)
       const m = Math.floor((diff % 3600000) / 60000)
       const s = Math.floor((diff % 60000) / 1000)
-      if (navEl) navEl.textContent = `${d}D ${pad(h)}H ${pad(m)}M ${pad(s)}S`
-      if (abajoEl) abajoEl.textContent = `${d}D ${pad(h)}H ${pad(m)}M ${pad(s)}S`
+      const reloj = `${d}D ${pad(h)}H ${pad(m)}M ${pad(s)}S`
+
+      // ABAJO (móvil): la cuenta, siempre. Es la única señal de
+      // urgencia que queda en pantalla desde que la barra de arriba
+      // se fue, así que aquí no hay estado previo: cuenta desde ya
+      // hasta que cierra el carrito el día 13.
+      if (etiquetaAbajo) etiquetaAbajo.hidden = false
+      if (abajoEl) abajoEl.textContent = reloj
+
+      // ARRIBA (escritorio): sigue el doble estado. Antes de que abra
+      // sólo se ven las plazas —una cuenta atrás de dieciséis días no
+      // es la promesa— y es además como sale el marcado, así que si
+      // este script fallara se queda en el estado que no miente.
+      if (ahora < INICIO) {
+        if (etiqueta) etiqueta.hidden = true
+        if (navEl) navEl.textContent = 'Solo 40 plazas'
+      } else {
+        if (etiqueta) etiqueta.hidden = false
+        if (navEl) navEl.textContent = reloj
+      }
       // Al llegar a cero se para y se queda en ceros: quien entre el
       // lunes ve de un vistazo que llega tarde.
       if (diff === 0) clearInterval(iv)
@@ -1284,11 +1293,11 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     const bar = document.getElementById('l8-sticky')
     if (!bar) return
     const hero = document.getElementById('hero')
-    // #precio, no #oferta: ese id no existe en la página desde alguna
-    // reordenación, y como el script antiguo hacía "if (!offer) return",
-    // la barra no sólo no se escondía sobre la oferta: no se escondía
-    // nunca. Por eso se veían dos botones nada más entrar.
-    const offer = document.getElementById('precio')
+    // Ya no se esconde sobre la tarjeta de precio. Se escondía porque
+    // la barra llevaba el precio tachado al lado del botón y competía
+    // con la tarjeta, que es la que tiene el contexto. Desde que la
+    // barra sólo lleva la cuenta atrás y un botón, no compite con
+    // nada: se queda fija abajo toda la página.
 
     // El logo del banner se enciende y se apaga con lo mismo que
     // decide la barra de abajo, para no montar un segundo
@@ -1296,9 +1305,8 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     const logo = document.getElementById('l8-logo-movil')
 
     let enBanner = !!hero
-    let enOferta = false
     const pintar = () => {
-      bar.classList.toggle('hidden', enBanner || enOferta)
+      bar.classList.toggle('hidden', enBanner)
       if (logo) logo.classList.toggle('oculto', !enBanner)
     }
 
@@ -1317,7 +1325,6 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     // de ahí el threshold 0: con 0.1 la barra aparecía todavía con el
     // botón del banner a la vista.
     mirar(hero, (v) => (enBanner = v))
-    mirar(offer, (v) => (enOferta = v))
     pintar()
   })()
 

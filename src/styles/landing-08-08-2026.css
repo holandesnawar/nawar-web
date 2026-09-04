@@ -5743,3 +5743,13 @@
 @media (max-width: 380px) {
   .l8 .l8-logo-movil { top: 14px; left: 20px; height: 27px; }
 }
+
+/* ── Menos aire encima de la pastilla del banner ───────────────
+   Los 104 px de arriba estaban calculados para dejar pasar la barra
+   fija de 66 px. En móvil esa barra ya no existe: sólo queda el logo,
+   que acaba a 46 px. Con 68 px la pastilla arranca a 22 px del logo
+   en vez de a 58, y la primera pantalla gana media línea de titular.
+   En escritorio no se toca: allí la barra sigue estando. */
+@media (max-width: 959px) {
+  .l8 .hero-inner.hero-inner { padding-top: 68px; }
+}
