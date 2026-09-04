@@ -482,6 +482,12 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     <!-- ══════════════════════════════════════════════════════════
          NAVBAR — fijo, cristal de marca: logo · contador · CTA
     ══════════════════════════════════════════════════════════ -->
+    {/* La línea de progreso del scroll. En móvil es lo único que
+        queda arriba —la barra entera se esconde— y dice de un
+        vistazo cuánto llevas leído. En escritorio no sale: allí la
+        barra sigue con su logo, su contador y su botón. */}
+    <div class="l8-progreso" aria-hidden="true"><span id="l8-progreso-fill"></span></div>
+
     <nav class="l8nav">
       <div class="l8nav-inner">
         <a href="#hero" class="l8nav-logo" aria-label="Inicio">
@@ -993,11 +999,16 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         Si el script no llegara a ejecutarse se queda sin salir, y no
         es grave: el mismo enlace está ocho veces más abajo. */}
     <div class="mobile-sticky hidden" id="l8-sticky">
-      <div class="mobile-sticky-price is-oculto" id="l8-sticky-precio" hidden>
-        <s>{VALOR_TOTAL}&nbsp;€</s>
-        <strong>{PRECIO}&nbsp;€</strong>
+      {/* Aquí iba el precio tachado, oculto con [hidden] y con la
+          clase .is-oculto. No servía de nada: .mobile-sticky-price
+          trae display:flex y le gana al atributo, así que el bloque
+          seguía ocupando su sitio, invisible, empujando al botón.
+          Fuera del marcado; su CSS se queda por si vuelve. */}
+      <div class="ms-cuenta" id="l8-sticky-cuenta">
+        <span class="ms-cuenta-label" id="l8-sticky-label" hidden>Las plazas cierran en</span>
+        <strong class="ms-cuenta-valor" id="l8-sticky-valor">Solo 40 plazas</strong>
       </div>
-      <a href={CHECKOUT_URL} class="btn btn-sticky">Obtener acceso</a>
+      <a href={CHECKOUT_URL} class="btn btn-sticky">Quiero mi plaza</a>
     </div>
 
   </div>
@@ -1027,8 +1038,12 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     try { localStorage.removeItem('nawar_offer_end_l8') } catch (e) {}
 
     const pad = (n: number) => (n < 10 ? '0' : '') + n
+    // Dos sitios con la misma cuenta: el centro de la barra de arriba
+    // —que en móvil no se ve— y la izquierda de la barra de abajo.
     const etiqueta = document.getElementById('l8-timer-label')
     const navEl = document.getElementById('l8-timer')
+    const etiquetaAbajo = document.getElementById('l8-sticky-label')
+    const abajoEl = document.getElementById('l8-sticky-valor')
 
     const tick = () => {
       const ahora = Date.now()
@@ -1039,9 +1054,12 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       if (ahora < INICIO) {
         if (etiqueta) etiqueta.hidden = true
         if (navEl) navEl.textContent = 'Solo 40 plazas'
+        if (etiquetaAbajo) etiquetaAbajo.hidden = true
+        if (abajoEl) abajoEl.textContent = 'Solo 40 plazas'
         return
       }
       if (etiqueta) etiqueta.hidden = false
+      if (etiquetaAbajo) etiquetaAbajo.hidden = false
 
       const diff = Math.max(0, FIN - ahora)
       const d = Math.floor(diff / 86400000)
@@ -1049,12 +1067,37 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       const m = Math.floor((diff % 3600000) / 60000)
       const s = Math.floor((diff % 60000) / 1000)
       if (navEl) navEl.textContent = `${d}D ${pad(h)}H ${pad(m)}M ${pad(s)}S`
+      if (abajoEl) abajoEl.textContent = `${d}D ${pad(h)}H ${pad(m)}M ${pad(s)}S`
       // Al llegar a cero se para y se queda en ceros: quien entre el
       // lunes ve de un vistazo que llega tarde.
       if (diff === 0) clearInterval(iv)
     }
     const iv = setInterval(tick, 1000)
     tick()
+  })()
+
+  /* ── La línea de progreso de arriba ───────────────────────
+     Se pinta con scaleX y no con width: cambiar el ancho obliga al
+     navegador a recalcular el diseño en cada píxel de scroll, y una
+     transformación no. Y el cálculo va dentro de un rAF, así que
+     por muchos eventos de scroll que lleguen sólo se pinta una vez
+     por fotograma. */
+  ;(function initProgreso() {
+    const fill = document.getElementById('l8-progreso-fill')
+    if (!fill) return
+    let pendiente = 0
+    const pintar = () => {
+      pendiente = 0
+      const alto = document.documentElement.scrollHeight - window.innerHeight
+      // Una página que cabe entera en la pantalla no tiene progreso
+      // que enseñar; sin esta guarda saldría una división por cero.
+      const p = alto > 0 ? Math.min(1, Math.max(0, window.scrollY / alto)) : 0
+      fill.style.transform = 'scaleX(' + p.toFixed(4) + ')'
+    }
+    const alScroll = () => { if (!pendiente) pendiente = requestAnimationFrame(pintar) }
+    window.addEventListener('scroll', alScroll, { passive: true })
+    window.addEventListener('resize', alScroll, { passive: true })
+    pintar()
   })()
 
   /* ── Animaciones de entrada [data-anim] ──────────────────── */

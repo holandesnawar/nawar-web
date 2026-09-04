@@ -5640,3 +5640,85 @@
 .l8 .final-cta h2.h2, .l8 .final-cta h2 {
   font-size: clamp(24px, 3.3vw, 40px);
 }
+
+/* ══════════════════════════════════════════════════════════════
+   ▓▓ LAS DOS BARRAS DEL MÓVIL ▓▓
+   Arriba no queda nada: ni logo, ni contador, ni botón. Sólo una
+   línea que avanza con el scroll. Y abajo, la cuenta a la izquierda
+   y el botón a la derecha, más pequeño, en vez de un botón solo
+   ocupando el ancho entero.
+══════════════════════════════════════════════════════════════ */
+
+/* ── La línea de progreso ──────────────────────────────────────
+   Sin fondo macizo: la carrilera va en un azul claro muy diluido
+   que se ve tanto sobre las secciones blancas como sobre el índigo,
+   y el relleno lleva el degradado de marca —el azul vivo a la
+   izquierda para que destaque sobre blanco, el claro a la derecha
+   para que destaque sobre oscuro—. */
+.l8 .l8-progreso {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 3px; z-index: 900;
+  background: rgba(125, 188, 255, 0.20);
+  pointer-events: none;
+}
+.l8 .l8-progreso span {
+  display: block; height: 100%; width: 100%;
+  background: linear-gradient(90deg, #0b6df0 0%, #4da3ff 100%);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+/* El corte es el mismo con el que la barra de arriba desaparecía en
+   escritorio y aparecía la de abajo: por debajo de 960 mandan las
+   barras de móvil. */
+@media (max-width: 959px) {
+  .l8 .l8nav { display: none; }
+  .l8 .l8-progreso { display: block; }
+
+  /* La barra de abajo deja de ser un botón centrado */
+  .l8 .mobile-sticky.mobile-sticky {
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 14px calc(9px + env(safe-area-inset-bottom, 0px));
+  }
+  .l8 .ms-cuenta {
+    display: flex; flex-direction: column; gap: 1px;
+    min-width: 0;
+  }
+  .l8 .ms-cuenta-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.62);
+    white-space: nowrap;
+  }
+  /* Su propio [hidden] con display:none: la etiqueta se hereda como
+     bloque y un display de la hoja le gana al atributo. Quinta vez
+     en esta página; las otras cuatro están anotadas más arriba. */
+  .l8 .ms-cuenta-label[hidden] { display: none; }
+  .l8 .ms-cuenta-valor {
+    font-family: 'Poppins', system-ui, sans-serif;
+    font-size: 17px; font-weight: 800; letter-spacing: 0.03em;
+    line-height: 1.15;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  /* El botón se encoge a su contenido: ya no es el único inquilino
+     de la barra. La clase repetida es para ganarle a las dos reglas
+     de más arriba que lo ponían al 100 %. */
+  .l8 .mobile-sticky .btn-sticky.btn-sticky {
+    width: auto; max-width: none; flex: 0 0 auto;
+    padding: 11px 18px;
+    font-size: 14.5px;
+    border-radius: 11px;
+  }
+}
+
+/* Los móviles estrechos: la cuenta y el botón juntos rozan los
+   340 px, así que ahí se aprieta un punto en vez de partir la
+   barra en dos filas. */
+@media (max-width: 379px) {
+  .l8 .ms-cuenta-valor { font-size: 15px; }
+  .l8 .mobile-sticky .btn-sticky.btn-sticky { padding: 11px 14px; font-size: 13.5px; }
+}
