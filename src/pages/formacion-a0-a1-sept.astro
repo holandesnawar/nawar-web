@@ -488,6 +488,23 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         barra sigue con su logo, su contador y su botón. */}
     <div class="l8-progreso" aria-hidden="true"><span id="l8-progreso-fill"></span></div>
 
+    {/* El logo, sólo en el banner y sólo en móvil: arriba ya no hay
+        barra donde ponerlo, y el hueco que dejó al desaparecer está
+        justo aquí, encima de la pastilla de "plazas abiertas". Se
+        apaga cuando el banner sale de pantalla —lo decide el mismo
+        observador que saca la barra de abajo— para que de ahí en
+        adelante arriba no haya nada más que la línea.
+        No es enlace: estando sólo dentro del banner, un enlace al
+        banner no lleva a ninguna parte. */}
+    <img
+      class="l8-logo-movil"
+      id="l8-logo-movil"
+      src={LOGO}
+      alt="Holandés Nawar"
+      width="150"
+      height="38"
+    />
+
     <nav class="l8nav">
       <div class="l8nav-inner">
         <a href="#hero" class="l8nav-logo" aria-label="Inicio">
@@ -1273,9 +1290,17 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     // nunca. Por eso se veían dos botones nada más entrar.
     const offer = document.getElementById('precio')
 
+    // El logo del banner se enciende y se apaga con lo mismo que
+    // decide la barra de abajo, para no montar un segundo
+    // observador que mire exactamente el mismo elemento.
+    const logo = document.getElementById('l8-logo-movil')
+
     let enBanner = !!hero
     let enOferta = false
-    const pintar = () => bar.classList.toggle('hidden', enBanner || enOferta)
+    const pintar = () => {
+      bar.classList.toggle('hidden', enBanner || enOferta)
+      if (logo) logo.classList.toggle('oculto', !enBanner)
+    }
 
     const mirar = (el: HTMLElement | null, alVer: (visible: boolean) => void) => {
       if (!el) return

@@ -5722,3 +5722,24 @@
   .l8 .ms-cuenta-valor { font-size: 15px; }
   .l8 .mobile-sticky .btn-sticky.btn-sticky { padding: 11px 14px; font-size: 13.5px; }
 }
+
+/* ── El logo del banner en móvil ───────────────────────────────
+   Al quitar la barra de arriba, el banner se quedó con una franja
+   vacía de unos 110 px encima de la pastilla: la que ocupaba la
+   barra. Ahí va el logo, fijo mientras se ve el banner y apagado en
+   cuanto se pasa.
+   Sin pointer-events: no es un enlace, es una marca. */
+.l8 .l8-logo-movil { display: none; }
+@media (max-width: 959px) {
+  .l8 .l8-logo-movil {
+    display: block;
+    position: fixed; top: 16px; left: 24px; z-index: 899;
+    height: 30px; width: auto;
+    pointer-events: none;
+    transition: opacity .28s ease;
+  }
+  .l8 .l8-logo-movil.oculto { opacity: 0; }
+}
+@media (max-width: 380px) {
+  .l8 .l8-logo-movil { top: 14px; left: 20px; height: 27px; }
+}
