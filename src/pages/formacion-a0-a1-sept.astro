@@ -1304,9 +1304,12 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     // observador que mire exactamente el mismo elemento.
     const logo = document.getElementById('l8-logo-movil')
 
+    const botonBanner = document.querySelector('.hero-ctas') as HTMLElement | null
+
     let enBanner = !!hero
+    let conBotonALaVista = !!botonBanner
     const pintar = () => {
-      bar.classList.toggle('hidden', enBanner)
+      bar.classList.toggle('hidden', conBotonALaVista)
       if (logo) logo.classList.toggle('oculto', !enBanner)
     }
 
@@ -1321,10 +1324,16 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       ).observe(el)
     }
 
-    // El banner se da por pasado en cuanto sale entero de la pantalla,
-    // de ahí el threshold 0: con 0.1 la barra aparecía todavía con el
-    // botón del banner a la vista.
+    // El logo se apaga cuando el banner sale entero de la pantalla.
     mirar(hero, (v) => (enBanner = v))
+    // La barra, en cambio, mira el botón del banner y no el banner
+    // entero. El banner mide una pantalla de las grandes (100vh), pero
+    // en el móvil de verdad la barra del navegador se come un trozo,
+    // así que "que el banner salga entero" obligaba a scrollear más de
+    // una pantalla visible y la barra llegaba tardísimo. Lo que hay
+    // que evitar es ver dos botones a la vez, y eso deja de pasar en
+    // cuanto el del banner se va por arriba.
+    mirar(botonBanner, (v) => (conBotonALaVista = v))
     pintar()
   })()
 

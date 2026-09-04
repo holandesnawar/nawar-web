@@ -5753,3 +5753,23 @@
 @media (max-width: 959px) {
   .l8 .hero-inner.hero-inner { padding-top: 68px; }
 }
+
+/* ── Retoques de las barras de móvil ───────────────────────────
+   El logo, un punto más grande y con más aire por encima; el relleno
+   del banner sube con él para que la pastilla no se le pegue. */
+@media (max-width: 959px) {
+  .l8 .l8-logo-movil { top: 22px; height: 34px; }
+  .l8 .hero-inner.hero-inner { padding-top: 78px; }
+  /* La cuenta de la barra de abajo: la etiqueta iba al 62 % de blanco
+     y sobre el cristal oscuro se leía gris apagado. */
+  .l8 .ms-cuenta-label { color: rgba(255, 255, 255, 0.85); }
+}
+@media (max-width: 380px) {
+  .l8 .l8-logo-movil { top: 20px; left: 20px; height: 31px; }
+  .l8 .hero-inner.hero-inner { padding-top: 72px; }
+}
+
+/* La letra pequeña de debajo del botón del banner. Iba al 78 % y
+   ahora que dice "Solo 40 plazas" —un dato, no una nota al pie—
+   tiene que leerse a la primera. */
+.l8 .hero-nota.hero-nota { color: rgba(255, 255, 255, 0.95); }
