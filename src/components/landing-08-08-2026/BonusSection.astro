@@ -382,15 +382,16 @@ const carita = (tono: string) =>
     rotateY(var(--cert-ry, 0deg))
     rotate(var(--cert-giro, -7deg));
   display: block;
-  filter: drop-shadow(0 18px 32px rgba(8, 12, 45, 0.35));
-  transition: transform .55s cubic-bezier(.22,1,.36,1), filter .45s ease;
+  /* Sin sombra exterior: el efecto va todo dentro del certificado.
+     El z-index sigue creando el contexto de composición que la capa
+     de mezcla necesita, así que quitar el filtro no la rompe. */
+  transition: transform .55s cubic-bezier(.22,1,.36,1);
 }
 .bn-cert--foto.inclinando .bn-cert-papel {
-  transition: transform .12s linear, filter .45s ease;
-  filter: drop-shadow(0 26px 44px rgba(8, 12, 45, 0.45));
+  transition: transform .12s linear;
 }
-/* Las esquinas a 12 px, sólo aquí: es la imagen del certificado. */
-.bn-cert-papel img { width: 100%; height: auto; display: block; border-radius: 12px; }
+/* Las esquinas a 15 px, sólo aquí: es la imagen del certificado. */
+.bn-cert-papel img { width: 100%; height: auto; display: block; border-radius: 15px; }
 .bn-cert--foto.sin-fondo .bn-cert-papel {
   position: static;
   width: 100%;
@@ -421,9 +422,9 @@ const carita = (tono: string) =>
 .bn-cert-fx {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;
   overflow: hidden;
-  /* Mismas esquinas que la imagen de debajo: si no, el brillo se
+  /* Mismas esquinas que la imagen de debajo: si no, la sombra se
      pinta en los picos que el border-radius acaba de quitar. */
-  border-radius: 12px;
+  border-radius: 15px;
   /* La mezcla va aquí, en el elemento enmascarado, y no en los hijos:
      la máscara crea grupo de composición propio, y desde dentro los
      hijos no verían la imagen que hay debajo. */
@@ -436,25 +437,55 @@ const carita = (tono: string) =>
           mask-repeat: no-repeat;
 }
 .bn-cert-fx-glow, .bn-cert-fx-sheen { position: absolute; display: block; }
+/* La mancha azul que iba y venía por dentro se apaga: con la sombra
+   cruzando había dos cosas moviéndose a la vez sobre la misma imagen
+   y ninguna se leía. Se queda la receta por si vuelve. */
 .bn-cert-fx-glow {
+  display: none;
   inset: -45%;
   background: radial-gradient(circle at 32% 28%, rgba(150,198,255,0.92) 0%, rgba(255,255,255,0) 58%);
   opacity: .8;
   transform: translate3d(-7%, -7%, 0);
 }
-.bn-row.vis .bn-cert-fx-glow { animation: bn-cert-glow 4.5s ease-in-out infinite alternate; }
-.bn-row:hover .bn-cert-fx-glow { opacity: 1; }
+
+/* La sombra que cruza el certificado, en multiply: sobre un documento
+   casi blanco, oscurecer es lo único que se nota. Azul marino en vez
+   de gris para que la sombra también sea de la casa.
+
+   ⚠️ La banda mide LO MISMO que su caja, ni un píxel más. Antes se
+   estiraba un 45 % por cada lado "para que entrara y saliera sin que
+   se viera el borde", y ese fue el fallo que la hacía invisible: el
+   trayecto es un porcentaje del ancho de la propia banda, así que al
+   ensancharla el recorrido se disparó a 1.546 px para una caja de
+   350, y la parte oscura sólo pasaba por delante del certificado
+   durante un cuarto de segundo de cada tres. Con la banda del ancho
+   de la caja, el degradado ya se encarga de que los bordes entren
+   difuminados. */
 .bn-cert-fx-sheen {
-  inset: 0;
-  /* Banda ancha (30-70) y cargada: sobre un certificado casi blanco,
-     un 55 % de azul en una franja estrecha cruzaba la imagen sin que
-     diera tiempo a verlo. */
-  background: linear-gradient(115deg, rgba(255,255,255,0) 30%, rgba(140,192,255,0.72) 50%, rgba(255,255,255,0) 70%);
-  transform: translateX(-130%);
+  inset: -10% 0;
+  background: linear-gradient(
+    105deg,
+    rgba(255,255,255,0) 22%,
+    rgba(22, 38, 96, 0.42) 50%,
+    rgba(255,255,255,0) 78%
+  );
+  transform: translateX(-100%);
 }
-.bn-row.vis .bn-cert-fx-sheen { animation: bn-cert-sheen 3.6s ease-in-out 0.4s infinite; }
+/* Ciclo de 3,2 s: la sombra cruza durante los primeros 1,9 s —de los
+   que se ve casi un segundo— y luego espera fuera de cuadro. */
+.bn-row.vis .bn-cert-fx-sheen { animation: bn-cert-sheen 3.2s ease-in-out infinite; }
+/* A quien pide menos movimiento no se le deja la imagen muerta: la
+   misma sombra, quieta en el centro, entrando y saliendo despacio. */
 @media (prefers-reduced-motion: reduce) {
-  .bn-row.vis .bn-cert-fx-glow, .bn-row.vis .bn-cert-fx-sheen { animation: none; }
+  .bn-row.vis .bn-cert-fx-glow { animation: none; }
+  .bn-row.vis .bn-cert-fx-sheen {
+    animation: bn-cert-sombra-quieta 5s ease-in-out infinite alternate;
+    transform: translateX(0);
+  }
+}
+@keyframes bn-cert-sombra-quieta {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 /* ── Baraja de capturas (bonus 03) ────────────────────────────
@@ -898,9 +929,9 @@ const carita = (tono: string) =>
    casi nunca coincidía con que estuvieras mirando. */
 .bn-row.vis .bn-cert-sheen { animation: bn-cert-sheen 3.6s ease-in-out 0.4s infinite; }
 @keyframes bn-cert-sheen {
-  0%   { transform: translateX(-130%); }
-  44%  { transform: translateX(130%); }
-  100% { transform: translateX(130%); }
+  0%,  4%  { transform: translateX(-100%); }
+  60%      { transform: translateX(100%); }
+  100%     { transform: translateX(100%); }
 }
 @media (prefers-reduced-motion: reduce) {
   .bn-row.vis .bn-cert::after,
