@@ -1304,12 +1304,14 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     // observador que mire exactamente el mismo elemento.
     const logo = document.getElementById('l8-logo-movil')
 
-    const botonBanner = document.querySelector('.hero-ctas') as HTMLElement | null
+    // La barra sale justo cuando asoma la sección de debajo, que es
+    // el instante en que se acaba el azul del banner.
+    const siguiente = hero ? (hero.nextElementSibling as HTMLElement | null) : null
 
     let enBanner = !!hero
-    let conBotonALaVista = !!botonBanner
+    let asomaLaSiguiente = false
     const pintar = () => {
-      bar.classList.toggle('hidden', conBotonALaVista)
+      bar.classList.toggle('hidden', !asomaLaSiguiente)
       if (logo) logo.classList.toggle('oculto', !enBanner)
     }
 
@@ -1326,14 +1328,33 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
     // El logo se apaga cuando el banner sale entero de la pantalla.
     mirar(hero, (v) => (enBanner = v))
-    // La barra, en cambio, mira el botón del banner y no el banner
-    // entero. El banner mide una pantalla de las grandes (100vh), pero
-    // en el móvil de verdad la barra del navegador se come un trozo,
-    // así que "que el banner salga entero" obligaba a scrollear más de
-    // una pantalla visible y la barra llegaba tardísimo. Lo que hay
-    // que evitar es ver dos botones a la vez, y eso deja de pasar en
-    // cuanto el del banner se va por arriba.
-    mirar(botonBanner, (v) => (conBotonALaVista = v))
+
+    /* La barra sale en cuanto asoma la sección de debajo, o sea justo
+       cuando se acaba el azul del banner.
+
+       Y esto NO va con IntersectionObserver, aunque todo lo demás de
+       esta página sí. Un observador sólo avisa cuando se cruza un
+       borde: entre cruce y cruce el dato se queda viejo, así que con
+       un scroll de un dedo rápido la barra llegaba con retraso, y en
+       una pantalla en la que el banner cabe justo, el borde no se
+       llega a cruzar nunca. Aquí hace falta saber la posición exacta
+       en cada momento, y eso es una cuenta por fotograma.
+
+       Se lee la posición dentro del rAF —una medida de un elemento,
+       una vez por fotograma— y el listener va en passive para no
+       frenar el scroll. */
+    if (siguiente) {
+      let pendiente = 0
+      const medir = () => {
+        pendiente = 0
+        asomaLaSiguiente = siguiente.getBoundingClientRect().top < window.innerHeight
+        pintar()
+      }
+      const alScroll = () => { if (!pendiente) pendiente = requestAnimationFrame(medir) }
+      window.addEventListener('scroll', alScroll, { passive: true })
+      window.addEventListener('resize', alScroll, { passive: true })
+      medir()
+    }
     pintar()
   })()
 
