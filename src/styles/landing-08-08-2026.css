@@ -5773,3 +5773,17 @@
    ahora que dice "Solo 40 plazas" —un dato, no una nota al pie—
    tiene que leerse a la primera. */
 .l8 .hero-nota.hero-nota { color: rgba(255, 255, 255, 0.95); }
+
+/* ── El cierre: dos frases, no cuatro renglones sueltos ────────
+   El titular son dos frases y cada una ocupaba dos líneas, así que
+   se leía como cuatro renglones sin relación. Baja de talla para
+   acortarlas y, sobre todo, se separan entre sí: el hueco es lo que
+   convierte cuatro líneas en dos párrafos. */
+.l8 .final-cta h2.h2, .l8 .final-cta h2 {
+  font-size: clamp(21px, 2.7vw, 34px);
+}
+.l8 .final-cta .fc-cabecera h2 > em { margin-top: 0.42em; }
+
+/* Y la letra fina de debajo del botón: ahora es un solo dato, así
+   que el escudo va pegado a él y no a media palabra de distancia. */
+.l8 .final-cta-fine .nw-icon { margin-right: 4px; vertical-align: -2px; }

@@ -22,7 +22,7 @@ const SOPORTE_IMG  = 'https://docs.holandesnawar.com/img/Landing/bonus.soporte.p
 // Bonus 05: el certificado de verdad. Tiene que ser una imagen
 // (jpg/png/webp); un PDF no se puede pintar en un <img>. Con la
 // constante vacía se sigue viendo el diploma dibujado en CSS.
-const CERTIFICADO_IMG = 'https://docs.holandesnawar.com/img/Certificado.web.base.png'
+const CERTIFICADO_IMG = 'https://docs.holandesnawar.com/img/Landing/Certificado.final.landing.png'
 // El fondo va debajo y el certificado encima, girado para que encaje
 // con la perspectiva del fondo. Los cuatro números de abajo son lo
 // único que hay que tocar para cuadrarlos: no he podido ver las dos
@@ -390,8 +390,8 @@ const carita = (tono: string) =>
 .bn-cert--foto.inclinando .bn-cert-papel {
   transition: transform .12s linear;
 }
-/* Las esquinas a 15 px, sólo aquí: es la imagen del certificado. */
-.bn-cert-papel img { width: 100%; height: auto; display: block; border-radius: 15px; }
+/* Las esquinas a 12 px, sólo aquí: es la imagen del certificado. */
+.bn-cert-papel img { width: 100%; height: auto; display: block; border-radius: 12px; }
 .bn-cert--foto.sin-fondo .bn-cert-papel {
   position: static;
   width: 100%;
@@ -422,9 +422,9 @@ const carita = (tono: string) =>
 .bn-cert-fx {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;
   overflow: hidden;
-  /* Mismas esquinas que la imagen de debajo: si no, la sombra se
+  /* Mismas esquinas que la imagen de debajo: si no, el destello se
      pinta en los picos que el border-radius acaba de quitar. */
-  border-radius: 15px;
+  border-radius: 12px;
   /* La mezcla va aquí, en el elemento enmascarado, y no en los hijos:
      la máscara crea grupo de composición propio, y desde dentro los
      hijos no verían la imagen que hay debajo. */
@@ -448,42 +448,51 @@ const carita = (tono: string) =>
   transform: translate3d(-7%, -7%, 0);
 }
 
-/* La sombra que cruza el certificado, en multiply: sobre un documento
-   casi blanco, oscurecer es lo único que se nota. Azul marino en vez
-   de gris para que la sombra también sea de la casa.
+/* El destello que cruza el certificado.
 
-   ⚠️ La banda mide LO MISMO que su caja, ni un píxel más. Antes se
-   estiraba un 45 % por cada lado "para que entrara y saliera sin que
-   se viera el borde", y ese fue el fallo que la hacía invisible: el
-   trayecto es un porcentaje del ancho de la propia banda, así que al
-   ensancharla el recorrido se disparó a 1.546 px para una caja de
-   350, y la parte oscura sólo pasaba por delante del certificado
-   durante un cuarto de segundo de cada tres. Con la banda del ancho
-   de la caja, el degradado ya se encarga de que los bordes entren
-   difuminados. */
+   Va en multiply y no en screen, y esto no es un capricho: el papel
+   es casi blanco, y aclarar lo blanco no se ve —el blanco ya está al
+   máximo—. Lo único que se nota sobre un documento claro es teñir.
+   Así que el "brillo" se hace al revés que en una superficie oscura:
+   dos filos de azul vivo de marca con un hueco casi limpio en medio.
+   Ese hueco, rodeado de azul, es lo que el ojo lee como el reflejo.
+
+   ⚠️ La banda mide LO MISMO que su caja, ni un píxel más. El trayecto
+   de la animación es un porcentaje del ancho de la propia banda, así
+   que ensancharla dispara el recorrido y el destello pasa volando:
+   con un 45 % de más por lado, cruzaba en un cuarto de segundo. */
 .bn-cert-fx-sheen {
   inset: -10% 0;
   background: linear-gradient(
-    105deg,
-    rgba(255,255,255,0) 22%,
-    rgba(22, 38, 96, 0.42) 50%,
-    rgba(255,255,255,0) 78%
+    100deg,
+    rgba(255,255,255,0) 28%,
+    rgba(11, 109, 240, 0.62) 43%,
+    rgba(180, 220, 255, 0.28) 50%,
+    rgba(11, 109, 240, 0.62) 57%,
+    rgba(255,255,255,0) 72%
   );
   transform: translateX(-100%);
 }
-/* Ciclo de 3,2 s: la sombra cruza durante los primeros 1,9 s —de los
-   que se ve casi un segundo— y luego espera fuera de cuadro. */
-.bn-row.vis .bn-cert-fx-sheen { animation: bn-cert-sheen 3.2s ease-in-out infinite; }
+/* Cruza en un segundo y medio y descansa dos y medio: es un
+   destello, no un intermitente. Arranca cuando la fila entra en
+   pantalla, que es cuando el usuario llega a la sección.
+
+   ⚠️ linear, y no una curva suave. Con cubic-bezier(.4,0,.2,1) —la
+   de toda la página— el recorrido acelera justo en el medio, que es
+   donde está el certificado: la banda cruzaba la parte visible en
+   dos décimas y el resto del tiempo estaba fuera de cuadro. Un
+   destello tiene que ir a velocidad constante para que se vea. */
+.bn-row.vis .bn-cert-fx-sheen { animation: bn-cert-sheen 4s linear infinite; }
 /* A quien pide menos movimiento no se le deja la imagen muerta: la
    misma sombra, quieta en el centro, entrando y saliendo despacio. */
 @media (prefers-reduced-motion: reduce) {
   .bn-row.vis .bn-cert-fx-glow { animation: none; }
   .bn-row.vis .bn-cert-fx-sheen {
-    animation: bn-cert-sombra-quieta 5s ease-in-out infinite alternate;
+    animation: bn-cert-destello-quieto 5s ease-in-out infinite alternate;
     transform: translateX(0);
   }
 }
-@keyframes bn-cert-sombra-quieta {
+@keyframes bn-cert-destello-quieto {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
@@ -929,8 +938,8 @@ const carita = (tono: string) =>
    casi nunca coincidía con que estuvieras mirando. */
 .bn-row.vis .bn-cert-sheen { animation: bn-cert-sheen 3.6s ease-in-out 0.4s infinite; }
 @keyframes bn-cert-sheen {
-  0%,  4%  { transform: translateX(-100%); }
-  60%      { transform: translateX(100%); }
+  0%,  6%  { transform: translateX(-100%); }
+  44%      { transform: translateX(100%); }
   100%     { transform: translateX(100%); }
 }
 @media (prefers-reduced-motion: reduce) {
