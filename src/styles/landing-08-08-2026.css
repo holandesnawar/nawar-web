@@ -5787,3 +5787,54 @@
 /* Y la letra fina de debajo del botón: ahora es un solo dato, así
    que el escudo va pegado a él y no a media palabra de distancia. */
 .l8 .final-cta-fine .nw-icon { margin-right: 4px; vertical-align: -2px; }
+
+/* ══════════════════════════════════════════════════════════════
+   WHATSAPP
+   Un botón pequeño y fijo abajo a la derecha, más la línea del
+   final de las preguntas frecuentes. Los dos salen sólo si hay
+   número: con la constante vacía no se pinta ninguno.
+══════════════════════════════════════════════════════════════ */
+.l8 .l8-wa {
+  position: fixed;
+  right: 18px; bottom: 18px;
+  z-index: 850;
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: #25D366;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(8, 12, 45, 0.28);
+  transition: transform .25s cubic-bezier(.22,1,.36,1), bottom .3s ease, box-shadow .25s ease;
+}
+.l8 .l8-wa svg { width: 26px; height: 26px; display: block; }
+.l8 .l8-wa:hover { transform: scale(1.07); box-shadow: 0 10px 26px rgba(8, 12, 45, 0.36); }
+.l8 .l8-wa:active { transform: scale(.96); }
+
+/* En móvil, por encima de la barra de abajo cuando esa está fuera.
+   La barra mide 61-63 px, así que 76 la deja con aire. */
+@media (max-width: 959px) {
+  .l8 .l8-wa {
+    right: 14px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    width: 44px; height: 44px;
+  }
+  .l8 .l8-wa svg { width: 24px; height: 24px; }
+  .l8 .l8-wa.subido { bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* La línea del final de las preguntas frecuentes */
+.l8 .np-faq-wa { text-align: center; margin-top: 28px; }
+.l8 .np-faq-wa a {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: 15px; font-weight: 600;
+  color: #1D0084;
+  background: #fff;
+  border: 1.5px solid #cfe0ff;
+  padding: 12px 20px; border-radius: 100px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.l8 .np-faq-wa a:hover { border-color: #4da3ff; box-shadow: 0 6px 18px rgba(29, 0, 132, 0.10); }
+.l8 .np-faq-wa svg { width: 19px; height: 19px; color: #25D366; flex-shrink: 0; }
+@media (max-width: 560px) {
+  .l8 .np-faq-wa a { font-size: 14px; padding: 11px 16px; }
+}
