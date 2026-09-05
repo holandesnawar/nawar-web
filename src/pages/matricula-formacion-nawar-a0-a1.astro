@@ -47,16 +47,27 @@ if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
       <!-- Header -->
       <header class="mx-header">
         {/* Sin palomita: un check delante dice "hecho", y aquí no hay nada
-            hecho todavía — es el primero de dos pasos. */}
+            hecho todavía — es el primero de dos pasos.
+            El contador de pasos SÍ va aquí: la pantalla de pago de la escuela
+            dice "Paso 2 de 2", así que sin esto el comprador aterrizaba en un
+            paso 2 sin haber visto nunca un paso 1, y mientras rellenaba esta
+            pantalla no sabía cuánto le quedaba. */}
         <span class="mx-badge">
-          Formación A0 → A1 · Plazas limitadas
+          Paso 1 de 2 · Formación A0 → A1
         </span>
         <h1 class="mx-title"><span class="mx-title-gradient">Reserva tu plaza</span></h1>
-        <p class="mx-lead">Estás a un paso de tu primera clase.</p>
-        <p class="mx-body">
-          Completa tus datos y pasa al pago seguro. En cuanto se confirme,
-          recibirás un email para crear tu cuenta y entrar a la academia.
-        </p>
+        {/* Una sola línea de texto en toda la pantalla, a propósito (sept 2026).
+            Antes había tres: "Estás a un paso de tu primera clase", "Completa
+            tus datos y pasa al pago seguro" —que narra lo que ya se ve: tres
+            campos y un botón que pone "Continuar al pago"— y el aviso de que
+            tras pagar llega un correo para crear la cuenta. Esa última es
+            información buena contada en el momento equivocado: nadie que aún
+            no ha pagado se pregunta cómo entrará después, y va en la página de
+            bienvenida, donde la duda sí existe.
+            Lo que queda no es relleno: dice que al pulsar TODAVÍA no se le
+            cobra, que es la duda real de quien tiene delante un botón con la
+            palabra "pago". */}
+        <p class="mx-lead">Rellena tus datos y en el siguiente paso eliges cómo pagar.</p>
       </header>
 
       <!-- Formulario directo sobre el azul (sin tarjeta) -->
@@ -208,16 +219,14 @@ if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+  /* Al quedarse sola bajo el titular, esta línea pasó de negrita a peso normal:
+     en 700 competía con el titular y sonaba a segundo titular. Debajo de un
+     título de 56 px, lo que se necesita es una voz más baja, no otra igual.
+     (Aquí vivía también `.mx-body`, la regla del párrafo que se quitó.) */
   .mx-lead {
-    font-size: clamp(17px, 1.8vw, 20px);
-    font-weight: 700; line-height: 1.4;
-    color: rgba(255, 255, 255, 0.95);
-    max-width: 600px; margin: 0;
-  }
-  .mx-body {
-    font-size: clamp(14px, 1.3vw, 16px);
-    font-weight: 400; line-height: 1.7;
-    color: rgba(255, 255, 255, 0.75);
+    font-size: clamp(15px, 1.5vw, 18px);
+    font-weight: 400; line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
     max-width: 600px; margin: 0;
   }
 
