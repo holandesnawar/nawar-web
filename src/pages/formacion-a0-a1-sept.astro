@@ -510,17 +510,14 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         <a href="#hero" class="l8nav-logo" aria-label="Inicio">
           <img src={LOGO} alt="Holandés con Nawar" width="150" height="38" />
         </a>
-        {/* Dos estados. Antes de que abra la convocatoria, en el
-            centro de la barra va sólo "SOLO 40 PLAZAS": el dato de
-            las plazas tiene que verse desde hoy, y una cuenta atrás
-            todavía no. Cuando abre, esa misma línea pasa a ser la
-            etiqueta del contador y debajo aparecen los días.
-
-            El marcado sale con el estado de antes, que es el que no
-            miente si el script no llegara a ejecutarse. */}
+        {/* Sólo el cierre. Las 40 plazas salieron de aquí: ya están
+            debajo del botón del banner, en la tarjeta de precio, en
+            la nota del cierre de la oferta y en una pregunta
+            frecuente. Una quinta vez, y encima fija en pantalla toda
+            la página, era ruido. */}
         <div class="l8nav-timer" id="l8-timer-caja">
-          <div class="l8nav-timer-label" id="l8-timer-label" hidden>Solo 40 plazas · cierran en</div>
-          <div class="l8nav-timer-value" id="l8-timer">Solo 40 plazas</div>
+          <div class="l8nav-timer-label" id="l8-timer-label">Las plazas cierran en</div>
+          <div class="l8nav-timer-value" id="l8-timer">0D 00H 00M 00S</div>
         </div>
         <a href={CHECKOUT_URL} class="l8nav-cta">
           Obtener acceso
@@ -1052,7 +1049,6 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
      Ojo con el desfase: de finales de octubre a finales de marzo
      España va en +01:00, no en +02:00. */
   ;(function initCountdown() {
-    const INICIO = Date.parse('2026-09-08T08:00:00+02:00')
     const FIN = Date.parse('2026-09-13T23:59:59+02:00')
 
     // Restos del contador viejo, para no dejar basura en el navegador
@@ -1068,32 +1064,22 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     const abajoEl = document.getElementById('l8-sticky-valor')
 
     const tick = () => {
-      const ahora = Date.now()
-      const diff = Math.max(0, FIN - ahora)
+      const diff = Math.max(0, FIN - Date.now())
       const d = Math.floor(diff / 86400000)
       const h = Math.floor((diff % 86400000) / 3600000)
       const m = Math.floor((diff % 3600000) / 60000)
       const s = Math.floor((diff % 60000) / 1000)
       const reloj = `${d}D ${pad(h)}H ${pad(m)}M ${pad(s)}S`
 
-      // ABAJO (móvil): la cuenta, siempre. Es la única señal de
-      // urgencia que queda en pantalla desde que la barra de arriba
-      // se fue, así que aquí no hay estado previo: cuenta desde ya
-      // hasta que cierra el carrito el día 13.
+      // La misma cuenta en los dos sitios y sin estados: el carrito
+      // cierra el día 13 pase lo que pase, así que contar desde hoy
+      // es verdad desde hoy. Antes la de arriba se guardaba hasta el
+      // día 8 y enseñaba las plazas mientras tanto; con el arranque a
+      // la vuelta de la esquina eso era una regla de más.
+      if (etiqueta) etiqueta.hidden = false
+      if (navEl) navEl.textContent = reloj
       if (etiquetaAbajo) etiquetaAbajo.hidden = false
       if (abajoEl) abajoEl.textContent = reloj
-
-      // ARRIBA (escritorio): sigue el doble estado. Antes de que abra
-      // sólo se ven las plazas —una cuenta atrás de dieciséis días no
-      // es la promesa— y es además como sale el marcado, así que si
-      // este script fallara se queda en el estado que no miente.
-      if (ahora < INICIO) {
-        if (etiqueta) etiqueta.hidden = true
-        if (navEl) navEl.textContent = 'Solo 40 plazas'
-      } else {
-        if (etiqueta) etiqueta.hidden = false
-        if (navEl) navEl.textContent = reloj
-      }
       // Al llegar a cero se para y se queda en ceros: quien entre el
       // lunes ve de un vistazo que llega tarde.
       if (diff === 0) clearInterval(iv)
