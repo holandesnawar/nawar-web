@@ -390,8 +390,12 @@ const carita = (tono: string) =>
 .bn-cert--foto.inclinando .bn-cert-papel {
   transition: transform .12s linear;
 }
-/* Las esquinas a 12 px, sólo aquí: es la imagen del certificado. */
-.bn-cert-papel img { width: 100%; height: auto; display: block; border-radius: 12px; }
+/* Las esquinas a 8 px, sólo aquí: es la imagen del certificado.
+   ⚠️ Esto sólo recorta si el PNG viene con las esquinas EN PICO. Si
+   el archivo ya trae el redondeo dibujado —y la sombra alrededor,
+   que también parece venir dentro—, ningún valor de aquí lo cambia:
+   hay que reexportar la imagen. */
+.bn-cert-papel img { width: 100%; height: auto; display: block; border-radius: 8px; }
 .bn-cert--foto.sin-fondo .bn-cert-papel {
   position: static;
   width: 100%;
@@ -424,7 +428,7 @@ const carita = (tono: string) =>
   overflow: hidden;
   /* Mismas esquinas que la imagen de debajo: si no, el destello se
      pinta en los picos que el border-radius acaba de quitar. */
-  border-radius: 12px;
+  border-radius: 8px;
   /* La mezcla va aquí, en el elemento enmascarado, y no en los hijos:
      la máscara crea grupo de composición propio, y desde dentro los
      hijos no verían la imagen que hay debajo. */
@@ -465,11 +469,13 @@ const carita = (tono: string) =>
   inset: -10% 0;
   background: linear-gradient(
     100deg,
-    rgba(255,255,255,0) 28%,
-    rgba(11, 109, 240, 0.62) 43%,
-    rgba(180, 220, 255, 0.28) 50%,
-    rgba(11, 109, 240, 0.62) 57%,
-    rgba(255,255,255,0) 72%
+    rgba(255,255,255,0) 10%,
+    rgba(77, 163, 255, 0.30) 28%,
+    rgba(11, 109, 240, 0.78) 42%,
+    rgba(200, 230, 255, 0.30) 50%,
+    rgba(11, 109, 240, 0.78) 58%,
+    rgba(77, 163, 255, 0.30) 72%,
+    rgba(255,255,255,0) 90%
   );
   transform: translateX(-100%);
 }
@@ -482,7 +488,7 @@ const carita = (tono: string) =>
    donde está el certificado: la banda cruzaba la parte visible en
    dos décimas y el resto del tiempo estaba fuera de cuadro. Un
    destello tiene que ir a velocidad constante para que se vea. */
-.bn-row.vis .bn-cert-fx-sheen { animation: bn-cert-sheen 4s linear infinite; }
+.bn-row.vis .bn-cert-fx-sheen { animation: bn-cert-sheen 3.6s linear infinite; }
 /* A quien pide menos movimiento no se le deja la imagen muerta: la
    misma sombra, quieta en el centro, entrando y saliendo despacio. */
 @media (prefers-reduced-motion: reduce) {
@@ -938,8 +944,8 @@ const carita = (tono: string) =>
    casi nunca coincidía con que estuvieras mirando. */
 .bn-row.vis .bn-cert-sheen { animation: bn-cert-sheen 3.6s ease-in-out 0.4s infinite; }
 @keyframes bn-cert-sheen {
-  0%,  6%  { transform: translateX(-100%); }
-  44%      { transform: translateX(100%); }
+  0%,  4%  { transform: translateX(-100%); }
+  62%      { transform: translateX(100%); }
   100%     { transform: translateX(100%); }
 }
 @media (prefers-reduced-motion: reduce) {
