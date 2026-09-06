@@ -156,7 +156,7 @@ const incluidoEnPrecio = [
 const faqs = [
   {
     q: '¿Por qué cuesta 397€?',
-    a: 'Porque el precio incluye todo lo que has visto: el programa completo, las 16 clases en directo, la comunidad, el soporte y el certificado. No hay extras ni pagos posteriores. Trabajamos con grupos pequeños en cada convocatoria porque es la única forma de acompañar de verdad a cada alumno.',
+    a: 'Porque el precio incluye todo lo que has visto: el programa completo, las clases en directo, la comunidad, el soporte y el certificado. No hay extras ni pagos posteriores. Trabajamos con grupos pequeños en cada convocatoria porque es la única forma de acompañar de verdad a cada alumno.',
   },
   {
     q: '¿Es para principiantes absolutos?',
@@ -1093,7 +1093,10 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
      Ojo con el desfase: de finales de octubre a finales de marzo
      España va en +01:00, no en +02:00. */
   ;(function initCountdown() {
-    const FIN = Date.parse('2026-09-13T23:59:59+02:00')
+    // Medianoche del domingo al lunes: el domingo 13 entero, hasta el
+    // último segundo. Escrito como las 00:00 del 14 para que no haya
+    // duda de si el domingo entra o no.
+    const FIN = Date.parse('2026-09-14T00:00:00+02:00')
 
     // Restos del contador viejo, para no dejar basura en el navegador
     // de quien ya había pasado por aquí.

@@ -14,7 +14,7 @@ const nucleo = [
   { item: 'Libros y materiales descargables', detalle: 'Presentaciones, guías y PDFs de cada lección', valor: 120 },
 ]
 const bonus = [
-  { item: 'Clase semanal en directo', detalle: '16 clases con profesor, todas grabadas', valor: 1040 },
+  { item: 'Clase semanal en directo', detalle: 'Con un profesor de la formación, todas grabadas', valor: 1040 },
   { item: 'Comunidad privada de hispanohablantes', detalle: 'Gente en tu misma situación, no aprendes solo', valor: 120 },
   { item: 'Ejercicios y lecciones extra', detalle: 'Material adicional para repasar sin límite', valor: 90 },
   { item: 'Soporte y resolución de dudas', detalle: 'Preguntas y te responde el equipo', valor: 150 },
@@ -267,7 +267,11 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 /* Sobre azul oscuro, el 74 % de blanco a 13 px se leía a media luz.
    Sube de tamaño y casi a blanco: es la letra que sostiene toda la
    tabla del valor. */
-.sv-detalle { display: block; font-size: 15px; color: rgba(255,255,255,0.92); line-height: 1.55; margin-top: 5px; }
+/* 10 px y no 5: cuando el nombre del bonus se parte en dos líneas
+   —"Comunidad privada / de hispanohablantes"— con 5 px la frase de
+   debajo se pegaba al segundo renglón y las tres líneas se leían
+   como un bloque apelmazado. */
+.sv-detalle { display: block; font-size: 15px; color: rgba(255,255,255,0.92); line-height: 1.55; margin-top: 10px; }
 /* La nota va bajo el importe, no bajo el texto: así la fila no crece
    una tercera línea y no parece que el párrafo se duplique. */
 .sv-nota {
