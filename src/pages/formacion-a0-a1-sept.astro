@@ -48,13 +48,13 @@ export const prerender = true
    ⚠️ CHECKOUT_URL sigue apuntando al enlace de pago de 297 €.
       Hay que crear el enlace de 397 € en Stripe y pegarlo aquí
       antes de mandar tráfico a esta página.
-   ⚠️ Los valores del stack (VALOR_TOTAL y el campo `valor` de
-      cada línea) son una propuesta. Cámbialos por los tuyos.
-      VALOR_TOTAL se escribe a mano porque lo pinta la barra de
-      móvil, pero la suma de verdad la hace PrecioSection: si tocas
-      un `valor`, cuadra este número o dirán cosas distintas.
-      Las clases valen 1.040 € porque son 16 × los 65 € que la
-      propia página da como precio de una clase suelta.
+   ⚠️ Los valores del desglose (el campo `valor` de cada línea, en
+      PrecioSection y en StackValor) son una propuesta. El total, el
+      precio tachado y el "te ahorras" se calculan solos a partir de
+      ellos, así que tocando un `valor` se recalcula todo.
+      Las clases valen 910 € porque son 14 × los 65 € que la propia
+      página da como precio de una clase suelta: si cambia el número
+      de clases, ese importe hay que rehacerlo.
 ───────────────────────────────────────────────────────────── */
 /* Todos los CTA pasan por el formulario de matriculación: recoge los
    datos y los pre-rellena en el checkout de Stripe, que es lo que
@@ -75,7 +75,12 @@ const WHATSAPP_URL = WHATSAPP
   ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSAPP_MSG)}`
   : ''
 const PRECIO = '397'
-const VALOR_TOTAL = '2.620'
+/* VALOR_TOTAL vivía aquí escrito a mano porque lo pintaba el precio
+   tachado de la barra de móvil. Ese bloque salió del marcado cuando
+   la barra pasó a llevar la cuenta atrás, así que la constante ya no
+   la usaba nadie: era un número suelto que había que acordarse de
+   cuadrar a mano cada vez que cambiaba el desglose. Fuera. El único
+   total de la página lo calcula PrecioSection sumando sus filas. */
 const AHORRO = '100'
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
 /* El del pie va aparte: el de arriba se veía torcido ahí abajo. Este
