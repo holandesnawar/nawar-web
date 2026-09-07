@@ -5838,3 +5838,24 @@
 @media (max-width: 560px) {
   .l8 .np-faq-wa a { font-size: 14px; padding: 11px 16px; }
 }
+
+/* ── Los dos remates del cierre en móvil ───────────────────────
+
+   1) La pastilla de WhatsApp de las preguntas frecuentes se partía
+   en dos líneas y el icono se quedaba solo, centrado a media altura
+   de un bloque de dos renglones. La frase pasa a ser sólo
+   "Escríbenos por WhatsApp" —el "¿No está tu pregunta?" lo daba ya
+   el sitio, justo debajo de dieciséis respuestas— y lleva nowrap,
+   así que o cabe entera o no cabe: nunca se parte. Medida: 242 px
+   en una pantalla de 360, que da 312 de hueco. */
+.l8 .np-faq-wa a { white-space: nowrap; }
+
+/* 2) El titular del cierre se quedó pequeño en el móvil: el suelo
+   del clamp estaba en 21 px, menos que el de cualquier otro titular
+   de la página.
+   23 px y ni uno más: a 24 la primera frase pide un tercer renglón
+   en pantallas de 360, y a 26 lo piden las dos. Probado uno a uno
+   de 21 a 26 en 360 y en 390. */
+.l8 .final-cta h2.h2, .l8 .final-cta h2 {
+  font-size: clamp(23px, 2.7vw, 34px);
+}
