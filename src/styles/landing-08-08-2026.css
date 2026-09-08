@@ -5472,9 +5472,14 @@
     display: inline-flex;
     order: -1;
     align-self: flex-end;
-    /* Los 12 px de abajo son los que la suben: separan la nota del
-       botón en vez de dejarla pegada a él. */
-    margin: 0 8px 12px 0;
+    /* Sube 12 px y deja 12 px más de aire hasta el botón, que es lo
+       que la despega de él. Los dos números van a la vez y con signo
+       contrario a propósito: el negativo de arriba tira de la nota
+       hacia el titular y el de abajo devuelve al botón a donde
+       estaba, así que se mueve la nota y no todo lo demás. Y las
+       viñetas de arriba no se tocan: el hueco con ellas era de 36 y
+       queda en 24, el mismo que ahora hay con el botón. */
+    margin: -12px 8px 24px 0;
   }
   .l8 .hero-empieza-txt { font-size: 24px; }
   /* Y la flecha sube con el texto: iba 8 px por debajo de su línea. */
