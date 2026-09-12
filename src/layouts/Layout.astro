@@ -22,6 +22,30 @@ const {
 } = Astro.props
 
 const siteURL = 'https://www.holandesnawar.com'
+
+/* Píxel de Meta (conjunto de datos "Hebben&Zijn").
+   Va en el layout, o sea en TODAS las páginas, y tiene que ser así:
+   el visitante llega por el anuncio a la landing pero se matricula en
+   otra página distinta, y si el píxel no está también allí la
+   conversión no se le atribuye al anuncio.
+   Vaciando esta constante se apaga en todo el sitio de una vez. */
+const META_PIXEL = '1410831147818099'
+/* El código va montado aquí arriba y no dentro del marcado: un
+   literal de varias líneas con llaves dentro rompe al compilador de
+   Astro, que se cree que las llaves son suyas.
+   Sólo mide PageView. Los eventos de conversión —Lead al enviar la
+   matrícula, Purchase al pagar— son un paso aparte y no están. */
+const META_PIXEL_SNIPPET = `!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '${META_PIXEL}');
+fbq('track', 'PageView');`
+const META_PIXEL_NOSCRIPT = `<img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=${META_PIXEL}&ev=PageView&noscript=1" />`
 ---
 
 <!doctype html>
@@ -100,6 +124,13 @@ const siteURL = 'https://www.holandesnawar.com'
       gtag('js', new Date());
       gtag('config', 'G-S3GJTLQHRJ');
     </script>
+
+    {/* Píxel de Meta. is:inline para que salga tal cual y se
+        ejecute en la cabecera: si no, Astro se lo lleva a un módulo
+        aparte y se carga más tarde, que para medir es justo lo que
+        no interesa. */}
+    {META_PIXEL && <script is:inline set:html={META_PIXEL_SNIPPET} />}
+    {META_PIXEL && <noscript set:html={META_PIXEL_NOSCRIPT} />}
 
     <!-- Fonts: Inter + Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
