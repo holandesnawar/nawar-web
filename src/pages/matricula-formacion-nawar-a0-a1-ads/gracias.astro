@@ -76,7 +76,7 @@ const pasos = [
 
       <div class="gr-header">
         <span class="gr-check" aria-hidden="true">
-          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="3.2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
           </svg>
         </span>
@@ -128,10 +128,6 @@ const pasos = [
             así lo que te mandemos después llega bien.
           </p>
         </div>
-      </div>
-
-      <div class="gr-footer">
-        <a href="/" class="gr-back">Volver al inicio</a>
       </div>
 
     </div>
@@ -205,13 +201,17 @@ const pasos = [
     gap: 14px;
     margin-bottom: 40px;
   }
+  /* Igual que en la otra página de gracias de anuncios: más presente
+     que en las de la web, porque aquí es lo primero que se ve y tiene
+     que decir "hecho" de un vistazo. */
   .gr-check {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 44px; height: 44px; border-radius: 50%;
-    background: transparent;
-    border: 2px solid #4da3ff;
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(77,163,255,0.14);
+    border: 3px solid #4da3ff;
     color: #4da3ff;
-    margin-bottom: 4px;
+    box-shadow: 0 0 0 8px rgba(77,163,255,0.12), 0 10px 30px rgba(77,163,255,0.25);
+    margin-bottom: 8px;
   }
   .gr-title {
     font-family: var(--font-poppins), system-ui, sans-serif;
@@ -323,18 +323,10 @@ const pasos = [
   }
   .gr-spam-text strong { color: #fff; font-weight: 600; }
 
-  .gr-footer { margin-top: 46px; }
-  .gr-back {
-    display: inline-flex; align-items: center;
-    font-family: var(--font-inter), system-ui, sans-serif;
-    font-size: 14.5px; font-weight: 600;
-    color: rgba(255,255,255,0.95);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(255,255,255,0.5);
-    padding-bottom: 2px;
-    transition: color .2s, border-color .2s;
-  }
-  .gr-back:hover { color: #fff; border-color: rgba(255,255,255,0.6); }
+  /* Aquí iba "Volver al inicio". Fuera, por lo mismo que en la otra
+     página de gracias de anuncios: es una puerta de salida al final de
+     un embudo, justo donde lo que toca es esperar nuestro mensaje o
+     escribirnos. */
 
   @media (max-width: 640px) {
     .gr-page { padding: 36px 20px 72px; }
