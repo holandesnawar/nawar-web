@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 
 // A dónde lleva el botón "Apúntate" (los tres: escritorio, tablet y menú móvil).
-// Por decisión de Rida (sept 2026) va a la landing de la formación mientras
-// dure la convocatoria; cuando se cierre, volver a '/lista-de-espera'.
-const APUNTATE_HREF = '/formacion-a0-a1-sept'
+// Durante la convocatoria (sept 2026) apuntó a '/formacion-a0-a1-sept'; con la
+// matrícula cerrada vuelve a la lista de espera. Es el único sitio que tocar.
+const APUNTATE_HREF = '/lista-de-espera'
 
 const NAV_LINKS = [
   { label: 'Inicio',         href: '/' },
