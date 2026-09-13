@@ -31,6 +31,11 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
 // de que sólo se descargue una de las dos.
 const FOTO_PACK = 'https://docs.holandesnawar.com/img/Landing/Todo.pc.png'
 const FOTO_PACK_MOVIL = 'https://docs.holandesnawar.com/img/Landing/todoo.movil.png'
+
+/* Igual que en la tarjeta de precio: la landing de anuncios no
+   habla de plazas limitadas y se calla con plazas={false}. */
+interface Props { plazas?: boolean }
+const { plazas = true } = Astro.props
 ---
 <section class="ai-section" data-navbar="light">
   <div class="inner">
@@ -100,7 +105,9 @@ const FOTO_PACK_MOVIL = 'https://docs.holandesnawar.com/img/Landing/todoo.movil.
         {/* Espacios duros dentro de cada dato: así la línea sólo puede
             partir por los separadores y no deja un "Solo" colgando al
             final del renglón. */}
-        <p class="ai-nota">15 días de garantía · Acceso inmediato · Solo 40 plazas</p>
+        <p class="ai-nota">{plazas
+          ? `15 días de garantía · Acceso inmediato · Solo 40 plazas`
+          : `15 días de garantía · Acceso inmediato`}</p>
       </aside>
 
     </div>
