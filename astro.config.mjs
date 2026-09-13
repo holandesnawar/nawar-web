@@ -25,9 +25,27 @@ export default defineConfig({
 
      Ojo: sólo cambia la landing normal. /formacion-a0-a1-sept-ads se
      queda con su nombre —tiene anuncios apuntando ahí— y no le afecta
-     esta regla, que casa la ruta exacta y no por prefijo. */
+     esta regla, que casa la ruta exacta y no por prefijo.
+
+     La matrícula sigue la misma lógica: era
+     /matricula-formacion-nawar-a0-a1 y ahora es
+     /matricula-formacion-nawar. El nivel en la URL la dejaba vieja en
+     cuanto se abra el A1 → A2, y ese enlace está pegado en correos ya
+     enviados y reenviado por WhatsApp, así que la ruta vieja tampoco
+     puede quedarse en un 404.
+
+     No hace falta duplicar ninguna página: renombrar el archivo cambia
+     la URL, y la regla de aquí abajo se encarga de la vieja. Lo que sí
+     hubo que tocar son los siete sitios que enlazaban a la ruta
+     antigua, o los botones de la landing habrían acabado en la lista
+     de espera sin decirlo.
+
+     Ojo con las dos rutas de anuncios: la regla casa la ruta EXACTA,
+     así que ni /formacion-a0-a1-sept-ads ni
+     /matricula-formacion-nawar-a0-a1-ads se ven afectadas. */
   redirects: {
     '/formacion-a0-a1-sept': { status: 302, destination: '/lista-de-espera' },
+    '/matricula-formacion-nawar-a0-a1': { status: 302, destination: '/lista-de-espera' },
   },
   vite: {
     plugins: [tailwindcss()],

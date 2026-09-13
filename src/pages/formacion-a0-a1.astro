@@ -59,7 +59,13 @@ export const prerender = true
 /* Todos los CTA pasan por el formulario de matriculación: recoge los
    datos y los pre-rellena en el checkout de Stripe, que es lo que
    reduce los abandonos. Ya no se enlaza a Stripe directamente. */
-const CHECKOUT_URL = '/matricula-formacion-nawar-a0-a1'
+/* La matrícula se renombró: era /matricula-formacion-nawar-a0-a1 y
+   ahora es /matricula-formacion-nawar, porque el nivel en la URL la
+   dejaba vieja al abrir el siguiente. La ruta antigua redirige a la
+   lista de espera —circula por correos ya enviados— así que dejarla
+   aquí habría mandado a la lista de espera todos los botones de esta
+   página sin que ninguno lo dijera. */
+const CHECKOUT_URL = '/matricula-formacion-nawar'
 
 /* ── WhatsApp para las dudas de antes de comprar ───────────────
    ⚠️ VACÍO = APAGADO. Ni sale el botón flotante ni la línea de las
@@ -1224,7 +1230,11 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
      que hay hoy (banner, navbar, barra fija, banda intermedia, stack
      y tarjeta de precio) y los que se añadan mañana. */
   ;(function initPuertas() {
-    const DESTINO = '/matricula-formacion-nawar-a0-a1'
+    /* Tiene que ser la MISMA ruta que CHECKOUT_URL, porque los
+       botones se buscan por su destino: a[href="…"]. Si se
+       desincronizan, esto no casa con nada y la puerta deja de
+       cerrarse sin dar ningún error. */
+    const DESTINO = '/matricula-formacion-nawar'
     const ESPERA = '/lista-de-espera'
 
     function textoDe(a: HTMLAnchorElement): Text | null {
