@@ -2,6 +2,11 @@
 /* ══════════════════════════════════════════════════════════════
    COPIA PARA ANUNCIOS — /formacion-a0-a1-sept-ads
 
+   Esta URL conserva el "-sept" aunque la landing normal lo haya
+   perdido (ahora es /formacion-a0-a1). No es un descuido: hay
+   anuncios apuntando aquí, y cambiar la URL de destino de un
+   anuncio en marcha lo rompe.
+
    ⚠️ ESTA PÁGINA YA NO VENDE. Es captación.
 
    La original cierra la venta aquí mismo: precio, cuenta atrás y
@@ -20,7 +25,7 @@
      2. Ni cuentas atrás, ni "quedan X días", ni fechas de cierre.
      3. Ningún botón va a Stripe ni al checkout: todos al formulario.
 
-   Es la misma landing que /formacion-a0-a1-sept en lo demás,
+   Es la misma landing que /formacion-a0-a1 en lo demás,
    duplicada para poder cambiar el copy de los anuncios sin tocar la
    que ya está corriendo. Las secciones grandes NO están duplicadas:
    se importan las mismas de components/landing-08-08-2026, igual
@@ -33,12 +38,12 @@
    barra de abajo. A partir de ahora, cualquier cambio en esas
    partes hay que hacerlo en los DOS sitios o las dos páginas dirán
    cosas distintas. Para ver en qué se han separado:
-     diff src/pages/formacion-a0-a1-sept.astro \
+     diff src/pages/formacion-a0-a1.astro \
           src/pages/formacion-a0-a1-sept-ads.astro
 
    El sitemap ya la deja fuera sin tocar nada: el filtro de
    astro.config.mjs descarta todo lo que contenga
-   "formacion-a0-a1-sept", y este nombre lo contiene. Y va con
+   "formacion-a0-a1", y este nombre lo contiene. Y va con
    noindex igual que la original, así que Google no la va a indexar
    ni la va a ver como contenido duplicado.
 ══════════════════════════════════════════════════════════════ */
@@ -1173,7 +1178,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
      entera con las dos: esta página ya no mete prisa con ninguna
      fecha, y un contador es la forma más ruidosa de hacerlo.
      Si algún día vuelve la urgencia a los anuncios, el original sigue
-     en /formacion-a0-a1-sept, con su fecha fija y su desfase horario
+     en /formacion-a0-a1, con su fecha fija y su desfase horario
      comentados. */
 
   /* ── La línea de progreso de arriba ───────────────────────

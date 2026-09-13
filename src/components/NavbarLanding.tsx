@@ -3,7 +3,12 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 // A dónde lleva el botón "Apúntate" (los tres: escritorio, tablet y menú móvil).
 // Por decisión de Rida (sept 2026) va a la landing de la formación mientras
 // dure la convocatoria; cuando se cierre, volver a '/lista-de-espera'.
-const APUNTATE_HREF = '/formacion-a0-a1-sept'
+//
+// ⚠️ Actualizado al renombrar la landing: era '/formacion-a0-a1-sept', que
+// ahora redirige a la lista de espera. Dejarlo con el nombre viejo habría
+// convertido el botón principal de toda la web en un enlace a la lista de
+// espera, y sin dar la cara: el enlace no se rompe, sólo lleva a otro sitio.
+const APUNTATE_HREF = '/formacion-a0-a1'
 
 const NAV_LINKS = [
   { label: 'Inicio',         href: '/' },
