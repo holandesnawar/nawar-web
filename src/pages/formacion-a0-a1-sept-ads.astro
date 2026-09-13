@@ -2,11 +2,31 @@
 /* ══════════════════════════════════════════════════════════════
    COPIA PARA ANUNCIOS — /formacion-a0-a1-sept-ads
 
-   Es la misma landing que /formacion-a0-a1-sept, duplicada para
-   poder cambiar el copy de los anuncios sin tocar la que ya está
-   corriendo. Las secciones grandes NO están duplicadas: se importan
-   las mismas de components/landing-08-08-2026, igual que la
-   original, así que un cambio ahí sale en las dos a la vez.
+   ⚠️ ESTA PÁGINA YA NO VENDE. Es captación.
+
+   La original cierra la venta aquí mismo: precio, cuenta atrás y
+   checkout. Esta no. No enseña ningún precio, no mete prisa con
+   ninguna fecha y todos sus botones llevan a un formulario que sólo
+   recoge el contacto (/matricula-formacion-nawar-a0-a1-ads). La
+   venta se cierra después, hablando con la persona.
+
+   Por qué: es la página a la que llega el tráfico frío de anuncios,
+   que no conoce la marca. Poner un precio delante de alguien que
+   acaba de aterrizar sólo sirve para que se vaya sin darnos forma
+   de volver a hablar con él. Así al menos queda el contacto.
+
+   De ahí salen las tres reglas que hay que respetar al tocarla:
+     1. Ni una cifra de precio, ni entera ni tachada ni "desde".
+     2. Ni cuentas atrás, ni "quedan X días", ni fechas de cierre.
+     3. Ningún botón va a Stripe ni al checkout: todos al formulario.
+
+   Es la misma landing que /formacion-a0-a1-sept en lo demás,
+   duplicada para poder cambiar el copy de los anuncios sin tocar la
+   que ya está corriendo. Las secciones grandes NO están duplicadas:
+   se importan las mismas de components/landing-08-08-2026, igual
+   que la original, así que un cambio ahí sale en las dos a la vez.
+   Las que aquí tienen que decir algo distinto lo hacen con una
+   propiedad (plazas, precio, fechas), no con una copia del archivo.
 
    ⚠️ Lo que sí está duplicado es este archivo: el banner, la lista
    de preguntas frecuentes, el bloque de cierre, el contador y la
@@ -35,7 +55,9 @@ import MetodoFunciona from '../components/landing-08-08-2026/MetodoFunciona.astr
 import QueIncluye from '../components/landing-08-08-2026/QueIncluye.astro'
 import BonusSection from '../components/landing-08-08-2026/BonusSection.astro'
 import ParaTiSection from '../components/landing-08-08-2026/ParaTiSection.astro'
-import PrecioSection from '../components/landing-08-08-2026/PrecioSection.astro'
+/* PrecioSection no se importa: esta página no enseña precio. Se deja
+   escrito para que se vea que es una decisión y no un olvido.
+   import PrecioSection from '../components/landing-08-08-2026/PrecioSection.astro' */
 // El desglose de valor ya no es una sección aparte: vive dentro de
 // PrecioSection, en su columna izquierda. El componente se queda en el
 // repo por si algún día vuelve a separarse.
@@ -68,21 +90,16 @@ export const prerender = true
 
 /* ─────────────────────────────────────────────────────────────
    AJUSTES RÁPIDOS
-   ⚠️ CHECKOUT_URL sigue apuntando al enlace de pago de 297 €.
-      Hay que crear el enlace de 397 € en Stripe y pegarlo aquí
-      antes de mandar tráfico a esta página.
-   ⚠️ Los valores del desglose (el campo `valor` de cada línea, en
-      PrecioSection y en StackValor) son una propuesta. El total, el
-      precio tachado y el "te ahorras" se calculan solos a partir de
-      ellos, así que tocando un `valor` se recalcula todo.
-      Las clases valen 910 € porque son 14 × los 65 € que la propia
-      página da como precio de una clase suelta: si cambia el número
-      de clases, ese importe hay que rehacerlo.
 ───────────────────────────────────────────────────────────── */
-/* Todos los CTA pasan por el formulario de matriculación: recoge los
-   datos y los pre-rellena en el checkout de Stripe, que es lo que
-   reduce los abandonos. Ya no se enlaza a Stripe directamente. */
-const CHECKOUT_URL = '/matricula-formacion-nawar-a0-a1'
+/* Todos los CTA de la página van AQUÍ, y este formulario no cobra:
+   recoge nombre, correo y WhatsApp, los manda al CRM y enseña una
+   página de gracias. Nadie pasa por Stripe desde esta landing.
+
+   Ojo con confundirlo con /matricula-formacion-nawar-a0-a1 (sin
+   -ads), que sí crea la sesión de pago y además está detrás de la
+   puerta de plazas: con la convocatoria cerrada redirige a la lista
+   de espera, y mandar ahí el tráfico de anuncios sería tirarlo. */
+const CTA_URL = '/matricula-formacion-nawar-a0-a1-ads'
 
 /* ── WhatsApp para las dudas de antes de comprar ───────────────
    ⚠️ VACÍO = APAGADO. Ni sale el botón flotante ni la línea de las
@@ -97,14 +114,12 @@ const WHATSAPP_MSG = 'Hola, tengo una duda sobre la Formación Nawar A0-A1'
 const WHATSAPP_URL = WHATSAPP
   ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSAPP_MSG)}`
   : ''
-const PRECIO = '397'
-/* VALOR_TOTAL vivía aquí escrito a mano porque lo pintaba el precio
-   tachado de la barra de móvil. Ese bloque salió del marcado cuando
-   la barra pasó a llevar la cuenta atrás, así que la constante ya no
-   la usaba nadie: era un número suelto que había que acordarse de
-   cuadrar a mano cada vez que cambiaba el desglose. Fuera. El único
-   total de la página lo calcula PrecioSection sumando sus filas. */
-const AHORRO = '100'
+/* Aquí vivían PRECIO ('397'), VALOR_TOTAL y AHORRO. Las tres se han
+   ido con el precio: esta página no enseña ninguna cifra, y dejarlas
+   declaradas sin usar es la forma más fácil de que alguien las vuelva
+   a pintar en pantalla sin darse cuenta de que aquí no van.
+   El precio sigue donde tiene que estar: en la landing normal, que
+   sí vende, y en la conversación. */
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
 /* El del pie va aparte: el de arriba se veía torcido ahí abajo. Este
    se pinta sin width ni height fijos —los de antes forzaban 120×30 y
@@ -169,34 +184,32 @@ const bonuses = [
   },
 ]
 
-/* Lo que entra en el precio */
-const incluidoEnPrecio = [
-  'Formación completa A0 → A1 con 6 meses de acceso',
-  'Escuela con ejercicios interactivos y seguimiento',
-  'Clase semanal en directo + todas las grabaciones',
-  'Comunidad privada de hispanohablantes',
-  'Ejercicios y lecciones extra para repasar',
-  'Soporte y resolución de dudas',
-  'Certificado oficial A0-A1 personalizado',
-  'Actualizaciones de contenido incluidas',
-]
+/* Aquí vivía `incluidoEnPrecio`, la lista de lo que entraba en los
+   397 €. No la pintaba nadie —era código muerto desde hacía tiempo—
+   y en una página sin precio el propio nombre invitaba a volver a
+   sacarla. Lo que se llevas sigue contado en AccesoIncluye. */
 
 const faqs = [
+  /* Ojo con esta primera: NO da la cifra, a propósito, y aun así hay
+     que dejarla. La pregunta se la hace todo el mundo, y una página
+     que la esquiva del todo manda a la gente a buscar el precio fuera
+     —o a irse. Reconocerla y decir cuándo se responde cuesta menos
+     que fingir que nadie se lo pregunta. */
   {
-    q: '¿Por qué cuesta 397€?',
-    a: 'Porque el precio incluye todo lo que has visto: el programa completo, las clases en directo, la comunidad, el soporte y el certificado. No hay extras ni pagos posteriores. Trabajamos con grupos pequeños en cada convocatoria porque es la única forma de acompañar de verdad a cada alumno.',
+    q: '¿Cuánto cuesta?',
+    a: 'Te lo decimos cuando hablemos, y sin rodeos. Es un pago único, sin cuotas ni permanencia, y con 15 días de garantía. Preferimos dártelo con contexto —qué incluye, de dónde partes, si te encaja— en vez de soltarte una cifra en una página web y que decidas a ciegas.',
+  },
+  {
+    q: '¿Qué pasa cuando dejo mis datos?',
+    a: 'Nada automático ni ningún cobro. Te escribimos por WhatsApp en menos de 24 horas, vemos de dónde partes y resolvemos lo que necesites. Si lo ves claro, completamos la matrícula ahí mismo y entras en la escuela. Y si no, no pasa nada: no te insistimos.',
   },
   {
     q: '¿Es para principiantes absolutos?',
     a: 'Sí. La formación está diseñada desde cero, pensando en alguien que nunca ha estudiado neerlandés o que tiene nociones muy básicas. No necesitas saber nada previo para empezar.',
   },
   {
-    q: '¿Cuándo tengo acceso?',
-    a: 'El acceso es inmediato. En cuanto completas el pago recibirás un email con tus datos de acceso a la escuela, con los dos primeros módulos ya abiertos. Puedes empezar en minutos.',
-  },
-  {
     q: '¿Durante cuánto tiempo tengo acceso?',
-    a: 'Tienes 6 meses de acceso desde el día que entras. Dentro de ese plazo entra todo: los módulos que se van abriendo, las clases grabadas y cualquier material o mejora que añadamos al programa mientras tanto, sin pagar más. Eres del grupo fundador, así que no te quedas con la versión del primer día. El programa arranca el 14 de septiembre y son 16 semanas, así que terminas en enero y todavía te quedan dos meses de acceso para repasar lo que quieras.',
+    a: 'Tienes 6 meses de acceso desde el día que entras. Dentro de ese plazo entra todo: los módulos que se van abriendo, las clases grabadas y cualquier material o mejora que añadamos al programa mientras tanto, sin pagar más. Eres del grupo fundador, así que no te quedas con la versión del primer día. El programa son 16 semanas, así que al terminarlo todavía te quedan un par de meses de acceso para repasar lo que quieras.',
   },
   {
     q: '¿Y si no tengo mucho tiempo?',
@@ -235,16 +248,12 @@ const faqs = [
     a: 'Esta formación cubre el nivel A0 → A1, que es la base sobre la que se construye todo lo demás: la gramática, el vocabulario y las frases del día a día. Es el punto de partida para preparar el inburgering, pero no es un curso de preparación del examen en sí. Si tu objetivo es presentarte pronto, escríbenos y te decimos con franqueza si te encaja.',
   },
   {
-    q: '¿Puedo pagar a plazos?',
-    a: 'Sí. En el pago puedes elegir Klarna y fraccionar el importe. También aceptamos tarjeta, iDEAL y Bancontact, que son los métodos habituales en Países Bajos y Bélgica.',
-  },
-  {
     q: '¿Y si me arrepiento dentro de un mes?',
-    a: 'La garantía cubre los primeros 15 días: tiempo de sobra para hacer enteros los dos módulos con los que entras, ver arrancar el grupo el 14 de septiembre y decidir con criterio. Pasado ese plazo el acceso sigue siendo tuyo hasta completar los 6 meses, así que no pierdes nada de lo que has pagado.',
+    a: 'La garantía cubre los primeros 15 días: tiempo de sobra para hacer enteros los dos módulos con los que entras, ver arrancar el grupo y decidir con criterio. Pasado ese plazo el acceso sigue siendo tuyo hasta completar los 6 meses, así que no pierdes lo que ya has hecho.',
   },
   {
     q: '¿Cuándo empiezo?',
-    a: 'En cuanto completes el pago entras en la escuela con los dos primeros módulos abiertos. Puedes empezar hoy mismo, en los próximos minutos si quieres.',
+    a: 'En cuanto cerramos la matrícula entras en la escuela con los dos primeros módulos abiertos, y a partir de ahí se te va abriendo uno por semana. Cuándo arranca tu grupo te lo decimos al hablar contigo.',
   },
 ]
 
@@ -253,7 +262,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
 <Layout
   title={`Formación Nawar A0-A1 | Aprende neerlandés de verdad`}
-  description="La formación de neerlandés diseñada para hispanohablantes. +15 h de vídeo, ejercicios online, clase semanal en directo, comunidad y certificado. Acceso completo por 397 €."
+  description="La formación de neerlandés diseñada para hispanohablantes. +15 h de vídeo, ejercicios online, clase semanal en directo, comunidad y certificado. Reserva tu plaza y te contamos cómo funciona."
   keywords="curso neerlandés online, formación neerlandés hispanohablantes, aprender holandés desde el español, inburgering, neerlandés A0 A1"
   noindex={true}
 >
@@ -547,22 +556,19 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       height="38"
     />
 
+    {/* La barra de arriba se queda con dos piezas: logo y botón. En el
+        medio iba la cuenta atrás ("Las plazas cierran en…"), que aquí
+        no existe. La clase extra -sin-timer es la que recompone la
+        rejilla: la hoja compartida la tiene a tres columnas
+        (1fr auto 1fr) y, al quitar la pieza del centro, el botón se
+        iba a la columna de en medio. */}
     <nav class="l8nav">
-      <div class="l8nav-inner">
+      <div class="l8nav-inner l8nav-inner--sin-timer">
         <a href="#hero" class="l8nav-logo" aria-label="Inicio">
           <img src={LOGO} alt="Holandés con Nawar" width="150" height="38" />
         </a>
-        {/* Sólo el cierre. Las 40 plazas salieron de aquí: ya están
-            debajo del botón del banner, en la tarjeta de precio, en
-            la nota del cierre de la oferta y en una pregunta
-            frecuente. Una quinta vez, y encima fija en pantalla toda
-            la página, era ruido. */}
-        <div class="l8nav-timer" id="l8-timer-caja">
-          <div class="l8nav-timer-label" id="l8-timer-label">Las plazas cierran en</div>
-          <div class="l8nav-timer-value" id="l8-timer">0D 00H 00M 00S</div>
-        </div>
-        <a href={CHECKOUT_URL} class="l8nav-cta">
-          Obtener acceso
+        <a href={CTA_URL} class="l8nav-cta">
+          Reservar mi plaza
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
         </a>
       </div>
@@ -632,15 +638,20 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
               <div class="hero-cta-col">
                 {/* Sin flecha: la que cuenta es la de la nota a mano, que
                     ya apunta al botón. Dos flechas seguidas se estorban. */}
-                <a href={CHECKOUT_URL} class="btn btn-primary btn-lg">
-                  Quiero aprender neerlandés
+                <a href={CTA_URL} class="btn btn-primary btn-lg">
+                  Reservar mi plaza
                 </a>
-                {/* En la de anuncios no se habla de plazas, así que
-                    aquí vuelve la garantía: es la otra cosa que quita
-                    miedo en la primera pantalla. */}
+                {/* Aquí iba primero "Solo 40 plazas" y luego "Garantía
+                    de 15 días". Ninguna de las dos vale ya: la primera
+                    porque esta página no habla de plazas, y la segunda
+                    porque una garantía de devolución delante de alguien
+                    que todavía no sabe que hay que pagar sólo levanta
+                    la pregunta antes de tiempo.
+                    Lo que sí hace falta en la primera pantalla es que
+                    el botón no dé miedo: decir que no cobra. */}
                 <p class="hero-nota">
                   <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                  Garantía de 15 días
+                  Sin compromiso: te escribimos antes de nada
                 </p>
               </div>
               <span class="hero-empieza" aria-hidden="true">
@@ -865,9 +876,9 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         después el método: explicar un sistema a quien ya ha abandonado
         tres cursos, sin reconocer antes por qué los abandonó, suena a
         lo mismo de siempre. */}
-    <PresentacionNawar />
+    <PresentacionNawar ads={true} />
 
-    <MetodoFunciona />
+    <MetodoFunciona ads={true} />
 
 
 
@@ -883,8 +894,8 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     <section class="l8-cta-band">
       <div class="inner">
         <div class="l8-cta-band-inner sr">
-          <a href={CHECKOUT_URL} class="l8-cta-band-btn">
-            Reservar mi acceso
+          <a href={CTA_URL} class="l8-cta-band-btn">
+            Reservar mi plaza
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow}/></svg>
           </a>
         </div>
@@ -894,14 +905,21 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     {/* ── 7. Primero los cinco bonus, uno a uno... ── */}
     <BonusSection />
 
-    {/* ── 11. Y en cuanto se ha dicho lo que vale, lo que cuesta.
-           Antes esto estaba cinco secciones más abajo y la página
-           cerraba dos veces: una aquí con el total y otra allí con la
-           tarjeta. Ahora la oferta va de un tirón y cierra una vez. ── */}
-    <PrecioSection plazas={false} />
+    {/* ── 11. Aquí iba PrecioSection: el desglose de valor, el total
+           tachado, los 397 €, los logos de pago y el fraccionado con
+           Klarna. Fuera entera. Es la única sección que se quita del
+           todo, y es la que define esta página: sin ella el recorrido
+           pasa de los bonus al filtro y de ahí a la garantía, sin
+           enseñar nunca una cifra.
+           No basta con vaciarla: el desglose de valor ("esto vale
+           2.490 €") sólo tiene sentido si detrás viene el precio. Sin
+           precio detrás es un número grande colgado que asusta y no
+           cierra nada. Por eso se va el bloque completo, no sólo la
+           tarjeta. El import se queda arriba, comentado. ── */}
 
-    {/* ── 12. Filtro después del precio: quien ha visto la cifra y se
-           reconoce aquí, se queda. ── */}
+    {/* ── 12. El filtro. Antes venía después del precio —"has visto la
+           cifra, ¿te reconoces aquí?"—; ahora es lo primero que pide
+           algo al lector, y funciona igual: quien se reconoce, sigue. ── */}
     <ParaTiSection />
 
     <!-- ══════════════════════════════════════════════════════════
@@ -940,10 +958,10 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
          a poner <EscasezSection /> aquí y su import arriba. */}
 
     {/* ── 14. Y qué pasa justo después de pagar ── */}
-    <CronogramaSection />
+    <CronogramaSection ads={true} />
 
     {/* ── 15. Recordatorio de todo lo que entra, y salida ── */}
-    <AccesoIncluye plazas={false} />
+    <AccesoIncluye plazas={false} conPrecio={false} />
 
     <!-- ══════════════════════════════════════════════════════════
          FAQ — diseño limpio, sin tarjetas (nawar-plus)
@@ -1028,13 +1046,17 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
         <div class="content">
           <div class="final-cta-btns">
-            <a href={CHECKOUT_URL} class="btn btn-primary btn-lg">
-              Unirme ahora
+            <a href={CTA_URL} class="btn btn-primary btn-lg">
+              Reservar mi plaza
             </a>
           </div>
+          {/* Decía "Acceso inmediato", y desde esta página es mentira:
+              el acceso llega después de hablar, no al pulsar. Lo que
+              sí es inmediato —y lo que hace falta prometer en el
+              último botón de la página— es la respuesta. */}
           <p class="final-cta-fine">
             <svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-shield-check"/></svg>
-            Acceso inmediato
+            Te respondemos en menos de 24 h
           </p>
         </div>
       </div>
@@ -1087,82 +1109,75 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         pantalla y dos a la vez agobian. Sale sola al pasar el hero.
         Si el script no llegara a ejecutarse se queda sin salir, y no
         es grave: el mismo enlace está ocho veces más abajo. */}
-    <div class="mobile-sticky hidden" id="l8-sticky">
-      {/* Aquí iba el precio tachado, oculto con [hidden] y con la
-          clase .is-oculto. No servía de nada: .mobile-sticky-price
-          trae display:flex y le gana al atributo, así que el bloque
-          seguía ocupando su sitio, invisible, empujando al botón.
-          Fuera del marcado; su CSS se queda por si vuelve. */}
-      <div class="ms-cuenta" id="l8-sticky-cuenta">
-        <span class="ms-cuenta-label" id="l8-sticky-label" hidden>Las plazas cierran en</span>
-        <strong class="ms-cuenta-valor" id="l8-sticky-valor">0D 00H 00M 00S</strong>
-      </div>
-      <a href={CHECKOUT_URL} class="btn btn-sticky">Quiero mi plaza</a>
+    {/* Un solo botón, a lo ancho. Antes compartía la barra con la
+        cuenta atrás y por eso se encogía a su contenido; sin ella
+        vuelve a ser el único inquilino, y la clase -solo es la que
+        deshace ese encogimiento (las reglas están en el <style> del
+        final de esta página, no en la hoja compartida). */}
+    <div class="mobile-sticky mobile-sticky--solo hidden" id="l8-sticky">
+      <a href={CTA_URL} class="btn btn-sticky">Reservar mi plaza</a>
     </div>
 
   </div>
 </Layout>
 
-<script>
-  /* ── Contador de la convocatoria: fechas fijas ─────────────
-     Antes eran siete días por visitante guardados en localStorage:
-     cada persona veía su propia cuenta atrás y se le reiniciaba al
-     cambiar de navegador o al borrar los datos. Ahora es una sola
-     fecha para todo el mundo.
+<style>
+  /* ══════════════════════════════════════════════════════════════
+     LO QUE CAMBIA SÓLO EN LA LANDING DE ANUNCIOS
 
-     Las dos fechas llevan el desfase escrito (+02:00, que es la hora
-     de España en septiembre): así el momento es el mismo para quien
-     entre desde Ámsterdam, desde Madrid o desde México, sin depender
-     de la zona horaria del visitador.
+     Estas reglas viven aquí y no en landing-08-08-2026.css a
+     propósito: esa hoja la comparten las dos landings, y todo lo que
+     se toque ahí sale también en la que está vendiendo.
 
-     ⚠️ Para otra convocatoria sólo hay que cambiar estas dos líneas.
-     Ojo con el desfase: de finales de octubre a finales de marzo
-     España va en +01:00, no en +02:00. */
-  ;(function initCountdown() {
-    /* Diez días desde que se puso en marcha esta copia (13 de
-       septiembre), o sea hasta el final del 23. Fecha fija y no diez
-       días por visitante: quien vuelva mañana ve un día menos, que es
-       lo que hace que una cuenta atrás signifique algo.
-       ⚠️ Cuando se acabe hay que poner fecha nueva aquí; si no, la
-       landing de anuncios se queda con el contador a cero. */
-    const FIN = Date.parse('2026-09-24T00:00:00+02:00')
+     Las clases van repetidas (.x.x) para ganar en especificidad a las
+     de la hoja compartida sin depender del orden en que se carguen
+     los dos ficheros. Es el mismo truco que ya se usa en varios
+     sitios de este proyecto; queda feo y es a posta.
+  ══════════════════════════════════════════════════════════════ */
 
-    // Restos del contador viejo, para no dejar basura en el navegador
-    // de quien ya había pasado por aquí.
-    try { localStorage.removeItem('nawar_offer_end_l8') } catch (e) {}
+  /* ── La barra de arriba, sin la cuenta atrás ──────────────────
+     La hoja compartida la reparte en tres columnas (1fr auto 1fr)
+     porque el contador iba en el centro. Sin él sólo quedan dos
+     piezas, y con tres columnas el botón se metía en la de en medio
+     en vez de irse a la derecha. */
+  .l8 .l8nav-inner--sin-timer.l8nav-inner {
+    grid-template-columns: 1fr auto;
+  }
+  .l8 .l8nav-inner--sin-timer .l8nav-cta { justify-self: end; }
 
-    const pad = (n: number) => (n < 10 ? '0' : '') + n
-    // Dos sitios con la misma cuenta: el centro de la barra de arriba
-    // —que en móvil no se ve— y la izquierda de la barra de abajo.
-    const etiqueta = document.getElementById('l8-timer-label')
-    const navEl = document.getElementById('l8-timer')
-    const etiquetaAbajo = document.getElementById('l8-sticky-label')
-    const abajoEl = document.getElementById('l8-sticky-valor')
-
-    const tick = () => {
-      const diff = Math.max(0, FIN - Date.now())
-      const d = Math.floor(diff / 86400000)
-      const h = Math.floor((diff % 86400000) / 3600000)
-      const m = Math.floor((diff % 3600000) / 60000)
-      const s = Math.floor((diff % 60000) / 1000)
-      const reloj = `${d}D ${pad(h)}H ${pad(m)}M ${pad(s)}S`
-
-      // La misma cuenta en los dos sitios y sin estados: el carrito
-      // cierra el día 13 pase lo que pase, así que contar desde hoy
-      // es verdad desde hoy. Antes la de arriba se guardaba hasta el
-      // día 8 y enseñaba las plazas mientras tanto; con el arranque a
-      // la vuelta de la esquina eso era una regla de más.
-      if (etiqueta) etiqueta.hidden = false
-      if (navEl) navEl.textContent = reloj
-      if (etiquetaAbajo) etiquetaAbajo.hidden = false
-      if (abajoEl) abajoEl.textContent = reloj
-      // Al llegar a cero se para y se queda en ceros: quien entre el
-      // lunes ve de un vistazo que llega tarde.
-      if (diff === 0) clearInterval(iv)
+  /* ── La barra de abajo, con el botón solo ─────────────────────
+     Debajo de 960 px la hoja compartida separa la barra en dos
+     (justify-content: space-between) y encoge el botón a su
+     contenido, porque compartía sitio con la cuenta atrás. Aquí es
+     el único inquilino, así que vuelve a ocupar el ancho. */
+  @media (max-width: 959px) {
+    .l8 .mobile-sticky--solo.mobile-sticky.mobile-sticky {
+      justify-content: center;
     }
-    const iv = setInterval(tick, 1000)
-    tick()
-  })()
+    .l8 .mobile-sticky--solo .btn-sticky.btn-sticky.btn-sticky {
+      width: 100%;
+      /* Tope para que en tabletas no se estire en una banda larguísima */
+      max-width: 460px;
+      flex: 0 1 auto;
+      padding: 13px 20px;
+      font-size: 15.5px;
+    }
+  }
+  @media (max-width: 379px) {
+    .l8 .mobile-sticky--solo .btn-sticky.btn-sticky.btn-sticky {
+      padding: 12px 16px; font-size: 15px;
+    }
+  }
+</style>
+
+<script>
+  /* Aquí vivía initCountdown, la cuenta atrás que pintaba "Las plazas
+     cierran en …" en la barra de arriba y en la de abajo. Se ha ido
+     entera con las dos: esta página ya no mete prisa con ninguna
+     fecha, y un contador es la forma más ruidosa de hacerlo.
+     Si algún día vuelve la urgencia a los anuncios, el original sigue
+     en /formacion-a0-a1-sept, con su fecha fija y su desfase horario
+     comentados. */
 
   /* ── La línea de progreso de arriba ───────────────────────
      Se pinta con scaleX y no con width: cambiar el ancho obliga al
@@ -1213,81 +1228,20 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     items.forEach((el) => obs.observe(el))
   })()
 
-  /* ── El precio de la barra fija no se enseña de entrada ────
-     Iba visible desde el banner y destripaba la cifra antes de haber
-     contado nada de lo que incluye. Ahora aparece al llegar a la
-     sección de precio y, una vez fuera, ya se queda: el observador se
-     desconecta en cuanto dispara. */
-  ;(function initPrecioBarra() {
-    const precio = document.getElementById('l8-sticky-precio')
-    const seccion = document.getElementById('precio')
-    if (!precio || !seccion) return
-    if (!('IntersectionObserver' in window)) { precio.classList.remove('is-oculto'); return }
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (!e.isIntersecting) return
-          precio.classList.remove('is-oculto')
-          obs.disconnect()
-        })
-      },
-      { threshold: 0, rootMargin: '0px 0px -25% 0px' }
-    )
-    obs.observe(seccion)
-  })()
+  /* Aquí vivían otros dos bloques, y los dos se han ido con el precio
+     y las plazas:
 
-  /* ── Puerta 1: los botones ────────────────────────────────
-     Esta página es estática, así que el estado de la matrícula se
-     resuelve en cliente. Por defecto los botones se quedan como
-     están —abiertos—, y sólo si /api/plazas dice que está cerrada se
-     reescriben para llevar a la lista de espera. Si la llamada falla
-     no se toca nada: cerrar por un timeout sería dejar de vender, y
-     la matrícula redirige igualmente por servidor.
+     · initPrecioBarra, que sacaba el precio tachado en la barra de
+       abajo al llegar a la sección de precio. Ya no hay ni precio ni
+       sección.
 
-     Se buscan por destino y no por una clase: así entran todos los
-     que hay hoy (banner, navbar, barra fija, banda intermedia, stack
-     y tarjeta de precio) y los que se añadan mañana. */
-  ;(function initPuertas() {
-    const DESTINO = '/matricula-formacion-nawar-a0-a1'
-    const ESPERA = '/lista-de-espera'
-
-    function textoDe(a: HTMLAnchorElement): Text | null {
-      // Solo el texto: los <svg> de la flecha se quedan donde están.
-      for (const n of Array.from(a.childNodes)) {
-        if (n.nodeType === Node.TEXT_NODE && (n.textContent ?? '').trim()) return n as Text
-      }
-      return null
-    }
-
-    function cerrar() {
-      document.querySelectorAll<HTMLAnchorElement>(`a[href="${DESTINO}"]`).forEach((a) => {
-        a.href = ESPERA
-        const t = textoDe(a)
-        // La barra fija de abajo es estrecha y no traga la frase entera.
-        const corto = a.closest('.mobile-sticky') || a.classList.contains('l8nav-cta')
-        if (t) t.textContent = corto ? 'Lista de espera' : 'Apúntate a la lista de espera'
-      })
-      // Con las puertas cerradas el precio tachado y el "quedan X" sobran.
-      document.querySelectorAll<HTMLElement>('[data-plazas-quedan]').forEach((el) => {
-        el.hidden = true
-      })
-    }
-
-    fetch('/api/plazas', { headers: { accept: 'application/json' } })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => {
-        if (!d) return
-        if (d.abierta === false) return cerrar()
-        // Escasez de verdad: sale de los cobros, no es un número inventado.
-        if (typeof d.quedan === 'number' && d.quedan > 0) {
-          document.querySelectorAll<HTMLElement>('[data-plazas-quedan]').forEach((el) => {
-            el.textContent = d.quedan === 1 ? 'Queda 1 plaza' : `Quedan ${d.quedan} plazas`
-            el.hidden = false
-          })
-        }
-      })
-      .catch(() => {})
-  })()
+     · initPuertas, que preguntaba a /api/plazas y, con la
+       convocatoria cerrada, reescribía todos los botones para
+       mandarlos a la lista de espera. Eso aquí sería un fallo grave:
+       este formulario recoge solicitudes SIEMPRE, esté la
+       convocatoria como esté, y desviar a la lista de espera el
+       tráfico por el que se ha pagado es tirar el dinero del anuncio.
+       Por eso no está: no es que sobre, es que no debe volver. */
 
   /* ── Acordeón de FAQ ─────────────────────────────────────── */
   ;(function initFAQ() {

@@ -27,6 +27,21 @@ const pasos = [
     icon: 'M13 10V3L4 14h7v7l9-11h-7z',
   },
 ]
+
+/* En la landing de anuncios el paso 1 no puede decir "pasas al pago
+   seguro y en minutos tienes tu acceso": allí el formulario no cobra
+   y el acceso llega después de hablar. Sólo cambia ese paso; los
+   otros tres describen la escuela y valen igual en las dos. */
+const paso1Ads = {
+  num: '1',
+  title: 'Reservas tu plaza',
+  desc: 'Dejas tus datos, hablamos contigo para ver si te encaja y, si lo ves claro, completamos la matrícula y entras en la escuela.',
+  icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+}
+
+interface Props { ads?: boolean }
+const { ads = false } = Astro.props
+const losPasos = ads ? [paso1Ads, ...pasos.slice(1)] : pasos
 ---
 <div class="mf-wrapper">
   <div class="mf-outer" data-navbar="light">
@@ -48,7 +63,7 @@ const pasos = [
 
           <!-- Pasos -->
           <div class="mf-steps">
-            {pasos.map((p, i) => (
+            {losPasos.map((p, i) => (
               <div class={`mf-step sr${i > 0 ? ` d${i}` : ''}`}>
                 <div class="mf-step-line" aria-hidden="true"></div>
                 <div class="mf-step-num">{p.num}</div>
