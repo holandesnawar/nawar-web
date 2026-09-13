@@ -216,7 +216,7 @@ const faqs = [
   },
   {
     q: '¿Cuántos alumnos hay en la clase semanal?',
-    a: 'Pocos, y a propósito. 40 es el máximo de la convocatoria: es el aforo de la clase en directo, no una previsión de cuánta gente habrá. En la práctica el grupo es más pequeño, porque no todo el mundo se conecta a la misma hora. Siempre hay tiempo para preguntar, y si un día prefieres solo escuchar o no puedes venir, la clase se graba.',
+    a: 'Pocos, y a propósito: el grupo se mantiene reducido para que dé tiempo a preguntar. En la práctica es aún más pequeño, porque no todo el mundo se conecta a la misma hora. Y si un día prefieres solo escuchar o no puedes venir, la clase se graba.',
   },
   {
     q: '¿Puedo hacerlo desde el móvil?',
@@ -635,14 +635,12 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
                 <a href={CHECKOUT_URL} class="btn btn-primary btn-lg">
                   Quiero aprender neerlandés
                 </a>
-                {/* Aquí ponía "Garantía de 15 días". La garantía sigue
-                    contada entera en su propia sección y en dos
-                    preguntas frecuentes; lo que no estaba en ningún
-                    sitio de la primera pantalla era el número de
-                    plazas, que es lo que mueve a decidir hoy. */}
+                {/* En la de anuncios no se habla de plazas, así que
+                    aquí vuelve la garantía: es la otra cosa que quita
+                    miedo en la primera pantalla. */}
                 <p class="hero-nota">
                   <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                  Solo 40 plazas
+                  Garantía de 15 días
                 </p>
               </div>
               <span class="hero-empieza" aria-hidden="true">
@@ -900,7 +898,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
            Antes esto estaba cinco secciones más abajo y la página
            cerraba dos veces: una aquí con el total y otra allí con la
            tarjeta. Ahora la oferta va de un tirón y cierra una vez. ── */}
-    <PrecioSection />
+    <PrecioSection plazas={false} />
 
     {/* ── 12. Filtro después del precio: quien ha visto la cifra y se
            reconoce aquí, se queda. ── */}
@@ -945,7 +943,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     <CronogramaSection />
 
     {/* ── 15. Recordatorio de todo lo que entra, y salida ── */}
-    <AccesoIncluye />
+    <AccesoIncluye plazas={false} />
 
     <!-- ══════════════════════════════════════════════════════════
          FAQ — diseño limpio, sin tarjetas (nawar-plus)
@@ -1097,7 +1095,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
           Fuera del marcado; su CSS se queda por si vuelve. */}
       <div class="ms-cuenta" id="l8-sticky-cuenta">
         <span class="ms-cuenta-label" id="l8-sticky-label" hidden>Las plazas cierran en</span>
-        <strong class="ms-cuenta-valor" id="l8-sticky-valor">Solo 40 plazas</strong>
+        <strong class="ms-cuenta-valor" id="l8-sticky-valor">0D 00H 00M 00S</strong>
       </div>
       <a href={CHECKOUT_URL} class="btn btn-sticky">Quiero mi plaza</a>
     </div>
@@ -1121,10 +1119,13 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
      Ojo con el desfase: de finales de octubre a finales de marzo
      España va en +01:00, no en +02:00. */
   ;(function initCountdown() {
-    // Medianoche del domingo al lunes: el domingo 13 entero, hasta el
-    // último segundo. Escrito como las 00:00 del 14 para que no haya
-    // duda de si el domingo entra o no.
-    const FIN = Date.parse('2026-09-14T00:00:00+02:00')
+    /* Diez días desde que se puso en marcha esta copia (13 de
+       septiembre), o sea hasta el final del 23. Fecha fija y no diez
+       días por visitante: quien vuelva mañana ve un día menos, que es
+       lo que hace que una cuenta atrás signifique algo.
+       ⚠️ Cuando se acabe hay que poner fecha nueva aquí; si no, la
+       landing de anuncios se queda con el contador a cero. */
+    const FIN = Date.parse('2026-09-24T00:00:00+02:00')
 
     // Restos del contador viejo, para no dejar basura en el navegador
     // de quien ya había pasado por aquí.

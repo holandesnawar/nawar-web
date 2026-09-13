@@ -42,6 +42,12 @@ const ahorro = valorTotal - Number(precio)
 // de un vistazo, que es justo para lo que está.
 const eur = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
+
+/* La landing de anuncios no habla de plazas limitadas. El
+   componente lo sigue diciendo por defecto —la landing normal no
+   cambia—, y se calla pasándole plazas={false}. */
+interface Props { plazas?: boolean }
+const { plazas = true } = Astro.props
 ---
 <div class="pr-wrapper" id="precio">
   <div class="pr-outer" data-navbar="dark">
@@ -132,7 +138,9 @@ const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
                         Para recuperarlo basta con devolver el <strong>
                         con data-plazas-quedan: el script y su estilo
                         siguen en su sitio. */}
-                    <span><strong>Solo 40 plazas</strong> en esta convocatoria</span>
+                    <span>{plazas
+                      ? <><strong>Solo 40 plazas</strong> en esta convocatoria</>
+                      : <><strong>Grupo reducido</strong> y acompañado en cada módulo</>}</span>
                   </li>
                   <li>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
