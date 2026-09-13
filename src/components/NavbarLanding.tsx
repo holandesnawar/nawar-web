@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 
+// A dónde lleva el botón "Apúntate" (los tres: escritorio, tablet y menú móvil).
+// Por decisión de Rida (sept 2026) va a la landing de la formación mientras
+// dure la convocatoria; cuando se cierre, volver a '/lista-de-espera'.
+const APUNTATE_HREF = '/formacion-a0-a1-sept'
+
 const NAV_LINKS = [
   { label: 'Inicio',         href: '/' },
   { label: 'Nuestra visión', href: '/nuestra-vision' },
@@ -121,7 +126,7 @@ export default function NavbarLanding() {
                 Acceso a alumnos
               </a>
               <a
-                href="/lista-de-espera"
+                href={APUNTATE_HREF}
                 className="inline-flex items-center gap-2 px-7 py-3 text-[15px] font-semibold rounded-lg bg-[#4da3ff] text-[#1D0084] transition-colors duration-200"
               >
                 Apúntate
@@ -134,7 +139,7 @@ export default function NavbarLanding() {
             {/* Mobile */}
             <div className="lg:hidden flex items-center gap-2">
               <a
-                href="/lista-de-espera"
+                href={APUNTATE_HREF}
                 className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-[#4da3ff] text-[#1D0084] text-[14px] font-semibold hover:bg-[#5eb4ff] transition-all duration-200"
               >
                 Apúntate
@@ -204,7 +209,7 @@ export default function NavbarLanding() {
                 Acceso a alumnos
               </a>
               <a
-                href="/lista-de-espera"
+                href={APUNTATE_HREF}
                 onClick={handleLink}
                 className="flex w-full items-center justify-center gap-2.5 px-6 py-4 text-[16px] font-semibold rounded-xl bg-[#4da3ff] text-[#1D0084] hover:bg-[#5eb4ff] transition-all duration-200 shadow-[0_4px_20px_rgba(77,163,255,0.30)]"
               >
