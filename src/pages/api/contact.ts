@@ -17,7 +17,7 @@ async function sendContactEmail(
     })
 
     await transporter.sendMail({
-      from:    '"Nawar Academia" <holandesnawar@gmail.com>',
+      from:    '"Holandés Nawar" <holandesnawar@gmail.com>',
       to:      'info@holandesnawar.com',
       replyTo: email,
       subject: `Nueva consulta: ${asunto}`,

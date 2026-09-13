@@ -144,7 +144,7 @@ export default function StepsSection({ steps }: Props) {
           </span>
           <h2 className="title text-white">
             Así avanzas dentro{' '}
-            <span className="text-[#4da3ff]">de la academia</span>
+            <span className="text-[#4da3ff]">de la escuela</span>
           </h2>
         </div>
 
