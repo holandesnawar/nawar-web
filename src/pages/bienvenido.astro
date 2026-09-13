@@ -91,6 +91,33 @@ export const prerender = false
   </div>
 </Layout>
 
+<script>
+  /* Purchase para Meta. Aquí sólo se llega cuando Stripe da el pago
+     por bueno y redirige con ?session_id=cs_...
+
+     Dos guardas que importan:
+
+     1. Sin session_id no se dispara. Quien escriba /bienvenido a mano
+        —o quien vuelva por el historial sin el parámetro— no puede
+        contar como una venta.
+
+     2. El session_id va como eventID. Meta descarta los eventos
+        repetidos con el mismo eventID y el mismo nombre dentro de
+        48 h, así que recargar la página, volver atrás o compartir el
+        enlace no infla las ventas. Sin esto una sola compra puede
+        contarse tres veces y la campaña optimiza sobre un número que
+        no existe. */
+  const sesion = new URLSearchParams(window.location.search).get('session_id')
+  if (sesion) {
+    ;(window as any).fbq?.(
+      'track',
+      'Purchase',
+      { value: 397, currency: 'EUR', content_name: 'Formación Nawar A0-A1' },
+      { eventID: sesion }
+    )
+  }
+</script>
+
 <style>
   /* ── Página ── */
   .bv-page {

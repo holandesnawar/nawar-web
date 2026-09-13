@@ -422,6 +422,16 @@ if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
         setLoading(false)
         return
       }
+      /* Lead para Meta: la persona ha dejado sus datos y se va a
+         pagar. Va con ?. porque el píxel puede no estar —bloqueadores,
+         o la constante vacía en el layout— y una campaña de medición
+         nunca puede impedir una matrícula. fbevents manda el evento
+         con sendBeacon, así que sobrevive a la redirección de la
+         línea siguiente y no hace falta retrasarla. */
+      ;(window as any).fbq?.('track', 'Lead', {
+        content_name: 'Formación Nawar A0-A1',
+        currency: 'EUR',
+      })
       window.location.href = data.payment_url
     } catch {
       showToast('Hubo un problema de red. Revisa tu conexión y vuelve a intentarlo.')
