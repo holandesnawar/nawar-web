@@ -9,7 +9,10 @@ Disallow: /api/
 # de redes sociales (que ignoran robots.txt) generen preview en DMs
 Disallow: /ebook-a0-a1
 Disallow: /ebook-a0-a1/
-Disallow: /formacion-a0-a1-sept
-Disallow: /formacion-a0-a1-sept/
+# Sin el "-sept" al final: así cubre la landing renombrada
+# (/formacion-a0-a1), la de anuncios (/formacion-a0-a1-sept-ads) y la
+# URL vieja que ahora redirige, porque Disallow casa por prefijo.
+Disallow: /formacion-a0-a1
+Disallow: /formacion-a0-a1/
 
 Sitemap: https://www.holandesnawar.com/sitemap-index.xml

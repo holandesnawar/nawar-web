@@ -1,8 +1,13 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 
 // A dónde lleva el botón "Apúntate" (los tres: escritorio, tablet y menú móvil).
-// Durante la convocatoria (sept 2026) apuntó a '/formacion-a0-a1-sept'; con la
-// matrícula cerrada vuelve a la lista de espera. Es el único sitio que tocar.
+// Durante la convocatoria (sept 2026) apuntó a la landing de la formación; con
+// la matrícula cerrada vuelve a la lista de espera. Es el único sitio que tocar.
+//
+// ⚠️ Si vuelve a apuntar a la landing, la ruta es '/formacion-a0-a1', SIN el
+// "-sept": aquélla se renombró y ahora redirige (302) a la lista de espera. Con
+// el nombre viejo el botón seguiría funcionando pero llevaría a la lista de
+// espera sin que nadie se diera cuenta, que es la peor forma de romperse.
 const APUNTATE_HREF = '/lista-de-espera'
 
 const NAV_LINKS = [
