@@ -12,6 +12,13 @@
 // sobre la objeción, el porqué en una tarjeta destacada, y debajo la
 // promesa concreta.
 const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
+/* La landing de anuncios pide ads={true}: allí este botón no puede
+   llevar al checkout —no se cobra en la web— sino al formulario que
+   sólo recoge el contacto. */
+const matriculaAdsUrl = '/matricula-formacion-nawar-a0-a1-ads'
+interface Props { ads?: boolean }
+const { ads = false } = Astro.props
+const destino = ads ? matriculaAdsUrl : matriculaUrl
 // La ilustración de la objeción. En ordenador va a la izquierda, con
 // la pregunta a su derecha; en móvil cae debajo del titular y la
 // entradilla, que es el orden en que está en el marcado.
@@ -64,8 +71,8 @@ const FOTO_CURSOS = 'https://docs.holandesnawar.com/img/Landing/cuantos%20cursos
           real del idioma, corrección progresiva, soporte para cuando te bloqueas, acompañamiento semanal,
           clases en directo y una comunidad activa que avanza contigo.
         </p>
-        <a href={matriculaUrl} class="pn-cta">
-          Unirme a Nawar
+        <a href={destino} class="pn-cta">
+          {ads ? 'Reservar mi plaza' : 'Unirme a Nawar'}
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>
       </div>

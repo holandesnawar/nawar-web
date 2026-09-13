@@ -26,16 +26,29 @@ const accesoIncluye = [
 const bonusIncluye = 'Los 5 bonus de esta convocatoria, incluidos'
 const precio = '397'
 const matriculaUrl = '/matricula-formacion-nawar-a0-a1'
+/* La matrícula de la landing de anuncios: la que NO cobra. Va aparte
+   porque la de arriba crea la sesión de pago y además redirige a la
+   lista de espera con la convocatoria cerrada. */
+const matriculaAdsUrl = '/matricula-formacion-nawar-a0-a1-ads'
 // Fondo blanco en la propia imagen: por eso la sección va en blanco.
 // La versión de móvil viene recompuesta aparte; el <picture> se encarga
 // de que sólo se descargue una de las dos.
 const FOTO_PACK = 'https://docs.holandesnawar.com/img/Landing/Todo.pc.png'
 const FOTO_PACK_MOVIL = 'https://docs.holandesnawar.com/img/Landing/todoo.movil.png'
 
-/* Igual que en la tarjeta de precio: la landing de anuncios no
-   habla de plazas limitadas y se calla con plazas={false}. */
-interface Props { plazas?: boolean }
-const { plazas = true } = Astro.props
+/* Dos interruptores para la landing de anuncios. Los dos vienen
+   encendidos, así que la landing normal no cambia:
+
+   · plazas={false} — no habla de plazas limitadas.
+   · conPrecio={false} — ni enseña la cifra ni mete prisa: se va el
+     bloque del precio, la palomita de "oferta por tiempo limitado"
+     pasa a decir qué es esto, y el botón deja de sonar a comprar.
+     La sección sigue haciendo su trabajo (recordar todo lo que
+     entra y dar salida), sólo que la salida es una conversación.
+     Se llama así y no `precio` porque ahí arriba ya hay una
+     constante con ese nombre: la cifra. */
+interface Props { plazas?: boolean; conPrecio?: boolean }
+const { plazas = true, conPrecio = true } = Astro.props
 ---
 <section class="ai-section" data-navbar="light">
   <div class="inner">
@@ -43,7 +56,7 @@ const { plazas = true } = Astro.props
     <div class="ai-header sr">
       <span class="badge-light">
         <svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Oferta por tiempo limitado
+        {conPrecio ? 'Oferta por tiempo limitado' : 'Todo lo que incluye'}
       </span>
       <h2 class="ai-title">
         <span class="ai-negro">Empieza hoy.</span>
@@ -94,20 +107,33 @@ const { plazas = true } = Astro.props
             quedaba en blanco justo detrás de la palabra azul y
             cantaba. El de apertura se queda blanco, con su frase. */}
         <p class="ai-card-title">¿Preparado para <span class="ai-card-hl">hablar neerlandés?</span></p>
-        <div class="ai-card-precio">
-          <span class="ai-precio">{precio}&nbsp;€</span>
-          <span class="ai-precio-nota">pago único</span>
-        </div>
-        <a href={matriculaUrl} class="ai-cta">
-          Empezar ahora
+        {conPrecio ? (
+          <div class="ai-card-precio">
+            <span class="ai-precio">{precio}&nbsp;€</span>
+            <span class="ai-precio-nota">pago único</span>
+          </div>
+        ) : (
+          /* Sin la cifra, el titular se quedaba pegado al botón y la
+             tarjeta parecía a la que le falta un trozo. Aquí va lo
+             único que quiere saber quien ha bajado toda la página sin
+             ver un precio: qué pasa exactamente si pulsa. */
+          <p class="ai-card-paso">
+            Déjanos tus datos y te escribimos para ver de dónde partes
+            y si esto te encaja.
+          </p>
+        )}
+        <a href={conPrecio ? matriculaUrl : matriculaAdsUrl} class="ai-cta">
+          {conPrecio ? 'Empezar ahora' : 'Reservar mi plaza'}
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>
         {/* Espacios duros dentro de cada dato: así la línea sólo puede
             partir por los separadores y no deja un "Solo" colgando al
             final del renglón. */}
-        <p class="ai-nota">{plazas
-          ? `15 días de garantía · Acceso inmediato · Solo 40 plazas`
-          : `15 días de garantía · Acceso inmediato`}</p>
+        <p class="ai-nota">{!conPrecio
+          ? `No se te cobra nada ahora`
+          : plazas
+            ? `15 días de garantía · Acceso inmediato · Solo 40 plazas`
+            : `15 días de garantía · Acceso inmediato`}</p>
       </aside>
 
     </div>
@@ -237,6 +263,16 @@ const { plazas = true } = Astro.props
   line-height: 1;
 }
 .ai-precio-nota { font-size: 13px; color: rgba(255,255,255,0.72); }
+
+/* Lo que ocupa el sitio del precio en la landing de anuncios. Mismo
+   hueco por abajo que el bloque de la cifra (22 px) para que el botón
+   caiga donde caía y las dos versiones de la tarjeta midan casi lo
+   mismo. */
+.ai-card-paso {
+  font-size: 14.5px; line-height: 1.6;
+  color: rgba(255,255,255,0.86);
+  margin: 0 0 22px;
+}
 
 .ai-cta {
   display: flex; align-items: center; justify-content: center; gap: 9px;

@@ -31,6 +31,51 @@ const pasos = [
     desc: 'Los módulos se van abriendo por calendario, con semanas de repaso entre medias para ponerte al día. La clase en directo no falla ninguna. Con 20–30 minutos al día llegas a pedir cita, hacer la compra y presentarte en neerlandés.',
   },
 ]
+
+/* La misma secuencia contada para la landing de anuncios, que la pide
+   con ads={true}. Cambian tres cosas y las tres por el mismo
+   motivo —allí no se paga en la web y la página no caduca—:
+     · el paso 1 no lleva a un pago, lleva a una conversación;
+     · el paso 2 ya no es "en minutos": lo marca la respuesta;
+     · el paso 3 pierde la fecha. Una landing de anuncios rueda
+       semanas o meses, y una fecha escrita a mano ahí se queda
+       vieja el lunes siguiente sin que nadie se dé cuenta. */
+const pasosAds = [
+  {
+    n: '01',
+    cuando: 'Hoy',
+    title: 'Reservas tu plaza',
+    desc: 'Rellenas un formulario corto con tu nombre, tu correo y tu WhatsApp. No se te cobra nada.',
+  },
+  {
+    n: '02',
+    cuando: 'En menos de 24 h',
+    title: 'Hablamos',
+    desc: 'Te escribimos, vemos de dónde partes y resolvemos tus dudas. Si lo ves claro, completamos la matrícula ahí mismo.',
+  },
+  {
+    n: '03',
+    cuando: 'El mismo día',
+    title: 'Entras en la escuela',
+    desc: 'Recibes tus datos de acceso con los dos primeros módulos ya abiertos, así que puedes empezar esa misma noche.',
+  },
+  {
+    n: '04',
+    cuando: 'A partir de ahí',
+    title: 'Tus primeras conversaciones reales',
+    desc: 'Los módulos se van abriendo por calendario, con semanas de repaso entre medias para ponerte al día, y cada semana tienes tu clase en directo. Con 20–30 minutos al día llegas a pedir cita, hacer la compra y presentarte en neerlandés.',
+  },
+]
+
+interface Props { ads?: boolean }
+const { ads = false } = Astro.props
+const losPasos = ads ? pasosAds : pasos
+
+/* El subtítulo también cambia: "cuando entras" da por hecho un pago
+   que aquí todavía no existe. */
+const subtitulo = ads
+  ? 'Sin sorpresas y sin letra pequeña. Esto es exactamente lo que pasa desde que dejas tus datos.'
+  : 'Sin sorpresas y sin letra pequeña. Esto es exactamente lo que ocurre cuando entras.'
 ---
 <section class="cr-section" data-navbar="light">
   <div class="inner" style="position:relative;z-index:1;">
@@ -41,11 +86,11 @@ const pasos = [
         Qué pasa después
       </span>
       <h2 class="cr-title">Desde que reservas hasta tu <span class="cr-accent">primera conversación</span></h2>
-      <p class="cr-sub">Sin sorpresas y sin letra pequeña. Esto es exactamente lo que ocurre cuando entras.</p>
+      <p class="cr-sub">{subtitulo}</p>
     </div>
 
     <ol class="cr-steps">
-      {pasos.map((p, i) => (
+      {losPasos.map((p, i) => (
         <li class={`cr-step sr${i > 0 ? ` d${i}` : ''}`}>
           <div class="cr-marker" aria-hidden="true">
             <span class="cr-dot">{p.n}</span>

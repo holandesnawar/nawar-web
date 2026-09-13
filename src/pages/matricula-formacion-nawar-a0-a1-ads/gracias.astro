@@ -1,0 +1,346 @@
+---
+/**
+ * Gracias de la matrícula de anuncios. Aquí aterriza quien acaba de
+ * dejar sus datos en /matricula-formacion-nawar-a0-a1-ads.
+ *
+ * Cuidado con lo que dice esta página: la persona NO ha pagado. Decirle
+ * "ya estás matriculado" la deja creyendo que está dentro, y la llamada
+ * empieza rebajándole la expectativa, que es la peor forma de empezar
+ * una venta. Lo que sí es verdad y sí compromete: le guardamos la plaza
+ * mientras hablamos. Eso es lo que se cuenta.
+ *
+ * Aquí se dispara el evento Lead del píxel: es el punto en el que Meta
+ * mide bien —una URL propia, después de que la petición haya salido
+ * bien— y no al pulsar el botón.
+ *
+ * Va sin indexar: es una página de embudo.
+ */
+import Layout from '../../layouts/Layout.astro'
+
+export const prerender = true
+
+/** El remitente real de systeme.io. Tiene que ser el de verdad o el
+ *  consejo de "míralo en spam" no sirve de nada. */
+const REMITENTE = 'info@holandesnawar.com'
+
+/* Mismo número que la landing. Aquí el WhatsApp no es un botón de
+   dudas: es el atajo para quien no quiere esperar a que le escribamos,
+   y en un embudo que se cierra hablando ése es el mejor caso posible.
+   ⚠️ VACÍO = no sale el bloque. */
+const WHATSAPP = '31616084212'
+const WHATSAPP_MSG = 'Hola, acabo de reservar mi plaza en la Formación Nawar A0-A1'
+const WHATSAPP_URL = WHATSAPP
+  ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSAPP_MSG)}`
+  : ''
+
+const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
+
+/* Los tres pasos que vienen. Están escritos en segunda persona y con
+   plazo en el primero: la duda de quien acaba de dejar su teléfono es
+   "¿cuándo me escriben?", y dejarla sin responder es lo que hace que
+   la gente se enfríe antes de la conversación. */
+const pasos = [
+  {
+    n: '01',
+    t: 'Te escribimos',
+    d: 'En menos de 24 horas, por WhatsApp al número que nos has dejado.',
+  },
+  {
+    n: '02',
+    t: 'Resolvemos tus dudas',
+    d: 'Vemos de dónde partes, cómo funciona la formación y si te encaja de verdad.',
+  },
+  {
+    n: '03',
+    t: 'Completas la matrícula',
+    d: 'Si lo ves claro, cerramos la matrícula y entras en la escuela.',
+  },
+]
+---
+
+<Layout
+  title="Plaza reservada — Formación Nawar A0-A1"
+  description="Hemos recibido tu solicitud. El equipo de Holandés Nawar te contacta para completar la matrícula."
+  noindex={true}
+>
+  <div class="gr-page">
+    <div class="gr-glow1" aria-hidden="true"></div>
+    <div class="gr-glow2" aria-hidden="true"></div>
+    <div class="gr-dots" aria-hidden="true"></div>
+
+    <div class="gr-shell">
+
+      <a href="/" class="gr-logo-link" aria-label="Volver al inicio">
+        <img src={LOGO} alt="Holandés Nawar" class="gr-logo" />
+      </a>
+
+      <div class="gr-header">
+        <span class="gr-check" aria-hidden="true">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
+        </span>
+        <h1 class="gr-title"><span class="gr-title-gradient">Tu plaza está reservada.</span></h1>
+        <p class="gr-lead">
+          Hemos recibido tu solicitud. Te la guardamos mientras hablamos:
+          el equipo te escribe para completar la matrícula contigo y
+          resolver lo que necesites antes de decidir.
+        </p>
+      </div>
+
+      <ol class="gr-pasos">
+        {pasos.map((p) => (
+          <li class="gr-paso">
+            <span class="gr-paso-n" aria-hidden="true">{p.n}</span>
+            <div>
+              <p class="gr-paso-t">{p.t}</p>
+              <p class="gr-paso-d">{p.d}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      {WHATSAPP_URL && (
+        <div class="gr-wa">
+          <div>
+            <p class="gr-wa-title">¿Prefieres no esperar?</p>
+            <p class="gr-wa-text">
+              Escríbenos tú y lo vemos ahora mismo.
+            </p>
+          </div>
+          <a href={WHATSAPP_URL} class="gr-wa-btn" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.38-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35z"/>
+              <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.87 9.87 0 004.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2zm0 18.13h-.01a8.2 8.2 0 01-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 01-1.26-4.37c0-4.54 3.7-8.23 8.25-8.23 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 012.41 5.82c0 4.54-3.7 8.23-8.24 8.23z"/>
+            </svg>
+            Escribir por WhatsApp
+          </a>
+        </div>
+      )}
+
+      <div class="gr-spam">
+        <div class="gr-spam-icon" aria-hidden="true">📩</div>
+        <div>
+          <p class="gr-spam-title">Mira también tu correo</p>
+          <p class="gr-spam-text">
+            Te llegará confirmación desde <strong>{REMITENTE}</strong>. Si ha
+            caído en spam o en promociones, muévela a la bandeja de entrada:
+            así lo que te mandemos después llega bien.
+          </p>
+        </div>
+      </div>
+
+      <div class="gr-footer">
+        <a href="/" class="gr-back">Volver al inicio</a>
+      </div>
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  /* El lead para Meta se cuenta aquí, no al pulsar el botón: es lo que
+     Meta mide bien y lo que no se infla si la petición falla. La marca
+     en sessionStorage evita contar dos veces a quien recarga. Va con ?.
+     porque el píxel puede no estar (bloqueadores) y esta página tiene
+     que verse igual. */
+  const evento = () =>
+    (window as any).fbq?.('track', 'Lead', {
+      content_name: 'Matrícula Formación Nawar A0-A1 (ads)',
+      currency: 'EUR',
+    })
+  try {
+    if (!sessionStorage.getItem('lead-matricula-ads')) {
+      evento()
+      sessionStorage.setItem('lead-matricula-ads', '1')
+    }
+  } catch {
+    evento()
+  }
+</script>
+
+<style>
+  /* Mismo lenguaje que las demás páginas de gracias: azul de marca, dos
+     manchas de luz y la trama de puntos. */
+  .gr-page {
+    min-height: 100vh;
+    background: #1D0084;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 52px 32px 96px;
+  }
+  .gr-glow1 {
+    position: absolute; top: -140px; left: 50%; transform: translateX(-50%);
+    width: 960px; height: 560px;
+    background: radial-gradient(ellipse at center, rgba(11,109,240,0.5) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .gr-glow2 {
+    position: absolute; bottom: -60px; right: -80px;
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse at center, rgba(77,163,255,0.16) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .gr-dots {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.4;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .gr-shell {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 700px;
+    display: flex; flex-direction: column;
+    align-items: flex-start;
+  }
+  .gr-logo-link { display: inline-block; margin-bottom: 44px; }
+  .gr-logo { height: 38px; width: auto; object-fit: contain; }
+
+  .gr-header {
+    width: 100%;
+    display: flex; flex-direction: column; align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+  .gr-check {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: transparent;
+    border: 2px solid #4da3ff;
+    color: #4da3ff;
+    margin-bottom: 4px;
+  }
+  .gr-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: clamp(34px, 5vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.08;
+    margin: 0;
+  }
+  .gr-title-gradient {
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .gr-lead {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 17px; line-height: 1.65;
+    color: #ffffff;
+    margin: 0; max-width: 560px;
+  }
+
+  /* ── Los tres pasos ── */
+  .gr-pasos {
+    width: 100%;
+    list-style: none;
+    margin: 0 0 36px; padding: 0;
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  .gr-paso { display: flex; gap: 16px; align-items: flex-start; }
+  .gr-paso-n {
+    flex-shrink: 0;
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #4da3ff;
+    /* Ancho fijo: sin él, "01" y "03" no miden lo mismo con la fuente
+       real y los tres títulos empiezan cada uno en un sitio. */
+    width: 26px;
+    padding-top: 2px;
+  }
+  .gr-paso-t {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: 16.5px; font-weight: 700; color: #fff;
+    letter-spacing: -0.01em;
+    margin: 0 0 3px;
+  }
+  .gr-paso-d {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    color: rgba(255,255,255,0.82);
+    margin: 0; max-width: 520px;
+  }
+
+  /* ── Atajo de WhatsApp ── */
+  .gr-wa {
+    width: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap;
+    border: 1px solid rgba(77,163,255,0.28);
+    border-radius: 16px;
+    background: rgba(77,163,255,0.08);
+    padding: 20px 22px;
+    margin-bottom: 24px;
+  }
+  .gr-wa-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: 16px; font-weight: 700; color: #fff;
+    margin: 0 0 3px;
+  }
+  .gr-wa-text {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 14.5px; line-height: 1.55;
+    color: rgba(255,255,255,0.85);
+    margin: 0;
+  }
+  .gr-wa-btn {
+    display: inline-flex; align-items: center; gap: 9px;
+    flex-shrink: 0;
+    background: #25D366; color: #06331a;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 15px; font-weight: 700;
+    padding: 12px 20px; border-radius: 12px;
+    text-decoration: none;
+    transition: background .2s;
+  }
+  .gr-wa-btn:hover { background: #3ae07a; }
+
+  /* ── Aviso del correo ── */
+  .gr-spam {
+    width: 100%;
+    display: flex; gap: 14px; align-items: flex-start;
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.05);
+    padding: 18px 20px;
+  }
+  .gr-spam-icon { font-size: 22px; line-height: 1.2; flex-shrink: 0; }
+  .gr-spam-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: 15.5px; font-weight: 700; color: #fff;
+    margin: 0 0 4px;
+  }
+  .gr-spam-text {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: rgba(255,255,255,0.92);
+    margin: 0;
+  }
+  .gr-spam-text strong { color: #fff; font-weight: 600; }
+
+  .gr-footer { margin-top: 46px; }
+  .gr-back {
+    display: inline-flex; align-items: center;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 14.5px; font-weight: 600;
+    color: rgba(255,255,255,0.95);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    padding-bottom: 2px;
+    transition: color .2s, border-color .2s;
+  }
+  .gr-back:hover { color: #fff; border-color: rgba(255,255,255,0.6); }
+
+  @media (max-width: 640px) {
+    .gr-page { padding: 36px 20px 72px; }
+    .gr-logo-link { margin-bottom: 32px; }
+    .gr-wa { flex-direction: column; align-items: stretch; gap: 14px; }
+    .gr-wa-btn { justify-content: center; }
+    .gr-spam { flex-direction: column; gap: 10px; }
+  }
+</style>

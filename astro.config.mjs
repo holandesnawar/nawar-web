@@ -24,6 +24,10 @@ export default defineConfig({
         !page.includes('/acceso') &&
         !page.includes('/contacto') &&
         !page.includes('/lista-de-espera') &&
+        // Las matrículas y sus páginas de gracias son embudo, no
+        // captación. La de siempre no llegaba aquí porque se renderiza
+        // en servidor, pero la de anuncios sí es estática y entraría.
+        !page.includes('/matricula') &&
         !page.includes('/cookies') &&
         !page.includes('/politica-de-privacidad') &&
         !page.includes('/terminos-y-condiciones') &&
