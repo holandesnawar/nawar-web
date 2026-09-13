@@ -409,8 +409,10 @@ export const prerender = false
       const data = await res.json().catch(() => null)
 
       if (res.ok && data?.success) {
-        form.style.display = 'none'
-        if (success) success.style.display = 'flex'
+        // A diferencia de la original, aquí no se enseña el "gracias" en la
+        // misma página: se va a una URL propia, que es lo que Meta mide bien
+        // (y donde se dispara el evento Lead).
+        window.location.href = '/guia/hebben-zijn-a/gracias'
         return
       }
     } catch {
