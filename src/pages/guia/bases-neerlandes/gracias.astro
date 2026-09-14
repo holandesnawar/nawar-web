@@ -1,12 +1,20 @@
 ---
 /**
- * Página de gracias de la guía de las bases del neerlandés, SOLO para el
- * tráfico de anuncios (/guia/bases-neerlandes-a). Existe por Meta: una URL propia tras el formulario es
- * la forma limpia de medir el lead, mejor que un mensaje que aparece en la
- * misma página. Aquí se dispara el evento Lead del píxel.
+ * Página de gracias de la guía de las bases del neerlandés. La comparten
+ * LAS DOS versiones del formulario:
  *
- * La original (/guia/bases-neerlandes) sigue enseñando el "gracias" en la
- * propia página; no se toca.
+ *   /guia/bases-neerlandes     (orgánica)
+ *   /guia/bases-neerlandes-a   (anuncios)
+ *
+ * Al principio sólo la de anuncios saltaba aquí y la orgánica enseñaba un
+ * aviso en su propia página. Ahora las dos acaban aquí: una página entera
+ * cuenta mejor qué pasa ahora que un renglón pequeño debajo del botón, y de
+ * paso el lead se mide igual venga de donde venga.
+ *
+ * Vive bajo /guia/bases-neerlandes/ y no bajo la de anuncios porque ya no es
+ * de ninguna de las dos en particular. Aquí se dispara el evento Lead del
+ * píxel: es el punto en el que Meta mide bien —una URL propia, después de
+ * que la petición haya salido bien— y no al pulsar el botón.
  *
  * Qué hace además de dar las gracias: quitar la única duda que tiene alguien
  * que acaba de dejar su correo ("¿y ahora?"), pedir lo único útil hoy (que
