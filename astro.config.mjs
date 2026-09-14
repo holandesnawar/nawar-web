@@ -58,11 +58,16 @@ export default defineConfig({
       // landings de venta) NO se incluye
       filter: (page) =>
         !page.includes('/api/') &&
-        // Sin el "-sept": la landing se renombró y con el nombre viejo
-        // este filtro ya no la cazaba, así que se habría colado en el
-        // sitemap. Así, por subcadena, cubre las dos: /formacion-a0-a1
-        // y /formacion-a0-a1-sept-ads.
-        !page.includes('/formacion-a0-a1') &&
+        // Todas las landings de venta de un tirón, con el guion incluido
+        // para no cazar nada más. Antes ponía "/formacion-a0-a1" y se
+        // quedaba corto dos veces: al renombrar la landing y al aparecer
+        // /formacion-nawar-a0-a1, que lleva "nawar" en medio y no
+        // contiene esa cadena. Cubre las tres que hay y las que vengan:
+        //   /formacion-a0-a1  ·  /formacion-a0-a1-sept-ads
+        //   /formacion-nawar-a0-a1
+        // (gracias-pre-formacion no empieza por "/formacion-", así que
+        //  no le afecta.)
+        !page.includes('/formacion-') &&
         !page.includes('/admin/') &&
         !page.includes('/acceso') &&
         !page.includes('/contacto') &&
