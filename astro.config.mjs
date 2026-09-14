@@ -76,6 +76,10 @@ export default defineConfig({
         // ella (su página de gracias), sin tocar la original, que no
         // termina en "-a".
         !/\/guia\/[a-z0-9-]+-a(\/|$)/.test(page) &&
+        // Y las páginas de gracias, que también van con noindex. Se casa el
+        // segmento entero ("…/gracias/" o "…/gracias") y no la palabra
+        // suelta, para no llevarse por delante /gracias-pre-formacion.
+        !/\/gracias\/?$/.test(page) &&
         !page.includes('/admin/') &&
         !page.includes('/acceso') &&
         !page.includes('/contacto') &&

@@ -30,7 +30,7 @@ export const prerender = false
 ══════════════════════════════════════════════════════════════ */
 
 /* ⚠️ La etiqueta del CRM ("Guía Bases") NO vive aquí sino en el
-   <script> del final del archivo. No es por gusto: ese <script> es un
+   bloque de script del final del archivo. No es por gusto: ese script es un
    módulo aparte que se ejecuta en el navegador y no ve las constantes
    del frontmatter, que sólo existen al generar el HTML. Puesta aquí,
    el navegador lanzaba un ReferenceError al montar el envío, el
@@ -125,12 +125,10 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
           </div>
 
           <div class="guide-form-wrap">
-            <div id="guide-success" class="guide-success" style="display:none;">
-              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-              <span>¡Gracias! Revisa tu correo para ver tu guía. <br/> No olvides revisar la carpeta de spam.</span>
-            </div>
+            {/* Aquí iba el "¡Gracias!" que se enseñaba en esta misma
+                página. Ya no: el formulario lleva a una página de gracias
+                de verdad. Se quita el bloque para que nadie lo dé por
+                vivo al leer el marcado. */}
 
             <form id="guide-form" class="guide-form">
               {/* Honeypot anti-bot — invisible */}
@@ -492,7 +490,6 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
   const nameInput = document.getElementById('guide-name') as HTMLInputElement | null
   const emailInput = document.getElementById('guide-email') as HTMLInputElement | null
   const submitBtn = document.getElementById('guide-submit') as HTMLButtonElement | null
-  const success = document.getElementById('guide-success') as HTMLElement | null
 
   form?.addEventListener('submit', async (event) => {
     event.preventDefault()
@@ -519,10 +516,12 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
       const data = await res.json().catch(() => null)
 
       if (res.ok && data?.success) {
-        // A diferencia de la original, aquí no se enseña el "gracias" en la
-        // misma página: se va a una URL propia, que es lo que Meta mide bien
-        // (y donde se dispara el evento Lead).
-        window.location.href = '/guia/bases-neerlandes-a/gracias'
+        // Las dos versiones acaban en la MISMA página de gracias. Antes
+        // la orgánica enseñaba el aviso aquí mismo, sin cambiar de URL, y
+        // eso deja al que acaba de dejar su correo mirando un renglón
+        // pequeño debajo del botón. Una página entera cuenta mejor qué
+        // pasa ahora, y de paso el lead se mide igual venga de donde venga.
+        window.location.href = '/guia/bases-neerlandes/gracias'
         return
       }
     } catch {
