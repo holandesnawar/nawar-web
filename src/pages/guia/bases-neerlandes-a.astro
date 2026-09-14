@@ -397,12 +397,25 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
     justify-content: center;
     align-items: center;
     align-self: stretch;
+    /* Sube el libro respecto al centro de la fila. Sin esto queda
+       alineado con el centro del texto y se ve hundido, porque el
+       bloque de la izquierda acaba en un botón ancho que pesa mucho
+       abajo. 34 px es poco a propósito: más y el libro se despega del
+       texto y parece de otra sección. Se anula en móvil, donde no hay
+       dos columnas que compensar. */
+    transform: translateY(-34px);
   }
 
   .guide-image {
     display: block;
-    width: 108%;
-    max-width: 108%;
+    /* El archivo viene recortado a su contenido —antes el libro sólo
+       ocupaba el 73 % del ancho y el resto era aire transparente— así
+       que un 96 % de la columna ya lo enseña grande. Con el archivo sin
+       recortar hacía falta un 124 % para lo mismo, y eso además lo
+       sacaba fuera de su columna. Mide 735 px de ancho y aquí se pinta
+       a 430, así que le sobra resolución. */
+    width: 96%;
+    max-width: 96%;
     height: auto;
     margin: 0 auto;
   }
@@ -424,9 +437,13 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
     .guide-visual {
       justify-content: flex-start;
       padding-bottom: 28px;
+      /* En una sola columna no hay nada que compensar: el libro va
+         debajo del formulario y subirlo sólo lo pegaría al botón. */
+      transform: none;
     }
 
     .guide-image {
+      width: 100%;
       max-width: 560px;
     }
   }
