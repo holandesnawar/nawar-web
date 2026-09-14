@@ -1,0 +1,232 @@
+---
+/**
+ * Página de gracias de la guía de las bases del neerlandés, SOLO para el
+ * tráfico de anuncios (/guia/bases-neerlandes-a). Existe por Meta: una URL propia tras el formulario es
+ * la forma limpia de medir el lead, mejor que un mensaje que aparece en la
+ * misma página. Aquí se dispara el evento Lead del píxel.
+ *
+ * La original (/guia/bases-neerlandes) sigue enseñando el "gracias" en la
+ * propia página; no se toca.
+ *
+ * Qué hace además de dar las gracias: quitar la única duda que tiene alguien
+ * que acaba de dejar su correo ("¿y ahora?"), pedir lo único útil hoy (que
+ * mire spam y nos saque de ahí) y dejar UNA puerta suave a la formación. Sin
+ * teléfono ni WhatsApp: es tráfico frío y aún no nos conoce.
+ *
+ * Va sin indexar: es una página de embudo, no de captación.
+ */
+import Layout from '../../../layouts/Layout.astro'
+import '../../../styles/nawar-sections.css'
+
+export const prerender = true
+
+/** El remitente con el que llega la guía (systeme.io). Tiene que ser el real,
+ *  o el consejo de "sácanos de spam" no sirve. */
+const REMITENTE = 'info@holandesnawar.com'
+/** A dónde va el botón. La versión de anuncios de la landing, para que el
+ *  recorrido entero de esa persona quede en el mismo embudo. */
+const LANDING = '/formacion-nawar-a0-a1'
+
+const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
+---
+
+<Layout
+  title="Tu guía va en camino — Holandés Nawar"
+  description="Te hemos enviado la guía de las bases del neerlandés a tu correo."
+  noindex={true}
+>
+  <div class="gr-page">
+    <div class="gr-glow1" aria-hidden="true"></div>
+    <div class="gr-glow2" aria-hidden="true"></div>
+    <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0.4;"></div>
+
+    <div class="gr-shell">
+
+      <a href="/" class="gr-logo-link">
+        <img src={LOGO} alt="Holandés Nawar" class="gr-logo" />
+      </a>
+
+      <div class="gr-header">
+        <span class="gr-check" aria-hidden="true">
+          <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="3.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
+        </span>
+        <h1 class="gr-title"><span class="gr-title-gradient">Tu guía va en camino.</span></h1>
+        <p class="gr-lead">
+          Te la acabamos de enviar a tu correo. Puede tardar unos minutos en llegar.
+        </p>
+      </div>
+
+      <div class="gr-spam">
+        <div class="gr-spam-icon" aria-hidden="true">📩</div>
+        <div>
+          <p class="gr-spam-title">Si no la ves, mira en spam o en promociones</p>
+          <p class="gr-spam-text">
+            Viene de <strong>{REMITENTE}</strong>. Si ha caído ahí, muévela a la
+            bandeja de entrada: así lo que te mandemos después llega bien.
+          </p>
+        </div>
+      </div>
+
+      <div class="gr-more">
+        <p class="gr-more-title">¿Quieres ir más allá de la guía?</p>
+        <p class="gr-more-text">
+          La Formación Nawar A0-A1 es el camino entero, explicado desde el español,
+          con clase en vivo cada semana.
+        </p>
+        <a href={LANDING} class="gr-more-btn">
+          Ver la formación
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  /* El lead para Meta se cuenta AQUÍ, en la página de gracias, no al pulsar
+     el botón: es lo que Meta mide bien y lo que no se infla si la petición
+     falla. La marca en sessionStorage evita contar dos veces a quien recarga.
+     Va con ?. porque el píxel puede no estar (bloqueadores) y esta página
+     tiene que verse igual. */
+  try {
+    if (!sessionStorage.getItem('lead-bases-neerlandes-a')) {
+      ;(window as any).fbq?.('track', 'Lead', { content_name: 'Guía Bases del neerlandés' })
+      sessionStorage.setItem('lead-bases-neerlandes-a', '1')
+    }
+  } catch {
+    ;(window as any).fbq?.('track', 'Lead', { content_name: 'Guía Bases del neerlandés' })
+  }
+</script>
+
+<style>
+  /* Mismo lenguaje que gracias-pre-formacion: azul de marca, dos manchas de
+     luz y la trama de puntos. */
+  .gr-page {
+    min-height: 100vh;
+    background: #1D0084;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 52px 32px 96px;
+  }
+  .gr-glow1 {
+    position: absolute; top: -140px; left: 50%; transform: translateX(-50%);
+    width: 960px; height: 560px;
+    background: radial-gradient(ellipse at center, rgba(11,109,240,0.5) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .gr-glow2 {
+    position: absolute; bottom: -60px; right: -80px;
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse at center, rgba(77,163,255,0.16) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .gr-shell {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 700px;
+    display: flex; flex-direction: column;
+    align-items: flex-start;
+  }
+  .gr-logo-link { display: inline-block; margin-bottom: 44px; }
+  .gr-logo { height: 38px; width: auto; object-fit: contain; }
+
+  .gr-header {
+    width: 100%;
+    display: flex; flex-direction: column; align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 30px;
+  }
+  /* Más presente que en las otras páginas de gracias: aquí es lo primero que
+     se ve y tiene que decir "hecho" de un vistazo. */
+  .gr-check {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(77,163,255,0.14);
+    border: 3px solid #4da3ff;
+    color: #4da3ff;
+    box-shadow: 0 0 0 8px rgba(77,163,255,0.12), 0 10px 30px rgba(77,163,255,0.25);
+    margin-bottom: 8px;
+  }
+  .gr-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: clamp(36px, 5.2vw, 54px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.08;
+    margin: 0;
+  }
+  .gr-title-gradient {
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .gr-lead {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 17px; line-height: 1.65;
+    color: #ffffff;
+    margin: 0; max-width: 560px;
+  }
+
+  .gr-spam {
+    width: 100%;
+    display: flex; gap: 14px; align-items: flex-start;
+    border: 1px solid rgba(77,163,255,0.28);
+    border-radius: 16px;
+    background: rgba(77,163,255,0.08);
+    padding: 18px 20px;
+    margin-bottom: 40px;
+  }
+  .gr-spam-icon { font-size: 22px; line-height: 1.2; flex-shrink: 0; }
+  .gr-spam-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: 15.5px; font-weight: 700; color: #fff;
+    margin: 0 0 4px;
+  }
+  .gr-spam-text {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: rgba(255,255,255,0.92);
+    margin: 0;
+  }
+  .gr-spam-text strong { color: #fff; font-weight: 600; }
+
+  /* La puerta a la formación: una, discreta, después de lo importante. */
+  .gr-more { width: 100%; }
+  .gr-more-title {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: 20px; font-weight: 700; color: #fff;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+  }
+  .gr-more-text {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    color: rgba(255,255,255,0.88);
+    margin: 0 0 18px; max-width: 560px;
+  }
+  .gr-more-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #4da3ff; color: #0a1656;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 15px; font-weight: 700;
+    padding: 13px 22px; border-radius: 12px;
+    text-decoration: none;
+    transition: background .2s;
+  }
+  .gr-more-btn:hover { background: #5eb4ff; }
+
+  @media (max-width: 640px) {
+    .gr-page { padding: 36px 20px 72px; }
+    .gr-logo-link { margin-bottom: 32px; }
+    .gr-spam { flex-direction: column; gap: 10px; }
+    .gr-more-btn { width: 100%; justify-content: center; }
+  }
+</style>
