@@ -61,10 +61,20 @@ const DESCRIPCION =
   'estructura de la frase. Explicado desde el español.'
 
 /* ── La portada, en la columna de la derecha ──────────────────
+   Se sirve desde el propio sitio (public/img/) y no desde
+   docs.holandesnawar.com a propósito: el original de allí viene con
+   fondo blanco, y sobre el azul de la página eso es un rectángulo
+   blanco enorme detrás del libro. Esta copia lleva el fondo recortado
+   —sólo queda el libro y el cuadro azul claro— y el recorte está hecho
+   sobre el archivo, no con CSS: en un fondo oscuro no hay mezcla que
+   valga, multiply apaga la imagen entera y screen deja el blanco.
+
+   ⚠️ Si Rida sube una portada nueva a docs, hay que volver a recortarla
+   antes de ponerla aquí; pegar la URL de docs tal cual devuelve el
+   rectángulo blanco.
    ⚠️ VACÍO = la columna no se pinta y la página se queda a una sola
-   columna, a ancho completo. Está así a propósito mientras se hace el
-   mockup: cuando exista, se pega aquí su URL y aparece sola. */
-const PORTADA = ''
+   columna, a ancho completo. */
+const PORTADA = '/img/guia-bases.png'
 const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés para hispanohablantes'
 ---
 
@@ -181,14 +191,20 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
   .guide-shell {
     position: relative;
     z-index: 1;
-    max-width: 1152px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 32px;
   }
 
+  /* Ya no es mitad y mitad. El titular de esta guía tiene 24 caracteres
+     —el de Hebben/Zijn tenía 16— y en media pantalla no cabe en una
+     línea ni bajándolo mucho. Dándole 1.4 de 2.4 a la columna del texto
+     y ensanchando el contenedor, el titular entra a 42 px con holgura y
+     la portada sigue teniendo sitio de sobra: mide 974 px de ancho y se
+     pinta a 440, así que le sobra resolución. */
   .guide-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.4fr 1fr;
     gap: 56px;
     align-items: center;
   }
@@ -214,19 +230,15 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
     padding-bottom: 56px;
   }
 
-  /* Baja de 72 px a 60. Medido, no a ojo: "Las bases del neerlandés"
-     ocupa 947 px a 72 px y la columna da 720, así que se partía en dos
-     líneas en cualquier pantalla de ordenador. A 60 px baja a 789 y,
-     con la columna ensanchada de abajo, entra en una sola con holgura
-     de sobra para cuando cargue la Poppins de verdad, que es más ancha
-     que la de reserva con la que se mide aquí.
-     ⚠️ Esto vale mientras la columna de la derecha esté vacía. El día
-     que se ponga la portada, la rejilla vuelve a dos columnas de media
-     pantalla y el titular se partirá otra vez: ahí habrá que acortarlo
-     o bajarlo más. */
+  /* 42 px, medido y no a ojo. "Las bases del neerlandés" ocupa 947 px
+     a los 72 px del diseño original y la columna del texto da 630, así
+     que se partía en dos. A 42 px baja a 552 y entra en una línea con
+     78 px de margen, que hacen falta: aquí la Poppins no se puede
+     descargar y se mide con la de reserva, que es más estrecha.
+     Si algún día se acorta el titular, esto se puede volver a subir. */
   .guide-title {
     font-family: var(--font-poppins), system-ui, sans-serif;
-    font-size: clamp(38px, 6vw, 60px);
+    font-size: clamp(34px, 3.5vw, 42px);
     font-weight: 700;
     letter-spacing: -0.045em;
     line-height: 1.05;
