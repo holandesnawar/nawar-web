@@ -9,10 +9,11 @@ Disallow: /api/
 # de redes sociales (que ignoran robots.txt) generen preview en DMs
 Disallow: /ebook-a0-a1
 Disallow: /ebook-a0-a1/
-# Sin el "-sept" al final: así cubre la landing renombrada
-# (/formacion-a0-a1), la de anuncios (/formacion-a0-a1-sept-ads) y la
-# URL vieja que ahora redirige, porque Disallow casa por prefijo.
-Disallow: /formacion-a0-a1
-Disallow: /formacion-a0-a1/
+# Una sola línea para todas las landings de venta: Disallow casa por
+# prefijo, así que "/formacion-" cubre /formacion-a0-a1, la de anuncios
+# (/formacion-a0-a1-sept-ads), /formacion-nawar-a0-a1 y la URL vieja que
+# ahora redirige. Con "/formacion-a0-a1" se escapaba la de "nawar", que
+# lleva esa palabra en medio.
+Disallow: /formacion-
 
 Sitemap: https://www.holandesnawar.com/sitemap-index.xml

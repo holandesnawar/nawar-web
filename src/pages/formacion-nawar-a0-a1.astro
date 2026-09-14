@@ -1,0 +1,23 @@
+---
+/**
+ * /formacion-nawar-a0-a1 — la misma landing de captación, con una URL
+ * que se puede mandar a alguien sin que ponga "ads" ni el mes de una
+ * convocatoria que ya pasó.
+ *
+ * Para cuando el enlace va a mano: por WhatsApp, en la bio, en un
+ * correo, en una respuesta a un comentario. Los anuncios siguen
+ * apuntando a /formacion-a0-a1-sept-ads, que es la misma página.
+ *
+ * Todo el contenido está en
+ * components/landing-08-08-2026/LandingCaptacion.astro. Tocar ahí
+ * cambia las dos rutas a la vez, que es justo lo que se busca.
+ *
+ * ⚠️ No confundir con /formacion-a0-a1 (sin "nawar"), que es la
+ * landing que SÍ vende: precio, garantía y checkout. Ésta no enseña
+ * ninguna cifra y sus botones llevan al formulario de contacto.
+ */
+import LandingCaptacion from '../components/landing-08-08-2026/LandingCaptacion.astro'
+
+export const prerender = true
+---
+<LandingCaptacion />
