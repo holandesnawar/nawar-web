@@ -23,9 +23,22 @@ export const prerender = true
 /** El remitente con el que llega la guía (systeme.io). Tiene que ser el real,
  *  o el consejo de "sácanos de spam" no sirve. */
 const REMITENTE = 'info@holandesnawar.com'
-/** A dónde va el botón. La versión de anuncios de la landing, para que el
- *  recorrido entero de esa persona quede en el mismo embudo. */
-const LANDING = '/formacion-nawar-a0-a1'
+/* A dónde va el botón: la matrícula de siempre, la que cobra.
+   NO la de anuncios (/matricula-formacion-nawar-a0-a1-ads), y a
+   propósito: aquella etiqueta el contacto como "Matrícula ads" y
+   dispara su propio evento Lead, así que meter ahí a quien viene de
+   una guía ensuciaría los datos con los que Meta optimiza las
+   campañas.
+
+   ⚠️ Dos cosas que conviene tener presentes de este destino:
+     · Está detrás de la puerta de plazas. Con la convocatoria
+       cerrada redirige sola a /lista-de-espera, así que el botón
+       nunca deja a nadie tirado, pero tampoco avisa antes.
+     · Lleva directo al formulario de pago. Quien acaba de descargar
+       una guía gratuita de nivel 0 todavía no sabe qué incluye la
+       formación ni cuánto cuesta; si se quiere un paso intermedio,
+       el sitio es /formacion-nawar-a0-a1, que lo cuenta entero. */
+const MATRICULA = '/matricula-formacion-nawar'
 
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
 ---
@@ -69,14 +82,23 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
         </div>
       </div>
 
+      {/* La puerta a la formación. Informa y se calla: ni prisa, ni
+          cifras, ni "plazas limitadas". Quien acaba de pedir una guía
+          gratuita de nivel 0 no está decidiendo nada hoy, y empujarle
+          aquí sólo consigue que la siguiente vez no abra el correo.
+          La última frase es a propósito la que quita presión: dice que
+          con la guía ya tiene de sobra para empezar. */}
       <div class="gr-more">
-        <p class="gr-more-title">¿Quieres ir más allá de la guía?</p>
+        <p class="gr-more-title">Y si más adelante quieres el camino entero</p>
         <p class="gr-more-text">
-          La Formación Nawar A0-A1 es el camino entero, explicado desde el español,
-          con clase en vivo cada semana.
+          Tenemos una formación de neerlandés A0 → A1 hecha para
+          hispanohablantes: el programa completo explicado desde el
+          español, con clase en directo cada semana y acompañamiento
+          mientras dura. Lo dejamos aquí por si te interesa mirarlo. Sin
+          prisa: con la guía ya tienes para empezar.
         </p>
-        <a href={LANDING} class="gr-more-btn">
-          Ver la formación
+        <a href={MATRICULA} class="gr-more-btn">
+          Matricularme
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/>
           </svg>
