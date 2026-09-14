@@ -25,10 +25,8 @@ export const prerender = false
    ⚠️ Si se toca el copy de la original, hay que tocarlo aquí también:
    este archivo está duplicado a propósito, no comparte cuerpo.
 
-   ⚠️ TODO EL TEXTO DE ABAJO ES PROVISIONAL. Está escrito a partir del
-   tema, no de la guía: el contenido real todavía no ha llegado.
-   Cuando llegue, se reescriben TITULO, ENTRADILLA y PUNTOS y ya está;
-   el resto de la página no depende de ellos.
+   El copy sale de la guía real. Si la guía cambia, lo que hay que
+   tocar son TITULO, ENTRADILLA y PUNTOS: el resto no depende de ellos.
 ══════════════════════════════════════════════════════════════ */
 
 /* ⚠️ La etiqueta del CRM ("Guía Bases") NO vive aquí sino en el
@@ -43,17 +41,20 @@ export const prerender = false
    y esa persona nunca recibe la guía. */
 
 /* ── El copy ──────────────────────────────────────────────────
-   ⚠️ Provisional, pendiente de la guía real. */
+   Sale de la guía real (15 páginas, 6 capítulos, nivel 0), no de
+   suposiciones: artículos de/het/een, pronombres personales y
+   posesivos, verbos regulares e irregulares en presente con zijn y
+   hebben, vocabulario y expresiones, y estructura de la frase. */
 const TITULO = 'Las bases del neerlandés'
 const ENTRADILLA = `
-  Deja tu email y recibe <strong>gratis</strong> la guía con la que
-  empezar el neerlandés desde el español: los cimientos del idioma
-  explicados con orden, con ejemplos reales y sin pasar por el inglés,
-  para que <strong>sepas por dónde empezar</strong> en vez de ir dando
-  tumbos entre apps y vídeos sueltos.
+  Deja tu email y recibe <strong>gratis</strong> esta guía de
+  <strong>15 páginas</strong> para empezar desde cero: los artículos,
+  los pronombres, los verbos en presente y el vocabulario que de
+  verdad se usa. Todo explicado desde el español, en seis capítulos,
+  para que <strong>te defiendas en tu primer mes aquí</strong>.
 `
 const PUNTOS = [
-  'Ideal para niveles A0-A1',
+  'Desde cero, sin experiencia previa',
   'Explicado desde el español',
   'Con ejemplos y frases del día a día',
 ]
@@ -62,15 +63,16 @@ const PUNTOS = [
 const TITULO_PESTANA = `${TITULO} — Guía gratuita | Holandés Nawar`
 const DESCRIPCION =
   'Descarga gratis la guía de las bases del neerlandés para hispanohablantes: ' +
-  'los cimientos del idioma explicados desde el español, con ejemplos reales y ' +
-  'frases del día a día. Para empezar desde cero con orden.'
+  '15 páginas y 6 capítulos desde cero con los artículos de, het y een, los ' +
+  'pronombres, los verbos zijn y hebben en presente, vocabulario esencial y la ' +
+  'estructura de la frase. Explicado desde el español.'
 
 /* ── La portada, en la columna de la derecha ──────────────────
    ⚠️ VACÍO = la columna no se pinta y la página se queda a una sola
    columna, a ancho completo. Está así a propósito mientras se hace el
    mockup: cuando exista, se pega aquí su URL y aparece sola. */
 const PORTADA = ''
-const PORTADA_ALT = 'Portada de la guía gratuita de las bases del neerlandés'
+const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés para hispanohablantes'
 ---
 
 <Layout
@@ -207,7 +209,11 @@ const PORTADA_ALT = 'Portada de la guía gratuita de las bases del neerlandés'
      max-width, que ya los tiene. */
   .guide-copy:only-child {
     grid-column: 1 / -1;
-    max-width: 720px;
+    /* Ancho para que el titular quepa en una línea. No arrastra al
+       resto: la entradilla se queda en sus 560 px y el formulario en
+       sus 540, que son los que dan una línea de lectura cómoda. Aquí
+       el ancho sólo lo usa el titular. */
+    max-width: 1000px;
   }
 
   .guide-copy {
@@ -217,9 +223,19 @@ const PORTADA_ALT = 'Portada de la guía gratuita de las bases del neerlandés'
     padding-bottom: 56px;
   }
 
+  /* Baja de 72 px a 60. Medido, no a ojo: "Las bases del neerlandés"
+     ocupa 947 px a 72 px y la columna da 720, así que se partía en dos
+     líneas en cualquier pantalla de ordenador. A 60 px baja a 789 y,
+     con la columna ensanchada de abajo, entra en una sola con holgura
+     de sobra para cuando cargue la Poppins de verdad, que es más ancha
+     que la de reserva con la que se mide aquí.
+     ⚠️ Esto vale mientras la columna de la derecha esté vacía. El día
+     que se ponga la portada, la rejilla vuelve a dos columnas de media
+     pantalla y el titular se partirá otra vez: ahí habrá que acortarlo
+     o bajarlo más. */
   .guide-title {
     font-family: var(--font-poppins), system-ui, sans-serif;
-    font-size: clamp(38px, 6vw, 72px);
+    font-size: clamp(38px, 6vw, 60px);
     font-weight: 700;
     letter-spacing: -0.045em;
     line-height: 1.05;
