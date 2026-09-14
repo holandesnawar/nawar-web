@@ -68,6 +68,14 @@ export default defineConfig({
         // (gracias-pre-formacion no empieza por "/formacion-", así que
         //  no le afecta.)
         !page.includes('/formacion-') &&
+        // Las guías SÍ se indexan, pero su variante de anuncios no: lleva
+        // noindex y la canónica apuntando a la original. Estando además en
+        // el sitemap le decíamos a Google dos cosas contrarias —"indexa
+        // esto" y "no indexes esto"—, y la que gana no la elegimos
+        // nosotros. Casa /guia/<lo-que-sea>-a y todo lo que cuelgue de
+        // ella (su página de gracias), sin tocar la original, que no
+        // termina en "-a".
+        !/\/guia\/[a-z0-9-]+-a(\/|$)/.test(page) &&
         !page.includes('/admin/') &&
         !page.includes('/acceso') &&
         !page.includes('/contacto') &&
