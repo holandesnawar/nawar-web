@@ -495,6 +495,12 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
      corre en el navegador y no ve nada de allá arriba. Tiene que
      existir con este nombre exacto en systeme.io. */
   const ETIQUETA_CRM = 'Guía Bases'
+  /* Esta la recibe SOLO quien no estaba ya en systeme.io. De ella cuelga la
+     campaña de bienvenida: a quien ya está en la lista no hay que volver a
+     darle la bienvenida, y mezclarlos haría que la campaña se la comieran
+     los de siempre. También es el número de leads NUEVOS de los anuncios.
+     Si no existe en systeme.io, se crea sola la primera vez. */
+  const ETIQUETA_NUEVO = 'Nuevo Bases'
 
   const form = document.getElementById('guide-form') as HTMLFormElement | null
   const nameInput = document.getElementById('guide-name') as HTMLInputElement | null
@@ -518,7 +524,7 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, tagName: ETIQUETA_CRM, website }),
+        body: JSON.stringify({ name, email, tagName: ETIQUETA_CRM, tagNuevo: ETIQUETA_NUEVO, website }),
       })
 
       const data = await res.json().catch(() => null)
