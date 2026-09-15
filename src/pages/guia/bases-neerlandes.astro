@@ -244,6 +244,25 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
     margin: 0 0 16px;
   }
 
+  /* El degradado, una vez POR LÍNEA.
+     text-gradient-white pinta un degradado vertical de blanco a blanco
+     al 45 % sobre todo el elemento. Con el titular en una línea eso es
+     un brillo suave y queda bien; en cuanto parte en dos —y en móvil
+     parte siempre— la primera línea sale blanca y la segunda gris, y
+     parece que cambie de color a media frase.
+     En la home no pasa porque allí el titular lleva un <br> a mano y
+     cada línea va en su propio span: el degradado nunca abarca dos.
+     Aquí no se puede forzar el corte, porque en ordenador tiene que ir
+     en una sola línea. La solución equivalente es acotar el degradado a
+     la altura de una línea y repetirlo: así cada línea recibe el mismo
+     tratamiento que la única de la home, parta donde parta.
+     La clase repetida es para ganarle a .text-gradient-white, que viene
+     de la hoja compartida. */
+  .guide-title.guide-title {
+    background-size: 100% 1.05em;
+    background-repeat: repeat;
+  }
+
   .guide-lead {
     margin: 0;
     max-width: 560px;

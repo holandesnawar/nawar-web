@@ -198,6 +198,17 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+  /* El degradado, una vez por línea. Sin esto, cuando el titular parte
+     en dos —en móvil parte siempre— la primera línea sale blanca y la
+     segunda gris, y parece que cambie de color a media frase. Acotarlo
+     a la altura de una línea y repetirlo le da a cada línea el mismo
+     tratamiento, parta donde parta. Misma solución que en el titular de
+     las guías. */
+  .gr-title-gradient {
+    background-size: 100% 1.08em;
+    background-repeat: repeat;
+  }
+
   .gr-lead {
     font-family: var(--font-inter), system-ui, sans-serif;
     font-size: 17px; line-height: 1.65;
