@@ -29,12 +29,41 @@ async function findTagId(tagName: string, headers: Record<string, string>): Prom
   return null
 }
 
+/**
+ * El id de una etiqueta, creándola si todavía no existe.
+ *
+ * Se crea sola a propósito: si la etiqueta se escribe aquí y falta en
+ * systeme.io, el contacto entraría sin etiquetar y la campaña que cuelga de
+ * ella no le llegaría a nadie, sin que salte ningún error a la vista. Es el
+ * tipo de fallo que no se descubre hasta contar las ventas.
+ */
+async function ensureTagId(tagName: string, headers: Record<string, string>): Promise<number | null> {
+  const existente = await findTagId(tagName, headers)
+  if (existente) return existente
+  try {
+    const res = await fetch(`${SYSTEME_BASE}/tags`, {
+      method: 'POST', headers, body: JSON.stringify({ name: tagName }),
+    })
+    if (res.ok) {
+      const data = await res.json().catch(() => null)
+      console.log('[waitlist] etiqueta creada:', tagName, data?.id)
+      return data?.id ?? null
+    }
+    console.error('[waitlist] no se pudo crear la etiqueta', tagName, res.status)
+  } catch (e) {
+    console.error('[waitlist] error creando la etiqueta', tagName, e)
+  }
+  return null
+}
+
 type SyncDebug = {
   createStatus?: number
   createBody?: string
   contactId?: number | null
   tagId?: number | null
   tagStatus?: number
+  tagNuevoId?: number | null
+  tagNuevoStatus?: number
   searchStatus?: number
   searchBody?: string
   error?: string
@@ -48,6 +77,8 @@ async function syncToCRM(
   conociste: string,
   nivel: string,
   tagName: string,
+  /** Etiqueta que recibe SOLO quien no estaba ya en el CRM. Vacío = ninguna. */
+  tagNuevoName: string,
   headers: Record<string, string>,
   debug: SyncDebug
 ): Promise<void> {
@@ -70,10 +101,15 @@ async function syncToCRM(
     debug.tagId = tagId
 
     let contactId: number | null = null
+    // Nuevo = systeme.io ha aceptado el alta. Si el correo ya estaba, el POST
+    // devuelve 4xx y bajamos a buscarlo. Ese es todo el criterio, y es el
+    // bueno: lo decide el CRM, no nosotros.
+    let esNuevo = false
 
     if (createRes.ok) {
       const data = await createRes.json().catch(() => null)
       contactId = data?.id ?? null
+      esNuevo = true
       console.log('[waitlist] contact created:', contactId)
     } else {
       const errText = await createRes.text()
@@ -134,6 +170,23 @@ async function syncToCRM(
       if (!contactId) console.error('[waitlist] no contactId for:', email)
       if (!tagId)     console.error('[waitlist] tag not found:', tagName)
     }
+
+    // La etiqueta de "lead nuevo": solo para quien no estaba ya en el CRM, que
+    // es de lo que cuelga la campaña de bienvenida. A quien ya está dentro no
+    // se le vuelve a dar la bienvenida.
+    if (contactId && esNuevo && tagNuevoName) {
+      const idNuevo = await ensureTagId(tagNuevoName, headers)
+      debug.tagNuevoId = idNuevo
+      if (idNuevo) {
+        const tr = await fetch(`${SYSTEME_BASE}/contacts/${contactId}/tags`, {
+          method: 'POST', headers, body: JSON.stringify({ tagId: idNuevo }),
+        })
+        debug.tagNuevoStatus = tr.status
+        // 409 = ya la tenía = también es éxito.
+        if (tr.ok || tr.status === 409) console.log('[waitlist] lead nuevo etiquetado:', tagNuevoName, contactId)
+        else console.error('[waitlist] error etiquetando lead nuevo:', tr.status)
+      }
+    }
   } catch (e) {
     debug.error = (e as Error).message
     console.error('[waitlist] syncToCRM error:', e)
@@ -154,6 +207,10 @@ export const POST: APIRoute = async ({ request }) => {
     typeof body?.tagName === 'string' && body.tagName.trim()
       ? body.tagName.trim()
       : TAG_NAME
+  // Opcional: la manda solo el formulario que quiere separar a los que llegan
+  // por primera vez. Si no viene, no se etiqueta nada de más.
+  const tagNuevo =
+    typeof body?.tagNuevo === 'string' && body.tagNuevo.trim() ? body.tagNuevo.trim() : ''
 
   // ── Honeypot anti-bot ──
   // Si el campo trampa 'website' viene relleno, es un bot.
@@ -187,7 +244,7 @@ export const POST: APIRoute = async ({ request }) => {
       'accept':       'application/json',
     }
     try {
-      await syncToCRM(email, firstName, lastName, phone, conociste, nivel, tagName, headers, debug)
+      await syncToCRM(email, firstName, lastName, phone, conociste, nivel, tagName, tagNuevo, headers, debug)
     } catch (e) {
       debug.error = (e as Error).message
       console.error('[waitlist] sync failed:', e)
