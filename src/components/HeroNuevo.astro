@@ -1,5 +1,6 @@
 ---
 interface Props { data?: any }
+import { CTA_PRINCIPAL } from '../lib/cta'
 const { data } = Astro.props
 const badge      = data?.badge      ?? 'Neerlandés para hispanohablantes'
 const titleLine1 = data?.titleLine1 ?? 'Aprende neerlandés'
@@ -10,7 +11,13 @@ const bullets    = data?.bullets?.length ? data.bullets : [
   'Sin experiencia previa — desde cero hasta conversar',
   'Comunidad activa de +600 hispanohablantes',
 ]
-const ctaText    = data?.ctaText    ?? 'Únete a la lista de espera'
+const ctaText    = data?.ctaText    ?? 'Matricularme'
+/* El segundo botón, para quien todavía no está para decidir: abre WhatsApp con
+   el mensaje ya escrito. No pide correo, así que no hay nada que guardar ni que
+   etiquetar; la conversación empieza directamente contigo. */
+const WHATSAPP = '31616084212'
+const WHATSAPP_MSG = 'Hola, quiero formarme con NAWAR'
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSAPP_MSG)}`
 ---
 <section id="inicio" class="hero-section" data-navbar="dark">
   <div class="hero-glow1" aria-hidden="true"></div>
@@ -81,36 +88,25 @@ const ctaText    = data?.ctaText    ?? 'Únete a la lista de espera'
         ))}
       </ul>
 
-      <div class="hero-form-row h-anim" id="lista-espera" style="--hd:0.48s">
-        <form id="hero-signup-form" class="hero-form">
-          {/* Honeypot anti-bot */}
-          <input type="text" id="hero-honeypot" name="website" tabindex="-1" autocomplete="off" class="hero-honeypot" aria-hidden="true" />
-          <input
-            id="hero-email"
-            type="email"
-            placeholder="Introduce tu correo electrónico"
-            class="hero-email-input"
-            autocomplete="email"
-            required
-          />
-          <button type="submit" class="hero-form-btn">
-            {ctaText}
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-          </button>
-        </form>
-        <div id="hero-signup-success" class="hero-success" style="display:none;">
+      {/* Dos salidas, según lo decidido que venga el visitante: el que lo tiene
+          claro se matricula y el que no, pregunta. Antes había aquí un campo de
+          correo, y recogía direcciones sueltas: sin teléfono no se podía llamar
+          a nadie y detrás no colgaba ninguna campaña. El correo se sigue
+          recogiendo en el banner del pie, que es donde tiene sentido. */}
+      <div class="hero-cta-row h-anim" id="lista-espera" style="--hd:0.48s">
+        <a href={CTA_PRINCIPAL} class="hero-cta-main">
+          {ctaText}
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
           </svg>
-          ¡Perfecto! Te avisamos en cuanto abramos plazas.
-        </div>
+        </a>
+        <a href={WHATSAPP_URL} target="_blank" rel="noopener" class="hero-cta-alt">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.87 9.87 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.17c-.25.69-1.46 1.33-2 1.37-.51.04-1.16.06-1.87-.12-.43-.11-.99-.33-1.7-.64-3-1.3-4.96-4.32-5.11-4.52-.15-.2-1.22-1.62-1.22-3.09s.77-2.19 1.05-2.49c.27-.3.6-.37.8-.37.2 0 .4 0 .57.01.18.01.43-.07.67.51.25.6.85 2.07.92 2.22.08.15.13.32.02.52-.1.2-.15.32-.3.5-.15.17-.32.38-.45.51-.15.15-.31.31-.13.61.17.3.77 1.27 1.66 2.06 1.14 1.02 2.1 1.33 2.4 1.48.3.15.47.13.65-.08.17-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.27.1 1.72.81 2.02.96.3.15.5.22.57.35.07.12.07.72-.18 1.41z"/>
+          </svg>
+          Más información
+        </a>
       </div>
-
-      <p class="hero-privacy h-anim" style="--hd:0.55s">
-        Al hacer clic, confirmo que he leído y aceptado la <a href="/politica-de-privacidad">política de privacidad</a>.
-      </p>
     </div>
 
   </div>
@@ -267,67 +263,43 @@ const ctaText    = data?.ctaText    ?? 'Únete a la lista de espera'
 }
 
 /* ── Form row ── */
-.hero-form-row { width: 100%; max-width: 540px; margin-bottom: 10px; }
-.hero-honeypot {
-  position: absolute !important;
-  left: -10000px !important;
-  width: 1px !important;
-  height: 1px !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-.hero-form {
-  display: flex;
-  gap: 8px;
+.hero-cta-row {
   width: 100%;
+  max-width: 540px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
-.hero-email-input {
-  flex: 1;
-  min-width: 0;
-  padding: 16px 18px;
-  border-radius: 10px;
-  background: #fff;
-  border: none;
-  color: #1D0084;
-  font-size: 14px;
-  font-family: inherit;
-  outline: none;
-}
-.hero-email-input::placeholder { color: #9aa5bc; }
-.hero-form-btn {
-  flex-shrink: 0;
+.hero-cta-main,
+.hero-cta-alt {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   padding: 16px 24px;
   border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  background: #4da3ff;
-  color: #1D0084;
   font-size: 14px;
   font-weight: 700;
   font-family: inherit;
+  text-decoration: none;
   white-space: nowrap;
+  transition: background .2s, border-color .2s;
 }
-.hero-success {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: rgba(255,255,255,0.85);
-  padding: 12px 0;
+/* Matricularse: relleno, es la acción principal. */
+.hero-cta-main {
+  background: #4da3ff;
+  color: #1D0084;
+  border: 1px solid #4da3ff;
 }
-
-/* ── Privacy ── */
-.hero-privacy {
-  font-size: 12px;
-  color: rgba(255,253,253,0.8);
+.hero-cta-main:hover { background: #5eb4ff; }
+/* Preguntar: contorno. Tiene que leerse como la alternativa, no como un
+   segundo botón igual de fuerte, o los dos compiten y no se pulsa ninguno. */
+.hero-cta-alt {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
 }
-.hero-privacy a {
-  color: rgba(255,255,255,0.55);
-  text-decoration: underline;
-}
+.hero-cta-alt:hover { border-color: rgba(255, 255, 255, 0.7); }
 
 /* ── Flags ── */
 .hero-flags-strip {
@@ -360,10 +332,9 @@ const ctaText    = data?.ctaText    ?? 'Únete a la lista de espera'
     gap: 48px;
   }
   .hero-col-card { display: none; }
-  .hero-form {
-    flex-direction: column;
-  }
-  .hero-form-btn {
+  .hero-cta-row { flex-direction: column; }
+  .hero-cta-main,
+  .hero-cta-alt {
     width: 100%;
     justify-content: center;
   }
@@ -374,37 +345,3 @@ const ctaText    = data?.ctaText    ?? 'Únete a la lista de espera'
   .badge-dark { font-size: 9px; padding: 5px 12px; }
 }
 </style>
-
-<script>
-  const form    = document.getElementById('hero-signup-form') as HTMLFormElement | null
-  const success = document.getElementById('hero-signup-success') as HTMLElement | null
-  const btn     = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null
-
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault()
-    const email = (document.getElementById('hero-email') as HTMLInputElement)?.value?.trim()
-    const website = (document.getElementById('hero-honeypot') as HTMLInputElement | null)?.value || ''
-    if (!email) return
-
-    if (btn) { btn.textContent = '...'; btn.disabled = true }
-
-    try {
-      const res = await fetch('/api/waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, website }),
-      })
-      const data = await res.json()
-
-      if (data.success) {
-        ;(form as HTMLElement).style.display = 'none'
-        if (success) success.style.display = 'flex'
-      } else {
-        if (btn) { btn.textContent = 'Inténtalo de nuevo'; btn.disabled = false }
-        console.error('Error lista espera:', data.error)
-      }
-    } catch {
-      if (btn) { btn.textContent = 'Error — inténtalo de nuevo'; btn.disabled = false }
-    }
-  })
-</script>
