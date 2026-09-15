@@ -177,25 +177,35 @@ const pasos = [
     font-size: clamp(34px, 5vw, 52px);
     font-weight: 700;
     letter-spacing: -0.04em;
-    /* 1.26 y no 1.08. Con `background-clip: text` lo que se ve es el fondo
-       recortado por las letras, así que lo que asome fuera de la caja de línea
-       NO se pinta: con 1.08 la caja queda más baja que la letra y a la "g" de
-       "guía" y a la "p" de "plaza" se les cortaba la cola en plano. Si se baja
-       este número, vuelve. */
-    --lh: 1.26;
+    /* Con `background-clip: text` lo que se ve es el fondo recortado por las
+       letras, así que lo que asome fuera de la caja de línea NO se pinta: a la
+       "g" de "guía" y a la "p" de "plaza" se les cortaba la cola en plano.
+       1.26 no bastaba: MEDIDO con la Poppins de verdad, la tinta acababa a
+       0,52 px del borde y ese medio píxel se pierde al redondear en pantalla.
+       Con 1.32 sobran 2,6 px.
+       ⚠️ Si se vuelve a medir esto, hay que cargar Poppins de verdad. Con la
+       letra de sistema de repuesto cabe de sobra y parece que no hay problema:
+       así se dio por bueno el 1.26. */
+    --lh: 1.32;
     line-height: var(--lh);
     margin: 0;
   }
   .gr-title-gradient {
-    /* El degradado termina EN LA LÍNEA BASE (0.98em de la caja) y de ahí abajo
-       se queda quieto. Si sigue cayendo hasta el final, la cola de la "g" y de
-       la "p" —lo único que baja de la línea base— acaba siendo lo más pálido
-       del titular y parece que la letra se deshace. Así la cola pesa lo mismo
-       que la panza de la "u" de al lado. */
+    /* Dos cosas a la vez:
+       · Arriba del todo arranca en el MISMO tono en el que acaba abajo. Ahí no
+         hay tinta (las mayúsculas empiezan más abajo), así que no se nota, y a
+         cambio la costura entre un mosaico y el siguiente deja de existir: si
+         alguna vez la cola de una letra roza el borde, no aparece el destello
+         blanco que delataba el fallo.
+       · Termina EN LA LÍNEA BASE y de ahí abajo se queda quieto. Si siguiera
+         cayendo, la cola de la "g" y de la "p" —lo único que baja de ahí— sería
+         lo más pálido del titular y parecería que la letra se deshace. */
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 1) 0,
-      rgba(255, 255, 255, 0.55) 0.98em,
+      rgba(255, 255, 255, 0.55) 0,
+      rgba(255, 255, 255, 0.55) 0.10em,
+      rgba(255, 255, 255, 1) 0.17em,
+      rgba(255, 255, 255, 0.55) 1.02em,
       rgba(255, 255, 255, 0.55) 100%
     );
     -webkit-background-clip: text;
