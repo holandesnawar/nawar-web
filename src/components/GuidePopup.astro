@@ -1,4 +1,18 @@
 ---
+/**
+ * El regalo que asoma abajo a la izquierda en el home.
+ *
+ * Apunta a la guía de las bases, que es la de nivel 0 y la que entra en la
+ * campaña de bienvenida ("Nuevo Bases"). Antes ofrecía la de hebben/zijn, que
+ * es más específica y encaja peor con alguien que acaba de aterrizar en la web.
+ *
+ * El título dice lo mismo que la propia página de la guía a propósito: si el
+ * popup promete una cosa y la página se titula otra, parece que el enlace se ha
+ * equivocado y se cierra.
+ */
+const TITULO = 'Las bases del neerlandés'
+const DESCRIPCION = 'Más de 15 páginas para tu primer mes aquí'
+const DESTINO = '/guia/bases-neerlandes'
 ---
 
 <div id="guide-popup" class="guide-popup" aria-hidden="true">
@@ -10,11 +24,11 @@
     <div class="guide-popup-head">
       <div class="guide-popup-emoji" aria-hidden="true">🎁</div>
       <p class="guide-popup-kicker">Guía gratis</p>
-      <h3 id="guide-popup-title" class="guide-popup-title">¿Hebben of zijn?</h3>
-      <p class="guide-popup-desc">Domina los verbos más usados del neerlandés</p>
+      <h3 id="guide-popup-title" class="guide-popup-title">{TITULO}</h3>
+      <p class="guide-popup-desc">{DESCRIPCION}</p>
     </div>
 
-    <a class="guide-popup-btn" href="/guia/hebben-zijn">
+    <a class="guide-popup-btn" href={DESTINO}>
       Descargar ahora
       <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
