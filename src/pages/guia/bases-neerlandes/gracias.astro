@@ -31,22 +31,25 @@ export const prerender = true
 /** El remitente con el que llega la guía (systeme.io). Tiene que ser el real,
  *  o el consejo de "sácanos de spam" no sirve. */
 const REMITENTE = 'info@holandesnawar.com'
-/* A dónde va el botón: la matrícula de siempre, la que cobra.
-   NO la de anuncios (/matricula-formacion-nawar-a0-a1-ads), y a
-   propósito: aquella etiqueta el contacto como "Matrícula ads" y
-   dispara su propio evento Lead, así que meter ahí a quien viene de
-   una guía ensuciaría los datos con los que Meta optimiza las
-   campañas.
+/* A dónde va el botón: la matrícula sin pago de URL limpia. Recoge el
+   contacto y la venta se cierra hablando, que es justo el paso que le
+   toca a alguien que acaba de pedir una guía gratuita de nivel 0.
 
-   ⚠️ Dos cosas que conviene tener presentes de este destino:
-     · Está detrás de la puerta de plazas. Con la convocatoria
-       cerrada redirige sola a /lista-de-espera, así que el botón
-       nunca deja a nadie tirado, pero tampoco avisa antes.
-     · Lleva directo al formulario de pago. Quien acaba de descargar
-       una guía gratuita de nivel 0 todavía no sabe qué incluye la
-       formación ni cuánto cuesta; si se quiere un paso intermedio,
-       el sitio es /formacion-nawar-a0-a1, que lo cuenta entero. */
-const MATRICULA = '/matricula-formacion-nawar'
+   Las otras dos NO valen aquí, y conviene saber por qué:
+
+     · /matricula-formacion-nawar cobra. Crea la sesión de pago en
+       Stripe y además está detrás de la puerta de plazas, así que con
+       la convocatoria cerrada manda a la lista de espera. Mandar ahí a
+       alguien que aún no sabe qué incluye la formación ni cuánto
+       cuesta es pedirle que decida a ciegas.
+     · /matricula-formacion-nawar-a0-a1-ads es la de anuncios: etiqueta
+       el contacto como "Matrícula ads" y dispara su propio evento Lead
+       del píxel. Meter ahí a quien viene de una guía ensucia los datos
+       con los que Meta optimiza las campañas.
+
+   Ésta no hace ninguna de las dos cosas: etiqueta "Matrícula" a secas
+   y no toca el píxel. */
+const MATRICULA = '/matricula-a0-a1'
 
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
 ---
