@@ -1,9 +1,14 @@
 ---
 /**
- * Matrícula de la landing de ANUNCIOS. Aquí no se cobra.
+ * Matrícula SIN pago: recoge el contacto y la venta se cierra hablando.
  *
- * Por qué existe una segunda matrícula en vez de reutilizar
- * /matricula-formacion-nawar-a0-a1:
+ * Es la misma página que la de anuncios
+ * (/matricula-formacion-nawar-a0-a1-ads); esta tiene la URL limpia, para
+ * mandarla a mano por WhatsApp, en la bio o en un correo. Lo único que
+ * cambia entre las dos es la etiqueta del CRM, el origen que se guarda y
+ * que aquella dispara el píxel de Meta en su gracias.
+ *
+ * Por qué no se reutiliza /matricula-formacion-nawar (la de pago):
  *
  *   1. Aquella crea una sesión de pago en Stripe y manda al checkout.
  *      Esta no cobra nada: recoge el contacto y ya está. La venta se
@@ -13,25 +18,22 @@
  *      tráfico de anuncios no puede toparse con eso, porque aquí no
  *      hay convocatoria que cerrar: se recogen solicitudes siempre.
  *
- * Los datos van al mismo CRM que el resto del sitio (systeme.io, vía
- * /api/waitlist) con su propia etiqueta, que es lo que separa estas
- * solicitudes de las de la lista de espera y lo que dispara la
- * automatización de seguimiento.
+ * Los datos van a DOS sitios, y cada uno hace un trabajo distinto:
  *
- * Y además a la escuela (/api/solicitud), para que la persona salga en
- * Panel → Estadísticas → "Matrículas nuevas" junto a las que llegan por
- * la URL limpia. Ese aviso es de propina: si falla, el contacto sigue en
- * el CRM y lo único que se pierde es la línea del panel.
+ *   · systeme.io (vía /api/waitlist), con su etiqueta, que es lo que
+ *     dispara la secuencia de correos de seguimiento.
+ *   · la escuela (vía /api/solicitud), para que la persona salga en
+ *     Panel → Estadísticas → "Matrículas nuevas" y se la pueda llamar.
  *
- * El evento Lead del píxel NO se dispara aquí sino en la página de
- * gracias: es lo que Meta mide bien y lo que no se infla si la
- * petición falla a mitad.
+ * El del CRM es el que manda: si falla, se avisa y no se pasa de
+ * pantalla. El de la escuela es de propina y va en paralelo; si falla,
+ * el contacto sigue en el CRM y solo se pierde la línea del panel.
  */
 import Layout from '../layouts/Layout.astro'
 
 export const prerender = true
 
-/* ⚠️ La etiqueta del CRM ("Matrícula ads") y la ruta de la página de
+/* ⚠️ La etiqueta del CRM ("Matrícula") y la ruta de la página de
    gracias viven en el bloque de script del final, no aquí: es un
    módulo aparte y no ve las constantes del frontmatter. Si hay que
    cambiar alguna de las dos, es ahí abajo.
@@ -352,8 +354,8 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 </style>
 
 <script>
-  const ETIQUETA = 'Matrícula ads'
-  const GRACIAS = '/matricula-formacion-nawar-a0-a1-ads/gracias'
+  const ETIQUETA = 'Matrícula'
+  const GRACIAS = '/matricula-a0-a1/gracias'
 
   const form = document.getElementById('form') as HTMLFormElement | null
   const btn = document.getElementById('submit') as HTMLButtonElement | null
@@ -424,7 +426,6 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
       email: val('email').toLowerCase(),
       phone: val('phone'),
       tagName: ETIQUETA,
-      conociste: 'Anuncio',
       website: (document.getElementById('mx-honeypot') as HTMLInputElement | null)?.value ?? '',
     }
 
@@ -435,7 +436,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
       const aviso = fetch('/api/solicitud', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...payload, source: 'ads' }),
+        body: JSON.stringify({ ...payload, source: 'web' }),
       }).catch(() => null)
 
       const res = await fetch('/api/waitlist', {
