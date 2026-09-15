@@ -485,7 +485,11 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
     }
 
     .guide-image {
-      max-width: 100%;
+      /* En el móvil el libro ocupaba el ancho completo de la columna, de borde
+         a borde, y quedaba apretado contra los lados. Un 88 % lo deja respirar
+         sin que pierda presencia. Solo aquí: en escritorio tiene su columna y
+         el 96 % está bien. */
+      max-width: 88%;
     }
   }
 </style>
