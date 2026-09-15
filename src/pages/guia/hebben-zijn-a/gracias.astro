@@ -159,7 +159,13 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
     font-size: clamp(36px, 5.2vw, 54px);
     font-weight: 700;
     letter-spacing: -0.04em;
-    line-height: 1.08;
+    /* 1.26 y no 1.08. Con `background-clip: text` lo que se ve es el fondo
+       recortado por las letras, así que lo que asome fuera de la caja de línea
+       NO se pinta: con 1.08 la caja queda más baja que la letra y a la "g" de
+       "guía" y a la "p" de "plaza" se les cortaba la cola en plano. Si se baja
+       este número, vuelve. */
+    --lh: 1.26;
+    line-height: var(--lh);
     margin: 0;
   }
   .gr-title-gradient {

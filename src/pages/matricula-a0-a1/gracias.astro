@@ -177,7 +177,13 @@ const pasos = [
     font-size: clamp(34px, 5vw, 52px);
     font-weight: 700;
     letter-spacing: -0.04em;
-    line-height: 1.08;
+    /* 1.26 y no 1.08. Con `background-clip: text` lo que se ve es el fondo
+       recortado por las letras, así que lo que asome fuera de la caja de línea
+       NO se pinta: con 1.08 la caja queda más baja que la letra y a la "g" de
+       "guía" y a la "p" de "plaza" se les cortaba la cola en plano. Si se baja
+       este número, vuelve. */
+    --lh: 1.26;
+    line-height: var(--lh);
     margin: 0;
   }
   .gr-title-gradient {
@@ -193,7 +199,10 @@ const pasos = [
      tratamiento, parta donde parta. Misma solución que en el titular de
      las guías. */
   .gr-title-gradient {
-    background-size: 100% 1.08em;
+    /* Atado a --lh: el mosaico tiene que medir EXACTAMENTE una línea. Si los
+       dos números se separan, el degradado deja de cuadrar con las líneas y
+       parte las letras por la mitad. */
+    background-size: 100% calc(var(--lh) * 1em);
     background-repeat: repeat;
   }
 
