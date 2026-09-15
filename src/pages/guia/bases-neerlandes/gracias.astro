@@ -72,7 +72,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 
       <div class="gr-header">
         <span class="gr-check" aria-hidden="true">
-          <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="3.2" viewBox="0 0 24 24">
+          <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="4" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
           </svg>
         </span>
@@ -182,9 +182,12 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
     display: inline-flex; align-items: center; justify-content: center;
     width: 64px; height: 64px; border-radius: 50%;
     background: rgba(77,163,255,0.14);
-    border: 3px solid #4da3ff;
+    /* Sin halo alrededor: aquel anillo se leía como un segundo borde de otro
+       tono y ensuciaba la forma. El icono se sostiene con su propio trazo,
+       grueso por fuera (el aro) y por dentro (la marca), los dos del mismo
+       azul. */
+    border: 4px solid #4da3ff;
     color: #4da3ff;
-    box-shadow: 0 0 0 8px rgba(77,163,255,0.12), 0 10px 30px rgba(77,163,255,0.25);
     margin-bottom: 8px;
   }
   .gr-title {
