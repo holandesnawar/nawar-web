@@ -6,6 +6,7 @@ const title = data?.title ?? 'Dos clics. Listo.'
 const subtitle = data?.subtitle ?? 'Reserva tu plaza en minutos y recibirás acceso prioritario antes del lanzamiento.'
 const guaranteeText = data?.guaranteeText ?? 'Garantía de devolución 15 días'
 const ctaText = data?.ctaText ?? 'Unirte'
+import { CTA_PRINCIPAL } from '../lib/cta'
 ---
 <div class="proceso-wrapper">
 <div class="proceso-outer" data-navbar="dark">
@@ -159,7 +160,7 @@ const ctaText = data?.ctaText ?? 'Unirte'
 
       <!-- CTA final -->
       <div class="proceso-cta-wrap sr">
-        <a href="/lista-de-espera" class="btn-proceso-cta">
+        <a href={CTA_PRINCIPAL} class="btn-proceso-cta">
           {ctaText}
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>

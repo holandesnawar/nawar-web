@@ -7,6 +7,7 @@ const subtitle = data?.subtitle ?? 'En un mundo cada vez más globalizado, habla
 const note = data?.note ?? 'Domina el neerlandés y transforma tu futuro profesional →'
 const ctaPrimary = data?.ctaPrimary ?? 'Quiero empezar'
 const ctaSecondary = data?.ctaSecondary ?? 'Preguntas frecuentes'
+import { CTA_PRINCIPAL } from '../lib/cta'
 ---
 <section class="section-dark py-section" data-navbar="dark" style="position:relative;overflow:hidden;">
   <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:1000px;height:700px;background:radial-gradient(ellipse at center,rgba(11,109,240,0.35) 0%,transparent 65%);pointer-events:none;" aria-hidden="true"></div>
@@ -23,7 +24,7 @@ const ctaSecondary = data?.ctaSecondary ?? 'Preguntas frecuentes'
         <p class="value-sub">{subtitle}</p>
         <p class="value-note">{note}</p>
         <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;">
-          <a href="/lista-de-espera" class="valor-cta-btn">
+          <a href={CTA_PRINCIPAL} class="valor-cta-btn">
             {ctaPrimary}
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
