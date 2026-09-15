@@ -230,7 +230,11 @@ export const prerender = false
     background: #F0F5FF;
     border: 1px solid transparent;
     color: #1D0084;
-    font-size: 15px;
+    /* 16px y no 15: por debajo de 16, Safari en el iPhone hace zoom solo al
+       tocar el campo y deja la página descolocada. Se arregla desde el CSS y
+       NO tocando el viewport con maximum-scale, que además impide al usuario
+       ampliar a propósito. */
+    font-size: 16px;
     font-family: inherit;
     outline: none;
     transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
