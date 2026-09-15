@@ -1,14 +1,15 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 
-// A dónde lleva el botón "Apúntate" (los tres: escritorio, tablet y menú móvil).
-// Durante la convocatoria (sept 2026) apuntó a la landing de la formación; con
-// la matrícula cerrada vuelve a la lista de espera. Es el único sitio que tocar.
+// El botón "Apúntate" (los tres: escritorio, tablet y menú móvil) sale del
+// mismo sitio que los demás botones de la web, en src/lib/cta.ts. Antes tenía
+// aquí su propia constante y eso hacía que el menú y el cuerpo de la página
+// pudieran apuntar a destinos distintos sin que nadie se diera cuenta.
 //
-// ⚠️ Si vuelve a apuntar a la landing, la ruta es '/formacion-a0-a1', SIN el
-// "-sept": aquélla se renombró y ahora redirige (302) a la lista de espera. Con
-// el nombre viejo el botón seguiría funcionando pero llevaría a la lista de
-// espera sin que nadie se diera cuenta, que es la peor forma de romperse.
-const APUNTATE_HREF = '/lista-de-espera'
+// ⚠️ Si algún día vuelve a apuntar a la landing, la ruta es '/formacion-a0-a1',
+// SIN el "-sept": aquélla se renombró y ahora redirige (302) a la lista de
+// espera. Con el nombre viejo el botón seguiría funcionando pero llevaría a la
+// lista de espera sin que nadie se diera cuenta.
+import { CTA_PRINCIPAL } from '../lib/cta'
 
 const NAV_LINKS = [
   { label: 'Inicio',         href: '/' },
@@ -131,7 +132,7 @@ export default function NavbarLanding() {
                 Acceso a alumnos
               </a>
               <a
-                href={APUNTATE_HREF}
+                href={CTA_PRINCIPAL}
                 className="inline-flex items-center gap-2 px-7 py-3 text-[15px] font-semibold rounded-lg bg-[#4da3ff] text-[#1D0084] transition-colors duration-200"
               >
                 Apúntate
@@ -144,7 +145,7 @@ export default function NavbarLanding() {
             {/* Mobile */}
             <div className="lg:hidden flex items-center gap-2">
               <a
-                href={APUNTATE_HREF}
+                href={CTA_PRINCIPAL}
                 className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-[#4da3ff] text-[#1D0084] text-[14px] font-semibold hover:bg-[#5eb4ff] transition-all duration-200"
               >
                 Apúntate
@@ -214,7 +215,7 @@ export default function NavbarLanding() {
                 Acceso a alumnos
               </a>
               <a
-                href={APUNTATE_HREF}
+                href={CTA_PRINCIPAL}
                 onClick={handleLink}
                 className="flex w-full items-center justify-center gap-2.5 px-6 py-4 text-[16px] font-semibold rounded-xl bg-[#4da3ff] text-[#1D0084] hover:bg-[#5eb4ff] transition-all duration-200 shadow-[0_4px_20px_rgba(77,163,255,0.30)]"
               >
