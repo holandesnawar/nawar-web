@@ -206,21 +206,24 @@ const pasos = [
     margin: 0;
   }
   .gr-title-gradient {
-    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%);
+    /* El degradado termina EN LA LÍNEA BASE (0.98em de la caja) y de ahí abajo
+       se queda quieto. Si sigue cayendo hasta el final, la cola de la "g" y de
+       la "p" —lo único que baja de la línea base— acaba siendo lo más pálido
+       del titular y parece que la letra se deshace. Así la cola pesa lo mismo
+       que la panza de la "u" de al lado. */
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 1) 0,
+      rgba(255, 255, 255, 0.55) 0.98em,
+      rgba(255, 255, 255, 0.55) 100%
+    );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-  }
-  /* El degradado, una vez por línea. Sin esto, cuando el titular parte
-     en dos —en móvil parte siempre— la primera línea sale blanca y la
-     segunda gris, y parece que cambie de color a media frase. Acotarlo
-     a la altura de una línea y repetirlo le da a cada línea el mismo
-     tratamiento, parta donde parta. Misma solución que en el titular de
-     las guías. */
-  .gr-title-gradient {
-    /* Atado a --lh: el mosaico tiene que medir EXACTAMENTE una línea. Si los
-       dos números se separan, el degradado deja de cuadrar con las líneas y
-       parte las letras por la mitad. */
+    /* Una vez por línea. Sin esto, cuando el titular parte en dos —en móvil
+       parte siempre— la primera línea sale blanca y la segunda gris, y parece
+       que cambie de color a media frase. Atado a --lh: el mosaico tiene que
+       medir EXACTAMENTE una línea o el degradado deja de cuadrar con ellas. */
     background-size: 100% calc(var(--lh) * 1em);
     background-repeat: repeat;
   }
