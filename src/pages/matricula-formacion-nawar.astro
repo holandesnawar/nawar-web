@@ -16,6 +16,12 @@ if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
 <Layout
   title="Matrícula — Formación Nawar A0-A1"
   description="Reserva tu plaza en la Formación Nawar A0-A1 y empieza a aprender neerlandés desde cero: método desde el español, clases en vivo y una comunidad que te acompaña."
+  {/* Página de embudo: se llega por un enlace nuestro, no buscando en Google.
+      robots.txt ya la tapa, pero eso es un cartel que el buscador respeta por
+      educación: si alguien enlaza esta URL desde fuera, Google puede indexarla
+      sin haberla leído y sacarla en los resultados con un texto raro. Con
+      noindex, no. */}
+  noindex={true}
 >
   <!-- Banner de error global -->
   <div id="err" class="mx-toast" role="alert">
