@@ -210,14 +210,14 @@ export default function NavbarLanding() {
               <a
                 href="/acceso"
                 onClick={handleLink}
-                className="flex w-full items-center justify-center px-6 py-4 text-[15px] font-semibold rounded-xl bg-white/12 border border-white/25 text-white hover:bg-white/18 transition-all duration-200"
+                className="flex w-full items-center justify-center px-6 py-4 text-[15px] font-semibold rounded-lg bg-white/12 border border-white/25 text-white hover:bg-white/18 transition-all duration-200"
               >
                 Acceso a alumnos
               </a>
               <a
                 href={CTA_PRINCIPAL}
                 onClick={handleLink}
-                className="flex w-full items-center justify-center gap-2.5 px-6 py-4 text-[16px] font-semibold rounded-xl bg-[#4da3ff] text-[#1D0084] hover:bg-[#5eb4ff] transition-all duration-200 shadow-[0_4px_20px_rgba(77,163,255,0.30)]"
+                className="flex w-full items-center justify-center gap-2.5 px-6 py-4 text-[16px] font-semibold rounded-lg bg-[#4da3ff] text-[#1D0084] hover:bg-[#5eb4ff] transition-all duration-200 shadow-[0_4px_20px_rgba(77,163,255,0.30)]"
               >
                 Apúntate
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
