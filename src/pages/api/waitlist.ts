@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro'
+import { createHash, timingSafeEqual } from 'node:crypto'
 
 export const prerender = false
 
@@ -7,22 +8,51 @@ const TAG_NAME     = 'Lista de espera'
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
+/**
+ * Cómo se comparan los nombres de etiqueta.
+ *
+ * Sin acentos, sin mayúsculas y con los guiones y los espacios de más
+ * aplanados. Mismo criterio que el webhook de Inrō, y por el mismo motivo:
+ * "Nuevo Bases", "nuevo bases" y "Nuevo-Bases" son la misma etiqueta para una
+ * persona, y si el código no lo ve así acaba creando duplicados que parten la
+ * campaña en dos sin que salte ningún error.
+ */
+function normalizar(nombre: string): string {
+  return (nombre || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[-_]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+/** Todas las etiquetas de la cuenta, paginando hasta que se acaban. */
+async function listarEtiquetas(headers: Record<string, string>): Promise<any[]> {
+  const todas: any[] = []
+  // Tope de seguridad: 20 páginas = 2000 etiquetas. Con más que eso, algo raro
+  // pasa y es mejor parar que quedarse dando vueltas dentro de una función
+  // serverless que Vercel va a cortar igualmente.
+  for (let page = 1; page <= 20; page++) {
+    const res = await fetch(`${SYSTEME_BASE}/tags?itemsPerPage=100&page=${page}`, { headers })
+    if (!res.ok) break
+    const data = await res.json().catch(() => null)
+    const items: any[] = data?.items ?? []
+    todas.push(...items)
+    if (items.length < 100) break
+  }
+  return todas
+}
+
 async function findTagId(tagName: string, headers: Record<string, string>): Promise<number | null> {
   try {
-    const res = await fetch(`${SYSTEME_BASE}/tags?itemsPerPage=100`, { headers })
-    if (!res.ok) return null
-    const data = await res.json().catch(() => null)
-    const tags: any[] = data?.items ?? []
-    const match = tags.find((t: any) => t.name?.toLowerCase() === tagName.toLowerCase())
-    if (match) return match.id
-    if (tags.length === 100) {
-      const res2 = await fetch(`${SYSTEME_BASE}/tags?itemsPerPage=100&page=2`, { headers })
-      if (res2.ok) {
-        const data2 = await res2.json().catch(() => null)
-        const m2 = (data2?.items ?? []).find((t: any) => t.name?.toLowerCase() === tagName.toLowerCase())
-        if (m2) return m2.id
-      }
-    }
+    // ⚠️ Antes esto miraba SOLO dos páginas (200 etiquetas) y comparaba el
+    // nombre tal cual en minúsculas. Las dos cosas fallan en silencio
+    // devolviendo null, y quien llama se queda sin saber si la etiqueta no
+    // existe o si simplemente no se llegó a ella.
+    const buscado = normalizar(tagName)
+    const match = (await listarEtiquetas(headers)).find((t: any) => normalizar(t.name) === buscado)
+    return match ? match.id : null
   } catch (e) {
     console.error('[waitlist] findTagId error:', e)
   }
@@ -49,7 +79,14 @@ async function ensureTagId(tagName: string, headers: Record<string, string>): Pr
       console.log('[waitlist] etiqueta creada:', tagName, data?.id)
       return data?.id ?? null
     }
-    console.error('[waitlist] no se pudo crear la etiqueta', tagName, res.status)
+    // Crear ha fallado. La causa más normal es que la etiqueta SÍ existe y la
+    // búsqueda no dio con ella, así que se vuelve a mirar antes de rendirse:
+    // rendirse aquí es lo que dejaba al lead sin etiquetar y a la campaña sin
+    // nadie dentro.
+    const cuerpo = await res.text().catch(() => '')
+    console.error('[waitlist] no se pudo crear la etiqueta', tagName, res.status, cuerpo.slice(0, 150))
+    const segundoIntento = await findTagId(tagName, headers)
+    if (segundoIntento) return segundoIntento
   } catch (e) {
     console.error('[waitlist] error creando la etiqueta', tagName, e)
   }
@@ -57,6 +94,8 @@ async function ensureTagId(tagName: string, headers: Record<string, string>): Pr
 }
 
 type SyncDebug = {
+  /** Lo que decide si entra en la campaña de bienvenida. Es EL dato. */
+  esNuevo?: boolean
   createStatus?: number
   createBody?: string
   contactId?: number | null
@@ -157,6 +196,7 @@ async function syncToCRM(
     }
 
     debug.contactId = contactId
+    debug.esNuevo = esNuevo
 
     // Añadir etiqueta
     if (contactId && tagId) {
@@ -236,6 +276,20 @@ export const POST: APIRoute = async ({ request }) => {
 
   console.log('[waitlist] received:', { email, tagName, hasKey: !!apiKey })
 
+  // ⚠️ El diagnóstico se calculaba entero y se tiraba a la basura: la
+  // respuesta era siempre el mismo "¡Registrado con éxito!" pasara lo que
+  // pasara. Por eso, cuando la etiqueta de lead nuevo dejó de ponerse, no
+  // había forma de saber si fallaba la etiqueta, el alta o el nombre.
+  //
+  // Ahora se puede pedir, pero SOLO con la clave: decir en abierto si un correo
+  // ya estaba en la lista dejaría que cualquiera comprobase quién está apuntado
+  // probando direcciones una a una.
+  const claveDada = typeof body?.clave === 'string' ? body.clave : ''
+  const claveBuena =
+    (import.meta.env.NAWAR_WEBHOOK_SECRET as string | undefined) ||
+    (typeof process !== 'undefined' ? process.env.NAWAR_WEBHOOK_SECRET : undefined)
+  const conDiagnostico = !!claveDada && !!claveBuena && mismaClave(claveDada, claveBuena)
+
   const debug: SyncDebug = {}
   if (apiKey) {
     const headers = {
@@ -257,7 +311,20 @@ export const POST: APIRoute = async ({ request }) => {
   return json({
     success: true,
     message: '¡Registrado con éxito! Te avisamos en cuanto abramos plazas.',
+    ...(conDiagnostico ? { diagnostico: debug } : {}),
   })
+}
+
+/**
+ * Las dos claves, comparadas en tiempo constante. Se hashean antes para que los
+ * búferes midan igual (`timingSafeEqual` revienta con longitudes distintas) y
+ * de paso no se filtre la longitud de la buena. Mismo patrón que el webhook de
+ * Inrō.
+ */
+function mismaClave(a: string, b: string): boolean {
+  const ha = createHash('sha256').update(a, 'utf8').digest()
+  const hb = createHash('sha256').update(b, 'utf8').digest()
+  return timingSafeEqual(ha, hb)
 }
 
 function json(data: object, status = 200) {
