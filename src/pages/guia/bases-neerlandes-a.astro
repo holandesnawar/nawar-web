@@ -504,6 +504,12 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
 </style>
 
 <script>
+  import { guardarUTM, leerUTM } from '../../lib/utm'
+
+  // Lo primero, antes de que la persona toque nada: los utm_* viven en la
+  // dirección de llegada y se pierden al primer clic.
+  guardarUTM()
+
   /* La etiqueta del CRM va aquí y no en el frontmatter: este script
      corre en el navegador y no ve nada de allá arriba. Tiene que
      existir con este nombre exacto en systeme.io. */
@@ -539,7 +545,16 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
         headers: { 'Content-Type': 'application/json' },
         // "conociste" va al campo "Cómo conociste Nawar" de systeme.io: así se
         // distingue en el CRM quién vino del anuncio, no solo por la URL.
-        body: JSON.stringify({ name, email, tagName: ETIQUETA_CRM, tagNuevo: ETIQUETA_NUEVO, website, conociste: 'Anuncio' }),
+        body: JSON.stringify({
+          name,
+          email,
+          tagName: ETIQUETA_CRM,
+          tagNuevo: ETIQUETA_NUEVO,
+          website,
+          conociste: 'Anuncio',
+          // De qué anuncio viene. Vacíos si la visita es orgánica.
+          ...leerUTM(),
+        }),
       })
 
       const data = await res.json().catch(() => null)
