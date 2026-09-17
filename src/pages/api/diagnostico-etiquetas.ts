@@ -19,7 +19,8 @@
  *
  * Se abre con la misma clave que el webhook de Inrō (`NAWAR_WEBHOOK_SECRET`),
  * en la URL para poder mirarlo desde el móvil:
- *   /api/diagnostico-etiquetas?clave=...&buscar=bases
+ *   /api/diagnostico-etiquetas?clave=...&buscar=bases     → las etiquetas
+ *   /api/diagnostico-etiquetas?clave=...&email=x@y.com    → un contacto y las suyas
  */
 import type { APIRoute } from 'astro'
 import { createHash, timingSafeEqual } from 'node:crypto'
@@ -76,6 +77,39 @@ export const GET: APIRoute = async ({ url }) => {
     'X-API-Key': apiKey,
     'Content-Type': 'application/json',
     accept: 'application/json',
+  }
+
+  // ── Un contacto concreto: ?email=… ──
+  //
+  // Es la pregunta que de verdad cierra el caso: "esta persona que se apuntó
+  // ayer, ¿está?, ¿y con qué etiquetas?". Si sale con "Guía Bases" y sin la de
+  // lead nuevo, es que systeme.io ya la conocía y el código hizo lo correcto;
+  // si sale con las dos, funciona; si no sale, el alta no llegó.
+  //
+  // Va detrás de la clave como todo lo demás: preguntar si un correo está en la
+  // lista es precisamente lo que no puede quedar abierto.
+  const email = (url.searchParams.get('email') || '').trim()
+  if (email) {
+    try {
+      const res = await fetch(`${SYSTEME_BASE}/contacts?email=${encodeURIComponent(email)}`, { headers })
+      if (!res.ok) return json({ error: `systeme.io respondió ${res.status} al buscar el contacto` }, 502)
+      const data = await res.json().catch(() => null)
+      const items: any[] = data?.items ?? (Array.isArray(data) ? data : [])
+      if (!items.length) {
+        return json({ email, existe: false, nota: 'systeme.io no tiene ese correo.' })
+      }
+      const c = items[0]
+      const etiquetas = (c?.tags ?? []).map((t: any) => t?.name).filter(Boolean)
+      return json({
+        email,
+        existe: true,
+        id: c?.id ?? null,
+        registrado: c?.registeredAt ?? c?.createdAt ?? null,
+        etiquetas,
+      })
+    } catch (e) {
+      return json({ error: `No se pudo hablar con systeme.io: ${(e as Error).message}` }, 502)
+    }
   }
 
   const todas: { id: number; nombre: string }[] = []
