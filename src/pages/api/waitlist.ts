@@ -96,6 +96,9 @@ async function ensureTagId(tagName: string, headers: Record<string, string>): Pr
 type SyncDebug = {
   /** Lo que decide si entra en la campaña de bienvenida. Es EL dato. */
   esNuevo?: boolean
+  campos?: string[]
+  camposStatus?: number
+  camposError?: string
   createStatus?: number
   createBody?: string
   contactId?: number | null
@@ -108,13 +111,82 @@ type SyncDebug = {
   error?: string
 }
 
+/** Lo que se sabe de dónde vino esta persona. Todo opcional. */
+export type Procedencia = {
+  conociste?: string
+  nivel?: string
+  utmSource?: string
+  utmMedium?: string
+  utmCampaign?: string
+}
+
+/**
+ * Escribe los campos personalizados del contacto, APARTE del alta.
+ *
+ * ⚠️ Antes iban dentro del POST que crea el contacto, y eso es justo lo que no
+ * se puede hacer: systeme.io escribe los campos por SLUG, y un slug que no
+ * exista hace fallar la petición ENTERA. Resultado: el lead no se crea, el
+ * código baja a buscarlo, no lo encuentra, y la persona se pierde sin que
+ * salte nada. Y solo les pasaría a los formularios que mandan campos —o sea,
+ * justo a los de los anuncios, que son los que se pagan.
+ *
+ * Yendo aparte, lo peor que puede pasar es un contacto sin el campo relleno.
+ * El lead se queda.
+ */
+async function escribirCampos(
+  contactId: number,
+  de: Procedencia,
+  headers: Record<string, string>,
+  debug: SyncDebug
+): Promise<void> {
+  // Los slugs los genera systeme.io quitando los caracteres no ingleses, no
+  // transliterándolos: "Cómo conociste Nawar" -> cmo_conociste_nawar y
+  // "Nivel de neerlandés" -> nivel_de_neerlands. No son erratas.
+  const fields: { slug: string; value: string }[] = []
+  if (de.conociste)   fields.push({ slug: 'cmo_conociste_nawar', value: de.conociste })
+  if (de.nivel)       fields.push({ slug: 'nivel_de_neerlands',  value: de.nivel })
+  if (de.utmSource)   fields.push({ slug: 'utm_source',          value: de.utmSource })
+  if (de.utmMedium)   fields.push({ slug: 'utm_medium',          value: de.utmMedium })
+  if (de.utmCampaign) fields.push({ slug: 'utm_campaign',        value: de.utmCampaign })
+  if (!fields.length) return
+
+  debug.campos = fields.map((f) => f.slug)
+  try {
+    // El PATCH de API Platform quiere merge-patch; con application/json
+    // contesta 415. Se prueban los tres que acepta systeme.io según el caso.
+    const intentos: [string, string][] = [
+      ['PATCH', 'application/merge-patch+json'],
+      ['PATCH', 'application/json'],
+      ['PUT',   'application/json'],
+    ]
+    for (const [method, contentType] of intentos) {
+      const res = await fetch(`${SYSTEME_BASE}/contacts/${contactId}`, {
+        method,
+        headers: { ...headers, 'Content-Type': contentType },
+        body: JSON.stringify({ fields }),
+      })
+      debug.camposStatus = res.status
+      if (res.ok) return
+      // 415 = tipo de contenido que no le vale: se prueba el siguiente.
+      // Cualquier otro error no se arregla cambiando el método.
+      if (res.status !== 415) {
+        debug.camposError = (await res.text().catch(() => '')).slice(0, 200)
+        console.error('[waitlist] campos error:', res.status, debug.camposError)
+        return
+      }
+    }
+  } catch (e) {
+    debug.camposError = (e as Error).message
+    console.error('[waitlist] campos error:', e)
+  }
+}
+
 async function syncToCRM(
   email: string,
   firstName: string,
   lastName: string,
   phone: string,
-  conociste: string,
-  nivel: string,
+  de: Procedencia,
   tagName: string,
   /** Etiqueta que recibe SOLO quien no estaba ya en el CRM. Vacío = ninguna. */
   tagNuevoName: string,
@@ -122,14 +194,12 @@ async function syncToCRM(
   debug: SyncDebug
 ): Promise<void> {
   try {
+    // Solo los campos de toda la vida. Los personalizados van después y por
+    // su cuenta: ver escribirCampos() para el porqué, que no es un detalle.
     const body: Record<string, any> = { email }
     if (firstName) body.firstName = firstName
     if (lastName)  body.surname   = lastName
     if (phone)     body.phone     = phone
-    const fields: { slug: string; value: string }[] = []
-    if (conociste) fields.push({ slug: 'cmo_conociste_nawar', value: conociste })
-    if (nivel)     fields.push({ slug: 'nivel_de_neerlands',  value: nivel })
-    if (fields.length) body.fields = fields
 
     // Crear o encontrar contacto y buscar tag en paralelo
     const [createRes, tagId] = await Promise.all([
@@ -175,10 +245,6 @@ async function syncToCRM(
           if (firstName) upd.firstName = firstName
           if (lastName)  upd.surname   = lastName
           if (phone)     upd.phone     = phone
-          const updFields: { slug: string; value: string }[] = []
-          if (conociste) updFields.push({ slug: 'cmo_conociste_nawar', value: conociste })
-          if (nivel)     updFields.push({ slug: 'nivel_de_neerlands',  value: nivel })
-          if (updFields.length) upd.fields = updFields
           if (Object.keys(upd).length > 0) {
             let pr = await fetch(`${SYSTEME_BASE}/contacts/${contactId}`, {
               method: 'PATCH', headers, body: JSON.stringify(upd),
@@ -197,6 +263,10 @@ async function syncToCRM(
 
     debug.contactId = contactId
     debug.esNuevo = esNuevo
+
+    // Los campos personalizados, ahora que hay contacto y venga de donde venga
+    // (recién creado o encontrado). Si falla, falla solo esto.
+    if (contactId) await escribirCampos(contactId, de, headers, debug)
 
     // Añadir etiqueta
     if (contactId && tagId) {
@@ -243,6 +313,12 @@ export const POST: APIRoute = async ({ request }) => {
   const phone     = (body?.phone     ?? '').trim()
   const conociste = (body?.conociste ?? '').trim()
   const nivel     = (body?.nivel     ?? '').trim()
+  // De qué anuncio viene. Los manda el formulario leyéndolos de su propia URL;
+  // si la visita es orgánica llegan vacíos y no se escribe nada, que es lo
+  // correcto: un utm_source en blanco pisaría el de una visita anterior.
+  const utmSource   = (body?.utmSource   ?? '').trim().slice(0, 120)
+  const utmMedium   = (body?.utmMedium   ?? '').trim().slice(0, 120)
+  const utmCampaign = (body?.utmCampaign ?? '').trim().slice(0, 120)
   const tagName   =
     typeof body?.tagName === 'string' && body.tagName.trim()
       ? body.tagName.trim()
@@ -298,7 +374,17 @@ export const POST: APIRoute = async ({ request }) => {
       'accept':       'application/json',
     }
     try {
-      await syncToCRM(email, firstName, lastName, phone, conociste, nivel, tagName, tagNuevo, headers, debug)
+      await syncToCRM(
+        email,
+        firstName,
+        lastName,
+        phone,
+        { conociste, nivel, utmSource, utmMedium, utmCampaign },
+        tagName,
+        tagNuevo,
+        headers,
+        debug
+      )
     } catch (e) {
       debug.error = (e as Error).message
       console.error('[waitlist] sync failed:', e)
