@@ -4,19 +4,34 @@
  *
  * Los "Términos y condiciones" que ya existen regulan el USO de la
  * web: propiedad intelectual, enlaces, responsabilidad. No regulan
- * una COMPRA, y desde que la landing cobra 397 € hace falta un
- * documento que diga qué se compra, por cuánto, durante cuánto
- * tiempo, cómo se cancela y cómo se devuelve el dinero.
+ * una COMPRA, y desde que la landing cobra hace falta un documento
+ * que diga qué se compra, durante cuánto tiempo, cómo se cancela y
+ * cómo se devuelve el dinero.
  *
  * Mismo diseño que el resto de páginas legales de nawar-web: fondo
  * índigo, halo, la caja de 820 px y la misma escala de texto. Se
  * copia el bloque de estilos entero a propósito, para no tocar los
  * de las otras tres páginas.
  *
- * PUBLICADA el 28/08/2026 con todos los datos dentro: titular, KVK,
- * BTW, las 40 plazas como límite firme, las fechas de la convocatoria
- * de septiembre, Stripe y sus métodos, IVA incluido, Klarna, la
- * garantía y los plazos de respuesta.
+ * PUBLICADA el 28/08/2026. Lleva lo que tiene que llevar un contrato:
+ * titular, KVK, BTW, Stripe y sus métodos, Klarna, la garantía, los
+ * plazos de respuesta y la ley aplicable.
+ *
+ * ⚠️ Lo que NO lleva, y no debe volver a llevar: el precio, el número
+ * de plazas, las fechas de una convocatoria concreta y el desglose de
+ * lo que incluye el producto. Todo eso se escribió aquí el 28/08 y
+ * convirtió el documento en una landing. Dos motivos para no repetirlo:
+ *
+ *  - Son datos de la OFERTA, no del contrato, y cambian cada
+ *    convocatoria. Escritos aquí se quedan viejos sin que nadie se
+ *    entere, y un documento legal que se contradice con el checkout es
+ *    peor que uno escueto.
+ *  - Esta página la ve cualquiera desde el pie de la web. El precio no
+ *    tiene por qué estar ahí cuando la matrícula está cerrada.
+ *
+ * La obligación legal de informar del precio total ANTES de pagar se
+ * cumple donde toca: en la página de la formación y en el checkout, que
+ * es donde el comprador decide.
  *
  * Está enlazada desde el pie de la web y desde el formulario de
  * matrícula, que es donde importa: el comprador tiene que poder leer
@@ -55,7 +70,7 @@ const ACTUALIZADO = '28 de agosto de 2026'
 
 <Layout
   title="Condiciones de contratación — Holandés Nawar"
-  description="Condiciones de contratación de la Formación Nawar A0-A1: precio, acceso, derecho de desistimiento y garantía de devolución."
+  description="Condiciones de contratación de la Formación Nawar A0-A1: acceso, pago, derecho de desistimiento y garantía de devolución."
   noindex={true}
 >
   <NavbarLanding client:load />
@@ -94,20 +109,10 @@ const ACTUALIZADO = '28 de agosto de 2026'
         <p>Estas condiciones se aplican junto con los <a href="/terminos-y-condiciones">Términos y Condiciones</a> de uso del sitio y la <a href="/politica-de-privacidad">Política de Privacidad</a>. En lo relativo a la compra de la formación, si algo de aquellos textos contradijera lo que dice este documento, prevalece este.</p>
 
         <h2>2. Qué se contrata</h2>
-        <p>La formación es un programa online de aprendizaje de neerlandés de nivel A0 a A1, diseñado para hispanohablantes, con una duración de <strong>16 semanas</strong> de programa. Incluye:</p>
-        <ul>
-          <li>El programa completo A0 → A1: 10 módulos, más de 15 horas de vídeo y 360 lecciones.</li>
-          <li>Acceso a la escuela, con ejercicios, flashcards, lectura, escucha y repaso.</li>
-          <li>Una clase en directo semanal con un profesor del equipo, que además queda grabada.</li>
-          <li>Libros, presentaciones y materiales descargables.</li>
-          <li>Soporte y resolución de dudas por parte del equipo.</li>
-          <li>Acceso a la comunidad privada de alumnos.</li>
-          <li>Certificado de finalización Holandés Nawar al completar el programa.</li>
-          <li>Prioridad para reservar plaza en el siguiente nivel (A1 → A2) cuando se abra.</li>
-        </ul>
-        <p>La formación es un servicio de contenido digital: no se envía ningún producto físico. El certificado de finalización es un documento propio de Holandés Nawar y <strong>no es un título oficial</strong> ni sustituye a los exámenes oficiales de neerlandés (inburgering, NT2 u otros).</p>
-        <p>Las plazas de cada convocatoria son limitadas: <strong>un máximo de 40 plazas por convocatoria</strong>. Es un límite firme; cuando se cubren, la matrícula se cierra hasta la convocatoria siguiente. Ese número es el aforo máximo y no una previsión del número de alumnos que habrá.</p>
-        <p>La matrícula de la convocatoria de septiembre de 2026 abre el <strong>martes 8 de septiembre de 2026</strong> y se cierra el <strong>domingo 13 de septiembre de 2026 a las 23:59</strong> (hora de los Países Bajos), o antes si se cubren las 40 plazas.</p>
+        <p>Se contrata el acceso a una formación online de neerlandés de nivel A0 a A1, impartida en español, que incluye contenido grabado, materiales descargables, clases en directo con un profesor del equipo, resolución de dudas y acceso a la comunidad de alumnos.</p>
+        <p>El detalle concreto de cada convocatoria —contenidos, calendario, número de plazas y precio— es el que figure en la página de la formación y en el proceso de matrícula en el momento de contratar, y es el que se aplica a esa compra.</p>
+        <p>La formación es un servicio de contenido digital: no se envía ningún producto físico. Al completarla se entrega un certificado de finalización, que es un documento propio de Holandés Nawar y <strong>no es un título oficial</strong> ni sustituye a los exámenes oficiales de neerlandés (inburgering, NT2 u otros).</p>
+        <p>Las plazas de cada convocatoria son limitadas. Cuando se cubren, la matrícula se cierra hasta la convocatoria siguiente.</p>
 
         <h2>3. Cómo se contrata</h2>
         <ul>
@@ -120,8 +125,8 @@ const ACTUALIZADO = '28 de agosto de 2026'
 
         <h2>4. Precio y pago</h2>
         <ul>
-          <li>El precio de la formación es de <strong>397 €, IVA incluido</strong>, en un <strong>pago único</strong>.</li>
-          <li>El precio mostrado en la web es el precio final para el consumidor, sin gastos adicionales de gestión ni de envío.</li>
+          <li>El precio de la formación es el que se muestra en el proceso de matrícula antes de confirmar el pago. Se abona en un <strong>pago único</strong>.</li>
+          <li>El precio mostrado incluye el IVA y es el precio final para el consumidor: no se añaden gastos de gestión ni de envío.</li>
           <li><strong>Pago a plazos.</strong> En el momento del pago puedes elegir <strong>Klarna</strong> y fraccionar el importe o aplazarlo. Holandés Nawar no cobra ningún recargo por ello: las condiciones concretas —número de plazos, calendario y cualquier coste— las establece Klarna, están sujetas a su aprobación y se te muestran antes de confirmar. La relación de pago aplazado es entre el alumno y Klarna; Holandés Nawar recibe el importe completo desde el primer momento y el acceso se abre igual.</li>
           <li>La factura se emite y se envía por email a la dirección facilitada en la matrícula.</li>
         </ul>
@@ -130,7 +135,7 @@ const ACTUALIZADO = '28 de agosto de 2026'
         <h2>5. Acceso y duración</h2>
         <ul>
           <li>El acceso a la escuela es <strong>inmediato</strong> tras la confirmación del pago, salvo que en la propia oferta se indique una fecha de apertura distinta.</li>
-          <li>Duración del acceso al contenido: <strong>6 meses</strong> desde la fecha de compra. El programa está diseñado para completarse en 16 semanas, de modo que ese plazo deja margen para repetir contenidos y recuperar semanas perdidas. Durante ese periodo se incluyen las actualizaciones del temario y las grabaciones de las clases en directo.</li>
+          <li>Duración del acceso al contenido: <strong>6 meses</strong> desde la fecha de compra. Ese plazo deja margen para repetir contenidos y recuperar semanas perdidas. Durante ese periodo se incluyen las actualizaciones del temario y las grabaciones de las clases en directo.</li>
           <li>El acceso es <strong>personal e intransferible</strong>. Está prohibido compartir las credenciales, revender el acceso o difundir los materiales. El incumplimiento puede dar lugar a la cancelación del acceso sin derecho a devolución.</li>
           <li>Las clases en directo se imparten en el horario anunciado para cada convocatoria y quedan grabadas y disponibles en la escuela.</li>
         </ul>
