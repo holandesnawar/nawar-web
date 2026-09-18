@@ -354,6 +354,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 </style>
 
 <script>
+  import { contextoDelLead } from '../lib/recorrido'
   const ETIQUETA = 'Matrícula'
   const GRACIAS = '/matricula-a0-a1/gracias'
 
@@ -436,7 +437,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
       const aviso = fetch('/api/solicitud', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...payload, source: 'web' }),
+        body: JSON.stringify({ ...payload, source: 'web', ...contextoDelLead() }),
       }).catch(() => null)
 
       const res = await fetch('/api/waitlist', {
