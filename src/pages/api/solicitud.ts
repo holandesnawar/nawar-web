@@ -47,6 +47,16 @@ export const POST: APIRoute = async ({ request }) => {
     last_name: (body?.lastName ?? body?.last_name ?? '').toString().trim(),
     phone: (body?.phone ?? '').toString().trim(),
     source: body?.source === 'ads' ? 'ads' : 'web',
+    // Por dónde pasó antes de rellenar. Lo manda el navegador, así que se
+    // recorta y se filtra: nada de guardar una cadena larga que venga de
+    // fuera. Las marcas son de un juego cerrado (lib/recorrido.ts) y lo que
+    // no encaje se tira.
+    recorrido: Array.isArray(body?.recorrido)
+      ? body.recorrido
+          .filter((x: unknown) => typeof x === 'string' && /^[a-z-]{1,24}$/.test(x))
+          .slice(-12)
+      : [],
+    referrer: (body?.referrer ?? '').toString().trim().slice(0, 120),
   }
 
   try {

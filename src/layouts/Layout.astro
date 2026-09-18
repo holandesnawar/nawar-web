@@ -165,6 +165,14 @@ const META_PIXEL_NOSCRIPT = `<img height="1" width="1" style="display:none" alt=
     <!-- Vercel Speed Insights — Core Web Vitals (LCP, CLS, INP) para SEO -->
     <SpeedInsights />
 
+    <!-- Por dónde va pasando el visitante, para saber qué ha visto ya cuando
+         deja sus datos. Va en el Layout y no en cada página a propósito: así
+         una página nueva solo tiene que añadir su regla en lib/recorrido.ts. -->
+    <script>
+      import { registrarPagina } from '../lib/recorrido'
+      registrarPagina()
+    </script>
+
     <!-- Scroll reveal: sequential stagger for .sr/.sr-s, bidirectional for .sr-bi -->
     <script>
       // Sequential stagger state
