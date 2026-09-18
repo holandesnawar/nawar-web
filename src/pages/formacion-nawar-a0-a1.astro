@@ -14,10 +14,21 @@
  *
  * ⚠️ No confundir con /formacion-a0-a1 (sin "nawar"), que es la
  * landing que SÍ vende: precio, garantía y checkout. Ésta no enseña
- * ninguna cifra y sus botones llevan al formulario de contacto.
+ * ninguna cifra.
+ *
+ * Sus botones van a la MATRÍCULA DE VERDAD, no al formulario de
+ * contacto de los anuncios. Es la diferencia entre las dos rutas y el
+ * motivo de que el destino sea un parámetro: este enlace se manda a
+ * mano a gente que ya ha hablado contigo, y pedirle el contacto para
+ * llamarla después es una vuelta de más. El tráfico frío de anuncios
+ * sí necesita esa vuelta, y por eso la otra ruta no la pierde.
+ *
+ * La matrícula está detrás de la puerta de plazas: con la convocatoria
+ * cerrada redirige sola a la lista de espera, así que este enlace se
+ * puede seguir mandando entre convocatorias sin dejar a nadie tirado.
  */
 import LandingCaptacion from '../components/landing-08-08-2026/LandingCaptacion.astro'
 
 export const prerender = true
 ---
-<LandingCaptacion />
+<LandingCaptacion ctaUrl="/matricula-formacion-nawar" />
