@@ -47,8 +47,14 @@ const FOTO_PACK_MOVIL = 'https://docs.holandesnawar.com/img/Landing/todoo.movil.
      entra y dar salida), sólo que la salida es una conversación.
      Se llama así y no `precio` porque ahí arriba ya hay una
      constante con ese nombre: la cifra. */
-interface Props { plazas?: boolean; conPrecio?: boolean }
-const { plazas = true, conPrecio = true } = Astro.props
+/* `ctaUrl` manda sobre todo lo demás. Existe porque el destino estaba
+   atado a `conPrecio`, y son dos cosas distintas: una landing puede no
+   enseñar la cifra y aun así llevar a la matrícula de verdad (la que se
+   manda a mano a alguien con quien ya has hablado). Atados, cambiar una
+   cambiaba la otra sin que se notara. */
+interface Props { plazas?: boolean; conPrecio?: boolean; ctaUrl?: string }
+const { plazas = true, conPrecio = true, ctaUrl } = Astro.props
+const destinoCta = ctaUrl || (conPrecio ? matriculaUrl : matriculaAdsUrl)
 ---
 <section class="ai-section" data-navbar="light">
   <div class="inner">
@@ -122,7 +128,7 @@ const { plazas = true, conPrecio = true } = Astro.props
             y si esto te encaja.
           </p>
         )}
-        <a href={conPrecio ? matriculaUrl : matriculaAdsUrl} class="ai-cta">
+        <a href={destinoCta} class="ai-cta">
           {conPrecio ? 'Empezar ahora' : 'Reservar mi plaza'}
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>

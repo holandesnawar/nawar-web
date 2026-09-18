@@ -105,15 +105,25 @@ import TestimonialsSection from './TestimonialsSection.astro'
 /* ─────────────────────────────────────────────────────────────
    AJUSTES RÁPIDOS
 ───────────────────────────────────────────────────────────── */
-/* Todos los CTA de la página van AQUÍ, y este formulario no cobra:
-   recoge nombre, correo y WhatsApp, los manda al CRM y enseña una
-   página de gracias. Nadie pasa por Stripe desde esta landing.
+/* A dónde van todos los CTA de la página. Lo decide QUIEN la monta,
+   porque las dos rutas que usan este componente quieren cosas
+   distintas y antes compartían destino sin querer:
 
-   Ojo con confundirlo con /matricula-formacion-nawar-a0-a1 (sin
-   -ads), que sí crea la sesión de pago y además está detrás de la
-   puerta de plazas: con la convocatoria cerrada redirige a la lista
-   de espera, y mandar ahí el tráfico de anuncios sería tirarlo. */
-const CTA_URL = '/matricula-formacion-nawar-a0-a1-ads'
+   · /formacion-a0-a1-sept-ads → el formulario que solo recoge el
+     contacto (el de por defecto). Es tráfico frío de anuncios: no
+     conoce la marca, y mandarlo a pagar es perderlo sin quedarnos
+     siquiera con su correo.
+   · /formacion-nawar-a0-a1 → la matrícula de verdad. Ese enlace se
+     manda a mano —por WhatsApp, en la bio, contestando a alguien—,
+     o sea a gente que ya ha hablado contigo. Pedirle el contacto
+     otra vez para llamarla después es una vuelta de más.
+
+   ⚠️ La matrícula de pago está detrás de la puerta de plazas: con la
+   convocatoria cerrada redirige sola a la lista de espera. Por eso el
+   tráfico de anuncios NO debe ir ahí: pagas por un clic que acaba en
+   un formulario de espera. */
+const { ctaUrl } = Astro.props
+const CTA_URL = ctaUrl || '/matricula-formacion-nawar-a0-a1-ads'
 
 /* ── WhatsApp para las dudas de antes de comprar ───────────────
    ⚠️ VACÍO = APAGADO. Ni sale el botón flotante ni la línea de las
@@ -887,7 +897,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         después el método: explicar un sistema a quien ya ha abandonado
         tres cursos, sin reconocer antes por qué los abandonó, suena a
         lo mismo de siempre. */}
-    <PresentacionNawar ads={true} />
+    <PresentacionNawar ads={true} ctaUrl={CTA_URL} />
 
     <MetodoFunciona ads={true} />
 
@@ -972,7 +982,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     <CronogramaSection ads={true} />
 
     {/* ── 15. Recordatorio de todo lo que entra, y salida ── */}
-    <AccesoIncluye plazas={false} conPrecio={false} />
+    <AccesoIncluye plazas={false} conPrecio={false} ctaUrl={CTA_URL} />
 
     <!-- ══════════════════════════════════════════════════════════
          FAQ — diseño limpio, sin tarjetas (nawar-plus)

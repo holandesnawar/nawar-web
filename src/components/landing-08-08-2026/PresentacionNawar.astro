@@ -16,9 +16,11 @@ const matriculaUrl = '/matricula-formacion-nawar'
    llevar al checkout —no se cobra en la web— sino al formulario que
    sólo recoge el contacto. */
 const matriculaAdsUrl = '/matricula-formacion-nawar-a0-a1-ads'
-interface Props { ads?: boolean }
-const { ads = false } = Astro.props
-const destino = ads ? matriculaAdsUrl : matriculaUrl
+/* `ctaUrl` manda sobre `ads`: la landing que lo monta sabe a dónde
+   quiere mandar, y no siempre coincide con "es de anuncios". */
+interface Props { ads?: boolean; ctaUrl?: string }
+const { ads = false, ctaUrl } = Astro.props
+const destino = ctaUrl || (ads ? matriculaAdsUrl : matriculaUrl)
 // La ilustración de la objeción. En ordenador va a la izquierda, con
 // la pregunta a su derecha; en móvil cae debajo del titular y la
 // entradilla, que es el orden en que está en el marcado.
