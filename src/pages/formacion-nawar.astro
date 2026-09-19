@@ -1,0 +1,41 @@
+---
+/**
+ * /formacion-nawar — la landing que VENDE directo.
+ *
+ * Misma página que las otras dos rutas de captación
+ * (components/landing-08-08-2026/LandingCaptacion.astro), pero sus
+ * botones llevan a la matrícula de verdad: formulario, checkout y el
+ * precio delante. Sin formulario de contacto de por medio.
+ *
+ * ⚠️ Las tres rutas de esta misma landing, y por qué son tres:
+ *
+ *   /formacion-nawar           → matrícula → checkout. Ve el precio.
+ *   /formacion-nawar-a0-a1     → formulario de contacto. No ve precio.
+ *   /formacion-a0-a1-sept-ads  → formulario de contacto. Los anuncios.
+ *
+ * La diferencia no es de diseño, es de a quién se le manda:
+ *
+ *  · Ésta, a quien ya ha hablado contigo o ya te conoce. Pedirle el
+ *    contacto para llamarle después es una vuelta de más: si está
+ *    listo, que compre.
+ *  · Las otras dos, a tráfico frío. Poner un precio delante de alguien
+ *    que acaba de aterrizar sólo sirve para que se vaya sin dejarnos
+ *    forma de volver a hablar con él. Así al menos queda el contacto.
+ *
+ * ⚠️ Y una consecuencia que conviene tener presente: como la landing
+ * NO enseña ninguna cifra, quien llega por aquí ve el precio por
+ * primera vez en la caja. Con alguien que ya te conoce no pasa nada;
+ * si esta URL se repartiera en frío, ahí sí convendría enseñarlo antes.
+ *
+ * La matrícula está detrás de la puerta de plazas: con la convocatoria
+ * cerrada redirige sola a la lista de espera, así que este enlace se
+ * puede mandar entre convocatorias sin dejar a nadie tirado.
+ *
+ * No confundir con /formacion-a0-a1 (sin "nawar"), que es otra landing
+ * distinta: ésa sí enseña precio, garantía y desglose.
+ */
+import LandingCaptacion from '../components/landing-08-08-2026/LandingCaptacion.astro'
+
+export const prerender = true
+---
+<LandingCaptacion ctaUrl="/matricula-formacion-nawar" />
