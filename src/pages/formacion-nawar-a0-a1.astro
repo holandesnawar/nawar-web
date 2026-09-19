@@ -1,34 +1,35 @@
 ---
 /**
- * /formacion-nawar-a0-a1 — la misma landing de captación, con una URL
- * que se puede mandar a alguien sin que ponga "ads" ni el mes de una
- * convocatoria que ya pasó.
+ * /formacion-nawar-a0-a1 — la landing de captación con una URL que se
+ * puede mandar sin que ponga "ads" ni el mes de una convocatoria que ya
+ * pasó.
  *
- * Para cuando el enlace va a mano: por WhatsApp, en la bio, en un
- * correo, en una respuesta a un comentario. Los anuncios siguen
- * apuntando a /formacion-a0-a1-sept-ads, que es la misma página.
+ * Sus botones llevan al formulario que SÓLO recoge el contacto. No se
+ * cobra desde aquí y no se enseña ninguna cifra: la venta se cierra
+ * después, hablando.
  *
- * Todo el contenido está en
+ * ⚠️ Las tres rutas de esta misma landing, y por qué son tres:
+ *
+ *   /formacion-nawar           → matrícula → checkout. Ve el precio.
+ *   /formacion-nawar-a0-a1     → formulario de contacto. No ve precio.
+ *   /formacion-a0-a1-sept-ads  → formulario de contacto. Los anuncios.
+ *
+ * Esta ruta llevó un tiempo a la matrícula de pago, y se volvió atrás a
+ * propósito: hacía falta separar los dos casos en URLs distintas en vez
+ * de ir cambiando el destino de una sola. Quien ya ha hablado contigo
+ * recibe /formacion-nawar y compra; el tráfico que aún no te conoce
+ * recibe ésta y deja su contacto.
+ *
+ * Todo el contenido vive en
  * components/landing-08-08-2026/LandingCaptacion.astro. Tocar ahí
- * cambia las dos rutas a la vez, que es justo lo que se busca.
+ * cambia las tres rutas a la vez, que es justo lo que se busca: el
+ * único parámetro que las distingue es a dónde apuntan los botones.
  *
- * ⚠️ No confundir con /formacion-a0-a1 (sin "nawar"), que es la
- * landing que SÍ vende: precio, garantía y checkout. Ésta no enseña
- * ninguna cifra.
- *
- * Sus botones van a la MATRÍCULA DE VERDAD, no al formulario de
- * contacto de los anuncios. Es la diferencia entre las dos rutas y el
- * motivo de que el destino sea un parámetro: este enlace se manda a
- * mano a gente que ya ha hablado contigo, y pedirle el contacto para
- * llamarla después es una vuelta de más. El tráfico frío de anuncios
- * sí necesita esa vuelta, y por eso la otra ruta no la pierde.
- *
- * La matrícula está detrás de la puerta de plazas: con la convocatoria
- * cerrada redirige sola a la lista de espera, así que este enlace se
- * puede seguir mandando entre convocatorias sin dejar a nadie tirado.
+ * No confundir con /formacion-a0-a1 (sin "nawar"), que es otra landing
+ * distinta: ésa sí enseña precio, garantía y desglose.
  */
 import LandingCaptacion from '../components/landing-08-08-2026/LandingCaptacion.astro'
 
 export const prerender = true
 ---
-<LandingCaptacion ctaUrl="/matricula-formacion-nawar" />
+<LandingCaptacion />
