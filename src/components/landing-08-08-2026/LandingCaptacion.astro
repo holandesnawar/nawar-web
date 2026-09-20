@@ -124,7 +124,14 @@ import TestimonialsSection from './TestimonialsSection.astro'
    convocatoria cerrada redirige sola a la lista de espera. Por eso el
    tráfico de anuncios NO debe ir ahí: pagas por un clic que acaba en
    un formulario de espera. */
-const { ctaUrl } = Astro.props
+const { ctaUrl, conPrecio = false } = Astro.props
+/* `conPrecio` lo decide la ruta, igual que el destino de los botones.
+   Con él, la tarjeta final enseña la cifra y el botón pasa a "Empezar ahora";
+   sin él, pide el contacto y no se nombra ningún importe.
+
+   Va emparejado con `ctaUrl`: enseñar 397 € y mandar al formulario que sólo
+   recoge el correo es prometer una cosa y hacer otra. Si se enciende uno, el
+   otro tiene que apuntar a la matrícula. */
 const CTA_URL = ctaUrl || '/matricula-formacion-nawar-a0-a1-ads'
 
 /* ── WhatsApp para las dudas de antes de comprar ───────────────
@@ -984,7 +991,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     <CronogramaSection ads={true} />
 
     {/* ── 15. Recordatorio de todo lo que entra, y salida ── */}
-    <AccesoIncluye plazas={false} conPrecio={false} ctaUrl={CTA_URL} />
+    <AccesoIncluye plazas={false} conPrecio={conPrecio} ctaUrl={CTA_URL} />
 
     <!-- ══════════════════════════════════════════════════════════
          FAQ — diseño limpio, sin tarjetas (nawar-plus)
