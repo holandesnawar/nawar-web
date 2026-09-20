@@ -116,7 +116,8 @@ const destinoCta = ctaUrl || (conPrecio ? matriculaUrl : matriculaAdsUrl)
         {conPrecio ? (
           <div class="ai-card-precio">
             <span class="ai-precio">{precio}&nbsp;€</span>
-            <span class="ai-precio-nota">pago único</span>
+            <span class="ai-precio-nota">pago único, IVA incluido</span>
+            <span class="ai-precio-plazos">o a plazos con Klarna, sin recargo</span>
           </div>
         ) : (
           /* Sin la cifra, el titular se quedaba pegado al botón y la
@@ -261,6 +262,10 @@ const destinoCta = ctaUrl || (conPrecio ? matriculaUrl : matriculaAdsUrl)
 .ai-card-hl { color: #7dbcff; }
 .ai-card-precio {
   display: flex; align-items: baseline; justify-content: center; gap: 9px;
+  /* La línea del pago a plazos baja a su propio renglón. Sin esto, el
+     contenedor la pone en la misma fila que la cifra y la parte en tres
+     trozos contra el borde de la tarjeta. */
+  flex-wrap: wrap;
   margin-bottom: 22px;
 }
 .ai-precio {
@@ -269,6 +274,16 @@ const destinoCta = ctaUrl || (conPrecio ? matriculaUrl : matriculaAdsUrl)
   line-height: 1;
 }
 .ai-precio-nota { font-size: 13px; color: rgba(255,255,255,0.72); }
+/* El pago a plazos va pegado a la cifra y no abajo con la letra pequeña:
+   es ahí, en el segundo en que se lee el número, donde aparece la objeción
+   de "no puedo soltar eso hoy". Abajo llega tarde. */
+.ai-precio-plazos {
+  flex-basis: 100%;
+  margin-top: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #9fd8ff;
+}
 
 /* Lo que ocupa el sitio del precio en la landing de anuncios. Mismo
    hueco por abajo que el bloque de la cifra (22 px) para que el botón
