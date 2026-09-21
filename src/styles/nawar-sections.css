@@ -802,28 +802,33 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
 @media (min-width: 768px)  { .proceso-steps { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1024px) { .proceso-steps { grid-template-columns: 1fr 1fr 1fr; } }
 
+/* ── Las tres tarjetas del proceso: cristal de verdad ───────────
+   Antes iban en un azul marino al 26 % con un halo azul dentro:
+   sobre el fondo índigo, eso es morado sobre morado, y las tres se
+   fundían con la sección. Ahora llevan la receta de la barra de la
+   landing —cristal NEUTRO, no índigo: neutro al 40 %, borde claro
+   al 20 %, filo de luz arriba y sombra larga—, que es lo que se
+   ve como vidrio y no como una mancha más clara.
+   El halo azul de cada tarjeta se queda quitado: era lo que
+   "enmoradaba" el cristal. */
 .proceso-card {
-  /* Apple glass más suave */
-  background: rgba(15, 27, 72, 0.26);
-  backdrop-filter: saturate(130%) blur(14px);
-  -webkit-backdrop-filter: saturate(130%) blur(14px);
-  border: 1px solid rgba(255,255,255,0.13);
-  border-radius: 22px; padding: 32px 28px 28px;
+  background: rgba(20, 22, 28, 0.40);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  backdrop-filter: saturate(140%) blur(18px);
+  border: 1px solid rgba(255,255,255,0.20);
+  border-radius: 24px; padding: 32px 28px 28px;
   position: relative; overflow: hidden;
   box-shadow:
-    0 10px 30px rgba(3, 9, 33, 0.18),
-    inset 0 1px 0 rgba(255,255,255,0.06);
+    0 18px 48px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255,255,255,0.12);
   color: rgba(255,255,255,0.96);
+  transition: border-color .25s, transform .25s;
 }
 .proceso-card:hover {
-  border-color: rgba(255,255,255,0.22);
+  border-color: rgba(255,255,255,0.34);
+  transform: translateY(-2px);
 }
-.proceso-card-glow {
-  position: absolute; top: -60px; right: -60px;
-  width: 240px; height: 240px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(77,163,255,0.22) 0%, transparent 70%);
-  pointer-events: none;
-}
+.proceso-card-glow { display: none; }
 /* Subtle brand-color background behind cards */
 .proceso-steps::before {
   content: '';
@@ -836,8 +841,9 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
 
 .proceso-num {
   display: inline-flex; align-items: center; justify-content: center;
+  align-self: flex-start; /* la tarjeta es columna flex: sin esto la pastilla se estira a todo el ancho */
   height: 30px; padding: 0 16px; border-radius: 9999px;
-  background: rgba(77,163,255,0.15); border: 1px solid rgba(77,163,255,0.35);
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.22);
   font-size: 12px; font-weight: 700; color: #4da3ff;
   letter-spacing: 0.07em; margin-bottom: 20px;
 }
@@ -846,7 +852,11 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
   font-size: 22px; font-weight: 600; color: #fff;
   letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 16px;
 }
-.proceso-perks { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+/* La tarjeta es una columna y la lista se estira: así las tres
+   pantallitas blancas quedan alineadas por abajo aunque un paso
+   tenga un renglón más de texto que otro. Sin esto bailaban. */
+.proceso-card { display: flex; flex-direction: column; }
+.proceso-perks { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; flex: 1; }
 .proceso-perks li {
   display: flex; align-items: center; gap: 10px;
   font-size: 14px; font-weight: 500; color: #fff;
@@ -857,24 +867,31 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
   display: flex; align-items: center; justify-content: center;
 }
 
+/* La pantallita de cada paso: BLANCA, como el mockup del hero.
+   Es la pieza que tiene que parecer "la app": blanca sobre el
+   cristal oscuro, con sombra propia, como una tarjeta apoyada
+   encima. Antes era otro cristal al 4 % dentro del cristal de la
+   tarjeta —vidrio dentro de vidrio— y no se distinguía nada. */
 .proceso-mockup {
   margin-top: 8px;
-  border-radius: 14px; overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.04);
+  border-radius: 16px; overflow: hidden;
+  background: #fff;
+  border: 1px solid rgba(255,255,255,0.85);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.28), inset 0 1px 0 #fff;
 }
-.proceso-mockup-inner { padding: 16px 18px; }
+.proceso-mockup-inner { padding: 6px 18px 8px; }
 .pm-row {
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 10px 0; border-bottom: 1px solid #EEF2FA;
 }
 .pm-row:last-child { border-bottom: none; }
-.pm-label { font-size: 11px; color: rgba(255,255,255,0.50); flex-shrink: 0; }
-.pm-value { font-size: 12px; color: #fff; font-weight: 500; text-align: right; }
+.pm-label { font-size: 12px; color: #7A86A0; flex-shrink: 0; }
+.pm-value { font-size: 13px; color: #1D0084; font-weight: 600; text-align: right; }
 .pm-badge {
-  padding: 2px 8px; border-radius: 9999px; font-size: 10px; font-weight: 600;
-  background: rgba(77,163,255,0.18); color: #4da3ff;
+  padding: 3px 9px; border-radius: 9999px; font-size: 11px; font-weight: 700;
+  background: #E6F1FF; color: #025dc7;
 }
+.pm-badge--ok { background: #E8FBF3; color: #0E9F6E; }
 
 /* CTA al final del proceso */
 .proceso-cta-wrap {

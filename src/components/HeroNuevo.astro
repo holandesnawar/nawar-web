@@ -180,6 +180,96 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSA
   min-height: 100vh;
 }
 
+/* ⚠️ Estas reglas viven AQUÍ y no en nawar-sections.css a propósito:
+   `.lesson-card` y `.float-badge` las usa también la landing de la
+   formación (MetodoFunciona, QueIncluye), que se trabaja aparte. En la
+   hoja global este rediseño le habría cambiado el mockup a la landing
+   sin que nadie lo pidiera. Astro acota lo de aquí a este componente. */
+/* ── El mockup del hero: una pantalla BLANCA sobre el azul ──────
+   Antes era un cristal índigo (blanco al 7 % sobre #1D0084): un
+   rectángulo un poco más claro que el fondo, con el texto encima.
+   Morado sobre morado, y por eso se veía apagado. Lo que hace que
+   una "pantalla de la app" se lea como tal es el contraste: una
+   tarjeta blanca de verdad, con las esquinas grandes y una sombra
+   larga, como enseña Apple sus productos.
+   Detrás, dos tarjetas fantasma ladeadas: es lo que da la sensación
+   de "pila de lecciones" sin inclinar la que se lee.
+   Las dos etiquetas flotantes van al revés: en cristal oscuro (la
+   receta de la barra de la landing) para que no se confundan con
+   la tarjeta blanca sobre la que se apoyan. */
+.lesson-card {
+  position: relative; width: 100%; max-width: 400px;
+  filter: drop-shadow(0 30px 60px rgba(3, 9, 33, 0.45));
+}
+.lesson-card::before,
+.lesson-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+  z-index: 0;
+  pointer-events: none;
+}
+.lesson-card::before { transform: rotate(-4deg) translate(-6px, 10px); }
+.lesson-card::after  { transform: rotate(2.5deg) translate(8px, 6px); background: rgba(255,255,255,0.16); }
+.lesson-card-inner {
+  position: relative; z-index: 1;
+  background: #fff;
+  border: 1px solid rgba(255,255,255,0.85);
+  border-radius: 22px; padding: 24px;
+  box-shadow: inset 0 1px 0 #fff;
+}
+.lc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.lc-icon {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: #F0F5FF; border: 1px solid #DDE6F5;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.lc-title { font-size: 14px; font-weight: 600; color: #1D0084; }
+.lc-sub   { font-size: 12px; color: #6B7590; margin-top: 2px; }
+.lc-live  {
+  margin-left: auto; display: flex; align-items: center; gap: 6px; white-space: nowrap;
+  padding: 4px 10px; border-radius: 9999px;
+  background: #E8FBF3; border: 1px solid #B9EBD5;
+}
+.lc-live-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #10b981; box-shadow: 0 0 6px rgba(16,185,129,0.6);
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+@keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+.lc-live-text { font-size: 11px; font-weight: 600; color: #0E9F6E; }
+.lc-label        { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #8A96AB; margin-bottom: 6px; }
+.lc-lesson-title { font-size: 16px; font-weight: 700; color: #1D0084; margin-bottom: 16px; }
+.lc-prog-row     { display: flex; justify-content: space-between; font-size: 12px; color: #6B7590; margin-bottom: 8px; }
+.lc-prog-bar     { height: 6px; background: #E4EAF8; border-radius: 9999px; margin-bottom: 20px; overflow: hidden; }
+.lc-prog-fill    { height: 100%; width: 40%; background: linear-gradient(90deg, #025dc7, #4da3ff); border-radius: 9999px; }
+.lc-vocab        { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.lc-vitem        { background: #F0F5FF; border: 1px solid #DDE6F5; border-radius: 12px; padding: 10px 12px; }
+.lc-vitem-nl     { font-size: 13px; font-weight: 600; color: #1D0084; margin-bottom: 2px; }
+.lc-vitem-es     { font-size: 11px; color: #025dc7; }
+
+/* Etiquetas flotantes: cristal oscuro, la receta de la barra de la
+   landing (neutro al 52 %, borde claro, filo de luz arriba). Sobre
+   la tarjeta blanca un cristal índigo se vería sucio; el neutro se
+   ve como vidrio. */
+.float-badge {
+  position: absolute; z-index: 2;
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 14px;
+  background: rgba(20, 22, 28, 0.52);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  backdrop-filter: saturate(140%) blur(18px);
+  border: 1px solid rgba(255,255,255,0.22);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.10);
+}
+.float-badge p { font-size: 12px; font-weight: 600; color: #fff; line-height: 1.3; }
+.float-badge p:last-child { font-weight: 400; color: rgba(255,255,255,0.72); }
+.fb-top { top: -20px; right: -20px; }
+.fb-bot { bottom: -20px; left: -20px; }
+
 /* ── Gradient title effect — per-letter (repeats each em) ── */
 .hero-title-gradient {
   background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%);

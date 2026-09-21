@@ -27,29 +27,36 @@ import { CTA_PRINCIPAL } from '../lib/cta'
 
       <div class="proceso-steps">
 
+        {/* ⚠️ Los tres pasos describen el camino REAL de la matrícula
+            abierta: formulario → pago → correo con el acceso. Antes
+            contaban el de la lista de espera ("completamente gratis",
+            "acceso garantizado en el lanzamiento"), y eso en una página
+            que manda a un pago de 397 € es una promesa falsa.
+            Las pantallitas blancas enseñan lo que la persona ve de
+            verdad en cada paso; nada inventado. */}
         <!-- Paso 01 -->
         <div class="proceso-card sr">
           <div class="proceso-card-glow" aria-hidden="true"></div>
           <div class="proceso-num">01</div>
-          <h3 class="proceso-card-title">Solicita tu plaza</h3>
+          <h3 class="proceso-card-title">Matricúlate en dos minutos</h3>
           <ul class="proceso-perks">
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Rellena el formulario en menos de 2 minutos
+              Nombre, correo y teléfono. Nada más
             </li>
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Completamente gratis
+              Sin cuenta ni contraseña todavía
             </li>
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Plazas limitadas por cohorte
+              Plazas limitadas por convocatoria
             </li>
           </ul>
           <div class="proceso-mockup">
@@ -59,12 +66,12 @@ import { CTA_PRINCIPAL } from '../lib/cta'
                 <span class="pm-value">María García</span>
               </div>
               <div class="pm-row">
-                <span class="pm-label">Nivel actual</span>
-                <span class="pm-badge">Principiante</span>
+                <span class="pm-label">Correo</span>
+                <span class="pm-value">maria@gmail.com</span>
               </div>
               <div class="pm-row">
-                <span class="pm-label">Objetivo</span>
-                <span class="pm-value">Vivir en Países Bajos</span>
+                <span class="pm-label">Plaza</span>
+                <span class="pm-badge">Reservada</span>
               </div>
             </div>
           </div>
@@ -74,40 +81,40 @@ import { CTA_PRINCIPAL } from '../lib/cta'
         <div class="proceso-card sr d1">
           <div class="proceso-card-glow" aria-hidden="true"></div>
           <div class="proceso-num">02</div>
-          <h3 class="proceso-card-title">Confirma tu plaza prioritaria</h3>
+          <h3 class="proceso-card-title">Paga seguro, como prefieras</h3>
           <ul class="proceso-perks">
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Acceso garantizado en el lanzamiento
+              Tarjeta, iDEAL, Klarna o Bancontact
             </li>
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Acceso a la comunidad privada
+              Factura en tu correo al momento
             </li>
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Confirmación por correo en segundos
+              Garantía de 15 días: si no te convence, te devolvemos el dinero
             </li>
           </ul>
           <div class="proceso-mockup">
             <div class="proceso-mockup-inner">
               <div class="pm-row">
-                <span class="pm-label">Estado</span>
-                <span class="pm-badge">✓ Activo</span>
+                <span class="pm-label">Pago</span>
+                <span class="pm-badge pm-badge--ok">✓ Confirmado</span>
               </div>
               <div class="pm-row">
-                <span class="pm-label">Acceso</span>
-                <span class="pm-value">Todos los módulos</span>
+                <span class="pm-label">Método</span>
+                <span class="pm-value">iDEAL</span>
               </div>
               <div class="pm-row">
-                <span class="pm-label">Comunidad</span>
-                <span class="pm-value">Invitación enviada</span>
+                <span class="pm-label">Factura</span>
+                <span class="pm-value">Enviada a tu correo</span>
               </div>
             </div>
           </div>
@@ -117,19 +124,19 @@ import { CTA_PRINCIPAL } from '../lib/cta'
         <div class="proceso-card sr d2">
           <div class="proceso-card-glow" aria-hidden="true"></div>
           <div class="proceso-num">03</div>
-          <h3 class="proceso-card-title">Empieza a hablar neerlandés</h3>
+          <h3 class="proceso-card-title">Entra a la escuela hoy mismo</h3>
           <ul class="proceso-perks">
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Sigue el método paso a paso desde el español
+              Tu acceso llega por correo en minutos
             </li>
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Resultados visibles en las primeras semanas
+              Empiezas el módulo 1, desde el español
             </li>
             <li>
               <span class="proceso-check">
@@ -142,15 +149,15 @@ import { CTA_PRINCIPAL } from '../lib/cta'
             <div class="proceso-mockup-inner">
               <div class="pm-row">
                 <span class="pm-label">Progreso</span>
-                <span class="pm-value">Módulo 2 · 40%</span>
+                <span class="pm-value">Módulo 1 · Lección 1</span>
               </div>
               <div class="pm-row">
-                <span class="pm-label">Próxima clase</span>
-                <span class="pm-badge">En el lanzamiento</span>
+                <span class="pm-label">Próxima clase en vivo</span>
+                <span class="pm-badge">Esta semana</span>
               </div>
               <div class="pm-row">
                 <span class="pm-label">Racha</span>
-                <span class="pm-value">Con método desde el día 1</span>
+                <span class="pm-value">Día 1</span>
               </div>
             </div>
           </div>
