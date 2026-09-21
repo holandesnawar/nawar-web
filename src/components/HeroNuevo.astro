@@ -209,11 +209,16 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSA
   /* "Más cristal y menos blanco" (21/09): el relleno baja al 5 % y el
      brillo al 12 %. Lo que hace el vidrio es el desenfoque, el borde
      de luz y el filo de arriba, no el blanco. */
+  /* "Bájale algo de morado sin perder el cristal" (21/09): el morado es
+     el fondo visto a través del vidrio. Se enfría con una capa neutra
+     oscura al 22 % (la de la barra de la landing, pero mucho más leve)
+     y sin saturar el desenfoque. El brillo, el borde y el filo de luz
+     siguen igual: eso es lo que hace el cristal. */
   background:
     linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 60%, rgba(255,255,255,0.07) 100%),
-    rgba(255,255,255,0.05);
-  -webkit-backdrop-filter: saturate(160%) blur(24px);
-  backdrop-filter: saturate(160%) blur(24px);
+    rgba(20, 22, 28, 0.22);
+  -webkit-backdrop-filter: saturate(95%) blur(24px);
+  backdrop-filter: saturate(95%) blur(24px);
   border: 1px solid rgba(255,255,255,0.30);
   box-shadow: 0 16px 40px rgba(3,9,33,0.45), inset 0 1px 0 rgba(255,255,255,0.32);
 }
