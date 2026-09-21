@@ -802,30 +802,29 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
 @media (min-width: 768px)  { .proceso-steps { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1024px) { .proceso-steps { grid-template-columns: 1fr 1fr 1fr; } }
 
-/* ── Las tres tarjetas del proceso: cristal de verdad ───────────
-   Antes iban en un azul marino al 26 % con un halo azul dentro:
-   sobre el fondo índigo, eso es morado sobre morado, y las tres se
-   fundían con la sección. Ahora llevan la receta de la barra de la
-   landing —cristal NEUTRO, no índigo: neutro al 40 %, borde claro
-   al 20 %, filo de luz arriba y sombra larga—, que es lo que se
-   ve como vidrio y no como una mancha más clara.
-   El halo azul de cada tarjeta se queda quitado: era lo que
-   "enmoradaba" el cristal. */
+/* ── Las tres tarjetas del proceso: el MISMO cristal claro del hero ─
+   Vidrio esmerilado, no caja negra ni azul marino: relleno blanco al
+   5 % con un brillo diagonal, desenfoque fuerte, borde de luz al 30 %
+   y filo de arriba. Es la receta del .glass de HeroNuevo.astro; si se
+   cambia una, cambiar la otra. El halo azul de cada tarjeta sigue
+   quitado: era lo que las enmoradaba. */
 .proceso-card {
-  background: rgba(20, 22, 28, 0.40);
-  -webkit-backdrop-filter: saturate(140%) blur(18px);
-  backdrop-filter: saturate(140%) blur(18px);
-  border: 1px solid rgba(255,255,255,0.20);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 60%, rgba(255,255,255,0.07) 100%),
+    rgba(255,255,255,0.05);
+  -webkit-backdrop-filter: saturate(160%) blur(24px);
+  backdrop-filter: saturate(160%) blur(24px);
+  border: 1px solid rgba(255,255,255,0.30);
   border-radius: 24px; padding: 32px 28px 28px;
   position: relative; overflow: hidden;
   box-shadow:
-    0 18px 48px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255,255,255,0.12);
+    0 16px 40px rgba(3, 9, 33, 0.45),
+    inset 0 1px 0 rgba(255,255,255,0.32);
   color: rgba(255,255,255,0.96);
   transition: border-color .25s, transform .25s;
 }
 .proceso-card:hover {
-  border-color: rgba(255,255,255,0.34);
+  border-color: rgba(255,255,255,0.45);
   transform: translateY(-2px);
 }
 .proceso-card-glow { display: none; }
@@ -875,9 +874,9 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
 .proceso-mockup {
   margin-top: 8px;
   border-radius: 16px; overflow: hidden;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.18);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.26);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.22);
 }
 .proceso-mockup-inner { padding: 6px 18px 8px; }
 .pm-row {
