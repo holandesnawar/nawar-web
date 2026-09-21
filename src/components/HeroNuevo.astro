@@ -200,11 +200,19 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSA
    Neutro y no índigo: es lo que se ve como vidrio y no como una
    mancha más clara del mismo morado. */
 .glass {
-  background: rgba(20, 22, 28, 0.52);
-  -webkit-backdrop-filter: saturate(140%) blur(18px);
-  backdrop-filter: saturate(140%) blur(18px);
-  border: 1px solid rgba(255,255,255,0.22);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.10);
+  /* Cristal CLARO, no negro (el usuario lo pidió así el 21/09: "fondo
+     cristal"). La receta de la barra de la landing es neutra oscura y
+     sobre el azul se leía como una caja negra. Esto es vidrio
+     esmerilado: blanco al 12 % con un brillo diagonal encima, borde
+     claro al 34 % y filo de luz arriba. El brillo y el borde son lo
+     que lo separan de "un rectángulo un poco más claro". */
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.12) 100%),
+    rgba(255,255,255,0.10);
+  -webkit-backdrop-filter: saturate(160%) blur(22px);
+  backdrop-filter: saturate(160%) blur(22px);
+  border: 1px solid rgba(255,255,255,0.34);
+  box-shadow: 0 16px 40px rgba(3,9,33,0.45), inset 0 1px 0 rgba(255,255,255,0.40);
 }
 .mock {
   position: relative;
@@ -246,10 +254,10 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSA
 .mock-opt {
   display: flex; align-items: center; gap: 10px;
   padding: 10px 12px; border-radius: 12px;
-  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.20);
   font-size: 14px; font-weight: 600; color: #fff;
 }
-.mock-opt.is-right { background: rgba(77,163,255,0.16); border-color: #4da3ff; }
+.mock-opt.is-right { background: rgba(77,163,255,0.28); border-color: #4da3ff; }
 .mock-letter {
   width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
   display: inline-flex; align-items: center; justify-content: center;
@@ -258,7 +266,7 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSA
 .mock-opt.is-right .mock-letter { background: #4da3ff; color: #0a1656; }
 .mock-tick { margin-left: auto; color: #4da3ff; font-weight: 700; }
 .mock-foot { display: flex; align-items: center; gap: 14px; }
-.mock-prog { flex: 1; height: 6px; border-radius: 9999px; background: rgba(255,255,255,0.12); overflow: hidden; }
+.mock-prog { flex: 1; height: 6px; border-radius: 9999px; background: rgba(255,255,255,0.20); overflow: hidden; }
 .mock-prog-fill { width: 30%; height: 100%; border-radius: 9999px; background: #4da3ff; }
 .mock-btn {
   padding: 9px 16px; border-radius: 8px;
