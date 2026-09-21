@@ -809,12 +809,17 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
    cambia una, cambiar la otra. El halo azul de cada tarjeta sigue
    quitado: era lo que las enmoradaba. */
 .proceso-card {
+  /* ⚠️ Misma receta que el hero pero con MENOS relleno y sin saturar:
+     aquí las tarjetas son grandes y se apoyan sobre los halos azules de
+     la sección; con el 5 % de blanco y saturate(160%) el desenfoque
+     amplificaba esos halos y las tres salían lila, mucho más claras que
+     el mockup del hero (el usuario lo vio a la primera). */
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 60%, rgba(255,255,255,0.07) 100%),
-    rgba(255,255,255,0.05);
-  -webkit-backdrop-filter: saturate(160%) blur(24px);
-  backdrop-filter: saturate(160%) blur(24px);
-  border: 1px solid rgba(255,255,255,0.30);
+    linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.015) 60%, rgba(255,255,255,0.04) 100%),
+    rgba(255,255,255,0.03);
+  -webkit-backdrop-filter: saturate(115%) blur(24px);
+  backdrop-filter: saturate(115%) blur(24px);
+  border: 1px solid rgba(255,255,255,0.28);
   border-radius: 24px; padding: 32px 28px 28px;
   position: relative; overflow: hidden;
   box-shadow:
@@ -828,9 +833,10 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
   transform: translateY(-2px);
 }
 .proceso-card-glow { display: none; }
-/* Subtle brand-color background behind cards */
+/* El halo claro que iba detrás de las tarjetas se queda apagado: con
+   el cristal, el desenfoque lo cogía y las lavaba. */
 .proceso-steps::before {
-  content: '';
+  content: none;
   position: absolute;
   top: -40px; left: 50%; transform: translateX(-50%);
   width: 110%; height: calc(100% + 80px);
@@ -874,9 +880,9 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
 .proceso-mockup {
   margin-top: 8px;
   border-radius: 16px; overflow: hidden;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.26);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.24);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.20);
 }
 .proceso-mockup-inner { padding: 6px 18px 8px; }
 .pm-row {
