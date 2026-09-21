@@ -5864,3 +5864,45 @@
 .l8 .final-cta h2.h2, .l8 .final-cta h2 {
   font-size: clamp(23px, 2.7vw, 34px);
 }
+
+/* ══════════════════════════════════════════════════════════════
+   LAS ENTRADILLAS DE SECCIÓN, MÁS ESTRECHAS QUE SU TITULAR
+
+   Cada sección tiene su propia clase para el párrafo de debajo del
+   titular, y ninguna llevaba tope de ancho: se estiraban hasta el
+   borde del contenedor. Medido a 1440 px, la de "¿Qué incluye la
+   formación Nawar?" salía 549 px MÁS ANCHA que su propio titular, la
+   de "Así funciona" 364 y la de los bonus 322. El resultado es una
+   línea larguísima colgando debajo de un titular corto: se lee peor y
+   parece que el bloque esté descuadrado.
+
+   Con el tope, el párrafo cae dentro del ancho del titular y parte en
+   dos líneas en vez de una larga o tres cortas. text-wrap: balance
+   reparte las dos líneas para que midan parecido, que es lo que evita
+   la segunda línea con tres palabras sueltas.
+
+   Van todas juntas y no una por archivo porque es la misma decisión
+   repetida ocho veces; si alguna necesita otro ancho, se le pone
+   después de esta regla.
+══════════════════════════════════════════════════════════════ */
+.l8 .otr-lead,
+.l8 .porq-sub,
+.l8 .pil-sub,
+.l8 .pn-lead,
+.l8 .mf-sub,
+.l8 .qi-sub,
+.l8 .bn-sub,
+.l8 .pt-sub,
+.l8 .cr-sub,
+.l8 .mk-p,
+.l8 .guarantee-lead {
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: auto;
+  text-wrap: balance;
+}
+
+/* La de la garantía es la más larga de todas (290 caracteres) y a
+   620 px se iba a cinco líneas. Con algo más de ancho se queda en
+   tres, que para un párrafo de letra pequeña es lo razonable. */
+.l8 .guarantee-lead { max-width: 720px; }
