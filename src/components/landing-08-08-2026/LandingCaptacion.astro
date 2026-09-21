@@ -1060,9 +1060,15 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         haber al final son las páginas legales. Cualquier otro enlace
         aquí es una puerta para irse justo cuando ya no queda nada que
         leer. */}
-    <footer class="footer footer--tarjeta">
-      <div class="container">
-        <div class="footer-caja">
+    <footer class="footer footer--pie">
+      {/* La barra oscura va POR FUERA del contenedor: tiene que llegar
+          a los dos bordes de la pantalla. El contenedor va dentro y es
+          el que mantiene el texto centrado y la raya sin tocar los
+          lados. Redondeada sólo por arriba: abajo es el final de la
+          página y una esquina redondeada ahí dejaría ver una franja
+          del fondo claro debajo. */}
+      <div class="footer-caja">
+        <div class="container">
           <div class="footer-links">
             <a href="/terminos-y-condiciones">Términos y condiciones</a>
             <a href="/condiciones-de-contratacion">Aviso legal</a>
@@ -1140,61 +1146,61 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
   }
   .l8 .l8nav-inner--sin-timer .l8nav-cta { justify-self: end; }
 
-  /* ── El pie, en tarjeta ───────────────────────────────────────
-     La franja de siempre va a todo el ancho y pegada al borde. Aquí
-     el pie es una tarjeta redonda del azul de marca flotando sobre el
-     blanco de las preguntas frecuentes, que es la misma forma con la
-     que la página viene presentando todo lo demás.
+  /* ── El pie ───────────────────────────────────────────────────
+     Barra oscura a todo el ancho con las dos esquinas de arriba
+     redondeadas, apoyada sobre el claro de las preguntas frecuentes.
      Las clases repetidas son para ganarle a .l8 .footer de la hoja
      compartida, que la usa la otra landing y no se toca. */
-  .l8 .footer.footer--tarjeta {
-    /* El mismo claro que las preguntas frecuentes, no transparente:
-       debajo de ellas el fondo de la página vuelve al azul de marca, y
-       una tarjeta azul sobre fondo azul no se ve. Continuando el claro,
-       el pie se lee como la última tarjeta de la misma sección. */
+  .l8 .footer.footer--pie {
+    /* El mismo claro que las preguntas frecuentes: es lo que se ve por
+       encima de las esquinas redondeadas. Con el fondo de la página
+       —azul de marca— esas dos esquinas no se notarían. */
     background: #F0F4FF;
     border-top: none;
-    padding: 0 0 56px;
+    padding: 56px 0 0;
   }
-  .l8 .footer--tarjeta .footer-caja {
+  .l8 .footer--pie .footer-caja {
     background: #1D0084;
-    border-radius: 26px;
-    padding: 34px 32px 26px;
+    border-radius: 28px 28px 0 0;
+    padding: 34px 0 30px;
     text-align: center;
   }
   /* En fila y centrados, no repartidos a los extremos: son tres
      enlaces, no un menú. */
-  .l8 .footer--tarjeta .footer-links {
+  .l8 .footer--pie .footer-links {
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 44px;
     flex-wrap: wrap;
   }
-  .l8 .footer--tarjeta .footer-links a {
-    font-size: 14px;
-    color: rgba(255,255,255,0.82);
+  .l8 .footer--pie .footer-links a {
+    font-size: 15px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.95);
   }
-  .l8 .footer--tarjeta .footer-links a:hover { color: #fff; }
-  .l8 .footer--tarjeta .footer-raya {
+  .l8 .footer--pie .footer-links a:hover { color: #fff; }
+  .l8 .footer--pie .footer-raya {
     height: 1px;
-    background: rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.28);
     margin: 26px 0 20px;
   }
-  .l8 .footer--tarjeta .footer-copy {
-    font-size: 12.5px;
-    letter-spacing: 0.10em;
-    color: rgba(255,255,255,0.62);
+  .l8 .footer--pie .footer-copy {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.88);
     margin: 0;
     width: auto;
     text-align: center;
   }
   @media (max-width: 640px) {
-    .l8 .footer--tarjeta { padding-bottom: 40px; }
-    .l8 .footer--tarjeta .footer-caja { border-radius: 20px; padding: 26px 20px 20px; }
-    /* Apilados: en fila, tres enlaces de 14 px no caben en 360 px sin
+    .l8 .footer.footer--pie { padding-top: 40px; }
+    .l8 .footer--pie .footer-caja { border-radius: 22px 22px 0 0; padding: 26px 0 22px; }
+    /* Apilados: en fila, tres enlaces de 15 px no caben en 360 px sin
        partirse por la mitad de una frase. */
-    .l8 .footer--tarjeta .footer-links { flex-direction: column; gap: 14px; }
-    .l8 .footer--tarjeta .footer-raya { margin: 20px 0 16px; }
+    .l8 .footer--pie .footer-links { flex-direction: column; gap: 14px; }
+    .l8 .footer--pie .footer-raya { margin: 20px 0 16px; }
+    .l8 .footer--pie .footer-copy { font-size: 12px; }
   }
 
   /* ── La barra de abajo, con el botón solo ─────────────────────
