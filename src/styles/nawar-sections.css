@@ -900,3 +900,58 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
   .proceso-garantia { margin-top: 28px; }
   .proceso-wrapper { padding: 0 0 64px; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   LAS PALOMITAS Y LAS CRUCES DEL HOME — una sola forma
+
+   Círculo hueco de 22 px con borde de 2 px y la marca dentro, en
+   azul de marca para lo bueno y en rojo para lo malo. Es la misma
+   forma que ya usaban el hero de esta página y TODA la landing de
+   la formación (ver el bloque `.l8 .porq-icon-check` en
+   landing-08-08-2026.css, de donde sale esta).
+
+   Antes el home tenía tres formas distintas a la vez y se notaba:
+     · círculo relleno translúcido sin borde  (las cruces de
+       "Por qué existe Nawar")
+     · círculo de 20 px con borde de 1 px     (sus palomitas y las
+       de "Dos clics. Listo.")
+     · el hero, que ya iba con la forma buena
+   El relleno translúcido con la marca fina por encima es lo que se
+   veía apagado: sobre la tarjeta clara la cruz roja casi no tenía
+   contraste y la palomita se perdía dentro del azul de la tarjeta.
+
+   ⚠️ Se quedan fuera A PROPÓSITO las marcas que van DENTRO de una
+   pastilla (.badge-light, .badge-dark): ahí el tick forma parte del
+   distintivo, no es la viñeta de una lista.
+══════════════════════════════════════════════════════════════ */
+.porq-icon-check,
+.porq-list--bad .porq-icon-x,
+.proceso-check,
+.hero-check {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid #4da3ff;
+  color: #4da3ff;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+  padding: 0;
+}
+.porq-icon-check svg,
+.proceso-check svg,
+.hero-check svg {
+  width: 12px; height: 12px;
+  stroke: currentColor !important;
+  stroke-width: 2.6 !important;
+}
+/* Sobre la tarjeta clara el rojo lee mejor que el azul apagado */
+.porq-list--bad .porq-icon-x {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+.porq-list--bad .porq-icon-x svg {
+  width: 11px; height: 11px;
+  stroke: currentColor !important;
+  stroke-width: 2.8 !important;
+}

@@ -87,8 +87,10 @@ export default function StickyComparisonSection({ items }: Props) {
                 <div className="mb-3 p-4 rounded-2xl bg-[#F0F8FF]">
                   <p className="text-[11px] font-bold uppercase tracking-wider text-[#4da3ff] mb-2">Con nosotros</p>
                   <div className="flex gap-3 items-start">
-                    <span className="mt-0.5 w-5 h-5 shrink-0 rounded-full bg-[#4da3ff] flex items-center justify-center">
-                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                    {/* Misma palomita que el resto de la web: círculo hueco
+                        de 22 px con borde de 2 px, no un disco relleno. */}
+                    <span className="mt-0.5 w-[22px] h-[22px] shrink-0 rounded-full border-2 border-[#4da3ff] text-[#4da3ff] flex items-center justify-center">
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2.6} viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                     </span>
@@ -99,8 +101,14 @@ export default function StickyComparisonSection({ items }: Props) {
                 <div className="p-4 rounded-2xl bg-[#F8FAFC]">
                   <p className="text-[11px] font-bold uppercase tracking-wider text-[#9CA3AF] mb-2">Academia clásica</p>
                   <div className="flex gap-3 items-start">
-                    <span className="mt-0.5 w-5 h-5 shrink-0 rounded-full bg-[#E8EBF4] flex items-center justify-center">
-                      <svg className="w-3 h-3 text-[#9CA3AF]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                    {/* La cruz va en rojo, como en la landing. Antes era un
+                        disco gris con la cruz gris encima: no se distinguía
+                        de la palomita a simple vista, que es justo lo que
+                        esta sección tiene que dejar claro de un vistazo.
+                        Lo secundario del bloque lo marcan el fondo y el
+                        color del texto, no la viñeta. */}
+                    <span className="mt-0.5 w-[22px] h-[22px] shrink-0 rounded-full border-2 border-[#dc2626] text-[#dc2626] flex items-center justify-center">
+                      <svg className="w-[11px] h-[11px]" fill="none" stroke="currentColor" strokeWidth={2.8} viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </span>

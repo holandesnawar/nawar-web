@@ -37,14 +37,27 @@ const points = data?.points?.length ? data.points : defaultPoints
         <!-- Desktop: photo left + 2x2 grid right | Mobile: photo + swipe cards -->
         <div class="pq-layout">
 
-          <!-- Photo -->
+          <!-- Foto.
+               Imagen propia, servida desde /public. Antes era una de banco
+               (Unsplash) y era LA MISMA que usa ValorNuevo más arriba: dos
+               veces la misma foto en la misma página, que es lo que se
+               notaba al bajar.
+               AVIF con respaldo JPG: el navegador que no entienda el
+               primero se queda con el segundo y nunca sale el hueco roto.  -->
           <div class="pq-photo-col">
             <div class="pq-photo-wrap">
-              <img
-                src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=900&fit=crop&q=80"
-                alt="Estudiantes aprendiendo neerlandés"
-                class="pq-photo"
-              />
+              <picture>
+                <source srcset="/img/estudiando.avif" type="image/avif" />
+                <img
+                  src="/img/estudiando.jpg"
+                  alt="Alumna estudiando neerlandés con su cuaderno y el portátil"
+                  class="pq-photo"
+                  width="740"
+                  height="493"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
             </div>
           </div>
 
@@ -140,10 +153,21 @@ const points = data?.points?.length ? data.points : defaultPoints
   width: 100%;
   position: sticky; top: 92px;
   height: 380px;
+  /* Rejilla de una casilla: así el <picture> se estira solo hasta el
+     alto del hueco. Con `height:100%` a secas no basta en móvil, donde
+     el alto sale del aspect-ratio y no de una cifra. */
+  display: grid;
 }
+/* El <picture> es inline por defecto: sin esto el `height:100%` de la
+   imagen mide contra una caja de alto automático y la foto se queda
+   con su alto natural en vez de llenar el hueco. */
+.pq-photo-wrap picture { display: block; width: 100%; height: 100%; min-height: 0; }
 .pq-photo {
   width: 100%; height: 100%;
   object-fit: cover; display: block;
+  /* La alumna cae un poco a la derecha del encuadre; recortando por el
+     centro se le come parte del cuaderno. */
+  object-position: 54% center;
 }
 
 /* Points column: 2×2 grid */
