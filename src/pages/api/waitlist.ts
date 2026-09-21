@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro'
+import { camposDePersona, escribirCampos as escribirCamposLib, relojDe } from '../../lib/systeme'
 import { createHash, timingSafeEqual } from 'node:crypto'
 
 export const prerender = false
@@ -94,6 +95,8 @@ async function ensureTagId(tagName: string, headers: Record<string, string>): Pr
 }
 
 type SyncDebug = {
+  personaStatus?: number
+  personaError?: string
   /** Lo que decide si entra en la campaña de bienvenida. Es EL dato. */
   esNuevo?: boolean
   campos?: string[]
@@ -267,6 +270,22 @@ async function syncToCRM(
     // Los campos personalizados, ahora que hay contacto y venga de donde venga
     // (recién creado o encontrado). Si falla, falla solo esto.
     if (contactId) await escribirCampos(contactId, de, headers, debug)
+
+    // Y el nombre, el apellido y el teléfono como campos por slug, aparte.
+    // Mandarlos como propiedades sueltas del contacto (arriba, en el POST) no
+    // los guardaba y no avisaba: ver camposDePersona() en lib/systeme.ts.
+    if (contactId) {
+      const rp = await escribirCamposLib(
+        contactId,
+        camposDePersona(firstName, lastName, phone),
+        { apiKey: headers['X-API-Key'], reloj: relojDe(8000) }
+      )
+      debug.personaStatus = rp.status
+      if (!rp.ok) {
+        debug.personaError = (rp.error ?? '').slice(0, 200)
+        console.error('[waitlist] persona error:', rp.status, debug.personaError)
+      }
+    }
 
     // Añadir etiqueta
     if (contactId && tagId) {
