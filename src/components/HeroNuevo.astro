@@ -28,35 +28,45 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSA
 
     <!-- LEFT: visual card -->
     <div class="hero-col-card">
-      <div class="lesson-card h-anim" style="--hd:0.2s">
-        <div class="lesson-card-inner">
-          <div class="lc-header">
-            <div class="lc-icon">🎓</div>
-            <div>
-              <p class="lc-title">Vista previa de la experiencia</p>
-              <p class="lc-sub">Módulo A1 · Primera edición</p>
-            </div>
-            <span class="lc-live"><span class="lc-live-dot"></span><span class="lc-live-text">En vivo</span></span>
+      {/* El mockup del hero. Composición a lo Pikingli —una tarjeta de
+          pregunta ladeada, un reproductor, un botón con emoji y una
+          etiqueta— pero TODO en el cristal de la barra de la landing
+          (neutro al 52 %, borde claro, filo de luz), sobre nuestro azul.
+          Nada blanco: se probó y no encajaba con el tono del home.
+          Es una pregunta de verdad de la lección 1 (goedemorgen). */}
+      <div class="mock h-anim" style="--hd:0.2s">
+
+        <div class="mock-card glass">
+          <div class="mock-head">
+            <span class="mock-kicker">Pregunta 3 / 10</span>
+            <span class="mock-live"><span class="mock-live-dot"></span>En vivo</span>
           </div>
-          <p class="lc-label">Lección 6</p>
-          <p class="lc-lesson-title">Los verbos en presente 🇳🇱</p>
-          <div class="lc-prog-row"><span>Formato del módulo</span><span>8 lecciones</span></div>
-          <div class="lc-prog-bar"><div class="lc-prog-fill"></div></div>
-          <div class="lc-vocab">
-            <div class="lc-vitem"><p class="lc-vitem-nl">goedemorgen</p><p class="lc-vitem-es">buenos días</p></div>
-            <div class="lc-vitem"><p class="lc-vitem-nl">tot ziens</p><p class="lc-vitem-es">hasta luego</p></div>
-            <div class="lc-vitem"><p class="lc-vitem-nl">dank je wel</p><p class="lc-vitem-es">muchas gracias</p></div>
-            <div class="lc-vitem"><p class="lc-vitem-nl">alsjeblieft</p><p class="lc-vitem-es">por favor</p></div>
+          <p class="mock-q">¿Cómo se dice <em>«buenos días»</em>?</p>
+          <p class="mock-hint">Escucha y elige la opción correcta</p>
+          <div class="mock-opts">
+            <div class="mock-opt is-right"><span class="mock-letter">A</span>goedemorgen<span class="mock-tick">✓</span></div>
+            <div class="mock-opt"><span class="mock-letter">B</span>goedenavond</div>
+            <div class="mock-opt"><span class="mock-letter">C</span>tot ziens</div>
+          </div>
+          <div class="mock-foot">
+            <div class="mock-prog"><div class="mock-prog-fill"></div></div>
+            <span class="mock-btn">Confirmar</span>
           </div>
         </div>
-        <div class="float-badge fb-top">
-          <span style="font-size:20px;">🔥</span>
-          <div><p>Próxima edición</p><p>Plazas limitadas</p></div>
+
+        <div class="mock-audio glass" aria-hidden="true">
+          <span class="mock-play">▶</span>
+          <span class="mock-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <span class="mock-time">0:02</span>
         </div>
-        <div class="float-badge fb-bot">
-          <span style="font-size:18px;">🇪🇸🇲🇽🇦🇷</span>
+
+        <div class="mock-emoji glass" aria-hidden="true">🔊</div>
+
+        <div class="mock-tag glass">
+          <span class="mock-tag-flags">🇪🇸🇲🇽🇦🇷</span>
           <div><p>Sesiones en vivo</p><p>incluidas desde el día 1</p></div>
         </div>
+
       </div>
     </div>
 
@@ -180,95 +190,130 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSA
   min-height: 100vh;
 }
 
-/* ⚠️ Estas reglas viven AQUÍ y no en nawar-sections.css a propósito:
-   `.lesson-card` y `.float-badge` las usa también la landing de la
-   formación (MetodoFunciona, QueIncluye), que se trabaja aparte. En la
-   hoja global este rediseño le habría cambiado el mockup a la landing
-   sin que nadie lo pidiera. Astro acota lo de aquí a este componente. */
-/* ── El mockup del hero: una pantalla BLANCA sobre el azul ──────
-   Antes era un cristal índigo (blanco al 7 % sobre #1D0084): un
-   rectángulo un poco más claro que el fondo, con el texto encima.
-   Morado sobre morado, y por eso se veía apagado. Lo que hace que
-   una "pantalla de la app" se lea como tal es el contraste: una
-   tarjeta blanca de verdad, con las esquinas grandes y una sombra
-   larga, como enseña Apple sus productos.
-   Detrás, dos tarjetas fantasma ladeadas: es lo que da la sensación
-   de "pila de lecciones" sin inclinar la que se lee.
-   Las dos etiquetas flotantes van al revés: en cristal oscuro (la
-   receta de la barra de la landing) para que no se confundan con
-   la tarjeta blanca sobre la que se apoyan. */
-.lesson-card {
-  position: relative; width: 100%; max-width: 400px;
-  filter: drop-shadow(0 30px 60px rgba(3, 9, 33, 0.45));
-}
-.lesson-card::before,
-.lesson-card::after {
-  content: '';
-  position: absolute; inset: 0;
-  border-radius: 22px;
-  background: rgba(255,255,255,0.10);
-  border: 1px solid rgba(255,255,255,0.18);
-  z-index: 0;
-  pointer-events: none;
-}
-.lesson-card::before { transform: rotate(-4deg) translate(-6px, 10px); }
-.lesson-card::after  { transform: rotate(2.5deg) translate(8px, 6px); background: rgba(255,255,255,0.16); }
-.lesson-card-inner {
-  position: relative; z-index: 1;
-  background: #fff;
-  border: 1px solid rgba(255,255,255,0.85);
-  border-radius: 22px; padding: 24px;
-  box-shadow: inset 0 1px 0 #fff;
-}
-.lc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-.lc-icon {
-  width: 40px; height: 40px; border-radius: 12px;
-  background: #F0F5FF; border: 1px solid #DDE6F5;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; flex-shrink: 0;
-}
-.lc-title { font-size: 14px; font-weight: 600; color: #1D0084; }
-.lc-sub   { font-size: 12px; color: #6B7590; margin-top: 2px; }
-.lc-live  {
-  margin-left: auto; display: flex; align-items: center; gap: 6px; white-space: nowrap;
-  padding: 4px 10px; border-radius: 9999px;
-  background: #E8FBF3; border: 1px solid #B9EBD5;
-}
-.lc-live-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: #10b981; box-shadow: 0 0 6px rgba(16,185,129,0.6);
-  animation: pulse-dot 1.5s ease-in-out infinite;
-}
-@keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
-.lc-live-text { font-size: 11px; font-weight: 600; color: #0E9F6E; }
-.lc-label        { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #8A96AB; margin-bottom: 6px; }
-.lc-lesson-title { font-size: 16px; font-weight: 700; color: #1D0084; margin-bottom: 16px; }
-.lc-prog-row     { display: flex; justify-content: space-between; font-size: 12px; color: #6B7590; margin-bottom: 8px; }
-.lc-prog-bar     { height: 6px; background: #E4EAF8; border-radius: 9999px; margin-bottom: 20px; overflow: hidden; }
-.lc-prog-fill    { height: 100%; width: 40%; background: linear-gradient(90deg, #025dc7, #4da3ff); border-radius: 9999px; }
-.lc-vocab        { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.lc-vitem        { background: #F0F5FF; border: 1px solid #DDE6F5; border-radius: 12px; padding: 10px 12px; }
-.lc-vitem-nl     { font-size: 13px; font-weight: 600; color: #1D0084; margin-bottom: 2px; }
-.lc-vitem-es     { font-size: 11px; color: #025dc7; }
+/* ── El mockup del hero ─────────────────────────────────────────
+   Vive AQUÍ y no en nawar-sections.css a propósito: la landing usa
+   nombres parecidos (.lesson-card, .float-badge) desde la hoja global
+   y se trabaja aparte. Astro acota lo de aquí a este componente.
 
-/* Etiquetas flotantes: cristal oscuro, la receta de la barra de la
-   landing (neutro al 52 %, borde claro, filo de luz arriba). Sobre
-   la tarjeta blanca un cristal índigo se vería sucio; el neutro se
-   ve como vidrio. */
-.float-badge {
-  position: absolute; z-index: 2;
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 14px; border-radius: 14px;
+   El cristal es LA RECETA DE LA BARRA DE LA LANDING (.l8nav): neutro
+   al 52 %, borde claro al 22 %, filo de luz arriba y sombra larga.
+   Neutro y no índigo: es lo que se ve como vidrio y no como una
+   mancha más clara del mismo morado. */
+.glass {
   background: rgba(20, 22, 28, 0.52);
   -webkit-backdrop-filter: saturate(140%) blur(18px);
   backdrop-filter: saturate(140%) blur(18px);
   border: 1px solid rgba(255,255,255,0.22);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.10);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.10);
 }
-.float-badge p { font-size: 12px; font-weight: 600; color: #fff; line-height: 1.3; }
-.float-badge p:last-child { font-weight: 400; color: rgba(255,255,255,0.72); }
-.fb-top { top: -20px; right: -20px; }
-.fb-bot { bottom: -20px; left: -20px; }
+.mock {
+  position: relative;
+  width: 100%; max-width: 400px;
+  padding: 26px 34px 38px 18px; /* aire para las piezas que asoman */
+}
+
+/* La tarjeta de la pregunta: ladeada, como en la referencia */
+.mock-card {
+  position: relative; z-index: 1;
+  border-radius: 24px; padding: 22px 22px 20px;
+  transform: rotate(-3deg);
+  color: #fff;
+}
+.mock-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.mock-kicker {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.62);
+}
+.mock-live {
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  padding: 4px 10px; border-radius: 9999px;
+  background: rgba(16,185,129,0.16); border: 1px solid rgba(16,185,129,0.40);
+  font-size: 11px; font-weight: 600; color: #34d399;
+}
+.mock-live-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: #10b981;
+  box-shadow: 0 0 6px #10b981; animation: mock-pulse 1.5s ease-in-out infinite;
+}
+@keyframes mock-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+.mock-q {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 19px; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.mock-q em { font-style: normal; color: #4da3ff; }
+.mock-hint { font-size: 12.5px; color: rgba(255,255,255,0.6); margin-bottom: 16px; }
+.mock-opts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.mock-opt {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 12px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  font-size: 14px; font-weight: 600; color: #fff;
+}
+.mock-opt.is-right { background: rgba(77,163,255,0.16); border-color: #4da3ff; }
+.mock-letter {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.10); font-size: 11px; font-weight: 700;
+}
+.mock-opt.is-right .mock-letter { background: #4da3ff; color: #0a1656; }
+.mock-tick { margin-left: auto; color: #4da3ff; font-weight: 700; }
+.mock-foot { display: flex; align-items: center; gap: 14px; }
+.mock-prog { flex: 1; height: 6px; border-radius: 9999px; background: rgba(255,255,255,0.12); overflow: hidden; }
+.mock-prog-fill { width: 30%; height: 100%; border-radius: 9999px; background: #4da3ff; }
+.mock-btn {
+  padding: 9px 16px; border-radius: 8px;
+  background: #4da3ff; color: #0a1656; font-size: 13px; font-weight: 700;
+}
+
+/* El reproductor: pastilla arriba a la derecha, un poco ladeada al otro lado */
+.mock-audio {
+  /* Un poco más arriba y más a la derecha: la tarjeta va ladeada y su
+     esquina derecha sube, y la pastilla pisaba el "En vivo". */
+  position: absolute; z-index: 2; top: -14px; right: -16px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 14px 9px 9px; border-radius: 9999px;
+  transform: rotate(3deg);
+  color: #fff;
+}
+.mock-play {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  background: #4da3ff; color: #0a1656;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 10px; padding-left: 2px;
+}
+.mock-wave { display: inline-flex; align-items: center; gap: 3px; height: 18px; }
+.mock-wave i {
+  display: block; width: 3px; border-radius: 2px; background: #4da3ff;
+  animation: mock-wave 1.1s ease-in-out infinite;
+}
+.mock-wave i:nth-child(1) { height: 6px;  animation-delay: 0s; }
+.mock-wave i:nth-child(2) { height: 14px; animation-delay: .1s; }
+.mock-wave i:nth-child(3) { height: 10px; animation-delay: .2s; }
+.mock-wave i:nth-child(4) { height: 18px; animation-delay: .3s; }
+.mock-wave i:nth-child(5) { height: 8px;  animation-delay: .4s; }
+.mock-wave i:nth-child(6) { height: 15px; animation-delay: .5s; }
+.mock-wave i:nth-child(7) { height: 9px;  animation-delay: .6s; }
+.mock-wave i:nth-child(8) { height: 13px; animation-delay: .7s; }
+@keyframes mock-wave { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.45); } }
+.mock-time { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.75); font-variant-numeric: tabular-nums; }
+
+/* El botón redondo con el emoji: como el megáfono de la referencia */
+.mock-emoji {
+  position: absolute; z-index: 2; right: -8px; top: 46%;
+  width: 62px; height: 62px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 27px; line-height: 1;
+}
+
+/* La etiqueta de abajo */
+.mock-tag {
+  position: absolute; z-index: 2; bottom: 0; left: -10px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 14px;
+}
+.mock-tag-flags { font-size: 18px; line-height: 1; }
+.mock-tag p { font-size: 12px; font-weight: 600; color: #fff; line-height: 1.3; }
+.mock-tag p:last-child { font-weight: 400; color: rgba(255,255,255,0.72); }
 
 /* ── Gradient title effect — per-letter (repeats each em) ── */
 .hero-title-gradient {
