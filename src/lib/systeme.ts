@@ -298,3 +298,30 @@ export async function escribirCampos(
   }
   return res
 }
+
+
+/**
+ * Nombre, apellido y teléfono del contacto, como CAMPOS por slug.
+ *
+ * ⚠️ Por qué existe esto: durante meses los tres altas (matrícula, guías e
+ * Inrō) mandaban `firstName` y `surname` como propiedades sueltas del
+ * contacto, y los contactos llegaban a systeme.io SIN nombre. En la API de
+ * systeme.io (API Platform) los datos de la persona no son propiedades del
+ * contacto: son campos de los de siempre, dentro de `fields`, con estos slugs
+ * fijos: `first_name`, `surname`, `phone_number`. Una propiedad que la API no
+ * conoce la ignora sin decir nada, y por eso nunca hubo un error que mirar.
+ *
+ * Se escriben en una llamada APARTE de los campos personalizados: si un slug
+ * de estos no valiera, que falle solo esto y no las UTMs ni la procedencia.
+ */
+export function camposDePersona(
+  firstName: string,
+  surname: string,
+  phone: string
+): { slug: string; value: string }[] {
+  const campos: { slug: string; value: string }[] = []
+  if (firstName) campos.push({ slug: 'first_name', value: firstName })
+  if (surname) campos.push({ slug: 'surname', value: surname })
+  if (phone) campos.push({ slug: 'phone_number', value: phone })
+  return campos
+}

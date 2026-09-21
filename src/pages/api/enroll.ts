@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro'
 import { getEstadoPlazas, MENSAJE_CERRADO } from '../../lib/plazas'
 import { ESCUELA_URL } from '../../lib/escuela'
+import { camposDePersona, escribirCampos, relojDe } from '../../lib/systeme'
 
 export const prerender = false
 
@@ -93,6 +94,19 @@ async function syncToCRM(
           }
         }
       }
+    }
+
+    // El nombre, el apellido y el teléfono, como campos por slug y en su
+    // propia llamada. Ver camposDePersona() en lib/systeme.ts: mandarlos como
+    // propiedades sueltas (arriba) no los guardaba y no avisaba.
+    if (contactId) {
+      const rp = await escribirCampos(
+        contactId,
+        camposDePersona(lead.firstName, lead.lastName, lead.phone),
+        { apiKey: headers['X-API-Key'], reloj: relojDe(8000) }
+      )
+      if (rp.ok) console.log('[enroll] persona escrita:', contactId)
+      else console.error('[enroll] persona error:', rp.status, (rp.error ?? '').slice(0, 200))
     }
 
     // Añadir el tag de reenganche por su ID (más fiable que buscar por nombre).
