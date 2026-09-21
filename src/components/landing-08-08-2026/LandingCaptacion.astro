@@ -1179,9 +1179,13 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     color: rgba(255,255,255,0.95);
   }
   .l8 .footer--pie .footer-links a:hover { color: #fff; }
+  /* La raya va casi blanca a propósito. Con poca opacidad sobre el azul
+     #1D0084 se convierte en un gris azulado que se pierde, sobre todo en
+     pantallas de móvil con poco brillo. A 0.75 el píxel sale ~(198,191,224):
+     se lee como una línea blanca de verdad, que es lo que pedía el diseño. */
   .l8 .footer--pie .footer-raya {
     height: 1px;
-    background: rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.75);
     margin: 26px 0 20px;
   }
   .l8 .footer--pie .footer-copy {
