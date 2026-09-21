@@ -816,11 +816,14 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
      el mockup del hero (el usuario lo vio a la primera). */
   /* Menos morado, mismo criterio que el hero: capa neutra oscura leve
      bajo el brillo y desenfoque sin saturar. */
+  /* Con la capa neutra al 20 % salían casi negras en producción (21/09).
+     Baja al 8 %: sigue enfriando el morado sin apagar la tarjeta, y el
+     brillo sube un punto para que se lea como vidrio y no como sombra. */
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.015) 60%, rgba(255,255,255,0.04) 100%),
-    rgba(20, 22, 28, 0.20);
-  -webkit-backdrop-filter: saturate(95%) blur(24px);
-  backdrop-filter: saturate(95%) blur(24px);
+    linear-gradient(135deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.03) 60%, rgba(255,255,255,0.06) 100%),
+    rgba(20, 22, 28, 0.08);
+  -webkit-backdrop-filter: saturate(100%) blur(24px);
+  backdrop-filter: saturate(100%) blur(24px);
   border: 1px solid rgba(255,255,255,0.28);
   border-radius: 24px; padding: 32px 28px 28px;
   position: relative; overflow: hidden;
