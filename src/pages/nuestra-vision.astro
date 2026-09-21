@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import { CTA_PRINCIPAL } from '../lib/cta'
 import NavbarLanding from '../components/NavbarLanding'
 import MetodoNawar from '../components/MetodoNawar.astro'
 import FooterNuevo from '../components/FooterNuevo.astro'
@@ -29,7 +30,7 @@ import '../styles/nawar-sections.css'
       <p class="vision-sub">
         Nawar nació para que ningún hispanohablante tenga que enfrentarse al neerlandés sin el método que realmente funciona.
       </p>
-      <a href="/lista-de-espera" class="vision-cta">
+      <a href={CTA_PRINCIPAL} class="vision-cta">
         Empieza a aprender hoy mismo
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
@@ -45,8 +46,8 @@ import '../styles/nawar-sections.css'
         {"Creemos que aprender neerlandés no debería ser una barrera. Para vivir, trabajar e integrarte en Países Bajos, el idioma es la clave. Pero nadie lo enseñaba desde el español. Con el método correcto, con quien lo entiende, todo cambia. Por eso creamos Nawar: un método diseñado desde el español, por quienes entienden tus retos, tus dudas y tu punto de partida. Hispanohablantes de todo el mundo ya esperan el lanzamiento. El neerlandés no es imposible, solo necesitabas el método adecuado.".split(" ").map((w: string) => <span class="vphrase">{w} </span>)}
       </p>
       <div class="sr-bi" style="margin-top:48px;">
-        <a href="/lista-de-espera" class="vision-community-btn">
-          Unirse a la comunidad
+        <a href={CTA_PRINCIPAL} class="vision-community-btn">
+          Quiero formarme con Nawar
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
           </svg>
