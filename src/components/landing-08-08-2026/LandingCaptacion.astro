@@ -1033,79 +1033,44 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════════════════════
-         CTA FINAL
-    ══════════════════════════════════════════════════════════ -->
-    <section class="final-cta">
-      <div class="final-cta-glow" aria-hidden="true"></div>
-      <div class="dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:.4"></div>
-      <div class="final-cta-divider" aria-hidden="true"></div>
-      <div class="container" style="position:relative">
-        <div class="content fc-cabecera">
-          <div class="eyebrow eyebrow-accent" style="display:inline-flex;margin-bottom:24px">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" style="flex-shrink:0"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Empieza hoy
-          </div>
-          <h2>
-            <span class="text-gradient-white">Nosotros vamos a seguir enseñando neerlandés.</span>
-            <em>¿Y tú? ¿Dónde estarás dentro de 16 semanas?</em>
-          </h2>
-          <p>
-            Las 16 semanas van a pasar igual. Lo único que cambia es dónde te dejan.
-          </p>
-        </div>
+    {/* Aquí iba el cierre: "¿Y tú? ¿Dónde estarás dentro de 16
+        semanas?" con su botón. Fuera por dos motivos:
 
-        <div class="fc-futuros">
-          <article class="fc-futuro fc-futuro--igual">
-            <span class="fc-tag fc-tag--igual">Dentro de 16 semanas</span>
-            <p class="fc-p">
-              <strong>Puede que sigas contestando en inglés en la panadería.</strong>
-              Que sigas llevando a alguien contigo al gemeente. Que sigas entendiendo la
-              mitad de la reunión y asintiendo al resto.
-            </p>
-          </article>
-          <article class="fc-futuro fc-futuro--nawar">
-            <span class="fc-tag fc-tag--nawar">O puede que…</span>
-            <p class="fc-p">
-              <strong>Entiendas a tu vecino y le contestes sin traducir.</strong>
-              Que hagas tus gestiones tú solo. Que sueltes tu primera frase larga en
-              neerlandés y no te tiemble la voz.
-            </p>
-          </article>
-        </div>
+          · Repetía por sexta vez el mismo argumento que ya hacen
+            "Seamos honestos", "El coste de seguir igual", "El otro
+            lado", "Por qué existe Nawar" y "¿Cuántos cursos has
+            empezado?". A esas alturas o ya está convencido o no lo
+            vas a convencer con otra vuelta.
+          · Llegaba DESPUÉS de las preguntas frecuentes, o sea después
+            del punto en el que la gente ya ha decidido. El cierre de
+            verdad es "Todo lo que te llevas", que sí tiene su botón.
 
-        <div class="content">
-          <div class="final-cta-btns">
-            <a href={CTA_URL} class="btn btn-primary btn-lg">
-              Reservar mi plaza
-            </a>
-          </div>
-          {/* Decía "Acceso inmediato", y desde esta página es mentira:
-              el acceso llega después de hablar, no al pulsar. Lo que
-              sí es inmediato —y lo que hace falta prometer en el
-              último botón de la página— es la respuesta. */}
-          <p class="final-cta-fine">
-            <svg class="nw-icon nw-icon--xs nw-icon--dark" aria-hidden="true"><use href="#i-shield-check"/></svg>
-            Te respondemos en menos de 24 h
-          </p>
-        </div>
-      </div>
-    </section>
+        Ahora las preguntas frecuentes entregan directamente al pie.
+        Su CSS (.final-cta y compañía) se queda en la hoja compartida:
+        lo usa /formacion-a0-a1, que sí conserva la sección. */}
 
     <!-- ══════════════════════════════════════════════════════════
          FOOTER
     ══════════════════════════════════════════════════════════ -->
-    <footer class="footer">
-      <div class="container footer-inner">
-        <a href="#hero" class="footer-logo">
-          <img src={LOGO_FOOTER} alt="Holandés Nawar" loading="lazy" decoding="async" />
-        </a>
-        <div class="footer-links">
-          <a href="/politica-de-privacidad">Política de privacidad</a>
-          <a href="/terminos-y-condiciones">Términos y condiciones</a>
-          <a href="/contacto">Contacto</a>
+    {/* El pie es una tarjeta redonda sobre el blanco de las preguntas
+        frecuentes, no una franja a todo el ancho. Así la página cierra
+        con la misma forma con la que va presentando todo lo demás y no
+        con un bloque pegado al borde.
+        Sin logo y sin enlaces de navegación: lo único que tiene que
+        haber al final son las páginas legales. Cualquier otro enlace
+        aquí es una puerta para irse justo cuando ya no queda nada que
+        leer. */}
+    <footer class="footer footer--tarjeta">
+      <div class="container">
+        <div class="footer-caja">
+          <div class="footer-links">
+            <a href="/terminos-y-condiciones">Términos y condiciones</a>
+            <a href="/condiciones-de-contratacion">Aviso legal</a>
+            <a href="/politica-de-privacidad">Política de privacidad</a>
+          </div>
+          <div class="footer-raya" aria-hidden="true"></div>
+          <p class="footer-copy">HOLANDÉS NAWAR © 2026</p>
         </div>
-        <p class="footer-copy">© 2026 Holandés Nawar. Todos los derechos reservados.</p>
       </div>
     </footer>
 
@@ -1174,6 +1139,63 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
     grid-template-columns: 1fr auto;
   }
   .l8 .l8nav-inner--sin-timer .l8nav-cta { justify-self: end; }
+
+  /* ── El pie, en tarjeta ───────────────────────────────────────
+     La franja de siempre va a todo el ancho y pegada al borde. Aquí
+     el pie es una tarjeta redonda del azul de marca flotando sobre el
+     blanco de las preguntas frecuentes, que es la misma forma con la
+     que la página viene presentando todo lo demás.
+     Las clases repetidas son para ganarle a .l8 .footer de la hoja
+     compartida, que la usa la otra landing y no se toca. */
+  .l8 .footer.footer--tarjeta {
+    /* El mismo claro que las preguntas frecuentes, no transparente:
+       debajo de ellas el fondo de la página vuelve al azul de marca, y
+       una tarjeta azul sobre fondo azul no se ve. Continuando el claro,
+       el pie se lee como la última tarjeta de la misma sección. */
+    background: #F0F4FF;
+    border-top: none;
+    padding: 0 0 56px;
+  }
+  .l8 .footer--tarjeta .footer-caja {
+    background: #1D0084;
+    border-radius: 26px;
+    padding: 34px 32px 26px;
+    text-align: center;
+  }
+  /* En fila y centrados, no repartidos a los extremos: son tres
+     enlaces, no un menú. */
+  .l8 .footer--tarjeta .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .l8 .footer--tarjeta .footer-links a {
+    font-size: 14px;
+    color: rgba(255,255,255,0.82);
+  }
+  .l8 .footer--tarjeta .footer-links a:hover { color: #fff; }
+  .l8 .footer--tarjeta .footer-raya {
+    height: 1px;
+    background: rgba(255,255,255,0.22);
+    margin: 26px 0 20px;
+  }
+  .l8 .footer--tarjeta .footer-copy {
+    font-size: 12.5px;
+    letter-spacing: 0.10em;
+    color: rgba(255,255,255,0.62);
+    margin: 0;
+    width: auto;
+    text-align: center;
+  }
+  @media (max-width: 640px) {
+    .l8 .footer--tarjeta { padding-bottom: 40px; }
+    .l8 .footer--tarjeta .footer-caja { border-radius: 20px; padding: 26px 20px 20px; }
+    /* Apilados: en fila, tres enlaces de 14 px no caben en 360 px sin
+       partirse por la mitad de una frase. */
+    .l8 .footer--tarjeta .footer-links { flex-direction: column; gap: 14px; }
+    .l8 .footer--tarjeta .footer-raya { margin: 20px 0 16px; }
+  }
 
   /* ── La barra de abajo, con el botón solo ─────────────────────
      Debajo de 960 px la hoja compartida separa la barra en dos

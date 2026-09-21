@@ -6,7 +6,13 @@ const badge = data?.badge ?? 'Por qué existe Nawar'
 // (ver "TÍTULOS DE LAS SECCIONES CLARAS" en la hoja de la landing).
 const title = data?.title ?? 'El método que nadie\n<span>te había ofrecido</span>'
 const subtitle = data?.subtitle ?? 'Las academias tradicionales no están pensadas para ti. Nawar nació para cambiar eso: neerlandés desde el español.'
-const leftTitle = data?.leftCardTitle ?? 'El 90% de los estudiantes abandona sin hablar ni una frase'
+/* Antes ponía "El 90% de los estudiantes abandona sin hablar ni una
+   frase". Ese 90 % no sale de ningún sitio, y un porcentaje sin
+   fuente en una página que vende es de las cosas que más
+   credibilidad quitan justo a quien ya viene escéptico. Lo que va
+   debajo son las cinco razones, que se sostienen solas: el titular
+   no necesita una cifra, necesita que el lector se reconozca. */
+const leftTitle = data?.leftCardTitle ?? 'Por qué lo dejaste las otras veces'
 const leftItems = data?.leftCardItems ?? [
   'Clases genéricas diseñadas para angloparlantes',
   'Profesores que no hablan ni entienden español',
