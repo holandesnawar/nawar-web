@@ -819,9 +819,13 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
   /* Con la capa neutra al 20 % salían casi negras en producción (21/09).
      Baja al 8 %: sigue enfriando el morado sin apagar la tarjeta, y el
      brillo sube un punto para que se lea como vidrio y no como sombra. */
+  /* El tinte del cristal es AZUL OSCURO (el #0a1656 de la marca), no gris
+     neutro: el gris al 20 % las dejaba negras y al 8 % volvían a salir
+     lila. Un azul más oscuro que el fondo enfría el morado sin apagar la
+     tarjeta, porque es el mismo color del fondo, solo más profundo. */
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.03) 60%, rgba(255,255,255,0.06) 100%),
-    rgba(20, 22, 28, 0.08);
+    linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 60%, rgba(255,255,255,0.05) 100%),
+    rgba(10, 22, 86, 0.34);
   -webkit-backdrop-filter: saturate(100%) blur(24px);
   backdrop-filter: saturate(100%) blur(24px);
   border: 1px solid rgba(255,255,255,0.28);
@@ -885,9 +889,13 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
 .proceso-mockup {
   margin-top: 8px;
   border-radius: 16px; overflow: hidden;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.24);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.20);
+  /* Igual que la tarjeta de fuera: mismo tinte azul oscuro, no una capa
+     blanca encima (eso era lo que la volvía lila dentro de la azul). */
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 60%, rgba(255,255,255,0.03) 100%),
+    rgba(10, 22, 86, 0.30);
+  border: 1px solid rgba(255,255,255,0.22);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
 }
 .proceso-mockup-inner { padding: 6px 18px 8px; }
 .pm-row {
