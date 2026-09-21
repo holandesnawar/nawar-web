@@ -100,12 +100,19 @@ export const GET: APIRoute = async ({ url }) => {
       }
       const c = items[0]
       const etiquetas = (c?.tags ?? []).map((t: any) => t?.name).filter(Boolean)
+      // Los campos tal cual los tiene systeme.io, con su slug: es la manera de
+      // ver dónde vive el nombre de verdad (first_name / surname) y si llegó.
+      const campos = (c?.fields ?? []).map((f: any) => ({ slug: f?.slug, valor: f?.value ?? null }))
       return json({
         email,
         existe: true,
         id: c?.id ?? null,
         registrado: c?.registeredAt ?? c?.createdAt ?? null,
         etiquetas,
+        campos,
+        // Por si la API los devolviera como propiedades sueltas (que es como
+        // se mandaban antes y no servía): para comparar.
+        propiedades_sueltas: { firstName: c?.firstName ?? null, surname: c?.surname ?? null, phone: c?.phone ?? null },
       })
     } catch (e) {
       return json({ error: `No se pudo hablar con systeme.io: ${(e as Error).message}` }, 502)

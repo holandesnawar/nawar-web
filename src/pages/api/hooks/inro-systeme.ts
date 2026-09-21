@@ -4,6 +4,7 @@ import {
   asignarEtiqueta,
   crearOBuscarContacto,
   escribirCampos,
+  camposDePersona,
   leerEnv,
   relojDe,
   resolverEtiqueta,
@@ -205,10 +206,13 @@ export const POST: APIRoute = async ({ request }) => {
     // En serie y no en paralelo: los dos escriben sobre el mismo contacto y no
     // conviene que se pisen.
     const resCampos = await escribirCampos(contacto.id, campos, ctx)
+    // El nombre, como campos por slug y aparte (ver camposDePersona en lib).
+    const resPersona = await escribirCampos(contacto.id, camposDePersona(firstName, surname, ''), ctx)
     const resTag = tag.id !== null ? await asignarEtiqueta(contacto.id, tag.id, ctx) : null
 
     const problemas: string[] = []
     if (!resCampos.ok) problemas.push(`campos:${resCampos.status}`)
+    if (!resPersona.ok) problemas.push(`persona:${resPersona.status}`)
     if (tag.id === null) problemas.push(`etiqueta:${tag.via}`)
     else if (resTag && !resTag.ok) problemas.push(`etiqueta:${resTag.status}`)
 
