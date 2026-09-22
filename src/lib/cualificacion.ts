@@ -1,15 +1,23 @@
 /**
  * La cualificación antes de la llamada.
  *
- * Quien pide una llamada contesta seis preguntas. No son para conocerle:
+ * Quien pide una llamada contesta once preguntas. No son para conocerle:
  * son para que a la llamada lleguen los que tienen el nivel, el momento y
  * la disposición de invertir, y los demás reciban lo que les toca ahora
- * (la guía gratis) sin gastar una llamada. Es lo que hace UDIA y lo que
- * está en el plan de la escuela: cualificar → llamada → cerrar hablando.
+ * (la guía gratis) sin gastar una llamada. Es lo que hacen UDIA e ICO y lo
+ * que está en el plan de la escuela: cualificar → llamada → cerrar hablando.
+ *
+ * Tres tipos de pregunta:
+ *  - `opciones`: una lista, con letra (A, B, C…) y puntos por opción.
+ *  - `escala`: del 1 al 5, con un texto en los extremos y en el medio.
+ *  - `texto`: respuesta abierta. No puntúa; es para leerla antes de llamar.
  *
  * La puntuación es transparente a propósito: cada opción tiene sus puntos
  * aquí, a la vista, y se recalcula en el servidor (api/cualificacion.ts)
  * con esta misma tabla. Cambiar el corte o los puntos es cambiar un número.
+ *
+ * `etiqueta` es el nombre corto de la pregunta para la ficha del contacto y
+ * el correo al equipo: el título largo (el que "vende") ahí solo estorba.
  */
 
 export interface Opcion {
@@ -18,16 +26,42 @@ export interface Opcion {
   puntos: number
 }
 
-export interface Pregunta {
+interface Base {
   clave: string
+  /** Nombre corto, para la ficha y el correo. */
+  etiqueta: string
+  /** Lo que ve la persona. Puede ser largo: aquí es donde se vende. */
   titulo: string
   ayuda?: string
+}
+
+export interface PreguntaOpciones extends Base {
+  tipo: 'opciones'
   opciones: Opcion[]
 }
 
+export interface PreguntaEscala extends Base {
+  tipo: 'escala'
+  /** Texto bajo el 1, el 3 y el 5. */
+  extremos: [string, string, string]
+  /** Puntos por cada valor del 1 al 5. */
+  puntos: [number, number, number, number, number]
+}
+
+export interface PreguntaTexto extends Base {
+  tipo: 'texto'
+  placeholder?: string
+  /** Menos caracteres que esto no se acepta. */
+  minimo: number
+}
+
+export type Pregunta = PreguntaOpciones | PreguntaEscala | PreguntaTexto
+
 export const PREGUNTAS: Pregunta[] = [
   {
+    tipo: 'opciones',
     clave: 'nivel',
+    etiqueta: 'Nivel',
     titulo: '¿Cuál es tu nivel de neerlandés ahora mismo?',
     opciones: [
       { valor: 'cero', texto: 'Cero, empiezo desde nada', puntos: 2 },
@@ -37,7 +71,9 @@ export const PREGUNTAS: Pregunta[] = [
     ],
   },
   {
+    tipo: 'opciones',
     clave: 'situacion',
+    etiqueta: 'Dónde está',
     titulo: '¿Dónde estás?',
     opciones: [
       { valor: 'vivo', texto: 'Ya vivo en Países Bajos o Bélgica', puntos: 3 },
@@ -47,7 +83,9 @@ export const PREGUNTAS: Pregunta[] = [
     ],
   },
   {
+    tipo: 'opciones',
     clave: 'motivo',
+    etiqueta: 'Para qué',
     titulo: '¿Para qué lo necesitas?',
     opciones: [
       { valor: 'trabajo', texto: 'Trabajo: mejorar en el mío o encontrar otro', puntos: 2 },
@@ -57,7 +95,48 @@ export const PREGUNTAS: Pregunta[] = [
     ],
   },
   {
+    tipo: 'opciones',
+    clave: 'edad',
+    etiqueta: 'Edad',
+    titulo: '¿Cuántos años tienes?',
+    ayuda: 'Selecciona tu rango de edad.',
+    // No puntúa: es para saber con quién hablas antes de llamar.
+    opciones: [
+      { valor: 'menos18', texto: 'Menos de 18', puntos: 0 },
+      { valor: '18a25', texto: 'Entre 18 y 25', puntos: 0 },
+      { valor: '26a35', texto: 'Entre 26 y 35', puntos: 0 },
+      { valor: '36a49', texto: 'Entre 36 y 49', puntos: 0 },
+      { valor: 'mas50', texto: 'Más de 50', puntos: 0 },
+    ],
+  },
+  {
+    tipo: 'opciones',
+    clave: 'ocupacion',
+    etiqueta: 'Ocupación',
+    titulo: 'Queremos conocer mejor tu situación… ¿qué opción se ajusta más a lo que haces ahora?',
+    opciones: [
+      { valor: 'completa', texto: 'Trabajo a jornada completa', puntos: 1 },
+      { valor: 'media', texto: 'Trabajo a media jornada', puntos: 1 },
+      { valor: 'busco', texto: 'Estoy buscando trabajo', puntos: 1 },
+      { valor: 'estudio', texto: 'Estudio', puntos: 0 },
+      { valor: 'casa', texto: 'Me ocupo de la casa o la familia', puntos: 1 },
+      { valor: 'negocio', texto: 'Tengo mi propio negocio', puntos: 1 },
+    ],
+  },
+  {
+    tipo: 'texto',
+    clave: 'objetivo',
+    etiqueta: 'Qué espera conseguir',
+    titulo:
+      'Hablar neerlandés te abre puertas: el trabajo, el médico, el colegio de tus hijos, los vecinos. Pero cada persona tiene su propio motivo, y queremos conocer el tuyo para ver cómo podemos ayudarte.\n\n¿Qué esperas haber conseguido en tres meses con Nawar?',
+    ayuda: 'Descríbelo con detalle y honestidad: de tus respuestas depende que te propongamos plaza o no.',
+    placeholder: 'Escribe aquí tu respuesta…',
+    minimo: 15,
+  },
+  {
+    tipo: 'opciones',
     clave: 'cuando',
+    etiqueta: 'Cuándo empieza',
     titulo: '¿Cuándo quieres empezar?',
     opciones: [
       { valor: 'ya', texto: 'Esta semana', puntos: 3 },
@@ -67,7 +146,9 @@ export const PREGUNTAS: Pregunta[] = [
     ],
   },
   {
+    tipo: 'opciones',
     clave: 'horas',
+    etiqueta: 'Horas a la semana',
     titulo: '¿Cuántas horas a la semana puedes dedicarle?',
     ayuda: 'Con menos de dos no se avanza, y preferimos decírtelo antes.',
     opciones: [
@@ -78,22 +159,46 @@ export const PREGUNTAS: Pregunta[] = [
     ],
   },
   {
+    tipo: 'opciones',
     clave: 'inversion',
-    titulo: 'Disponibilidad económica',
+    etiqueta: 'Disponibilidad económica',
     // Sin cifra, a propósito: el precio se cuenta en la llamada, con la
     // persona delante. Aquí se mide la disposición, no se negocia.
-    ayuda:
-      'Si vemos que encajas en la formación, sabiendo que vas a aprender el idioma que te abre la vida aquí y con un acompañamiento cercano durante todo el proceso… ¿hasta qué punto puedes invertir en ti?',
+    titulo:
+      'Aprender el idioma es lo que más cambia tu vida aquí, y en Nawar no lo haces solo: clases en vivo, profesores que hablan tu idioma y un acompañamiento cercano durante todo el camino. Sabiendo esto, ¿hasta qué punto puedes invertir en ti hoy?',
     opciones: [
-      { valor: 'contado', texto: 'El dinero no es un problema: puedo pagarlo al contado, sin financiación', puntos: 3 },
-      { valor: 'esfuerzo', texto: 'Puedo hacer un esfuerzo con ayuda: con un plan de pago, busco la forma', puntos: 2 },
-      { valor: 'no', texto: 'Ahora mismo no dispongo de dinero para esto', puntos: -10 },
+      { valor: 'contado', texto: 'El dinero no es un problema: puedo pagarlo al contado', puntos: 3 },
+      { valor: 'plazos', texto: 'Puedo hacerlo con un plan de pago a plazos', puntos: 2 },
+      { valor: 'busco', texto: 'Ahora mismo me cuesta, pero estoy comprometido a encontrar la forma', puntos: 1 },
+      { valor: 'no', texto: 'No tengo capacidad de inversión ni pienso buscarla', puntos: -10 },
+    ],
+  },
+  {
+    tipo: 'escala',
+    clave: 'compromiso',
+    etiqueta: 'Compromiso (1 a 5)',
+    titulo: 'Con lo que has contestado, ¿hasta qué punto estás comprometido a aprender neerlandés de verdad en los próximos tres meses?',
+    extremos: ['No es mi momento', 'Sin más…', 'Al 100 %'],
+    puntos: [-5, -1, 0, 1, 2],
+  },
+  {
+    tipo: 'opciones',
+    clave: 'decision',
+    etiqueta: 'Quién decide',
+    titulo: 'Si vemos que encajas, ¿quién toma la decisión final?',
+    ayuda: 'Si la decisión es de más de una persona, en la llamada tenéis que estar las dos.',
+    opciones: [
+      { valor: 'yo', texto: 'Decido yo', puntos: 1 },
+      { valor: 'otra', texto: 'Decido con otra persona (pareja, padres, etc.)', puntos: 0 },
     ],
   },
 ]
 
-/** A partir de cuántos puntos se le ofrece la llamada. */
-export const CORTE_APTO = 7
+/** A partir de cuántos puntos se le ofrece la llamada. Máximo posible: 19. */
+export const CORTE_APTO = 9
+
+/** Hasta dónde se guarda una respuesta abierta. */
+export const MAX_TEXTO = 800
 
 export interface Resultado {
   puntuacion: number
@@ -102,15 +207,34 @@ export interface Resultado {
   respuestas: { pregunta: string; respuesta: string; puntos: number }[]
 }
 
+/** Letras para las opciones: A, B, C… */
+export const LETRAS = 'ABCDEFGHIJ'
+
 /** Puntúa un juego de respuestas {clave: valor}. Lo que no sea una opción
- *  válida cuenta cero y se apunta como "sin responder". */
-export function puntuar(respuestas: Record<string, string>): Resultado {
+ *  válida cuenta cero y se apunta como "sin responder". Las respuestas
+ *  abiertas van en `textos` y no puntúan. */
+export function puntuar(respuestas: Record<string, string>, textos: Record<string, string> = {}): Resultado {
   let total = 0
   const detalle: Resultado['respuestas'] = []
   for (const p of PREGUNTAS) {
-    const op = p.opciones.find((o) => o.valor === respuestas[p.clave])
-    total += op?.puntos ?? 0
-    detalle.push({ pregunta: p.titulo, respuesta: op?.texto ?? 'Sin responder', puntos: op?.puntos ?? 0 })
+    if (p.tipo === 'opciones') {
+      const op = p.opciones.find((o) => o.valor === respuestas[p.clave])
+      total += op?.puntos ?? 0
+      detalle.push({ pregunta: p.etiqueta, respuesta: op?.texto ?? 'Sin responder', puntos: op?.puntos ?? 0 })
+    } else if (p.tipo === 'escala') {
+      const n = Number(respuestas[p.clave])
+      const valido = Number.isInteger(n) && n >= 1 && n <= 5
+      const puntos = valido ? p.puntos[n - 1] : 0
+      total += puntos
+      detalle.push({
+        pregunta: p.etiqueta,
+        respuesta: valido ? `${n} de 5 (${n === 1 ? p.extremos[0] : n === 5 ? p.extremos[2] : n === 3 ? p.extremos[1] : ''})`.replace(' ()', '') : 'Sin responder',
+        puntos,
+      })
+    } else {
+      const t = (textos[p.clave] ?? '').toString().trim().slice(0, MAX_TEXTO)
+      detalle.push({ pregunta: p.etiqueta, respuesta: t || 'Sin responder', puntos: 0 })
+    }
   }
   return { puntuacion: total, apto: total >= CORTE_APTO, respuestas: detalle }
 }

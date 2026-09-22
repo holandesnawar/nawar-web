@@ -4,23 +4,40 @@
  *
  * Pantalla 0: qué es la llamada y qué vamos a hacer (que la persona sepa a
  * qué viene antes de dar sus datos). Pantalla 1: nombre, correo y WhatsApp.
- * Después, una pregunta por pantalla (nivel, situación, motivo, cuándo,
- * horas, disponibilidad económica), con "Continuar". Al final, según la
- * nota que calcula el servidor: el botón para agendar o la guía gratis.
+ * Después, una pregunta por pantalla (src/lib/cualificacion.ts). Al final,
+ * según la nota que calcula el servidor: el botón para agendar o la guía.
  *
  * Por qué filtrar: la llamada es lo más caro de la escuela (tiempo de una
  * persona). A ella llegan los que tienen el nivel, el momento y la
  * disposición; los demás reciben lo que les sirve ahora, sin sentirse
- * rechazados. Preguntas y puntos: src/lib/cualificacion.ts.
+ * rechazados.
  *
- * Diseño (pedido 22/09, con UDIA de referencia): solo la línea de progreso,
- * sin "paso X de N"; cajas de respuesta de cristal, no azules; la pregunta
- * del dinero sin cifra. El precio se cuenta en la llamada.
+ * Diseño (pedido 22/09, con UDIA e ICO de referencia): solo la línea de
+ * progreso, sin "paso X de N"; cajas de cristal azul marino; la pregunta del
+ * dinero sin cifra. Y lo que hace ICO con Typeform, hecho aquí:
+ *  - cada opción lleva su letra (A, B, C…) y se puede contestar con el
+ *    teclado; al tocar una opción se pasa sola a la siguiente pregunta;
+ *  - preguntas que venden mientras preguntan (el texto largo antes de la
+ *    pregunta), una abierta ("¿qué esperas conseguir?") con el marco de
+ *    "de esto depende que te propongamos plaza", una escala del 1 al 5 de
+ *    compromiso y "¿quién decide?";
+ *  - foto de fondo con velo azul (FOTO_FONDO; vacío = sin foto, solo el
+ *    fondo de la marca).
+ *
+ * Qué pasa al terminar: si encaja, el botón de reservar día y hora
+ * (PUBLIC_AGENDA_URL o WhatsApp); si no, la guía gratis. En los dos casos la
+ * escuela guarda las respuestas (Panel → Llamadas) y avisa por correo al
+ * equipo. Nada se queda en el aire.
  */
 import Layout from '../layouts/Layout.astro'
-import { PREGUNTAS } from '../lib/cualificacion'
+import { LETRAS, PREGUNTAS } from '../lib/cualificacion'
 
 export const prerender = true
+
+/** Foto de fondo, a la derecha, con velo. Vacío = sin foto. */
+const FOTO_FONDO = ''
+
+const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boolean)
 ---
 
 <Layout
@@ -29,6 +46,8 @@ export const prerender = true
   noindex={true}
 >
   <div class="ag-page">
+    {FOTO_FONDO ? <div class="ag-photo" style={`background-image:url('${FOTO_FONDO}')`} aria-hidden="true"></div> : null}
+    {FOTO_FONDO ? <div class="ag-veil" aria-hidden="true"></div> : null}
     <div class="ag-glow1" aria-hidden="true"></div>
     <div class="ag-glow2" aria-hidden="true"></div>
     <div class="ag-dots" aria-hidden="true"></div>
@@ -66,13 +85,14 @@ export const prerender = true
           </p>
           <div class="ag-actions">
             <button type="button" class="ag-btn" data-go="datos">Comenzar</button>
+            <span class="ag-hint">Tarda dos minutos</span>
           </div>
         </section>
 
         <!-- 1 · Tu contacto -->
         <section class="ag-pane" data-pane="datos" hidden>
-          <h2 class="ag-q ag-center">Tu contacto</h2>
-          <p class="ag-lead ag-center">Antes de continuar, necesitamos conocerte un poquito mejor.</p>
+          <h2 class="ag-q">Tu contacto</h2>
+          <p class="ag-lead">Antes de continuar, necesitamos conocerte un poquito mejor.</p>
           <div class="ag-fields">
             <div class="ag-field">
               <label class="ag-label" for="first_name">Nombre <span class="ag-req">*</span></label>
@@ -96,34 +116,64 @@ export const prerender = true
           <p class="ag-err" id="ag-err-datos">Revisa el nombre, el correo y el teléfono.</p>
           <div class="ag-actions ag-between">
             <button type="button" class="ag-btn-ghost" data-go="intro">‹ Anterior</button>
-            <button type="button" class="ag-btn" data-go="q0">Continuar ›</button>
+            <button type="button" class="ag-btn" data-go="q0">Aceptar ›</button>
           </div>
         </section>
 
         <!-- Preguntas -->
-        {PREGUNTAS.map((p, i) => (
-          <section class="ag-pane" data-pane={`q${i}`} data-clave={p.clave} hidden>
-            <h2 class="ag-q ag-center">{p.titulo} <span class="ag-req">*</span></h2>
-            {p.ayuda ? <p class="ag-lead ag-center">{p.ayuda}</p> : null}
-            <div class="ag-options" role="radiogroup" aria-label={p.titulo}>
-              {p.opciones.map((o) => (
-                <button type="button" class="ag-option" data-valor={o.valor} role="radio" aria-checked="false">
-                  <span class="ag-option-dot" aria-hidden="true"></span>
-                  <span>{o.texto}</span>
-                </button>
-              ))}
-            </div>
-            <p class="ag-err" data-err={`q${i}`}>Elige una opción para continuar.</p>
-            <div class="ag-actions ag-between">
-              <button type="button" class="ag-btn-ghost" data-go={i === 0 ? 'datos' : `q${i - 1}`}>‹ Anterior</button>
-              <button type="button" class="ag-btn" data-continuar={`q${i}`}>{i === PREGUNTAS.length - 1 ? 'Ver si encajo ›' : 'Continuar ›'}</button>
-            </div>
-          </section>
-        ))}
+        {PREGUNTAS.map((p, i) => {
+          const partes = parrafos(p.titulo)
+          const pregunta = partes[partes.length - 1]
+          const intro = partes.slice(0, -1)
+          return (
+            <section class="ag-pane" data-pane={`q${i}`} data-clave={p.clave} data-tipo={p.tipo} hidden>
+              {intro.map((t) => <p class="ag-intro">{t}</p>)}
+              <h2 class="ag-q">{pregunta} <span class="ag-req">*</span></h2>
+              {p.ayuda ? <p class="ag-lead">{p.ayuda}</p> : null}
+
+              {p.tipo === 'opciones' ? (
+                <div class="ag-options" role="radiogroup" aria-label={pregunta}>
+                  {p.opciones.map((o, j) => (
+                    <button type="button" class="ag-option" data-valor={o.valor} data-letra={LETRAS[j]} role="radio" aria-checked="false">
+                      <span class="ag-key" aria-hidden="true">{LETRAS[j]}</span>
+                      <span>{o.texto}</span>
+                    </button>
+                  ))}
+                </div>
+              ) : p.tipo === 'escala' ? (
+                <div class="ag-scale-wrap">
+                  <div class="ag-scale" role="radiogroup" aria-label={pregunta}>
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <button type="button" class="ag-scale-btn" data-valor={String(n)} data-letra={String(n)} role="radio" aria-checked="false">{n}</button>
+                    ))}
+                  </div>
+                  <div class="ag-scale-labels" aria-hidden="true">
+                    <span>{p.extremos[0]}</span>
+                    <span>{p.extremos[1]}</span>
+                    <span>{p.extremos[2]}</span>
+                  </div>
+                </div>
+              ) : (
+                <div class="ag-textwrap">
+                  <textarea class="ag-textarea" data-texto={p.clave} data-minimo={String(p.minimo)} rows="3" placeholder={p.placeholder ?? 'Escribe aquí…'} maxlength="800"></textarea>
+                  <p class="ag-hint">Pulsa <strong>Mayús ⇧ + Intro ↵</strong> para añadir un párrafo.</p>
+                </div>
+              )}
+
+              <p class="ag-err" data-err={`q${i}`}>
+                {p.tipo === 'texto' ? 'Cuéntanoslo con un poco más de detalle para continuar.' : 'Elige una opción para continuar.'}
+              </p>
+              <div class="ag-actions ag-between">
+                <button type="button" class="ag-btn-ghost" data-go={i === 0 ? 'datos' : `q${i - 1}`}>‹ Anterior</button>
+                <button type="button" class="ag-btn" data-continuar={`q${i}`}>{i === PREGUNTAS.length - 1 ? 'Ver si encajo ›' : 'Aceptar ›'}</button>
+              </div>
+            </section>
+          )
+        })}
 
         <section class="ag-pane" data-pane="enviando" hidden>
-          <h2 class="ag-q ag-center">Un segundo…</h2>
-          <p class="ag-lead ag-center">Guardando tus respuestas.</p>
+          <h2 class="ag-q">Un segundo…</h2>
+          <p class="ag-lead">Guardando tus respuestas.</p>
         </section>
 
         <section class="ag-pane" data-pane="apto" hidden>
@@ -161,10 +211,15 @@ export const prerender = true
   const preguntas = panes.filter((p) => p.dataset.clave)
   const fill = document.getElementById('ag-fill') as HTMLElement
   const respuestas: Record<string, string> = {}
+  const textos: Record<string, string> = {}
   // La línea: intro 0 %, datos un tramo, y cada pregunta otro.
   const tramos = preguntas.length + 1
+  let actual = 'intro'
+  let saltando: number | null = null
 
   const mostrar = (id: string) => {
+    if (saltando) { clearTimeout(saltando); saltando = null }
+    actual = id
     panes.forEach((p) => { p.hidden = p.dataset.pane !== id })
     let hecho = 0
     if (id === 'datos') hecho = 0.5
@@ -172,6 +227,10 @@ export const prerender = true
     else if (id === 'enviando' || id === 'apto' || id === 'noapto') hecho = tramos
     fill.style.width = `${Math.min(100, Math.round((hecho / tramos) * 100))}%`
     window.scrollTo({ top: 0, behavior: 'smooth' })
+    // La pregunta abierta: el cursor ya dentro, sin tener que tocar.
+    const pane = panes.find((p) => p.dataset.pane === id)
+    const area = pane?.querySelector<HTMLTextAreaElement>('.ag-textarea')
+    if (area) setTimeout(() => area.focus(), 60)
   }
 
   const val = (id: string) => (document.getElementById(id) as HTMLInputElement).value.trim()
@@ -189,29 +248,73 @@ export const prerender = true
     })
   })
 
+  const indice = (pane: HTMLElement) => Number((pane.dataset.pane as string).slice(1))
+  const siguiente = async (pane: HTMLElement) => {
+    const i = indice(pane)
+    if (i + 1 < preguntas.length) mostrar(`q${i + 1}`)
+    else await enviar()
+  }
+
+  /** Elegir una opción (o un punto de la escala): se marca y, tras un
+   *  respiro para verla marcada, pasa sola a la siguiente. Como Typeform. */
+  const elegir = (pane: HTMLElement, btn: HTMLButtonElement) => {
+    pane.querySelectorAll('[role="radio"]').forEach((b) => b.setAttribute('aria-checked', 'false'))
+    btn.setAttribute('aria-checked', 'true')
+    respuestas[pane.dataset.clave as string] = btn.dataset.valor as string
+    pane.querySelector('[data-err]')?.classList.remove('visible')
+    if (saltando) clearTimeout(saltando)
+    saltando = window.setTimeout(() => { saltando = null; siguiente(pane) }, 420)
+  }
+
   preguntas.forEach((pane) => {
-    pane.querySelectorAll<HTMLButtonElement>('.ag-option').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        pane.querySelectorAll('.ag-option').forEach((b) => b.setAttribute('aria-checked', 'false'))
-        btn.setAttribute('aria-checked', 'true')
-        respuestas[pane.dataset.clave as string] = btn.dataset.valor as string
-        pane.querySelector('[data-err]')?.classList.remove('visible')
+    pane.querySelectorAll<HTMLButtonElement>('[role="radio"]').forEach((btn) => {
+      btn.addEventListener('click', () => elegir(pane, btn))
+    })
+    const area = pane.querySelector<HTMLTextAreaElement>('.ag-textarea')
+    if (area) {
+      area.addEventListener('input', () => {
+        textos[pane.dataset.clave as string] = area.value
+        if (area.value.trim().length >= Number(area.dataset.minimo || 0)) pane.querySelector('[data-err]')?.classList.remove('visible')
       })
+      // Intro = continuar; Mayús+Intro = párrafo nuevo (como Typeform).
+      area.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); continuar(pane) }
+      })
+    }
+  })
+
+  const completa = (pane: HTMLElement) => {
+    const area = pane.querySelector<HTMLTextAreaElement>('.ag-textarea')
+    if (area) return area.value.trim().length >= Number(area.dataset.minimo || 0)
+    return Boolean(respuestas[pane.dataset.clave as string])
+  }
+
+  const continuar = async (pane: HTMLElement) => {
+    if (!completa(pane)) {
+      pane.querySelector('[data-err]')?.classList.add('visible')
+      return
+    }
+    await siguiente(pane)
+  }
+
+  form.querySelectorAll<HTMLButtonElement>('[data-continuar]').forEach((b) => {
+    b.addEventListener('click', () => {
+      const pane = panes.find((p) => p.dataset.pane === b.dataset.continuar) as HTMLElement
+      continuar(pane)
     })
   })
 
-  form.querySelectorAll<HTMLButtonElement>('[data-continuar]').forEach((b) => {
-    b.addEventListener('click', async () => {
-      const id = b.dataset.continuar as string
-      const pane = panes.find((p) => p.dataset.pane === id) as HTMLElement
-      if (!respuestas[pane.dataset.clave as string]) {
-        pane.querySelector('[data-err]')?.classList.add('visible')
-        return
-      }
-      const i = Number(id.slice(1))
-      if (i + 1 < preguntas.length) mostrar(`q${i + 1}`)
-      else await enviar()
-    })
+  // Teclado: la letra elige la opción (o el número, en la escala); Intro
+  // continúa. Solo en las preguntas, y nunca mientras se escribe en un campo.
+  document.addEventListener('keydown', (e) => {
+    if (!actual.startsWith('q')) return
+    const objetivo = e.target as HTMLElement | null
+    if (objetivo && (objetivo.tagName === 'INPUT' || objetivo.tagName === 'TEXTAREA')) return
+    const pane = panes.find((p) => p.dataset.pane === actual) as HTMLElement
+    if (e.key === 'Enter') { e.preventDefault(); continuar(pane); return }
+    const tecla = e.key.toUpperCase()
+    const btn = pane.querySelector<HTMLButtonElement>(`[role="radio"][data-letra="${tecla}"]`)
+    if (btn && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); elegir(pane, btn) }
   })
 
   async function enviar() {
@@ -229,6 +332,7 @@ export const prerender = true
           phone: val('phone'),
           website: (document.getElementById('ag-hp') as HTMLInputElement).value,
           respuestas,
+          textos,
           ...leerUTM(),
           ...contextoDelLead(),
         }),
@@ -253,10 +357,14 @@ export const prerender = true
     min-height: 100vh; background: #1D0084; position: relative; overflow: hidden;
     display: flex; align-items: flex-start; justify-content: center; padding: 52px 32px 96px;
   }
+  /* Foto de fondo (si la hay): a la derecha, con velo azul para que el texto
+     se lea encima y la foto quede detrás, como en ICO. */
+  .ag-photo { position: absolute; inset: 0; background-size: cover; background-position: 80% center; background-repeat: no-repeat; opacity: 0.9; pointer-events: none; }
+  .ag-veil { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(29,0,132,0.97) 0%, rgba(29,0,132,0.92) 45%, rgba(20,8,90,0.66) 100%); }
   .ag-glow1 { position: absolute; top: -140px; left: 50%; transform: translateX(-50%); width: 960px; height: 560px; background: radial-gradient(ellipse at center, rgba(11,109,240,0.5) 0%, transparent 65%); pointer-events: none; }
   .ag-glow2 { position: absolute; bottom: -60px; right: -80px; width: 600px; height: 400px; background: radial-gradient(ellipse at center, rgba(77,163,255,0.16) 0%, transparent 65%); pointer-events: none; }
   .ag-dots { position: absolute; inset: 0; pointer-events: none; opacity: 0.4; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 28px 28px; }
-  .ag-shell { position: relative; z-index: 1; width: 100%; max-width: 640px; display: flex; flex-direction: column; align-items: flex-start; color: #fff; }
+  .ag-shell { position: relative; z-index: 1; width: 100%; max-width: 680px; display: flex; flex-direction: column; align-items: flex-start; color: #fff; }
   .ag-logo-link { display: inline-block; margin-bottom: 32px; }
   .ag-logo { height: 38px; width: auto; object-fit: contain; }
 
@@ -266,20 +374,21 @@ export const prerender = true
 
   .ag-badge { display: inline-flex; padding: 6px 16px; border-radius: 9999px; background: #025dc7; color: #e0f2ff; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 10px; }
   .ag-title-sm { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(26px, 3.8vw, 36px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 8px; }
-  .ag-q { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(24px, 3.4vw, 32px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin: 0; }
-  .ag-center { text-align: center; width: 100%; }
-  .ag-lead { font-size: clamp(15px, 1.5vw, 17px); line-height: 1.65; color: rgba(255,255,255,0.78); margin: 14px 0 0; }
+  /* El texto que vende antes de la pregunta: mismo cuerpo, menos peso. */
+  .ag-intro { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(19px, 2.4vw, 24px); font-weight: 500; letter-spacing: -0.015em; line-height: 1.4; margin: 0 0 18px; color: rgba(255,255,255,0.92); }
+  .ag-q { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(22px, 3vw, 30px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.2; margin: 0; }
+  .ag-lead { font-size: clamp(15px, 1.5vw, 17px); line-height: 1.65; color: rgba(255,255,255,0.78); margin: 12px 0 0; }
   .ag-lead strong { color: #fff; font-weight: 600; }
   .ag-sub { font-size: 16px; font-weight: 700; margin: 22px 0 8px; }
   .ag-list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 15.5px; line-height: 1.55; color: rgba(255,255,255,0.78); }
   .ag-list strong { color: #fff; font-weight: 600; }
   .ag-req { color: #ff8a8a; font-weight: 500; }
+  .ag-hint { font-size: 12.5px; color: rgba(255,255,255,0.5); margin: 10px 0 0; }
+  .ag-hint strong { color: rgba(255,255,255,0.75); font-weight: 600; }
 
   /* El formulario es hijo de una columna flex con align-items:flex-start:
      sin ancho, se encogía al contenido y en escritorio las preguntas
-     salían pegadas a la izquierda, con el título "centrado" respecto a
-     una caja de 400 px. En móvil no se notaba porque el contenido ya
-     llenaba el ancho. */
+     salían pegadas a la izquierda. */
   #ag-form { width: 100%; }
   .ag-pane { width: 100%; }
   .ag-honeypot { position: absolute !important; left: -10000px !important; width: 1px !important; height: 1px !important; overflow: hidden !important; opacity: 0 !important; pointer-events: none !important; }
@@ -287,13 +396,13 @@ export const prerender = true
   .ag-field { display: flex; flex-direction: column; gap: 6px; }
   .ag-label { font-size: 15px; font-weight: 600; }
   .ag-help { margin: 0; font-size: 13px; color: rgba(255,255,255,0.55); }
-  /* Cajas de cristal, como las respuestas. */
-  .ag-input {
-    width: 100%; padding: 15px 18px; border-radius: 12px; color: #fff; font-size: 16px; font-family: inherit; outline: none;
-    /* Cristal: tinte azul oscuro (el #0a1656 de la marca) con un brillo
-       diagonal encima. Blanco al 5 % sobre este fondo salía lila; el azul
-       más oscuro que el fondo enfría y se lee como vidrio. Misma receta que
-       las tarjetas del home. */
+
+  /* Cristal: tinte azul oscuro (el #0a1656 de la marca) con un brillo
+     diagonal encima. Blanco al 5 % sobre este fondo salía lila; el azul más
+     oscuro que el fondo enfría y se lee como vidrio. Misma receta que las
+     tarjetas del home. */
+  .ag-input, .ag-option, .ag-scale-btn, .ag-textarea {
+    color: #fff; font-family: inherit; outline: none;
     background:
       linear-gradient(135deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 60%, rgba(255,255,255,0.05) 100%),
       rgba(10, 22, 86, 0.34);
@@ -302,30 +411,44 @@ export const prerender = true
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(3,9,33,0.25);
     transition: border-color .15s, background .15s;
   }
-  .ag-input::placeholder { color: rgba(255,255,255,0.35); }
-  .ag-input:focus { border-color: rgba(255,255,255,0.75); }
+  .ag-input { width: 100%; padding: 15px 18px; border-radius: 12px; font-size: 16px; }
+  .ag-input::placeholder, .ag-textarea::placeholder { color: rgba(255,255,255,0.35); }
+  .ag-input:focus, .ag-textarea:focus { border-color: rgba(255,255,255,0.75); }
 
   .ag-options { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
   .ag-option {
     display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
-    padding: 16px 18px; border-radius: 12px; cursor: pointer; font-family: inherit;
-    background:
-      linear-gradient(135deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 60%, rgba(255,255,255,0.05) 100%),
-      rgba(10, 22, 86, 0.34);
-    border: 1.5px solid rgba(255,255,255,0.26);
-    -webkit-backdrop-filter: saturate(100%) blur(16px); backdrop-filter: saturate(100%) blur(16px);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(3,9,33,0.25);
-    color: #fff; font-size: 16px; font-weight: 500; line-height: 1.4; transition: background .15s, border-color .15s;
+    padding: 14px 16px; border-radius: 12px; cursor: pointer;
+    font-size: 16px; font-weight: 500; line-height: 1.4;
   }
-  .ag-option:hover { border-color: rgba(255,255,255,0.45); }
-  .ag-option[aria-checked="true"] {
+  .ag-option:hover, .ag-scale-btn:hover { border-color: rgba(255,255,255,0.5); }
+  .ag-option[aria-checked="true"], .ag-scale-btn[aria-checked="true"] {
     background:
-      linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 60%, rgba(255,255,255,0.08) 100%),
+      linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.09) 100%),
       rgba(10, 22, 86, 0.34);
     border-color: rgba(255,255,255,0.9);
   }
-  .ag-option-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.45); flex-shrink: 0; }
-  .ag-option[aria-checked="true"] .ag-option-dot { border-color: #fff; background: #fff; box-shadow: inset 0 0 0 4px #1D0084; }
+  /* La letra de la opción, como Typeform: una tecla. Al elegir se llena. */
+  .ag-key {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1.5px solid rgba(255,255,255,0.55); font-size: 12px; font-weight: 700; letter-spacing: 0.02em;
+    color: rgba(255,255,255,0.9); transition: background .15s, color .15s, border-color .15s;
+  }
+  .ag-option[aria-checked="true"] .ag-key { background: #fff; color: #1D0084; border-color: #fff; }
+
+  /* Escala 1–5: cinco teclas en fila, texto bajo los extremos y el centro. */
+  .ag-scale-wrap { margin-top: 28px; }
+  .ag-scale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+  .ag-scale-btn { height: 60px; border-radius: 12px; cursor: pointer; font-size: 18px; font-weight: 600; }
+  .ag-scale-btn[aria-checked="true"] { background: #fff; color: #1D0084; border-color: #fff; }
+  .ag-scale-labels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 10px; font-size: 13.5px; color: rgba(255,255,255,0.7); }
+  .ag-scale-labels span:nth-child(2) { text-align: center; }
+  .ag-scale-labels span:nth-child(3) { text-align: right; }
+
+  /* Respuesta abierta. */
+  .ag-textwrap { margin-top: 26px; }
+  .ag-textarea { width: 100%; padding: 15px 18px; border-radius: 12px; font-size: 16px; line-height: 1.55; resize: vertical; min-height: 120px; display: block; }
 
   .ag-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 32px; }
   .ag-between { justify-content: space-between; }
@@ -341,5 +464,10 @@ export const prerender = true
   @media (max-width: 640px) {
     .ag-page { padding: 28px 20px 72px; }
     .ag-btn { flex: 1; }
+    .ag-actions .ag-hint { display: none; }
+    .ag-scale { gap: 8px; }
+    .ag-scale-btn { height: 54px; font-size: 17px; }
+    .ag-scale-labels { font-size: 12px; }
+    .ag-veil { background: linear-gradient(180deg, rgba(29,0,132,0.97) 0%, rgba(29,0,132,0.9) 100%); }
   }
 </style>

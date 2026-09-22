@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro'
-import { puntuar } from '../../lib/cualificacion'
+import { MAX_TEXTO, puntuar } from '../../lib/cualificacion'
 import { ESCUELA_URL, avisarEscuela } from '../../lib/escuela'
 import {
   asignarEtiqueta,
@@ -41,7 +41,13 @@ export const POST: APIRoute = async ({ request }) => {
   for (const [k, v] of Object.entries((body?.respuestas ?? {}) as Record<string, unknown>)) {
     if (typeof v === 'string' && /^[a-z0-9]{1,20}$/.test(v) && /^[a-z]{1,20}$/.test(k)) respuestas[k] = v
   }
-  const resultado = puntuar(respuestas)
+  // Las respuestas abiertas: texto libre, acotado. Se guardan tal cual (la
+  // escuela y el correo las escapan al pintarlas), sin saltos raros.
+  const textos: Record<string, string> = {}
+  for (const [k, v] of Object.entries((body?.textos ?? {}) as Record<string, unknown>)) {
+    if (typeof v === 'string' && /^[a-z]{1,20}$/.test(k)) textos[k] = v.replace(/[\u0000-\u0008\u000B-\u001F]/g, '').trim().slice(0, MAX_TEXTO)
+  }
+  const resultado = puntuar(respuestas, textos)
 
   const recorrido: string[] = Array.isArray(body?.recorrido)
     ? body.recorrido.filter((x: unknown) => typeof x === 'string' && /^[a-z-]{1,24}$/.test(x)).slice(-12)
