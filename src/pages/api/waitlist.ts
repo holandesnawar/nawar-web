@@ -53,8 +53,18 @@ async function findTagId(tagName: string, headers: Record<string, string>): Prom
     // devolviendo null, y quien llama se queda sin saber si la etiqueta no
     // existe o si simplemente no se llegó a ella.
     const buscado = normalizar(tagName)
-    const match = (await listarEtiquetas(headers)).find((t: any) => normalizar(t.name) === buscado)
-    return match ? match.id : null
+    const todas = await listarEtiquetas(headers)
+    const exacta = todas.find((t: any) => normalizar(t.name) === buscado)
+    if (exacta) return exacta.id
+    // Sin coincidencia exacta: se admite la diferencia singular/plural
+    // ("Nuevo Bases" ↔ "Nuevos Bases"). En la cuenta la etiqueta se ha
+    // llamado de las dos formas según quién la escribiera, y crear la
+    // variante que falte partiría la campaña en dos sin avisar. Solo se usa
+    // cuando la exacta no existe, para no fundir dos etiquetas distintas.
+    const singular = (n: string) => n.split(' ').map((w) => w.replace(/s$/, '')).join(' ')
+    const parecida = todas.find((t: any) => singular(normalizar(t.name)) === singular(buscado))
+    if (parecida) console.log('[waitlist] etiqueta por singular/plural:', tagName, '→', parecida.name)
+    return parecida ? parecida.id : null
   } catch (e) {
     console.error('[waitlist] findTagId error:', e)
   }
