@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro'
+import { avisarEscuela } from '../../../lib/escuela'
 import { createHash, timingSafeEqual } from 'node:crypto'
 import {
   asignarEtiqueta,
@@ -215,6 +216,20 @@ export const POST: APIRoute = async ({ request }) => {
     if (!resPersona.ok) problemas.push(`persona:${resPersona.status}`)
     if (tag.id === null) problemas.push(`etiqueta:${tag.via}`)
     else if (resTag && !resTag.ok) problemas.push(`etiqueta:${resTag.status}`)
+
+    // La copia en la escuela, para la ficha del contacto.
+    await avisarEscuela({
+      kind: 'instagram',
+      email,
+      first_name: firstName,
+      last_name: surname,
+      source: 'instagram',
+      tag: etiqueta,
+      utm_source: texto(body?.utm_source),
+      utm_medium: texto(body?.utm_medium),
+      utm_campaign: texto(body?.utm_campaign),
+      extra: { username, origen },
+    })
 
     log(problemas.length ? 'parcial' : 'ok', {
       contact_id: contacto.id,

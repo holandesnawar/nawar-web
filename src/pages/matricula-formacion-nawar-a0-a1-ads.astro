@@ -353,6 +353,8 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 
 <script>
   import { contextoDelLead } from '../lib/recorrido'
+  import { guardarUTM, leerUTM } from '../lib/utm'
+  guardarUTM()
   const ETIQUETA = 'Matrícula ads'
   const GRACIAS = '/matricula-formacion-nawar-a0-a1-ads/gracias'
 
@@ -436,7 +438,7 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
       const aviso = fetch('/api/solicitud', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...payload, source: 'ads', ...contextoDelLead() }),
+        body: JSON.stringify({ ...payload, source: 'ads', ...contextoDelLead(), ...leerUTM() }),
       }).catch(() => null)
 
       const res = await fetch('/api/waitlist', {

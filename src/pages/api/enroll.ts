@@ -145,6 +145,14 @@ export const POST: APIRoute = async ({ request }) => {
   const phone     = (body?.phone      ?? '').toString().trim()
   const country   = (body?.country    ?? '').toString().trim()
   const city      = (body?.city       ?? '').toString().trim()
+  // De dónde viene la venta: se guarda con la matrícula en la escuela.
+  const utmSource   = (body?.utmSource   ?? '').toString().trim().slice(0, 120)
+  const utmMedium   = (body?.utmMedium   ?? '').toString().trim().slice(0, 120)
+  const utmCampaign = (body?.utmCampaign ?? '').toString().trim().slice(0, 120)
+  const recorrido: string[] = Array.isArray(body?.recorrido)
+    ? body.recorrido.filter((x: unknown) => typeof x === 'string' && /^[a-z-]{1,24}$/.test(x)).slice(-12)
+    : []
+  const referrer = (body?.referrer ?? '').toString().trim().slice(0, 120)
 
   // ── Honeypot anti-bot ──
   const honeypot = (body?.website ?? '').toString().trim()
@@ -189,6 +197,11 @@ export const POST: APIRoute = async ({ request }) => {
         phone,
         country,
         city,
+        utm_source: utmSource,
+        utm_medium: utmMedium,
+        utm_campaign: utmCampaign,
+        recorrido,
+        referrer,
       }),
     })
 

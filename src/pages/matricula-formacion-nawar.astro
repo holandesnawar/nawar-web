@@ -342,6 +342,9 @@ if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
 </style>
 
 <script>
+  import { guardarUTM, leerUTM } from '../lib/utm'
+  import { contextoDelLead } from '../lib/recorrido'
+  guardarUTM()
   const form = document.getElementById('form') as HTMLFormElement | null
   const btn = document.getElementById('submit') as HTMLButtonElement | null
   const btnText = document.getElementById('mx-btn-text') as HTMLElement | null
@@ -403,6 +406,10 @@ if (!plazas.abierta) return Astro.redirect(RUTA_LISTA_ESPERA, 302)
       last_name: (document.getElementById('last_name') as HTMLInputElement).value.trim(),
       email: (document.getElementById('email') as HTMLInputElement).value.trim().toLowerCase(),
       website: (document.getElementById('mx-honeypot') as HTMLInputElement | null)?.value ?? '',
+      // De qué anuncio viene y por dónde pasó: se guarda con la matrícula
+      // para saber de dónde sale cada venta.
+      ...leerUTM(),
+      ...contextoDelLead(),
     }
 
     try {
