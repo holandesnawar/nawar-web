@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro'
+import { avisarEscuela } from '../../lib/escuela'
 import { camposDePersona, escribirCampos as escribirCamposLib, relojDe } from '../../lib/systeme'
 import { createHash, timingSafeEqual } from 'node:crypto'
 
@@ -342,6 +343,15 @@ export const POST: APIRoute = async ({ request }) => {
     typeof body?.tagName === 'string' && body.tagName.trim()
       ? body.tagName.trim()
       : TAG_NAME
+  // Qué guía es ("bases", "hebben"). Lo manda solo el formulario de una guía;
+  // los demás (lista de espera, contacto de anuncios) no lo mandan y no se
+  // avisa a la escuela desde aquí: el de anuncios ya avisa por /api/solicitud
+  // y la lista de espera no es una descarga.
+  const guia = typeof body?.guia === 'string' ? body.guia.trim().slice(0, 20) : ''
+  const recorrido: string[] = Array.isArray(body?.recorrido)
+    ? body.recorrido.filter((x: unknown) => typeof x === 'string' && /^[a-z-]{1,24}$/.test(x)).slice(-12)
+    : []
+  const referrer = (body?.referrer ?? '').toString().trim().slice(0, 120)
   // Opcional: la manda solo el formulario que quiere separar a los que llegan
   // por primera vez. Si no viene, no se etiqueta nada de más.
   const tagNuevo =
@@ -412,6 +422,24 @@ export const POST: APIRoute = async ({ request }) => {
     debug.error = 'SYSTEME_API_KEY not set'
     console.error('[waitlist] SYSTEME_API_KEY not set — skipping CRM sync for:', email)
   }
+  // La copia en la escuela: con o sin CRM, que quede rastro de la descarga.
+  if (guia && email) {
+    await avisarEscuela({
+      kind: guia === 'bases' ? 'guia-bases' : guia === 'hebben' ? 'guia-hebben' : 'guia',
+      email,
+      first_name: firstName,
+      last_name: lastName,
+      phone,
+      source: conociste === 'Anuncio' || utmSource ? 'ads' : 'web',
+      tag: tagName,
+      recorrido,
+      referrer,
+      utm_source: utmSource,
+      utm_medium: utmMedium,
+      utm_campaign: utmCampaign,
+    })
+  }
+
 
   return json({
     success: true,

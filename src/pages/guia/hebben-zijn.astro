@@ -374,6 +374,7 @@ export const prerender = false
 </style>
 
 <script>
+  import { contextoDelLead } from '../../lib/recorrido'
   const form = document.getElementById('guide-form') as HTMLFormElement | null
   const nameInput = document.getElementById('guide-name') as HTMLInputElement | null
   const emailInput = document.getElementById('guide-email') as HTMLInputElement | null
@@ -397,7 +398,7 @@ export const prerender = false
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, tagName: 'Hebben / Zijn', website }),
+        body: JSON.stringify({ name, email, tagName: 'Hebben / Zijn', website, guia: 'hebben', ...contextoDelLead() }),
       })
 
       const data = await res.json().catch(() => null)

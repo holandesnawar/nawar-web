@@ -57,6 +57,9 @@ export const POST: APIRoute = async ({ request }) => {
           .slice(-12)
       : [],
     referrer: (body?.referrer ?? '').toString().trim().slice(0, 120),
+    utm_source: (body?.utmSource ?? '').toString().trim().slice(0, 120),
+    utm_medium: (body?.utmMedium ?? '').toString().trim().slice(0, 120),
+    utm_campaign: (body?.utmCampaign ?? '').toString().trim().slice(0, 120),
   }
 
   try {

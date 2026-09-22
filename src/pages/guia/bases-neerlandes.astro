@@ -500,6 +500,7 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
 
 <script>
   import { guardarUTM, leerUTM } from '../../lib/utm'
+  import { contextoDelLead } from '../../lib/recorrido'
 
   // Lo primero, antes de que la persona toque nada: los utm_* viven en la
   // dirección de llegada y se pierden al primer clic.
@@ -546,6 +547,9 @@ const PORTADA_ALT = 'Portada de la guía gratuita: las bases del neerlandés par
           website,
           // De qué anuncio viene. Vacíos si la visita es orgánica.
           ...leerUTM(),
+          // Qué guía es y por dónde pasó: para la copia en la escuela.
+          guia: 'bases',
+          ...contextoDelLead(),
         }),
       })
 
