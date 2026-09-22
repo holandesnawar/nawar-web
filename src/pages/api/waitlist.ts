@@ -100,6 +100,7 @@ type SyncDebug = {
   personaError?: string
   /** Lo que decide si entra en la campaña de bienvenida. Es EL dato. */
   esNuevo?: boolean
+  etiquetasPrevias?: string[]
   campos?: string[]
   camposStatus?: number
   camposError?: string
@@ -192,7 +193,8 @@ async function syncToCRM(
   phone: string,
   de: Procedencia,
   tagName: string,
-  /** Etiqueta que recibe SOLO quien no estaba ya en el CRM. Vacío = ninguna. */
+  /** Etiqueta que recibe SOLO quien no tenía todavía la etiqueta principal
+   *  (su primera vez con esta guía). Vacío = ninguna. */
   tagNuevoName: string,
   headers: Record<string, string>,
   debug: SyncDebug
@@ -239,8 +241,24 @@ async function syncToCRM(
         const sd = await searchRes.json().catch(() => null)
         debug.searchBody = JSON.stringify(sd).slice(0, 200)
         const items = sd?.items ?? sd?.contacts ?? (Array.isArray(sd) ? sd : null)
-        if (Array.isArray(items) && items.length > 0) contactId = items[0]?.id ?? null
-        else if (sd?.id) contactId = sd.id
+        const encontrado = Array.isArray(items) && items.length > 0 ? items[0] : sd?.id ? sd : null
+        if (encontrado?.id) contactId = encontrado.id
+
+        // ⚠️ "Nuevo" no es "no estaba en el CRM": es "no tenía TODAVÍA esta
+        // etiqueta". Antes solo contaba como nuevo quien se creaba en ese
+        // momento, y casi nadie se crea aquí: la mayoría ya está en systeme.io
+        // por Instagram, la lista de espera o la otra guía. O sea que la
+        // etiqueta "Nuevos Bases" no se ponía casi nunca, y la campaña que
+        // cuelga de ella no arrancaba. Ahora se mira si el contacto YA tenía
+        // la etiqueta de la guía; si no la tenía, es su primera vez aquí.
+        if (encontrado) {
+          const etiquetasQueTiene: string[] = (encontrado.tags ?? [])
+            .map((t: any) => (typeof t === 'string' ? t : t?.name) || '')
+            .filter(Boolean)
+          const yaTeniaEsta = etiquetasQueTiene.some((n) => normalizar(n) === normalizar(tagName))
+          esNuevo = !yaTeniaEsta
+          debug.etiquetasPrevias = etiquetasQueTiene
+        }
 
         if (contactId) {
           console.log('[waitlist] found existing contact:', contactId, '— updating...')
