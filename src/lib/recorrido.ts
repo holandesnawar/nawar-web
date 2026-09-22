@@ -26,6 +26,7 @@ const TOPE = 12
 
 /** Las páginas que dicen algo del producto, y qué enseña cada una. */
 const PAGINAS: { prueba: RegExp; marca: string }[] = [
+  { prueba: /^\/agendar\/?$/, marca: 'agendar' },
   // ⚠️ La única con precio. Es la que parte a los leads en dos grupos.
   { prueba: /^\/formacion-a0-a1\/?$/, marca: 'landing-precio' },
   // Las dos rutas de la landing de captación: mismo contenido, sin cifras.

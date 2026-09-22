@@ -46,7 +46,7 @@ export const POST: APIRoute = async ({ request }) => {
     first_name: (body?.firstName ?? body?.first_name ?? '').toString().trim(),
     last_name: (body?.lastName ?? body?.last_name ?? '').toString().trim(),
     phone: (body?.phone ?? '').toString().trim(),
-    source: body?.source === 'ads' ? 'ads' : 'web',
+    source: body?.source === 'ads' ? 'ads' : body?.source === 'llamada' ? 'llamada' : 'web',
     // Por dónde pasó antes de rellenar. Lo manda el navegador, así que se
     // recorta y se filtra: nada de guardar una cadena larga que venga de
     // fuera. Las marcas son de un juego cerrado (lib/recorrido.ts) y lo que
