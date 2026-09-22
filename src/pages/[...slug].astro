@@ -1,0 +1,55 @@
+---
+/**
+ * La red que recoge las rutas que la web NO tiene.
+ *
+ * Cuando alguien pide /ig, /guia-bases, /lo-que-sea y no existe ninguna
+ * página con ese nombre, Astro acaba aquí. Se le pregunta a la escuela si
+ * hay un enlace corto o una redirección con ese nombre (los crea el
+ * administrador desde Panel → Webs, sin despliegue) y, si lo hay, se manda
+ * a la persona a su destino. Si no, el 404 de siempre.
+ *
+ * Las páginas de verdad ganan siempre: Astro solo cae en este catch-all
+ * cuando ninguna ruta estática o dinámica casa. O sea que un enlace llamado
+ * "blog" nunca taparía /blog (y el servidor ya rechaza esos nombres).
+ *
+ * En blando: si la escuela no contesta en 2,5 s, 404. Un enlace corto que
+ * tarda es mejor que una web que se cuelga por un atajo.
+ */
+import { ESCUELA_URL } from '../lib/escuela'
+
+export const prerender = false
+
+const slug = (Astro.params.slug || '').toString().replace(/^\/+|\/+$/g, '')
+
+// Lo que a todas luces no es un atajo: archivos (con extensión), rutas
+// internas de Astro y la API. Directo al 404, sin molestar a la escuela.
+const noEsAtajo =
+  !slug ||
+  /\.[a-z0-9]{2,5}$/i.test(slug) ||
+  slug.startsWith('_') ||
+  slug.startsWith('api/') ||
+  slug.startsWith('.well-known')
+
+if (!noEsAtajo) {
+  const control = new AbortController()
+  const reloj = setTimeout(() => control.abort(), 2500)
+  try {
+    const res = await fetch(`${ESCUELA_URL}/api/v1/webs/resolver/${encodeURI(slug)}`, {
+      signal: control.signal,
+      headers: { accept: 'application/json' },
+    })
+    if (res.ok) {
+      const data = await res.json().catch(() => null)
+      const destino = typeof data?.destino === 'string' ? data.destino : ''
+      if (destino) return Astro.redirect(destino, 302)
+    }
+  } catch {
+    // La escuela no contestó: se sigue al 404.
+  } finally {
+    clearTimeout(reloj)
+  }
+}
+
+Astro.response.status = 404
+return Astro.rewrite('/404')
+---
