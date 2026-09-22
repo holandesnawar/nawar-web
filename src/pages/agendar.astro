@@ -275,6 +275,12 @@ export const prerender = true
   .ag-list strong { color: #fff; font-weight: 600; }
   .ag-req { color: #ff8a8a; font-weight: 500; }
 
+  /* El formulario es hijo de una columna flex con align-items:flex-start:
+     sin ancho, se encogía al contenido y en escritorio las preguntas
+     salían pegadas a la izquierda, con el título "centrado" respecto a
+     una caja de 400 px. En móvil no se notaba porque el contenido ya
+     llenaba el ancho. */
+  #ag-form { width: 100%; }
   .ag-pane { width: 100%; }
   .ag-honeypot { position: absolute !important; left: -10000px !important; width: 1px !important; height: 1px !important; overflow: hidden !important; opacity: 0 !important; pointer-events: none !important; }
   .ag-fields { display: flex; flex-direction: column; gap: 22px; margin-top: 32px; }
@@ -284,25 +290,40 @@ export const prerender = true
   /* Cajas de cristal, como las respuestas. */
   .ag-input {
     width: 100%; padding: 15px 18px; border-radius: 12px; color: #fff; font-size: 16px; font-family: inherit; outline: none;
-    background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.22);
-    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+    /* Cristal: tinte azul oscuro (el #0a1656 de la marca) con un brillo
+       diagonal encima. Blanco al 5 % sobre este fondo salía lila; el azul
+       más oscuro que el fondo enfría y se lee como vidrio. Misma receta que
+       las tarjetas del home. */
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 60%, rgba(255,255,255,0.05) 100%),
+      rgba(10, 22, 86, 0.34);
+    border: 1.5px solid rgba(255,255,255,0.26);
+    -webkit-backdrop-filter: saturate(100%) blur(16px); backdrop-filter: saturate(100%) blur(16px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(3,9,33,0.25);
     transition: border-color .15s, background .15s;
   }
   .ag-input::placeholder { color: rgba(255,255,255,0.35); }
-  .ag-input:focus { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.08); }
+  .ag-input:focus { border-color: rgba(255,255,255,0.75); }
 
   .ag-options { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
   .ag-option {
     display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
     padding: 16px 18px; border-radius: 12px; cursor: pointer; font-family: inherit;
-    background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.22);
-    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 60%, rgba(255,255,255,0.05) 100%),
+      rgba(10, 22, 86, 0.34);
+    border: 1.5px solid rgba(255,255,255,0.26);
+    -webkit-backdrop-filter: saturate(100%) blur(16px); backdrop-filter: saturate(100%) blur(16px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(3,9,33,0.25);
     color: #fff; font-size: 16px; font-weight: 500; line-height: 1.4; transition: background .15s, border-color .15s;
   }
-  .ag-option:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.4); }
-  .ag-option[aria-checked="true"] { background: rgba(255,255,255,0.11); border-color: rgba(255,255,255,0.85); }
+  .ag-option:hover { border-color: rgba(255,255,255,0.45); }
+  .ag-option[aria-checked="true"] {
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 60%, rgba(255,255,255,0.08) 100%),
+      rgba(10, 22, 86, 0.34);
+    border-color: rgba(255,255,255,0.9);
+  }
   .ag-option-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.45); flex-shrink: 0; }
   .ag-option[aria-checked="true"] .ag-option-dot { border-color: #fff; background: #fff; box-shadow: inset 0 0 0 4px #1D0084; }
 
