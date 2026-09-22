@@ -79,11 +79,15 @@ export const PREGUNTAS: Pregunta[] = [
   },
   {
     clave: 'inversion',
-    titulo: 'La formación cuesta 397 € (pago único, o a plazos con Klarna). Si en la llamada ves que encaja, ¿estás en disposición de invertirlo?',
+    titulo: 'Disponibilidad económica',
+    // Sin cifra, a propósito: el precio se cuenta en la llamada, con la
+    // persona delante. Aquí se mide la disposición, no se negocia.
+    ayuda:
+      'Si vemos que encajas en la formación, sabiendo que vas a aprender el idioma que te abre la vida aquí y con un acompañamiento cercano durante todo el proceso… ¿hasta qué punto puedes invertir en ti?',
     opciones: [
-      { valor: 'si', texto: 'Sí, si encaja lo hago', puntos: 3 },
-      { valor: 'dudo', texto: 'Quiero saber más en la llamada', puntos: 1 },
-      { valor: 'no', texto: 'Ahora mismo no', puntos: -10 },
+      { valor: 'contado', texto: 'El dinero no es un problema: puedo pagarlo al contado, sin financiación', puntos: 3 },
+      { valor: 'esfuerzo', texto: 'Puedo hacer un esfuerzo con ayuda: con un plan de pago, busco la forma', puntos: 2 },
+      { valor: 'no', texto: 'Ahora mismo no dispongo de dinero para esto', puntos: -10 },
     ],
   },
 ]
