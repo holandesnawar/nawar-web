@@ -422,10 +422,16 @@ export const POST: APIRoute = async ({ request }) => {
     debug.error = 'SYSTEME_API_KEY not set'
     console.error('[waitlist] SYSTEME_API_KEY not set — skipping CRM sync for:', email)
   }
-  // La copia en la escuela: con o sin CRM, que quede rastro de la descarga.
-  if (guia && email) {
+  // La copia en la escuela: con o sin CRM, que quede rastro del alta. Las
+  // guías van con su nombre; la lista de espera (la que no manda `guia` y
+  // entra con la etiqueta de siempre) también, para que el orgánico no se
+  // quede solo en systeme.io. El formulario de contacto de anuncios NO pasa
+  // por aquí: ya avisa por /api/solicitud y avisar dos veces sacaría a la
+  // persona dos veces en su historial.
+  const esListaDeEspera = !guia && tagName === TAG_NAME
+  if ((guia || esListaDeEspera) && email) {
     await avisarEscuela({
-      kind: guia === 'bases' ? 'guia-bases' : guia === 'hebben' ? 'guia-hebben' : 'guia',
+      kind: guia === 'bases' ? 'guia-bases' : guia === 'hebben' ? 'guia-hebben' : guia ? 'guia' : 'lista-espera',
       email,
       first_name: firstName,
       last_name: lastName,
