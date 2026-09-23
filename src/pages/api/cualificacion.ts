@@ -37,6 +37,30 @@ export const POST: APIRoute = async ({ request }) => {
   const phone = (body?.phone ?? '').toString().trim().slice(0, 40)
   if (!email || !email.includes('@') || !firstName) return json({ error: 'Faltan el nombre o el correo' }, 400)
 
+  const recorridoParcial: string[] = Array.isArray(body?.recorrido)
+    ? body.recorrido.filter((x: unknown) => typeof x === 'string' && /^[a-z-]{1,24}$/.test(x)).slice(-12)
+    : []
+
+  // Modo parcial: la persona acaba de pasar la pantalla de datos. Se guarda
+  // YA en la escuela como evento "agendar-empezado", para que si cierra la
+  // pestaña a mitad no se pierda: sale en Panel → Llamadas como "No
+  // terminó". Sin CRM, sin solicitud y sin correo al equipo: eso va al
+  // terminar. Solo el evento a propósito: /payments/solicitudes tiene un
+  // tope de 5 por hora y por IP, y todas las llamadas de la web salen de
+  // las IP de Vercel; gastar dos por persona acercaría el tope.
+  if (body?.parcial === true) {
+    await avisarEscuela({
+      kind: 'agendar-empezado',
+      email,
+      first_name: firstName,
+      last_name: lastName,
+      phone,
+      source: 'llamada',
+      recorrido: recorridoParcial,
+    })
+    return json({ ok: true })
+  }
+
   const respuestas: Record<string, string> = {}
   for (const [k, v] of Object.entries((body?.respuestas ?? {}) as Record<string, unknown>)) {
     if (typeof v === 'string' && /^[a-z0-9]{1,20}$/.test(v) && /^[a-z]{1,20}$/.test(k)) respuestas[k] = v
