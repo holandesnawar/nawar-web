@@ -61,6 +61,24 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: true })
   }
 
+  // Modo reserva: Calendly avisó a la página de que ha elegido día y hora.
+  // Se apunta como evento "reunion" para que Panel → Llamadas diga "Hora
+  // reservada" y no haya que ir a Calendly a comprobarlo. El día exacto lo
+  // tiene Calendly (y su correo); aquí solo va el enlace del evento.
+  if (body?.reservada === true) {
+    const uri = (body?.calendly_evento ?? '').toString().trim()
+    await avisarEscuela({
+      kind: 'reunion',
+      email,
+      first_name: firstName,
+      last_name: lastName,
+      phone,
+      source: 'llamada',
+      extra: /^https:\/\/api\.calendly\.com\/scheduled_events\/[\w-]{1,80}$/.test(uri) ? { calendly_evento: uri } : {},
+    })
+    return json({ ok: true })
+  }
+
   const respuestas: Record<string, string> = {}
   for (const [k, v] of Object.entries((body?.respuestas ?? {}) as Record<string, unknown>)) {
     if (typeof v === 'string' && /^[a-z0-9]{1,20}$/.test(v) && /^[a-z]{1,20}$/.test(k)) respuestas[k] = v
@@ -124,7 +142,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   // A dónde agendar: Calendly/Cal.com si está puesto; si no, WhatsApp con el
   // mensaje ya escrito. Así la página funciona desde hoy.
-  const agenda = leerEnv('PUBLIC_AGENDA_URL') || ''
+  const agenda = leerEnv('PUBLIC_AGENDA_URL') || 'https://calendly.com/holandesconnawar/llamada-de-consultoria'
   const nombre = encodeURIComponent(`${firstName} ${lastName}`.trim())
   const agendaUrl = agenda
     ? `${agenda}${agenda.includes('?') ? '&' : '?'}name=${nombre}&email=${encodeURIComponent(email)}`
