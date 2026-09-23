@@ -449,6 +449,10 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
     transition: border-color .15s, background .15s;
   }
   .ag-input { width: 100%; padding: 15px 18px; border-radius: 12px; font-size: 16px; }
+  /* Los campos sin sombra exterior (pedido 23/09): cuatro seguidos con su
+     sombra oscurecían toda la columna y se perdía el cristal. Solo queda el
+     filo de luz de arriba. Las cajas de respuesta la conservan. */
+  .ag-input, .ag-textarea { box-shadow: inset 0 1px 0 rgba(255,255,255,0.18); }
   .ag-input::placeholder, .ag-textarea::placeholder { color: rgba(255,255,255,0.35); }
   .ag-input:focus, .ag-textarea:focus { border-color: rgba(255,255,255,0.75); }
 
