@@ -1,7 +1,7 @@
 /**
  * La cualificación antes de la llamada.
  *
- * Quien pide una llamada contesta siete preguntas. No son para conocerle:
+ * Quien pide una llamada contesta nueve preguntas. No son para conocerle:
  * son para que a la llamada lleguen los que tienen el nivel, el momento y
  * la disposición de invertir, y los demás reciban lo que les toca ahora
  * (la guía gratis) sin gastar una llamada. Es lo que hacen UDIA e ICO y lo
@@ -95,6 +95,35 @@ export const PREGUNTAS: Pregunta[] = [
     ],
   },
   {
+    tipo: 'opciones',
+    clave: 'edad',
+    etiqueta: 'Edad',
+    titulo: '¿Cuántos años tienes?',
+    ayuda: 'Selecciona tu rango de edad.',
+    // No puntúa: es para saber con quién hablas antes de llamar.
+    opciones: [
+      { valor: 'menos18', texto: 'Menos de 18', puntos: 0 },
+      { valor: '18a25', texto: 'Entre 18 y 25', puntos: 0 },
+      { valor: '26a35', texto: 'Entre 26 y 35', puntos: 0 },
+      { valor: '36a49', texto: 'Entre 36 y 49', puntos: 0 },
+      { valor: 'mas50', texto: 'Más de 50', puntos: 0 },
+    ],
+  },
+  {
+    tipo: 'opciones',
+    clave: 'ocupacion',
+    etiqueta: 'Ocupación',
+    titulo: 'Queremos conocer mejor tu situación… ¿qué opción se ajusta más a lo que haces ahora?',
+    opciones: [
+      { valor: 'completa', texto: 'Trabajo a jornada completa', puntos: 1 },
+      { valor: 'media', texto: 'Trabajo a media jornada', puntos: 1 },
+      { valor: 'busco', texto: 'Estoy buscando trabajo', puntos: 1 },
+      { valor: 'estudio', texto: 'Estudio', puntos: 0 },
+      { valor: 'casa', texto: 'Me ocupo de la casa o la familia', puntos: 1 },
+      { valor: 'negocio', texto: 'Tengo mi propio negocio', puntos: 1 },
+    ],
+  },
+  {
     tipo: 'texto',
     clave: 'objetivo',
     etiqueta: 'Qué espera conseguir',
@@ -143,15 +172,15 @@ export const PREGUNTAS: Pregunta[] = [
 ]
 
 /**
- * A partir de cuántos puntos se le ofrece la llamada. Máximo posible: 14.
+ * A partir de cuántos puntos se le ofrece la llamada. Máximo posible: 15.
  *
- * Quitadas el 23/09 (decisión del usuario): edad, ocupación, cuándo empieza y
- * quién decide. Para un ticket de 397 € cada pantalla de más cuesta leads;
- * edad y ocupación no cambiaban nada, casi no hay menores ni gente que no
- * decida por sí misma, y "cuándo empiezas" lo trabaja el closer en la
- * llamada: si es un proceso de admisión, es para empezar ya.
+ * Quitadas el 23/09 (decisión del usuario): "cuándo empieza" y "quién
+ * decide". Casi no hay menores ni gente que no decida por sí misma, y
+ * "cuándo empiezas" lo trabaja el closer en la llamada: si es un proceso de
+ * admisión, es para empezar ya. ⚠️ Edad y ocupación SE QUEDAN: se quitaron
+ * por error y el usuario las pidió de vuelta.
  */
-export const CORTE_APTO = 8
+export const CORTE_APTO = 9
 
 /** Hasta dónde se guarda una respuesta abierta. */
 export const MAX_TEXTO = 800
