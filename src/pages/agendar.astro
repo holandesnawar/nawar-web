@@ -40,6 +40,14 @@ export const prerender = true
 /** Foto de fondo, a la derecha, con velo. Vacío = sin foto. */
 const FOTO_FONDO = ''
 
+/**
+ * El calendario de la llamada (Calendly), incrustado en la última pantalla
+ * como hace ICO: texto que prepara la llamada a un lado y el calendario al
+ * otro. PUBLIC_AGENDA_URL en Vercel lo cambia sin tocar código.
+ */
+const CALENDLY_URL = (import.meta.env.PUBLIC_AGENDA_URL as string | undefined) || 'https://calendly.com/holandesconnawar/llamada-de-consultoria'
+const WHATSAPP_URL = 'https://wa.me/31616084212'
+
 const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boolean)
 ---
 
@@ -179,13 +187,40 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
           <p class="ag-lead">Guardando tus respuestas.</p>
         </section>
 
-        <section class="ag-pane" data-pane="apto" hidden>
-          <span class="ag-badge">Encajas</span>
-          <h2 class="ag-title-sm">Reserva tu llamada</h2>
-          <p class="ag-lead">Por lo que cuentas, la formación es para ti. Elige un hueco y hablamos: quince o veinte minutos, sin compromiso, para ver cómo llegar al A1 desde donde estás.</p>
-          <div class="ag-actions">
-            <a id="ag-agenda" class="ag-btn" href="#" target="_blank" rel="noopener">Elegir día y hora ›</a>
+        <section class="ag-pane ag-pane-reserva" data-pane="apto" hidden>
+          <div class="ag-reserva">
+            <div class="ag-reserva-texto">
+              <span class="ag-badge">Encajas</span>
+              <h2 class="ag-q"><span id="ag-nombre"></span>ahora solo te queda elegir el día y la hora que mejor te vengan para tu llamada con el equipo.</h2>
+              <p class="ag-lead">
+                Nos tomamos en serio cada llamada: trabajamos con grupos reducidos y cada plaza cuenta. Es una
+                llamada para ver tu caso y darte un plan; si solo quieres información general, la tienes en la web.
+              </p>
+              <p class="ag-sub">Así que asegúrate de esto:</p>
+              <ul class="ag-list">
+                <li>Estar en un sitio tranquilo, sin ruido y con buena conexión.</li>
+                <li>Tener claro lo que nos has contado: tu nivel y para qué necesitas el idioma.</li>
+                <li>Ser puntual.</li>
+              </ul>
+              <p class="ag-lead ag-nota">
+                Si te surge algo y no puedes, avísanos cuanto antes por
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener">WhatsApp</a>.
+              </p>
+              <div class="ag-actions ag-solo-movil">
+                <button type="button" class="ag-btn" id="ag-ver-calendario">Elegir día y hora ›</button>
+              </div>
+            </div>
+            <div class="ag-calendario" id="ag-calendario" data-url={CALENDLY_URL}>
+              <div class="ag-calendario-caja" id="ag-calendly"></div>
+              <p class="ag-cal-alt">¿No ves el calendario? <a id="ag-agenda" href={CALENDLY_URL} target="_blank" rel="noopener">Ábrelo aquí</a></p>
+            </div>
           </div>
+        </section>
+
+        <section class="ag-pane" data-pane="reservada" hidden>
+          <span class="ag-badge">Llamada reservada</span>
+          <h2 class="ag-title-sm">¡Hecho! Nos vemos en la llamada</h2>
+          <p class="ag-lead">Te acaba de llegar un correo con el día, la hora y el enlace. Si necesitas cambiarla, en ese mismo correo tienes el botón para hacerlo.</p>
         </section>
 
         <section class="ag-pane" data-pane="noapto" hidden>
@@ -227,7 +262,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
     let hecho = 0
     if (id === 'datos') hecho = 0.5
     else if (id.startsWith('q')) hecho = 1 + Number(id.slice(1))
-    else if (id === 'enviando' || id === 'apto' || id === 'noapto') hecho = tramos
+    else if (id === 'enviando' || id === 'apto' || id === 'noapto' || id === 'reservada') hecho = tramos
     fill.style.width = `${Math.min(100, Math.round((hecho / tramos) * 100))}%`
     window.scrollTo({ top: 0, behavior: 'smooth' })
     // La pregunta abierta: el cursor ya dentro, sin tener que tocar.
@@ -351,6 +386,92 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
     if (btn && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); elegir(pane, btn) }
   })
 
+  // ── La reserva, con el calendario de Calendly dentro de la página ──────
+  // El script de Calendly se carga solo aquí, al llegar a esta pantalla: los
+  // que no encajan nunca lo descargan.
+  const calendario = document.getElementById('ag-calendario') as HTMLElement
+  const cajaCal = document.getElementById('ag-calendly') as HTMLElement
+  let calendlyPuesto = false
+
+  const cargarScript = () =>
+    new Promise<void>((ok, mal) => {
+      if ((window as any).Calendly) return ok()
+      const sc = document.createElement('script')
+      sc.src = 'https://assets.calendly.com/assets/external/widget.js'
+      sc.async = true
+      sc.onload = () => ok()
+      sc.onerror = () => mal(new Error('calendly'))
+      document.head.appendChild(sc)
+    })
+
+  const ponerCalendario = async () => {
+    if (calendlyPuesto) return
+    calendlyPuesto = true
+    const base = calendario.dataset.url as string
+    const nombre = `${val('first_name')} ${val('last_name')}`.trim()
+    // Colores de la marca (Calendly los aplica si el plan lo permite; si no,
+    // los ignora sin romper nada) y sin el aviso de cookies encima.
+    const url = `${base}${base.includes('?') ? '&' : '?'}hide_gdpr_banner=1&primary_color=1d0084`
+    try {
+      await cargarScript()
+      ;(window as any).Calendly.initInlineWidget({
+        url,
+        parentElement: cajaCal,
+        prefill: { name: nombre, email: val('email').toLowerCase() },
+        resize: true,
+      })
+    } catch {
+      // Si el script no carga (bloqueador, red), queda el enlace de debajo.
+      calendario.classList.add('ag-cal-fallo')
+    }
+  }
+
+  const abrirReserva = () => {
+    const nombre = val('first_name')
+    ;(document.getElementById('ag-nombre') as HTMLElement).textContent = nombre ? `${nombre}, ` : ''
+    document.body.classList.add('ag-ancho')
+    mostrar('apto')
+    // En escritorio el calendario va al lado del texto desde el principio.
+    // En el móvil, debajo, y se abre con el botón (como ICO): así se lee
+    // primero lo que hay que saber antes de reservar.
+    if (window.matchMedia('(min-width: 900px)').matches) {
+      calendario.classList.add('abierto')
+      ponerCalendario()
+    }
+  }
+
+  document.getElementById('ag-ver-calendario')?.addEventListener('click', (e) => {
+    ;(e.currentTarget as HTMLElement).closest('.ag-actions')?.setAttribute('hidden', '')
+    calendario.classList.add('abierto')
+    ponerCalendario()
+    setTimeout(() => calendario.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60)
+  })
+
+  // Cuando reserva, Calendly avisa a la página. Se apunta en la escuela para
+  // que en Panel → Llamadas salga "Hora reservada", y se da las gracias.
+  window.addEventListener('message', (e) => {
+    if (e.origin !== 'https://calendly.com') return
+    const d = (e as MessageEvent).data
+    if (!d || d.event !== 'calendly.event_scheduled') return
+    fetch('/api/cualificacion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      keepalive: true,
+      body: JSON.stringify({
+        reservada: true,
+        first_name: val('first_name'),
+        last_name: val('last_name'),
+        email: val('email').toLowerCase(),
+        phone: val('phone'),
+        calendly_evento: d.payload?.event?.uri ?? '',
+      }),
+    }).catch(() => {})
+    setTimeout(() => {
+      document.body.classList.remove('ag-ancho')
+      mostrar('reservada')
+    }, 1800)
+  })
+
   async function enviar() {
     mostrar('enviando')
     const errEnvio = document.getElementById('ag-err-envio') as HTMLElement
@@ -374,8 +495,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
       const data = await res.json().catch(() => null)
       if (!res.ok || !data?.ok) throw new Error('no ok')
       if (data.apto) {
-        ;(document.getElementById('ag-agenda') as HTMLAnchorElement).href = data.agenda_url
-        mostrar('apto')
+        abrirReserva()
       } else {
         mostrar('noapto')
       }
@@ -419,6 +539,9 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   .ag-sub { font-size: 16px; font-weight: 700; margin: 22px 0 8px; }
   .ag-list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 15.5px; line-height: 1.55; color: rgba(255,255,255,0.78); }
   .ag-list strong { color: #fff; font-weight: 600; }
+  /* El reset global de la web quita las viñetas; aquí hacen falta. */
+  .ag-list { list-style: disc; }
+  .ag-list li::marker { color: #4da3ff; }
   .ag-req { color: #ff8a8a; font-weight: 500; }
   .ag-hint { font-size: 12.5px; color: rgba(255,255,255,0.5); margin: 10px 0 0; }
   .ag-hint strong { color: rgba(255,255,255,0.75); font-weight: 600; }
@@ -501,6 +624,33 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   .ag-err.visible { display: block; }
   .ag-legal { width: 100%; text-align: center; font-size: 12px; line-height: 1.6; color: rgba(255,255,255,0.4); margin: 40px 0 0; }
   .ag-legal a { color: rgba(255,255,255,0.6); text-decoration: underline; }
+
+  /* ── Pantalla de reserva: texto + calendario ─────────────────────────── */
+  /* En esta pantalla la columna se ensancha para que quepan los dos. */
+  :global(body.ag-ancho) .ag-shell { max-width: 1120px; }
+  :global(body.ag-ancho) .ag-progress { max-width: none; }
+  .ag-reserva { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 44px; align-items: start; }
+  .ag-reserva .ag-q { margin-top: 4px; }
+  .ag-nota { font-size: 14px; }
+  .ag-nota a, .ag-cal-alt a { color: #fff; text-decoration: underline; }
+  .ag-solo-movil { display: none; }
+  .ag-calendario { display: none; }
+  .ag-calendario.abierto { display: block; }
+  /* Calendly pinta en blanco: se le da el mismo radio que las cajas y un
+     borde de cristal para que entre en la página en vez de flotar. */
+  .ag-calendario-caja {
+    min-height: 660px; border-radius: 16px; overflow: hidden; background: #fff;
+    border: 1.5px solid rgba(255,255,255,0.26);
+  }
+  .ag-cal-alt { margin: 10px 0 0; font-size: 12.5px; color: rgba(255,255,255,0.6); text-align: center; }
+  .ag-cal-fallo .ag-calendario-caja { display: none; }
+  .ag-cal-fallo .ag-cal-alt { font-size: 15px; color: #fff; }
+
+  @media (max-width: 899px) {
+    .ag-reserva { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .ag-solo-movil { display: flex; }
+    .ag-calendario-caja { min-height: 700px; }
+  }
 
   @media (hover: none) {
     .ag-textwrap .ag-hint { display: none; }
