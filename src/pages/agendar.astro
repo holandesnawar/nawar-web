@@ -19,8 +19,11 @@
  *    teclado; al tocar una opción se pasa sola a la siguiente pregunta;
  *  - preguntas que venden mientras preguntan (el texto largo antes de la
  *    pregunta), una abierta ("¿qué esperas conseguir?") con el marco de
- *    "de esto depende que te propongamos plaza", una escala del 1 al 5 de
- *    compromiso y "¿quién decide?";
+ *    "de esto depende que te propongamos plaza" y una escala del 1 al 5 de
+ *    compromiso. Siete preguntas: para 397 € cada pantalla de más cuesta
+ *    leads (edad, ocupación, cuándo y quién decide se quitaron el 23/09);
+ *  - el contacto se guarda al pasar la pantalla de datos, no al final: si
+ *    abandona a mitad, sale en Panel → Llamadas como "No terminó";
  *  - foto de fondo con velo azul (FOTO_FONDO; vacío = sin foto, solo el
  *    fondo de la marca).
  *
@@ -243,10 +246,41 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   form.querySelectorAll<HTMLButtonElement>('[data-go]').forEach((b) => {
     b.addEventListener('click', () => {
       const destino = b.dataset.go as string
-      if (destino === 'q0' && !datosOk()) return
+      if (destino === 'q0') {
+        if (!datosOk()) return
+        guardarParcial()
+      }
       mostrar(destino)
     })
   })
+
+  // En cuanto deja sus datos, la escuela ya lo sabe: si cierra a mitad, sale
+  // en Panel → Llamadas como "No terminó" y se le puede escribir. Una vez por
+  // correo (si vuelve atrás y lo cambia, se manda otra vez). Sin esperar la
+  // respuesta: la persona no nota nada, y keepalive lo deja salir aunque
+  // cierre la pestaña justo después.
+  let parcialEnviado = ''
+  const guardarParcial = () => {
+    const email = val('email').toLowerCase()
+    if (!email || email === parcialEnviado) return
+    parcialEnviado = email
+    try {
+      fetch('/api/cualificacion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify({
+          parcial: true,
+          first_name: val('first_name'),
+          last_name: val('last_name'),
+          email,
+          phone: val('phone'),
+          website: (document.getElementById('ag-hp') as HTMLInputElement).value,
+          ...contextoDelLead(),
+        }),
+      }).catch(() => {})
+    } catch {}
+  }
 
   const indice = (pane: HTMLElement) => Number((pane.dataset.pane as string).slice(1))
   const siguiente = async (pane: HTMLElement) => {
@@ -375,8 +409,11 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   .ag-badge { display: inline-flex; padding: 6px 16px; border-radius: 9999px; background: #025dc7; color: #e0f2ff; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 10px; }
   .ag-title-sm { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(26px, 3.8vw, 36px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 8px; }
   /* El texto que vende antes de la pregunta: mismo cuerpo, menos peso. */
-  .ag-intro { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(19px, 2.4vw, 24px); font-weight: 500; letter-spacing: -0.015em; line-height: 1.4; margin: 0 0 18px; color: rgba(255,255,255,0.92); }
-  .ag-q { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(22px, 3vw, 30px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.2; margin: 0; }
+  /* Sin negrita a propósito (pedido 23/09: "se ve muy cargado"). En móvil,
+     cinco líneas de Poppins en 700 eran un bloque. El texto que vende va en
+     400 y más apagado; la pregunta en 500, que ya destaca por tamaño. */
+  .ag-intro { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(18px, 2.2vw, 22px); font-weight: 400; letter-spacing: -0.01em; line-height: 1.45; margin: 0 0 18px; color: rgba(255,255,255,0.82); }
+  .ag-q { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(21px, 2.8vw, 28px); font-weight: 500; letter-spacing: -0.015em; line-height: 1.3; margin: 0; }
   .ag-lead { font-size: clamp(15px, 1.5vw, 17px); line-height: 1.65; color: rgba(255,255,255,0.78); margin: 12px 0 0; }
   .ag-lead strong { color: #fff; font-weight: 600; }
   .ag-sub { font-size: 16px; font-weight: 700; margin: 22px 0 8px; }
@@ -460,6 +497,10 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   .ag-err.visible { display: block; }
   .ag-legal { width: 100%; text-align: center; font-size: 12px; line-height: 1.6; color: rgba(255,255,255,0.4); margin: 40px 0 0; }
   .ag-legal a { color: rgba(255,255,255,0.6); text-decoration: underline; }
+
+  @media (hover: none) {
+    .ag-textwrap .ag-hint { display: none; }
+  }
 
   @media (max-width: 640px) {
     .ag-page { padding: 28px 20px 72px; }

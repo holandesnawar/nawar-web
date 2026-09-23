@@ -1,7 +1,7 @@
 /**
  * La cualificación antes de la llamada.
  *
- * Quien pide una llamada contesta once preguntas. No son para conocerle:
+ * Quien pide una llamada contesta siete preguntas. No son para conocerle:
  * son para que a la llamada lleguen los que tienen el nivel, el momento y
  * la disposición de invertir, y los demás reciban lo que les toca ahora
  * (la guía gratis) sin gastar una llamada. Es lo que hacen UDIA e ICO y lo
@@ -95,35 +95,6 @@ export const PREGUNTAS: Pregunta[] = [
     ],
   },
   {
-    tipo: 'opciones',
-    clave: 'edad',
-    etiqueta: 'Edad',
-    titulo: '¿Cuántos años tienes?',
-    ayuda: 'Selecciona tu rango de edad.',
-    // No puntúa: es para saber con quién hablas antes de llamar.
-    opciones: [
-      { valor: 'menos18', texto: 'Menos de 18', puntos: 0 },
-      { valor: '18a25', texto: 'Entre 18 y 25', puntos: 0 },
-      { valor: '26a35', texto: 'Entre 26 y 35', puntos: 0 },
-      { valor: '36a49', texto: 'Entre 36 y 49', puntos: 0 },
-      { valor: 'mas50', texto: 'Más de 50', puntos: 0 },
-    ],
-  },
-  {
-    tipo: 'opciones',
-    clave: 'ocupacion',
-    etiqueta: 'Ocupación',
-    titulo: 'Queremos conocer mejor tu situación… ¿qué opción se ajusta más a lo que haces ahora?',
-    opciones: [
-      { valor: 'completa', texto: 'Trabajo a jornada completa', puntos: 1 },
-      { valor: 'media', texto: 'Trabajo a media jornada', puntos: 1 },
-      { valor: 'busco', texto: 'Estoy buscando trabajo', puntos: 1 },
-      { valor: 'estudio', texto: 'Estudio', puntos: 0 },
-      { valor: 'casa', texto: 'Me ocupo de la casa o la familia', puntos: 1 },
-      { valor: 'negocio', texto: 'Tengo mi propio negocio', puntos: 1 },
-    ],
-  },
-  {
     tipo: 'texto',
     clave: 'objetivo',
     etiqueta: 'Qué espera conseguir',
@@ -132,18 +103,6 @@ export const PREGUNTAS: Pregunta[] = [
     ayuda: 'Descríbelo con detalle y honestidad: de tus respuestas depende que te propongamos plaza o no.',
     placeholder: 'Escribe aquí tu respuesta…',
     minimo: 15,
-  },
-  {
-    tipo: 'opciones',
-    clave: 'cuando',
-    etiqueta: 'Cuándo empieza',
-    titulo: '¿Cuándo quieres empezar?',
-    opciones: [
-      { valor: 'ya', texto: 'Esta semana', puntos: 3 },
-      { valor: 'mes', texto: 'Este mes', puntos: 2 },
-      { valor: 'trimestre', texto: 'En uno a tres meses', puntos: 1 },
-      { valor: 'mirando', texto: 'Solo estoy mirando', puntos: 0 },
-    ],
   },
   {
     tipo: 'opciones',
@@ -165,7 +124,7 @@ export const PREGUNTAS: Pregunta[] = [
     // Sin cifra, a propósito: el precio se cuenta en la llamada, con la
     // persona delante. Aquí se mide la disposición, no se negocia.
     titulo:
-      'Aprender el idioma es lo que más cambia tu vida aquí, y en Nawar no lo haces solo: clases en vivo, profesores que hablan tu idioma y un acompañamiento cercano durante todo el camino. Sabiendo esto, ¿hasta qué punto puedes invertir en ti hoy?',
+      'Aprender el idioma es lo que más cambia tu vida aquí, y en Nawar no lo haces solo: clases en vivo, profesores que hablan tu idioma y un acompañamiento cercano durante todo el camino.\n\nSabiendo esto, ¿hasta qué punto puedes invertir en ti hoy?',
     opciones: [
       { valor: 'contado', texto: 'El dinero no es un problema: puedo pagarlo al contado', puntos: 3 },
       { valor: 'plazos', texto: 'Puedo hacerlo con un plan de pago a plazos', puntos: 2 },
@@ -181,21 +140,18 @@ export const PREGUNTAS: Pregunta[] = [
     extremos: ['No es mi momento', 'Sin más…', 'Al 100 %'],
     puntos: [-5, -1, 0, 1, 2],
   },
-  {
-    tipo: 'opciones',
-    clave: 'decision',
-    etiqueta: 'Quién decide',
-    titulo: 'Si vemos que encajas, ¿quién toma la decisión final?',
-    ayuda: 'Si la decisión es de más de una persona, en la llamada tenéis que estar las dos.',
-    opciones: [
-      { valor: 'yo', texto: 'Decido yo', puntos: 1 },
-      { valor: 'otra', texto: 'Decido con otra persona (pareja, padres, etc.)', puntos: 0 },
-    ],
-  },
 ]
 
-/** A partir de cuántos puntos se le ofrece la llamada. Máximo posible: 19. */
-export const CORTE_APTO = 9
+/**
+ * A partir de cuántos puntos se le ofrece la llamada. Máximo posible: 14.
+ *
+ * Quitadas el 23/09 (decisión del usuario): edad, ocupación, cuándo empieza y
+ * quién decide. Para un ticket de 397 € cada pantalla de más cuesta leads;
+ * edad y ocupación no cambiaban nada, casi no hay menores ni gente que no
+ * decida por sí misma, y "cuándo empiezas" lo trabaja el closer en la
+ * llamada: si es un proceso de admisión, es para empezar ya.
+ */
+export const CORTE_APTO = 8
 
 /** Hasta dónde se guarda una respuesta abierta. */
 export const MAX_TEXTO = 800
