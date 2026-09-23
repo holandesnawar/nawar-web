@@ -80,7 +80,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
           <h1 class="ag-title-sm">Tu plan para llegar al A1 en tres meses</h1>
           <p class="ag-lead">
             Esta llamada no es una demo bonita. Es un <strong>diagnóstico directo</strong> para que tomes una decisión clara:
-            <strong>¿la formación de Nawar es el camino correcto para ti ahora… o no?</strong> En 15–20 minutos te damos claridad
+            <strong>¿la formación de Nawar es el camino correcto para ti ahora… o no?</strong> En media hora te damos claridad
             y un plan concreto.
           </p>
           <p class="ag-sub">Qué haremos contigo:</p>
@@ -192,14 +192,15 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
              es una cita que casi seguro se cumple; un "no" no gasta hueco. -->
         <section class="ag-pane" data-pane="encajas" hidden>
           <span class="ag-badge">Encajas</span>
-          <h2 class="ag-q"><span data-nombre></span>por lo que nos cuentas, la formación es para ti.</h2>
+          <!-- "Encajas para una llamada", no "la formación es para ti": en este
+               punto todavía no se vende nada (pedido 23/09). El aviso de "no
+               faltes, hay pocos huecos" va solo en la página del calendario. -->
+          <h2 class="ag-q"><span data-nombre></span>por lo que nos cuentas, encajas para una llamada con el equipo.</h2>
           <p class="ag-lead">
-            El siguiente paso es una <strong>llamada de 15–20 minutos</strong> con alguien del equipo: vemos tu caso,
-            te damos un plan concreto y decidimos juntos si es tu momento. Después de reservar te escribimos por
-            WhatsApp para confirmar la cita.
+            Es una <strong>llamada de media hora</strong> para ver tu caso y darte un plan concreto. Puedes hacernos
+            todas las preguntas que tengas, sin compromiso.
           </p>
           <div class="ag-separador" aria-hidden="true"></div>
-          <p class="ag-intro">Tenemos pocos huecos de llamada a la semana, y cada uno que se queda vacío es una llamada que otra persona no ha podido tener.</p>
           <h2 class="ag-q">¿Te comprometes a asistir a la llamada que reserves? <span class="ag-req">*</span></h2>
           <div class="ag-options" role="radiogroup" aria-label="Compromiso de asistir" id="ag-compromiso">
             <button type="button" class="ag-option" data-valor="si" data-letra="A" role="radio" aria-checked="false">
@@ -210,6 +211,9 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
               <span class="ag-key" aria-hidden="true">B</span>
               <span>No, prefiero no reservar la llamada ahora</span>
             </button>
+          </div>
+          <div class="ag-actions">
+            <button type="button" class="ag-btn-ghost" data-go={`q${PREGUNTAS.length - 1}`}>‹ Anterior</button>
           </div>
         </section>
 
@@ -228,22 +232,28 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
         <section class="ag-pane ag-pane-reserva" data-pane="apto" hidden>
           <div class="ag-reserva">
             <div class="ag-reserva-texto">
-              <span class="ag-badge">Último paso</span>
-              <h2 class="ag-q"><span data-nombre></span>ahora solo te queda elegir el día y la hora que mejor te vengan para tu llamada con el equipo.</h2>
-              <p class="ag-lead">
-                Nos tomamos en serio cada llamada: trabajamos con grupos reducidos y cada plaza cuenta. Es una
-                llamada para ver tu caso y darte un plan; si solo quieres información general, la tienes en la web.
-              </p>
-              <p class="ag-sub">Así que asegúrate de esto:</p>
-              <ul class="ag-list">
-                <li>Estar en un sitio tranquilo, sin ruido y con buena conexión.</li>
-                <li>Tener claro lo que nos has contado: tu nivel y para qué necesitas el idioma.</li>
-                <li>Ser puntual.</li>
-              </ul>
-              <p class="ag-lead ag-nota">
-                Si te surge algo y no puedes, avísanos cuanto antes por
-                <a href={WHATSAPP_URL} target="_blank" rel="noopener">WhatsApp</a>.
-              </p>
+              <div class="ag-reserva-contenido">
+                <img src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png" alt="Holandés Nawar" class="ag-logo ag-logo-split" width="150" height="38" />
+                <span class="ag-badge">Último paso</span>
+                <h2 class="ag-q">Elige el día y la hora que mejor te vengan para tu llamada con el equipo.</h2>
+                <p class="ag-lead">
+                  Nos tomamos muy en serio cada llamada: tenemos pocos huecos a la semana, y cada uno que se queda
+                  vacío es una llamada que otra persona no ha podido tener.
+                </p>
+                <p class="ag-sub">Así que asegúrate de esto:</p>
+                <ul class="ag-list">
+                  <li>Estás en un sitio tranquilo, sin ruido y con buena conexión.</li>
+                  <li>Tienes a mano todo lo que quieras preguntarnos.</li>
+                  <li>Eres puntual.</li>
+                </ul>
+                <p class="ag-lead ag-nota">
+                  Si te surge un imprevisto y no puedes asistir, avísanos por
+                  <a href={WHATSAPP_URL} target="_blank" rel="noopener">WhatsApp</a> con la máxima antelación posible.
+                </p>
+                <div class="ag-actions">
+                  <button type="button" class="ag-btn-ghost" id="ag-cal-volver">‹ Anterior</button>
+                </div>
+              </div>
             </div>
             <div class="ag-calendario" id="ag-calendario" data-url={CALENDLY_URL}>
               <div class="ag-cal-barra">
@@ -455,14 +465,16 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
     const nombre = `${val('first_name')} ${val('last_name')}`.trim()
     // Colores de la marca (Calendly los aplica si el plan lo permite; si no,
     // los ignora sin romper nada) y sin el aviso de cookies encima.
-    const url = `${base}${base.includes('?') ? '&' : '?'}hide_gdpr_banner=1&primary_color=1d0084`
+    // Sin el bloque de detalles del evento (duración, notas…): el texto de la
+    // izquierda ya lo cuenta, y así el calendario empieza arriba del todo y
+    // cabe sin tener que bajar.
+    const url = `${base}${base.includes('?') ? '&' : '?'}hide_event_type_details=1&hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=1d0084`
     try {
       await cargarScript()
       ;(window as any).Calendly.initInlineWidget({
         url,
         parentElement: cajaCal,
         prefill: { name: nombre, email: val('email').toLowerCase() },
-        resize: true,
       })
     } catch {
       // Si el script no carga (bloqueador, red), queda el enlace de debajo.
@@ -486,14 +498,16 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   const irAlCalendario = () => {
     mostrar('apto')
     calendario.classList.add('abierto')
-    if (esEscritorio()) document.body.classList.add('ag-ancho')
+    // Ordenador: la página entera se parte en dos mitades, sin la línea de
+    // pasos ni el logo de arriba, con Calendly desde arriba del todo.
+    if (esEscritorio()) document.body.classList.add('ag-split')
     else document.body.classList.add('ag-cal-movil')
     ponerCalendario()
   }
 
   const cerrarCalendario = () => {
     calendario.classList.remove('abierto')
-    document.body.classList.remove('ag-cal-movil', 'ag-ancho')
+    document.body.classList.remove('ag-cal-movil', 'ag-split')
     abrirReserva()
   }
 
@@ -505,6 +519,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
 
   compromiso.querySelectorAll<HTMLElement>('[role="radio"]').forEach((b) => b.addEventListener('click', () => responderCompromiso(b)))
   document.getElementById('ag-cal-cerrar')?.addEventListener('click', cerrarCalendario)
+  document.getElementById('ag-cal-volver')?.addEventListener('click', cerrarCalendario)
   document.getElementById('ag-volver-reservar')?.addEventListener('click', abrirReserva)
 
   // Cuando reserva, Calendly avisa a la página. Se apunta en la escuela para
@@ -528,7 +543,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
     }).catch(() => {})
     setTimeout(() => {
       calendario.classList.remove('abierto')
-      document.body.classList.remove('ag-ancho', 'ag-cal-movil')
+      document.body.classList.remove('ag-split', 'ag-cal-movil')
       mostrar('reservada')
     }, 1800)
   })
@@ -594,18 +609,19 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   /* Sin negrita a propósito (pedido 23/09: "se ve muy cargado"). En móvil,
      cinco líneas de Poppins en 700 eran un bloque. El texto que vende va en
      400 y más apagado; la pregunta en 500, que ya destaca por tamaño. */
-  .ag-intro { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(18px, 2.2vw, 22px); font-weight: 400; letter-spacing: -0.01em; line-height: 1.45; margin: 0 0 18px; color: rgba(255,255,255,0.82); }
+  .ag-intro { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(18px, 2.2vw, 22px); font-weight: 400; letter-spacing: -0.01em; line-height: 1.45; margin: 0 0 18px; color: rgba(255,255,255,0.95); }
   .ag-q { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(21px, 2.8vw, 28px); font-weight: 500; letter-spacing: -0.015em; line-height: 1.3; margin: 0; }
-  .ag-lead { font-size: clamp(15px, 1.5vw, 17px); line-height: 1.65; color: rgba(255,255,255,0.78); margin: 12px 0 0; }
+  /* Descripciones casi blancas (23/09): al 78 % costaba leerlas; ICO las pone blancas. */
+  .ag-lead { font-size: clamp(15px, 1.5vw, 17px); line-height: 1.65; color: rgba(255,255,255,0.93); margin: 12px 0 0; }
   .ag-lead strong { color: #fff; font-weight: 600; }
   .ag-sub { font-size: 16px; font-weight: 700; margin: 22px 0 8px; }
-  .ag-list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 15.5px; line-height: 1.55; color: rgba(255,255,255,0.78); }
+  .ag-list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 15.5px; line-height: 1.55; color: rgba(255,255,255,0.93); }
   .ag-list strong { color: #fff; font-weight: 600; }
   /* El reset global de la web quita las viñetas; aquí hacen falta. */
   .ag-list { list-style: disc; }
   .ag-list li::marker { color: #4da3ff; }
   .ag-req { color: #ff8a8a; font-weight: 500; }
-  .ag-hint { font-size: 12.5px; color: rgba(255,255,255,0.5); margin: 10px 0 0; }
+  .ag-hint { font-size: 12.5px; color: rgba(255,255,255,0.7); margin: 10px 0 0; }
   .ag-hint strong { color: rgba(255,255,255,0.75); font-weight: 600; }
 
   /* El formulario es hijo de una columna flex con align-items:flex-start:
@@ -617,7 +633,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   .ag-fields { display: flex; flex-direction: column; gap: 22px; margin-top: 32px; }
   .ag-field { display: flex; flex-direction: column; gap: 6px; }
   .ag-label { font-size: 15px; font-weight: 600; }
-  .ag-help { margin: 0; font-size: 13px; color: rgba(255,255,255,0.55); }
+  .ag-help { margin: 0; font-size: 13px; color: rgba(255,255,255,0.78); }
 
   /* Cristal: tinte azul oscuro (el #0a1656 de la marca) con un brillo
      diagonal encima. Blanco al 5 % sobre este fondo salía lila; el azul más
@@ -679,56 +695,72 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   .ag-scale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
   .ag-scale-btn { height: 60px; border-radius: 12px; cursor: pointer; font-size: 18px; font-weight: 600; }
   .ag-scale-btn[aria-checked="true"] { background: #fff; color: #1D0084; border-color: #fff; }
-  .ag-scale-labels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 10px; font-size: 13.5px; color: rgba(255,255,255,0.7); }
+  .ag-scale-labels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 10px; font-size: 13.5px; color: rgba(255,255,255,0.88); }
   .ag-scale-labels span:nth-child(2) { text-align: center; }
   .ag-scale-labels span:nth-child(3) { text-align: right; }
 
   /* Respuesta abierta. */
   .ag-textwrap { margin-top: 26px; }
-  .ag-textarea { line-height: 1.5; resize: none; min-height: 90px; display: block; }
+  /* La respuesta abierta va en caja, como las opciones (23/09): con solo la
+     línea de debajo no parecía una respuesta. Los datos de contacto sí se
+     quedan en línea, al estilo Typeform. */
+  .ag-textarea {
+    line-height: 1.5; resize: none; min-height: 120px; display: block;
+    background: rgba(77, 163, 255, 0.13); border: 1.5px solid rgba(255,255,255,0.30);
+    border-radius: 12px; padding: 14px 16px; font-size: 17px;
+  }
+  .ag-textarea:focus { border-color: #fff; }
 
   .ag-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 32px; }
   .ag-between { justify-content: space-between; }
   .ag-btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 15px 30px; border-radius: 12px; border: none; cursor: pointer; background: #fff; color: #1D0084; font-size: 16px; font-weight: 700; font-family: inherit; text-decoration: none; transition: background .15s; }
   .ag-btn:hover { background: #e9efff; }
-  .ag-btn-ghost { background: transparent; border: none; color: rgba(255,255,255,0.7); font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; padding: 8px 0; }
+  .ag-btn-ghost { background: transparent; border: none; color: rgba(255,255,255,0.85); font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; padding: 8px 0; }
   .ag-btn-ghost:hover { color: #fff; }
   .ag-err { display: none; margin-top: 14px; font-size: 13px; color: #ff8a8a; font-weight: 500; }
   .ag-err.visible { display: block; }
   .ag-legal { width: 100%; text-align: center; font-size: 12px; line-height: 1.6; color: rgba(255,255,255,0.4); margin: 40px 0 0; }
   .ag-legal a { color: rgba(255,255,255,0.6); text-decoration: underline; }
 
-  /* ── Pantalla de reserva: texto + calendario ─────────────────────────── */
-  /* En esta pantalla la columna se ensancha para que quepan los dos. */
-  :global(body.ag-ancho) .ag-shell { max-width: 1120px; }
-  :global(body.ag-ancho) .ag-progress { max-width: none; }
-  .ag-reserva { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 44px; align-items: start; }
+  /* ── Página del calendario (ordenador): dos mitades, como ICO ─────────────
+     Pedido 23/09: a lo ancho de la pantalla, sin la línea de pasos, y con
+     Calendly empezando arriba del todo para que todo quepa sin bajar. */
+  .ag-logo-split { display: none; }
+  :global(body.ag-split) .ag-page { padding: 0; min-height: 100vh; }
+  :global(body.ag-split) .ag-shell { max-width: none; }
+  :global(body.ag-split) .ag-logo-link,
+  :global(body.ag-split) .ag-progress,
+  :global(body.ag-split) .ag-legal { display: none; }
+  .ag-reserva { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 100vh; }
+  .ag-reserva-texto { display: flex; align-items: center; justify-content: center; padding: 48px 56px; }
+  .ag-reserva-contenido { width: 100%; max-width: 540px; display: flex; flex-direction: column; }
+  .ag-logo-split { display: block; margin-bottom: 40px; }
   .ag-reserva .ag-q { margin-top: 4px; }
   .ag-nota { font-size: 14px; }
-  .ag-nota a, .ag-cal-alt a { color: #fff; text-decoration: underline; }
+  .ag-nota a { color: #fff; text-decoration: underline; }
   .ag-separador { height: 1px; background: rgba(255,255,255,0.14); margin: 30px 0 26px; }
   .ag-enlace { color: #fff; text-decoration: underline; }
   .ag-calendario { display: none; }
   .ag-cal-barra { display: none; }
   .ag-calendario.abierto { display: block; }
-  /* Calendly pinta en blanco: se le da el mismo radio que las cajas y un
-     borde de cristal para que entre en la página en vez de flotar. */
-  .ag-calendario-caja {
-    min-height: 660px; border-radius: 16px; overflow: hidden; background: #fff;
-    border: 1.5px solid rgba(255,255,255,0.26);
-  }
-  .ag-cal-alt { margin: 10px 0 0; font-size: 12.5px; color: rgba(255,255,255,0.6); text-align: center; }
+  /* Calendly ocupa la mitad derecha de arriba abajo, en blanco y sin marco,
+     como en ICO. Alto fijo de pantalla: el calendario hace su propio scroll
+     si alguna vez lo necesita, la página no. */
+  .ag-calendario.abierto { position: sticky; top: 0; height: 100vh; background: #fff; display: flex; flex-direction: column; }
+  .ag-calendario-caja { flex: 1; min-height: 0; background: #fff; }
+  .ag-cal-alt { display: none; margin: 0; padding: 16px; font-size: 15px; color: #1D0084; text-align: center; }
+  .ag-cal-alt a { color: #1D0084; }
   .ag-cal-fallo .ag-calendario-caja { display: none; }
-  .ag-cal-fallo .ag-cal-alt { font-size: 15px; color: #fff; }
+  .ag-cal-fallo .ag-cal-alt { display: block; margin: auto; }
 
   /* Móvil: el calendario ocupa la pantalla entera, con una barra y una X
      para volver. El texto ya se leyó en "Encajas", no se repite. */
   @media (max-width: 899px) {
     .ag-reserva { grid-template-columns: minmax(0, 1fr); }
     .ag-reserva-texto { display: none; }
+    .ag-reserva { min-height: 0; }
     .ag-calendario.abierto {
-      position: fixed; inset: 0; z-index: 60; background: #1D0084;
-      overflow-y: auto; -webkit-overflow-scrolling: touch;
+      position: fixed; inset: 0; z-index: 60; height: auto; background: #fff;
     }
     .ag-cal-barra {
       display: flex; align-items: center; justify-content: space-between;
@@ -737,8 +769,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
       border-bottom: 1px solid rgba(255,255,255,0.12);
     }
     .ag-cal-cerrar { width: 40px; height: 40px; border: 0; background: transparent; color: #fff; font-size: 28px; line-height: 1; cursor: pointer; }
-    .ag-calendario-caja { min-height: calc(100vh - 56px); border-radius: 0; border: 0; }
-    .ag-cal-alt { padding: 0 20px; }
+    .ag-cal-barra { flex-shrink: 0; }
     :global(body.ag-cal-movil) { overflow: hidden; }
   }
 
