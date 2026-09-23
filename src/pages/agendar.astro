@@ -339,29 +339,37 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   })
 
   // En cuanto deja sus datos, la escuela ya lo sabe: si cierra a mitad, sale
-  // en Panel → Llamadas como "No terminó" y se le puede escribir. Una vez por
-  // correo (si vuelve atrás y lo cambia, se manda otra vez). Sin esperar la
+  // en Panel → Llamadas como "No terminó" y se le puede escribir. Y después,
+  // con cada respuesta, se manda otra vez con lo que lleva contestado: quien
+  // se va en la pregunta 5 deja cuatro respuestas con las que llamarle en
+  // frío. La escuela reescribe su misma línea, no crea otra. Sin esperar la
   // respuesta: la persona no nota nada, y keepalive lo deja salir aunque
   // cierre la pestaña justo después.
   let parcialEnviado = ''
-  const guardarParcial = () => {
+  const guardarParcial = (ultima = '') => {
     const email = val('email').toLowerCase()
-    if (!email || email === parcialEnviado) return
-    parcialEnviado = email
+    if (!email) return
+    const cuerpo = JSON.stringify({
+      parcial: true,
+      first_name: val('first_name'),
+      last_name: val('last_name'),
+      email,
+      phone: val('phone'),
+      website: (document.getElementById('ag-hp') as HTMLInputElement).value,
+      respuestas,
+      textos,
+      ultima,
+      ...contextoDelLead(),
+    })
+    // Si no ha cambiado nada (volvió atrás y adelante), no se repite.
+    if (cuerpo === parcialEnviado) return
+    parcialEnviado = cuerpo
     try {
       fetch('/api/cualificacion', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         keepalive: true,
-        body: JSON.stringify({
-          parcial: true,
-          first_name: val('first_name'),
-          last_name: val('last_name'),
-          email,
-          phone: val('phone'),
-          website: (document.getElementById('ag-hp') as HTMLInputElement).value,
-          ...contextoDelLead(),
-        }),
+        body: cuerpo,
       }).catch(() => {})
     } catch {}
   }
@@ -369,8 +377,11 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   const indice = (pane: HTMLElement) => Number((pane.dataset.pane as string).slice(1))
   const siguiente = async (pane: HTMLElement) => {
     const i = indice(pane)
-    if (i + 1 < preguntas.length) mostrar(`q${i + 1}`)
-    else await enviar()
+    if (i + 1 < preguntas.length) {
+      // La última no: esa la manda entera enviar().
+      guardarParcial(pane.dataset.clave as string)
+      mostrar(`q${i + 1}`)
+    } else await enviar()
   }
 
   /** Elegir una opción (o un punto de la escala): se marca y, tras un
@@ -734,7 +745,9 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   .ag-reserva { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 100vh; }
   .ag-reserva-texto { display: flex; align-items: center; justify-content: center; padding: 48px 56px; }
   .ag-reserva-contenido { width: 100%; max-width: 540px; display: flex; flex-direction: column; }
-  .ag-logo-split { display: block; margin-bottom: 40px; }
+  /* A la izquierda, como el texto: en una columna flex se estiraba al
+     ancho y object-fit lo dejaba centrado. */
+  .ag-logo-split { display: block; align-self: flex-start; width: auto; margin-bottom: 40px; }
   .ag-reserva .ag-q { margin-top: 4px; }
   .ag-nota { font-size: 14px; }
   .ag-nota a { color: #fff; text-decoration: underline; }

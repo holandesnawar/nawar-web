@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro'
-import { MAX_TEXTO, puntuar } from '../../lib/cualificacion'
+import { MAX_TEXTO, PREGUNTAS, puntuar } from '../../lib/cualificacion'
 import { ESCUELA_URL, avisarEscuela } from '../../lib/escuela'
 import {
   asignarEtiqueta,
@@ -41,14 +41,31 @@ export const POST: APIRoute = async ({ request }) => {
     ? body.recorrido.filter((x: unknown) => typeof x === 'string' && /^[a-z-]{1,24}$/.test(x)).slice(-12)
     : []
 
-  // Modo parcial: la persona acaba de pasar la pantalla de datos. Se guarda
-  // YA en la escuela como evento "agendar-empezado", para que si cierra la
+  const respuestas: Record<string, string> = {}
+  for (const [k, v] of Object.entries((body?.respuestas ?? {}) as Record<string, unknown>)) {
+    if (typeof v === 'string' && /^[a-z0-9]{1,20}$/.test(v) && /^[a-z]{1,20}$/.test(k)) respuestas[k] = v
+  }
+  // Las respuestas abiertas: texto libre, acotado. Se guardan tal cual (la
+  // escuela y el correo las escapan al pintarlas), sin saltos raros.
+  const textos: Record<string, string> = {}
+  for (const [k, v] of Object.entries((body?.textos ?? {}) as Record<string, unknown>)) {
+    if (typeof v === 'string' && /^[a-z]{1,20}$/.test(k)) textos[k] = v.replace(/[\u0000-\u0008\u000B-\u001F]/g, '').trim().slice(0, MAX_TEXTO)
+  }
+
+  // Modo parcial: la persona acaba de pasar la pantalla de datos (y luego,
+  // otra vez con cada respuesta). Se guarda YA en la escuela como evento "agendar-empezado", para que si cierra la
   // pestaña a mitad no se pierda: sale en Panel → Llamadas como "No
   // terminó". Sin CRM, sin solicitud y sin correo al equipo: eso va al
   // terminar. Solo el evento a propósito: /payments/solicitudes tiene un
   // tope de 5 por hora y por IP, y todas las llamadas de la web salen de
   // las IP de Vercel; gastar dos por persona acercaría el tope.
   if (body?.parcial === true) {
+    // Lo que lleve contestado hasta ahora, sin las que faltan: si se va a
+    // mitad, el closer puede llamarle sabiendo ya su nivel, para qué lo
+    // quiere, etc. La escuela reescribe la misma línea en cada respuesta
+    // (una persona = una línea en 24 h), no crea una nueva.
+    const hechas = puntuar(respuestas, textos).respuestas.filter((r) => r.respuesta !== 'Sin responder')
+    const ultima = PREGUNTAS.find((p) => p.clave === (body?.ultima ?? '').toString())?.etiqueta ?? ''
     await avisarEscuela({
       kind: 'agendar-empezado',
       email,
@@ -57,6 +74,7 @@ export const POST: APIRoute = async ({ request }) => {
       phone,
       source: 'llamada',
       recorrido: recorridoParcial,
+      ...(hechas.length ? { extra: { respuestas: hechas, ultima } } : {}),
     })
     return json({ ok: true })
   }
@@ -79,16 +97,6 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: true })
   }
 
-  const respuestas: Record<string, string> = {}
-  for (const [k, v] of Object.entries((body?.respuestas ?? {}) as Record<string, unknown>)) {
-    if (typeof v === 'string' && /^[a-z0-9]{1,20}$/.test(v) && /^[a-z]{1,20}$/.test(k)) respuestas[k] = v
-  }
-  // Las respuestas abiertas: texto libre, acotado. Se guardan tal cual (la
-  // escuela y el correo las escapan al pintarlas), sin saltos raros.
-  const textos: Record<string, string> = {}
-  for (const [k, v] of Object.entries((body?.textos ?? {}) as Record<string, unknown>)) {
-    if (typeof v === 'string' && /^[a-z]{1,20}$/.test(k)) textos[k] = v.replace(/[\u0000-\u0008\u000B-\u001F]/g, '').trim().slice(0, MAX_TEXTO)
-  }
   const resultado = puntuar(respuestas, textos)
 
   const recorrido: string[] = Array.isArray(body?.recorrido)
