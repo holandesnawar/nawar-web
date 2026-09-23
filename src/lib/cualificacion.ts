@@ -172,22 +172,40 @@ export const PREGUNTAS: Pregunta[] = [
 ]
 
 /**
- * A partir de cuántos puntos se le ofrece la llamada. Máximo posible: 15.
+ * Quién se queda fuera: SOLO quien cruza una línea roja (pedido 23/09: "más
+ * flexible"). Antes decidía una suma con corte en 9 sobre 15, y eso era
+ * estricto con quien no tocaba y blando con quien sí:
+ *  - dejaba fuera a 1 de cada 10 personas serias (vive o se muda, quiere
+ *    invertir aunque le cueste, compromiso 3 o más), casi siempre por la
+ *    combinación "me cuesta pero busco la forma" + pocas horas, que es
+ *    justo a quien un closer convence;
+ *  - y dejaba pasar a quien venía por curiosidad y ni vive ni se muda.
  *
- * Quitadas el 23/09 (decisión del usuario): "cuándo empieza" y "quién
- * decide". Casi no hay menores ni gente que no decida por sí misma, y
- * "cuándo empiezas" lo trabaja el closer en la llamada: si es un proceso de
- * admisión, es para empezar ya. ⚠️ Edad y ocupación SE QUEDAN: se quitaron
- * por error y el usuario las pidió de vuelta.
+ * Ahora la suma NO decide: queda como temperatura del lead, para ordenar a
+ * quién llamar primero. Lo que decide son estas tres líneas, cada una con su
+ * motivo, que sale en Panel → Llamadas y en el correo al equipo.
+ *
+ * A propósito NO son línea roja: el nivel A2 (lo ve el closer en la
+ * llamada), la edad, la ocupación y las horas.
  */
-export const CORTE_APTO = 9
+export const LINEAS_ROJAS: { motivo: string; cruza: (r: Record<string, string>) => boolean }[] = [
+  { motivo: 'No tiene capacidad de inversión ni piensa buscarla', cruza: (r) => r.inversion === 'no' },
+  { motivo: 'Compromiso 1 de 5: dice que no es su momento', cruza: (r) => r.compromiso === '1' },
+  {
+    motivo: 'Viene por curiosidad y ni vive ni piensa mudarse',
+    cruza: (r) => r.motivo === 'curiosidad' && r.situacion === 'otro',
+  },
+]
 
 /** Hasta dónde se guarda una respuesta abierta. */
 export const MAX_TEXTO = 800
 
 export interface Resultado {
+  /** Temperatura del lead (para ordenar), no decide. */
   puntuacion: number
   apto: boolean
+  /** Por qué se queda fuera, en cristiano. Vacío si encaja. */
+  motivo_fuera: string
   /** Las respuestas, en cristiano, para la ficha del contacto. */
   respuestas: { pregunta: string; respuesta: string; puntos: number }[]
 }
@@ -221,5 +239,6 @@ export function puntuar(respuestas: Record<string, string>, textos: Record<strin
       detalle.push({ pregunta: p.etiqueta, respuesta: t || 'Sin responder', puntos: 0 })
     }
   }
-  return { puntuacion: total, apto: total >= CORTE_APTO, respuestas: detalle }
+  const linea = LINEAS_ROJAS.find((l) => l.cruza(respuestas))
+  return { puntuacion: total, apto: !linea, motivo_fuera: linea?.motivo ?? '', respuestas: detalle }
 }

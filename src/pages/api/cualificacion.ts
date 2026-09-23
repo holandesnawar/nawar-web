@@ -102,7 +102,7 @@ export const POST: APIRoute = async ({ request }) => {
     recorrido,
     referrer,
     ...utm,
-    extra: { puntuacion: resultado.puntuacion, apto: resultado.apto, respuestas: resultado.respuestas },
+    extra: { puntuacion: resultado.puntuacion, apto: resultado.apto, motivo_fuera: resultado.motivo_fuera, respuestas: resultado.respuestas },
   })
 
   // 2) systeme.io, en blando.
