@@ -187,11 +187,49 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
           <p class="ag-lead">Guardando tus respuestas.</p>
         </section>
 
+        <!-- Encajas: se dice qué viene (una llamada) y se pide el compromiso de
+             asistir antes de enseñar el calendario, como ICO. Un "sí" aquí
+             es una cita que casi seguro se cumple; un "no" no gasta hueco. -->
+        <section class="ag-pane" data-pane="encajas" hidden>
+          <span class="ag-badge">Encajas</span>
+          <h2 class="ag-q"><span data-nombre></span>por lo que nos cuentas, la formación es para ti.</h2>
+          <p class="ag-lead">
+            El siguiente paso es una <strong>llamada de 15–20 minutos</strong> con alguien del equipo: vemos tu caso,
+            te damos un plan concreto y decidimos juntos si es tu momento. Después de reservar te escribimos por
+            WhatsApp para confirmar la cita.
+          </p>
+          <div class="ag-separador" aria-hidden="true"></div>
+          <p class="ag-intro">Tenemos pocos huecos de llamada a la semana, y cada uno que se queda vacío es una llamada que otra persona no ha podido tener.</p>
+          <h2 class="ag-q">¿Te comprometes a asistir a la llamada que reserves? <span class="ag-req">*</span></h2>
+          <div class="ag-options" role="radiogroup" aria-label="Compromiso de asistir" id="ag-compromiso">
+            <button type="button" class="ag-option" data-valor="si" data-letra="A" role="radio" aria-checked="false">
+              <span class="ag-key" aria-hidden="true">A</span>
+              <span>Sí, entiendo y voy a asistir a la llamada</span>
+            </button>
+            <button type="button" class="ag-option" data-valor="no" data-letra="B" role="radio" aria-checked="false">
+              <span class="ag-key" aria-hidden="true">B</span>
+              <span>No, prefiero no reservar la llamada ahora</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="ag-pane" data-pane="noreserva" hidden>
+          <h2 class="ag-title-sm">Sin problema</h2>
+          <p class="ag-lead">
+            Cuando sea tu momento, vuelve a esta página o escríbenos por <a class="ag-enlace" href={WHATSAPP_URL} target="_blank" rel="noopener">WhatsApp</a>.
+            Mientras tanto, la guía de las bases te sirve para ir avanzando, gratis.
+          </p>
+          <div class="ag-actions">
+            <a class="ag-btn" href="/guia/bases-neerlandes">Descargar la guía gratis ›</a>
+            <button type="button" class="ag-btn-ghost" id="ag-volver-reservar">‹ Mejor sí, quiero reservar</button>
+          </div>
+        </section>
+
         <section class="ag-pane ag-pane-reserva" data-pane="apto" hidden>
           <div class="ag-reserva">
             <div class="ag-reserva-texto">
-              <span class="ag-badge">Encajas</span>
-              <h2 class="ag-q"><span id="ag-nombre"></span>ahora solo te queda elegir el día y la hora que mejor te vengan para tu llamada con el equipo.</h2>
+              <span class="ag-badge">Último paso</span>
+              <h2 class="ag-q"><span data-nombre></span>ahora solo te queda elegir el día y la hora que mejor te vengan para tu llamada con el equipo.</h2>
               <p class="ag-lead">
                 Nos tomamos en serio cada llamada: trabajamos con grupos reducidos y cada plaza cuenta. Es una
                 llamada para ver tu caso y darte un plan; si solo quieres información general, la tienes en la web.
@@ -206,11 +244,12 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
                 Si te surge algo y no puedes, avísanos cuanto antes por
                 <a href={WHATSAPP_URL} target="_blank" rel="noopener">WhatsApp</a>.
               </p>
-              <div class="ag-actions ag-solo-movil">
-                <button type="button" class="ag-btn" id="ag-ver-calendario">Elegir día y hora ›</button>
-              </div>
             </div>
             <div class="ag-calendario" id="ag-calendario" data-url={CALENDLY_URL}>
+              <div class="ag-cal-barra">
+                <span>Elige día y hora</span>
+                <button type="button" class="ag-cal-cerrar" id="ag-cal-cerrar" aria-label="Cerrar el calendario">×</button>
+              </div>
               <div class="ag-calendario-caja" id="ag-calendly"></div>
               <p class="ag-cal-alt">¿No ves el calendario? <a id="ag-agenda" href={CALENDLY_URL} target="_blank" rel="noopener">Ábrelo aquí</a></p>
             </div>
@@ -262,7 +301,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
     let hecho = 0
     if (id === 'datos') hecho = 0.5
     else if (id.startsWith('q')) hecho = 1 + Number(id.slice(1))
-    else if (id === 'enviando' || id === 'apto' || id === 'noapto' || id === 'reservada') hecho = tramos
+    else if (['enviando', 'encajas', 'noreserva', 'apto', 'noapto', 'reservada'].includes(id)) hecho = tramos
     fill.style.width = `${Math.min(100, Math.round((hecho / tramos) * 100))}%`
     window.scrollTo({ top: 0, behavior: 'smooth' })
     // La pregunta abierta: el cursor ya dentro, sin tener que tocar.
@@ -376,6 +415,11 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   // Teclado: la letra elige la opción (o el número, en la escala); Intro
   // continúa. Solo en las preguntas, y nunca mientras se escribe en un campo.
   document.addEventListener('keydown', (e) => {
+    if (actual === 'encajas' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      const b = compromiso.querySelector<HTMLElement>(`[data-letra="${e.key.toUpperCase()}"]`)
+      if (b) { e.preventDefault(); responderCompromiso(b) }
+      return
+    }
     if (!actual.startsWith('q')) return
     const objetivo = e.target as HTMLElement | null
     if (objetivo && (objetivo.tagName === 'INPUT' || objetivo.tagName === 'TEXTAREA')) return
@@ -426,26 +470,42 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
     }
   }
 
+  const esEscritorio = () => window.matchMedia('(min-width: 900px)').matches
+  const compromiso = document.getElementById('ag-compromiso') as HTMLElement
+
+  // Encaja → primero la pantalla "Encajas" con el compromiso de asistir.
   const abrirReserva = () => {
     const nombre = val('first_name')
-    ;(document.getElementById('ag-nombre') as HTMLElement).textContent = nombre ? `${nombre}, ` : ''
-    document.body.classList.add('ag-ancho')
-    mostrar('apto')
-    // En escritorio el calendario va al lado del texto desde el principio.
-    // En el móvil, debajo, y se abre con el botón (como ICO): así se lee
-    // primero lo que hay que saber antes de reservar.
-    if (window.matchMedia('(min-width: 900px)').matches) {
-      calendario.classList.add('abierto')
-      ponerCalendario()
-    }
+    document.querySelectorAll<HTMLElement>('[data-nombre]').forEach((el) => { el.textContent = nombre ? `${nombre}, ` : '' })
+    compromiso.querySelectorAll('[role="radio"]').forEach((b) => b.setAttribute('aria-checked', 'false'))
+    mostrar('encajas')
   }
 
-  document.getElementById('ag-ver-calendario')?.addEventListener('click', (e) => {
-    ;(e.currentTarget as HTMLElement).closest('.ag-actions')?.setAttribute('hidden', '')
+  // "Sí, voy a asistir" → el calendario. En el ordenador, media página con el
+  // texto al lado. En el móvil, a pantalla completa con una X para volver.
+  const irAlCalendario = () => {
+    mostrar('apto')
     calendario.classList.add('abierto')
+    if (esEscritorio()) document.body.classList.add('ag-ancho')
+    else document.body.classList.add('ag-cal-movil')
     ponerCalendario()
-    setTimeout(() => calendario.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60)
-  })
+  }
+
+  const cerrarCalendario = () => {
+    calendario.classList.remove('abierto')
+    document.body.classList.remove('ag-cal-movil', 'ag-ancho')
+    abrirReserva()
+  }
+
+  const responderCompromiso = (btn: HTMLElement) => {
+    compromiso.querySelectorAll('[role="radio"]').forEach((b) => b.setAttribute('aria-checked', 'false'))
+    btn.setAttribute('aria-checked', 'true')
+    setTimeout(() => (btn.dataset.valor === 'si' ? irAlCalendario() : mostrar('noreserva')), 380)
+  }
+
+  compromiso.querySelectorAll<HTMLElement>('[role="radio"]').forEach((b) => b.addEventListener('click', () => responderCompromiso(b)))
+  document.getElementById('ag-cal-cerrar')?.addEventListener('click', cerrarCalendario)
+  document.getElementById('ag-volver-reservar')?.addEventListener('click', abrirReserva)
 
   // Cuando reserva, Calendly avisa a la página. Se apunta en la escuela para
   // que en Panel → Llamadas salga "Hora reservada", y se da las gracias.
@@ -467,7 +527,8 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
       }),
     }).catch(() => {})
     setTimeout(() => {
-      document.body.classList.remove('ag-ancho')
+      calendario.classList.remove('abierto')
+      document.body.classList.remove('ag-ancho', 'ag-cal-movil')
       mostrar('reservada')
     }, 1800)
   })
@@ -526,7 +587,8 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   .ag-progress { width: 100%; height: 4px; border-radius: 9999px; background: rgba(255,255,255,0.14); overflow: hidden; margin-bottom: 36px; }
   .ag-progress-fill { height: 100%; width: 0%; background: #4da3ff; border-radius: 9999px; transition: width .35s ease; }
 
-  .ag-badge { display: inline-flex; padding: 6px 16px; border-radius: 9999px; background: #025dc7; color: #e0f2ff; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 10px; }
+  /* La etiqueta pedía aire con el título (23/09: "queda algo pegado"). */
+  .ag-badge { display: inline-flex; padding: 6px 16px; border-radius: 9999px; background: #025dc7; color: #e0f2ff; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 20px; align-self: flex-start; }
   .ag-title-sm { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(26px, 3.8vw, 36px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 8px; }
   /* El texto que vende antes de la pregunta: mismo cuerpo, menos peso. */
   /* Sin negrita a propósito (pedido 23/09: "se ve muy cargado"). En móvil,
@@ -571,13 +633,17 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(3,9,33,0.25);
     transition: border-color .15s, background .15s;
   }
-  .ag-input { width: 100%; padding: 15px 18px; border-radius: 12px; font-size: 16px; }
-  /* Los campos sin sombra exterior (pedido 23/09): cuatro seguidos con su
-     sombra oscurecían toda la columna y se perdía el cristal. Solo queda el
-     filo de luz de arriba. Las cajas de respuesta la conservan. */
-  .ag-input, .ag-textarea { box-shadow: inset 0 1px 0 rgba(255,255,255,0.18); }
-  .ag-input::placeholder, .ag-textarea::placeholder { color: rgba(255,255,255,0.35); }
-  .ag-input:focus, .ag-textarea:focus { border-color: rgba(255,255,255,0.75); }
+  /* Campos de texto como Typeform (pedido 23/09: "demasiado oscuro"): sin
+     caja, sin fondo y sin sombra, solo la línea de debajo. Se escribe sobre
+     el fondo de la página, que es lo que les da ligereza. */
+  .ag-input, .ag-textarea {
+    width: 100%; background: transparent; border: 0; border-radius: 0;
+    border-bottom: 1.5px solid rgba(255,255,255,0.38);
+    -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none;
+    padding: 10px 2px; font-size: 20px;
+  }
+  .ag-input::placeholder, .ag-textarea::placeholder { color: rgba(255,255,255,0.32); }
+  .ag-input:focus, .ag-textarea:focus { border-bottom-color: #fff; }
 
   .ag-options { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
   .ag-option {
@@ -585,12 +651,19 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
     padding: 14px 16px; border-radius: 12px; cursor: pointer;
     font-size: 16px; font-weight: 500; line-height: 1.4;
   }
-  .ag-option:hover, .ag-scale-btn:hover { border-color: rgba(255,255,255,0.5); }
-  .ag-option[aria-checked="true"], .ag-scale-btn[aria-checked="true"] {
-    background:
-      linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.09) 100%),
-      rgba(10, 22, 86, 0.34);
-    border-color: rgba(255,255,255,0.9);
+  /* Cajas de respuesta más claras (23/09): antes el tinte era un azul MÁS
+     oscuro que el fondo y la columna entera se veía apagada. Ahora es un velo
+     del azul claro de la marca, más claro que el fondo, y sin sombra: lo que
+     separa la caja del fondo es el borde, como en Typeform. */
+  .ag-option, .ag-scale-btn {
+    background: rgba(77, 163, 255, 0.13);
+    border: 1.5px solid rgba(255,255,255,0.30);
+    box-shadow: none;
+  }
+  .ag-option:hover, .ag-scale-btn:hover { background: rgba(77, 163, 255, 0.2); border-color: rgba(255,255,255,0.55); }
+  .ag-option[aria-checked="true"] {
+    background: rgba(77, 163, 255, 0.28);
+    border-color: #fff;
   }
   /* La letra de la opción, como Typeform: una tecla. Al elegir se llena. */
   .ag-key {
@@ -612,7 +685,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
 
   /* Respuesta abierta. */
   .ag-textwrap { margin-top: 26px; }
-  .ag-textarea { width: 100%; padding: 15px 18px; border-radius: 12px; font-size: 16px; line-height: 1.55; resize: vertical; min-height: 120px; display: block; }
+  .ag-textarea { line-height: 1.5; resize: none; min-height: 90px; display: block; }
 
   .ag-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 32px; }
   .ag-between { justify-content: space-between; }
@@ -633,8 +706,10 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   .ag-reserva .ag-q { margin-top: 4px; }
   .ag-nota { font-size: 14px; }
   .ag-nota a, .ag-cal-alt a { color: #fff; text-decoration: underline; }
-  .ag-solo-movil { display: none; }
+  .ag-separador { height: 1px; background: rgba(255,255,255,0.14); margin: 30px 0 26px; }
+  .ag-enlace { color: #fff; text-decoration: underline; }
   .ag-calendario { display: none; }
+  .ag-cal-barra { display: none; }
   .ag-calendario.abierto { display: block; }
   /* Calendly pinta en blanco: se le da el mismo radio que las cajas y un
      borde de cristal para que entre en la página en vez de flotar. */
@@ -646,10 +721,25 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   .ag-cal-fallo .ag-calendario-caja { display: none; }
   .ag-cal-fallo .ag-cal-alt { font-size: 15px; color: #fff; }
 
+  /* Móvil: el calendario ocupa la pantalla entera, con una barra y una X
+     para volver. El texto ya se leyó en "Encajas", no se repite. */
   @media (max-width: 899px) {
-    .ag-reserva { grid-template-columns: minmax(0, 1fr); gap: 20px; }
-    .ag-solo-movil { display: flex; }
-    .ag-calendario-caja { min-height: 700px; }
+    .ag-reserva { grid-template-columns: minmax(0, 1fr); }
+    .ag-reserva-texto { display: none; }
+    .ag-calendario.abierto {
+      position: fixed; inset: 0; z-index: 60; background: #1D0084;
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
+    }
+    .ag-cal-barra {
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 1; height: 56px; padding: 0 12px 0 20px;
+      background: #1D0084; color: #fff; font-weight: 600; font-size: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .ag-cal-cerrar { width: 40px; height: 40px; border: 0; background: transparent; color: #fff; font-size: 28px; line-height: 1; cursor: pointer; }
+    .ag-calendario-caja { min-height: calc(100vh - 56px); border-radius: 0; border: 0; }
+    .ag-cal-alt { padding: 0 20px; }
+    :global(body.ag-cal-movil) { overflow: hidden; }
   }
 
   @media (hover: none) {
