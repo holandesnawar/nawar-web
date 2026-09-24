@@ -4,12 +4,13 @@ const { data } = Astro.props
 const badge = data?.badge ?? 'Por qué existe Nawar'
 const title = data?.title ?? 'El método que nadie\nte había ofrecido'
 const subtitle = data?.subtitle ?? 'Las academias tradicionales no están pensadas para ti. Nawar nació para cambiar eso: neerlandés desde el español, con método real y comunidad que te acompaña.'
-const leftTitle = data?.leftCardTitle ?? 'El 90% de los estudiantes abandona sin hablar ni una frase'
+// Sin el "90 %": era una cifra inventada (ver landing-08-08-2026/PorQueNawar.astro).
+const leftTitle = data?.leftCardTitle ?? 'Por qué lo dejaste las otras veces'
 const leftItems = data?.leftCardItems ?? [
   'Clases genéricas diseñadas para angloparlantes',
   'Profesores que no hablan ni entienden español',
   'Precios elevados sin garantías ni resultados claros',
-  'Sin comunidad: aprendes solo y te abandonas a mitad',
+  'Sin comunidad: aprendes solo y abandonas a mitad',
   'Memorización de reglas sin contexto cultural real',
 ]
 const rightTitle = data?.rightCardTitle ?? 'En Nawar avanzas desde cero con una ruta clara pensada para hispanohablantes'

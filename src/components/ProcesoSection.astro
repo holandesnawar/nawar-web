@@ -2,7 +2,7 @@
 interface Props { data?: any }
 const { data } = Astro.props
 const badge = data?.badge ?? 'Así de sencillo'
-const title = data?.title ?? 'Dos clics. Listo.'
+const title = data?.title ?? 'Tres pasos y estás dentro.'
 const subtitle = data?.subtitle ?? 'Reserva tu plaza en minutos y recibirás acceso prioritario antes del lanzamiento.'
 const guaranteeText = data?.guaranteeText ?? 'Garantía de devolución 15 días'
 const ctaText = data?.ctaText ?? 'Unirte'
@@ -27,11 +27,13 @@ import { CTA_PRINCIPAL } from '../lib/cta'
 
       <div class="proceso-steps">
 
-        {/* ⚠️ Los tres pasos describen el camino REAL de la matrícula
-            abierta: formulario → pago → correo con el acceso. Antes
-            contaban el de la lista de espera ("completamente gratis",
-            "acceso garantizado en el lanzamiento"), y eso en una página
-            que manda a un pago de 397 € es una promesa falsa.
+        {/* ⚠️ Los tres pasos describen el camino REAL desde esta página:
+            el botón (CTA_PRINCIPAL) lleva al formulario de contacto, que
+            NO cobra. Luego hablamos con la persona y, si encaja, entra.
+            Antes el paso 2 era "Paga seguro, como prefieras": falso aquí,
+            porque desde la home nadie llega a la caja de pago. Si algún
+            día el botón vuelve a ir a la matrícula que cobra, hay que
+            reescribir los pasos (ver src/lib/cta.ts).
             Las pantallitas blancas enseñan lo que la persona ve de
             verdad en cada paso; nada inventado. */}
         <!-- Paso 01 -->
@@ -70,8 +72,8 @@ import { CTA_PRINCIPAL } from '../lib/cta'
                 <span class="pm-value">maria@gmail.com</span>
               </div>
               <div class="pm-row">
-                <span class="pm-label">Plaza</span>
-                <span class="pm-badge">Reservada</span>
+                <span class="pm-label">Solicitud</span>
+                <span class="pm-badge">Enviada</span>
               </div>
             </div>
           </div>
@@ -81,40 +83,40 @@ import { CTA_PRINCIPAL } from '../lib/cta'
         <div class="proceso-card sr d1">
           <div class="proceso-card-glow" aria-hidden="true"></div>
           <div class="proceso-num">02</div>
-          <h3 class="proceso-card-title">Paga seguro, como prefieras</h3>
+          <h3 class="proceso-card-title">Hablamos contigo</h3>
           <ul class="proceso-perks">
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Tarjeta, iDEAL, Klarna o Bancontact
+              Nos ponemos en contacto contigo
             </li>
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Factura en tu correo al momento
+              Vemos tu nivel, tu objetivo y el tiempo que tienes
             </li>
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Garantía de 15 días: si no te convence, te devolvemos el dinero
+              Comprobamos si es realmente lo que necesitas
             </li>
           </ul>
           <div class="proceso-mockup">
             <div class="proceso-mockup-inner">
               <div class="pm-row">
-                <span class="pm-label">Pago</span>
-                <span class="pm-badge pm-badge--ok">✓ Confirmado</span>
+                <span class="pm-label">Contacto</span>
+                <span class="pm-value">Llamada o WhatsApp</span>
               </div>
               <div class="pm-row">
-                <span class="pm-label">Método</span>
-                <span class="pm-value">iDEAL</span>
+                <span class="pm-label">Hablamos de</span>
+                <span class="pm-value">Tu nivel y tu objetivo</span>
               </div>
               <div class="pm-row">
-                <span class="pm-label">Factura</span>
-                <span class="pm-value">Enviada a tu correo</span>
+                <span class="pm-label">Compromiso</span>
+                <span class="pm-badge">Ninguno</span>
               </div>
             </div>
           </div>
@@ -124,19 +126,19 @@ import { CTA_PRINCIPAL } from '../lib/cta'
         <div class="proceso-card sr d2">
           <div class="proceso-card-glow" aria-hidden="true"></div>
           <div class="proceso-num">03</div>
-          <h3 class="proceso-card-title">Entra a la escuela hoy mismo</h3>
+          <h3 class="proceso-card-title">Entras a la escuela y empiezas</h3>
           <ul class="proceso-perks">
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Tu acceso llega por correo en minutos
+              Tu acceso a la escuela llega por correo
             </li>
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Empiezas el módulo 1, desde el español
+              El material ya está disponible para empezar
             </li>
             <li>
               <span class="proceso-check">
