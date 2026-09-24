@@ -150,7 +150,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   // A dónde agendar: Calendly/Cal.com si está puesto; si no, WhatsApp con el
   // mensaje ya escrito. Así la página funciona desde hoy.
-  const agenda = leerEnv('PUBLIC_AGENDA_URL') || 'https://calendly.com/holandesconnawar/llamada-de-consultoria'
+  const agenda = leerEnv('PUBLIC_AGENDA_URL') || 'https://calendly.com/holandesnawar/llamada-de-consultoria'
   const nombre = encodeURIComponent(`${firstName} ${lastName}`.trim())
   const agendaUrl = agenda
     ? `${agenda}${agenda.includes('?') ? '&' : '?'}name=${nombre}&email=${encodeURIComponent(email)}`

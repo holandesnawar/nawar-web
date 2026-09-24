@@ -45,7 +45,7 @@ const FOTO_FONDO = ''
  * como hace ICO: texto que prepara la llamada a un lado y el calendario al
  * otro. PUBLIC_AGENDA_URL en Vercel lo cambia sin tocar código.
  */
-const CALENDLY_URL = (import.meta.env.PUBLIC_AGENDA_URL as string | undefined) || 'https://calendly.com/holandesconnawar/llamada-de-consultoria'
+const CALENDLY_URL = (import.meta.env.PUBLIC_AGENDA_URL as string | undefined) || 'https://calendly.com/holandesnawar/llamada-de-consultoria'
 const WHATSAPP_URL = 'https://wa.me/31616084212'
 
 const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boolean)
@@ -129,6 +129,10 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
             <button type="button" class="ag-btn-ghost" data-go="intro">‹ Anterior</button>
             <button type="button" class="ag-btn" data-go="q0">Aceptar ›</button>
           </div>
+          {/* Solo aquí, donde se piden los datos: antes iba al pie de TODAS las
+              pantallas y molestaba. Donde se recogen datos personales tiene
+              que seguir estando el enlace a la política. */}
+          <p class="ag-legal">Al continuar aceptas la <a href="/politica-de-privacidad">política de privacidad</a>.</p>
         </section>
 
         <!-- Preguntas -->
@@ -283,7 +287,6 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
         <p class="ag-err" id="ag-err-envio">No se pudo enviar. Vuelve a intentarlo en un momento.</p>
       </form>
 
-      <p class="ag-legal">Al continuar aceptas la <a href="/politica-de-privacidad">política de privacidad</a>.</p>
     </div>
   </div>
 </Layout>
@@ -730,7 +733,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   .ag-btn-ghost:hover { color: #fff; }
   .ag-err { display: none; margin-top: 14px; font-size: 13px; color: #ff8a8a; font-weight: 500; }
   .ag-err.visible { display: block; }
-  .ag-legal { width: 100%; text-align: center; font-size: 12px; line-height: 1.6; color: rgba(255,255,255,0.4); margin: 40px 0 0; }
+  .ag-legal { font-size: 12px; line-height: 1.6; color: rgba(255,255,255,0.4); margin: 18px 0 0; }
   .ag-legal a { color: rgba(255,255,255,0.6); text-decoration: underline; }
 
   /* ── Página del calendario (ordenador): dos mitades, como ICO ─────────────
