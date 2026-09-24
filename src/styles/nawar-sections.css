@@ -440,6 +440,7 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   padding: 14px 28px; border-radius: 8px; border: none; cursor: pointer;
   background: #1D0084; color: #fff; font-size: 14px; font-weight: 700;
+  text-decoration: none;
 }
 .footer-signup-privacy { font-size: 12px; color: rgba(29,0,132,0.70); line-height: 1.5; }
 .footer-signup-privacy a { color: rgba(29,0,132,0.90); text-decoration: underline; }

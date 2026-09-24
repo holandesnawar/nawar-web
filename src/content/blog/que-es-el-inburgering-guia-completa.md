@@ -96,7 +96,7 @@ Esta es la decisión más importante de todo el proceso. No todas las formacione
 
 **Apps genéricas (Duolingo, Babbel):** vocabulario suelto, sin método. No te preparan para la parte oral del examen ni para hablar en el día a día.
 
-**Nuestra formación para hispanohablantes:** Desde [Nawar](/) enseñamos neerlandés desde el español, con gramática comparada, práctica oral desde el día 1 y una comunidad de hispanohablantes que avanzan contigo. 
+**Nuestra formación para hispanohablantes:** En [Holandés Nawar enseñamos neerlandés online desde el español](/), con gramática comparada, práctica oral desde el día 1 y una comunidad de hispanohablantes que avanzan contigo. 
 
 Si partes de cero o nivel A0-A1 y quieres llegar al B1 en 12–18 meses, nuestra formación está pensada exactamente para eso.
 
@@ -117,4 +117,4 @@ No esperes a estar "listo" para todo. Presenta KNM primero (el más fácil), lue
 
 ## Conclusión
 
-El Inburgering **no es un obstáculo, es una puerta**. Aprobar significa acceder a mejores empleos, más oportunidades académicas, y eventualmente la ciudadanía neerlandesa. Con método, constancia y soporte desde tu idioma, lo superas en los 3 años que tienes.[](/blog/como-mejorar-tu-pronunciacion-en-neerlandes-consejos-y-trucos)
+El Inburgering **no es un obstáculo, es una puerta**. Aprobar significa acceder a mejores empleos, más oportunidades académicas, y eventualmente la ciudadanía neerlandesa. Con método, constancia y soporte desde tu idioma, lo superas en los 3 años que tienes.

@@ -87,7 +87,7 @@ El verdadero coste no está en el examen, está en **cuánto tiempo y energía p
 
 Si tu idioma materno es el español, **no pases por el filtro del inglés**. Las academias genéricas traducen sus materiales, pero explican los conceptos pensando en angloparlantes. Pierdes tiempo haciendo una traducción mental doble.
 
-El español tiene **más similitudes con el neerlandés de las que crees,** si las usas como palanca, avanzas mucho más rápido. Ese es exactamente el enfoque de nuestra [formación para hispanohablantes](/).
+El español tiene **más similitudes con el neerlandés de las que crees,** si las usas como palanca, avanzas mucho más rápido. Ese es exactamente el enfoque de nuestro [curso de neerlandés online para hispanohablantes](/).
 
 **2. Combina 3 tipos de input**
 
