@@ -31,10 +31,32 @@ const faq          = (landing as any).faq          ?? null
 ---
 
 <Layout
-  title="Nawar | Aprende Holandés desde el Español"
-  description="Domina el neerlandés con Nawar, la escuela online exclusiva para hispanohablantes. Método probado desde el español, clases en vivo y comunidad. ¡Empieza hoy!"
-  keywords="curso neerlandés online, aprender neerlandés desde el español, holandés para hispanohablantes, inburgering, academia neerlandés"
+  title="Curso de neerlandés online para hispanohablantes | Holandés Nawar"
+  description="Aprende neerlandés desde cero y en español: módulos interactivos, clases de conversación en vivo, consultas con profesores y comunidad de hispanohablantes."
+  keywords="curso de neerlandés online, curso de holandés online, aprender neerlandés desde cero, clases de neerlandés en español, neerlandés para hispanohablantes, neerlandés A1, inburgering"
 >
+  {/* Ficha del curso para Google y las IAs (la de la organización va en el
+      Layout). Solo datos que se pueden comprobar: si cambia la formación
+      (módulos, nivel), cambiarlo también aquí y en public/llms.txt. */}
+  <script type="application/ld+json" is:inline set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "Formación Nawar A0-A1: neerlandés desde cero para hispanohablantes",
+    "description": "Curso online de neerlandés para hispanohablantes, desde cero hasta el nivel A1, explicado en español: 10 módulos interactivos con ejercicios y audio, clases de conversación en vivo cada semana, sistema de consultas con profesores que hablan español, progreso siempre a la vista y comunidad privada. Todo el material es propio.",
+    "provider": {
+      "@type": "EducationalOrganization",
+      "name": "Holandés Nawar",
+      "url": "https://www.holandesnawar.com"
+    },
+    "inLanguage": "es",
+    "teaches": "Neerlandés (holandés)",
+    "educationalLevel": "Principiante (A0-A1)",
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "online",
+      "inLanguage": "es"
+    }
+  })} />
   <NavbarLanding client:load />
   <GuidePopup />
 
