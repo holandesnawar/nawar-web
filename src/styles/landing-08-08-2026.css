@@ -2612,6 +2612,9 @@
 @media (min-width: 768px) {
 .l8 .np-stats-grid { grid-template-columns: repeat(3, 1fr); }
 }
+@media (min-width: 768px) {
+.l8 .np-stats-grid--2 { grid-template-columns: repeat(2, 1fr); max-width: 760px; }
+}
 .l8 .np-stat-card {
   padding: 36px 28px;
   border-radius: 22px;
