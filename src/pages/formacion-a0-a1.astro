@@ -106,15 +106,17 @@ const dolores = [
 ]
 
 /* Ancla de precio */
+/* Sin el "83 % abandona el primer año": era una cifra sin fuente, como el
+   "90 %" que se quitó de la home. Si vuelve una tercera tarjeta, que sea un
+   dato comprobable; con dos, la rejilla se pone a dos columnas sola. */
 const stats = [
   { num: '€800', label: 'lo que cuesta un solo nivel (A1, A2 o B1) en una academia de neerlandés en Países Bajos' },
   { num: '€65', label: 'el precio de una única clase suelta con un profesor de neerlandés' },
-  { num: '83%', label: 'de hispanohablantes en Países Bajos abandonan el neerlandés durante el primer año' },
 ]
 
 /* Stack de valor — el corazón de la oferta */
 const stack = [
-  { nombre: 'Formación completa A0 → A1', detalle: '7 módulos y +15 h de vídeo estructurado, explicado desde el español', valor: '€800', bonus: false },
+  { nombre: 'Formación completa A0 → A1', detalle: '10 módulos y +15 h de vídeo estructurado, explicado desde el español', valor: '€800', bonus: false },
   { nombre: 'Escuela con ejercicios interactivos', detalle: 'Feedback inmediato, vocabulario con audio nativo, diálogos y seguimiento de tu progreso', valor: '€150', bonus: false },
   { nombre: 'Clase semanal en directo', detalle: 'Con profesor interno según tu módulo. Todas quedan grabadas', valor: '€780', bonus: true },
   { nombre: 'Comunidad privada de hispanohablantes', detalle: 'Gente en tu misma situación, no aprendes solo', valor: '€120', bonus: true },
@@ -818,7 +820,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
           <span class="badge-light"><svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Los números que nadie te cuenta</span>
           <h2 class="np-stats-title">Aprender neerlandés no es caro.<br /><span class="np-stats-accent">El sistema sí lo es.</span></h2>
         </div>
-        <div class="np-stats-grid">
+        <div class={`np-stats-grid${stats.length === 2 ? ' np-stats-grid--2' : ''}`}>
           {stats.map((s, i) => (
             <div class="np-stat-card sr-bi" style={`transition-delay:${i * 0.08}s;`}>
               <div class="np-stat-num">{s.num}</div>
