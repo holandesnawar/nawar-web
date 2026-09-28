@@ -1,31 +1,25 @@
 import {
   AbsoluteFill,
-  interpolate,
   OffthreadVideo,
   staticFile,
-  useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import type { Clip } from "./schema";
-import { BRAND, FONT, OFF } from "./theme";
+import type { Clip, Crop } from "./schema";
+import { BRAND, FONT, OFF, PANEL_WIDTH, SRC_HEIGHT, SRC_WIDTH } from "./theme";
 
-// Un tramo de un clip, encuadrado para que no se vean dedos ni bordes.
-// Un zoom muy suave le da algo de vida cuando la página está quieta.
-export const SlideClip: React.FC<{ clip: Clip; index: number }> = ({
+// Un tramo de un clip, colocado para que la zona `crop` llene el panel.
+export const SlideClip: React.FC<{ clip: Clip; crop: Crop; index: number }> = ({
   clip,
+  crop,
   index,
 }) => {
-  const frame = useCurrentFrame();
-  const { fps, durationInFrames } = useVideoConfig();
-
-  const drift = interpolate(frame, [0, durationInFrames], [1, 1.03], {
-    extrapolateRight: "clamp",
-  });
-  const transform = `translate(${clip.x}%, ${clip.y}%) scale(${clip.zoom * drift})`;
+  const { fps } = useVideoConfig();
 
   if (!clip.src) {
-    return <Placeholder index={index} transform={transform} />;
+    return <Placeholder index={index} />;
   }
+
+  const scale = PANEL_WIDTH / ((crop.x1 - crop.x0) * SRC_WIDTH);
 
   return (
     <AbsoluteFill style={{ backgroundColor: BRAND }}>
@@ -35,45 +29,29 @@ export const SlideClip: React.FC<{ clip: Clip; index: number }> = ({
         trimAfter={Math.round(clip.to * fps)}
         muted
         style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          transform,
+          position: "absolute",
+          width: SRC_WIDTH * scale,
+          height: SRC_HEIGHT * scale,
+          left: -crop.x0 * SRC_WIDTH * scale,
+          top: -crop.y0 * SRC_HEIGHT * scale,
         }}
       />
     </AbsoluteFill>
   );
 };
 
-const Placeholder: React.FC<{ index: number; transform: string }> = ({
-  index,
-  transform,
-}) => (
+const Placeholder: React.FC<{ index: number }> = ({ index }) => (
   <AbsoluteFill
     style={{
-      backgroundColor: BRAND,
+      backgroundColor: OFF,
       alignItems: "center",
       justifyContent: "center",
+      fontFamily: FONT,
+      fontWeight: 800,
+      fontSize: 96,
+      color: BRAND,
     }}
   >
-    <div
-      style={{
-        width: 820,
-        height: 1160,
-        borderRadius: 24,
-        backgroundColor: OFF,
-        boxShadow: "0 40px 80px rgba(0,0,0,.35)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontFamily: FONT,
-        fontWeight: 800,
-        fontSize: 96,
-        color: BRAND,
-        transform,
-      }}
-    >
-      Slide {index + 1}
-    </div>
+    Slide {index + 1}
   </AbsoluteFill>
 );

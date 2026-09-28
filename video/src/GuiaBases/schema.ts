@@ -10,19 +10,26 @@ export const clipSchema = z.object({
   // Tramo del clip original, en segundos.
   from: z.number().min(0),
   to: z.number().min(0),
-  // Encuadre: zoom >= 1 y desplazamiento en % para dejar fuera dedos y bordes.
-  zoom: z.number().min(1),
-  x: z.number(),
-  y: z.number(),
   entry: transitionSchema,
+});
+
+// Zona del clip original (en fracciones del cuadro) que se ve en el panel.
+// Deja fuera la parte de abajo, que es por donde entra la mano al pasar página.
+export const cropSchema = z.object({
+  x0: z.number().min(0).max(1),
+  y0: z.number().min(0).max(1),
+  x1: z.number().min(0).max(1),
+  y1: z.number().min(0).max(1),
 });
 
 export const guiaBasesSchema = z.object({
   clips: z.array(clipSchema),
+  crop: cropSchema,
   // Lo que va entre comillas sale resaltado.
   cta: z.string(),
   transitionSeconds: z.number().min(0.1).max(1.5),
 });
 
 export type Clip = z.infer<typeof clipSchema>;
+export type Crop = z.infer<typeof cropSchema>;
 export type GuiaBasesProps = z.infer<typeof guiaBasesSchema>;
