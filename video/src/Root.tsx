@@ -2,12 +2,43 @@ import "./index.css";
 import { Composition } from "remotion";
 import { HelloWorld } from "./HelloWorld";
 import { Logo } from "./HelloWorld/Logo";
+import { calculateGuiaBasesMetadata, GuiaBases } from "./GuiaBases/GuiaBases";
+import { guiaBasesSchema, type Clip } from "./GuiaBases/schema";
+import { FPS, HEIGHT, WIDTH } from "./GuiaBases/theme";
+
+// Mientras no estén los clips, tarjetas de muestra de 2,5 s.
+const sampleClips: Clip[] = Array.from({ length: 6 }, (_, i) => ({
+  src: "",
+  from: 0,
+  to: 2.5,
+  zoom: 1,
+  x: 0,
+  y: 0,
+  entry: i === 0 ? "corte" : "deslizar",
+}));
 
 // Each <Composition> is an entry in the sidebar!
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* Reel 9:16 de la guía gratuita. Los clips van en public/clips/. */}
+      <Composition
+        id="GuiaBases"
+        component={GuiaBases}
+        schema={guiaBasesSchema}
+        calculateMetadata={calculateGuiaBasesMetadata}
+        durationInFrames={1}
+        fps={FPS}
+        width={WIDTH}
+        height={HEIGHT}
+        defaultProps={{
+          clips: sampleClips,
+          cta: 'Responde "BASES" y te la envío',
+          transitionSeconds: 0.4,
+        }}
+      />
+
       <Composition
         // You can take the "id" to render a video:
         // npx remotion render HelloWorld
