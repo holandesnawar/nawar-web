@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-// Cómo entra cada clip: "corte" deja el paso de página real del vídeo;
-// "deslizar" y "fundido" tapan un paso de página en el que se ve la mano.
+// Cómo entra cada tramo: "corte" es un corte seco (lo normal: se salta el
+// momento de coger la página); "deslizar" y "fundido" quedan por si acaso.
 export const transitionSchema = z.enum(["corte", "deslizar", "fundido"]);
 
 export const clipSchema = z.object({
@@ -11,25 +11,19 @@ export const clipSchema = z.object({
   from: z.number().min(0),
   to: z.number().min(0),
   entry: transitionSchema,
-});
-
-// Zona del clip original (en fracciones del cuadro) que se ve en el panel.
-// Deja fuera la parte de abajo, que es por donde entra la mano al pasar página.
-export const cropSchema = z.object({
-  x0: z.number().min(0).max(1),
-  y0: z.number().min(0).max(1),
-  x1: z.number().min(0).max(1),
-  y1: z.number().min(0).max(1),
+  // Acercamiento durante el tramo (1 = nada), para el fotograma final alargado.
+  push: z.number().min(1),
 });
 
 export const guiaBasesSchema = z.object({
   clips: z.array(clipSchema),
-  crop: cropSchema,
+  // Zoom anclado arriba: deja fuera la parte de abajo del cuadro, que es por
+  // donde entra la mano al pasar página.
+  zoom: z.number().min(1),
   // Lo que va entre comillas sale resaltado.
   cta: z.string(),
   transitionSeconds: z.number().min(0.1).max(1.5),
 });
 
 export type Clip = z.infer<typeof clipSchema>;
-export type Crop = z.infer<typeof cropSchema>;
 export type GuiaBasesProps = z.infer<typeof guiaBasesSchema>;

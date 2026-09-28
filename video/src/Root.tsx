@@ -6,13 +6,30 @@ import { calculateGuiaBasesMetadata, GuiaBases } from "./GuiaBases/GuiaBases";
 import { guiaBasesSchema, type Clip } from "./GuiaBases/schema";
 import { FPS, HEIGHT, WIDTH } from "./GuiaBases/theme";
 
-// Montaje de la guía: una sola toma (IMG_6678, la más limpia y con mejor luz)
-// de la portada a la contraportada, empezando cuando la cámara ya está quieta.
-// La toma acaba justo al caer la contraportada, así que ese último fotograma
-// se alarga (IMG_6678_fin.mp4). Los clips se pasan a hd/ con ffmpeg (README).
+// Montaje de la guía con la toma IMG_6678 (la más limpia y con mejor luz).
+// Cada tramo empieza con la página ya en el aire (el corte se salta el momento
+// de cogerla), la deja caer y enseña la página nueva un par de segundos.
+// Todos los tramos están comprobados fotograma a fotograma sin mano en cuadro
+// con el zoom de 1.25. La toma acaba al caer la contraportada, así que ese
+// último fotograma se alarga (IMG_6678_fin.mp4) con un acercamiento suave.
+const tramo = (from: number, to: number): Clip => ({
+  src: "hd/IMG_6678.mp4",
+  from,
+  to,
+  entry: "corte",
+  push: 1,
+});
+
 const guiaClips: Clip[] = [
-  { src: "hd/IMG_6678.mp4", from: 0.8, to: 25.3333, entry: "corte" },
-  { src: "hd/IMG_6678_fin.mp4", from: 0, to: 2.5, entry: "corte" },
+  tramo(0.8, 2.0), // portada
+  tramo(3.55, 5.55), // 01 Introducción
+  tramo(7.37, 9.4), // 02 Artículos
+  tramo(11.7, 13.7), // 03 Pronombres
+  tramo(15.83, 17.8), // 04 Verbos
+  tramo(19.4, 21.2), // 05 Vocabulario
+  tramo(22.1, 23.9), // 06 Gramática
+  tramo(24.75, 25.3333), // contraportada
+  { src: "hd/IMG_6678_fin.mp4", from: 0, to: 2, entry: "corte", push: 1.04 },
 ];
 
 // Each <Composition> is an entry in the sidebar!
@@ -33,7 +50,7 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{
           clips: guiaClips,
           // Deja fuera la parte de abajo del cuadro, por donde entra la mano.
-          crop: { x0: 0.02, y0: 0.12, x1: 0.98, y1: 0.72 },
+          zoom: 1.25,
           cta: 'Responde "BASES" y te la envío',
           transitionSeconds: 0.3,
         }}

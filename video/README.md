@@ -2,10 +2,11 @@
 
 ## Reel de la guía gratuita (`GuiaBases`)
 
-Vertical 9:16 (1080×1920, 30 fps): la guía pasando de la portada a la
-contraportada dentro de un panel, y abajo la línea `Responde "BASES" y te la envío`.
-El panel solo enseña la parte de arriba del cuadro (`crop`), así que la mano
-que pasa las páginas desde la esquina de abajo no sale.
+Vertical 9:16 (1080×1920, 30 fps), vídeo a pantalla completa: de la portada
+a la contraportada con cortes que se saltan el momento de coger cada página
+(cada tramo empieza con la página ya en el aire) y abajo la línea
+`Responde "BASES" y te la envío`. El `zoom` va anclado arriba y deja fuera la
+parte de abajo del cuadro, que es por donde entra la mano.
 
 1. Copia los clips originales en `public/clips/` (no se suben a git) y pásalos
    a 1080×1920 y 30 fps en `public/clips/hd/`:
@@ -16,7 +17,8 @@ que pasa las páginas desde la esquina de abajo no sale.
 2. En `src/Root.tsx`, cada entrada de `clips` es un tramo:
    - `src`: archivo dentro de `public/clips/`
    - `from` / `to`: segundos del clip
-   - `entry`: `"corte"` (paso de página real), `"deslizar"` o `"fundido"`
+   - `entry`: `"corte"` (lo normal), `"deslizar"` o `"fundido"`
+   - `push`: acercamiento durante el tramo (1 = nada)
 3. `npm run dev` para verlo y ajustarlo en Remotion Studio.
 4. `npx remotion render GuiaBases out/guia-bases.mp4` para exportarlo.
 

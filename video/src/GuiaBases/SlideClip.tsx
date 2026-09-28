@@ -1,25 +1,31 @@
 import {
   AbsoluteFill,
+  interpolate,
   OffthreadVideo,
   staticFile,
+  useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import type { Clip, Crop } from "./schema";
-import { BRAND, FONT, OFF, PANEL_WIDTH, SRC_HEIGHT, SRC_WIDTH } from "./theme";
+import type { Clip } from "./schema";
+import { BRAND, FONT, OFF } from "./theme";
 
-// Un tramo de un clip, colocado para que la zona `crop` llene el panel.
-export const SlideClip: React.FC<{ clip: Clip; crop: Crop; index: number }> = ({
-  clip,
-  crop,
-  index,
-}) => {
-  const { fps } = useVideoConfig();
+// Un tramo de un clip a pantalla completa, con el zoom anclado arriba para
+// que la parte de abajo (donde está la mano) quede fuera del cuadro.
+export const SlideClip: React.FC<{
+  clip: Clip;
+  zoom: number;
+  index: number;
+}> = ({ clip, zoom, index }) => {
+  const frame = useCurrentFrame();
+  const { fps, durationInFrames } = useVideoConfig();
 
   if (!clip.src) {
     return <Placeholder index={index} />;
   }
 
-  const scale = PANEL_WIDTH / ((crop.x1 - crop.x0) * SRC_WIDTH);
+  const push = interpolate(frame, [0, durationInFrames], [1, clip.push], {
+    extrapolateRight: "clamp",
+  });
 
   return (
     <AbsoluteFill style={{ backgroundColor: BRAND }}>
@@ -29,11 +35,11 @@ export const SlideClip: React.FC<{ clip: Clip; crop: Crop; index: number }> = ({
         trimAfter={Math.round(clip.to * fps)}
         muted
         style={{
-          position: "absolute",
-          width: SRC_WIDTH * scale,
-          height: SRC_HEIGHT * scale,
-          left: -crop.x0 * SRC_WIDTH * scale,
-          top: -crop.y0 * SRC_HEIGHT * scale,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          transformOrigin: "50% 0%",
+          transform: `scale(${zoom * push})`,
         }}
       />
     </AbsoluteFill>
