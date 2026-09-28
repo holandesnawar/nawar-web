@@ -28,7 +28,6 @@ export const calculateGuiaBasesMetadata: CalculateMetadataFunction<
 
 export const GuiaBases: React.FC<GuiaBasesProps> = ({
   clips,
-  zoom,
   cta,
   transitionSeconds,
 }) => {
@@ -52,7 +51,7 @@ export const GuiaBases: React.FC<GuiaBasesProps> = ({
               />
             ) : null}
             <TransitionSeries.Sequence durationInFrames={clipFrames(clip, FPS)}>
-              <SlideClip clip={clip} zoom={zoom} index={i} />
+              <SlideClip clip={clip} index={i} />
             </TransitionSeries.Sequence>
           </Fragment>
         ))}

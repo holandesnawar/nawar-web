@@ -6,30 +6,55 @@ import { calculateGuiaBasesMetadata, GuiaBases } from "./GuiaBases/GuiaBases";
 import { guiaBasesSchema, type Clip } from "./GuiaBases/schema";
 import { FPS, HEIGHT, WIDTH } from "./GuiaBases/theme";
 
-// Montaje de la guía con la toma IMG_6678 (la más limpia y con mejor luz).
-// Cada tramo empieza con la página ya en el aire (el corte se salta el momento
-// de cogerla), la deja caer y enseña la página nueva un par de segundos.
-// Todos los tramos están comprobados fotograma a fotograma sin mano en cuadro
-// con el zoom de 1.25. La toma acaba al caer la contraportada, así que ese
-// último fotograma se alarga (IMG_6678_fin.mp4) con un acercamiento suave.
-const tramo = (from: number, to: number): Clip => ({
-  src: "hd/IMG_6678.mp4",
+// Montaje de la guía con la toma IMG_6675 (IMG_6675_fix.mp4: la misma toma con
+// unas rayas de tinta de la tabla de la página 04 limpiadas).
+// Cada página: la hoja volando (zoom 1.25, así la mano que la sujeta queda
+// fuera) y corte a la página nueva quieta con el encuadre natural. Los cortes
+// se saltan el momento de coger la página y la espera. Todos los tramos están
+// comprobados fotograma a fotograma sin mano en cuadro. La toma acaba al caer
+// la contraportada, así que ese fotograma se alarga (IMG_6675_fin.mp4).
+const SRC = "hd/IMG_6675_fix.mp4";
+const vuelo = (from: number, to: number): Clip => ({
+  src: SRC,
   from,
   to,
   entry: "corte",
+  zoom: 1.25,
+  push: 1,
+});
+const pagina = (from: number, to: number): Clip => ({
+  src: SRC,
+  from,
+  to,
+  entry: "corte",
+  zoom: 1,
   push: 1,
 });
 
 const guiaClips: Clip[] = [
-  tramo(0.8, 2.0), // portada
-  tramo(3.55, 5.55), // 01 Introducción
-  tramo(7.37, 9.4), // 02 Artículos
-  tramo(11.7, 13.7), // 03 Pronombres
-  tramo(15.83, 17.8), // 04 Verbos
-  tramo(19.4, 21.2), // 05 Vocabulario
-  tramo(22.1, 23.9), // 06 Gramática
-  tramo(24.75, 25.3333), // contraportada
-  { src: "hd/IMG_6678_fin.mp4", from: 0, to: 2, entry: "corte", push: 1.04 },
+  pagina(0.1, 1.4667), // portada
+  vuelo(3.4, 3.8667),
+  pagina(3.8667, 5.1), // 01 Introducción
+  vuelo(8.0333, 8.2667),
+  pagina(8.2667, 9.75), // 02 Artículos
+  vuelo(11.9667, 12.5333),
+  pagina(12.5333, 14.0), // 03 Pronombres
+  vuelo(16.0333, 16.6),
+  pagina(16.6, 18.3), // 04 Verbos
+  vuelo(20.1667, 20.4333),
+  pagina(20.4333, 22.1), // 05 Vocabulario
+  vuelo(24.2333, 24.4),
+  pagina(24.4, 26.1), // 06 Gramática
+  vuelo(27.3, 27.9),
+  pagina(27.9, 28.1667), // contraportada
+  {
+    src: "hd/IMG_6675_fin.mp4",
+    from: 0,
+    to: 2,
+    entry: "corte",
+    zoom: 1,
+    push: 1.04,
+  },
 ];
 
 // Each <Composition> is an entry in the sidebar!
@@ -49,8 +74,6 @@ export const RemotionRoot: React.FC = () => {
         height={HEIGHT}
         defaultProps={{
           clips: guiaClips,
-          // Deja fuera la parte de abajo del cuadro, por donde entra la mano.
-          zoom: 1.25,
           cta: 'Responde "BASES" y te la envío',
           transitionSeconds: 0.3,
         }}

@@ -9,13 +9,12 @@ import {
 import type { Clip } from "./schema";
 import { BRAND, FONT, OFF } from "./theme";
 
-// Un tramo de un clip a pantalla completa, con el zoom anclado arriba para
-// que la parte de abajo (donde está la mano) quede fuera del cuadro.
+// Un tramo de un clip a pantalla completa. Con zoom > 1 se acerca anclado
+// arriba, así la parte de abajo (donde está la mano) queda fuera del cuadro.
 export const SlideClip: React.FC<{
   clip: Clip;
-  zoom: number;
   index: number;
-}> = ({ clip, zoom, index }) => {
+}> = ({ clip, index }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
 
@@ -39,7 +38,7 @@ export const SlideClip: React.FC<{
           height: "100%",
           objectFit: "cover",
           transformOrigin: "50% 0%",
-          transform: `scale(${zoom * push})`,
+          transform: `scale(${clip.zoom * push})`,
         }}
       />
     </AbsoluteFill>
