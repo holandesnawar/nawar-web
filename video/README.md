@@ -3,9 +3,8 @@
 ## Reel de la guía gratuita (`GuiaBases`)
 
 Vertical 9:16 (1080×1920, 30 fps), vídeo a pantalla completa con la toma
-IMG_6675: cada página se ve quieta con el encuadre natural y, entre página y
-página, un instante de la hoja volando con zoom (así la mano que la sujeta
-queda fuera). Los cortes se saltan el momento de coger la página y la espera.
+IMG_6675 y el encuadre natural, sin zoom: cada página quieta y corte seco a la
+siguiente, así no se ve el paso de página ni la mano que la pasa.
 Abajo, la línea `Responde "BASES" y te la envío`.
 
 1. Copia los clips originales en `public/clips/` (no se suben a git) y pásalos
@@ -27,7 +26,7 @@ Abajo, la línea `Responde "BASES" y te la envío`.
 4. En `src/Root.tsx`, cada entrada de `clips` es un tramo:
    - `src`: archivo dentro de `public/clips/`
    - `from` / `to`: segundos del clip
-   - `zoom`: 1 = encuadre natural; 1.25 en los pasos de página
+   - `zoom`: 1 = encuadre natural (con más, se acerca anclado arriba)
    - `entry`: `"corte"` (lo normal), `"deslizar"` o `"fundido"`
    - `push`: acercamiento durante el tramo (1 = nada)
 5. `npm run dev` para verlo y ajustarlo en Remotion Studio.
