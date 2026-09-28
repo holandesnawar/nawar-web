@@ -1,5 +1,6 @@
 import {
   AbsoluteFill,
+  Freeze,
   interpolate,
   OffthreadVideo,
   staticFile,
@@ -26,21 +27,31 @@ export const SlideClip: React.FC<{
     extrapolateRight: "clamp",
   });
 
+  const video = (
+    <OffthreadVideo
+      src={staticFile(`clips/${clip.src}`)}
+      trimBefore={Math.round(clip.from * fps)}
+      trimAfter={Math.round(clip.to * fps)}
+      muted
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        transformOrigin: "50% 0%",
+        transform: `scale(${clip.zoom * push})`,
+      }}
+    />
+  );
+  // Pasado el tramo, se queda en su último fotograma durante `hold`.
+  const liveFrames = Math.round((clip.to - clip.from) * fps);
+
   return (
     <AbsoluteFill style={{ backgroundColor: BRAND }}>
-      <OffthreadVideo
-        src={staticFile(`clips/${clip.src}`)}
-        trimBefore={Math.round(clip.from * fps)}
-        trimAfter={Math.round(clip.to * fps)}
-        muted
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          transformOrigin: "50% 0%",
-          transform: `scale(${clip.zoom * push})`,
-        }}
-      />
+      {frame < liveFrames ? (
+        video
+      ) : (
+        <Freeze frame={liveFrames - 1}>{video}</Freeze>
+      )}
     </AbsoluteFill>
   );
 };

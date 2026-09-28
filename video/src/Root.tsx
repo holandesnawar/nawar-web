@@ -6,39 +6,31 @@ import { calculateGuiaBasesMetadata, GuiaBases } from "./GuiaBases/GuiaBases";
 import { guiaBasesSchema, type Clip } from "./GuiaBases/schema";
 import { FPS, HEIGHT, WIDTH } from "./GuiaBases/theme";
 
-// Montaje de la guía con la toma IMG_6675 (IMG_6675_fix.mp4: la misma toma con
-// unas rayas de tinta de la tabla de la página 04 limpiadas).
-// Todo con el encuadre natural, sin zoom: cada página quieta y corte seco a la
-// siguiente, así no se ve el paso de página ni la mano. Todos los tramos están
-// comprobados fotograma a fotograma sin mano en cuadro. La toma acaba al caer
-// la contraportada, así que ese fotograma se alarga (IMG_6675_fin.mp4).
-const SRC = "hd/IMG_6675_fix.mp4";
-const pagina = (from: number, to: number): Clip => ({
+// Montaje de la guía con la toma IMG_6678, todo con el mismo encuadre: un
+// zoom suave fijo de 1.15 anclado arriba (deja fuera la mano, que espera en la
+// esquina de abajo a la derecha). Cada página quieta y corte seco a la
+// siguiente, sin paso de página. Tramos comprobados fotograma a fotograma sin
+// mano en cuadro; 05, 06 y la contraportada alargan su último fotograma.
+const SRC = "hd/IMG_6678.mp4";
+const pagina = (from: number, to: number, hold = 0): Clip => ({
   src: SRC,
   from,
   to,
   entry: "corte",
-  zoom: 1,
+  zoom: 1.15,
   push: 1,
+  hold,
 });
 
 const guiaClips: Clip[] = [
-  pagina(0.1, 1.4667), // portada
-  pagina(3.9667, 5.1), // 01 Introducción
-  pagina(8.2667, 9.75), // 02 Artículos
-  pagina(12.6333, 14.0), // 03 Pronombres
-  pagina(16.6, 18.3), // 04 Verbos
-  pagina(20.5333, 22.1), // 05 Vocabulario
-  pagina(24.4, 26.1), // 06 Gramática
-  pagina(27.9, 28.1667), // contraportada
-  {
-    src: "hd/IMG_6675_fin.mp4",
-    from: 0,
-    to: 1.8,
-    entry: "corte",
-    zoom: 1,
-    push: 1,
-  },
+  pagina(0.1, 1.25), // portada
+  pagina(4.2, 5.6), // 01 Introducción
+  pagina(7.9, 9.3), // 02 Artículos
+  pagina(12.4, 13.8), // 03 Pronombres
+  pagina(16.8, 18.2), // 04 Verbos
+  pagina(20.9, 21.7, 0.5), // 05 Vocabulario
+  pagina(23.1333, 23.9, 0.5), // 06 Gramática
+  pagina(25.2, 25.3333, 1.8), // contraportada
 ];
 
 // Each <Composition> is an entry in the sidebar!
@@ -58,7 +50,7 @@ export const RemotionRoot: React.FC = () => {
         height={HEIGHT}
         defaultProps={{
           clips: guiaClips,
-          cta: 'Responde "BASES" y te la envío',
+          cta: "",
           transitionSeconds: 0.3,
         }}
       />

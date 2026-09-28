@@ -2,35 +2,30 @@
 
 ## Reel de la guía gratuita (`GuiaBases`)
 
-Vertical 9:16 (1080×1920, 30 fps), vídeo a pantalla completa con la toma
-IMG_6675 y el encuadre natural, sin zoom: cada página quieta y corte seco a la
-siguiente, así no se ve el paso de página ni la mano que la pasa.
-Abajo, la línea `Responde "BASES" y te la envío`.
+Vertical 9:16 (1080×1920, 30 fps) con la toma IMG_6678 y el mismo encuadre en
+todo el vídeo: un zoom suave fijo de 1.15 anclado arriba, que deja fuera la
+mano (espera en la esquina de abajo a la derecha). Cada página quieta y corte
+seco a la siguiente, sin paso de página. Sin texto encima (la línea `cta` va
+vacía; si se rellena, sale abajo con lo entrecomillado resaltado).
 
 1. Copia los clips originales en `public/clips/` (no se suben a git) y pásalos
    a 1080×1920 y 30 fps en `public/clips/hd/`:
    ```console
-   ffmpeg -i public/clips/IMG_6675.MOV -an -vf "scale=1080:1920,fps=30" \
-     -c:v libx264 -crf 16 -pix_fmt yuv420p public/clips/hd/IMG_6675.mp4
+   ffmpeg -i public/clips/IMG_6678.MOV -an -vf "scale=1080:1920,fps=30" \
+     -c:v libx264 -crf 16 -pix_fmt yuv420p public/clips/hd/IMG_6678.mp4
    ```
-2. Limpia las rayas de tinta de la tabla de la página 04 (crea `IMG_6675_fix.mp4`):
-   ```console
-   python3 scripts/limpiar-pagina-04.py
-   ```
-3. El final alarga el fotograma 845 (contraportada) en `IMG_6675_fin.mp4`:
-   ```console
-   ffmpeg -i public/clips/hd/IMG_6675_fix.mp4 -vf "select=eq(n\,845)" -frames:v 1 fin.png
-   ffmpeg -loop 1 -framerate 30 -i fin.png -t 3 -c:v libx264 -crf 16 \
-     -pix_fmt yuv420p public/clips/hd/IMG_6675_fin.mp4
-   ```
-4. En `src/Root.tsx`, cada entrada de `clips` es un tramo:
+2. En `src/Root.tsx`, cada entrada de `clips` es un tramo:
    - `src`: archivo dentro de `public/clips/`
    - `from` / `to`: segundos del clip
    - `zoom`: 1 = encuadre natural (con más, se acerca anclado arriba)
+   - `hold`: segundos que se queda quieto el último fotograma
    - `entry`: `"corte"` (lo normal), `"deslizar"` o `"fundido"`
    - `push`: acercamiento durante el tramo (1 = nada)
-5. `npm run dev` para verlo y ajustarlo en Remotion Studio.
-6. `npx remotion render GuiaBases out/guia-bases.mp4` para exportarlo.
+3. `npm run dev` para verlo y ajustarlo en Remotion Studio.
+4. `npx remotion render GuiaBases out/guia-bases.mp4` para exportarlo.
+
+`scripts/limpiar-pagina-04.py` limpia unas rayas de tinta de la tabla de la
+página 04 en la toma IMG_6675 (no hace falta con IMG_6678).
 
 Los clips van sin sonido; la música se pone en Instagram/TikTok.
 

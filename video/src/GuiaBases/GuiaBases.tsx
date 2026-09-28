@@ -9,7 +9,7 @@ import { SlideClip } from "./SlideClip";
 import { BRAND, FPS } from "./theme";
 
 const clipFrames = (clip: Clip, fps: number) =>
-  Math.max(1, Math.round((clip.to - clip.from) * fps));
+  Math.max(1, Math.round((clip.to - clip.from + clip.hold) * fps));
 
 // Las transiciones solapan los dos tramos, así que restan de la duración.
 export const calculateGuiaBasesMetadata: CalculateMetadataFunction<
@@ -56,7 +56,7 @@ export const GuiaBases: React.FC<GuiaBasesProps> = ({
           </Fragment>
         ))}
       </TransitionSeries>
-      <Cta text={cta} />
+      {cta ? <Cta text={cta} /> : null}
     </AbsoluteFill>
   );
 };
