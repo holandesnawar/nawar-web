@@ -2,11 +2,12 @@
 
 ## Reel de la guía gratuita (`GuiaBases`)
 
-Vertical 9:16 (1080×1920, 30 fps) con la toma IMG_6678 y el mismo encuadre en
-todo el vídeo: un zoom suave fijo de 1.15 anclado arriba, que deja fuera la
-mano (espera en la esquina de abajo a la derecha). Cada página quieta y corte
-seco a la siguiente, sin paso de página. Sin texto encima (la línea `cta` va
-vacía; si se rellena, sale abajo con lo entrecomillado resaltado).
+Vertical 9:16 (1080×1920, 30 fps) con la toma IMG_6678 y el encuadre natural,
+sin zoom. En cada paso de página se corta la parte en la que la mano llega y
+coge la hoja: cada tramo empieza con la hoja ya en el aire, cae y se ve la
+página nueva; también se cortan los ratos en que la mano ronda por abajo. Sin
+texto encima (la línea `cta` va vacía; si se rellena, sale abajo con lo
+entrecomillado resaltado).
 
 1. Copia los clips originales en `public/clips/` (no se suben a git) y pásalos
    a 1080×1920 y 30 fps en `public/clips/hd/`:

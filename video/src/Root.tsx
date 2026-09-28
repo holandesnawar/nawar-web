@@ -6,31 +6,35 @@ import { calculateGuiaBasesMetadata, GuiaBases } from "./GuiaBases/GuiaBases";
 import { guiaBasesSchema, type Clip } from "./GuiaBases/schema";
 import { FPS, HEIGHT, WIDTH } from "./GuiaBases/theme";
 
-// Montaje de la guía con la toma IMG_6678, todo con el mismo encuadre: un
-// zoom suave fijo de 1.15 anclado arriba (deja fuera la mano, que espera en la
-// esquina de abajo a la derecha). Cada página quieta y corte seco a la
-// siguiente, sin paso de página. Tramos comprobados fotograma a fotograma sin
-// mano en cuadro; 05, 06 y la contraportada alargan su último fotograma.
+// Montaje de la guía con la toma IMG_6678, sin zoom. En cada paso de página se
+// corta la parte en la que la mano llega y coge la hoja: el tramo empieza con
+// la hoja ya en el aire, cae y se ve la página nueva. También se cortan los
+// ratos en que la mano ronda por abajo después. Donde la página limpia dura
+// poco, su último fotograma se queda quieto un momento (`hold`).
 const SRC = "hd/IMG_6678.mp4";
-const pagina = (from: number, to: number, hold = 0): Clip => ({
+const tramo = (from: number, to: number, hold = 0): Clip => ({
   src: SRC,
   from,
   to,
   entry: "corte",
-  zoom: 1.15,
+  zoom: 1,
   push: 1,
   hold,
 });
 
 const guiaClips: Clip[] = [
-  pagina(0.1, 1.25), // portada
-  pagina(4.2, 5.6), // 01 Introducción
-  pagina(7.9, 9.3), // 02 Artículos
-  pagina(12.4, 13.8), // 03 Pronombres
-  pagina(16.8, 18.2), // 04 Verbos
-  pagina(20.9, 21.7, 0.5), // 05 Vocabulario
-  pagina(23.1333, 23.9, 0.5), // 06 Gramática
-  pagina(25.2, 25.3333, 1.8), // contraportada
+  tramo(0, 1.1), // portada
+  tramo(3.7333, 4.6333, 0.5), // hoja al aire → 01 Introducción
+  tramo(7.4333, 8.7), // hoja al aire → 02 Artículos
+  tramo(11.8667, 12.1), // hoja al aire → 03
+  tramo(14.1, 14.3333, 0.8), // 03 Pronombres
+  tramo(15.9333, 16.6), // hoja al aire → 04
+  tramo(16.9667, 17.6667), // 04 Verbos
+  tramo(19.5667, 19.9333), // hoja al aire → 05
+  tramo(20.8, 21.0, 0.6), // 05 Vocabulario (solo asoma la sombra de la mano)
+  tramo(22.2667, 22.5), // hoja al aire → 06
+  tramo(23.1667, 23.8667), // 06 Gramática
+  tramo(24.9333, 25.3333, 1.8), // hoja al aire → contraportada
 ];
 
 // Each <Composition> is an entry in the sidebar!
