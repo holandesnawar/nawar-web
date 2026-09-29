@@ -24,6 +24,9 @@ export interface Opcion {
   valor: string
   texto: string
   puntos: number
+  /** Si al elegirla hay que escribir algo más (p. ej. qué país). Se guarda
+   *  en `textos[clave]` y sale junto a la respuesta en la ficha. */
+  detalle?: { clave: string; placeholder: string }
 }
 
 interface Base {
@@ -79,7 +82,10 @@ export const PREGUNTAS: Pregunta[] = [
       { valor: 'vivo', texto: 'Ya vivo en Países Bajos o Bélgica', puntos: 3 },
       { valor: 'pronto', texto: 'Me mudo en menos de 6 meses', puntos: 2 },
       { valor: 'futuro', texto: 'Me mudaré más adelante', puntos: 1 },
-      { valor: 'otro', texto: 'Ninguna de estas', puntos: 0 },
+      // Pedido el 29/09: saber en qué país está quien no vive aquí, para
+      // escribirle con el prefijo bueno. El valor sigue siendo 'otro' (lo usa
+      // la línea roja de "curiosidad").
+      { valor: 'otro', texto: 'En otro país', puntos: 0, detalle: { clave: 'pais', placeholder: '¿En qué país?' } },
     ],
   },
   {
@@ -228,7 +234,9 @@ export function puntuar(respuestas: Record<string, string>, textos: Record<strin
     if (p.tipo === 'opciones') {
       const op = p.opciones.find((o) => o.valor === respuestas[p.clave])
       total += op?.puntos ?? 0
-      detalle.push({ pregunta: p.etiqueta, respuesta: op?.texto ?? 'Sin responder', puntos: op?.puntos ?? 0 })
+      const extra = op?.detalle ? (textos[op.detalle.clave] ?? '').toString().trim().slice(0, 80) : ''
+      const respuesta = op ? (extra ? `${op.texto}: ${extra}` : op.texto) : 'Sin responder'
+      detalle.push({ pregunta: p.etiqueta, respuesta, puntos: op?.puntos ?? 0 })
     } else if (p.tipo === 'escala') {
       const n = Number(respuestas[p.clave])
       const valido = Number.isInteger(n) && n >= 1 && n <= 5
