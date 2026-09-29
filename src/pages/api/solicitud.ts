@@ -65,9 +65,14 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const control = new AbortController()
     const reloj = setTimeout(() => control.abort(), TIMEOUT_MS)
+    // Con la clave de la web (SCHOOL_WEB_TOKEN en Vercel) la escuela no le
+    // aplica el tope de 5/hora/IP: todas estas peticiones salen de Vercel.
+    const tokenWeb =
+      (import.meta.env.SCHOOL_WEB_TOKEN as string | undefined) ||
+      (typeof process !== 'undefined' ? process.env.SCHOOL_WEB_TOKEN : undefined)
     const res = await fetch(ESCUELA_SOLICITUD_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...(tokenWeb ? { 'X-Web-Token': tokenWeb } : {}) },
       body: JSON.stringify(payload),
       signal: control.signal,
     })

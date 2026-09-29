@@ -20,7 +20,7 @@ export const REDIRECCIONES: Record<string, { status: 302; destination: string }>
   // El formulario corto de matrícula se retiró el 29/09: la matrícula es
   // /agendar. Sus direcciones siguen en correos, anuncios y WhatsApp.
   '/matricula-formacion-nawar-a0-a1': { status: 302, destination: '/agendar' },
-  // /matricula-a0-a1 y /matricula-formacion-nawar-a0-a1-ads NO van aquí:
-  // son páginas mínimas (src/pages/) que mandan a /agendar CONSERVANDO los
-  // ?utm_… de la dirección. Esta redirección los perdía.
+  // /matricula-formacion-nawar-a0-a1-ads NO va aquí: es una página mínima
+  // (src/pages/) que manda a /agendar CONSERVANDO los ?utm_… (esta
+  // redirección los perdía). /matricula-a0-a1 es el formulario corto, vivo.
 }
