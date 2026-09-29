@@ -29,7 +29,8 @@ const matriculaUrl = '/matricula-formacion-nawar'
 /* La matrícula de la landing de anuncios: la que NO cobra. Va aparte
    porque la de arriba crea la sesión de pago y además redirige a la
    lista de espera con la convocatoria cerrada. */
-const matriculaAdsUrl = '/matricula-formacion-nawar-a0-a1-ads'
+// Sin precio → /agendar (29/09; antes, el formulario corto de anuncios).
+const matriculaAdsUrl = '/agendar'
 // Fondo blanco en la propia imagen: por eso la sección va en blanco.
 // La versión de móvil viene recompuesta aparte; el <picture> se encarga
 // de que sólo se descargue una de las dos.
@@ -125,8 +126,8 @@ const destinoCta = ctaUrl || (conPrecio ? matriculaUrl : matriculaAdsUrl)
              único que quiere saber quien ha bajado toda la página sin
              ver un precio: qué pasa exactamente si pulsa. */
           <p class="ai-card-paso">
-            Déjanos tus datos y te escribimos para ver de dónde partes
-            y si esto te encaja.
+            Responde unas preguntas y reserva una llamada: vemos de dónde
+            partes y si esto te encaja.
           </p>
         )}
         <a href={destinoCta} class="ai-cta">

@@ -336,6 +336,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
       if (destino === 'q0') {
         if (!datosOk()) return
         guardarParcial()
+        contarLead()
       }
       mostrar(destino)
     })
@@ -348,6 +349,21 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   // frío. La escuela reescribe su misma línea, no crea otra. Sin esperar la
   // respuesta: la persona no nota nada, y keepalive lo deja salir aunque
   // cierre la pestaña justo después.
+  // El "Lead" del píxel de Meta, al dejar los datos: es el mismo momento en
+  // que la escuela ya tiene el contacto. Antes lo disparaba la página de
+  // gracias del formulario de anuncios; desde el 29/09 los anuncios traen
+  // aquí, y sin esto Meta dejaría de saber qué anuncios traen gente. Una vez
+  // por visita (quien vuelve atrás y adelante no cuenta dos veces). Con ?.
+  // porque el píxel puede no estar (bloqueadores).
+  const contarLead = () => {
+    const evento = () => (window as any).fbq?.('track', 'Lead', { content_name: 'Solicitud de plaza (agendar)', currency: 'EUR' })
+    try {
+      if (sessionStorage.getItem('lead-agendar')) return
+      sessionStorage.setItem('lead-agendar', '1')
+    } catch {}
+    evento()
+  }
+
   let parcialEnviado = ''
   const guardarParcial = (ultima = '') => {
     const email = val('email').toLowerCase()
@@ -363,6 +379,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
       textos,
       ultima,
       ...contextoDelLead(),
+      ...leerUTM(),
     })
     // Si no ha cambiado nada (volvió atrás y adelante), no se repite.
     if (cuerpo === parcialEnviado) return

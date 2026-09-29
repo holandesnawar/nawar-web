@@ -15,4 +15,8 @@
  *
  * Los textos viven en src/data/landing.json (ctaText, ctaPrimary).
  */
-export const CTA_PRINCIPAL = '/matricula-a0-a1'
+// Desde el 29/09 la matrícula ES /agendar: datos, unas preguntas y llamada
+// reservada. El formulario corto (nombre, correo y teléfono) se retiró; sus
+// direcciones redirigen aquí (src/lib/redirecciones.ts). Quien deja los
+// datos y se va a mitad no se pierde: sale en la escuela como "No terminó".
+export const CTA_PRINCIPAL = '/agendar'
