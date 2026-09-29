@@ -149,10 +149,15 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
               {p.tipo === 'opciones' ? (
                 <div class="ag-options" role="radiogroup" aria-label={pregunta}>
                   {p.opciones.map((o, j) => (
-                    <button type="button" class="ag-option" data-valor={o.valor} data-letra={LETRAS[j]} role="radio" aria-checked="false">
+                    <button type="button" class="ag-option" data-valor={o.valor} data-letra={LETRAS[j]} data-detalle={o.detalle?.clave} role="radio" aria-checked="false">
                       <span class="ag-key" aria-hidden="true">{LETRAS[j]}</span>
                       <span>{o.texto}</span>
                     </button>
+                  ))}
+                  {p.opciones.filter((o) => o.detalle).map((o) => (
+                    <div class="ag-detalle" data-detalle-de={o.valor} hidden>
+                      <input type="text" class="ag-input" data-detalle-clave={o.detalle!.clave} placeholder={o.detalle!.placeholder} maxlength="80" autocomplete="country-name" />
+                    </div>
                   ))}
                 </div>
               ) : p.tipo === 'escala' ? (
@@ -176,7 +181,11 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
               )}
 
               <p class="ag-err" data-err={`q${i}`}>
-                {p.tipo === 'texto' ? 'Cuéntanoslo con un poco más de detalle para continuar.' : 'Elige una opción para continuar.'}
+                {p.tipo === 'texto'
+                  ? 'Cuéntanoslo con un poco más de detalle para continuar.'
+                  : p.tipo === 'opciones' && p.opciones.some((o) => o.detalle)
+                    ? 'Elige una opción y, si estás en otro país, dinos cuál.'
+                    : 'Elige una opción para continuar.'}
               </p>
               <div class="ag-actions ag-between">
                 <button type="button" class="ag-btn-ghost" data-go={i === 0 ? 'datos' : `q${i - 1}`}>‹ Anterior</button>
@@ -413,12 +422,35 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
     respuestas[pane.dataset.clave as string] = btn.dataset.valor as string
     pane.querySelector('[data-err]')?.classList.remove('visible')
     if (saltando) clearTimeout(saltando)
+    // Una opción que pide algo más ("En otro país" → cuál): se abre su campo
+    // y NO pasa sola; sigue con Intro o "Aceptar". Las demás cierran el campo.
+    let abierto: HTMLInputElement | null = null
+    pane.querySelectorAll<HTMLElement>('[data-detalle-de]').forEach((caja) => {
+      const input = caja.querySelector<HTMLInputElement>('input') as HTMLInputElement
+      const toca = caja.dataset.detalleDe === btn.dataset.valor
+      caja.hidden = !toca
+      if (toca) abierto = input
+      else delete textos[input.dataset.detalleClave as string]
+    })
+    if (abierto) {
+      setTimeout(() => (abierto as HTMLInputElement).focus(), 60)
+      return
+    }
     saltando = window.setTimeout(() => { saltando = null; siguiente(pane) }, 420)
   }
 
   preguntas.forEach((pane) => {
     pane.querySelectorAll<HTMLButtonElement>('[role="radio"]').forEach((btn) => {
       btn.addEventListener('click', () => elegir(pane, btn))
+    })
+    pane.querySelectorAll<HTMLInputElement>('[data-detalle-clave]').forEach((input) => {
+      input.addEventListener('input', () => {
+        textos[input.dataset.detalleClave as string] = input.value
+        if (input.value.trim().length >= 2) pane.querySelector('[data-err]')?.classList.remove('visible')
+      })
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); continuar(pane) }
+      })
     })
     const area = pane.querySelector<HTMLTextAreaElement>('.ag-textarea')
     if (area) {
@@ -436,7 +468,12 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   const completa = (pane: HTMLElement) => {
     const area = pane.querySelector<HTMLTextAreaElement>('.ag-textarea')
     if (area) return area.value.trim().length >= Number(area.dataset.minimo || 0)
-    return Boolean(respuestas[pane.dataset.clave as string])
+    const elegida = respuestas[pane.dataset.clave as string]
+    if (!elegida) return false
+    // Si la elegida pide un detalle (el país), hace falta escribirlo.
+    const caja = pane.querySelector<HTMLElement>(`[data-detalle-de="${elegida}"]`)
+    if (caja) return (caja.querySelector('input') as HTMLInputElement).value.trim().length >= 2
+    return true
   }
 
   const continuar = async (pane: HTMLElement) => {
@@ -690,6 +727,8 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
     -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none;
     padding: 10px 2px; font-size: 20px;
   }
+  .ag-detalle { margin-top: 4px; }
+  .ag-detalle[hidden] { display: none; }
   .ag-input::placeholder, .ag-textarea::placeholder { color: rgba(255,255,255,0.32); }
   .ag-input:focus, .ag-textarea:focus { border-bottom-color: #fff; }
 
