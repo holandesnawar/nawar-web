@@ -15,8 +15,11 @@
  *
  * Los textos viven en src/data/landing.json (ctaText, ctaPrimary).
  */
-// Desde el 29/09 la matrícula ES /agendar: datos, unas preguntas y llamada
-// reservada. El formulario corto (nombre, correo y teléfono) se retiró; sus
-// direcciones redirigen aquí (src/lib/redirecciones.ts). Quien deja los
-// datos y se va a mitad no se pierde: sale en la escuela como "No terminó".
-export const CTA_PRINCIPAL = '/agendar'
+// Decidido con el usuario el 29/09, después de dar una vuelta:
+//  · Botones generales (menú de toda la web, home, Nuestra visión, blog) →
+//    el FORMULARIO CORTO (nombre, correo y teléfono obligatorio): es tráfico
+//    frío y lo corto capta más.
+//  · Landings sin precio (anuncios) → /agendar (LandingCaptacion y cía.).
+//  · Landings con precio → el pago.
+// Se probó a mandar todo a /agendar y se deshizo el mismo día.
+export const CTA_PRINCIPAL = '/matricula-a0-a1'
