@@ -120,7 +120,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
             </div>
             <div class="ag-field">
               <label class="ag-label" for="phone">Teléfono con WhatsApp <span class="ag-req">*</span></label>
-              <p class="ag-help">Para confirmarte la cita y mandarte recordatorios útiles.</p>
+              <p class="ag-help">Con el prefijo de tu país (+31, +32, +34…), para confirmarte la cita por WhatsApp.</p>
               <input id="phone" name="phone" type="tel" class="ag-input" placeholder="+31 6 …" autocomplete="tel" required />
             </div>
           </div>
@@ -282,6 +282,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
           <div class="ag-actions">
             <a class="ag-btn" href="/guia/bases-neerlandes">Descargar la guía gratis ›</a>
           </div>
+          <p class="ag-lead ag-nota">¿Crees que sí es tu momento? Escríbenos a <a class="ag-enlace" href="mailto:info@holandesnawar.com">info@holandesnawar.com</a> y lo hablamos.</p>
         </section>
 
         <p class="ag-err" id="ag-err-envio">No se pudo enviar. Vuelve a intentarlo en un momento.</p>

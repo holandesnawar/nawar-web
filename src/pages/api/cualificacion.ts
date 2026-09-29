@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro'
+import { normalizarTelefono } from '../../lib/telefono'
 import { MAX_TEXTO, PREGUNTAS, puntuar } from '../../lib/cualificacion'
 import { ESCUELA_URL, avisarEscuela } from '../../lib/escuela'
 import {
@@ -34,7 +35,7 @@ export const POST: APIRoute = async ({ request }) => {
   const email = (body?.email ?? '').toString().trim().toLowerCase()
   const firstName = (body?.first_name ?? '').toString().trim().slice(0, 120)
   const lastName = (body?.last_name ?? '').toString().trim().slice(0, 120)
-  const phone = (body?.phone ?? '').toString().trim().slice(0, 40)
+  const phone = normalizarTelefono((body?.phone ?? '').toString().slice(0, 40))
   if (!email || !email.includes('@') || !firstName) return json({ error: 'Faltan el nombre o el correo' }, 400)
 
   const recorridoParcial: string[] = Array.isArray(body?.recorrido)

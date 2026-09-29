@@ -197,6 +197,11 @@ export const LINEAS_ROJAS: { motivo: string; cruza: (r: Record<string, string>) 
   },
 ]
 
+/** Puede pagar (al contado o a plazos) y tiene al menos 2 horas a la semana. */
+export function puedeYTieneTiempo(r: Record<string, string>): boolean {
+  return (r.inversion === 'contado' || r.inversion === 'plazos') && !!r.horas && r.horas !== 'menos2'
+}
+
 /** Hasta dónde se guarda una respuesta abierta. */
 export const MAX_TEXTO = 800
 
@@ -239,6 +244,10 @@ export function puntuar(respuestas: Record<string, string>, textos: Record<strin
       detalle.push({ pregunta: p.etiqueta, respuesta: t || 'Sin responder', puntos: 0 })
     }
   }
-  const linea = LINEAS_ROJAS.find((l) => l.cruza(respuestas))
+  // Puede pagar y tiene tiempo = encaja SIEMPRE (29/09, tras rechazar a
+  // alguien con nivel cero que podía pagar y tenía horas). Ninguna línea
+  // roja gana a eso: si marcó el 1 de compromiso o "curiosidad", es algo
+  // que se aclara en la llamada, no motivo para cerrarle la puerta.
+  const linea = puedeYTieneTiempo(respuestas) ? undefined : LINEAS_ROJAS.find((l) => l.cruza(respuestas))
   return { puntuacion: total, apto: !linea, motivo_fuera: linea?.motivo ?? '', respuestas: detalle }
 }

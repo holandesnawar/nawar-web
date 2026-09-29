@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro'
+import { normalizarTelefono } from '../../lib/telefono'
 import { ESCUELA_URL } from '../../lib/escuela'
 
 export const prerender = false
@@ -45,7 +46,7 @@ export const POST: APIRoute = async ({ request }) => {
     email,
     first_name: (body?.firstName ?? body?.first_name ?? '').toString().trim(),
     last_name: (body?.lastName ?? body?.last_name ?? '').toString().trim(),
-    phone: (body?.phone ?? '').toString().trim(),
+    phone: normalizarTelefono((body?.phone ?? '').toString()),
     source: body?.source === 'ads' ? 'ads' : body?.source === 'llamada' ? 'llamada' : 'web',
     // Por dónde pasó antes de rellenar. Lo manda el navegador, así que se
     // recorta y se filtra: nada de guardar una cadena larga que venga de
