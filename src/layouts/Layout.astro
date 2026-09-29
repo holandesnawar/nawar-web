@@ -170,7 +170,13 @@ const META_PIXEL_NOSCRIPT = `<img height="1" width="1" style="display:none" alt=
          una página nueva solo tiene que añadir su regla en lib/recorrido.ts. -->
     <script>
       import { registrarPagina } from '../lib/recorrido'
+      import { guardarUTM } from '../lib/utm'
       registrarPagina()
+      // La campaña del anuncio, en cuanto abre cualquier página: el anuncio
+      // lleva a una landing y el formulario (/agendar) está en otra. Antes
+      // solo la guardaban las guías y los formularios, y con los botones de
+      // las landings yendo a /agendar la campaña se perdía por el camino.
+      guardarUTM()
     </script>
 
     <!-- Scroll reveal: sequential stagger for .sr/.sr-s, bidirectional for .sr-bi -->

@@ -132,7 +132,8 @@ const { ctaUrl, conPrecio = false } = Astro.props
    Va emparejado con `ctaUrl`: enseñar 397 € y mandar al formulario que sólo
    recoge el correo es prometer una cosa y hacer otra. Si se enciende uno, el
    otro tiene que apuntar a la matrícula. */
-const CTA_URL = ctaUrl || '/matricula-formacion-nawar-a0-a1-ads'
+// Sin precio → /agendar (29/09). Con precio, la página pasa ctaUrl al pago.
+const CTA_URL = ctaUrl || '/agendar'
 
 /* ── WhatsApp para las dudas de antes de comprar ───────────────
    ⚠️ VACÍO = APAGADO. Ni sale el botón flotante ni la línea de las
@@ -233,7 +234,7 @@ const faqs = [
      conversación, que es para lo que está el formulario. */
   {
     q: '¿Qué pasa cuando dejo mis datos?',
-    a: 'Nada automático ni ningún cobro. Te escribimos por WhatsApp en menos de 24 horas, vemos de dónde partes y resolvemos lo que necesites. Si lo ves claro, completamos la matrícula ahí mismo y entras en la escuela. Y si no, no pasa nada: no te insistimos.',
+    a: 'Ningún cobro. Respondes unas preguntas rápidas para que sepamos de dónde partes y eliges el día y la hora de una llamada con el equipo. En la llamada resolvemos lo que necesites y, si lo ves claro, completamos la matrícula ahí mismo y entras en la escuela. Y si no, no pasa nada: no te insistimos.',
   },
   {
     q: '¿Es para principiantes absolutos?',
@@ -683,7 +684,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
                     el botón no dé miedo: decir que no cobra. */}
                 <p class="hero-nota">
                   <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                  Sin compromiso: te escribimos antes de nada
+                  Sin compromiso: primero hablamos contigo
                 </p>
               </div>
               <span class="hero-empieza" aria-hidden="true">

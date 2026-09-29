@@ -124,4 +124,4 @@ Empieza por KNM (el más fácil y el que más confianza te da), luego lectura y 
 
 La mayoría de nuestros alumnos llegan después de probar apps genéricas, clases grupales en inglés, y cursos que asumen que ya sabes cómo pensar en neerlandés. **Nada de eso está pensado para un hispanohablante**.
 
-[👉 Fórmate con Nawar](/matricula-a0-a1): gramática comparada desde el español, práctica oral desde el primer día y una comunidad de hispanohablantes que avanzan contigo.
+[👉 Fórmate con Nawar](/agendar): gramática comparada desde el español, práctica oral desde el primer día y una comunidad de hispanohablantes que avanzan contigo.

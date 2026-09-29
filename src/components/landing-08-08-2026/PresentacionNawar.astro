@@ -15,7 +15,8 @@ const matriculaUrl = '/matricula-formacion-nawar'
 /* La landing de anuncios pide ads={true}: allí este botón no puede
    llevar al checkout —no se cobra en la web— sino al formulario que
    sólo recoge el contacto. */
-const matriculaAdsUrl = '/matricula-formacion-nawar-a0-a1-ads'
+// Sin precio → /agendar (29/09; antes, el formulario corto de anuncios).
+const matriculaAdsUrl = '/agendar'
 /* `ctaUrl` manda sobre `ads`: la landing que lo monta sabe a dónde
    quiere mandar, y no siempre coincide con "es de anuncios". */
 interface Props { ads?: boolean; ctaUrl?: string }

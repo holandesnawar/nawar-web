@@ -74,6 +74,11 @@ export const POST: APIRoute = async ({ request }) => {
       phone,
       source: 'llamada',
       recorrido: recorridoParcial,
+      // La campaña también aquí: si se va a mitad, el "No terminó" dice de
+      // qué anuncio venía (desde el 29/09 los anuncios llevan a /agendar).
+      utm_source: (body?.utmSource ?? '').toString().trim().slice(0, 120),
+      utm_medium: (body?.utmMedium ?? '').toString().trim().slice(0, 120),
+      utm_campaign: (body?.utmCampaign ?? '').toString().trim().slice(0, 120),
       ...(hechas.length ? { extra: { respuestas: hechas, ultima } } : {}),
     })
     return json({ ok: true })
@@ -110,9 +115,12 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   // 1) La escuela: solicitud (para llamarle) + evento con las respuestas.
+  // Con la clave de la web (si está en Vercel) la escuela no le aplica el
+  // tope de 5/hora/IP: todas estas peticiones salen de las IP de Vercel.
+  const tokenWeb = leerEnv('SCHOOL_WEB_TOKEN')
   const solicitud = fetch(`${ESCUELA_URL}/api/v1/payments/solicitudes`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...(tokenWeb ? { 'X-Web-Token': tokenWeb } : {}) },
     body: JSON.stringify({ email, first_name: firstName, last_name: lastName, phone, source: 'llamada', recorrido, referrer, ...utm }),
     signal: AbortSignal.timeout(6000),
   }).catch((e) => console.error('[cualificacion] solicitud:', (e as Error).message))
