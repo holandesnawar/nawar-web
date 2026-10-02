@@ -32,6 +32,11 @@ const PAGINAS: { prueba: RegExp; marca: string }[] = [
   { prueba: /^\/proceso-de-admision\/?$/, marca: 'admision' },
   // ⚠️ La única con precio. Es la que parte a los leads en dos grupos.
   { prueba: /^\/formacion-a0-a1\/?$/, marca: 'landing-precio' },
+  // ⚠️ La otra ruta CON precio y su formulario de pago (02/10): no se
+  // apuntaban, así que quien entraba por un enlace directo (un correo, un
+  // mensaje) llegaba a la caja "sin recorrido" y no se sabía cómo.
+  { prueba: /^\/formacion-nawar\/?$/, marca: 'landing-precio' },
+  { prueba: /^\/matricula-formacion-nawar\/?$/, marca: 'matricula-pago' },
   // Las dos rutas de la landing de captación: mismo contenido, sin cifras.
   { prueba: /^\/formacion-a0-a1-sept-ads\/?$/, marca: 'landing' },
   { prueba: /^\/formacion-nawar-a0-a1\/?$/, marca: 'landing' },
