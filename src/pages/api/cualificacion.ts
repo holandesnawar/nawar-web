@@ -53,6 +53,13 @@ export const POST: APIRoute = async ({ request }) => {
     if (typeof v === 'string' && /^[a-z]{1,20}$/.test(k)) textos[k] = v.replace(/[\u0000-\u0008\u000B-\u001F]/g, '').trim().slice(0, MAX_TEXTO)
   }
 
+  // De qué embudo viene (02/10): /proceso-de-admision manda 'admision' y en
+  // qué punto del vídeo va. /agendar no manda nada y todo sigue igual. Va en
+  // el `extra` del evento, para que Panel → Llamadas lo distinga.
+  const embudo = /^[a-z-]{1,20}$/.test((body?.embudo ?? '').toString()) ? body.embudo.toString() : ''
+  const video = ['empezado', 'visto'].includes((body?.video ?? '').toString()) ? body.video.toString() : ''
+  const marcaEmbudo: Record<string, string> = embudo ? { embudo, ...(video ? { video } : {}) } : {}
+
   // Modo parcial: la persona acaba de pasar la pantalla de datos (y luego,
   // otra vez con cada respuesta). Se guarda YA en la escuela como evento "agendar-empezado", para que si cierra la
   // pestaña a mitad no se pierda: sale en Panel → Llamadas como "No
@@ -80,7 +87,7 @@ export const POST: APIRoute = async ({ request }) => {
       utm_source: (body?.utmSource ?? '').toString().trim().slice(0, 120),
       utm_medium: (body?.utmMedium ?? '').toString().trim().slice(0, 120),
       utm_campaign: (body?.utmCampaign ?? '').toString().trim().slice(0, 120),
-      ...(hechas.length ? { extra: { respuestas: hechas, ultima } } : {}),
+      ...(hechas.length || embudo ? { extra: { ...marcaEmbudo, ...(hechas.length ? { respuestas: hechas, ultima } : {}) } } : {}),
     })
     return json({ ok: true })
   }
@@ -98,7 +105,7 @@ export const POST: APIRoute = async ({ request }) => {
       last_name: lastName,
       phone,
       source: 'llamada',
-      extra: /^https:\/\/api\.calendly\.com\/scheduled_events\/[\w-]{1,80}$/.test(uri) ? { calendly_evento: uri } : {},
+      extra: { ...marcaEmbudo, ...(/^https:\/\/api\.calendly\.com\/scheduled_events\/[\w-]{1,80}$/.test(uri) ? { calendly_evento: uri } : {}) },
     })
     return json({ ok: true })
   }
@@ -137,7 +144,7 @@ export const POST: APIRoute = async ({ request }) => {
     recorrido,
     referrer,
     ...utm,
-    extra: { puntuacion: resultado.puntuacion, apto: resultado.apto, motivo_fuera: resultado.motivo_fuera, respuestas: resultado.respuestas },
+    extra: { ...marcaEmbudo, puntuacion: resultado.puntuacion, apto: resultado.apto, motivo_fuera: resultado.motivo_fuera, respuestas: resultado.respuestas },
   })
 
   // 2) systeme.io, en blando.

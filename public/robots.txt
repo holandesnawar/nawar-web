@@ -15,5 +15,7 @@ Disallow: /ebook-a0-a1/
 # ahora redirige. Con "/formacion-a0-a1" se escapaba la de "nawar", que
 # lleva esa palabra en medio.
 Disallow: /formacion-
+# El proceso de admisión (embudo nuevo, 02/10): solo por enlace.
+Disallow: /proceso-de-admision
 
 Sitemap: https://www.holandesnawar.com/sitemap-index.xml
