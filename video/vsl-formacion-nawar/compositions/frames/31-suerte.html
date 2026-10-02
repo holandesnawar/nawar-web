@@ -1,0 +1,435 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: italic; src: url("assets/fonts/poppins-latin-800-italic.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 800; font-style: normal; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: nawar-blue + vignette; dots on a parallax layer ---------- */
+    #f31-ground {
+      position: absolute; inset: 0;
+      background-color: #120081;
+      background-image:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
+    #f31-par { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #f31-dots {
+      position: absolute; left: -200px; top: -240px; width: 2320px; height: 1560px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px;
+    }
+    #f31-amb {
+      position: absolute; left: 1000px; top: 120px; width: 900px; height: 800px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.26) 0%, rgba(77,163,255,0.08) 45%, rgba(77,163,255,0) 70%);
+    }
+    #f31-stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .f31-w { display: inline-block; }
+
+    /* ================= QUIZ CARD (shared design, scale 0.8, left) ================= */
+    #f31-cardpos { position: absolute; left: 84px; top: 262px; width: 1020px; height: 610px; }
+    #f31-cardsc { position: absolute; left: 0; top: 0; width: 1020px; height: 610px; transform: scale(0.9); transform-origin: 0 0; }
+    #f31-card {
+      position: absolute; inset: 0; border-radius: 28px; background: #FFFFFF;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45);
+      padding: 44px 76px 0 76px; transform-origin: 50% 100%;
+    }
+    #f31-qlabel {
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #5A6480; height: 26px; line-height: 26px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    #f31-qdot { width: 10px; height: 10px; border-radius: 50%; background: #0b6df0; }
+    #f31-q {
+      margin-top: 12px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 42px; line-height: 54px;
+      color: #0C0C1E; letter-spacing: -0.01em; white-space: nowrap;
+    }
+    #f31-q em { font-style: normal; color: #1D0084; }
+    #f31-rows { margin-top: 30px; display: flex; flex-direction: column; gap: 18px; }
+    .f31-row {
+      position: relative; width: 868px; height: 86px; border-radius: 18px;
+      background: #F1F4FB; border: 1px solid #DDE6F5;
+      display: flex; align-items: center; padding-left: 15px;
+    }
+    .f31-bw { position: relative; width: 56px; height: 56px; flex: none; }
+    .f31-badge {
+      position: absolute; inset: 0; border-radius: 14px; background: #1D0084; color: #FFFFFF;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 28px;
+    }
+    .f31-txt { margin-left: 26px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 32px; color: #0C0C1E; white-space: nowrap; }
+    #f31-tick { position: absolute; left: 12px; top: 12px; width: 32px; height: 32px; overflow: visible; }
+    #f31-tick path { fill: none; stroke: #FFFFFF; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+    #f31-ok {
+      position: absolute; right: 16px; top: 15px; height: 54px; padding: 0 22px 0 16px; border-radius: 999px;
+      background: #16A34A; color: #FFFFFF; display: flex; align-items: center; gap: 10px;
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 27px; white-space: nowrap;
+      box-shadow: 0 10px 24px rgba(22,163,74,0.35); transform-origin: 85% 50%;
+    }
+    #f31-ok svg { width: 28px; height: 28px; }
+
+    /* cursor + click ripple + confetti (card coordinates, above the card) */
+    #f31-cursor { position: absolute; left: 0; top: 0; width: 72px; height: 92px; overflow: visible; filter: drop-shadow(0 8px 14px rgba(4,0,40,0.35)); }
+    #f31-cursorIn { position: absolute; left: -5px; top: -5px; width: 72px; height: 92px; transform-origin: 5px 5px; }
+    #f31-ripple {
+      position: absolute; left: -40px; top: -40px; width: 80px; height: 80px; border-radius: 50%;
+      border: 5px solid #0b6df0; opacity: 0;
+    }
+    #f31-confetti { position: absolute; left: 790px; top: 313px; width: 0; height: 0; }
+    .f31-cf { position: absolute; left: -6px; top: -10px; width: 12px; height: 20px; border-radius: 3px; opacity: 0; }
+
+    /* ================= RIGHT COLUMN ================= */
+    .f31-col { position: absolute; left: 1050px; top: 0; width: 790px; height: 1080px; }
+    .f31-center { position: absolute; left: 0; width: 790px; display: flex; justify-content: center; white-space: nowrap; }
+    .f31-lead { font-family: "Poppins", sans-serif; font-weight: 600; font-size: 54px; line-height: 1.2; letter-spacing: -0.01em; color: rgba(255,255,255,0.72); gap: 0.26em; }
+    .f31-h { font-family: "Poppins", sans-serif; font-weight: 800; line-height: 0.98; letter-spacing: -0.035em; color: #FFFFFF; }
+
+    #f31-c1a { top: 352px; }
+    #f31-c1b { top: 420px; font-size: 128px; }
+    #f31-c1c { top: 568px; color: #FFFFFF; }
+
+    #f31-c2a { top: 548px; font-size: 140px; }
+    #f31-c2b { top: 684px; font-size: 140px; color: #4da3ff; text-shadow: 0 0 50px rgba(77,163,255,0.45); }
+
+    #f31-col3 { visibility: hidden; }
+    #f31-c3a { top: 262px; color: #FFFFFF; }
+    #f31-c3b {
+      top: 334px; font-family: "Poppins", sans-serif; font-style: italic; font-weight: 800; font-size: 104px;
+      line-height: 1.12; letter-spacing: -0.03em; color: rgba(255,255,255,0.72);
+    }
+    #f31-prog {
+      position: absolute; left: 20px; top: 528px; width: 750px; height: 196px; border-radius: 28px;
+      background: rgba(255,255,255,0.10);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.22), 0 40px 110px rgba(4,0,40,0.38);
+    }
+    #f31-plabel {
+      position: absolute; left: 44px; top: 40px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px;
+      letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.72); white-space: nowrap;
+    }
+    #f31-track { position: absolute; left: 44px; top: 112px; width: 662px; height: 36px; border-radius: 999px; background: rgba(255,255,255,0.18); }
+    #f31-fill, #f31-shard {
+      position: absolute; left: 0; top: 0; width: 662px; height: 36px; border-radius: 999px;
+      background: linear-gradient(90deg, #0b6df0 0%, #4da3ff 100%);
+      box-shadow: 0 0 30px rgba(77,163,255,0.45);
+    }
+    #f31-fill { clip-path: inset(0px 662px 0px 0px round 18px); }
+    #f31-fillRed { position: absolute; inset: 0; border-radius: 999px; background: #E02D3C; opacity: 0; }
+    #f31-shard {
+      clip-path: polygon(20% 0%, 80% 0%, 80% 100%, 20% 100%, 22.4% 72%, 19.2% 48%, 21.8% 22%);
+      opacity: 0; transform-origin: 50% 50%;
+    }
+    #f31-crack { position: absolute; left: 44px; top: 0; width: 662px; height: 196px; overflow: visible; }
+    #f31-crack path { fill: none; stroke: rgba(255,255,255,0.95); stroke-width: 5.5; stroke-linecap: round; stroke-linejoin: round; }
+    #f31-plus {
+      position: absolute; left: 470px; top: 26px; height: 52px; padding: 0 20px; border-radius: 999px;
+      background: #34D399; color: #07041F; display: flex; align-items: center;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 30px; white-space: nowrap;
+      box-shadow: 0 0 40px rgba(52,211,153,0.45); transform-origin: 50% 100%;
+    }
+
+    /* ================= THE DIE (CSS 3D cube) ================= */
+    #f31-dieX { position: absolute; left: 1345px; top: 262px; width: 200px; height: 200px; }
+    #f31-dieShadow {
+      position: absolute; left: 10px; top: 196px; width: 180px; height: 36px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(4,0,40,0.55) 0%, rgba(4,0,40,0) 70%);
+    }
+    #f31-dieY { position: absolute; left: 0; top: 0; width: 200px; height: 200px; perspective: 1100px; }
+    #f31-cube { position: absolute; left: 0; top: 0; width: 200px; height: 200px; transform-style: preserve-3d; }
+    .f31-face {
+      position: absolute; left: 0; top: 0; width: 200px; height: 200px; border-radius: 26px;
+      background: linear-gradient(145deg, #FFFFFF 0%, #EDF1FA 100%);
+      box-shadow: inset 0 0 0 1px rgba(29,0,132,0.08), inset 0 -12px 26px rgba(29,0,132,0.10);
+      backface-visibility: hidden;
+    }
+    .f31-core { position: absolute; left: 4px; top: 4px; width: 192px; height: 192px; background: #C9D1E6; border-radius: 30px; }
+    .f31-pip {
+      position: absolute; width: 38px; height: 38px; margin: -19px 0 0 -19px; border-radius: 50%;
+      background: #1D0084; box-shadow: inset 0 4px 6px rgba(0,0,0,0.38), 0 1px 0 rgba(255,255,255,0.8);
+    }
+  </style>
+
+  <div id="root" data-composition-id="31-suerte" data-width="1920" data-height="1080" data-duration="5.41">
+    <div id="f31-ground" class="clip" data-start="0" data-duration="5.41" data-track-index="0"></div>
+
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute"><filter id="f31-vbOut" x="-0.2" y="-0.6" width="1.4" height="2.2"><feGaussianBlur id="f31-vbOutN" in="SourceGraphic" stdDeviation="0 0" /></filter>
+      <filter id="f31-vbOut2" x="-0.2" y="-0.6" width="1.4" height="2.2"><feGaussianBlur id="f31-vbOut2N" in="SourceGraphic" stdDeviation="0 0" /></filter></svg>
+    <div id="f31-par"><div id="f31-dots"></div><div id="f31-amb"></div></div>
+    <div id="f31-stage">
+      <!-- ============ QUIZ CARD (fresh, uncrossed) ============ -->
+      <div id="f31-cardpos"><div id="f31-cardsc">
+        <div id="f31-card">
+          <div id="f31-qlabel"><span id="f31-qdot"></span><span>Elige una respuesta</span></div>
+          <div id="f31-q">¿Qué significa <em>“gezellig”</em>?</div>
+          <div id="f31-rows">
+            <div class="f31-row" id="f31-r0"><div class="f31-bw"><div class="f31-badge">A</div></div><span class="f31-txt">aburrido</span></div>
+            <div class="f31-row" id="f31-r1"><div class="f31-bw" id="f31-bw1"><div class="f31-badge" id="f31-b1"><span id="f31-bL">B</span></div><svg id="f31-tick" viewBox="0 0 32 32"><path id="f31-tickP" pathLength="1" d="M5 17 L13 25 L27 8" /></svg></div><span class="f31-txt" id="f31-t1">acogedor</span>
+              <div id="f31-ok"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="13" fill="#FFFFFF" /><path d="M8 14.5 L12.3 18.8 L20 10" fill="none" stroke="#16A34A" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" /></svg><span>¡Correcto!</span></div></div>
+            <div class="f31-row" id="f31-r2"><div class="f31-bw"><div class="f31-badge">C</div></div><span class="f31-txt">caro</span></div>
+            <div class="f31-row" id="f31-r3"><div class="f31-bw"><div class="f31-badge">D</div></div><span class="f31-txt">rápido</span></div>
+          </div>
+        </div>
+        <div id="f31-confetti"></div>
+        <div id="f31-cursor"><div id="f31-ripple"></div><svg id="f31-cursorIn" viewBox="-4 -4 58 74"><path d="M0 0 L0 50 L13 38 L22 58 L31 54 L22 34 L39 34 Z" fill="#0C0C1E" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round" /></svg></div>
+      </div></div>
+      <!-- ============ RIGHT COLUMN — scene 1 ============ -->
+      <div class="f31-col" id="f31-col1">
+        <div class="f31-center f31-lead" id="f31-c1a"><span class="f31-w" id="f31-wEstamos">Estamos</span></div>
+        <div class="f31-center f31-h" id="f31-c1b"><span class="f31-w" id="f31-wCansados">CANSADOS</span></div>
+        <div class="f31-center f31-lead" id="f31-c1c"><span class="f31-w" id="f31-wDe">de</span><span class="f31-w" id="f31-wEsos">esos</span><span class="f31-w" id="f31-wEjer">ejercicios</span></div>
+      </div>
+      <!-- ============ RIGHT COLUMN — scene 2 (PURA SUERTE) ============ -->
+      <div class="f31-col" id="f31-col2">
+        <div class="f31-center f31-h" id="f31-c2a"><span class="f31-w" id="f31-wPura">PURA</span></div>
+        <div class="f31-center f31-h" id="f31-c2b"><span class="f31-w" id="f31-wSuerte">SUERTE</span></div>
+      </div>
+      <!-- ============ RIGHT COLUMN — scene 3 (fake progress that cracks) ============ -->
+      <div class="f31-col" id="f31-col3">
+        <div class="f31-center f31-lead" id="f31-c3a"><span class="f31-w" id="f31-wY">y</span><span class="f31-w" id="f31-wTe">te</span><span class="f31-w" id="f31-wCrees">crees</span><span class="f31-w" id="f31-wQue">que</span><span class="f31-w" id="f31-wVas">vas</span></div>
+        <div class="f31-center" id="f31-c3b"><span class="f31-w" id="f31-wAvz">«avanzando»</span></div>
+        <div id="f31-prog">
+          <div id="f31-plabel">Tu progreso</div>
+          <div id="f31-track"><div id="f31-fill"><div id="f31-fillRed"></div></div><div id="f31-shard"></div></div>
+          <svg id="f31-crack" viewBox="0 0 662 196"><path id="f31-crk1" pathLength="1" d="M132 62 L141 84 L125 104 L145 126 L123 148 L137 170 L129 190" />
+            <path id="f31-crk2" pathLength="1" d="M141 84 L180 74 L206 82 L236 72" /><path id="f31-crk3" pathLength="1" d="M125 104 L90 115 L62 106" />
+            <path id="f31-crk4" pathLength="1" d="M145 126 L190 142 L218 135" /><path id="f31-crk5" pathLength="1" d="M123 148 L95 164 L78 184" /></svg>
+          <div id="f31-plus">+10 %</div>
+        </div>
+      </div>
+      <!-- ============ THE DIE (built in JS) ============ -->
+      <div id="f31-dieX"><div id="f31-dieShadow"></div><div id="f31-dieY"><div id="f31-cube"></div></div></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var $ = function (id) { return document.getElementById("f31-" + id); };
+      var tl = gsap.timeline({ paused: true });
+      var L = 0.04;
+      var F = 1 / 30;
+
+      // ---- build the die: 3 core planes (fill the rounded corners) + 6 faces (front shows 4) ----
+      var cube = $("cube");
+      ["rotateY(90deg)", "rotateX(90deg)", "none"].forEach(function (tr) {
+        var c = document.createElement("div"); c.className = "f31-core"; c.style.transform = tr; cube.appendChild(c);
+      });
+      var P = { 1: [[100, 100]], 2: [[56, 56], [144, 144]], 3: [[52, 52], [100, 100], [148, 148]],
+                4: [[52, 52], [148, 52], [52, 148], [148, 148]], 5: [[52, 52], [148, 52], [100, 100], [52, 148], [148, 148]],
+                6: [[56, 50], [56, 100], [56, 150], [144, 50], [144, 100], [144, 150]] };
+      [[4, ""], [3, "rotateY(180deg) "], [6, "rotateY(90deg) "], [1, "rotateY(-90deg) "], [5, "rotateX(90deg) "], [2, "rotateX(-90deg) "]]
+        .forEach(function (f) {
+          var face = document.createElement("div"); face.className = "f31-face";
+          face.style.transform = f[1] + "translateZ(100px)";
+          P[f[0]].forEach(function (xy) {
+            var pip = document.createElement("span"); pip.className = "f31-pip";
+            pip.style.left = xy[0] + "px"; pip.style.top = xy[1] + "px";
+            if (f[0] === 1) { pip.style.width = pip.style.height = "46px"; pip.style.margin = "-23px 0 0 -23px"; }
+            face.appendChild(pip);
+          });
+          cube.appendChild(face);
+        });
+
+      var T = { estamos: 0.12, cansados: 0.50, de: 1.02, esos: 1.07, ejercicios: 1.34, aciertas: 2.31,
+                pura: 2.94, suerte: 3.24, y: 3.83, te: 3.91, crees: 4.05, que: 4.36, vas: 4.47, avanzando: 4.64 };
+
+      var word = function (el, t, dy) {
+        tl.fromTo(el, { y: dy || 40, opacity: 0, filter: "blur(8px)" },
+          { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, t - L);
+      };
+      var slam = function (el, t, s, b) {
+        tl.fromTo(el, { scale: s || 1.3, opacity: 0, filter: "blur(" + (b || 12) + "px)" },
+          { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, t - L);
+      };
+      var shake = function (el, t, amp) {
+        var xs = [amp, -amp * 0.7, amp * 0.4, 0];
+        var ys = [-amp * 0.3, amp * 0.25, -amp * 0.1, 0];
+        tl.fromTo(el, { x: 0, y: 0 }, { x: xs[0], y: ys[0], duration: F, ease: "none", immediateRender: false }, t);
+        tl.to(el, { x: xs[1], y: ys[1], duration: F, ease: "none" }, t + F);
+        tl.to(el, { x: xs[2], y: ys[2], duration: F, ease: "none" }, t + 2 * F);
+        tl.to(el, { x: 0, y: 0, duration: F * 2, ease: "power2.out" }, t + 3 * F);
+      };
+      // vertical-blur whip out (cut-the-curve, upward)
+      var whipOut = function (el, node, C) {
+        var b = { v: 0 };
+        var w = function () { node.setAttribute("stdDeviation", "0 " + b.v.toFixed(2)); };
+        w();
+        tl.set(el, { filter: "url(#" + node.parentNode.id + ")" }, C - 0.2);
+        tl.fromTo(el, { y: 0 }, { y: -760, duration: 0.2, ease: "power3.in", immediateRender: false }, C - 0.2);
+        tl.fromTo(b, { v: 0 }, { v: 22, duration: 0.2, ease: "power2.in", onUpdate: w, immediateRender: false }, C - 0.2);
+        tl.set(el, { visibility: "hidden", filter: "none" }, C);
+      };
+
+      // ================= ENTRANCE: the (fresh) quiz card drops in with a 3D tilt =================
+      tl.fromTo($("dots"), { y: -90 }, { y: 0, duration: 0.55, ease: "expo.out" }, 0);
+      tl.fromTo($("card"), { y: -720, rotationX: -32, rotationY: 14, rotation: -4, transformPerspective: 1600 },
+        { y: 0, rotationX: 0, rotationY: 0, rotation: 0, transformPerspective: 1600, duration: 0.34, ease: "power3.out" }, 0);
+      tl.fromTo($("card"), { scaleY: 1 }, { scaleY: 0.97, duration: 0.05, ease: "power2.out", immediateRender: false }, 0.26);
+      tl.to($("card"), { scaleY: 1, duration: 0.18, ease: "power3.out" }, 0.31);
+      shake($("cardpos"), 0.27, 6);
+
+      // ================= SCENE 1 — Estamos CANSADOS de esos ejercicios =================
+      word($("wEstamos"), T.estamos);
+      slam($("wCansados"), T.cansados, 1.32, 12);
+      word($("wDe"), T.de, 34);
+      word($("wEsos"), T.esos, 34);
+      word($("wEjer"), T.ejercicios, 34);
+
+      // cursor: eeny-meeny over the options (deterministic path B → D → A → C → B)
+      var cur = $("cursor");
+      var rowIds = ["r0", "r1", "r2", "r3"];
+      tl.fromTo(cur, { x: 900, y: 640, opacity: 0 }, { x: 560, y: 318, opacity: 1, duration: 0.3, ease: "power2.out" }, 0.42);
+      var path = [
+        { x: 440, y: 528, t: 0.86 },  // D
+        { x: 600, y: 214, t: 1.24 },  // A
+        { x: 470, y: 426, t: 1.62 },  // C
+        { x: 520, y: 318, t: 2.0 }    // B (the "random" pick)
+      ];
+      path.forEach(function (p) {
+        tl.to(cur, { x: p.x, y: p.y, duration: 0.24, ease: "power2.inOut" }, p.t);
+      });
+      // small hesitation wiggle over B before the click
+      tl.to(cur, { x: 534, y: 312, duration: 0.1, ease: "sine.inOut" }, 2.24 - 0.1);
+      // hover highlights follow the cursor
+      var hover = function (id, tIn, tOut) {
+        tl.fromTo($(id), { backgroundColor: "#F1F4FB", borderColor: "#DDE6F5" },
+          { backgroundColor: "#E6EEFF", borderColor: "#7FB0F7", duration: 0.08, ease: "none", immediateRender: false }, tIn);
+        if (tOut) tl.to($(id), { backgroundColor: "#F1F4FB", borderColor: "#DDE6F5", duration: 0.12, ease: "none" }, tOut);
+      };
+      hover("r1", 0.62, 0.9);
+      hover("r3", 1.02, 1.28);
+      hover("r0", 1.4, 1.66);
+      hover("r2", 1.78, 2.04);
+      hover("r1", 2.16, null);
+
+      // ================= SCENE 2 — click on "aciertas" → ¡Correcto! + confetti =================
+      var CK = T.aciertas;
+      tl.fromTo($("cursorIn"), { scale: 1 }, { scale: 0.8, duration: 0.06, ease: "power2.out", immediateRender: false }, CK - 0.03);
+      tl.to($("cursorIn"), { scale: 1, duration: 0.18, ease: "power3.out" }, CK + 0.05);
+      tl.fromTo($("ripple"), { opacity: 0 }, { opacity: 0.9, duration: 0.01, ease: "none" }, CK);
+      tl.fromTo($("ripple"), { scale: 0.2 }, { scale: 1.7, duration: 0.45, ease: "power2.out" }, CK);
+      tl.to($("ripple"), { opacity: 0, duration: 0.43, ease: "power2.out" }, CK + 0.02);
+      tl.to($("r1"), { backgroundColor: "#E7F8EE", borderColor: "#16A34A", duration: 0.12, ease: "power2.out" }, CK + 0.02);
+      tl.fromTo($("b1"), { backgroundColor: "#1D0084" }, { backgroundColor: "#16A34A", duration: 0.12, ease: "power2.out" }, CK + 0.02);
+      tl.fromTo($("bL"), { opacity: 1 }, { opacity: 0, duration: 0.06, ease: "none" }, CK + 0.02);
+      var tk = $("tickP");
+      tk.setAttribute("stroke-dasharray", "1 1");
+      tl.fromTo(tk, { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.2, ease: "power2.out" }, CK + 0.06);
+      tl.fromTo($("bw1"), { scale: 1 }, { scale: 1.2, duration: 0.08, ease: "power2.out", immediateRender: false }, CK + 0.02);
+      tl.to($("bw1"), { scale: 1, duration: 0.3, ease: "power3.out" }, CK + 0.1);
+      tl.fromTo($("t1"), { color: "#0C0C1E" }, { color: "#15803D", duration: 0.12, ease: "none" }, CK + 0.02);
+      tl.fromTo($("ok"), { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2)" }, CK + 0.05);
+      // cursor slides off the answer so the green row reads
+      tl.to(cur, { x: 640, y: 420, opacity: 0, duration: 0.35, ease: "power2.in" }, CK + 0.45);
+
+      // confetti — deterministic by index
+      var colors = ["#16A34A", "#4da3ff", "#0b6df0", "#34D399", "#1D0084", "#9fd5f5"];
+      var cf = $("confetti");
+      var N = 22;
+      for (var i = 0; i < N; i++) {
+        var d = document.createElement("div");
+        d.className = "f31-cf";
+        d.style.background = colors[i % colors.length];
+        if (i % 3 === 0) { d.style.width = "16px"; d.style.height = "12px"; d.style.left = "-8px"; d.style.top = "-6px"; }
+        cf.appendChild(d);
+        var a = (-172 + i * (164 / (N - 1))) * Math.PI / 180;
+        var sp = 150 + ((i * 53) % 130);
+        var dx = Math.cos(a) * sp * 1.25, dy = Math.sin(a) * sp;
+        var rot = ((i * 67) % 360) - 180;
+        var t0 = CK + 0.04 + (i % 4) * 0.012;
+        tl.fromTo(d, { opacity: 0 }, { opacity: 1, duration: 0.02, ease: "none" }, t0);
+        tl.fromTo(d, { x: 0, y: 0, rotation: 0, scale: 0.4 },
+          { x: dx, y: dy, rotation: rot, scale: 1, duration: 0.42, ease: "power3.out" }, t0);
+        tl.to(d, { y: dy + 150 + ((i * 29) % 80), rotation: rot * 1.8, duration: 0.6, ease: "power1.in" }, t0 + 0.42);
+        tl.to(d, { opacity: 0, duration: 0.24, ease: "none" }, t0 + 0.78);
+      }
+
+      // ================= the die tumbles in on "pura" and lands showing 4 on "suerte" =================
+      whipOut($("col1"), $("vbOutN"), 2.9);
+      var DI = 2.86;
+      tl.fromTo($("dieX"), { x: 760 }, { x: 0, duration: 0.42, ease: "power2.out" }, DI);
+      tl.fromTo($("dieY"), { y: -300 }, { y: 0, duration: 0.24, ease: "power2.in" }, DI);
+      tl.to($("dieY"), { y: -54, duration: 0.11, ease: "power2.out" }, DI + 0.24);
+      tl.to($("dieY"), { y: 0, duration: 0.11, ease: "power2.in" }, DI + 0.35);
+      tl.fromTo($("cube"), { rotationX: 520, rotationY: -560, rotation: 160 },
+        { rotationX: -20, rotationY: -26, rotation: 0, duration: 0.52, ease: "power3.out" }, DI);
+      tl.fromTo($("dieShadow"), { scale: 0.4, opacity: 0.2 }, { scale: 1, opacity: 1, duration: 0.24, ease: "power2.in" }, DI);
+      tl.to($("dieShadow"), { scale: 0.8, opacity: 0.6, duration: 0.11, ease: "power2.out" }, DI + 0.24);
+      tl.to($("dieShadow"), { scale: 1, opacity: 1, duration: 0.11, ease: "power2.in" }, DI + 0.35);
+      shake($("col2"), DI + 0.24, 6);
+
+      slam($("wPura"), T.pura, 1.3, 12);
+      slam($("wSuerte"), T.suerte, 1.34, 14);
+
+      // ================= SCENE 3 — y te crees que vas «avanzando» → the bar cracks =================
+      whipOut($("col2"), $("vbOut2N"), 3.82);
+      // the die hops onto the card's corner (it was luck all along)
+      tl.to($("dieX"), { x: -462, duration: 0.46, ease: "power3.inOut" }, 3.66);
+      tl.to($("dieY"), { y: -66, scale: 0.52, duration: 0.46, ease: "power3.inOut" }, 3.66);
+      tl.to($("cube"), { rotationX: -24, rotationY: 34, rotation: 12, duration: 0.46, ease: "power3.inOut" }, 3.66);
+      tl.to($("dieShadow"), { opacity: 0, duration: 0.2, ease: "none" }, 3.66);
+
+      tl.set($("col3"), { visibility: "visible" }, 3.76);
+      word($("wY"), T.y, 60);
+      word($("wTe"), T.te, 60);
+      word($("wCrees"), T.crees, 60);
+      word($("wQue"), T.que, 40);
+      word($("wVas"), T.vas, 40);
+      tl.fromTo($("prog"), { y: 220, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "expo.out" }, 3.8);
+
+      // fast fill 0 → 80 %
+      var W = 662;
+      var fp = { p: 0 };
+      var writeFill = function () {
+        $("fill").style.clipPath = "inset(0px " + ((1 - fp.p) * W).toFixed(1) + "px 0px 0px round 18px)";
+      };
+      writeFill();
+      tl.fromTo(fp, { p: 0 }, { p: 0.8, duration: 0.36, ease: "power2.inOut", onUpdate: writeFill }, 4.3);
+      tl.fromTo($("plus"), { scale: 0, opacity: 0, y: 10 }, { scale: 1, opacity: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, T.avanzando - L);
+      tl.fromTo($("wAvz"), { opacity: 0, x: -40, filter: "blur(8px)" },
+        { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, T.avanzando - L);
+
+      // ---- CRACK + glitch at 4.90 ----
+      var CR = 4.9;
+      ["crk1", "crk2", "crk3", "crk4", "crk5"].forEach(function (id, k) {
+        var el = $(id);
+        el.setAttribute("stroke-dasharray", "1 1");
+        tl.fromTo(el, { attr: { "stroke-dashoffset": 1 } },
+          { attr: { "stroke-dashoffset": 0 }, duration: k === 0 ? 0.1 : 0.08, ease: "power2.out" }, CR + (k === 0 ? 0 : 0.04 + k * 0.02));
+      });
+      // flicker red / blue, then red
+      [[0, 1], [0.033, 0], [0.066, 1], [0.1, 0], [0.133, 1]].forEach(function (s) {
+        tl.set($("fillRed"), { opacity: s[1] }, CR + s[0]);
+      });
+      // glitch jitter on the panel and the quoted word
+      [[0, 16, -6], [0.033, -12, 4], [0.066, 8, -2], [0.1, -4, 0], [0.133, 0, 0]].forEach(function (s) {
+        tl.set($("prog"), { x: s[1], skewX: s[2] }, CR + s[0]);
+      });
+      [[0.02, -10], [0.053, 8], [0.086, -4], [0.12, 0]].forEach(function (s) {
+        tl.set($("wAvz"), { x: s[1] }, CR + s[0]);
+      });
+      // drop back to 20 %: the broken piece falls out of the track
+      [[0.0, 0.8, 0.52], [0.033, 0.52, 0.68], [0.066, 0.68, 0.2]].forEach(function (s) {
+        tl.fromTo(fp, { p: s[1] }, { p: s[2], duration: 0.01, ease: "none", onUpdate: writeFill, immediateRender: false }, CR + 0.02 + s[0]);
+      });
+      tl.set($("shard"), { opacity: 1 }, CR + 0.05);
+      tl.set($("fill"), { clipPath: "polygon(0% 0%, 20.4% 0%, 19.2% 28%, 21.6% 52%, 19% 76%, 20.6% 100%, 0% 100%)" }, CR + 0.1);
+      tl.fromTo($("shard"), { y: 0, rotation: 0, x: 0 },
+        { y: 170, rotation: 9, x: 40, duration: 0.3, ease: "power2.in", immediateRender: false }, CR + 0.06);
+      tl.fromTo($("shard"), { opacity: 1 }, { opacity: 0, duration: 0.12, ease: "none", immediateRender: false }, CR + 0.22);
+      [[0.05, 0.9], [0.083, 0.4], [0.116, 1]].forEach(function (s) {
+        tl.set($("shard"), { filter: "brightness(" + s[1] + ")" }, CR + s[0]);
+      });
+      // "+10 %" goes red and drops with it
+      tl.to($("plus"), { backgroundColor: "#E02D3C", color: "#FFFFFF", duration: 0.04, ease: "none" }, CR + 0.02);
+      tl.to($("plus"), { y: 140, rotation: 16, duration: 0.3, ease: "power2.in" }, CR + 0.08);
+      tl.to($("plus"), { opacity: 0, duration: 0.12, ease: "none" }, CR + 0.24);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["31-suerte"] = tl;
+    })();
+  </script>
+</template>

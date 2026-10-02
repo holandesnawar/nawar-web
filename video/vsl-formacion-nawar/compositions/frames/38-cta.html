@@ -1,0 +1,480 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: nawar-blue, full brightness (re-drop) + white dots + soft vignette ---------- */
+    #f38-ground {
+      position: absolute; inset: 0;
+      background-color: #120081;
+      background-image:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 58%, rgba(4,0,40,0.36) 100%),
+        radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px),
+        radial-gradient(circle at 50% 44%, #025dc7 0%, #120081 74%);
+      background-size: 100% 100%, 28px 28px, 100% 100%;
+      background-position: 0 0, 14px 14px, 0 0;
+    }
+
+    /* ---------- camera: cam (impact shake) > world (macro push) ---------- */
+    #f38-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 475px; }
+    #f38-world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 520px; }
+
+    /* ---------- halo behind the button (centre 960, 475) ---------- */
+    #f38-rays {
+      position: absolute; left: -340px; top: -825px; width: 2600px; height: 2600px; border-radius: 50%;
+      background:
+        repeating-conic-gradient(from 0deg at 50% 50%,
+          rgba(255,255,255,0.055) 0deg 2.4deg, rgba(255,255,255,0) 3.4deg 13deg, rgba(255,255,255,0.055) 14deg),
+        repeating-conic-gradient(from 5deg at 50% 50%,
+          rgba(159,213,245,0.045) 0deg 5deg, rgba(159,213,245,0) 6.5deg 21deg, rgba(159,213,245,0.045) 22.5deg);
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0%, rgba(0,0,0,0.7) 14%, rgba(0,0,0,0.22) 30%, rgba(0,0,0,0) 46%);
+      mask-image: radial-gradient(circle at 50% 50%, #000 0%, rgba(0,0,0,0.7) 14%, rgba(0,0,0,0.22) 30%, rgba(0,0,0,0) 46%);
+    }
+    #f38-glow {
+      position: absolute; left: 210px; top: 125px; width: 1500px; height: 700px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.55) 0%, rgba(77,163,255,0.22) 36%, rgba(77,163,255,0.07) 56%, rgba(77,163,255,0) 70%);
+    }
+    #f38-sparks { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .f38-spark { position: absolute; width: 0; height: 0; }
+    .f38-streak {
+      position: absolute; left: 0; top: -4px; height: 8px; border-radius: 4px; transform-origin: 0% 50%;
+      background: linear-gradient(90deg, rgba(159,213,245,0) 0%, rgba(159,213,245,0.7) 45%, #FFFFFF 100%);
+      box-shadow: 0 0 18px rgba(159,213,245,0.55);
+    }
+    #f38-shock {
+      position: absolute; left: 400px; top: 397px; width: 1120px; height: 156px; border-radius: 999px;
+      box-sizing: border-box; border: 5px solid rgba(255,255,255,0.9);
+      box-shadow: 0 0 40px rgba(159,213,245,0.7), inset 0 0 30px rgba(159,213,245,0.45);
+    }
+
+    /* ---------- the morphing card (final rect 180,96 1560x240) ---------- */
+    #f38-card { position: absolute; left: 180px; top: 96px; width: 1560px; height: 240px; }
+    #f38-card-clip { position: absolute; inset: 0; clip-path: inset(0px 0px 0px 0px round 28px); }
+    #f38-card-bg { position: absolute; inset: 0; border-radius: 28px; background-color: rgba(255,255,255,0.1); }
+    #f38-card-border {
+      position: absolute; inset: 0; border-radius: 28px; box-sizing: border-box;
+      border: 2px solid rgba(255,255,255,0.26);
+      box-shadow: 0 40px 110px rgba(4,0,40,0.38), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+    #f38-brand { position: absolute; left: 64px; top: 34px; width: 360px; height: 172px; }
+    #f38-brand-label {
+      position: absolute; left: 0; top: 0; width: 360px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.16em;
+      text-transform: uppercase; color: rgba(255,255,255,0.72);
+    }
+    #f38-brand-logo { position: absolute; left: 0; top: 40px; width: 360px; height: 128.5px; display: block;
+      filter: drop-shadow(0 14px 26px rgba(4,0,40,0.45)); }
+    #f38-card-div { position: absolute; left: 474px; top: 50px; width: 2px; height: 140px; background: rgba(255,255,255,0.26); transform-origin: 50% 50%; }
+    #f38-title {
+      position: absolute; left: 526px; top: 0; height: 240px; display: flex; align-items: center; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 84px; line-height: 1; letter-spacing: -0.03em;
+      text-transform: uppercase; color: #FFFFFF; padding-top: 8px; box-sizing: border-box;
+      text-shadow: 0 12px 40px rgba(4,0,40,0.4);
+    }
+    #f38-title-w { display: inline-block; }
+
+    /* ---------- the CTA button (1120 x 156 at 400,397 · centre 960,475) ---------- */
+    #f38-btnunit { position: absolute; left: 400px; top: 397px; width: 1120px; height: 156px; transform-origin: 560px 78px; }
+    #f38-btn {
+      position: absolute; inset: 0; border-radius: 999px; background: #FFFFFF; overflow: hidden;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 0 80px rgba(77,163,255,0.5);
+    }
+    #f38-btn-txt {
+      position: absolute; left: 78px; top: 0; height: 156px; display: flex; align-items: center; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 66px; line-height: 1; letter-spacing: -0.025em;
+      color: #1D0084; padding-top: 6px; box-sizing: border-box;
+    }
+    .f38-bw { display: inline-block; margin-right: 0.24em; }
+    .f38-bw:last-child { margin-right: 0; }
+    #f38-bw3 { color: #0b6df0; }
+    #f38-ripple {
+      position: absolute; left: 900px; top: -59px; width: 300px; height: 300px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(11,109,240,0.28) 0%, rgba(11,109,240,0.14) 55%, rgba(11,109,240,0) 72%);
+    }
+    #f38-btn-glint {
+      position: absolute; left: 0; top: -30px; width: 220px; height: 216px;
+      background: linear-gradient(105deg, rgba(159,213,245,0) 20%, rgba(159,213,245,0.5) 50%, rgba(159,213,245,0) 80%);
+    }
+
+    /* orb: arrow -> ringing phone; centre (1442,475) at rest, (1620,216) in the card */
+    #f38-orb {
+      position: absolute; left: 986px; top: 22px; width: 112px; height: 112px; border-radius: 50%;
+      background: #0b6df0; box-shadow: 0 10px 30px rgba(11,109,240,0.45), inset 0 -4px 0 rgba(4,0,40,0.18);
+    }
+    .f38-orb-ring {
+      position: absolute; left: 0; top: 0; width: 112px; height: 112px; border-radius: 50%; box-sizing: border-box;
+      border: 4px solid rgba(255,255,255,0.75); opacity: 0;
+    }
+    #f38-arrow { position: absolute; left: 26px; top: 26px; width: 60px; height: 60px; display: block; }
+    #f38-phone { position: absolute; left: 28px; top: 28px; width: 56px; height: 56px; display: block; transform-origin: 50% 50%; }
+
+    /* ---------- cursor (tip = hotspot at 1450,488) ---------- */
+    #f38-cursor { position: absolute; left: 1446px; top: 484px; width: 56px; height: 73px; transform-origin: 4px 4px; }
+    #f38-cursor svg { display: block; width: 56px; height: 73px; filter: drop-shadow(0 8px 14px rgba(4,0,40,0.45)); }
+
+    /* ---------- lead line under the button ---------- */
+    #f38-lead {
+      position: absolute; left: 0; top: 602px; width: 1920px; display: flex; justify-content: center; align-items: baseline;
+      white-space: nowrap; font-family: "Poppins", sans-serif; font-weight: 600; font-size: 52px; line-height: 1.2;
+      letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
+    }
+    .f38-lw { display: inline-block; margin-right: 0.26em; text-shadow: 0 8px 30px rgba(4,0,40,0.35); }
+    .f38-lw:last-child { margin-right: 0; }
+    .f38-lk { color: #FFFFFF; font-weight: 700; }
+
+    /* ---------- "Vemos" + three check-chips ---------- */
+    #f38-vemos {
+      position: absolute; left: 0; top: 398px; width: 1920px; height: 64px; display: flex; justify-content: center; align-items: center;
+      gap: 18px; white-space: nowrap;
+    }
+    #f38-eye { width: 62px; height: 40px; display: block; transform-origin: 50% 50%; }
+    #f38-vemos-w {
+      display: block; font-family: "Poppins", sans-serif; font-weight: 600; font-size: 46px; line-height: 1;
+      letter-spacing: -0.01em; color: rgba(255,255,255,0.72); padding-top: 6px;
+    }
+    #f38-chips {
+      position: absolute; left: 0; top: 488px; width: 1920px; height: 120px; display: flex; justify-content: center; align-items: center;
+      gap: 34px;
+    }
+    .f38-slot { position: relative; flex: none; }
+    .f38-chip {
+      position: relative; height: 116px; border-radius: 999px; background: #FFFFFF; box-sizing: border-box;
+      display: flex; align-items: center; gap: 22px; padding: 0 46px 0 20px; white-space: nowrap;
+      box-shadow: 0 30px 80px rgba(4,0,40,0.4);
+    }
+    .f38-ck {
+      flex: none; width: 76px; height: 76px; border-radius: 50%; background: #16A34A;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .f38-ck svg { width: 44px; height: 44px; display: block; }
+    .f38-ct {
+      display: block; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 54px; line-height: 1;
+      letter-spacing: -0.02em; color: #1D0084; padding-top: 6px;
+    }
+    #f38-ghost {
+      position: absolute; inset: 0; border-radius: 999px; box-sizing: border-box;
+      border: 3px dashed rgba(255,255,255,0.55); background: rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: center;
+    }
+    #f38-ghost-q {
+      display: block; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 64px; line-height: 1;
+      color: rgba(255,255,255,0.75); padding-top: 6px;
+    }
+
+    /* ---------- SIN COMPROMISO. stamp ---------- */
+    #f38-stamp-row {
+      position: absolute; left: 0; top: 690px; width: 1920px; height: 210px; display: flex; justify-content: center; align-items: center;
+    }
+    #f38-stamp-rot { position: relative; flex: none; transform: rotate(-3deg); }
+    #f38-stamp-glow {
+      position: absolute; left: -120px; top: -90px; right: -120px; bottom: -90px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(52,211,153,0.34) 0%, rgba(52,211,153,0.1) 45%, rgba(52,211,153,0) 70%);
+    }
+    #f38-stamp-box {
+      position: absolute; inset: 0; border-radius: 26px; box-sizing: border-box; border: 8px solid #34D399;
+      box-shadow: 0 0 40px rgba(52,211,153,0.35), inset 0 0 30px rgba(52,211,153,0.18);
+    }
+    #f38-stamp-inner { position: absolute; inset: 14px; border-radius: 16px; box-sizing: border-box; border: 2px solid rgba(52,211,153,0.6); }
+    #f38-stamp-txt {
+      position: relative; display: flex; align-items: center; white-space: nowrap; padding: 40px 72px 30px;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 120px; line-height: 1; letter-spacing: -0.035em;
+      text-transform: uppercase; color: #FFFFFF;
+    }
+    .f38-sw { display: inline-block; text-shadow: 0 14px 40px rgba(4,0,40,0.45); }
+    #f38-sw1 { margin-right: 0.24em; }
+
+    /* ---------- the re-drop flash ---------- */
+    #f38-flash { position: absolute; inset: 0; background: #FFFFFF; opacity: 0; pointer-events: none; }
+  </style>
+
+  <div id="root" data-composition-id="38-cta" data-width="1920" data-height="1080" data-duration="8.4">
+    <div id="f38-ground" class="clip" data-start="0" data-duration="8.4" data-track-index="0"></div>
+
+    <div id="f38-cam">
+      <div id="f38-world">
+        <div id="f38-rays"></div>
+        <div id="f38-glow"></div>
+        <div id="f38-sparks"></div>
+        <div id="f38-shock"></div>
+
+        <div id="f38-lead">
+          <span id="f38-lw1" class="f38-lw">en el</span>
+          <span id="f38-lw2" class="f38-lw f38-lk">siguiente</span>
+          <span id="f38-lw3" class="f38-lw f38-lk">paso</span>
+        </div>
+
+        <!-- contact card (the button morphs into it) -->
+        <div id="f38-card">
+          <div id="f38-card-clip">
+            <div id="f38-card-bg"></div>
+            <div id="f38-brand">
+              <div id="f38-brand-label">Equipo</div>
+              <img id="f38-brand-logo" src="assets/img/logo-nawar.png" alt="Nawar" />
+            </div>
+            <div id="f38-card-div"></div>
+            <div id="f38-title"><span id="f38-title-w">Te contactamos</span></div>
+          </div>
+          <div id="f38-card-border"></div>
+        </div>
+
+        <!-- CTA button -->
+        <div id="f38-btnunit">
+          <div id="f38-btn">
+            <div id="f38-ripple"></div>
+            <div id="f38-btn-txt">
+              <span id="f38-bw1" class="f38-bw">Completa</span>
+              <span id="f38-bw2" class="f38-bw">tu</span>
+              <span id="f38-bw3" class="f38-bw">matrícula</span>
+            </div>
+            <div id="f38-btn-glint"></div>
+          </div>
+          <div id="f38-orb">
+            <div id="f38-ring1" class="f38-orb-ring"></div>
+            <div id="f38-ring2" class="f38-orb-ring"></div>
+            <div id="f38-ring3" class="f38-orb-ring"></div>
+            <svg id="f38-arrow" viewBox="0 0 60 60" aria-hidden="true">
+              <path d="M13 30h32M33 17l13 13-13 13" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <svg id="f38-phone" viewBox="0 0 56 56" aria-hidden="true">
+              <path d="M19.5 9.5c1.6-.5 3.3.3 4 1.8l3 6.6c.6 1.4.2 3-1 3.9l-3.4 2.6c2.1 4.4 5.6 7.9 10 10l2.6-3.4c.9-1.2 2.5-1.6 3.9-1l6.6 3c1.5.7 2.3 2.4 1.8 4l-1.2 4.1c-.5 1.6-2 2.7-3.7 2.6C26.4 44.6 11.4 29.6 10.3 13.9c-.1-1.7 1-3.2 2.6-3.7z" fill="#FFFFFF" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- "Vemos" + check-chips -->
+        <div id="f38-vemos">
+          <svg id="f38-eye" viewBox="0 0 62 40" aria-hidden="true">
+            <path d="M3 20C10 8.5 19.6 3 31 3s21 5.5 28 17c-7 11.5-16.6 17-28 17S10 31.5 3 20z" fill="none" stroke="#4da3ff" stroke-width="4.5" stroke-linejoin="round" />
+            <circle cx="31" cy="20" r="8.5" fill="#4da3ff" />
+          </svg>
+          <span id="f38-vemos-w">Vemos</span>
+        </div>
+        <div id="f38-chips">
+          <div class="f38-slot">
+            <div id="f38-chip1" class="f38-chip">
+              <div id="f38-ck1" class="f38-ck"><svg viewBox="0 0 44 44" aria-hidden="true"><path id="f38-tk1" d="M10 23l8 8 16-17" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" /></svg></div>
+              <span class="f38-ct">Tu nivel</span>
+            </div>
+          </div>
+          <div class="f38-slot">
+            <div id="f38-chip2" class="f38-chip">
+              <div id="f38-ck2" class="f38-ck"><svg viewBox="0 0 44 44" aria-hidden="true"><path id="f38-tk2" d="M10 23l8 8 16-17" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" /></svg></div>
+              <span class="f38-ct">Tu situación</span>
+            </div>
+          </div>
+          <div class="f38-slot">
+            <div id="f38-ghost"><span id="f38-ghost-q">?</span></div>
+            <div id="f38-chip3" class="f38-chip">
+              <div id="f38-ck3" class="f38-ck"><svg viewBox="0 0 44 44" aria-hidden="true"><path id="f38-tk3" d="M10 23l8 8 16-17" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" /></svg></div>
+              <span class="f38-ct">¿Encaja contigo?</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- stamp -->
+        <div id="f38-stamp-row">
+          <div id="f38-stamp-rot">
+            <div id="f38-stamp-glow"></div>
+            <div id="f38-stamp-box"><div id="f38-stamp-inner"></div></div>
+            <div id="f38-stamp-txt">
+              <span id="f38-sw1" class="f38-sw">Sin</span>
+              <span id="f38-sw2" class="f38-sw">compromiso.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- cursor -->
+        <div id="f38-cursor">
+          <svg viewBox="0 0 40 52" aria-hidden="true">
+            <path d="M3 3 L3 40.5 L12.6 31.6 L19.6 47.2 L26.8 44 L19.9 28.6 L32.6 28.6 Z" fill="#FFFFFF" stroke="#1D0084" stroke-width="2.8" stroke-linejoin="round" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div id="f38-flash"></div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 8.4;
+
+      // ---------------- deterministic spark burst around the button ----------------
+      const sparks = q("f38-sparks");
+      const N = 14;
+      const streaks = [];
+      for (let i = 0; i < N; i++) {
+        const a = (i / N) * Math.PI * 2 + 0.2;
+        const rx = 610, ry = 120;
+        const cx = 960 + Math.cos(a) * rx;
+        const cy = 475 + Math.sin(a) * ry;
+        const s = document.createElement("div");
+        s.className = "f38-spark";
+        s.style.left = cx.toFixed(1) + "px";
+        s.style.top = cy.toFixed(1) + "px";
+        const nx = Math.cos(a) / rx, ny = Math.sin(a) / ry;
+        s.style.transform = "rotate(" + (Math.atan2(ny, nx) * 180 / Math.PI).toFixed(2) + "deg)";
+        const k = document.createElement("div");
+        k.className = "f38-streak";
+        k.style.width = [130, 90, 160, 104][i % 4] + "px";
+        s.appendChild(k);
+        sparks.appendChild(s);
+        streaks.push(k);
+      }
+
+      // =====================================================================
+      // Scene 1 (0.00–2.00) — RE-DROP: flash + CTA button slam + shockwave; cursor clicks on "siguiente paso"
+      // =====================================================================
+      tl.fromTo(q("f38-flash"), { opacity: 0.5 }, { opacity: 0, duration: 0.2, ease: "power1.out" }, 0);
+
+      tl.fromTo(q("f38-btnunit"), { scale: 1.6, opacity: 0, filter: "blur(16px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 0);
+      tl.fromTo(q("f38-shock"), { scale: 1, opacity: 0.95 }, { scale: 1.45, opacity: 0, duration: 0.6, ease: "power2.out" }, 0.08);
+      tl.fromTo(q("f38-glow"), { opacity: 0.4, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 0);
+      tl.fromTo(q("f38-rays"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.8, ease: "power3.out" }, 0);
+      tl.fromTo(q("f38-rays"), { rotation: -4 }, { rotation: 6, duration: D, ease: "none" }, 0);
+      streaks.forEach((k, i) => {
+        const at = 0.06 + (i % 3) * 0.014;
+        tl.fromTo(k, { x: -30, opacity: 0, scaleX: 0.25 },
+          { x: 40, opacity: 1, scaleX: 1, duration: 0.1, ease: "power2.out" }, at);
+        tl.to(k, { x: 220 + (i % 4) * 26, opacity: 0, scaleX: 0.35, duration: 0.38, ease: "power2.out" }, at + 0.1);
+      });
+
+      // button text builds: Completa (with the slam) · tu 0.44 · matrícula 0.57
+      tl.fromTo(q("f38-bw2"), { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 0.41);
+      tl.fromTo(q("f38-bw3"), { opacity: 0, y: 26, scale: 1.14 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power3.out" }, 0.54);
+      tl.fromTo(q("f38-btn-glint"), { x: -300 }, { x: 1300, duration: 0.62, ease: "power2.inOut" }, 0.72);
+
+      // lead: "en el" 0.97 · siguiente 1.18 · paso 1.57
+      const rise = (el, at) => tl.fromTo(el, { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, at);
+      rise(q("f38-lw1"), 0.94);
+      rise(q("f38-lw2"), 1.15);
+      rise(q("f38-lw3"), 1.54);
+
+      // cursor glides in and CLICKS on "siguiente paso" (1.30)
+      const cur = q("f38-cursor");
+      tl.fromTo(cur, { x: 430, y: 380, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 0.62, ease: "power3.out" }, 0.62);
+      tl.fromTo(cur, { scale: 1 }, { scale: 0.8, duration: 0.06, ease: "power2.out" }, 1.26);
+      tl.fromTo(cur, { scale: 0.8 }, { scale: 1, duration: 0.16, ease: "power2.out", immediateRender: false }, 1.32);
+      const unit = q("f38-btnunit");
+      tl.fromTo(unit, { scale: 1 }, { scale: 0.96, duration: 0.07, ease: "power2.out", immediateRender: false }, 1.27);
+      tl.fromTo(unit, { scale: 0.96 }, { scale: 1, duration: 0.34, ease: "back.out(2.2)", immediateRender: false }, 1.34);
+      tl.fromTo(q("f38-ripple"), { scale: 0, opacity: 1 }, { scale: 3.6, opacity: 0, duration: 0.6, ease: "power2.out" }, 1.29);
+      tl.fromTo(q("f38-ring1"), { scale: 1, opacity: 0 }, { scale: 1, opacity: 0.9, duration: 0.04, ease: "none" }, 1.29);
+      tl.fromTo(q("f38-ring1"), { scale: 1, opacity: 0.9 }, { scale: 2.3, opacity: 0, duration: 0.55, ease: "power2.out", immediateRender: false }, 1.33);
+      // "paso" (1.57): the arrow nudges forward
+      tl.fromTo(q("f38-arrow"), { x: 0 }, { x: 12, duration: 0.1, ease: "power2.out" }, 1.55);
+      tl.fromTo(q("f38-arrow"), { x: 12 }, { x: 0, duration: 0.22, ease: "power3.out", immediateRender: false }, 1.65);
+
+      // =====================================================================
+      // Scene 2 (1.95–3.40) — the button MORPHS into the contact card; TE CONTACTAMOS on "contactamos"
+      // =====================================================================
+      const M = 1.98, MD = 0.44;
+      tl.fromTo(q("f38-btn-txt"), { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(8px)", duration: 0.12, ease: "power1.in" }, M - 0.1);
+      tl.fromTo(q("f38-btn"), { opacity: 1 }, { opacity: 0, duration: 0.05, ease: "none" }, M);
+      tl.fromTo(q("f38-card"), { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, M);
+      tl.fromTo(q("f38-card-clip"), { clipPath: "inset(42px 220px 42px 220px round 78px)" },
+        { clipPath: "inset(0px 0px 0px 0px round 28px)", duration: MD, ease: "power3.inOut" }, M);
+      tl.fromTo(q("f38-card-bg"), { backgroundColor: "rgba(255,255,255,1)" },
+        { backgroundColor: "rgba(255,255,255,0.1)", duration: 0.24, ease: "power2.out" }, M + 0.02);
+      tl.fromTo(q("f38-card-border"), { opacity: 0 }, { opacity: 1, duration: 0.24, ease: "power1.out" }, M + 0.24);
+      // the orb travels with the card to its right end and grows (arrow -> phone)
+      tl.fromTo(q("f38-orb"), { x: 0, scale: 1 }, { x: 178, scale: 1.25, duration: MD, ease: "power3.inOut" }, M);
+      tl.fromTo(q("f38-arrow"), { opacity: 1, x: 0 }, { opacity: 0, x: 26, duration: 0.14, ease: "power1.in", immediateRender: false }, M);
+      tl.fromTo(q("f38-phone"), { opacity: 0, scale: 0.4, rotation: -50 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.3, ease: "back.out(2)" }, 2.07);
+      // scene-1 push-in on the button, released by the morph (the card widens as the camera pulls back)
+      tl.fromTo(q("f38-cam"), { scale: 1 }, { scale: 1.045, duration: 1.5, ease: "power1.inOut" }, 0.45);
+      tl.fromTo(q("f38-cam"), { scale: 1.045 }, { scale: 1, duration: MD, ease: "power3.inOut", immediateRender: false }, M);
+      // lead line tucks under the widening card; cursor leaves
+      tl.to(q("f38-lead"), { opacity: 0, y: -30, duration: 0.22, ease: "power2.in" }, M - 0.04);
+      tl.to(cur, { opacity: 0, x: 40, y: -40, duration: 0.2, ease: "power2.in" }, M - 0.04);
+
+      // TE CONTACTAMOS lands on "contactamos" (2.07)
+      tl.fromTo(q("f38-title-w"), { opacity: 0, y: 36, filter: "blur(10px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.34, ease: "power3.out" }, 2.06);
+
+      // the phone rings: 3 finite wiggles + two waves (2.34–2.95)
+      const ph = q("f38-phone");
+      const wig = [-18, 16, -14, 12, -8, 0];
+      let wt = 2.36, prev = 0;
+      wig.forEach((r) => {
+        tl.fromTo(ph, { rotation: prev }, { rotation: r, duration: 0.075, ease: "sine.inOut", immediateRender: false }, wt);
+        prev = r; wt += 0.075;
+      });
+      [["f38-ring2", 2.36], ["f38-ring3", 2.62]].forEach(([id, t]) => {
+        tl.fromTo(q(id), { scale: 1, opacity: 0 }, { scale: 1, opacity: 0.8, duration: 0.04, ease: "none" }, t);
+        tl.fromTo(q(id), { scale: 1, opacity: 0.8 }, { scale: 2.0, opacity: 0, duration: 0.6, ease: "power2.out", immediateRender: false }, t + 0.04);
+      });
+
+      // "contigo." (2.69): Equipo + logo signature
+      tl.fromTo(q("f38-card-div"), { scaleY: 0 }, { scaleY: 1, duration: 0.3, ease: "power3.out" }, 2.66);
+      tl.fromTo(q("f38-brand"), { opacity: 0, x: -34 }, { opacity: 1, x: 0, duration: 0.34, ease: "power3.out" }, 2.66);
+      tl.fromTo(q("f38-brand-logo"), { scale: 0.86, filter: "blur(8px) drop-shadow(0 14px 26px rgba(4,0,40,0.45))" },
+        { scale: 1, filter: "blur(0px) drop-shadow(0 14px 26px rgba(4,0,40,0.45))", duration: 0.4, ease: "back.out(1.8)" }, 2.66);
+
+      // =====================================================================
+      // Scene 3 (3.40–7.20) — "Vemos" + three check-chips on the voice
+      // =====================================================================
+      // the card rises to the top as the checklist opens below it (velocity-matched: halo + orb ride along)
+      const R = 3.06, RD = 0.44;
+      tl.fromTo(q("f38-card"), { y: 259 }, { y: 0, duration: RD, ease: "power3.inOut" }, R);
+      tl.fromTo(q("f38-orb"), { y: 0 }, { y: -259, duration: RD, ease: "power3.inOut" }, R);
+      tl.fromTo(q("f38-glow"), { y: 0 }, { y: -259, duration: RD, ease: "power3.inOut" }, R);
+      tl.to(q("f38-glow"), { opacity: 0.55, duration: RD, ease: "power1.inOut" }, R);
+      tl.fromTo(q("f38-rays"), { y: 0 }, { y: -259, duration: RD, ease: "power3.inOut" }, R);
+      tl.to(q("f38-rays"), { opacity: 0.45, duration: RD, ease: "power1.inOut" }, R);
+      // camera: the checklist cluster sits centred while it builds, then tilts up to make room for the stamp
+      tl.fromTo(q("f38-world"), { y: 0 }, { y: 110, duration: RD, ease: "power3.inOut" }, R);
+      tl.fromTo(q("f38-world"), { y: 110 }, { y: 0, duration: 0.36, ease: "power3.inOut", immediateRender: false }, 6.94);
+
+      tl.fromTo(q("f38-vemos-w"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 3.41);
+      tl.fromTo(q("f38-eye"), { opacity: 0, scaleY: 0.1 }, { opacity: 1, scaleY: 1, duration: 0.28, ease: "power3.out" }, 3.41);
+
+      const chipIn = (n, at, ckAt) => {
+        tl.fromTo(q("f38-chip" + n), { opacity: 0, y: 70, scale: 0.86 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.36, ease: "power3.out" }, at);
+        tl.fromTo(q("f38-ck" + n), { scale: 0 }, { scale: 1, duration: 0.32, ease: "back.out(2.4)" }, ckAt);
+        tl.fromTo(q("f38-tk" + n), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.22, ease: "power2.out" }, ckAt + 0.08);
+      };
+      chipIn(1, 3.80, 4.06);   // "nivel," 3.83
+      chipIn(2, 4.46, 4.72);   // "situación" 4.49
+      // "si" (5.14): an empty slot waits with a question mark; "formación" (5.57): the ? nudges
+      tl.fromTo(q("f38-ghost"), { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 5.11);
+      tl.fromTo(q("f38-ghost-q"), { scale: 1 }, { scale: 1.3, duration: 0.12, ease: "power2.out" }, 5.55);
+      tl.fromTo(q("f38-ghost-q"), { scale: 1.3 }, { scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, 5.67);
+      // "encaja" (6.05) fills the slot · ✓ on "contigo." (6.50)
+      chipIn(3, 6.02, 6.48);
+      tl.to(q("f38-ghost"), { opacity: 0, duration: 0.2, ease: "power1.out" }, 6.08);
+
+      // =====================================================================
+      // Scene 4 (7.20–8.40) — SIN COMPROMISO. stamp
+      // =====================================================================
+      tl.fromTo(q("f38-sw1"), { opacity: 0, scale: 1.6, filter: "blur(12px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.24, ease: "expo.out" }, 7.24);
+      tl.fromTo(q("f38-sw2"), { opacity: 0, scale: 1.45, filter: "blur(12px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.24, ease: "expo.out" }, 7.5);
+      tl.fromTo(q("f38-stamp-box"), { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: 0.2, ease: "expo.out" }, 7.5);
+      tl.fromTo(q("f38-stamp-glow"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1.05, duration: 0.2, ease: "power2.out" }, 7.56);
+      tl.to(q("f38-stamp-glow"), { opacity: 0.45, scale: 1, duration: 0.6, ease: "power2.out" }, 7.76);
+      // deterministic 3-frame impact shake
+      const SF = 1 / 30, cam = q("f38-cam");
+      tl.fromTo(cam, { x: 0, y: 0 }, { x: 11, y: -6, duration: SF, ease: "power2.out" }, 7.6);
+      tl.to(cam, { x: -8, y: 5, duration: SF, ease: "power2.out" }, 7.6 + SF);
+      tl.to(cam, { x: 0, y: 0, duration: SF, ease: "power2.out" }, 7.6 + SF * 2);
+
+      // macro camera: one quiet monotonic push under the whole frame
+      tl.fromTo(q("f38-world"), { scale: 1 }, { scale: 1.02, duration: D - 0.45, ease: "power1.inOut" }, 0.45);
+
+      tl.set({}, {}, D);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["38-cta"] = tl;
+    })();
+  </script>
+</template>

@@ -158,8 +158,8 @@
     #f12-ret-svg { position: absolute; left: -100px; top: -100px; width: 200px; height: 200px; overflow: visible; }
   </style>
 
-  <div id="root" data-composition-id="12-metodo" data-width="1920" data-height="1080" data-duration="6.037">
-    <div id="f12-ground" class="clip" data-start="0" data-duration="6.037" data-track-index="0"><div id="f12-dots"></div><div id="f12-vig"></div></div>
+  <div id="root" data-composition-id="12-metodo" data-width="1920" data-height="1080" data-duration="5.77">
+    <div id="f12-ground" class="clip" data-start="0" data-duration="5.77" data-track-index="0"><div id="f12-dots"></div><div id="f12-vig"></div></div>
 
     <!-- ===================== SCENE 1 — ES -> NL, straight ===================== -->
     <div id="f12-s1" class="f12-full">
@@ -211,7 +211,7 @@
               <div id="f12-camdot"></div>
               <div id="f12-screen">
                 <video id="f12-vid" class="clip" src="assets/video/clases-video-dentro.mp4" muted playsinline
-                  data-start="2.2" data-duration="3.837" data-media-start="0" data-hf-media-start-basis="local" data-track-index="2"></video>
+                  data-start="2.01" data-duration="3.76" data-media-start="0" data-hf-media-start-basis="local" data-track-index="2"></video>
                 <div id="f12-focus"></div><div id="f12-dim"></div><div id="f12-glass"></div>
               </div>
             </div>
@@ -413,6 +413,22 @@
       tl.fromTo(q("f12-gloss"), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 5.5);
 
       window.__timelines = window.__timelines || {};
+      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.37, 0.26], [0.703, 0.59], [1.352, 1.15], [1.62, 1.41], [1.713, 1.5], [2.324, 2.14], [2.583, 2.27], [3.065, 2.75], [3.49, 3.2], [3.611, 3.29], [3.99, 3.52], [4.777, 4.43], [5.0, 4.76], [5.203, 4.95], [5.268, 5.01], [6.037, 5.77]]);
       window.__timelines["12-metodo"] = tl;
     })();
   </script>

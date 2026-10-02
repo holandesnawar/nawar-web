@@ -1,0 +1,335 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+    .f27-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .f27-w { display: inline-block; }
+
+    /* ---------- ground: NIGHT ---------- */
+    #f27-ground { position: absolute; inset: 0; background: radial-gradient(circle at 50% 45%, #1a0f5c 0%, #07041F 65%); }
+    #f27-nvig { position: absolute; inset: 0; background: radial-gradient(ellipse 75% 70% at 50% 48%, rgba(7,4,31,0) 55%, rgba(3,2,15,0.55) 100%); }
+    .f27-star { position: absolute; border-radius: 50%; background: #FFFFFF; }
+    #f27-moon { position: absolute; left: 1490px; top: 104px; width: 200px; height: 200px; }
+    #f27-moonglow {
+      position: absolute; left: -170px; top: -170px; width: 540px; height: 540px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(159,213,245,0.42) 0%, rgba(77,163,255,0.14) 38%, rgba(77,163,255,0) 68%);
+    }
+    #f27-moonsvg { position: absolute; inset: 0; overflow: visible; }
+
+    /* ---------- scene 1: lock screen ---------- */
+    #f27-s1 { transform-origin: 960px 470px; }
+    #f27-clockglow {
+      position: absolute; left: 560px; top: 160px; width: 800px; height: 620px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.22) 0%, rgba(77,163,255,0.06) 42%, rgba(77,163,255,0) 70%);
+    }
+    #f27-lock { position: absolute; left: 940px; top: 214px; width: 40px; height: 50px; overflow: visible; }
+    .f27-crow { position: absolute; left: 0; width: 1920px; display: flex; justify-content: center; align-items: baseline; gap: 0.26em; white-space: nowrap; }
+    #f27-martes { top: 284px; font-family: "Poppins", sans-serif; font-weight: 600; font-size: 54px; line-height: 1.1; letter-spacing: -0.01em; color: rgba(255,255,255,0.72); }
+    #f27-clock {
+      top: 352px; font-family: "Poppins", sans-serif; font-weight: 600; font-size: 230px; line-height: 1; letter-spacing: -0.02em; color: #FFFFFF;
+      text-shadow: 0 0 40px rgba(159,213,245,0.35), 0 0 120px rgba(77,163,255,0.35); transform-origin: 50% 50%;
+    }
+    #f27-q { top: 652px; font-family: "Poppins", sans-serif; font-weight: 600; font-size: 60px; line-height: 1.1; letter-spacing: -0.01em; color: #FFFFFF; }
+    #f27-w-noche { color: #9fd5f5; text-shadow: 0 0 30px rgba(159,213,245,0.55); }
+
+    /* ---------- flood: NAWAR BLUE ---------- */
+    #f27-blue { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 50% 46%, #025dc7 0%, #120081 72%); }
+    #f27-dots {
+      position: absolute; left: -160px; top: -100px; width: 2240px; height: 1280px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px;
+    }
+    #f27-bvig { position: absolute; inset: 0; background: radial-gradient(ellipse 72% 70% at 50% 46%, rgba(4,0,40,0) 52%, rgba(4,0,40,0.42) 100%); }
+
+    /* ---------- laptop with the REAL consulta form ---------- */
+    #f27-left { transform-origin: 600px 560px; }
+    #f27-lapwrap { }
+    #f27-lapstage { perspective: 2200px; perspective-origin: 550px 440px; }
+    #f27-floor {
+      position: absolute; left: 70px; top: 712px; width: 960px; height: 80px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 40%, rgba(4,0,40,0.55) 0%, rgba(4,0,40,0.22) 45%, rgba(4,0,40,0) 72%);
+    }
+    #f27-lap { position: absolute; left: 110px; top: 150px; width: 880px; height: 592px; transform-origin: 50% 60%; }
+    #f27-bezel {
+      position: absolute; left: 0; top: 0; width: 880px; height: 566px; box-sizing: border-box; padding: 22px; border-radius: 26px;
+      background: #0C0C1E; box-shadow: 0 40px 110px rgba(4,0,40,0.45), inset 0 0 0 2px rgba(255,255,255,0.06);
+    }
+    #f27-camdot { position: absolute; left: 436px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: #262a40; }
+    #f27-screen { position: relative; width: 836px; height: 522px; border-radius: 8px; overflow: hidden; background: #8a8a8a; }
+    #f27-vid { position: absolute; left: -554.8px; top: -98.8px; width: 1945.6px; height: 1045.8px; object-fit: fill; display: block; }
+    #f27-dim { position: absolute; inset: 0; background: rgba(7,4,31,0.5); }
+    #f27-glass { position: absolute; inset: 0; background: linear-gradient(118deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 34%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 100%); }
+    #f27-base {
+      position: absolute; left: -44px; top: 564px; width: 968px; height: 26px; border-radius: 3px 3px 24px 24px;
+      background: linear-gradient(180deg, #eef1f7 0%, #c9cfdc 40%, #9aa3b8 100%); box-shadow: 0 10px 24px rgba(4,0,40,0.35);
+    }
+    #f27-notch { position: absolute; left: 404px; top: 0; width: 160px; height: 9px; border-radius: 0 0 10px 10px; background: linear-gradient(180deg, #9aa3b8 0%, #b9c0cf 100%); }
+    #f27-scrglow { position: absolute; left: 132px; top: 172px; width: 836px; height: 522px; border-radius: 12px; box-shadow: 0 0 120px 30px rgba(159,213,245,0.55); }
+
+    /* ---------- the REAL answered consulta ---------- */
+    #f27-ans {
+      position: absolute; left: 392px; top: 606px; width: 700px; height: 366px; border-radius: 16px; overflow: hidden; background: #FFFFFF;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.5), 0 0 0 8px rgba(255,255,255,0.12);
+    }
+    #f27-ans img { position: absolute; left: -391.5px; top: -210.9px; width: 1479.5px; height: 768.6px; display: block; }
+    #f27-pill {
+      position: absolute; left: 876px; top: 570px; display: flex; align-items: center; gap: 12px; padding: 12px 26px 12px 14px;
+      border-radius: 999px; background: #34D399; white-space: nowrap; transform-origin: 20% 50%;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 28px; line-height: 1; color: #0C0C1E;
+      box-shadow: 0 24px 60px rgba(4,0,40,0.45), 0 0 0 6px rgba(52,211,153,0.22);
+    }
+    #f27-pillsvg { width: 40px; height: 40px; overflow: visible; }
+
+    /* ---------- right column type ---------- */
+    .f27-col { position: absolute; left: 1150px; top: 0; width: 690px; height: 1080px; }
+    .f27-row { position: absolute; left: 0; display: flex; align-items: baseline; gap: 0.26em; white-space: nowrap; }
+    .f27-lead { font-family: "Poppins", sans-serif; font-weight: 600; font-size: 54px; line-height: 1.1; letter-spacing: -0.01em; color: rgba(255,255,255,0.72); }
+    #f27-preg {
+      position: absolute; left: -4px; top: 360px; font-family: "Poppins", sans-serif; font-weight: 900; font-size: 112px; line-height: 1;
+      letter-spacing: -0.04em; color: #FFFFFF; white-space: nowrap; transform-origin: 10% 60%; text-shadow: 0 16px 50px rgba(4,0,40,0.4);
+    }
+    #f27-dentro { top: 492px; }
+    #f27-w-escuela { color: #FFFFFF; font-weight: 700; }
+    .f27-h2 { font-family: "Poppins", sans-serif; font-weight: 800; line-height: 1; letter-spacing: -0.035em; color: #FFFFFF; text-shadow: 0 16px 50px rgba(4,0,40,0.4); }
+    #f27-tus { top: 236px; font-size: 110px; }
+    #f27-waitslot { position: absolute; left: 0; top: 378px; width: 690px; height: 84px; }
+    #f27-wait {
+      position: absolute; left: 0; top: 0; height: 84px; box-sizing: border-box; display: flex; align-items: center; gap: 18px; padding: 0 34px 0 24px;
+      border-radius: 999px; background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.28); white-space: nowrap; transform-origin: 10% 50%;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 34px; line-height: 1; color: rgba(255,255,255,0.82);
+    }
+    #f27-hour { width: 34px; height: 46px; overflow: visible; }
+    .f27-dot { display: inline-block; width: 10px; height: 10px; margin-left: 8px; border-radius: 50%; background: #FFFFFF; }
+    #f27-strike { position: absolute; left: 14px; right: 14px; top: 38px; height: 8px; border-radius: 4px; background: #E02D3C; transform-origin: 0% 50%; box-shadow: 0 2px 10px rgba(224,45,60,0.45); }
+    #f27-ok { position: absolute; left: 0; top: -2px; width: 88px; height: 88px; }
+    #f27-okdisc { position: absolute; inset: 0; border-radius: 50%; background: #34D399; box-shadow: 0 0 0 6px rgba(52,211,153,0.22), 0 20px 50px rgba(4,0,40,0.4); }
+    #f27-oksvg { position: absolute; inset: 0; overflow: visible; }
+    #f27-okring { position: absolute; inset: -6px; border-radius: 50%; border: 5px solid #34D399; }
+    #f27-noq { top: 492px; font-size: 96px; gap: 0.24em; }
+    #f27-espwrap { position: absolute; left: -6px; top: 612px; }
+    #f27-esp {
+      display: inline-block; padding: 8px 28px 12px; border-radius: 20px; background: #FFFFFF; white-space: nowrap; transform-origin: 30% 60%;
+      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 96px; line-height: 1; letter-spacing: -0.04em; color: #1D0084;
+      box-shadow: 0 30px 80px rgba(4,0,40,0.45);
+    }
+  </style>
+
+  <div id="root" data-composition-id="27-consultas" data-width="1920" data-height="1080" data-duration="6.57">
+    <div id="f27-ground" class="clip" data-start="0" data-duration="6.57" data-track-index="0"><div id="f27-nvig"></div></div>
+
+    <!-- night sky -->
+    <div id="f27-sky" class="f27-full">
+      <div id="f27-stars" class="f27-full"></div>
+      <div id="f27-moon">
+        <div id="f27-moonglow"></div>
+        <svg id="f27-moonsvg" viewBox="0 0 200 200" aria-hidden="true">
+          <defs><mask id="f27-moonmask"><rect x="0" y="0" width="200" height="200" fill="#FFFFFF" /><circle cx="134" cy="76" r="66" fill="#000000" /></mask></defs>
+          <circle cx="100" cy="100" r="72" fill="#EEF5FF" mask="url(#f27-moonmask)" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- scene 1: lock screen -->
+    <div id="f27-s1" class="f27-full">
+      <div id="f27-clockglow"></div>
+      <svg id="f27-lock" viewBox="0 0 40 50" aria-hidden="true">
+        <path d="M10,22 L10,15 C10,8.5 14.5,4 20,4 C25.5,4 30,8.5 30,15 L30,22" fill="none" stroke="rgba(255,255,255,0.72)" stroke-width="4.5" stroke-linecap="round" />
+        <rect x="4" y="21" width="32" height="25" rx="7" fill="rgba(255,255,255,0.72)" />
+      </svg>
+      <div class="f27-crow" id="f27-martes"><span class="f27-w" id="f27-w-martes">martes</span></div>
+      <div class="f27-crow" id="f27-clock">23:14</div>
+      <div class="f27-crow" id="f27-q"><span class="f27-w" id="f27-w-te">¿Te</span><span class="f27-w" id="f27-w-atascas">atascas</span><span class="f27-w" id="f27-w-por">por</span><span class="f27-w" id="f27-w-la">la</span><span class="f27-w" id="f27-w-noche">noche?</span></div>
+    </div>
+
+    <!-- the flood (nawar blue) -->
+    <div id="f27-blue"><div id="f27-dots"></div><div id="f27-bvig"></div></div>
+
+    <!-- left group: laptop (real form) + the real answered consulta -->
+    <div id="f27-left" class="f27-full">
+      <div id="f27-lapwrap" class="f27-full">
+        <div id="f27-floor"></div>
+        <div id="f27-scrglow"></div>
+        <div id="f27-lapstage" class="f27-full">
+          <div id="f27-lap">
+            <div id="f27-base"><div id="f27-notch"></div></div>
+            <div id="f27-bezel">
+              <div id="f27-camdot"></div>
+              <div id="f27-screen">
+                <video id="f27-vid" class="clip" src="assets/video/consulta-nueva.mp4" muted playsinline
+                  data-start="1.6" data-duration="4.97" data-media-start="3.5" data-hf-media-start-basis="local" data-track-index="2"></video>
+                <div id="f27-glass"></div><div id="f27-dim"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="f27-ans"><img src="assets/img/ui-consulta-respondida.png" alt="" /></div>
+      <div id="f27-pill">
+        <svg id="f27-pillsvg" viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="20" cy="20" r="17" fill="none" stroke="#0C0C1E" stroke-width="3.5" />
+          <path id="f27-pilltick" d="M12,20.5 L17.5,26 L28,14.5" pathLength="100" fill="none" stroke="#0C0C1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="100 100" stroke-dashoffset="100" />
+        </svg>
+        <span>Respondida</span>
+      </div>
+    </div>
+
+    <!-- scene 2 type -->
+    <div class="f27-col" id="f27-t2">
+      <div id="f27-preg">PREGUNTAS</div>
+      <div class="f27-row f27-lead" id="f27-dentro"><span class="f27-w" id="f27-w-dentro">dentro</span><span class="f27-w" id="f27-w-de">de</span><span class="f27-w" id="f27-w-la2">la</span><span class="f27-w" id="f27-w-escuela">escuela</span></div>
+    </div>
+
+    <!-- scene 3 type -->
+    <div class="f27-col" id="f27-t3">
+      <div class="f27-row f27-h2" id="f27-tus"><span class="f27-w" id="f27-w-tus">Tus</span><span class="f27-w" id="f27-w-dudas">dudas</span></div>
+      <div id="f27-waitslot">
+        <div id="f27-wait">
+          <svg id="f27-hour" viewBox="0 0 30 40" aria-hidden="true">
+            <path d="M4,3 L26,3 M4,37 L26,37 M7,3 C7,14 15,16 15,20 C15,24 7,26 7,37 M23,3 C23,14 15,16 15,20 C15,24 23,26 23,37" fill="none" stroke="rgba(255,255,255,0.82)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M10,33 L20,33 L15,27 Z" fill="rgba(255,255,255,0.82)" />
+          </svg>
+          <span>esperando</span><span><i class="f27-dot" id="f27-d0"></i><i class="f27-dot" id="f27-d1"></i><i class="f27-dot" id="f27-d2"></i></span>
+          <div id="f27-strike"></div>
+        </div>
+        <div id="f27-ok">
+          <div id="f27-okring"></div>
+          <div id="f27-okdisc"></div>
+          <svg id="f27-oksvg" viewBox="0 0 80 80" aria-hidden="true"><path id="f27-oktick" d="M23,41 L35,53 L58,28" pathLength="100" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="100 100" stroke-dashoffset="100" /></svg>
+        </div>
+      </div>
+      <div class="f27-row f27-h2" id="f27-noq"><span class="f27-w" id="f27-w-no">NO</span><span class="f27-w" id="f27-w-se">SE</span><span class="f27-w" id="f27-w-quedan">QUEDAN</span></div>
+      <div id="f27-espwrap"><div id="f27-esp">ESPERANDO.</div></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 6.57, LEAD = 0.04;
+      const T = {
+        te: 0.12, atascas: 0.20, martes: 0.70, por: 1.04, la: 1.15, noche: 1.25,
+        preguntas: 1.88, dentro: 2.36, de: 2.59, la2: 2.64, escuela: 2.69, responden: 3.00,
+        tus: 3.48, dudas: 3.86, no: 4.63, se: 4.75, quedan: 5.02, esperando: 5.39
+      };
+      const rise = (id, cue, dy) => tl.fromTo(q(id), { opacity: 0, y: dy || 40, filter: "blur(8px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, cue - LEAD);
+      const slam = (id, cue, s) => tl.fromTo(q(id), { opacity: 0, scale: s, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, cue - LEAD);
+
+      // ---------- deterministic stars ----------
+      const h = (n) => { const v = Math.sin(n * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
+      const stars = [];
+      for (let i = 0; i < 90 && stars.length < 64; i++) {
+        const x = 90 + h(i) * 1740, y = 80 + h(i + 311) * 880;
+        if (Math.abs(x - 960) < 470 && y > 190 && y < 740) continue;   // keep the lock screen clean
+        if (Math.abs(x - 1590) < 150 && Math.abs(y - 204) < 150) continue; // and the moon
+        const s = document.createElement("div"); s.className = "f27-star";
+        const r = 1.6 + h(i + 97) * 2.4;
+        s.style.left = x.toFixed(1) + "px"; s.style.top = y.toFixed(1) + "px";
+        s.style.width = r.toFixed(2) + "px"; s.style.height = r.toFixed(2) + "px";
+        s.style.opacity = (0.28 + h(i + 53) * 0.62).toFixed(2);
+        if (r > 3.2) s.style.boxShadow = "0 0 8px rgba(159,213,245,0.8)";
+        q("f27-stars").appendChild(s); stars.push(s);
+      }
+
+      // ---------- resting states ----------
+      tl.set(q("f27-blue"), { clipPath: "circle(0px at 550px 433px)" }, 0);
+      tl.set(q("f27-lapwrap"), { y: 980 }, 0);
+      tl.set(q("f27-scrglow"), { opacity: 0 }, 0);
+      tl.set(q("f27-dim"), { opacity: 0 }, 0);
+      tl.set([q("f27-ans"), q("f27-pill"), q("f27-wait"), q("f27-ok")], { opacity: 0 }, 0);
+      tl.set(q("f27-okring"), { opacity: 0 }, 0);
+      tl.set([q("f27-d0"), q("f27-d1"), q("f27-d2")], { opacity: 0.25, y: 0 }, 0);
+
+      // ================= ENTRANCE: the lock-screen clock zooms in from blur =================
+      tl.fromTo(q("f27-clock"), { opacity: 0, scale: 1.2, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, 0);
+      tl.fromTo(q("f27-clockglow"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" }, 0);
+      tl.fromTo(q("f27-lock"), { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.04);
+      tl.fromTo(q("f27-stars"), { opacity: 0.3, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, 0);
+      tl.fromTo(q("f27-moon"), { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 0.02);
+      tl.fromTo(q("f27-moonglow"), { opacity: 0.3, scale: 0.85 }, { opacity: 0.45, scale: 0.9, duration: 0.6, ease: "power2.out" }, 0);
+      tl.fromTo(q("f27-s1"), { scale: 1 }, { scale: 1.025, duration: 1.5, ease: "power1.inOut" }, 0.1);
+      // a few stars twinkle (finite, index-derived timing)
+      stars.forEach((s, i) => {
+        if (i % 6 !== 0) return;
+        const at = 0.2 + (i % 5) * 0.24, o = parseFloat(s.style.opacity);
+        tl.fromTo(s, { opacity: o }, { opacity: 0.12, duration: 0.18, ease: "sine.inOut", immediateRender: false }, at);
+        tl.to(s, { opacity: o, duration: 0.24, ease: "sine.inOut" }, at + 0.18);
+      });
+
+      // ================= SCENE 1: "¿Te atascas un martes por la noche?" =================
+      rise("f27-w-te", T.te); rise("f27-w-atascas", T.atascas);
+      tl.fromTo(q("f27-w-martes"), { opacity: 0, y: 24, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, T.martes - LEAD);
+      rise("f27-w-por", T.por); rise("f27-w-la", T.la);
+      slam("f27-w-noche", T.noche, 1.3);
+      tl.to(q("f27-moonglow"), { opacity: 1, scale: 1.12, duration: 0.45, ease: "power2.out" }, T.noche - LEAD);
+      tl.fromTo(q("f27-moonsvg"), { scale: 1 }, { scale: 1.08, duration: 0.4, ease: "power3.out", transformOrigin: "50% 50%" }, T.noche - LEAD);
+
+      // ================= SEAM UP (1.58-1.95): lock screen lifts away, laptop rises, blue floods out of the screen =================
+      tl.to(q("f27-s1"), { y: -340, filter: "blur(10px)", duration: 0.2, ease: "power3.in" }, 1.56);
+      tl.to(q("f27-s1"), { opacity: 0, duration: 0.06, ease: "none" }, 1.7);
+      tl.to(q("f27-sky"), { y: -120, duration: 0.4, ease: "power3.in" }, 1.58);
+      tl.to(q("f27-lapwrap"), { y: 0, duration: 0.5, ease: "expo.out" }, 1.62);
+      tl.fromTo(q("f27-lap"), { rotationX: 38, rotationY: 4 }, { rotationX: 6, rotationY: 10, duration: 0.6, ease: "expo.out" }, 1.62);
+      tl.fromTo(q("f27-scrglow"), { opacity: 0 }, { opacity: 1, duration: 0.14, ease: "power2.out", immediateRender: false }, 1.72);
+      tl.to(q("f27-scrglow"), { opacity: 0, duration: 0.5, ease: "power2.out" }, 1.86);
+      tl.to(q("f27-blue"), { clipPath: "circle(1620px at 550px 433px)", duration: 0.55, ease: "power2.out" }, 1.72);
+      tl.fromTo(q("f27-dots"), { scale: 1.12 }, { scale: 1, duration: 0.9, ease: "power3.out" }, 1.72);
+
+      // ================= SCENE 2: "Preguntas dentro de la escuela y te responden." =================
+      slam("f27-preg", T.preguntas, 1.36);
+      rise("f27-w-dentro", T.dentro); rise("f27-w-de", T.de); rise("f27-w-la2", T.la2); rise("f27-w-escuela", T.escuela);
+      // "responden." — the real answered consulta pops in front, success pill lands on its corner
+      tl.fromTo(q("f27-ans"), { opacity: 0, scale: 0.55, y: 90, rotation: -5, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, y: 0, rotation: 0, filter: "blur(0px)", duration: 0.38, ease: "power4.out" }, T.responden - LEAD);
+      tl.to(q("f27-dim"), { opacity: 1, duration: 0.4, ease: "power2.out" }, T.responden);
+      tl.to(q("f27-lapwrap"), { y: -14, duration: 0.5, ease: "power3.out" }, T.responden);
+      tl.fromTo(q("f27-pill"), { opacity: 0, scale: 0.3, rotation: -14 }, { opacity: 1, scale: 1, rotation: -3, duration: 0.36, ease: "back.out(2.2)" }, T.responden + 0.12);
+      tl.fromTo(q("f27-pilltick"), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.22, ease: "power2.out" }, T.responden + 0.24);
+
+      // ================= SEAM 2 -> 3: right column cuts up =================
+      tl.to(q("f27-t2"), { y: -220, filter: "blur(8px)", duration: 0.18, ease: "power4.in" }, 3.28);
+      tl.to(q("f27-t2"), { opacity: 0, duration: 0.05, ease: "none" }, 3.41);
+      tl.fromTo(q("f27-left"), { scale: 1 }, { scale: 1.025, duration: D - 3.3, ease: "power1.inOut" }, 3.3);
+
+      // ================= SCENE 3: "Tus dudas no se quedan esperando." =================
+      rise("f27-w-tus", T.tus, 70); rise("f27-w-dudas", T.dudas, 70);
+      // the doubt waits: an hourglass chip with breathing dots (finite)
+      tl.fromTo(q("f27-wait"), { opacity: 0, scale: 0.7, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "power3.out" }, T.dudas + 0.08);
+      tl.fromTo(q("f27-hour"), { rotation: 0 }, { rotation: 180, duration: 0.4, ease: "power2.inOut", transformOrigin: "50% 50%" }, T.dudas + 0.34);
+      [0, 1, 2].forEach((k) => {
+        [0, 1].forEach((c) => {
+          const at = T.dudas + 0.12 + c * 0.32 + k * 0.1;
+          tl.fromTo(q("f27-d" + k), { opacity: 0.25, y: 0 }, { opacity: 1, y: -6, duration: 0.12, ease: "power2.out", immediateRender: false }, at);
+          tl.to(q("f27-d" + k), { opacity: 0.25, y: 0, duration: 0.16, ease: "power2.in" }, at + 0.12);
+        });
+      });
+      // "no" — struck out
+      tl.fromTo(q("f27-strike"), { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power3.out" }, T.no - LEAD);
+      tl.to(q("f27-wait"), { opacity: 0.55, duration: 0.16, ease: "power1.out" }, T.no + 0.06);
+      // "quedan" — the waiting chip drops away, a check takes its place
+      tl.to(q("f27-wait"), { opacity: 0, scale: 0.86, y: 18, filter: "blur(6px)", duration: 0.18, ease: "power2.in" }, T.quedan - 0.1);
+      tl.fromTo(q("f27-ok"), { opacity: 0, scale: 0, rotation: -60 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.36, ease: "back.out(2.2)" }, T.quedan - LEAD);
+      tl.fromTo(q("f27-oktick"), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.22, ease: "power2.out" }, T.quedan + 0.08);
+      tl.fromTo(q("f27-okring"), { opacity: 0.9, scale: 0.9 }, { opacity: 0, scale: 1.9, duration: 0.45, ease: "power2.out", immediateRender: false }, T.quedan + 0.06);
+      // "NO SE QUEDAN ESPERANDO."
+      rise("f27-w-no", T.no, 50); rise("f27-w-se", T.se, 50);
+      slam("f27-w-quedan", T.quedan, 1.3);
+      tl.fromTo(q("f27-esp"), { opacity: 0, scale: 1.45, rotation: 0, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, rotation: -1.5, filter: "blur(0px)", duration: 0.32, ease: "power4.out" }, T.esperando - LEAD);
+      tl.fromTo(q("f27-espwrap"), { y: 0 }, { y: 6, duration: 1 / 30, ease: "none", immediateRender: false }, T.esperando + 0.2);
+      tl.to(q("f27-espwrap"), { y: -2, duration: 1 / 30, ease: "none" }, T.esperando + 0.2 + 1 / 30);
+      tl.to(q("f27-espwrap"), { y: 0, duration: 2 / 30, ease: "power2.out" }, T.esperando + 0.2 + 2 / 30);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["27-consultas"] = tl;
+    })();
+  </script>
+</template>

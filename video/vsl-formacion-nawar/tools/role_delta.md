@@ -38,7 +38,7 @@ product is shown inside devices. Craft matters: spacing, hierarchy, contrast, ea
    caveat-latin-700-normal.woff2. No emoji glyphs (no emoji font in the renderer) — draw icons as inline SVG.
 8. **Entrance is your transition.** Frames hard-cut on the first word; the first 0.25 s of your frame
    must carry the entrance move named in your block so the cut feels designed. No exit animation
-   (except frame 25). Your ground (background) must be fully painted from t=0.
+   (except frame 39, the end card). Your ground (background) must be fully painted from t=0.
 9. **Timing is sacred.** Each reveal starts at its word cue (you may lead by ≤ 0.06 s). Use the exact
    cue table in your packet, not the rounded numbers in prose. Root `data-duration` = your duration.
 10. **No orange, ever.** Palette strictly from `frame.md`. Yellow only inside the logo image.
@@ -95,3 +95,10 @@ element — center with flex/inset or use xPercent/yPercent in `fromTo`.
 
 Never edit any other frame, STORYBOARD.md, index.html, timing.json, frame.md or assets/. Never run
 `hyperframes render`. Work only inside the project directory.
+
+## v2 note
+
+This is v2 of the film. Frames 01–19 already exist (retimed v1 scenes) — never touch them unless your
+assignment says so. compositions/frames_v1/ holds the approved v1 scenes for reference/reuse (read-only).
+The soundtrack now has musical events your frame may sit on (stop, drop, breakdown, riser, re-drop, final
+hit) — your block says when; land the big visual hits exactly there.

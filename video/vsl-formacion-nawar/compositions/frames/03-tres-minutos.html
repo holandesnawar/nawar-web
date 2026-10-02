@@ -7,19 +7,23 @@
     @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
     @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
 
-    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #FFFFFF; }
 
-    /* ---------- ground: paper + indigo dot grid ---------- */
-    #f03-ground { position: absolute; inset: 0; background: #F5F7FF; overflow: hidden; }
+    /* ---------- ground: NAWAR BLUE (gradient + vignette) + white dot grid ---------- */
+    #f03-ground {
+      position: absolute; inset: 0; overflow: hidden;
+      background:
+        radial-gradient(ellipse 80% 78% at 50% 50%, rgba(6,0,60,0) 58%, rgba(6,0,60,0.42) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
     #f03-dots {
       position: absolute; inset: 0;
-      background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.6px, transparent 1.8px);
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
       background-size: 28px 28px; background-position: 10px 12px;
     }
     #f03-light {
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse 46% 62% at 30% 54%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 72%),
-                  radial-gradient(ellipse 95% 95% at 50% 50%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.06) 100%);
+      background: radial-gradient(ellipse 40% 58% at 30% 54%, rgba(77,163,255,0.30) 0%, rgba(77,163,255,0.10) 45%, rgba(77,163,255,0) 72%);
     }
 
     #f03-stage { position: absolute; inset: 0; transform-origin: 960px 560px; }
@@ -32,8 +36,8 @@
     #f03-shadow, #f03-pulse {
       position: absolute; left: 46px; top: 136px; width: 668px; height: 668px; border-radius: 50%;
     }
-    #f03-shadow { box-shadow: 0 46px 110px rgba(18,0,129,0.22), 0 8px 22px rgba(18,0,129,0.12); }
-    #f03-pulse { border: 8px solid #1D0084; }
+    #f03-shadow { box-shadow: 0 40px 110px rgba(4,0,40,0.45); }
+    #f03-pulse { border: 8px solid #FFFFFF; }
     #f03-svg { position: absolute; left: 0; top: 0; width: 760px; height: 860px; overflow: visible; }
 
     /* digital readout */
@@ -61,26 +65,26 @@
     #f03-uSeg { width: 180px; }
 
     /* ---------- right column: kinetic sentence ---------- */
-    #f03-copy { position: absolute; left: 1012px; top: 366px; width: 816px; }
+    #f03-copy { position: absolute; left: 1012px; top: 366px; width: 816px; text-shadow: 0 16px 44px rgba(4,0,40,0.28); }
     .f03-w { display: inline-block; }
     #f03-l1 {
-      font-weight: 600; font-size: 60px; line-height: 1.15; letter-spacing: -0.01em; color: #5A6480;
+      font-weight: 600; font-size: 60px; line-height: 1.15; letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
       white-space: nowrap;
     }
     #f03-l2 {
       margin-top: 10px;
-      font-weight: 700; font-size: 88px; line-height: 1.05; letter-spacing: -0.03em; color: #0C0C1E;
+      font-weight: 700; font-size: 88px; line-height: 1.05; letter-spacing: -0.03em; color: #FFFFFF;
       white-space: nowrap;
     }
     #f03-hero {
       margin-top: 2px; display: flex; align-items: flex-end; white-space: nowrap;
-      color: #1D0084; font-weight: 900;
-      filter: drop-shadow(0 28px 34px rgba(29,0,132,0.16));
+      color: #FFFFFF; font-weight: 900;
+      filter: drop-shadow(0 28px 34px rgba(4,0,40,0.36));
     }
     #f03-three {
       display: block; font-size: 262px; line-height: 0.86; letter-spacing: -0.04em;
       padding-right: 0.06em; transform-origin: 40% 88%;
-      text-shadow: 0 6px 0 rgba(29,0,132,0.10);
+      text-shadow: 0 6px 0 rgba(4,0,40,0.16);
     }
     #f03-mins {
       display: block; position: relative; font-size: 136px; line-height: 1; letter-spacing: -0.035em;
@@ -90,8 +94,8 @@
     #f03-mins .f03-ch { display: inline-block; }
   </style>
 
-  <div id="root" data-composition-id="03-tres-minutos" data-width="1920" data-height="1080" data-duration="2.306">
-    <div id="f03-ground" class="clip" data-start="0" data-duration="2.306" data-track-index="0">
+  <div id="root" data-composition-id="03-tres-minutos" data-width="1920" data-height="1080" data-duration="2.31">
+    <div id="f03-ground" class="clip" data-start="0" data-duration="2.31" data-track-index="0">
       <div id="f03-dots"></div>
       <div id="f03-light"></div>
     </div>
@@ -121,26 +125,26 @@
           <g transform="rotate(-45 380 470)">
             <g id="f03-btnL">
               <rect x="362" y="104" width="36" height="50" rx="6" fill="#14005E" />
-              <rect x="334" y="78" width="92" height="36" rx="12" fill="url(#f03-capGrad)" />
+              <rect x="334" y="78" width="92" height="36" rx="12" fill="url(#f03-capGrad)" stroke="rgba(159,213,245,0.42)" stroke-width="2.5" />
               <rect x="346" y="84" width="68" height="6" rx="3" fill="rgba(255,255,255,0.22)" />
             </g>
           </g>
           <g transform="rotate(45 380 470)">
             <g id="f03-btnR">
               <rect x="362" y="104" width="36" height="50" rx="6" fill="#14005E" />
-              <rect x="334" y="78" width="92" height="36" rx="12" fill="url(#f03-capGrad)" />
+              <rect x="334" y="78" width="92" height="36" rx="12" fill="url(#f03-capGrad)" stroke="rgba(159,213,245,0.42)" stroke-width="2.5" />
               <rect x="346" y="84" width="68" height="6" rx="3" fill="rgba(255,255,255,0.22)" />
             </g>
           </g>
           <!-- crown (start button) -->
           <g id="f03-crown">
             <rect x="354" y="90" width="52" height="64" rx="8" fill="#14005E" />
-            <rect x="310" y="44" width="140" height="56" rx="18" fill="url(#f03-capGrad)" />
+            <rect x="310" y="44" width="140" height="56" rx="18" fill="url(#f03-capGrad)" stroke="rgba(159,213,245,0.42)" stroke-width="2.5" />
             <rect x="326" y="52" width="108" height="8" rx="4" fill="rgba(255,255,255,0.22)" />
           </g>
 
           <!-- case + face -->
-          <circle cx="380" cy="470" r="334" fill="url(#f03-caseGrad)" />
+          <circle cx="380" cy="470" r="334" fill="url(#f03-caseGrad)" stroke="rgba(159,213,245,0.42)" stroke-width="3" />
           <circle cx="380" cy="470" r="318" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="4" />
           <circle cx="380" cy="470" r="298" fill="#FFFFFF" />
           <circle cx="380" cy="470" r="298" fill="none" stroke="#DDE6F5" stroke-width="2" />
@@ -289,6 +293,22 @@
       tl.to($("halo"), { attr: { r: 24 }, opacity: 0.28, duration: 0.3, ease: "power2.out" }, TICK2);
 
       window.__timelines = window.__timelines || {};
+      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.167, 0.18], [0.259, 0.28], [0.694, 0.7], [0.806, 0.81], [1.065, 1.1], [1.176, 1.2], [1.407, 1.49], [2.306, 2.31]]);
       window.__timelines["03-tres-minutos"] = tl;
     })();
   </script>

@@ -1,0 +1,311 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 800; font-style: normal; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: nawar-blue + vignette (dots ride a separate parallax layer) ---------- */
+    #f30-ground {
+      position: absolute; inset: 0;
+      background-color: #120081;
+      background-image:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+      background-size: 100% 100%, 100% 100%;
+    }
+    #f30-par { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #f30-dots {
+      position: absolute; left: -200px; top: -200px; width: 2320px; height: 1600px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px;
+      transform-origin: 1160px 740px;
+    }
+    #f30-amb {
+      position: absolute; left: 360px; top: 40px; width: 1200px; height: 860px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.30) 0%, rgba(77,163,255,0.10) 45%, rgba(77,163,255,0) 70%);
+    }
+
+    .f30-scene { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .f30-w { display: inline-block; }
+
+    /* ================= SCENE 1 — "Y una cosa más." ================= */
+    #f30-s1push { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 500px; }
+    #f30-disc {
+      position: absolute; left: 745px; top: 130px; width: 430px; height: 430px; border-radius: 50%;
+      background: radial-gradient(circle at 50% 40%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 70%);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.26), 0 40px 110px rgba(4,0,40,0.38);
+    }
+    #f30-hand { position: absolute; left: 70px; top: 62px; width: 290px; height: 290px; overflow: visible; }
+    #f30-plus {
+      position: absolute; left: 318px; top: -4px; height: 124px; padding: 0 36px;
+      display: flex; align-items: center; border-radius: 999px;
+      background: #4da3ff; color: #FFFFFF;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 66px; letter-spacing: -0.02em;
+      box-shadow: 0 0 60px rgba(77,163,255,0.55), 0 18px 40px rgba(4,0,40,0.35);
+      white-space: nowrap; transform-origin: 20% 80%;
+    }
+    #f30-line1 {
+      position: absolute; left: 0; top: 622px; width: 1920px;
+      display: flex; justify-content: center; gap: 0.26em; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 104px; line-height: 1.05;
+      letter-spacing: -0.025em; color: #FFFFFF;
+    }
+    #f30-mas { color: #4da3ff; }
+
+    /* ================= SCENE 2 — AQUÍ NO HAY TESTS + quiz card ================= */
+    #f30-s2 { visibility: hidden; }
+    #f30-s2cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 560px; }
+    #f30-head {
+      position: absolute; left: 0; top: 84px; width: 1920px; height: 120px;
+      display: flex; justify-content: center; align-items: center; gap: 0.28em; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 92px; line-height: 1;
+      letter-spacing: -0.03em; color: #FFFFFF;
+    }
+    #f30-chip {
+      display: inline-block; background: #E02D3C; color: #FFFFFF; border-radius: 16px;
+      padding: 0.08em 0.2em 0.05em 0.2em;
+      box-shadow: 0 24px 60px rgba(4,0,40,0.40), 0 0 0 0 rgba(224,45,60,0);
+    }
+
+    #f30-cardpos { position: absolute; left: 450px; top: 252px; width: 1020px; height: 610px; }
+    #f30-cardsc { position: absolute; inset: 0; transform: scale(1.12); transform-origin: 50% 0%; }
+    #f30-card {
+      position: absolute; inset: 0; border-radius: 28px; background: #FFFFFF;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45);
+      padding: 44px 76px 0 76px; transform-origin: 50% 0%;
+    }
+    #f30-qlabel {
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #5A6480; height: 26px; line-height: 26px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    #f30-qdot { width: 10px; height: 10px; border-radius: 50%; background: #0b6df0; }
+    #f30-q {
+      margin-top: 12px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 42px; line-height: 54px;
+      color: #0C0C1E; letter-spacing: -0.01em; white-space: nowrap;
+    }
+    #f30-q em { font-style: normal; color: #1D0084; }
+    #f30-rows { margin-top: 30px; display: flex; flex-direction: column; gap: 18px; }
+    .f30-row {
+      position: relative; width: 868px; height: 86px; border-radius: 18px;
+      background: #F1F4FB; border: 1px solid #DDE6F5;
+      display: flex; align-items: center; padding-left: 15px;
+    }
+    .f30-bw { position: relative; width: 56px; height: 56px; flex: none; }
+    .f30-badge {
+      position: absolute; inset: 0; border-radius: 14px; background: #1D0084; color: #FFFFFF;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 28px;
+    }
+    .f30-x { position: absolute; left: -16px; top: -16px; width: 88px; height: 88px; overflow: visible; }
+    .f30-x path { fill: none; stroke: #E02D3C; stroke-width: 11; stroke-linecap: round; }
+    .f30-txt {
+      margin-left: 26px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 32px; color: #0C0C1E;
+      white-space: nowrap;
+    }
+  </style>
+
+  <div id="root" data-composition-id="30-sin-tests" data-width="1920" data-height="1080" data-duration="4.57">
+    <div id="f30-ground" class="clip" data-start="0" data-duration="4.57" data-track-index="0"></div>
+
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+      <filter id="f30-vbOut" x="-0.2" y="-0.6" width="1.4" height="2.2"><feGaussianBlur id="f30-vbOutN" in="SourceGraphic" stdDeviation="0 0" /></filter>
+      <filter id="f30-vbIn" x="-0.2" y="-0.6" width="1.4" height="2.2"><feGaussianBlur id="f30-vbInN" in="SourceGraphic" stdDeviation="0 0" /></filter>
+    </svg>
+
+    <div id="f30-par">
+      <div id="f30-dots"></div>
+      <div id="f30-amb"></div>
+    </div>
+
+    <div id="f30-stage" class="f30-scene">
+      <!-- ============ SCENE 1 ============ -->
+      <div id="f30-s1" class="f30-scene">
+        <div id="f30-s1push">
+          <div id="f30-disc">
+            <!-- raised index finger: "one more thing" -->
+            <svg id="f30-hand" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 14a8 8 0 0 1-8 8" />
+              <path d="M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2" />
+              <path d="M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1" />
+              <path d="M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10" />
+              <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+            </svg>
+            <div id="f30-plus">+1</div>
+          </div>
+          <div id="f30-line1">
+            <span class="f30-w" id="f30-wY">Y</span>
+            <span class="f30-w" id="f30-wUna">una</span>
+            <span class="f30-w" id="f30-wCosa">cosa</span>
+            <span class="f30-w" id="f30-mas">más.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 2 ============ -->
+      <div id="f30-s2" class="f30-scene">
+        <div id="f30-s2cam">
+          <div id="f30-head">
+            <span class="f30-w" id="f30-hAqui">AQUÍ</span>
+            <span class="f30-w" id="f30-chip">NO</span>
+            <span class="f30-w" id="f30-hHay">HAY</span>
+            <span class="f30-w" id="f30-hTests">TESTS</span>
+          </div>
+
+          <div id="f30-cardpos">
+            <div id="f30-cardsc">
+              <div id="f30-card">
+                <div id="f30-qlabel"><span id="f30-qdot"></span><span>Elige una respuesta</span></div>
+                <div id="f30-q">¿Qué significa <em>“gezellig”</em>?</div>
+                <div id="f30-rows">
+                  <div class="f30-row" id="f30-r0">
+                    <div class="f30-bw" id="f30-bw0"><div class="f30-badge" id="f30-b0">A</div>
+                      <svg class="f30-x" viewBox="0 0 88 88"><path id="f30-x0a" pathLength="1" d="M22 22 L66 66" /><path id="f30-x0b" pathLength="1" d="M66 22 L22 66" /></svg></div>
+                    <span class="f30-txt" id="f30-t0">aburrido</span>
+                  </div>
+                  <div class="f30-row" id="f30-r1">
+                    <div class="f30-bw" id="f30-bw1"><div class="f30-badge" id="f30-b1">B</div>
+                      <svg class="f30-x" viewBox="0 0 88 88"><path id="f30-x1a" pathLength="1" d="M22 22 L66 66" /><path id="f30-x1b" pathLength="1" d="M66 22 L22 66" /></svg></div>
+                    <span class="f30-txt" id="f30-t1">acogedor</span>
+                  </div>
+                  <div class="f30-row" id="f30-r2">
+                    <div class="f30-bw" id="f30-bw2"><div class="f30-badge" id="f30-b2">C</div>
+                      <svg class="f30-x" viewBox="0 0 88 88"><path id="f30-x2a" pathLength="1" d="M22 22 L66 66" /><path id="f30-x2b" pathLength="1" d="M66 22 L22 66" /></svg></div>
+                    <span class="f30-txt" id="f30-t2">caro</span>
+                  </div>
+                  <div class="f30-row" id="f30-r3">
+                    <div class="f30-bw" id="f30-bw3"><div class="f30-badge" id="f30-b3">D</div>
+                      <svg class="f30-x" viewBox="0 0 88 88"><path id="f30-x3a" pathLength="1" d="M22 22 L66 66" /><path id="f30-x3b" pathLength="1" d="M66 22 L22 66" /></svg></div>
+                    <span class="f30-txt" id="f30-t3">rápido</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var $ = function (id) { return document.getElementById("f30-" + id); };
+      var tl = gsap.timeline({ paused: true });
+      var L = 0.04;
+      var F = 1 / 30;
+      var D = 4.57;
+
+      // exact word cues (frame-relative s)
+      var T = { y: 0.12, una: 0.30, cosa: 0.48, mas: 0.70, aqui: 1.30, no: 1.58, hay: 1.69, tests: 1.81,
+                a: 2.43, be: 3.02, ce: 3.55, de: 4.16 };
+
+      var word = function (el, t, dy) {
+        tl.fromTo(el, { y: dy || 40, opacity: 0, filter: "blur(8px)" },
+          { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, t - L);
+      };
+      var shake = function (el, t, amp) {
+        var xs = [amp, -amp * 0.7, amp * 0.4, 0];
+        var ys = [-amp * 0.3, amp * 0.25, -amp * 0.1, 0];
+        tl.fromTo(el, { x: 0, y: 0 }, { x: xs[0], y: ys[0], duration: F, ease: "none", immediateRender: false }, t);
+        tl.to(el, { x: xs[1], y: ys[1], duration: F, ease: "none" }, t + F);
+        tl.to(el, { x: xs[2], y: ys[2], duration: F, ease: "none" }, t + 2 * F);
+        tl.to(el, { x: 0, y: 0, duration: F * 2, ease: "power2.out" }, t + 3 * F);
+      };
+
+      // ================= ENTRANCE: camera settle + the raised finger pops =================
+      tl.fromTo($("dots"), { scale: 1.16 }, { scale: 1, duration: 0.6, ease: "expo.out" }, 0);
+      tl.fromTo($("amb"), { opacity: 0.2, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, 0);
+      tl.fromTo($("disc"), { scale: 0.35, opacity: 0, y: 40 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.3, ease: "expo.out" }, 0);
+      tl.fromTo($("hand"), { scale: 0.5, rotation: -14, y: 30 },
+        { scale: 1, rotation: 0, y: 0, duration: 0.34, ease: "power3.out" }, 0.02);
+
+      // "Y una cosa más." word by word
+      word($("wY"), T.y);
+      word($("wUna"), T.una);
+      word($("wCosa"), T.cosa);
+      word($("mas"), T.mas);
+
+      // "+1" badge pops on "más." and the finger nudges up with it
+      tl.fromTo($("plus"), { scale: 0, opacity: 0, rotation: 16 },
+        { scale: 1, opacity: 1, rotation: -6, duration: 0.3, ease: "expo.out" }, T.mas - L);
+      tl.fromTo($("hand"), { y: 0 }, { y: -12, duration: 0.1, ease: "power2.out", immediateRender: false }, T.mas - L);
+      tl.to($("hand"), { y: 0, duration: 0.3, ease: "power3.out" }, T.mas - L + 0.1);
+
+      // slow push while scene 1 is up
+      tl.fromTo($("s1push"), { scale: 1 }, { scale: 1.05, duration: 1.1, ease: "sine.out" }, 0.1);
+
+      // ================= SEAM (camera dives DOWN: scene 1 whips up, scene 2 rises in) =================
+      var C = 1.27;
+      var vOutN = $("vbOutN"), vInN = $("vbInN");
+      var vOut = { v: 0 }, vIn = { v: 0 };
+      var writeOut = function () { vOutN.setAttribute("stdDeviation", "0 " + vOut.v.toFixed(2)); };
+      var writeIn = function () { vInN.setAttribute("stdDeviation", "0 " + vIn.v.toFixed(2)); };
+      writeOut(); writeIn();
+      tl.set($("s1"), { filter: "url(#f30-vbOut)" }, C - 0.2);
+      tl.fromTo($("s1"), { y: 0 }, { y: -900, duration: 0.2, ease: "power3.in", immediateRender: false }, C - 0.2);
+      tl.fromTo(vOut, { v: 0 }, { v: 24, duration: 0.2, ease: "power2.in", onUpdate: writeOut, immediateRender: false }, C - 0.2);
+      tl.set($("s1"), { visibility: "hidden", filter: "none" }, C);
+      // ground parallax follows the dive
+      tl.fromTo($("par"), { y: 0 }, { y: -110, duration: 0.6, ease: "power3.inOut" }, C - 0.24);
+
+      tl.set($("s2"), { visibility: "visible" }, C - 0.04);
+      tl.set($("head"), { filter: "url(#f30-vbIn)" }, C - 0.04);
+      tl.fromTo(vIn, { v: 20 }, { v: 0, duration: 0.2, ease: "power2.out", onUpdate: writeIn, immediateRender: false }, C - 0.04);
+      tl.set($("head"), { filter: "none" }, C + 0.17);
+
+      // ================= SCENE 2 — AQUÍ · NO · HAY · TESTS =================
+      tl.fromTo($("hAqui"), { y: 320, opacity: 0 }, { y: 0, opacity: 1, duration: 0.42, ease: "expo.out" }, C - 0.03);
+      // red word-chip on "no"
+      tl.fromTo($("chip"), { opacity: 0 }, { opacity: 1, duration: 0.06, ease: "none" }, T.no - L);
+      tl.fromTo($("chip"), { scale: 0.5, rotation: 7, y: 26 },
+        { scale: 1, rotation: -2, y: 0, duration: 0.32, ease: "expo.out" }, T.no - L);
+      word($("hHay"), T.hay, 46);
+      tl.fromTo($("hTests"), { scale: 1.35, opacity: 0, filter: "blur(10px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, T.tests - L);
+
+      // quiz card slams up out of the dive on "tests"
+      var CS = T.tests - 0.05;
+      tl.fromTo($("card"), { y: 520, rotationX: 38, scale: 0.94, opacity: 0, transformPerspective: 1700 },
+        { y: 0, rotationX: 0, scale: 1, opacity: 1, transformPerspective: 1700, duration: 0.46, ease: "power4.out" }, CS);
+      [0, 1, 2, 3].forEach(function (i) {
+        tl.fromTo($("r" + i), { y: 36 + i * 14, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.42, ease: "power3.out" }, CS + 0.06 + i * 0.045);
+      });
+      shake($("cardpos"), CS + 0.2, 7);
+
+      // slow camera push on the card through the letter beats
+      tl.fromTo($("s2cam"), { scale: 1 }, { scale: 1.03, duration: D - 2.2, ease: "sine.inOut" }, 2.2);
+
+      // ================= THE LETTERS — each badge is crossed exactly on its spoken letter =================
+      var cross = function (i, c) {
+        var a = $("x" + i + "a"), b = $("x" + i + "b");
+        a.setAttribute("stroke-dasharray", "1 1");
+        b.setAttribute("stroke-dasharray", "1 1");
+        tl.fromTo(a, { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.1, ease: "power2.out" }, c - 0.04);
+        tl.fromTo(b, { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.1, ease: "power2.out" }, c + 0.04);
+        // stamp hit on the badge
+        tl.fromTo($("bw" + i), { scale: 1 }, { scale: 1.28, duration: 0.05, ease: "power2.out", immediateRender: false }, c - 0.03);
+        tl.to($("bw" + i), { scale: 1, duration: 0.26, ease: "power3.out" }, c + 0.02);
+        // row greys out
+        tl.fromTo($("b" + i), { backgroundColor: "#1D0084" }, { backgroundColor: "#BFC6D6", duration: 0.2, ease: "power2.out" }, c + 0.02);
+        tl.fromTo($("r" + i), { backgroundColor: "#F1F4FB", borderColor: "#DDE6F5" },
+          { backgroundColor: "#E9ECF2", borderColor: "#E2E6EE", duration: 0.24, ease: "power2.out" }, c + 0.02);
+        tl.fromTo($("t" + i), { color: "#0C0C1E" }, { color: "#A7AEBE", duration: 0.24, ease: "power2.out" }, c + 0.02);
+        shake($("r" + i), c + 0.03, 9);
+      };
+      cross(0, T.a);
+      cross(1, T.be);
+      cross(2, T.ce);
+      cross(3, T.de);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["30-sin-tests"] = tl;
+    })();
+  </script>
+</template>

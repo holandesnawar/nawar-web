@@ -1,0 +1,340 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: nawar-blue + white dot grid + vignette ---------- */
+    #f26-ground { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 50% 46%, #025dc7 0%, #120081 72%); }
+    #f26-dots {
+      position: absolute; left: -160px; top: -100px; width: 2240px; height: 1280px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px; transform-origin: 1120px 640px;
+    }
+    #f26-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 72% 70% at 50% 46%, rgba(4,0,40,0) 52%, rgba(4,0,40,0.42) 100%); }
+
+    .f26-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .f26-w { display: inline-block; }
+
+    /* ================= laptop with the REAL flashcards tool ================= */
+    #f26-lapback { transform-origin: 576px 480px; }
+    #f26-lapstage { perspective: 2200px; perspective-origin: 576px 480px; }
+    #f26-floor {
+      position: absolute; left: 70px; top: 742px; width: 1010px; height: 80px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 40%, rgba(4,0,40,0.55) 0%, rgba(4,0,40,0.22) 45%, rgba(4,0,40,0) 72%);
+    }
+    #f26-lap { position: absolute; left: 96px; top: 200px; width: 960px; height: 566px; transform-origin: 50% 50%; }
+    #f26-bezel {
+      position: absolute; left: 0; top: 0; width: 960px; height: 540px; box-sizing: border-box; padding: 22px; border-radius: 26px;
+      background: #0C0C1E; box-shadow: 0 40px 110px rgba(4,0,40,0.45), inset 0 0 0 2px rgba(255,255,255,0.06);
+    }
+    #f26-camdot { position: absolute; left: 476px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: #262a40; }
+    #f26-screen { position: relative; width: 916px; height: 496px; border-radius: 8px; overflow: hidden; background: #F5F7FF; }
+    #f26-vid { position: absolute; left: 0; top: 0; width: 1012px; height: 496px; object-fit: fill; display: block; }
+    #f26-focus { position: absolute; left: 487px; top: 120px; width: 240px; height: 119px; border-radius: 14px; box-shadow: 0 0 0 4px #4da3ff, 0 0 30px 8px rgba(77,163,255,0.6); }
+    #f26-dim { position: absolute; inset: 0; background: rgba(7,4,31,0.55); }
+    #f26-glass { position: absolute; inset: 0; background: linear-gradient(118deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 34%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 100%); }
+    #f26-base {
+      position: absolute; left: -44px; top: 538px; width: 1048px; height: 26px; border-radius: 3px 3px 24px 24px;
+      background: linear-gradient(180deg, #eef1f7 0%, #c9cfdc 40%, #9aa3b8 100%); box-shadow: 0 10px 24px rgba(4,0,40,0.35);
+    }
+    #f26-notch { position: absolute; left: 444px; top: 0; width: 160px; height: 9px; border-radius: 0 0 10px 10px; background: linear-gradient(180deg, #9aa3b8 0%, #b9c0cf 100%); }
+
+    /* ================= kinetic type (right column) ================= */
+    .f26-col { position: absolute; left: 1120px; top: 0; width: 720px; height: 1080px; }
+    .f26-row { position: absolute; left: 0; display: flex; align-items: baseline; gap: 0.26em; white-space: nowrap; }
+    .f26-lead { font-family: "Poppins", sans-serif; font-weight: 600; font-size: 54px; line-height: 1.1; letter-spacing: -0.01em; color: rgba(255,255,255,0.72); }
+    #f26-lead1 { top: 330px; }
+    #f26-flash {
+      position: absolute; left: -4px; top: 398px; font-family: "Poppins", sans-serif; font-weight: 900; font-size: 108px;
+      line-height: 1; letter-spacing: -0.04em; color: #FFFFFF; white-space: nowrap; transform-origin: 10% 60%;
+      text-shadow: 0 16px 50px rgba(4,0,40,0.4);
+    }
+    #f26-r1 { top: 346px; font-size: 50px; }
+    #f26-w-vocab { color: #FFFFFF; font-weight: 700; }
+    #f26-r2 { top: 406px; font-family: "Poppins", sans-serif; font-weight: 900; font-size: 120px; line-height: 1; letter-spacing: -0.04em; color: #FFFFFF; gap: 0.24em; text-shadow: 0 16px 50px rgba(4,0,40,0.4); }
+    #f26-w-quede { transform-origin: 20% 65%; }
+    #f26-r3 { top: 576px; font-weight: 700; color: #FFFFFF; }
+    #f26-w-escape { color: #4da3ff; text-shadow: 0 0 40px rgba(77,163,255,0.45); }
+    #f26-r4 { top: 644px; }
+
+    /* ================= cards (shared look) ================= */
+    .f26-card {
+      position: absolute; left: 0; top: 0; width: 420px; height: 260px; box-sizing: border-box; border-radius: 24px;
+      background: #FFFFFF; border: 1px solid #DDE6F5;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 6px 18px rgba(4,0,40,0.18);
+    }
+    .f26-lbl {
+      position: absolute; left: 0; top: 66px; width: 100%; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.16em; line-height: 1; color: #5A6480;
+    }
+    .f26-word {
+      position: absolute; left: 0; top: 104px; width: 100%; text-align: center; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 52px; line-height: 1.1; letter-spacing: -0.02em; color: #1D0084;
+    }
+    .f26-es { font-weight: 700; font-size: 48px; color: #0C0C1E; top: 106px; }
+    .f26-tag {
+      position: absolute; right: 18px; top: 18px; display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 7px;
+      border-radius: 999px; background: #F5F7FF; border: 1px solid #DDE6F5;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.08em; line-height: 1; color: #1D0084;
+    }
+    .f26-flag { position: relative; width: 26px; height: 18px; border-radius: 4px; overflow: hidden; box-shadow: 0 0 0 1px #DDE6F5; }
+    .f26-flag i { position: absolute; left: 0; width: 26px; height: 6px; }
+    .f26-hint {
+      position: absolute; left: 0; bottom: 30px; width: 100%; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.12em; color: #9aa3b8;
+    }
+
+    /* the 3D prop (scene 1) */
+    #f26-c0pos { position: absolute; left: 800px; top: 610px; width: 420px; height: 260px; }
+    #f26-c0 { position: absolute; inset: 0; transform-style: preserve-3d; }
+    .f26-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    #f26-face-b { transform: rotateY(180deg); }
+
+    /* the deck (scenes 2-3) */
+    #f26-deckpos { position: absolute; left: 410px; top: 320px; width: 420px; height: 260px; transform: scale(1.22); transform-origin: 210px 130px; }
+    #f26-deck { position: absolute; left: 0; top: 0; width: 420px; height: 260px; }
+    #f26-teth { position: absolute; left: 0; top: 0; width: 420px; height: 260px; overflow: visible; }
+    .f26-band { fill: none; stroke: #FFFFFF; stroke-width: 4; stroke-linecap: round; }
+    .f26-bandglow { fill: none; stroke: #9fd5f5; stroke-opacity: 0.45; stroke-width: 12; stroke-linecap: round; }
+    #f26-pin { position: absolute; left: -40px; top: -40px; width: 84px; height: 84px; }
+    #f26-pin-disc {
+      position: absolute; inset: 0; border-radius: 50%; background: #34D399;
+      box-shadow: 0 0 0 7px #FFFFFF, 0 20px 50px rgba(4,0,40,0.45);
+    }
+    #f26-pin-svg { position: absolute; inset: 0; overflow: visible; }
+    #f26-pin-ring { position: absolute; inset: -8px; border-radius: 50%; border: 5px solid #34D399; }
+
+    /* weekly strip */
+    #f26-cal {
+      position: absolute; left: 262px; top: 712px; display: flex; gap: 14px; padding: 20px 22px; border-radius: 30px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 30px 80px rgba(4,0,40,0.35);
+    }
+    .f26-day { position: relative; width: 84px; height: 112px; border-radius: 20px; background: rgba(255,255,255,0.06); }
+    .f26-dl {
+      position: absolute; left: 0; top: 14px; width: 84px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 28px; line-height: 1; color: rgba(255,255,255,0.8);
+    }
+    .f26-dc { position: absolute; left: 18px; top: 52px; width: 48px; height: 48px; border-radius: 50%; box-shadow: inset 0 0 0 2.5px rgba(255,255,255,0.25); }
+    .f26-df { position: absolute; inset: 0; border-radius: 50%; background: #4da3ff; box-shadow: 0 0 18px rgba(77,163,255,0.6); }
+    .f26-dsvg { position: absolute; inset: 0; overflow: visible; }
+  </style>
+
+  <div id="root" data-composition-id="26-flashcards" data-width="1920" data-height="1080" data-duration="4.55">
+    <div id="f26-ground" class="clip" data-start="0" data-duration="4.55" data-track-index="0"><div id="f26-dots"></div><div id="f26-vig"></div></div>
+
+    <!-- ===== laptop: the REAL flashcards tool ===== -->
+    <div id="f26-lapback" class="f26-full">
+      <div id="f26-floor"></div>
+      <div id="f26-lapstage" class="f26-full">
+        <div id="f26-lap">
+          <div id="f26-base"><div id="f26-notch"></div></div>
+          <div id="f26-bezel">
+            <div id="f26-camdot"></div>
+            <div id="f26-screen">
+              <video id="f26-vid" class="clip" src="assets/video/flashcards.mp4" muted playsinline
+                data-start="0" data-duration="4.55" data-media-start="0.8" data-track-index="2"></video>
+              <div id="f26-focus"></div><div id="f26-glass"></div><div id="f26-dim"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== scene 1 type ===== -->
+    <div class="f26-col" id="f26-t1">
+      <div class="f26-row f26-lead" id="f26-lead1"><span class="f26-w" id="f26-w-ademas">Además</span><span class="f26-w" id="f26-w-tienes">tienes</span></div>
+      <div id="f26-flash">FLASHCARDS</div>
+    </div>
+
+    <!-- ===== scenes 2-3 type ===== -->
+    <div class="f26-col" id="f26-t2">
+      <div class="f26-row f26-lead" id="f26-r1"><span class="f26-w" id="f26-w-para">para</span><span class="f26-w" id="f26-w-que">que</span><span class="f26-w" id="f26-w-el">el</span><span class="f26-w" id="f26-w-vocab">vocabulario</span></div>
+      <div class="f26-row" id="f26-r2"><span class="f26-w" id="f26-w-se">SE</span><span class="f26-w" id="f26-w-quede">QUEDE</span></div>
+      <div class="f26-row f26-lead" id="f26-r3"><span class="f26-w" id="f26-w-y">y</span><span class="f26-w" id="f26-w-no">no</span><span class="f26-w" id="f26-w-se2">se</span><span class="f26-w" id="f26-w-te">te</span><span class="f26-w" id="f26-w-escape">escape</span></div>
+      <div class="f26-row f26-lead" id="f26-r4"><span class="f26-w" id="f26-w-a">a</span><span class="f26-w" id="f26-w-la">la</span><span class="f26-w" id="f26-w-semana">semana.</span></div>
+    </div>
+
+    <!-- ===== weekly strip ===== -->
+    <div id="f26-cal"></div>
+
+    <!-- ===== the deck (flat cards) ===== -->
+    <div id="f26-deckpos"><div id="f26-deck">
+      <div class="f26-card" id="f26-k3"><div class="f26-tag"><div class="f26-flag"><i style="top:0;background:#AE1C27"></i><i style="top:6px;background:#FFFFFF"></i><i style="top:12px;background:#21468C"></i></div>NL</div><div class="f26-lbl">NEDERLANDS</div><div class="f26-word">geen</div></div>
+      <div class="f26-card" id="f26-k2"><div class="f26-tag"><div class="f26-flag"><i style="top:0;background:#AE1C27"></i><i style="top:6px;background:#FFFFFF"></i><i style="top:12px;background:#21468C"></i></div>NL</div><div class="f26-lbl">NEDERLANDS</div><div class="f26-word">komen</div></div>
+      <div class="f26-card" id="f26-k1"><div class="f26-tag"><div class="f26-flag"><i style="top:0;background:#AE1C27"></i><i style="top:6px;background:#FFFFFF"></i><i style="top:12px;background:#21468C"></i></div>NL</div><div class="f26-lbl">NEDERLANDS</div><div class="f26-word">de vis</div></div>
+      <div class="f26-card" id="f26-k0"><div class="f26-tag"><div class="f26-flag"><i style="top:0;background:#AE1C27"></i><i style="top:6px;background:#FFFFFF"></i><i style="top:12px;background:#21468C"></i></div>NL</div><div class="f26-lbl">NEDERLANDS</div><div class="f26-word">het broodje</div></div>
+      <svg id="f26-teth" viewBox="0 0 420 260" aria-hidden="true">
+        <line class="f26-bandglow" id="f26-bg1" x1="2" y1="2" x2="10.8" y2="7.6" /><line class="f26-band" id="f26-b1" x1="2" y1="2" x2="10.8" y2="7.6" />
+        <line class="f26-bandglow" id="f26-bg0" x1="2" y1="2" x2="0" y2="0" /><line class="f26-band" id="f26-b0" x1="2" y1="2" x2="0" y2="0" />
+      </svg>
+      <div id="f26-pin">
+        <div id="f26-pin-ring"></div>
+        <div id="f26-pin-disc"></div>
+        <svg id="f26-pin-svg" viewBox="0 0 84 84" aria-hidden="true"><path id="f26-pin-tick" d="M25,43 L37,55 L60,30" pathLength="100" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="100 100" stroke-dashoffset="100" /></svg>
+      </div>
+    </div></div>
+
+    <!-- ===== the 3D flip prop (scene 1) ===== -->
+    <div id="f26-c0pos">
+      <div id="f26-c0">
+        <div class="f26-face f26-card" id="f26-face-f"><div class="f26-lbl">ESPAÑOL</div><div class="f26-word f26-es">el bocadillo</div></div>
+        <div class="f26-face f26-card" id="f26-face-b"><div class="f26-tag"><div class="f26-flag"><i style="top:0;background:#AE1C27"></i><i style="top:6px;background:#FFFFFF"></i><i style="top:12px;background:#21468C"></i></div>NL</div><div class="f26-lbl">NEDERLANDS</div><div class="f26-word">het broodje</div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 4.55, LEAD = 0.04, F = 1 / 30;
+      const T = {
+        ademas: 0.12, tienes: 0.50, flashcards: 0.80, para: 1.39, que: 1.63, el: 1.76, vocab: 1.82,
+        se: 2.42, quede: 2.51, y: 2.79, no: 2.96, se2: 3.10, te: 3.26, escape: 3.37, a: 3.74, la: 3.80, semana: 3.89
+      };
+      const rise = (id, cue, dy) => tl.fromTo(q(id), { opacity: 0, y: dy || 40, filter: "blur(8px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, cue - LEAD);
+      const slam = (id, cue, s) => tl.fromTo(q(id), { opacity: 0, scale: s, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, cue - LEAD);
+
+      // ---------- build the weekly strip (L M X J V S D) ----------
+      const days = ["L", "M", "X", "J", "V", "S", "D"];
+      const dayEls = days.map((d, i) => {
+        const c = document.createElement("div"); c.className = "f26-day"; c.id = "f26-day" + i;
+        c.innerHTML = '<div class="f26-dl">' + d + '</div><div class="f26-dc"><div class="f26-df" id="f26-df' + i + '"></div>' +
+          '<svg class="f26-dsvg" viewBox="0 0 36 36" aria-hidden="true"><path id="f26-dt' + i + '" d="M10,18.5 L15.5,24 L26,12.5" pathLength="100" fill="none" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="100 100" stroke-dashoffset="100"/></svg></div>';
+        q("f26-cal").appendChild(c);
+        return c;
+      });
+
+      // ---------- resting states ----------
+      tl.set(q("f26-dim"), { opacity: 0 }, 0);
+      tl.set(q("f26-focus"), { opacity: 0 }, 0);
+      tl.set([q("f26-k1"), q("f26-k2"), q("f26-k3"), q("f26-k0")], { opacity: 0 }, 0);
+      tl.set(q("f26-pin"), { opacity: 0, scale: 0 }, 0);
+      tl.set(q("f26-pin-ring"), { opacity: 0 }, 0);
+      tl.set(q("f26-cal"), { opacity: 0 }, 0);
+      tl.set(dayEls.map((d, i) => q("f26-df" + i)), { scale: 0, opacity: 0 }, 0);
+
+      // ================= ENTRANCE (0.00-0.45) =================
+      // the flashcard prop flips in from edge-on; the laptop settles in from a steeper angle
+      tl.fromTo(q("f26-c0"), { rotationY: -90, transformPerspective: 1400 },
+        { rotationY: 0, transformPerspective: 1400, duration: 0.3, ease: "power3.out" }, 0);
+      tl.fromTo(q("f26-c0pos"), { x: 40, y: 0, scale: 1.08 }, { x: 0, y: 0, scale: 1, duration: 0.36, ease: "power3.out" }, 0);
+      tl.fromTo(q("f26-lap"), { rotationY: 28, rotationX: 6, x: -70 }, { rotationY: 12, rotationX: 3, x: 0, duration: 0.5, ease: "expo.out" }, 0);
+      tl.fromTo(q("f26-dots"), { scale: 1.1 }, { scale: 1, duration: 0.6, ease: "power3.out" }, 0);
+      tl.fromTo(q("f26-lapback"), { scale: 1 }, { scale: 1.035, duration: 1.12, ease: "power1.inOut" }, 0.2);
+
+      // ================= SCENE 1: "Además tienes FLASHCARDS" =================
+      rise("f26-w-ademas", T.ademas); rise("f26-w-tienes", T.tienes);
+      slam("f26-flash", T.flashcards, 1.34);
+      // the prop flips el bocadillo -> het broodje on "flashcards" (the real card on screen flips at the same instant)
+      tl.fromTo(q("f26-c0"), { rotationY: 0, transformPerspective: 1400 },
+        { rotationY: 180, transformPerspective: 1400, duration: 0.42, ease: "power2.inOut", immediateRender: false }, T.flashcards - LEAD);
+      tl.fromTo(q("f26-c0pos"), { y: 0, scale: 1 }, { y: -26, scale: 1.08, duration: 0.21, ease: "power2.out", immediateRender: false }, T.flashcards - LEAD);
+      tl.fromTo(q("f26-c0pos"), { y: -26, scale: 1.08 }, { y: 0, scale: 1, duration: 0.24, ease: "power2.inOut", immediateRender: false }, T.flashcards - LEAD + 0.21);
+      tl.fromTo(q("f26-focus"), { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.26, ease: "power3.out", immediateRender: false }, T.flashcards - LEAD);
+
+      // ================= SEAM 1 -> 2 (1.30-1.80): type cuts up, laptop steps back, card leaves the screen =================
+      tl.to(q("f26-t1"), { y: -190, filter: "blur(8px)", duration: 0.18, ease: "power4.in" }, 1.2);
+      tl.to(q("f26-t1"), { opacity: 0, duration: 0.06, ease: "none" }, 1.32);
+      tl.to(q("f26-lapback"), { scale: 0.86, x: -40, y: 6, filter: "blur(5px)", duration: 0.55, ease: "power3.inOut" }, 1.34);
+      tl.to(q("f26-lap"), { rotationY: 20, duration: 0.55, ease: "power3.inOut" }, 1.34);
+      tl.to(q("f26-dim"), { opacity: 1, duration: 0.5, ease: "power2.out" }, 1.36);
+      tl.to(q("f26-focus"), { opacity: 0, duration: 0.3, ease: "power1.out" }, 1.36);
+      // hand-off: the 3D prop becomes the flat top card of the deck (identical look), then travels to the deck
+      tl.set(q("f26-c0pos"), { opacity: 0 }, 1.3);
+      const S = 1.22;   // the deck is drawn at 1.22x: hand-off coords are the prop's box expressed in deck space
+      tl.set(q("f26-k0"), { opacity: 1, x: 390 / S, y: 290 / S, rotation: 0, scale: 1 / S }, 1.3);
+      tl.to(q("f26-k0"), { x: 30, y: 26, rotation: -5, scale: 1, duration: 0.5, ease: "power3.inOut" }, 1.34);
+
+      // ================= SCENE 2: "para que el vocabulario SE QUEDE" =================
+      rise("f26-w-para", T.para, 60); rise("f26-w-que", T.que); rise("f26-w-el", T.el); rise("f26-w-vocab", T.vocab);
+      // the vocabulary flies in loose around the top card
+      const loose = {
+        k1: { from: { x: -560, y: -440, rotation: -38 }, to: { x: -200, y: -132, rotation: -11 } },
+        k2: { from: { x: 520, y: -520, rotation: 34 }, to: { x: 180, y: -140, rotation: 9 } },
+        k3: { from: { x: -440, y: 480, rotation: 28 }, to: { x: -196, y: 196, rotation: 8 } }
+      };
+      ["k1", "k2", "k3"].forEach((k, i) => {
+        const at = T.vocab - LEAD + i * 0.05;
+        tl.fromTo(q("f26-" + k), { opacity: 0, x: loose[k].from.x, y: loose[k].from.y, rotation: loose[k].from.rotation },
+          { opacity: 1, x: loose[k].to.x, y: loose[k].to.y, rotation: loose[k].to.rotation, duration: 0.46, ease: "power3.out" }, at);
+        // a little float before the snap
+        tl.to(q("f26-" + k), { x: loose[k].to.x + [10, -8, 8][i], y: loose[k].to.y + [6, 8, -6][i], rotation: loose[k].to.rotation + [1.5, -1.5, 1][i], duration: 2.43 - (at + 0.46), ease: "sine.inOut" }, at + 0.46);
+      });
+      tl.to(q("f26-k0"), { x: 38, y: 20, rotation: -6, duration: 0.6, ease: "sine.inOut" }, 1.84);  // ends 2.44, before the snap
+
+      // "quede" — SNAP into a neat stack, the pin locks it
+      const STACK = { k3: [24, 36, 2.4], k2: [16, 24, -1.8], k1: [8, 12, 1.2], k0: [0, 0, 0] };
+      ["k3", "k2", "k1", "k0"].forEach((k, i) => {
+        tl.to(q("f26-" + k), { x: STACK[k][0], y: STACK[k][1], rotation: STACK[k][2], duration: 0.26, ease: "power4.out" }, T.quede - 0.06 + i * 0.02);
+      });
+      rise("f26-w-se", T.se);
+      slam("f26-w-quede", T.quede, 1.4);
+      // impact jolt on the stack
+      tl.fromTo(q("f26-deck"), { y: 0 }, { y: 7, duration: F, ease: "none", immediateRender: false }, T.quede + 0.08);
+      tl.to(q("f26-deck"), { y: -3, duration: F, ease: "none" }, T.quede + 0.08 + F);
+      tl.to(q("f26-deck"), { y: 0, duration: 2 * F, ease: "power2.out" }, T.quede + 0.08 + 2 * F);
+      tl.fromTo(q("f26-pin"), { opacity: 0, scale: 0, rotation: -60 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.36, ease: "back.out(2.2)" }, T.quede + 0.04);
+      tl.fromTo(q("f26-pin-tick"), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.22, ease: "power2.out" }, T.quede + 0.14);
+
+      // ================= SCENE 3: "y no se te escape" — the top two try to fly away, get pulled back =================
+      rise("f26-w-y", T.y); rise("f26-w-no", T.no); rise("f26-w-se2", T.se2); rise("f26-w-te", T.te);
+      const ESC0 = T.no - 0.02, ESCD = T.escape - 0.01 - ESC0;
+      tl.fromTo(q("f26-k0"), { x: 0, y: 0, rotation: 0, filter: "blur(0px)" },
+        { x: 112, y: -128, rotation: 12, filter: "blur(2.5px)", duration: ESCD, ease: "power1.inOut", immediateRender: false }, ESC0);
+      tl.fromTo(q("f26-k1"), { x: 8, y: 12, rotation: 1.2, filter: "blur(0px)" },
+        { x: 58, y: -78, rotation: -8, filter: "blur(2px)", duration: ESCD, ease: "power1.inOut", immediateRender: false }, ESC0 + 0.04);
+      // the pin strains (tiny shiver) while they pull
+      tl.fromTo(q("f26-pin"), { x: 0 }, { x: 3, duration: 0.05, ease: "none", immediateRender: false }, 3.12);
+      tl.to(q("f26-pin"), { x: -3, duration: 0.05, ease: "none" }, 3.17);
+      tl.to(q("f26-pin"), { x: 2, duration: 0.05, ease: "none" }, 3.22);
+      tl.to(q("f26-pin"), { x: 0, duration: 0.05, ease: "none" }, 3.27);
+      // "escape" — yanked back into the stack
+      tl.to(q("f26-k0"), { x: 0, y: 6, rotation: -1, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, T.escape - 0.02);
+      tl.to(q("f26-k0"), { y: 0, rotation: 0, duration: 0.2, ease: "power2.inOut" }, T.escape + 0.24);
+      tl.to(q("f26-k1"), { x: 8, y: 16, rotation: 1.2, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, T.escape);
+      tl.to(q("f26-k1"), { y: 12, duration: 0.2, ease: "power2.inOut" }, T.escape + 0.26);
+      tl.fromTo(q("f26-pin-disc"), { scale: 1.32 }, { scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, T.escape + 0.12);
+      tl.fromTo(q("f26-pin-ring"), { opacity: 0.9, scale: 0.9 }, { opacity: 0, scale: 1.9, duration: 0.42, ease: "power2.out", immediateRender: false }, T.escape + 0.12);
+      tl.fromTo(q("f26-w-escape"), { opacity: 0, y: -46, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, T.escape - LEAD);
+
+      // elastic tethers: pin -> top-left corner of each escaping card. Corner positions are precomputed for each
+      // key pose (deck coords) and tweened with the card's own timing/ease (attr tweens: no callbacks needed).
+      const B0 = [q("f26-b0"), q("f26-bg0")], B1 = [q("f26-b1"), q("f26-bg1")];
+      tl.set(q("f26-teth"), { opacity: 0 }, 0);
+      tl.set(q("f26-teth"), { opacity: 1 }, ESC0 - 0.02);
+      tl.fromTo(B0, { attr: { x2: 0, y2: 0 } }, { attr: { x2: 143.6, y2: -168.9 }, duration: ESCD, ease: "power1.inOut", immediateRender: false }, ESC0);
+      tl.to(B0, { attr: { x2: -2.2, y2: 9.7 }, duration: 0.26, ease: "power3.out" }, T.escape - 0.02);
+      tl.to(B0, { attr: { x2: 0, y2: 0 }, duration: 0.2, ease: "power2.inOut" }, T.escape + 0.24);
+      tl.fromTo(q("f26-b0"), { attr: { "stroke-width": 5 } }, { attr: { "stroke-width": 2.6 }, duration: ESCD, ease: "power1.inOut", immediateRender: false }, ESC0);
+      tl.to(q("f26-b0"), { attr: { "stroke-width": 5 }, duration: 0.26, ease: "power3.out" }, T.escape - 0.02);
+      tl.fromTo(B1, { attr: { x2: 10.8, y2: 7.6 } }, { attr: { x2: 42.0, y2: -47.5 }, duration: ESCD, ease: "power1.inOut", immediateRender: false }, ESC0 + 0.04);
+      tl.to(B1, { attr: { x2: 10.8, y2: 11.6 }, duration: 0.26, ease: "power3.out" }, T.escape);
+      tl.to(B1, { attr: { x2: 10.8, y2: 7.6 }, duration: 0.2, ease: "power2.inOut" }, T.escape + 0.26);
+
+      // ================= "a la semana." — every day of the week ticked =================
+      rise("f26-w-a", T.a); rise("f26-w-la", T.la); rise("f26-w-semana", T.semana);
+      tl.fromTo(q("f26-cal"), { opacity: 0, y: 34, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power3.out" }, T.a - LEAD);
+      dayEls.forEach((d, i) => {
+        const at = T.semana - 0.02 + i * 0.045;
+        tl.fromTo(q("f26-df" + i), { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.2, ease: "back.out(2)" }, at);
+        tl.fromTo(q("f26-dt" + i), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.16, ease: "power2.out" }, at + 0.06);
+        tl.fromTo(d, { backgroundColor: "rgba(255,255,255,0.06)" }, { backgroundColor: "rgba(77,163,255,0.16)", duration: 0.2, ease: "power1.out" }, at);
+      });
+
+      // hold: a barely-there settle
+      tl.fromTo(q("f26-dots"), { x: 0 }, { x: -18, duration: D - 1.4, ease: "none" }, 1.4);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["26-flashcards"] = tl;
+    })();
+  </script>
+</template>

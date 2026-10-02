@@ -13,7 +13,7 @@ import json, os, subprocess, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SFX_DIR = os.path.join(ROOT, "assets", "sfx")
 # Film-level SFX policy (mix pass): bass impacts only on the key beats; whooshes softer overall.
-IMPACT_FRAMES = {"01-hook", "02-no-valgas", "07-intentos", "11-nawar-nace", "22-clase-directo"}
+IMPACT_FRAMES = {"01-hook", "02-no-valgas", "07-intentos", "11-nawar-nace", "21-portatil", "33-de-verdad", "38-cta"}
 TYPE_GAIN = {"whoosh-short": 0.7, "whoosh": 0.7, "pop": 0.85}
 
 def dur_of(path):
@@ -64,7 +64,7 @@ def main():
     for ext in ("wav", "mp3", "m4a"):
         m = os.path.join(ROOT, "assets", "audio", f"music.{ext}")
         if os.path.exists(m):
-            mvol = float(os.environ.get("MUSIC_VOL", "0.16"))
+            mvol = float(os.environ.get("MUSIC_VOL", "1"))  # v2: music.wav is already levelled + ducked (tools/build_audio_v2.py)
             audio.append(f'      <audio id="el-music" src="assets/audio/music.{ext}" data-start="0" data-duration="{total}" data-track-index="11" data-volume="{mvol}"></audio>')
             break
     html = f"""<!doctype html>

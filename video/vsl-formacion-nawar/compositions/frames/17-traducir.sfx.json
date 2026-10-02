@@ -1,6 +1,22 @@
 [
-  {"t": 0.0, "sfx": "whoosh-short", "volume": 0.26},
-  {"t": 0.574, "sfx": "impact-bass-1", "volume": 0.32},
-  {"t": 2.12, "sfx": "glitch-1", "volume": 0.2},
-  {"t": 2.72, "sfx": "pop", "volume": 0.3}
+ {
+  "t": 0.0,
+  "sfx": "whoosh-short",
+  "volume": 0.26
+ },
+ {
+  "t": 1.1,
+  "sfx": "impact-bass-1",
+  "volume": 0.26
+ },
+ {
+  "t": 1.13,
+  "sfx": "glitch-1",
+  "volume": 0.2
+ },
+ {
+  "t": 1.75,
+  "sfx": "pop",
+  "volume": 0.3
+ }
 ]

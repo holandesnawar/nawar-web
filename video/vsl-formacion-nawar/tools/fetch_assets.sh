@@ -8,7 +8,7 @@ RAW=.raw && mkdir -p "$RAW" assets/audio assets/video assets/img assets/sfx asse
 
 dl() { curl -sS -L --fail --retry 3 -o "$RAW/$2" "https://drive.usercontent.google.com/download?id=$1&export=download&confirm=t"; echo "  got $2"; }
 echo "downloading from Drive…"
-dl 1OBYh_T7NRN6wPoat_WWgWA38609v_98e voz.mp3                 # ElevenLabs Audio Confident Oct 2 2026.mp3 (chosen take)
+dl 1OBYh_T7NRN6wPoat_WWgWA38609v_98e voz.mp3                 # v1 voice (ElevenLabs «Confident Oct 2 2026», kept for reference)
 dl 1y8Xw_5oZKp9jU7SghmwMPW0lCrLt_zVO formacion-cv.mov
 dl 1LV7e_Z6ToRQ06TI1ilDc9emNQYtlLyM5 inicio-home.mov
 dl 12xQ_z9byuPvWBk0HTyLGM6XBlxnTEuoi clases-video-dentro.mov
@@ -17,8 +17,6 @@ dl 1U_EeTWKKZ41njGJ-DdQYNZdwil_pVakG material.pdf
 dl 1P3ITYqftdRT38geYbVmgyeMxd-pnww43 nawar-wide.png
 dl 1BpH4EhH1iNFhOdoDvx65svGZ8027yX2s nawar-square.png
 
-echo "voice: chosen take, 1.08x pitch-preserving, -16 LUFS"
-ffmpeg -v error -y -i "$RAW/voz.mp3" -af "rubberband=tempo=1.08:pitch=1:formant=preserved:transients=crisp:detector=compound:phase=laminar:window=standard,loudnorm=I=-16:TP=-1.5:LRA=11" -ar 48000 -ac 1 assets/audio/voiceover.wav
 
 echo "platform recordings → 2560w H.264, silent"
 for f in inicio-home formacion-cv clases-video-dentro; do
@@ -58,8 +56,20 @@ for f in gsap SplitText MotionPathPlugin CustomEase DrawSVGPlugin Flip; do cp no
 echo "sfx (HyperFrames media-use pack)"
 cp ~/.claude/skills/media-use/audio/assets/sfx/*.mp3 assets/sfx/ 2>/dev/null || echo "  (install the hyperframes skills first: npx hyperframes skills)"
 
-echo "music bed + ducking"
-python3 tools/compose_music.py
-ffmpeg -v error -y -i assets/audio/voiceover.wav -af "adelay=400|400,apad=whole_dur=121.643,aformat=sample_rates=44100:channel_layouts=stereo" -t 121.643 "$RAW/vo_aligned.wav"
-ffmpeg -v error -y -i assets/audio/music_raw.wav -i "$RAW/vo_aligned.wav" -filter_complex "[0:a]loudnorm=I=-21:TP=-3:LRA=11[m];[m][1:a]sidechaincompress=threshold=0.02:ratio=5:attack=25:release=450:knee=4[d]" -map "[d]" -ar 44100 assets/audio/music.wav
-echo "done. Word timings are versioned in transcript.json / timing.json (re-align with tools/align/align3.py if the voice changes)."
+echo "v2 media (same Drive folder)"
+dl 1DeeW7B-n481P_BydJD1D5i76fE30af6Q voz-v2-b.mp3        # voice B (chosen v2 take)
+dl 1exOUAXG0zPIZVFJNXh6yB3_Ujf5KXXsQ musica-v2.mp3       # owner's music track
+dl 11L-TAspXnce5gh7CaVyiNM-bMTQ3ivXy ejercicios1.mov     # flashcards tool
+dl 165i7-clttvPwknNyin2VLeGMJxznXfVo ejercicios2.mov     # «Completa la frase»
+dl 17WJmsLyC2i71qv6UgMqGR4oXVYQtIuk1 ejercicios3.jpg     # «Ordena las palabras»
+dl 1U2pHBAtkSSAwqHdAbN-tmS-58gHN83vO nuestra-vision.mov  # website hero + vision
+ffmpeg -v error -y -i "$RAW/voz-v2-b.mp3" -af "loudnorm=I=-16:TP=-1.5:LRA=11" -ar 48000 -ac 1 "$RAW/voz-v2-b.wav"
+ffmpeg -v error -y -i "$RAW/musica-v2.mp3" -ac 2 -ar 44100 "$RAW/music_v2.wav"
+ffmpeg -v error -y -i "$RAW/ejercicios1.mov" -an -vf "fps=30,format=yuv420p" -c:v libx264 -preset slow -crf 16 -g 30 -movflags +faststart assets/video/flashcards.mp4
+ffmpeg -v error -y -i "$RAW/ejercicios2.mov" -an -vf "fps=30,format=yuv420p" -c:v libx264 -preset slow -crf 16 -g 30 -movflags +faststart assets/video/completa-frase.mp4
+ffmpeg -v error -y -i "$RAW/nuestra-vision.mov" -an -vf "fps=30,scale=1722:904,format=yuv420p" -c:v libx264 -preset slow -crf 16 -g 30 -movflags +faststart assets/video/nuestra-vision.mp4
+python3 -c "from PIL import Image; Image.open('$RAW/ejercicios3.jpg').convert('RGB').save('assets/img/ui-ordena-palabras.png')"
+
+echo "v2 soundtrack: voice takes + re-edited music + ducking"
+python3 tools/build_audio_v2.py
+echo "done. Word timings are versioned in transcript.json / timing.json (tools/transcript_v2.py + tools/timing.py)."

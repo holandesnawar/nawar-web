@@ -126,8 +126,8 @@
     #f16-brk-tick { stroke-dasharray: 100; stroke-dashoffset: 100; }
   </style>
 
-  <div id="root" data-composition-id="16-estructura" data-width="1920" data-height="1080" data-duration="6.99">
-    <div id="f16-ground" class="clip" data-start="0" data-duration="6.99" data-track-index="0"></div>
+  <div id="root" data-composition-id="16-estructura" data-width="1920" data-height="1080" data-duration="7.63">
+    <div id="f16-ground" class="clip" data-start="0" data-duration="7.63" data-track-index="0"></div>
 
     <svg width="0" height="0" aria-hidden="true" style="position:absolute">
       <symbol id="f16-i-blocks" viewBox="0 0 92 92">
@@ -353,6 +353,22 @@
       tl.fromTo(q("f16-g2"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 6.6);
 
       window.__timelines = window.__timelines || {};
+      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.83], [0.703, 1.45], [0.777, 1.53], [1.777, 2.35], [2.073, 2.67], [2.407, 3.09], [2.518, 3.25], [3.425, 4.09], [3.675, 4.37], [3.768, 4.46], [3.87, 4.56], [4.351, 5.05], [4.527, 5.22], [4.833, 5.52], [5.638, 6.27], [5.842, 6.55], [5.972, 6.82], [6.175, 6.95], [6.99, 7.63]]);
       window.__timelines["16-estructura"] = tl;
     })();
   </script>

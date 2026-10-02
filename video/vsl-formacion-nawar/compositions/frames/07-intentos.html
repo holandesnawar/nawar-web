@@ -168,8 +168,8 @@
     .f07-lvOn { background: #9fd5f5; color: #1D0084; }
   </style>
 
-  <div id="root" data-composition-id="07-intentos" data-width="1920" data-height="1080" data-duration="6.046">
-    <div id="f07-ground" class="clip" data-start="0" data-duration="6.046" data-track-index="0">
+  <div id="root" data-composition-id="07-intentos" data-width="1920" data-height="1080" data-duration="5.82">
+    <div id="f07-ground" class="clip" data-start="0" data-duration="5.82" data-track-index="0">
       <div id="f07-dots"></div>
       <div id="f07-light"></div>
     </div>
@@ -453,6 +453,22 @@
       tl.fromTo($("upper"), { opacity: 1, scale: 1 }, { opacity: 0.32, scale: 0.76, duration: 0.4, ease: "power3.out" }, T.nadie - L);
 
       window.__timelines = window.__timelines || {};
+      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.203, 0.21], [0.333, 0.35], [0.555, 0.58], [0.731, 0.75], [0.99, 1.04], [1.092, 1.1], [1.926, 1.92], [2.111, 2.12], [2.407, 2.46], [2.453, 2.52], [2.555, 2.6], [3.324, 3.26], [3.453, 3.38], [3.685, 3.63], [4.139, 4.05], [4.194, 4.25], [4.416, 4.47], [4.555, 4.59], [4.842, 4.9], [4.916, 5.01], [5.12, 5.24], [6.046, 5.82]]);
       window.__timelines["07-intentos"] = tl;
     })();
   </script>

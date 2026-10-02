@@ -29,6 +29,27 @@ Videos (assets/video/, 2560×1376, 30 fps, silent — always `muted`):
 - formacion-cv.mp4 6.2 s — course page hero (0–1.0) then scroll through the module list (MODULE 1 – OVER JOU …, lessons with ✓).
 - clases-video-dentro.mp4 23.2 s — inside a lesson: 0–7.5 video class slide «Dit is / Dit zijn» with the NATIVE TEACHER's webcam tile at the slide's top-left (≈ x 840–1190, y 175–375 in the 2560×1376 source); 8–14 lesson summary; 15–17 reading; 18–23 quiz.
 - consulta-nueva.mp4 11.6 s — opening a new consulta: category «Gramática», typing «cómo se traduce gezellig?», then «Publicar consulta».
+- flashcards.mp4 20.1 s (1718×842, NEW v2) — the REAL flashcards tool inside a lesson: left blue sidebar (course
+  modules), top lesson header + progress, center a flashcard (≈ x 830–1230, y 220–400) with «Repasar» (red) / «Ya lo sé»
+  (green) buttons under it, a «¿Tienes una duda sobre esta lección?» box below. Sequence (approx.): 0–1.5 «el bocadillo»,
+  2–3.5 flipped «het broodje» (+ Escuchar), 5 «wie», 6 «quién», 8 «el café», 9 «de vis», 10 «el pescado», 13 «willen»,
+  14 «venir», 15 «komen», 16 «no / ningún / ninguna», 17 «geen», 18–20 «cuánto / cuánta / cuántos».
+- completa-frase.mp4 19.1 s (1718×690, NEW v2) — REAL «Completa la frase» exercise: sentence «Een koffie, ___ (por favor)»
+  (input ≈ x 640–760, y 150–175), typing the answer ~4–7 s, «Comprobar» 8–9 s, green «¡Correcto!» bar ~10 s; second
+  sentence «Ik ___ elke dag koffie. (beber)» 11–17 s, ¡Correcto! ~18 s. Left blue sidebar lists MODULE 4–9.
+- nuestra-vision.mp4 4.5 s (1722×904, NEW v2) — the REAL website: hero with the 3D "Nawar" sign on the school building +
+  «Ayudarte a aprender neerlandés» (0–2.8 s), then scrolls to the vision text «Creemos que aprender neerlandés no debería
+  ser una barrera…» (3.0–4.5 s).
+New image: ui-ordena-palabras.png 879×434 — REAL «Ordena las palabras» exercise (Les 1 — Eten en drinken): «Ordena:
+"Quiero un vaso de agua, por favor."», dashed answer area, chips wil · een · glas · alsjeblieft. · water, · Ik,
+buttons Reiniciar / Comprobar.
+Real module names (sidebar): MODULE 1 – Over jou · 2 – Familie & vrienden · 3 – Eten en drinken · 4 – Het werk ·
+5 – Hobby's & vrije tijd · 6 – Thuis & wonen · 7 – Gezondheid · 8 – Vervoer & reizen · 9 – (title not confirmed:
+show it locked/blurred) · 10 – (not confirmed: locked/blurred). Lesson items inside a module: Video · Samenvatting ·
+Flashcards · Oefening · Lezen · Luisteren · Spreken.
+To inspect any video yourself: ffmpeg -ss <t> -i assets/video/<file>.mp4 -frames:v 1 /tmp/claude-0/-home-user-nawar-web/36d31257-d6ae-5587-b324-a9f00bcc433b/scratchpad/<name>.png  (then Read it).
+v1 frames for reference/reuse (read-only!): compositions/frames_v1/*.html (e.g. 20-por-dentro, 21-tu-ritmo,
+22-clase-directo, 25-end-card, 06-atascado).
 Audio: none in frames (SFX via the sidecar).
 """
 
@@ -92,8 +113,27 @@ SHARED GEOMETRY — sound keycaps (frames 18 and 19 MUST use exactly this):
 - END STATE of frame 18 (minus the six small chips and the waveform) == START STATE of frame 19 (ground paper with dots).
 """,
 }
-GEOM_FOR = {"18-sonidos": "tiles", "19-delatan": "tiles", "20-por-dentro": "path", "21-tu-ritmo": "path",
-            "23-comunidad": "constellation", "24-acompanado": "constellation"}
+GEOMETRY["laptop"] = """\
+SHARED GEOMETRY — the laptop (frames 20 and 21 are built by the SAME worker; the last frame of 20 and the
+first frame of 21 must be pixel-identical for the lid, the ▶ disc and the cursor — share one CSS/markup block).
+Start from: closed lid seen from above, ~1240×800, radius 44, centered ≈ (960, 560), rotated ≈ -24° so it crosses the
+frame diagonally (corners may leave frame); graphite shell (linear-gradient 160deg #3b4156 → #262a3c → #171a28),
+1.5 px inner highlight rgba(255,255,255,0.12), a darker thickness edge and a deep drop shadow on the blue ground;
+a faint diagonal specular streak. ▶ disc 200 px at ≈ (960, 470), unrotated, glassy white (14 % fill, 3 px white 65 %
+ring), white triangle. Adjust if needed, but keep 20's end == 21's start.
+"""
+GEOMETRY["path_v2"] = GEOMETRY["path"].replace("frames 20 and 21 MUST use exactly this", "frame 23 re-uses v1's path world").split("- END STATE")[0] + """\
+- START STATE of frame 23: N1 open (#4da3ff + open padlock), N2–N5 locked; no progress overlay yet; pill visible.
+"""
+GEOMETRY["quiz"] = """\
+SHARED DESIGN — generic quiz card + die (frames 30, 31, 33 — same worker; NOT the Nawar platform):
+quiz card white, radius 28, ~980×600, card-on-blue shadow; question «¿Qué significa "gezellig"?» Inter 700 40 px ink;
+4 option rows (≈ 868×86, radius 18, #F1F4FB fill, 1 px #DDE6F5 border, gap 18) each with a 56 px indigo letter badge
+(A/B/C/D white Inter 800) + option text Inter 600 32 px ink: A «aburrido» · B «acogedor» · C «caro» · D «rápido».
+Die: white CSS 3D cube ~200 px, radius 26 px faces, indigo pips, soft shadow.
+"""
+GEOM_FOR = {"20-pausa": "laptop", "21-portatil": "laptop", "23-camino": "path_v2",
+            "30-sin-tests": "quiz", "31-suerte": "quiz", "33-de-verdad": "quiz"}
 
 def storyboard_blocks():
     s = open(os.path.join(ROOT, "STORYBOARD.md"), encoding="utf-8").read()

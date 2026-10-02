@@ -1,0 +1,346 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: nawar-blue + white dot grid + soft vignette (v1 end card recipe) ---------- */
+    #f39-ground {
+      position: absolute; inset: 0;
+      background-color: #120081;
+      background-image:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.42) 100%),
+        radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px),
+        radial-gradient(circle at 50% 38%, #025dc7 0%, #120081 72%);
+      background-size: 100% 100%, 28px 28px, 100% 100%;
+      background-position: 0 0, 14px 14px, 0 0;
+    }
+
+    /* ---------- camera ---------- */
+    #f39-stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 500px; }
+
+    /* ---------- logo halo (centre 960, 254) ---------- */
+    #f39-rays {
+      position: absolute; left: -340px; top: -1046px; width: 2600px; height: 2600px; border-radius: 50%;
+      background:
+        repeating-conic-gradient(from 0deg at 50% 50%,
+          rgba(255,255,255,0.06) 0deg 2.4deg, rgba(255,255,255,0) 3.4deg 13deg, rgba(255,255,255,0.06) 14deg),
+        repeating-conic-gradient(from 5deg at 50% 50%,
+          rgba(159,213,245,0.05) 0deg 5deg, rgba(159,213,245,0) 6.5deg 21deg, rgba(159,213,245,0.05) 22.5deg);
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0%, rgba(0,0,0,0.7) 14%, rgba(0,0,0,0.22) 30%, rgba(0,0,0,0) 46%);
+      mask-image: radial-gradient(circle at 50% 50%, #000 0%, rgba(0,0,0,0.7) 14%, rgba(0,0,0,0.22) 30%, rgba(0,0,0,0) 46%);
+    }
+    #f39-glow {
+      position: absolute; left: 290px; top: -96px; width: 1340px; height: 700px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.6) 0%, rgba(77,163,255,0.25) 34%, rgba(77,163,255,0.08) 56%, rgba(77,163,255,0) 70%);
+    }
+    #f39-core {
+      position: absolute; left: 600px; top: 124px; width: 720px; height: 260px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(159,213,245,0.55) 0%, rgba(159,213,245,0) 70%);
+    }
+    #f39-flash {
+      position: absolute; left: 260px; top: -146px; width: 1400px; height: 800px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.95) 0%, rgba(214,236,252,0.6) 22%, rgba(159,213,245,0.22) 44%, rgba(159,213,245,0) 66%);
+    }
+    #f39-shock, #f39-pulse {
+      position: absolute; left: 520px; top: 74px; width: 880px; height: 360px; border-radius: 50%;
+      box-sizing: border-box; border: 6px solid rgba(255,255,255,0.85);
+      box-shadow: 0 0 40px rgba(159,213,245,0.7), inset 0 0 40px rgba(159,213,245,0.5);
+    }
+    #f39-pulse { border-width: 4px; border-color: rgba(255,255,255,0.7); opacity: 0; }
+    #f39-sparks { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .f39-spark { position: absolute; width: 0; height: 0; }
+    .f39-streak {
+      position: absolute; left: 0; top: -4px; height: 8px; border-radius: 4px; transform-origin: 0% 50%;
+      background: linear-gradient(90deg, rgba(159,213,245,0) 0%, rgba(159,213,245,0.7) 45%, #FFFFFF 100%);
+      box-shadow: 0 0 18px rgba(159,213,245,0.55);
+    }
+
+    /* ---------- logo: 760 x 271.1, centred x, top 118 ---------- */
+    #f39-logo-wrap {
+      position: absolute; left: 580px; top: 118px; width: 760px; height: 271.1px;
+      filter: drop-shadow(0 26px 44px rgba(4,0,40,0.55));
+    }
+    #f39-logo { position: absolute; left: 0; top: 0; width: 760px; height: 271.1px; display: block; }
+    #f39-shine-mask {
+      position: absolute; left: 0; top: 0; width: 760px; height: 271.1px; overflow: hidden; mix-blend-mode: screen;
+      -webkit-mask-image: url("assets/img/logo-nawar.png"); -webkit-mask-size: 100% 100%; -webkit-mask-repeat: no-repeat;
+      mask-image: url("assets/img/logo-nawar.png"); mask-size: 100% 100%; mask-repeat: no-repeat;
+    }
+    .f39-shine {
+      position: absolute; left: 0; top: -70px; width: 260px; height: 420px;
+      background: linear-gradient(112deg, rgba(255,255,255,0) 22%, rgba(255,255,255,0.14) 38%, rgba(255,255,255,0.65) 48.5%, rgba(255,255,255,0.65) 51.5%, rgba(255,255,255,0.14) 62%, rgba(255,255,255,0) 78%);
+    }
+
+    /* ---------- label under the logo ---------- */
+    #f39-label {
+      position: absolute; left: 0; top: 414px; width: 1920px; height: 30px; display: flex; justify-content: center; align-items: center;
+      gap: 14px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.16em;
+      text-transform: uppercase; color: rgba(255,255,255,0.72);
+    }
+    #f39-label span { display: block; }
+    #f39-arrow { width: 30px; height: 18px; display: block; }
+    .f39-dot { color: rgba(255,255,255,0.45); }
+
+    /* ---------- claim: display-h2, two centred lines ---------- */
+    #f39-claim {
+      position: absolute; left: 0; top: 478px; width: 1920px;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 88px; line-height: 1.06;
+      letter-spacing: -0.03em; color: #FFFFFF; text-align: center;
+    }
+    .f39-line { display: flex; justify-content: center; align-items: baseline; gap: 0.24em; white-space: nowrap; }
+    .f39-w { display: inline-block; text-shadow: 0 12px 40px rgba(4,0,40,0.38); }
+    .f39-acc { color: #4da3ff; transform-origin: 50% 70%;
+      text-shadow: 0 0 46px rgba(77,163,255,0.42), 0 12px 40px rgba(4,0,40,0.38); }
+
+    /* ---------- URL pill (white fill, indigo text) ---------- */
+    #f39-pill-row { position: absolute; left: 0; top: 724px; width: 1920px; height: 110px; display: flex; justify-content: center; }
+    #f39-pill-wrap { position: relative; flex: none; }
+    #f39-pill {
+      position: relative; height: 110px; border-radius: 999px; background: #FFFFFF; overflow: hidden;
+      display: flex; align-items: center; gap: 20px; padding: 0 50px 0 30px; box-sizing: border-box;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 0 80px rgba(77,163,255,0.5);
+    }
+    #f39-globe-disc {
+      flex: none; width: 66px; height: 66px; border-radius: 50%; background: #0b6df0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #f39-globe { width: 38px; height: 38px; display: block; }
+    #f39-url {
+      flex: none; white-space: nowrap; display: block;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 52px; line-height: 1;
+      letter-spacing: -0.015em; color: #1D0084; padding-top: 5px;
+    }
+    #f39-pill-glint {
+      position: absolute; left: 0; top: -20px; width: 170px; height: 150px; pointer-events: none;
+      background: linear-gradient(105deg, rgba(159,213,245,0) 20%, rgba(159,213,245,0.55) 50%, rgba(159,213,245,0) 80%);
+    }
+
+    /* ---------- social proof line (ui-small, white-72) ---------- */
+    #f39-social {
+      position: absolute; left: 0; top: 872px; width: 1920px; height: 40px; display: flex; justify-content: center; align-items: center;
+      gap: 12px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 500; font-size: 30px; line-height: 1; color: rgba(255,255,255,0.72);
+    }
+    #f39-people { width: 42px; height: 32px; display: block; }
+    #f39-num-box { display: block; position: relative; width: 124px; height: 32px; }
+    #f39-num {
+      position: absolute; right: 0; top: 0; height: 32px; line-height: 32px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; color: #FFFFFF; font-variant-numeric: tabular-nums;
+    }
+    #f39-social-txt { display: block; line-height: 32px; }
+
+    /* ---------- full-frame light band (screen) ---------- */
+    .f39-band {
+      position: absolute; left: -960px; top: -540px; width: 3840px; height: 2160px; pointer-events: none;
+      mix-blend-mode: screen;
+      background: linear-gradient(115deg, rgba(255,255,255,0) 41%, rgba(255,255,255,0.04) 46%, rgba(255,255,255,0.16) 50%, rgba(255,255,255,0.04) 54%, rgba(255,255,255,0) 59%);
+    }
+
+    /* ---------- the only exit of the film: fade to night ---------- */
+    #f39-night { position: absolute; inset: 0; background: #07041F; opacity: 0; pointer-events: none; }
+  </style>
+
+  <div id="root" data-composition-id="39-end-card" data-width="1920" data-height="1080" data-duration="7.2">
+    <div id="f39-ground" class="clip" data-start="0" data-duration="7.2" data-track-index="0"></div>
+
+    <div id="f39-stage">
+      <div id="f39-rays"></div>
+      <div id="f39-glow"></div>
+      <div id="f39-core"></div>
+      <div id="f39-flash"></div>
+      <div id="f39-shock"></div>
+      <div id="f39-pulse"></div>
+      <div id="f39-sparks"></div>
+
+      <div id="f39-logo-wrap">
+        <img id="f39-logo" src="assets/img/logo-nawar.png" alt="Nawar" />
+        <div id="f39-shine-mask">
+          <div id="f39-shine1" class="f39-shine"></div>
+          <div id="f39-shine2" class="f39-shine"></div>
+        </div>
+      </div>
+
+      <div id="f39-label">
+        <span>Formación Nawar</span>
+        <span class="f39-dot">·</span>
+        <span>A0</span>
+        <svg id="f39-arrow" viewBox="0 0 30 18" aria-hidden="true">
+          <path d="M2 9h23M18 3l7 6-7 6" fill="none" stroke="rgba(255,255,255,0.72)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>A1</span>
+      </div>
+
+      <div id="f39-claim">
+        <div class="f39-line">
+          <span id="f39-w1" class="f39-w">Tu</span>
+          <span id="f39-w2" class="f39-w">neerlandés</span>
+          <span id="f39-w3" class="f39-w">empieza</span>
+        </div>
+        <div class="f39-line">
+          <span id="f39-w4" class="f39-w f39-acc">cuando</span>
+          <span id="f39-w5" class="f39-w f39-acc">lo</span>
+          <span id="f39-w6" class="f39-w f39-acc">hablas.</span>
+        </div>
+      </div>
+
+      <div id="f39-pill-row">
+        <div id="f39-pill-wrap">
+          <div id="f39-pill">
+            <div id="f39-globe-disc">
+              <svg id="f39-globe" viewBox="0 0 40 40" aria-hidden="true">
+                <g fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="20" cy="20" r="15" />
+                  <ellipse cx="20" cy="20" rx="6.5" ry="15" />
+                  <path d="M5.5 15h29M5.5 25h29" />
+                </g>
+              </svg>
+            </div>
+            <span id="f39-url">holandesnawar.com</span>
+            <div id="f39-pill-glint"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="f39-social">
+        <svg id="f39-people" viewBox="0 0 40 30" aria-hidden="true">
+          <g fill="#9fd5f5">
+            <circle cx="14" cy="8.5" r="6" />
+            <path d="M2.5 28c0-6.6 5.1-11.5 11.5-11.5S25.5 21.4 25.5 28z" />
+            <circle cx="28.5" cy="10" r="4.8" opacity="0.75" />
+            <path d="M27.5 18.2c5.6.2 9.8 4.4 9.8 9.8h-9.6c0-3.6-1.2-6.9-3.4-9.3 1-.3 2.1-.5 3.2-.5z" opacity="0.75" />
+          </g>
+        </svg>
+        <span id="f39-num-box"><span id="f39-num">+30.000</span></span>
+        <span id="f39-social-txt">alumnos siguen nuestras clases en redes</span>
+      </div>
+    </div>
+
+    <div id="f39-band1" class="f39-band"></div>
+    <div id="f39-band2" class="f39-band"></div>
+    <div id="f39-night"></div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 7.2;
+      const HIT = 3.6; // the song's FINAL HIT
+
+      // ---------------- deterministic spark burst around the logo ----------------
+      const sparks = q("f39-sparks");
+      const N = 12;
+      const streaks = [];
+      for (let i = 0; i < N; i++) {
+        const a = (i / N) * Math.PI * 2 + 0.26;
+        const rx = 450, ry = 175;
+        const cx = 960 + Math.cos(a) * rx;
+        const cy = 254 + Math.sin(a) * ry;
+        const s = document.createElement("div");
+        s.className = "f39-spark";
+        s.style.left = cx.toFixed(1) + "px";
+        s.style.top = cy.toFixed(1) + "px";
+        const nx = Math.cos(a) / rx, ny = Math.sin(a) / ry;
+        s.style.transform = "rotate(" + (Math.atan2(ny, nx) * 180 / Math.PI).toFixed(2) + "deg)";
+        const k = document.createElement("div");
+        k.className = "f39-streak";
+        k.style.width = [120, 84, 150, 100][i % 4] + "px";
+        s.appendChild(k);
+        sparks.appendChild(s);
+        streaks.push(k);
+      }
+
+      // ---------------- Scene 1 (0.0–1.4) — logo bloom + light sweep on "Formación" (0.12) ----------------
+      const B = 0.06;
+      const wrap = q("f39-logo-wrap");
+      tl.fromTo(wrap, { scale: 0.6 }, { scale: 1.045, duration: 0.3, ease: "power3.out" }, B);
+      tl.to(wrap, { scale: 1, duration: 0.34, ease: "power2.inOut" }, B + 0.3);
+      tl.fromTo(wrap, { opacity: 0.6 }, { opacity: 1, duration: 0.1, ease: "power1.out" }, B);
+      tl.fromTo(q("f39-logo"), { filter: "blur(18px)" }, { filter: "blur(0px)", duration: 0.28, ease: "power2.out" }, B);
+
+      tl.fromTo(q("f39-glow"), { opacity: 0.45, scale: 0.45 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, B);
+      tl.fromTo(q("f39-core"), { opacity: 1, scale: 0.7 }, { opacity: 0.5, scale: 1.1, duration: 0.5, ease: "power2.out" }, B);
+      tl.fromTo(q("f39-rays"), { opacity: 0, scale: 0.55 }, { opacity: 1, scale: 1, duration: 0.8, ease: "power3.out" }, B);
+      tl.fromTo(q("f39-rays"), { rotation: -4 }, { rotation: 8, duration: D, ease: "none" }, 0);
+
+      tl.fromTo(q("f39-flash"), { opacity: 0.9, scale: 0.6 }, { opacity: 0, scale: 1.15, duration: 0.42, ease: "power2.out" }, B);
+      tl.fromTo(q("f39-shock"), { scale: 0.55, opacity: 0.9 }, { scale: 1.7, opacity: 0, duration: 0.6, ease: "power2.out" }, B);
+
+      streaks.forEach((k, i) => {
+        const at = B + 0.05 + (i % 3) * 0.014;
+        tl.fromTo(k, { x: -30, opacity: 0, scaleX: 0.25 },
+          { x: 40, opacity: 1, scaleX: 1, duration: 0.1, ease: "power2.out" }, at);
+        tl.to(k, { x: 200 + (i % 4) * 24, opacity: 0, scaleX: 0.35, duration: 0.36, ease: "power2.out" }, at + 0.1);
+      });
+
+      // entrance light sweep: masked shine across the wordmark + a soft full-frame band riding with it
+      tl.fromTo(q("f39-shine1"), { x: -380 }, { x: 900, duration: 0.6, ease: "power2.inOut" }, B + 0.16);
+      tl.fromTo(q("f39-band1"), { x: -2300 }, { x: 2300, duration: 0.95, ease: "power1.inOut" }, B + 0.02);
+      tl.fromTo(q("f39-band1"), { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power1.out", immediateRender: false }, B + 0.02);
+      tl.to(q("f39-band1"), { opacity: 0, duration: 0.25, ease: "power1.in" }, B + 0.72);
+
+      // "Nawar." (0.74): FORMACIÓN NAWAR · A0 → A1 under the logo
+      tl.fromTo(q("f39-label"), { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, 0.71);
+
+      // ---------------- Scene 2 (1.4–3.6) — the claim builds word by word on the voice ----------------
+      const rise = (el, at) =>
+        tl.fromTo(el, { opacity: 0, y: 44, filter: "blur(8px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, at);
+      const slam = (el, at) =>
+        tl.fromTo(el, { opacity: 0, scale: 1.28, filter: "blur(10px)" },
+          { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, at);
+      rise(q("f39-w1"), 1.51);   // Tu 1.54
+      rise(q("f39-w2"), 1.62);   // neerlandés 1.65
+      rise(q("f39-w3"), 2.13);   // empieza 2.16
+      slam(q("f39-w4"), 2.61);   // cuando 2.64
+      slam(q("f39-w5"), 2.96);   // lo 2.99
+      slam(q("f39-w6"), 3.07);   // hablas. 3.10
+
+      // ---------------- Scene 3 (3.6–7.2) — FINAL HIT: light sweep + pulse ring; URL pill; social line ----------------
+      tl.fromTo(wrap, { scale: 1 }, { scale: 1.05, duration: 0.1, ease: "power2.out", immediateRender: false }, HIT);
+      tl.fromTo(wrap, { scale: 1.05 }, { scale: 1, duration: 0.5, ease: "power3.out", immediateRender: false }, HIT + 0.1);
+      tl.fromTo(q("f39-pulse"), { scale: 0.8, opacity: 0.85 }, { scale: 1.9, opacity: 0, duration: 0.9, ease: "power2.out", immediateRender: false }, HIT);
+      tl.fromTo(q("f39-core"), { opacity: 0.5, scale: 1.1 }, { opacity: 1, scale: 1.25, duration: 0.12, ease: "power2.out", immediateRender: false }, HIT);
+      tl.fromTo(q("f39-core"), { opacity: 1, scale: 1.25 }, { opacity: 0.5, scale: 1.1, duration: 0.7, ease: "power2.out", immediateRender: false }, HIT + 0.12);
+      tl.fromTo(q("f39-flash"), { opacity: 0, scale: 0.8 }, { opacity: 0.45, scale: 1, duration: 0.1, ease: "power2.out", immediateRender: false }, HIT);
+      tl.fromTo(q("f39-flash"), { opacity: 0.45, scale: 1 }, { opacity: 0, scale: 1.15, duration: 0.5, ease: "power2.out", immediateRender: false }, HIT + 0.1);
+      tl.fromTo(q("f39-shine2"), { x: -380 }, { x: 900, duration: 0.62, ease: "power2.inOut" }, HIT);
+      tl.fromTo(q("f39-band2"), { x: -2300 }, { x: 2300, duration: 1.0, ease: "power1.inOut" }, HIT - 0.12);
+      tl.fromTo(q("f39-band2"), { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power1.out", immediateRender: false }, HIT - 0.12);
+      tl.to(q("f39-band2"), { opacity: 0, duration: 0.25, ease: "power1.in" }, HIT + 0.62);
+
+      // URL pill rises at 3.7
+      tl.fromTo(q("f39-pill-wrap"), { opacity: 0, y: 70, scale: 0.92 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power3.out" }, 3.7);
+      tl.fromTo(q("f39-globe-disc"), { rotation: -90, scale: 0.4 },
+        { rotation: 0, scale: 1, duration: 0.5, ease: "power3.out" }, 3.78);
+      tl.fromTo(q("f39-pill-glint"), { x: -220 }, { x: 760, duration: 0.6, ease: "power2.inOut" }, 4.15);
+
+      // +30.000 line at 4.0 (count-up, deterministic)
+      tl.fromTo(q("f39-social"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.42, ease: "power3.out" }, 4.0);
+      const numEl = q("f39-num");
+      const fmt = (n) => "+" + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const ctr = { v: 0 };
+      tl.fromTo(ctr, { v: 0 }, {
+        v: 30000, duration: 0.9, ease: "power3.out",
+        onUpdate: () => { numEl.textContent = fmt(Math.round(ctr.v)); },
+      }, 4.0);
+
+      // macro camera: one quiet monotonic push under the whole card (no breathing)
+      tl.fromTo(q("f39-stage"), { scale: 1 }, { scale: 1.022, duration: D - 0.6, ease: "power1.inOut" }, 0.6);
+
+      // the only exit of the film: everything fades to night (6.3 -> 7.2)
+      tl.fromTo(q("f39-night"), { opacity: 0 }, { opacity: 1, duration: 0.86, ease: "power1.inOut" }, 6.3);
+
+      tl.set({}, {}, D);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["39-end-card"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,187 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE ---------- */
+    #f25-ground { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%); }
+    #f25-dots {
+      position: absolute; left: -160px; top: -100px; width: 2240px; height: 1280px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px;
+    }
+    #f25-amb {
+      position: absolute; left: 260px; top: 160px; width: 1400px; height: 780px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.28) 0%, rgba(77,163,255,0.09) 45%, rgba(77,163,255,0) 70%);
+    }
+    #f25-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 78% 74% at 50% 50%, rgba(4,0,40,0) 52%, rgba(4,0,40,0.42) 100%); }
+    .f25-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #f25-cam { transform-origin: 960px 540px; }
+
+    /* speed streaks (entrance) */
+    .f25-sl { position: absolute; left: 0; height: 4px; border-radius: 3px; opacity: 0; transform-origin: 0% 50%;
+      background: linear-gradient(90deg, rgba(159,213,245,0) 0%, rgba(159,213,245,0.6) 55%, #FFFFFF 100%); }
+
+    /* ---------- cards ---------- */
+    .f25-card {
+      position: absolute; top: 200px; width: 528px; height: 680px; box-sizing: border-box; border-radius: 28px;
+      background: #FFFFFF; border: 1px solid #DDE6F5; box-shadow: 0 40px 110px rgba(4,0,40,0.45);
+    }
+    #f25-c1 { left: 124px; }
+    #f25-c2 { left: 696px; }
+    #f25-c3 { left: 1268px; }
+    .f25-media { position: absolute; left: 17px; top: 17px; width: 492px; height: 470px; border-radius: 18px; overflow: hidden; background: #FFFFFF; box-shadow: inset 0 0 0 1px #DDE6F5; }
+    .f25-edge { position: absolute; inset: 0; border-radius: 18px; box-shadow: inset 0 0 0 1px #DDE6F5; }
+    #f25-lezen { position: absolute; left: -138px; top: -264px; width: 1228.8px; height: 868.2px; display: block; }
+    /* completa-frase crop: source x 684→, rows 40–335, scale 1.18 (sentence + input + Comprobar) */
+    #f25-vcrop { position: absolute; left: 0; top: 61px; width: 492px; height: 348px; overflow: hidden; }
+    #f25-vid { position: absolute; left: -807.1px; top: -47.2px; width: 2027.2px; height: 814.2px; display: block; object-fit: fill; }
+    .f25-lis { position: absolute; left: -55.2px; top: -55.2px; width: 954.8px; height: 542.2px; display: block; }
+    #f25-tintclip { position: absolute; left: 20px; top: 122px; width: 6px; height: 66px; overflow: hidden; }
+    .f25-lisbg { background: url("assets/img/ui-luisteren-audio.png") 0 0 / 100% 100% no-repeat; }
+    #f25-tintclip .f25-lis { left: -75.2px; top: -177.2px; filter: url(#f25-tint); }
+    #f25-head { position: absolute; left: 25px; top: 116px; width: 3px; height: 78px; border-radius: 2px; background: #0b6df0; box-shadow: 0 0 10px rgba(11,109,240,0.5); }
+    #f25-head i { position: absolute; left: -5.5px; top: -10px; width: 14px; height: 14px; border-radius: 50%; background: #0b6df0; box-shadow: 0 0 0 3px #FFFFFF; }
+
+    .f25-lbl {
+      position: absolute; left: 30px; top: 510px; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 54px; line-height: 1.1; letter-spacing: -0.02em; color: #1D0084;
+    }
+    .f25-w { display: inline-block; }
+    #f25-w-activa { color: #0b6df0; transform-origin: 20% 70%; }
+    .f25-nl {
+      position: absolute; left: 31px; top: 590px; display: flex; align-items: center; gap: 12px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; color: #5A6480;
+    }
+    .f25-nl svg { width: 28px; height: 28px; display: block; color: #0b6df0; }
+  </style>
+
+  <div id="root" data-composition-id="25-practica" data-width="1920" data-height="1080" data-duration="2.66">
+    <div id="f25-ground" class="clip" data-start="0" data-duration="2.66" data-track-index="0"><div id="f25-dots"></div><div id="f25-amb"></div><div id="f25-vig"></div></div>
+
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+      <filter id="f25-tint" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.043  0 0 0 0 0.427  0 0 0 0 0.941  -5.5 0 0 0 5.5" /></filter>
+      <filter id="f25-mb1" x="-0.4" y="-0.1" width="1.8" height="1.2"><feGaussianBlur id="f25-mb1-b" stdDeviation="0 0" /></filter>
+      <filter id="f25-mb2" x="-0.1" y="-0.4" width="1.2" height="1.8"><feGaussianBlur id="f25-mb2-b" stdDeviation="0 0" /></filter>
+      <filter id="f25-mb3" x="-0.4" y="-0.1" width="1.8" height="1.2"><feGaussianBlur id="f25-mb3-b" stdDeviation="0 0" /></filter>
+    </svg>
+
+    <div id="f25-speed" class="f25-full">
+      <div class="f25-sl" style="top:258px; width:620px;"></div>
+      <div class="f25-sl" style="top:392px; width:460px; height:3px;"></div>
+      <div class="f25-sl" style="top:540px; width:760px;"></div>
+      <div class="f25-sl" style="top:688px; width:520px; height:3px;"></div>
+      <div class="f25-sl" style="top:822px; width:640px;"></div>
+    </div>
+
+    <div id="f25-cam" class="f25-full">
+      <!-- 1 · LECTURA — real reading exercise -->
+      <div class="f25-card" id="f25-c1">
+        <div class="f25-media">
+          <img id="f25-lezen" src="assets/img/ui-lezen-texto.png" alt="" />
+          <div class="f25-edge"></div>
+        </div>
+        <div class="f25-lbl" id="f25-lbl1">Lectura</div>
+        <div class="f25-nl" id="f25-nl1"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M3 6.5 C7 5 11 5.2 14 7.5 C17 5.2 21 5 25 6.5 V22 C21 20.6 17 20.8 14 23 C11 20.8 7 20.6 3 22 Z M14 7.5 V23" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" /></svg><span>Lezen</span></div>
+      </div>
+
+      <!-- 2 · ESCRITURA — real "Completa la frase" (typing alsjeblieft) -->
+      <div class="f25-card" id="f25-c2">
+        <div class="f25-media">
+          <div id="f25-vcrop">
+            <video id="f25-vid" class="clip" src="assets/video/completa-frase.mp4" muted playsinline
+              data-start="0.7" data-duration="1.96" data-media-start="6.85" data-hf-media-start-basis="local" data-track-index="2"></video>
+          </div>
+          <div class="f25-edge"></div>
+        </div>
+        <div class="f25-lbl" id="f25-lbl2">Escritura</div>
+        <div class="f25-nl" id="f25-nl2"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M5 23 L6.5 17.5 L18.5 5.5 L22.5 9.5 L10.5 21.5 Z M16 8 L20 12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" /></svg><span>Schrijven</span></div>
+      </div>
+
+      <!-- 3 · ESCUCHA ACTIVA — real listening player, playhead sweeping -->
+      <div class="f25-card" id="f25-c3">
+        <div class="f25-media">
+          <img class="f25-lis" src="assets/img/ui-luisteren-audio.png" alt="" />
+          <div id="f25-tintclip"><div class="f25-lis f25-lisbg"></div></div>
+          <div id="f25-head"><i></i></div>
+          <div class="f25-edge"></div>
+        </div>
+        <div class="f25-lbl" id="f25-lbl3"><span class="f25-w" id="f25-w-escucha">Escucha</span> <span class="f25-w" id="f25-w-activa">activa</span></div>
+        <div class="f25-nl" id="f25-nl3"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M5 17 V14 a9 9 0 0 1 18 0 V17 M5 17 h3.5 v6.5 H6.5 A1.5 1.5 0 0 1 5 22 Z M23 17 h-3.5 v6.5 h2 A1.5 1.5 0 0 0 23 22 Z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" /></svg><span>Luisteren</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const T = { lectura: 0.12, escritura: 0.76, y: 1.35, escucha: 1.55, activa: 1.97 };
+      const D = 2.66;
+
+      // directional blur proxies (seeded so a seek to t=0 is right)
+      const blurProxy = (id, seed, axis) => {
+        const node = q(id), p = { v: seed };
+        const write = () => node.setAttribute("stdDeviation", axis === "x" ? p.v.toFixed(2) + " 0" : "0 " + p.v.toFixed(2));
+        write();
+        return { p, write };
+      };
+      const label = (id, cue) => tl.fromTo(q(id), { opacity: 0, y: 34, filter: "blur(8px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, cue);
+      const recoil = (ids, t) => ids.forEach((id) => {
+        tl.to(q(id), { x: -12, duration: 0.07, ease: "power2.out" }, t);
+        tl.to(q(id), { x: 0, duration: 0.32, ease: "power3.out" }, t + 0.07);
+      });
+
+      tl.fromTo(q("f25-cam"), { scale: 1 }, { scale: 1.02, duration: D, ease: "none" }, 0);
+      tl.fromTo(q("f25-dots"), { x: 0 }, { x: -56, duration: D, ease: "power1.out" }, 0);
+
+      // ===== 1 · Lectura — slams in from the LEFT with a motion-blur streak (entrance, 0–0.28) =====
+      const b1 = blurProxy("f25-mb1-b", 46, "x");
+      q("f25-c1").style.filter = "url(#f25-mb1)";
+      tl.fromTo(q("f25-c1"), { x: -1180 }, { x: 0, duration: 0.3, ease: "expo.out" }, 0);
+      tl.fromTo(b1.p, { v: 46 }, { v: 0, duration: 0.28, ease: "expo.out", onUpdate: b1.write }, 0);
+      tl.set(q("f25-c1"), { filter: "none" }, 0.3);
+      gsap.utils.toArray("#f25-speed .f25-sl").forEach((el, i) => {
+        const at = (i % 3) * 0.02;
+        tl.fromTo(el, { x: -700, opacity: 0, scaleX: 0.3 }, { x: 260 + i * 40, opacity: 1, scaleX: 1, duration: 0.14, ease: "power2.out" }, at);
+        tl.to(el, { x: 980 + i * 60, opacity: 0, scaleX: 0.4, duration: 0.24, ease: "power2.out" }, at + 0.14);
+      });
+      label("f25-lbl1", T.lectura);
+      tl.fromTo(q("f25-nl1"), { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.28, ease: "power3.out" }, T.lectura + 0.1);
+
+      // ===== 2 · Escritura — slams DOWN from the top on "escritura" =====
+      const b2 = blurProxy("f25-mb2-b", 0, "y");
+      tl.set(q("f25-c2"), { filter: "url(#f25-mb2)" }, 0);
+      tl.fromTo(q("f25-c2"), { y: -1000, opacity: 1 }, { y: 0, duration: 0.3, ease: "expo.out" }, T.escritura - 0.05);
+      tl.fromTo(b2.p, { v: 40 }, { v: 0, duration: 0.28, ease: "expo.out", onUpdate: b2.write }, T.escritura - 0.05);
+      tl.set(q("f25-c2"), { filter: "none" }, T.escritura + 0.26);
+      recoil(["f25-c1"], T.escritura + 0.13);
+      label("f25-lbl2", T.escritura + 0.04);
+      tl.fromTo(q("f25-nl2"), { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.28, ease: "power3.out" }, T.escritura + 0.14);
+
+      // ===== 3 · Escucha activa — slams in from the RIGHT on "escucha" =====
+      const b3 = blurProxy("f25-mb3-b", 0, "x");
+      tl.set(q("f25-c3"), { filter: "url(#f25-mb3)" }, 0);
+      tl.fromTo(q("f25-c3"), { x: 1000 }, { x: 0, duration: 0.3, ease: "expo.out" }, T.escucha - 0.05);
+      tl.fromTo(b3.p, { v: 46 }, { v: 0, duration: 0.28, ease: "expo.out", onUpdate: b3.write }, T.escucha - 0.05);
+      tl.set(q("f25-c3"), { filter: "none" }, T.escucha + 0.26);
+      recoil(["f25-c1", "f25-c2"], T.escucha + 0.12);
+      tl.fromTo(q("f25-w-escucha"), { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, T.escucha + 0.04);
+      tl.fromTo(q("f25-nl3"), { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.28, ease: "power3.out" }, T.escucha + 0.14);
+      tl.fromTo(q("f25-w-activa"), { opacity: 0, scale: 1.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, T.activa - 0.03);
+
+      // playhead sweeps the real waveform; played bars turn blue
+      const P0 = T.escucha + 0.2, PD = D - P0;
+      tl.fromTo(q("f25-head"), { x: 0, opacity: 0 }, { x: 0, opacity: 1, duration: 0.12, ease: "power1.out" }, P0 - 0.12);
+      tl.to(q("f25-head"), { x: 230, duration: PD, ease: "none" }, P0);
+      tl.fromTo(q("f25-tintclip"), { width: 6 }, { width: 236, duration: PD, ease: "none" }, P0);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["25-practica"] = tl;
+    })();
+  </script>
+</template>

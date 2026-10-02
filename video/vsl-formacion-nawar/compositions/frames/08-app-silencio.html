@@ -230,8 +230,8 @@
     }
   </style>
 
-  <div id="root" data-composition-id="08-app-silencio" data-width="1920" data-height="1080" data-duration="6.667">
-    <div id="f08-ground" class="clip" data-start="0" data-duration="6.667" data-track-index="0"><div id="f08-dots"></div><div id="f08-light"></div></div>
+  <div id="root" data-composition-id="08-app-silencio" data-width="1920" data-height="1080" data-duration="6.85">
+    <div id="f08-ground" class="clip" data-start="0" data-duration="6.85" data-track-index="0"><div id="f08-dots"></div><div id="f08-light"></div></div>
     <svg width="0" height="0" aria-hidden="true" style="position: absolute"><filter id="f08-rise" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur id="f08-riseBlur" in="SourceGraphic" stdDeviation="0 24" /></filter><filter id="f08-whipO" x="-5%" y="-30%" width="110%" height="160%"><feGaussianBlur id="f08-whipOBlur" in="SourceGraphic" stdDeviation="0 0" /></filter><filter id="f08-whipI" x="-5%" y="-30%" width="110%" height="160%"><feGaussianBlur id="f08-whipIBlur" in="SourceGraphic" stdDeviation="0 18" /></filter></svg>
 
     <!-- ================= SCENES 1 + 2 ================= -->
@@ -517,6 +517,22 @@
       shake($("silShake"), T.silencio - L + 0.17, 5);
 
       window.__timelines = window.__timelines || {};
+      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.268, 0.35], [0.463, 0.5], [0.611, 0.61], [0.713, 0.68], [1.111, 1.04], [1.213, 1.19], [1.815, 1.67], [2.074, 1.86], [2.268, 2.1], [2.324, 2.16], [2.574, 2.58], [2.722, 2.74], [2.898, 2.9], [3.102, 3.14], [3.167, 3.21], [3.268, 3.33], [4.13, 4.01], [4.421, 4.25], [4.593, 4.42], [4.833, 4.55], [5.185, 4.935], [5.259, 5.17], [5.518, 5.57], [5.796, 5.87], [5.917, 5.95], [6.667, 6.85]]);
       window.__timelines["08-app-silencio"] = tl;
     })();
   </script>

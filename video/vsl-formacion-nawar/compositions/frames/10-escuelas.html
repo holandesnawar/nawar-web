@@ -175,8 +175,8 @@
     .f10-x svg { width: 46%; height: 46%; overflow: visible; }
   </style>
 
-  <div id="root" data-composition-id="10-escuelas" data-width="1920" data-height="1080" data-duration="6.611">
-    <div id="f10-ground" class="clip" data-start="0" data-duration="6.611" data-track-index="0">
+  <div id="root" data-composition-id="10-escuelas" data-width="1920" data-height="1080" data-duration="6.65">
+    <div id="f10-ground" class="clip" data-start="0" data-duration="6.65" data-track-index="0">
       <div id="f10-dots"></div>
       <div id="f10-light"></div>
     </div>
@@ -443,6 +443,22 @@
       });
 
       window.__timelines = window.__timelines || {};
+      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.361, 0.34], [0.782, 0.68], [1.213, 1.1], [1.555, 1.44], [1.592, 1.55], [2.204, 2.12], [2.287, 2.2], [2.574, 2.55], [2.694, 2.65], [3.046, 3.0], [3.241, 3.23], [3.389, 3.36], [3.713, 3.72], [3.815, 3.83], [4.528, 4.45], [4.574, 4.54], [4.87, 4.85], [4.991, 4.93], [5.342, 5.23], [5.667, 5.56], [5.861, 5.71], [6.055, 5.87], [6.611, 6.65]]);
       window.__timelines["10-escuelas"] = tl;
     })();
   </script>

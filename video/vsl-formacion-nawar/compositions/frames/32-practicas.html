@@ -1,0 +1,234 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+    #f32-ground { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%); }
+    #f32-dots { position: absolute; left: -160px; top: -100px; width: 2240px; height: 1280px; background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px); background-size: 28px 28px; background-position: 14px 14px; }
+    #f32-amb { position: absolute; left: 800px; top: 150px; width: 1120px; height: 780px; border-radius: 50%; background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.28) 0%, rgba(77,163,255,0.09) 45%, rgba(77,163,255,0) 70%); }
+    #f32-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 76% 72% at 50% 50%, rgba(4,0,40,0) 52%, rgba(4,0,40,0.42) 100%); }
+    .f32-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+    /* ---------- header: En + Nawar logo with a light sweep ---------- */
+    #f32-head { position: absolute; left: 80px; top: 88px; width: 600px; height: 132px; }
+    #f32-en { position: absolute; left: 0; top: 30px; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 60px; line-height: 1.1; letter-spacing: -0.02em; color: rgba(255,255,255,0.72); }
+    #f32-logo-wrap { position: absolute; left: 92px; top: 0; width: 360px; height: 128.4px; filter: drop-shadow(0 18px 34px rgba(4,0,40,0.5)); }
+    #f32-logo { position: absolute; left: 0; top: 0; width: 360px; height: 128.4px; display: block; }
+    #f32-shine-mask { position: absolute; left: 0; top: 0; width: 360px; height: 128.4px; overflow: hidden; mix-blend-mode: screen;
+      -webkit-mask-image: url("assets/img/logo-nawar.png"); -webkit-mask-size: 100% 100%; -webkit-mask-repeat: no-repeat;
+      mask-image: url("assets/img/logo-nawar.png"); mask-size: 100% 100%; mask-repeat: no-repeat; }
+    #f32-shine { position: absolute; left: 0; top: -40px; width: 150px; height: 210px; background: linear-gradient(112deg, rgba(255,255,255,0) 22%, rgba(255,255,255,0.18) 38%, rgba(255,255,255,0.75) 50%, rgba(255,255,255,0.18) 62%, rgba(255,255,255,0) 78%); }
+
+    /* ---------- verb list ---------- */
+    .f32-item { position: absolute; left: 80px; width: 790px; }
+    .f32-num { position: absolute; left: 0; top: 10px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; line-height: 1; letter-spacing: 0.1em; color: #4da3ff; }
+    .f32-verb { position: absolute; left: 64px; top: 0; white-space: nowrap; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 74px; line-height: 1; letter-spacing: -0.03em; color: #FFFFFF; text-shadow: 0 12px 40px rgba(4,0,40,0.35); }
+    .f32-ln { display: block; height: 74px; }
+    .f32-w { display: inline-block; }
+    .f32-acc { color: #4da3ff; }
+    .f32-ck { display: inline-block; position: relative; width: 44px; height: 44px; margin-left: 18px; vertical-align: 6px; }
+    .f32-ck i { position: absolute; inset: 0; border-radius: 50%; background: #34D399; box-shadow: 0 6px 18px rgba(4,0,40,0.3); }
+    .f32-ck svg { position: absolute; left: 0; top: 0; width: 44px; height: 44px; overflow: visible; }
+    .f32-ck path { fill: none; stroke: #FFFFFF; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 30; stroke-dashoffset: 30; }
+
+    /* ---------- device (browser, same chrome as frame 24) ---------- */
+    #f32-stage { perspective: 2200px; perspective-origin: 1354px 534px; }
+    #f32-floor { position: absolute; left: 900px; top: 856px; width: 900px; height: 66px; border-radius: 50%; background: radial-gradient(ellipse at 50% 40%, rgba(4,0,40,0.5) 0%, rgba(4,0,40,0.2) 45%, rgba(4,0,40,0) 72%); }
+    #f32-dev { position: absolute; left: 884px; top: 214px; width: 940px; height: 640px; border-radius: 22px; background: #0C0C1E; transform-origin: 50% 50%; box-shadow: 0 40px 110px rgba(4,0,40,0.45), inset 0 0 0 2px rgba(255,255,255,0.06); }
+    .f32-dots3 { position: absolute; left: 24px; top: 20px; display: flex; gap: 9px; }
+    .f32-dots3 i { display: block; width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.22); }
+    #f32-url { position: absolute; left: 260px; top: 11px; width: 420px; height: 30px; border-radius: 999px; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; gap: 8px; font-family: "Inter", sans-serif; font-weight: 500; font-size: 16px; line-height: 1; color: rgba(255,255,255,0.72); white-space: nowrap; }
+    #f32-url svg { width: 13px; height: 15px; display: block; }
+    #f32-screen { position: absolute; left: 10px; top: 52px; width: 920px; height: 578px; border-radius: 4px 4px 14px 14px; overflow: hidden; background: #FFFFFF; }
+    .f32-pane { position: absolute; left: 0; top: 0; width: 920px; height: 578px; background: #FFFFFF; overflow: hidden; }
+    .f32-glass { position: absolute; inset: 0; background: linear-gradient(118deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 34%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 100%); }
+    /* completa-frase crop (source x 600→1175, rows 0–338, scale 1.6) */
+    .f32-ccrop { position: absolute; left: 0; top: 18px; width: 920px; height: 541px; overflow: hidden; }
+    .f32-cvid { position: absolute; left: -960px; top: 0; width: 2748.8px; height: 1104px; display: block; object-fit: fill; }
+    /* ordena-palabras crop (source x 88→, rows 70→, scale 1.3) */
+    #f32-ocrop { position: absolute; left: 0; top: 52px; width: 920px; height: 474px; overflow: hidden; }
+    #f32-osc { position: absolute; left: -114.4px; top: -91px; width: 879px; height: 434px; transform: scale(1.3); transform-origin: 0 0; }
+    #f32-osc img { position: absolute; left: 0; top: 0; width: 879px; height: 434px; display: block; }
+    .f32-patch { position: absolute; background: #FFFFFF; }
+    .f32-chip { position: absolute; top: 296px; height: 35px; box-sizing: border-box; border: 1px solid #DDE4F4; border-radius: 8px; background: #F1F5FF; display: flex; align-items: center; justify-content: center; font-family: "Poppins", sans-serif; font-weight: 600; font-size: 14.5px; line-height: 1; color: #10162A; white-space: nowrap; }
+    /* luisteren crop (source x 100→, rows 100–855, scale 0.7) */
+    #f32-lcrop { position: absolute; left: 0; top: 25px; width: 920px; height: 528.5px; overflow: hidden; }
+    .f32-lis { position: absolute; left: -70px; top: -70px; width: 1331.4px; height: 756px; display: block; }
+    #f32-tclip { position: absolute; left: 38px; top: 180px; width: 6px; height: 82px; overflow: hidden; }
+    .f32-lisbg { background: url("assets/img/ui-luisteren-audio.png") 0 0 / 100% 100% no-repeat; }
+    #f32-tclip .f32-lis { left: -108px; top: -250px; filter: url(#f32-tint); }
+    #f32-phead { position: absolute; left: 43px; top: 176px; width: 3px; height: 90px; border-radius: 2px; background: #0b6df0; box-shadow: 0 0 10px rgba(11,109,240,0.5); }
+    #f32-phead i { position: absolute; left: -6px; top: -12px; width: 15px; height: 15px; border-radius: 50%; background: #0b6df0; box-shadow: 0 0 0 3px #FFFFFF; }
+    #f32-bring { position: absolute; left: 21px; top: 448px; width: 1000px; height: 76px; border-radius: 12px; box-shadow: 0 0 0 4px #0b6df0, 0 0 26px 6px rgba(11,109,240,0.45); }
+    #f32-cur { position: absolute; left: 0; top: 0; width: 30px; height: 36px; }
+    .f32-rip { position: absolute; left: -26px; top: -26px; width: 52px; height: 52px; border-radius: 50%; border: 3px solid #0b6df0; box-sizing: border-box; }
+
+    /* ---------- corner badge (speaker → struck "pista" bulb) ---------- */
+    #f32-badge { position: absolute; left: 1716px; top: 166px; width: 108px; height: 108px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 24px 60px rgba(4,0,40,0.45), 0 0 0 8px rgba(255,255,255,0.12); }
+    #f32-badge svg { position: absolute; left: 0; top: 0; width: 108px; height: 108px; overflow: visible; }
+  </style>
+
+  <div id="root" data-composition-id="32-practicas" data-width="1920" data-height="1080" data-duration="5.25">
+    <div id="f32-ground" class="clip" data-start="0" data-duration="5.25" data-track-index="0"><div id="f32-dots"></div><div id="f32-amb"></div><div id="f32-vig"></div></div>
+
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+      <filter id="f32-tint" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.043  0 0 0 0 0.427  0 0 0 0 0.941  -5.5 0 0 0 5.5" /></filter>
+    </svg>
+
+    <div id="f32-head">
+      <div id="f32-en">En</div>
+      <div id="f32-logo-wrap"><img id="f32-logo" src="assets/img/logo-nawar.png" alt="Nawar" /><div id="f32-shine-mask"><div id="f32-shine"></div></div></div>
+    </div>
+
+    <div class="f32-item" id="f32-i1" style="top:300px;"><div class="f32-num" id="f32-n1">01</div>
+      <div class="f32-verb"><span class="f32-ln"><span class="f32-w" id="f32-w-escribes">ESCRIBES</span><span class="f32-ck" id="f32-ck1"><i></i><svg viewBox="0 0 44 44"><path d="M13 23 L19.5 29.5 L32 16" /></svg></span></span></div></div>
+    <div class="f32-item" id="f32-i2" style="top:408px;"><div class="f32-num" id="f32-n2">02</div>
+      <div class="f32-verb"><span class="f32-ln"><span class="f32-w" id="f32-w-ordenas">ORDENAS</span> <span class="f32-w" id="f32-w-frases">FRASES</span><span class="f32-ck" id="f32-ck2"><i></i><svg viewBox="0 0 44 44"><path d="M13 23 L19.5 29.5 L32 16" /></svg></span></span></div></div>
+    <div class="f32-item" id="f32-i3" style="top:516px;"><div class="f32-num" id="f32-n3">03</div>
+      <div class="f32-verb"><span class="f32-ln"><span class="f32-w" id="f32-w-escuchas">ESCUCHAS</span></span><span class="f32-ln"><span class="f32-w" id="f32-w-y">Y</span> <span class="f32-w" id="f32-w-respondes">RESPONDES</span><span class="f32-ck" id="f32-ck3"><i></i><svg viewBox="0 0 44 44"><path d="M13 23 L19.5 29.5 L32 16" /></svg></span></span></div></div>
+    <div class="f32-item" id="f32-i4" style="top:698px;"><div class="f32-num" id="f32-n4">04</div>
+      <div class="f32-verb"><span class="f32-ln"><span class="f32-w" id="f32-w-completas">COMPLETAS</span></span><span class="f32-ln"><span class="f32-w f32-acc" id="f32-w-sin">SIN</span> <span class="f32-w f32-acc" id="f32-w-pistas">PISTAS</span><span class="f32-ck" id="f32-ck4"><i></i><svg viewBox="0 0 44 44"><path d="M13 23 L19.5 29.5 L32 16" /></svg></span></span></div></div>
+
+    <div id="f32-stage" class="f32-full">
+      <div id="f32-floor"></div>
+      <div id="f32-dev">
+        <div class="f32-dots3"><i></i><i></i><i></i></div>
+        <div id="f32-url"><svg viewBox="0 0 13 15" aria-hidden="true"><rect x="1" y="6.5" width="11" height="8" rx="2" fill="rgba(255,255,255,0.6)" /><path d="M3.5 6.5 V4.5 a3 3 0 0 1 6 0 V6.5" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.8" /></svg><span>holandesnawar.com/escuela</span></div>
+        <div id="f32-screen">
+          <div class="f32-pane" id="f32-p1"><div class="f32-ccrop">
+            <video id="f32-vid1" class="clip f32-cvid" src="assets/video/completa-frase.mp4" muted playsinline data-start="0" data-duration="1.8" data-media-start="14.94" data-hf-media-start-basis="local" data-track-index="2"></video></div></div>
+          <div class="f32-pane" id="f32-p2"><div id="f32-ocrop"><div id="f32-osc">
+            <img src="assets/img/ui-ordena-palabras.png" alt="" />
+            <div class="f32-patch" style="left:100px; top:290px; width:400px; height:46px;"></div>
+            <div class="f32-patch" id="f32-ph" style="left:112px; top:234px; width:300px; height:38px;"></div>
+            <div class="f32-chip" id="f32-c-wil" style="left:106px; width:44px;">wil</div>
+            <div class="f32-chip" id="f32-c-een" style="left:158px; width:51px;">een</div>
+            <div class="f32-chip" id="f32-c-glas" style="left:217px; width:54px;">glas</div>
+            <div class="f32-chip" id="f32-c-alsj" style="left:279px; width:93px;">alsjeblieft.</div>
+            <div class="f32-chip" id="f32-c-water" style="left:380px; width:67px;">water,</div>
+            <div class="f32-chip" id="f32-c-ik" style="left:455px; width:37px;">Ik</div>
+          </div></div></div>
+          <div class="f32-pane" id="f32-p3"><div id="f32-lcrop">
+            <img class="f32-lis" src="assets/img/ui-luisteren-audio.png" alt="" />
+            <div id="f32-tclip"><div class="f32-lis f32-lisbg"></div></div>
+            <div id="f32-phead"><i></i></div>
+            <div id="f32-bring"></div>
+            <div id="f32-cur"><div class="f32-rip" id="f32-rip1"></div><div class="f32-rip" id="f32-rip2"></div>
+              <svg viewBox="0 0 30 36" width="30" height="36"><path d="M2 2 L2 28 L9 21.5 L13.5 32 L18 30 L13.5 19.5 L23 19.5 Z" fill="#0C0C1E" stroke="#FFFFFF" stroke-width="2.4" stroke-linejoin="round" /></svg></div>
+          </div></div>
+          <div class="f32-pane" id="f32-p4"><div class="f32-ccrop">
+            <video id="f32-vid4" class="clip f32-cvid" src="assets/video/completa-frase.mp4" muted playsinline data-start="3.7" data-duration="1.55" data-media-start="8.83" data-hf-media-start-basis="local" data-track-index="2"></video></div></div>
+          <div class="f32-glass"></div>
+        </div>
+      </div>
+      <div id="f32-badge">
+        <svg viewBox="0 0 108 108" aria-hidden="true">
+          <g id="f32-spk" fill="none" stroke="#0b6df0" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M28 46 H38 L51 35 V73 L38 62 H28 Z" fill="#0b6df0" />
+            <path id="f32-a1" d="M60 46 Q65 54 60 62" /><path id="f32-a2" d="M67 40 Q76 54 67 68" /><path id="f32-a3" d="M74 34 Q87 54 74 74" />
+          </g>
+          <g id="f32-bulb" fill="none" stroke="#1D0084" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M54 26 C42 26 34 35 34 46 C34 54 39 59 43 63 V70 H65 V63 C69 59 74 54 74 46 C74 35 66 26 54 26 Z" />
+            <path d="M45 78 H63 M48 85 H60" />
+          </g>
+          <path id="f32-strike" d="M26 82 L82 26" fill="none" stroke="#E02D3C" stroke-width="9" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const T = { en: 0.12, nawar: 0.26, escribes: 0.56, ordenas: 1.47, frases: 1.86, escuchas: 2.46, y: 2.97, respondes: 3.05, completas: 3.82, sin: 4.39, pistas: 4.60 };
+      const rise = (id, cue) => tl.fromTo(q(id), { opacity: 0, x: -36, filter: "blur(8px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, cue - 0.04);
+      const slam = (id, cue) => tl.fromTo(q(id), { opacity: 0, scale: 1.3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, cue - 0.04);
+      const num = (id, cue) => tl.fromTo(q(id), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, cue - 0.04);
+      const check = (n, t) => {
+        tl.fromTo("#f32-ck" + n + " i", { scale: 0 }, { scale: 1, duration: 0.3, ease: "back.out(2.2)" }, t);
+        tl.fromTo("#f32-ck" + n + " path", { strokeDashoffset: 30 }, { strokeDashoffset: 0, duration: 0.22, ease: "power2.out" }, t + 0.1);
+      };
+      const dim = (id, t) => tl.fromTo(q(id), { opacity: 1 }, { opacity: 0.45, duration: 0.25, ease: "power2.out", immediateRender: false }, t);
+      // panes push up (fast slide) with a small device bump
+      const swap = (a, b, t) => {
+        tl.to(q(a), { y: -578, duration: 0.32, ease: "power3.inOut" }, t);
+        tl.fromTo(q(b), { y: 578 }, { y: 0, duration: 0.32, ease: "power3.inOut" }, t);
+        tl.to(q("f32-dev"), { scale: 0.975, duration: 0.14, ease: "power2.in" }, t);
+        tl.to(q("f32-dev"), { scale: 1, duration: 0.26, ease: "power3.out" }, t + 0.14);
+      };
+
+      // ===== ENTRANCE: header slides in under a light sweep, device swings in =====
+      tl.fromTo(q("f32-en"), { opacity: 0, x: -90 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, 0.06);
+      tl.fromTo(q("f32-logo-wrap"), { opacity: 0, x: -120 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, T.nawar - 0.06);
+      tl.fromTo(q("f32-shine"), { x: -170 }, { x: 400, duration: 0.5, ease: "power2.inOut" }, T.nawar - 0.02);
+      tl.fromTo(q("f32-dev"), { x: 260, rotationY: -18, opacity: 1 }, { x: 0, rotationY: -6, duration: 0.34, ease: "power3.out" }, 0);
+      tl.fromTo(q("f32-floor"), { opacity: 0, x: 200 }, { opacity: 1, x: 0, duration: 0.34, ease: "power3.out" }, 0);
+      tl.fromTo(q("f32-dots"), { scale: 1.08 }, { scale: 1, duration: 0.6, ease: "power3.out" }, 0);
+      tl.fromTo(q("f32-badge"), { scale: 0, opacity: 0 }, { scale: 0, opacity: 0, duration: 0.01 }, 0);
+
+      // ===== 01 ESCRIBES — the student types in the real exercise =====
+      num("f32-n1", T.escribes); slam("f32-w-escribes", T.escribes); check(1, T.escribes + 0.22);
+
+      // ===== 02 ORDENAS FRASES — chips fly into the answer area in order =====
+      swap("f32-p1", "f32-p2", T.ordenas - 0.08);
+      dim("f32-i1", T.ordenas); num("f32-n2", T.ordenas); slam("f32-w-ordenas", T.ordenas); rise("f32-w-frases", T.frases);
+      tl.fromTo(q("f32-ph"), { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "none" }, 1.7);
+      const order = [["f32-c-ik", -337], ["f32-c-wil", 57], ["f32-c-een", 57], ["f32-c-glas", 57], ["f32-c-water", -44], ["f32-c-alsj", 132]];
+      order.forEach(([id, dx], i) => {
+        const t = 1.62 + i * 0.1;
+        tl.fromTo(q(id), { x: 0, y: 0 }, { x: dx, y: -61, duration: 0.24, ease: "power3.inOut" }, t);
+        tl.fromTo(q(id), { scale: 1 }, { scale: 1.16, duration: 0.1, ease: "power2.out" }, t);
+        tl.to(q(id), { scale: 1, duration: 0.14, ease: "power2.in" }, t + 0.1);
+      });
+      check(2, T.frases + 0.3);
+
+      // ===== 03 ESCUCHAS Y RESPONDES — play, playhead sweeps, click "Hacer los ejercicios" =====
+      swap("f32-p2", "f32-p3", T.escuchas - 0.06);
+      dim("f32-i2", T.escuchas); num("f32-n3", T.escuchas); slam("f32-w-escuchas", T.escuchas);
+      rise("f32-w-y", T.y); rise("f32-w-respondes", T.respondes); check(3, T.respondes + 0.22);
+      tl.fromTo(q("f32-cur"), { x: 700, y: 440, opacity: 0 }, { x: 574, y: 351, opacity: 1, duration: 0.24, ease: "power3.out" }, 2.5);
+      tl.fromTo(q("f32-rip1"), { scale: 0.3, opacity: 0 }, { scale: 1.4, opacity: 0, duration: 0.01 }, 0);
+      tl.fromTo(q("f32-rip1"), { scale: 0.3, opacity: 1 }, { scale: 1.5, opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, 2.74);
+      tl.to(q("f32-cur"), { x: 596, y: 488, duration: 0.24, ease: "power3.inOut" }, T.respondes - 0.12);
+      tl.fromTo(q("f32-rip2"), { scale: 0.3, opacity: 0 }, { scale: 1.4, opacity: 0, duration: 0.01 }, 0);
+      tl.fromTo(q("f32-rip2"), { scale: 0.3, opacity: 1 }, { scale: 1.5, opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, T.respondes + 0.13);
+      tl.fromTo(q("f32-bring"), { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, T.respondes + 0.13);
+      tl.fromTo(q("f32-phead"), { x: 0, opacity: 0 }, { x: 0, opacity: 1, duration: 0.1 }, 2.66);
+      tl.to(q("f32-phead"), { x: 420, duration: 1.04, ease: "none" }, 2.76);
+      tl.fromTo(q("f32-tclip"), { width: 6 }, { width: 426, duration: 1.04, ease: "none" }, 2.76);
+      // speaker badge with three waves
+      tl.fromTo(q("f32-badge"), { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2)", immediateRender: false }, T.escuchas + 0.04);
+      tl.set(q("f32-bulb"), { opacity: 0 }, 0);
+      ["f32-a1", "f32-a2", "f32-a3"].forEach((id, k) => {
+        tl.set(q(id), { opacity: 0.2 }, 0);
+        for (let c = 0; c < 4; c++) {
+          const t = 2.6 + c * 0.3 + k * 0.08;
+          tl.to(q(id), { opacity: 1, duration: 0.08, ease: "power1.out" }, t);
+          tl.to(q(id), { opacity: 0.25, duration: 0.18, ease: "power1.in" }, t + 0.1);
+        }
+      });
+
+      // ===== 04 COMPLETAS SIN PISTAS — check + ¡Correcto!, the "pista" bulb gets struck =====
+      swap("f32-p3", "f32-p4", T.completas - 0.07);
+      dim("f32-i3", T.completas); num("f32-n4", T.completas); slam("f32-w-completas", T.completas);
+      tl.to(q("f32-spk"), { opacity: 0, scale: 0.6, svgOrigin: "54 54", duration: 0.12, ease: "power2.in" }, T.completas - 0.04);
+      tl.fromTo(q("f32-bulb"), { opacity: 0, scale: 0.6, svgOrigin: "54 54" }, { opacity: 1, scale: 1, svgOrigin: "54 54", duration: 0.24, ease: "back.out(2)", immediateRender: false }, T.completas + 0.08);
+      slam("f32-w-sin", T.sin);
+      tl.fromTo(q("f32-strike"), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.22, ease: "power3.out" }, T.sin);
+      tl.to(q("f32-bulb"), { opacity: 0.4, duration: 0.2, ease: "power1.out" }, T.sin + 0.1);
+      tl.fromTo(q("f32-badge"), { rotation: 0 }, { rotation: -8, duration: 0.06, ease: "power2.out", immediateRender: false }, T.sin + 0.04);
+      tl.to(q("f32-badge"), { rotation: 0, duration: 0.3, ease: "power3.out" }, T.sin + 0.1);
+      slam("f32-w-pistas", T.pistas);
+      check(4, T.pistas + 0.2);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["32-practicas"] = tl;
+    })();
+  </script>
+</template>

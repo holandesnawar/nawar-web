@@ -7,19 +7,23 @@
     @font-face { font-family: "Poppins"; font-weight: 900; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
     @font-face { font-family: "Inter"; font-weight: 700; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
 
-    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #FFFFFF; }
 
-    /* ---------- ground (paper + dot grid) ---------- */
-    #f01-ground { position: absolute; inset: 0; background: #F5F7FF; overflow: hidden; }
+    /* ---------- ground: NAWAR BLUE (gradient + vignette) + white dot grid ---------- */
+    #f01-ground {
+      position: absolute; inset: 0; overflow: hidden;
+      background:
+        radial-gradient(ellipse 80% 78% at 50% 50%, rgba(6,0,60,0) 58%, rgba(6,0,60,0.42) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
     #f01-dots {
       position: absolute; inset: 0;
-      background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.6px, transparent 1.9px);
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
       background-size: 28px 28px; background-position: 6px 8px;
     }
     #f01-glow {
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 55% at 50% 46%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%),
-                  radial-gradient(ellipse 90% 90% at 50% 50%, rgba(29,0,132,0) 55%, rgba(29,0,132,0.07) 100%);
+      background: radial-gradient(ellipse 58% 52% at 50% 46%, rgba(77,163,255,0.22) 0%, rgba(77,163,255,0.08) 45%, rgba(77,163,255,0) 72%);
     }
 
     #f01-stage { position: absolute; inset: 0; }
@@ -28,10 +32,10 @@
     #f01-l1 .f01-w, #f01-l2 .f01-w, #f01-cap .f01-w, #f01-hero, #f01-flag, #f01-card, #f01-arrow,
     #f01-fillRed, #f01-badge, #f01-ring { opacity: 0; }
 
-    /* opening anchor: an indigo text caret where "Si" will land */
+    /* opening anchor: a white text caret where "Si" will land */
     #f01-caret {
       position: absolute; left: 903px; top: 350px; width: 8px; height: 104px; border-radius: 4px;
-      background: #1D0084;
+      background: #FFFFFF;
     }
 
     /* ---------- scene 1 ---------- */
@@ -39,6 +43,7 @@
     #f01-l1 {
       position: absolute; left: 0; right: 0; top: 344px; text-align: center;
       font-weight: 800; font-size: 112px; line-height: 1.1; letter-spacing: -0.03em; white-space: nowrap;
+      text-shadow: 0 18px 50px rgba(4,0,40,0.30);
     }
     .f01-w { display: inline-block; }
     #f01-arrowWrap { position: absolute; inset: 0; transform-origin: 1640px 300px; }
@@ -47,25 +52,27 @@
       fill: none; stroke: #E02D3C; stroke-width: 13; stroke-linecap: round; stroke-linejoin: round;
       stroke-dasharray: 1 1.3; stroke-dashoffset: 1.05;
     }
+    #f01-arrow { filter: drop-shadow(0 8px 16px rgba(4,0,40,0.40)); }
 
     /* ---------- scene 2 ---------- */
     #f01-l2 {
       position: absolute; left: 0; right: 0; top: 196px; text-align: center; transform-origin: 50% 0%;
       font-weight: 700; font-size: 80px; line-height: 1.1; letter-spacing: -0.02em; white-space: nowrap;
     }
-    #f01-l2 .f01-lead { color: #5A6480; font-weight: 600; }
+    #f01-l2 { text-shadow: 0 14px 40px rgba(4,0,40,0.28); }
+    #f01-l2 .f01-lead { color: rgba(255,255,255,0.72); font-weight: 600; }
     #f01-v4 { position: relative; }
     #f01-ul {
       position: absolute; left: 2px; right: 2px; top: 113px; height: 6px; border-radius: 3px;
-      background: #0C0C1E; transform-origin: 0% 50%;
+      background: #FFFFFF; transform-origin: 0% 50%;
     }
 
     #f01-heroRow { position: absolute; left: 0; right: 0; top: 462px; display: flex; justify-content: center; }
     #f01-heroBox { display: flex; flex-direction: column; align-items: stretch; transform-origin: 50% 50%; }
     #f01-hero {
       font-weight: 900; font-size: 196px; line-height: 0.95; letter-spacing: -0.045em; text-transform: uppercase;
-      color: #1D0084; white-space: nowrap; padding-right: 0.03em;
-      text-shadow: 0 5px 0 rgba(29,0,132,0.10), 0 34px 70px rgba(29,0,132,0.20);
+      color: #FFFFFF; white-space: nowrap; padding-right: 0.03em;
+      text-shadow: 0 5px 0 rgba(4,0,40,0.16), 0 34px 70px rgba(4,0,40,0.40);
       transform-origin: 50% 55%;
     }
     #f01-flag {
@@ -81,7 +88,7 @@
     #f01-card {
       position: absolute; left: 340px; top: 600px; width: 1240px; height: 338px;
       background: #FFFFFF; border: 1px solid #DDE6F5; border-radius: 28px;
-      box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08);
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45);
       padding: 42px 56px 0 56px;
     }
     #f01-head { display: flex; justify-content: space-between; align-items: flex-end; height: 66px; }
@@ -128,8 +135,8 @@
     #f01-cap .f01-key { font-weight: 800; color: #0C0C1E; }
   </style>
 
-  <div id="root" data-composition-id="01-hook" data-width="1920" data-height="1080" data-duration="5.956">
-    <div id="f01-ground" class="clip" data-start="0" data-duration="5.956" data-track-index="0">
+  <div id="root" data-composition-id="01-hook" data-width="1920" data-height="1080" data-duration="6.01">
+    <div id="f01-ground" class="clip" data-start="0" data-duration="6.01" data-track-index="0">
       <div id="f01-dots"></div>
       <div id="f01-glow"></div>
     </div>
@@ -330,6 +337,22 @@
       tl.fromTo($("ring"), { opacity: 0.7, scale: 0.9 }, { opacity: 0, scale: 2.3, duration: 0.7, ease: "power2.out" }, J + 0.06);
 
       window.__timelines = window.__timelines || {};
+      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.428, 0.42], [0.548, 0.58], [0.724, 0.73], [0.993, 1.03], [1.122, 1.18], [1.604, 1.63], [1.733, 1.81], [1.983, 2.08], [2.326, 2.4], [2.696, 2.74], [3.03, 3.08], [3.28, 3.32], [3.826, 3.98], [3.891, 4.09], [4.233, 4.37], [4.372, 4.6], [4.743, 5.03], [4.844, 5.12], [5.956, 6.01]]);
       window.__timelines["01-hook"] = tl;
     })();
   </script>

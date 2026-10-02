@@ -1,0 +1,275 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Caveat"; font-weight: 700; font-style: normal; src: url("assets/fonts/caveat-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE + dots + vignette; f20-dim = the "paused" darkness ---------- */
+    #f20-ground { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%); }
+    #f20-dots {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 6px 10px;
+    }
+    #f20-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%); }
+    #f20-dim {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 72% at 50% 46%, rgba(4,0,40,0.16) 0%, rgba(4,0,40,0.30) 45%, rgba(3,0,30,0.70) 100%);
+    }
+
+    /* ---------- 2D camera > perspective stage > 3D laptop ---------- */
+    #f20-cam { position: absolute; inset: 0; transform-origin: 960px 540px; }
+    #f20-stage { position: absolute; inset: 0; perspective: 2400px; perspective-origin: 960px 540px; }
+    #f20-lap {
+      position: absolute; left: 310px; top: 170px; width: 1300px; height: 780px;
+      transform-style: preserve-3d; transform-origin: 650.0px 390.0px; transform: translate3d(0px, 0px, 400px) rotate(-24deg);
+    }
+    .f20-plane { position: absolute; left: 0; top: 0; width: 1300px; height: 780px; border-radius: 44px; }
+
+    /* table shadow (in the deck's plane, below it) */
+    #f20-shadow {
+      position: absolute; left: 10px; top: 26px; width: 1300px; height: 780px; border-radius: 70px;
+      background: rgba(3,0,28,0.62); box-shadow: 0 0 110px 46px rgba(3,0,28,0.58);
+      transform: translateZ(-24px);
+    }
+    /* deck: stacked layers = machined thickness; top face carries keyboard + trackpad */
+    .f20-dl { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04); }
+    #f20-decktop {
+      background: linear-gradient(180deg, #343a4f 0%, #2a2f42 55%, #23273a 100%);
+      box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.16), inset 0 3px 0 rgba(255,255,255,0.05);
+      overflow: hidden;
+    }
+    #f20-deckglow { position: absolute; left: 0; top: 0; width: 1300px; height: 780px; opacity: 0; background: radial-gradient(ellipse 62% 70% at 50% 0%, rgba(140,185,255,0.22) 0%, rgba(77,163,255,0.08) 45%, rgba(77,163,255,0) 75%); }
+    #f20-hinge { position: absolute; left: 150px; top: 0; width: 1000px; height: 24px; border-radius: 0 0 12px 12px; background: linear-gradient(180deg, #0c0e15 0%, #1a1d29 100%); }
+    .f20-grille {
+      position: absolute; top: 64px; width: 74px; height: 372px; border-radius: 10px;
+      background-image: radial-gradient(circle, rgba(6,7,12,0.85) 1.7px, transparent 2.2px);
+      background-size: 10px 10px; background-position: 2px 2px;
+    }
+    #f20-kb { position: absolute; left: 175px; top: 60px; width: 950px; height: 380px; display: block; }
+    #f20-pad {
+      position: absolute; left: 400px; top: 478px; width: 500px; height: 266px; border-radius: 22px;
+      background: linear-gradient(180deg, #2f3447 0%, #282c3d 100%);
+      box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.10), inset 0 -2px 0 rgba(0,0,0,0.25);
+    }
+
+    /* lid: hinge = its top edge (local); inner face (screen) points down when closed */
+    #f20-lid { position: absolute; left: 0; top: 0; width: 1300px; height: 780px; transform-style: preserve-3d; transform-origin: 50% 0%; }
+    .f20-ll { background: #171a25; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05); }
+    #f20-inner {
+      background: #0C0C1E; transform: translateZ(0.5px) rotateX(180deg); backface-visibility: hidden;
+      box-shadow: inset 0 0 0 7px #2b3044, inset 0 0 0 8.5px rgba(255,255,255,0.10);
+    }
+    #f20-camdot { position: absolute; left: 645.0px; top: 13px; width: 10px; height: 10px; border-radius: 50%; background: #1d2133; box-shadow: inset 0 0 0 2px #2a2f45; }
+    #f20-screen { position: absolute; left: 30px; top: 30px; width: 1240px; height: 696px; border-radius: 12px; overflow: hidden; background: #020208; }
+    #f20-outer {
+      background: linear-gradient(160deg, #3b4156 0%, #262a3c 52%, #171a28 100%);
+      box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.12), inset 0 0 60px rgba(0,0,0,0.25);
+      transform: translateZ(13.5px); backface-visibility: hidden; overflow: hidden;
+    }
+    #f20-spec {
+      position: absolute; left: 820px; top: -400px; width: 300px; height: 1600px; transform: rotate(-38deg);
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.075) 50%, rgba(255,255,255,0) 100%);
+    }
+    #f20-spec2 {
+      position: absolute; left: 1010px; top: -400px; width: 70px; height: 1600px; transform: rotate(-38deg);
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+    }
+    /* the play disc lives ON the lid, counter-rotated so it reads upright */
+    #f20-playpos { position: absolute; left: 612.0px; top: 150.7px; width: 200px; height: 200px; transform: rotate(24deg); }
+    #f20-disc {
+      position: absolute; inset: 0; border-radius: 50%; box-sizing: border-box;
+      background: radial-gradient(circle at 34% 26%, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.14) 46%, rgba(255,255,255,0.10) 100%);
+      border: 3px solid rgba(255,255,255,0.65);
+      box-shadow: 0 22px 50px rgba(0,0,0,0.42), inset 0 0 26px rgba(255,255,255,0.10);
+    }
+    #f20-press { position: absolute; inset: 0; border-radius: 50%; background: rgba(6,4,30,0.34); opacity: 0; }
+    #f20-tri { position: absolute; left: 0; top: 0; width: 200px; height: 200px; overflow: visible; }
+
+    #f20-cursor { position: absolute; left: 978px; top: 398px; width: 30px; height: 46px; }
+    #f20-cursori { position: absolute; left: 0; top: 0; width: 30px; height: 46px; transform-origin: 2px 2px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35)); }
+    #f20-ripple {
+      position: absolute; left: 839.2px; top: 259.2px; width: 241.6px; height: 241.6px; border-radius: 50%;
+      box-sizing: border-box; border: 3px solid #FFFFFF; opacity: 0;
+    }
+    /* ---------- player chrome (the film is PAUSED) ---------- */
+    #f20-shade { position: absolute; left: 0; top: 640px; width: 1920px; height: 440px; background: linear-gradient(180deg, rgba(3,0,28,0) 0%, rgba(3,0,28,0.62) 100%); }
+    #f20-bar {
+      position: absolute; left: 80px; top: 916px; width: 1760px; height: 72px; box-sizing: border-box;
+      display: flex; align-items: center; gap: 30px; padding: 0 36px; border-radius: 999px;
+      background: rgba(7,4,31,0.58); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.16), 0 18px 40px rgba(3,0,28,0.35);
+    }
+    .f20-ic { position: relative; width: 30px; height: 30px; flex: 0 0 30px; }
+    .f20-ic svg { position: absolute; left: 0; top: 0; width: 30px; height: 30px; display: block; }
+    #f20-track { position: relative; flex: 1 1 auto; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.30); }
+    #f20-fill { position: absolute; left: 0; top: 0; width: 48%; height: 6px; border-radius: 3px; background: #FFFFFF; }
+    #f20-knob { position: absolute; left: 48%; top: 3px; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.35); }
+    #f20-time { font-family: "Inter", sans-serif; font-weight: 600; font-size: 24px; line-height: 1; color: rgba(255,255,255,0.72); white-space: nowrap; letter-spacing: 0.01em; }
+    #f20-pause { position: absolute; left: 900px; top: 580px; width: 120px; height: 120px; }
+    #f20-pause i { position: absolute; top: 0; width: 38px; height: 120px; border-radius: 10px; background: #FFFFFF; box-shadow: 0 10px 40px rgba(3,0,28,0.45); }
+
+    /* ---------- the question (2D, over the lid) ---------- */
+    .f20-row { position: absolute; left: 0; width: 1920px; display: flex; justify-content: center; align-items: baseline; white-space: nowrap; }
+    .f20-w { display: inline-block; }
+    #f20-r1 { top: 524px; height: 100px; gap: 22px; }
+    .f20-h2 { font-weight: 800; font-size: 84px; line-height: 1.05; letter-spacing: -0.03em; color: #FFFFFF; text-shadow: 0 6px 30px rgba(3,0,28,0.45); }
+    #f20-r2 { top: 606px; height: 160px; }
+    #f20-dentro {
+      font-weight: 900; font-size: 150px; line-height: 1; letter-spacing: -0.04em; color: #4da3ff;
+      text-shadow: 0 0 46px rgba(77,163,255,0.55), 0 8px 30px rgba(3,0,28,0.40); transform-origin: 50% 60%;
+    }
+    #f20-r3 { top: 782px; height: 60px; gap: 12px; }
+    .f20-lead { font-weight: 600; font-size: 44px; line-height: 1.2; letter-spacing: -0.01em; color: rgba(255,255,255,0.72); }
+    #f20-valepos { position: absolute; left: 652px; top: 462px; transform: rotate(-4deg); transform-origin: 0 100%; }
+    #f20-vale { font-family: "Caveat", cursive; font-weight: 700; font-size: 64px; line-height: 1; color: #9fd5f5; text-shadow: 0 4px 20px rgba(3,0,28,0.45); }
+
+  </style>
+
+  <div id="root" data-composition-id="20-pausa" data-width="1920" data-height="1080" data-duration="3.22">
+    <div id="f20-ground" class="clip" data-start="0" data-duration="3.22" data-track-index="0">
+      <div id="f20-dots"></div>
+      <div id="f20-vig"></div>
+      <div id="f20-dim"></div>
+    </div>
+
+    <!-- ======= 2D camera > perspective stage > 3D laptop (shared geometry 20 <-> 21) ======= -->
+    <div id="f20-cam">
+      <div id="f20-stage">
+        <div id="f20-lap">
+          <div id="f20-shadow"></div>
+          <div class="f20-plane f20-dl" style="transform: translateZ(-2.0px); background: #4a5068;"></div>
+          <div class="f20-plane f20-dl" style="transform: translateZ(-4.0px); background: #3d4258;"></div>
+          <div class="f20-plane f20-dl" style="transform: translateZ(-6.0px); background: #33384c;"></div>
+          <div class="f20-plane f20-dl" style="transform: translateZ(-8.0px); background: #2d3144;"></div>
+          <div class="f20-plane f20-dl" style="transform: translateZ(-10.0px); background: #282c3d;"></div>
+          <div class="f20-plane f20-dl" style="transform: translateZ(-12.0px); background: #24283a;"></div>
+          <div class="f20-plane f20-dl" style="transform: translateZ(-14.0px); background: #212435;"></div>
+          <div class="f20-plane f20-dl" style="transform: translateZ(-16.0px); background: #1e2131;"></div>
+          <div class="f20-plane f20-dl" style="transform: translateZ(-18.0px); background: #1b1e2c;"></div>
+          <div class="f20-plane f20-dl" style="transform: translateZ(-20.0px); background: #181a27;"></div>
+          <div class="f20-plane f20-dl" style="transform: translateZ(-22.0px); background: #151722;"></div>
+          <div id="f20-decktop" class="f20-plane">
+            <div id="f20-hinge"></div>
+            <div class="f20-grille" style="left: 78px;"></div>
+            <div class="f20-grille" style="left: 1148px;"></div>
+            <svg id="f20-kb" viewBox="0 0 950 380" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="950" height="380" rx="18" fill="#10121a"></rect><rect x="4.0" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="67.3" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="130.7" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="194.0" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="257.3" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="320.7" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="384.0" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="447.3" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="510.7" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="574.0" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="637.3" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="700.7" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="764.0" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="827.3" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="890.7" y="10.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="4.0" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="67.3" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="130.7" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="194.0" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="257.3" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="320.7" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="384.0" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="447.3" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="510.7" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="574.0" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="637.3" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="700.7" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="764.0" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="827.3" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="890.7" y="72.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="4.0" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="67.3" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="130.7" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="194.0" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="257.3" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="320.7" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="384.0" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="447.3" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="510.7" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="574.0" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="637.3" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="700.7" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="764.0" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="827.3" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="890.7" y="134.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="4.0" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="67.3" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="130.7" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="194.0" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="257.3" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="320.7" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="384.0" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="447.3" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="510.7" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="574.0" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="637.3" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="700.7" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="764.0" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="827.3" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="890.7" y="196.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="4.0" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="67.3" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="130.7" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="194.0" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="257.3" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="320.7" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="384.0" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="447.3" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="510.7" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="574.0" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="637.3" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="700.7" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="764.0" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="827.3" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="890.7" y="258.0" width="55.3" height="54" rx="8" fill="#252937"></rect><rect x="4.0" y="320.0" width="55.3" height="52" rx="8" fill="#252937"></rect><rect x="67.3" y="320.0" width="55.3" height="52" rx="8" fill="#252937"></rect><rect x="130.7" y="320.0" width="55.3" height="52" rx="8" fill="#252937"></rect><rect x="194.0" y="320.0" width="55.3" height="52" rx="8" fill="#252937"></rect><rect x="257.3" y="320.0" width="435.3" height="52" rx="8" fill="#252937"></rect><rect x="700.7" y="320.0" width="55.3" height="52" rx="8" fill="#252937"></rect><rect x="764.0" y="320.0" width="55.3" height="52" rx="8" fill="#252937"></rect><rect x="827.3" y="320.0" width="55.3" height="52" rx="8" fill="#252937"></rect><rect x="890.7" y="320.0" width="55.3" height="52" rx="8" fill="#252937"></rect></svg>
+            <div id="f20-pad"></div>
+            <div id="f20-deckglow"></div>
+          </div>
+          <div id="f20-lid">
+            <div id="f20-inner" class="f20-plane">
+              <div id="f20-camdot"></div>
+              <div id="f20-screen">
+                <div id="f20-scr-off" style="position:absolute; inset:0; background:#020208;"></div>
+              </div>
+            </div>
+            <div class="f20-plane f20-ll" style="transform: translateZ(1.5px);"></div>
+            <div class="f20-plane f20-ll" style="transform: translateZ(3.0px);"></div>
+            <div class="f20-plane f20-ll" style="transform: translateZ(4.5px);"></div>
+            <div class="f20-plane f20-ll" style="transform: translateZ(6.0px);"></div>
+            <div class="f20-plane f20-ll" style="transform: translateZ(7.5px);"></div>
+            <div class="f20-plane f20-ll" style="transform: translateZ(9.0px);"></div>
+            <div class="f20-plane f20-ll" style="transform: translateZ(10.5px);"></div>
+            <div class="f20-plane f20-ll" style="transform: translateZ(12.0px);"></div>
+            <div id="f20-outer" class="f20-plane">
+              <div id="f20-spec"></div>
+              <div id="f20-spec2"></div>
+              <div id="f20-playpos">
+                <div id="f20-disc"></div>
+                <div id="f20-press"></div>
+                <svg id="f20-tri" viewBox="0 0 200 200"><path d="M 80 62 L 80 138 Q 80 146 87 142 L 142 106 Q 148 100 142 94 L 87 58 Q 80 54 80 62 Z" fill="#FFFFFF"></path></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="f20-shade"></div>
+    <div id="f20-ripple"></div>
+
+    <!-- the question -->
+    <div id="f20-valepos"><div id="f20-vale" class="f20-w">Vale,</div></div>
+    <div id="f20-r1" class="f20-row">
+      <span id="f20-w1" class="f20-w f20-h2">¿Y</span>
+      <span id="f20-w2" class="f20-w f20-h2">qué</span>
+      <span id="f20-w3" class="f20-w f20-h2">hay</span>
+    </div>
+    <div id="f20-r2" class="f20-row"><div id="f20-shake" class="f20-w"><span id="f20-dentro" class="f20-w">DENTRO?</span></div></div>
+    <div id="f20-r3" class="f20-row">
+      <span id="f20-w5" class="f20-w f20-lead">Te</span>
+      <span id="f20-w6" class="f20-w f20-lead">lo</span>
+      <span id="f20-w7" class="f20-w f20-lead">cuento.</span>
+    </div>
+
+    <!-- player chrome -->
+    <div id="f20-bar">
+      <div class="f20-ic">
+        <svg id="f20-bplay" viewBox="0 0 30 30"><path d="M 8 4.5 L 8 25.5 Q 8 28 10.2 26.7 L 26 16.6 Q 28 15 26 13.4 L 10.2 3.3 Q 8 2 8 4.5 Z" fill="#FFFFFF"></path></svg>
+        <svg id="f20-bpause" viewBox="0 0 30 30" style="opacity:0;"><rect x="6" y="4" width="6.5" height="22" rx="2" fill="#FFFFFF"></rect><rect x="17.5" y="4" width="6.5" height="22" rx="2" fill="#FFFFFF"></rect></svg>
+      </div>
+      <div id="f20-track"><div id="f20-fill"></div><div id="f20-knob"></div></div>
+      <div id="f20-time">1:37 / 3:22</div>
+      <div class="f20-ic"><svg viewBox="0 0 30 30"><path d="M 4 11 L 9 11 L 15 5.5 L 15 24.5 L 9 19 L 4 19 Z" fill="#FFFFFF"></path><path d="M 19.5 10 Q 23 15 19.5 20 M 22.5 7 Q 28.5 15 22.5 23" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></path></svg></div>
+      <div class="f20-ic"><svg viewBox="0 0 30 30"><path d="M 4 11 L 4 4 L 11 4 M 19 4 L 26 4 L 26 11 M 26 19 L 26 26 L 19 26 M 11 26 L 4 26 L 4 19" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+    </div>
+
+    <div id="f20-pause"><i style="left: 6px;"></i><i style="left: 76px;"></i></div>
+
+    <div id="f20-cursor"><div id="f20-cursori"><svg viewBox="0 0 30 46" width="30" height="46" xmlns="http://www.w3.org/2000/svg" style="display:block; overflow:visible;"><path d="M 1.5 1.5 L 1.5 35.5 L 9.5 27.8 L 14.6 40.2 L 20.2 37.9 L 15.2 25.8 L 26.5 25.8 Z" fill="#FFFFFF" stroke="#000000" stroke-width="2" stroke-linejoin="round"></path></svg></div></div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const $ = (id) => document.getElementById(id);
+
+      // ===== Scene 1 (0.0-0.6): hard cut to a FROZEN image. Only the pause flash + player bar move. =====
+      tl.fromTo($("f20-pause"), { opacity: 1, scale: 1 }, { opacity: 0, scale: 1.15, duration: 0.25, ease: "power2.out" }, 0);
+      tl.fromTo($("f20-bar"), { y: 170 }, { y: 0, duration: 0.3, ease: "power3.out" }, 0);
+      tl.fromTo($("f20-shade"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 0);
+      // the lid itself is still: rotationX 0 until the very end
+      tl.fromTo($("f20-lid"), { rotationX: 0 }, { rotationX: 0, duration: 0.01, ease: "none" }, 0);
+
+      // ===== Scene 2 (0.6-2.2): the question builds ON the lid =====
+      tl.fromTo($("f20-vale"), { opacity: 0, y: 22, rotation: -6 }, { opacity: 1, y: 0, rotation: 0, duration: 0.3, ease: "power3.out" }, 0.58);
+      [["f20-w1", 1.05], ["f20-w2", 1.20], ["f20-w3", 1.41]].forEach(([id, t]) => {
+        tl.fromTo($(id), { opacity: 0, y: 40, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, t);
+      });
+      tl.fromTo($("f20-dentro"), { opacity: 0, scale: 1.25, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, 1.53);
+      // 3-frame micro-shake of the text only
+      tl.set($("f20-shake"), { x: 0 }, 0);
+      tl.set($("f20-shake"), { x: 7, y: -2 }, 1.70);
+      tl.set($("f20-shake"), { x: -6, y: 2 }, 1.7334);
+      tl.set($("f20-shake"), { x: 3, y: -1 }, 1.7667);
+      tl.set($("f20-shake"), { x: 0, y: 0 }, 1.80);
+
+      // ===== Scene 3 (2.2-3.22): "Te lo cuento." + cursor clicks play =====
+      [["f20-w5", 2.24], ["f20-w6", 2.36], ["f20-w7", 2.45]].forEach(([id, t]) => {
+        tl.fromTo($(id), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.24, ease: "power2.out" }, t);
+      });
+      // cursor enters from bottom-right, glides to the play disc
+      tl.fromTo($("f20-cursor"), { x: 1020, y: 700 }, { x: 0, y: 0, duration: 0.65, ease: "power2.inOut" }, 2.30);
+      // click
+      tl.fromTo($("f20-cursori"), { scale: 1 }, { scale: 0.86, duration: 0.05, ease: "power2.out" }, 3.05);
+      tl.to($("f20-cursori"), { scale: 1, duration: 0.08, ease: "power2.out" }, 3.10);
+      tl.fromTo($("f20-press"), { opacity: 0 }, { opacity: 1, duration: 0.06, ease: "power2.out" }, 3.05);
+      tl.fromTo($("f20-ripple"), { opacity: 0.7, scale: 1 }, { opacity: 0, scale: 1.8, duration: 0.35, ease: "power2.out", immediateRender: false }, 3.05);
+      tl.set($("f20-ripple"), { opacity: 0 }, 0);
+      // player icon flips to pause (= playing)
+      tl.set($("f20-bplay"), { opacity: 1 }, 0);
+      tl.set($("f20-bpause"), { opacity: 0 }, 0);
+      tl.set($("f20-bplay"), { opacity: 0 }, 3.12);
+      tl.set($("f20-bpause"), { opacity: 1 }, 3.12);
+      // the lid starts to lift on its hinge (continues in 21)
+      tl.to($("f20-lid"), { rotationX: 4, duration: 0.09, ease: "power2.in" }, 3.10);
+
+      window.__timelines["20-pausa"] = tl;
+    })();
+  </script>
+</template>

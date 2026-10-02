@@ -7,17 +7,22 @@
 
     #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
 
-    /* ---------- ground: paper + indigo dot grid ---------- */
-    #f02-ground { position: absolute; inset: 0; background: #F5F7FF; overflow: hidden; }
+    /* ---------- ground: NAWAR BLUE (gradient + vignette) + white dot grid ---------- */
+    #f02-ground {
+      position: absolute; inset: 0; overflow: hidden;
+      background:
+        radial-gradient(ellipse 80% 78% at 50% 50%, rgba(6,0,60,0) 58%, rgba(6,0,60,0.42) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
     #f02-dots {
       position: absolute; inset: 0;
-      background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.6px, transparent 1.7px);
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
       background-size: 28px 28px;
       background-position: 14px 14px;
     }
     #f02-light {
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse 62% 58% at 50% 46%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 70%);
+      background: radial-gradient(ellipse 58% 54% at 50% 46%, rgba(77,163,255,0.22) 0%, rgba(77,163,255,0.08) 45%, rgba(77,163,255,0) 72%);
     }
 
     /* ---------- stage (shake target) ---------- */
@@ -31,11 +36,11 @@
     .f02-hero {
       font-family: "Poppins", sans-serif; font-weight: 900;
       font-size: 460px; line-height: 0.95; letter-spacing: -0.04em;
-      text-transform: uppercase; color: #0C0C1E; white-space: nowrap;
+      text-transform: uppercase; color: #FFFFFF; white-space: nowrap;
       padding-right: 0.04em; /* optical: compensate trailing tracking */
     }
-    #f02-no { text-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
-    #f02-ghost { color: transparent; -webkit-text-stroke: 5px rgba(29,0,132,0.6); }
+    #f02-no { text-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 6px 18px rgba(4,0,40,0.22); }
+    #f02-ghost { color: transparent; -webkit-text-stroke: 5px rgba(255,255,255,0.6); }
 
     /* ---------- the building line ---------- */
     #f02-lines {
@@ -47,8 +52,9 @@
       font-size: 148px; line-height: 1.0; letter-spacing: -0.035em; white-space: nowrap;
     }
     .f02-w { display: inline-block; }
-    .f02-lead { font-weight: 600; color: #5A6480; }
-    .f02-key { font-weight: 800; color: #0C0C1E; }
+    .f02-lead { font-weight: 600; color: rgba(255,255,255,0.72); }
+    .f02-key { font-weight: 800; color: #FFFFFF; }
+    .f02-row { text-shadow: 0 18px 50px rgba(4,0,40,0.30); }
 
     #f02-nv { position: relative; display: inline-flex; align-items: baseline; gap: 0.26em; }
     #f02-strike-rot {
@@ -58,21 +64,21 @@
     #f02-strike {
       position: absolute; inset: 0; border-radius: 9px; background: #E02D3C;
       transform-origin: 0% 50%;
-      box-shadow: 0 6px 18px rgba(224,45,60,0.28);
+      box-shadow: 0 6px 18px rgba(4,0,40,0.35);
     }
 
     #f02-chip {
       display: inline-block; position: relative;
-      background: #1D0084; color: #FFFFFF; border-radius: 14px;
+      background: #FFFFFF; color: #1D0084; border-radius: 14px;
       padding: 0.07em 0.2em 0.04em 0.2em; margin-left: 0.04em;
-      box-shadow: 0 30px 80px rgba(18,0,129,0.22), 0 4px 14px rgba(18,0,129,0.12);
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45);
       transform-origin: 50% 55%;
     }
-    #f02-chip .f02-key { color: #FFFFFF; }
+    #f02-chip .f02-key { color: #1D0084; text-shadow: none; }
   </style>
 
-  <div id="root" data-composition-id="02-no-valgas" data-width="1920" data-height="1080" data-duration="2.657">
-    <div id="f02-ground" class="clip" data-start="0" data-duration="2.657" data-track-index="0">
+  <div id="root" data-composition-id="02-no-valgas" data-width="1920" data-height="1080" data-duration="2.76">
+    <div id="f02-ground" class="clip" data-start="0" data-duration="2.76" data-track-index="0">
       <div id="f02-dots"></div>
       <div id="f02-light"></div>
     </div>
@@ -158,6 +164,22 @@
       tl.fromTo(q("f02-idiomas"), { y: 26 }, { y: 0, duration: 0.3, ease: "power3.out" }, T.idiomas - LEAD);
 
       window.__timelines = window.__timelines || {};
+      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.185, 0.21], [0.777, 0.76], [0.907, 0.92], [1.083, 1.11], [1.203, 1.21], [1.314, 1.32], [1.638, 1.67], [1.824, 1.84], [1.99, 2.02], [2.657, 2.76]]);
       window.__timelines["02-no-valgas"] = tl;
     })();
   </script>
