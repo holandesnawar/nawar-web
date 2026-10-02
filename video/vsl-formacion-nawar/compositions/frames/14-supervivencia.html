@@ -35,40 +35,128 @@
       background: linear-gradient(90deg, rgba(159,213,245,0) 0%, rgba(159,213,245,0.55) 55%, #FFFFFF 100%);
     }
 
-    /* ---------- laptop (shared house geometry) ---------- */
-    #f14-push { transform-origin: 600px 558px; }
+    /* ---------- MacBook Pro mockup (tools/mac_mockup.md) ---------- */
+    #f14-push { transform-origin: 558px 544px; }
     #f14-ltail {
-      position: absolute; left: -420px; top: 338px; width: 900px; height: 420px; border-radius: 210px;
+      position: absolute; left: -420px; top: 320px; width: 900px; height: 450px; border-radius: 225px;
       transform-origin: 100% 50%;
       background: linear-gradient(90deg, rgba(159,213,245,0) 0%, rgba(159,213,245,0.20) 55%, rgba(255,255,255,0.45) 100%);
     }
-    #f14-floor {
-      position: absolute; left: 100px; top: 806px; width: 1000px; height: 80px; border-radius: 50%;
-      background: radial-gradient(ellipse at 50% 40%, rgba(4,0,40,0.55) 0%, rgba(4,0,40,0.22) 45%, rgba(4,0,40,0) 72%);
+    /* ================= MAC MOCKUP (tools/mac_mockup.md) — MacBook Pro front view + macOS window =================
+       One design unit u = screen width / 1120. Screen = 1120u × 700u (16:10). Browser chrome = 70u,
+       content = 1120u × 630u = exactly 16:9. Set --sw (screen / window width, a multiple of 16) and
+       everything else follows. */
+    .f14-mbp { --u: calc(var(--sw) / 1120); }
+    .f14-mbp {
+      --sw: 896px;
+      --al-0: #fbfbfc; --al-1: #e4e6ea; --al-2: #c3c7ce; --al-3: #9a9fa8; --al-4: #6f747d;   /* silver */
+      position: absolute; width: calc(var(--u) * 1236); height: calc(var(--u) * 778);
     }
-    #f14-lapstage { perspective: 2200px; perspective-origin: 600px 558px; }
-    #f14-lap { position: absolute; left: 150px; top: 288px; width: 900px; height: 531px; transform-origin: 50% 50%; }
-    #f14-bezel {
-      position: absolute; left: 0; top: 0; width: 900px; height: 505px; box-sizing: border-box; padding: 22px; border-radius: 26px;
-      background: #0C0C1E; box-shadow: 0 40px 110px rgba(4,0,40,0.45), inset 0 0 0 2px rgba(255,255,255,0.06);
+    .f14-mbp--grey { --al-0: #c4c7cc; --al-1: #8e9198; --al-2: #6c6f76; --al-3: #4d5056; --al-4: #34363b; }
+    /* soft contact shadow on the "table" + a tight occlusion line under the lip */
+    .f14-mbp-shadow {
+      position: absolute; left: calc(var(--u) * -50); top: calc(var(--u) * 746); width: calc(var(--u) * 1336); height: calc(var(--u) * 110);
+      border-radius: 50%;
+      background: radial-gradient(ellipse 50% 50% at 50% 40%, rgba(3,0,30,0.72) 0%, rgba(3,0,30,0.44) 34%, rgba(3,0,30,0.14) 64%, rgba(3,0,30,0) 100%);
     }
-    #f14-camdot { position: absolute; left: 446px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: #262a40; }
-    #f14-screen { position: relative; width: 856px; height: 461px; border-radius: 8px; overflow: hidden; background: #EEF1F8; }
-    #f14-vzoom { position: absolute; left: 0; top: 0; width: 856px; height: 461px; transform-origin: 760px 95px; }
-    .f14-vid { position: absolute; left: 0; top: 0; width: 856px; height: 461px; object-fit: cover; display: block; }
+    .f14-mbp-occl {
+      position: absolute; left: calc(var(--u) * 30); top: calc(var(--u) * 772); width: calc(var(--u) * 1176); height: calc(var(--u) * 14);
+      border-radius: 50%; background: rgba(2,0,20,0.85); filter: blur(calc(var(--u) * 4));
+    }
+    /* lid: thin aluminium edge around black glass */
+    .f14-mbp-lid {
+      position: absolute; left: calc(var(--u) * 38); top: 0; width: calc(var(--u) * 1160); height: calc(var(--u) * 754);
+      border-radius: calc(var(--u) * 30) calc(var(--u) * 30) calc(var(--u) * 7) calc(var(--u) * 7);
+      background: linear-gradient(180deg, var(--al-1) 0%, var(--al-2) 45%, var(--al-3) 100%);
+      box-shadow: inset 0 0 0 calc(var(--u) * 0.8) rgba(255,255,255,0.55), 0 calc(var(--u) * 26) calc(var(--u) * 70) rgba(4,0,40,0.30);
+    }
+    .f14-mbp-glass {
+      position: absolute; left: calc(var(--u) * 4); top: calc(var(--u) * 4); width: calc(var(--u) * 1152); height: calc(var(--u) * 746);
+      border-radius: calc(var(--u) * 26.5) calc(var(--u) * 26.5) calc(var(--u) * 4) calc(var(--u) * 4); overflow: hidden;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, #0d0e12 0%, #050506 70%);
+      box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(0,0,0,0.85);
+    }
+    .f14-mbp-screen {
+      position: absolute; left: calc(var(--u) * 16); top: calc(var(--u) * 16); width: calc(var(--u) * 1120); height: calc(var(--u) * 700);
+      border-radius: calc(var(--u) * 10) calc(var(--u) * 10) calc(var(--u) * 1.5) calc(var(--u) * 1.5); overflow: hidden; background: #FFFFFF;
+    }
+    /* camera notch (with concave fillets into the bezel) + lens */
+    .f14-mbp-notch {
+      position: absolute; left: calc(var(--u) * 517); top: calc(var(--u) * 16); width: calc(var(--u) * 118); height: calc(var(--u) * 21);
+      border-radius: 0 0 calc(var(--u) * 8) calc(var(--u) * 8); background: #050506;
+    }
+    .f14-mbp-notch::before, .f14-mbp-notch::after { content: ""; position: absolute; top: 0; width: calc(var(--u) * 6); height: calc(var(--u) * 6); }
+    .f14-mbp-notch::before { left: calc(var(--u) * -6); background: radial-gradient(circle at 0% 100%, rgba(5,5,6,0) calc(var(--u) * 5.5), #050506 calc(var(--u) * 6)); }
+    .f14-mbp-notch::after { right: calc(var(--u) * -6); background: radial-gradient(circle at 100% 100%, rgba(5,5,6,0) calc(var(--u) * 5.5), #050506 calc(var(--u) * 6)); }
+    .f14-mbp-lens {
+      position: absolute; left: calc(var(--u) * 55.5); top: calc(var(--u) * 7); width: calc(var(--u) * 7); height: calc(var(--u) * 7); border-radius: 50%;
+      background: radial-gradient(circle at 38% 34%, #4a5a8c 0%, #1a2142 38%, #0a0b14 72%);
+      box-shadow: 0 0 0 calc(var(--u) * 1.2) #111217;
+    }
+    /* glass reflection over bezel + screen */
+    .f14-mbp-reflect {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none;
+      background: linear-gradient(121deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.035) 30%, rgba(255,255,255,0.016) 40.5%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 100%);
+    }
+    /* base: front lip only (no keyboard), slightly wider than the lid, drawn over the lid's hinge edge */
+    .f14-mbp-base {
+      position: absolute; left: 0; top: calc(var(--u) * 751); width: calc(var(--u) * 1236); height: calc(var(--u) * 27);
+      border-radius: calc(var(--u) * 4) calc(var(--u) * 4) calc(var(--u) * 70) calc(var(--u) * 70) / calc(var(--u) * 3) calc(var(--u) * 3) calc(var(--u) * 24) calc(var(--u) * 24);
+      background: linear-gradient(180deg, var(--al-0) 0%, var(--al-1) 12%, var(--al-2) 44%, var(--al-3) 76%, var(--al-4) 100%);
+      box-shadow: inset 0 calc(var(--u) * -1.2) calc(var(--u) * 1.5) rgba(0,0,0,0.22), inset 0 calc(var(--u) * 0.8) 0 rgba(255,255,255,0.7);
+    }
+    .f14-mbp-thumb {
+      position: absolute; left: calc(var(--u) * 538); top: 0; width: calc(var(--u) * 160); height: calc(var(--u) * 8);
+      border-radius: 0 0 50% 50% / 0 0 100% 100%;
+      background: linear-gradient(180deg, var(--al-3) 0%, var(--al-2) 55%, var(--al-1) 100%);
+      box-shadow: inset 0 calc(var(--u) * 1.6) calc(var(--u) * 2.2) rgba(0,0,0,0.30), 0 calc(var(--u) * 0.6) 0 rgba(255,255,255,0.45);
+    }
+
+    /* browser chrome (shared): tab strip 36u + toolbar 34u = 70u */
+    .f14-chrome { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 70); font-family: "Inter", sans-serif; }
+    .f14-tabs { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--u) * 36); background: #DEE1E6; }
+    .f14-tl { position: absolute; top: calc(var(--u) * 12); width: calc(var(--u) * 12); height: calc(var(--u) * 12); border-radius: 50%; }
+    .f14-tl-r { left: calc(var(--u) * 13); background: #FF5F57; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #E0443E; }
+    .f14-tl-y { left: calc(var(--u) * 33); background: #FEBC2E; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #DEA123; }
+    .f14-tl-g { left: calc(var(--u) * 53); background: #28C840; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #1AAB29; }
+    .f14-tab {
+      position: absolute; left: calc(var(--u) * 82); top: calc(var(--u) * 7); width: calc(var(--u) * 232); height: calc(var(--u) * 29);
+      border-radius: calc(var(--u) * 9) calc(var(--u) * 9) 0 0; background: #FFFFFF;
+    }
+    .f14-tab::before, .f14-tab::after { content: ""; position: absolute; bottom: 0; width: calc(var(--u) * 9); height: calc(var(--u) * 9); }
+    .f14-tab::before { left: calc(var(--u) * -9); background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f14-tab::after { right: calc(var(--u) * -9); background: radial-gradient(circle at 100% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f14-fav {
+      position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 7); width: calc(var(--u) * 15); height: calc(var(--u) * 15);
+      border-radius: calc(var(--u) * 3.5); overflow: hidden; background: radial-gradient(circle at 50% 45%, #2fb6f2 0%, #0b6df0 80%);
+    }
+    .f14-fav img { position: absolute; left: calc(var(--u) * 1.2); top: calc(var(--u) * 5.2); width: calc(var(--u) * 12.6); height: auto; display: block; }
+    .f14-tab-t {
+      position: absolute; left: calc(var(--u) * 35); top: 0; height: calc(var(--u) * 29); line-height: calc(var(--u) * 29);
+      font-size: calc(var(--u) * 12); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f14-tab-x { position: absolute; right: calc(var(--u) * 10); top: calc(var(--u) * 9.5); width: calc(var(--u) * 10); height: calc(var(--u) * 10); }
+    .f14-plus { position: absolute; left: calc(var(--u) * 330); top: calc(var(--u) * 11); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    .f14-bar { position: absolute; left: 0; top: calc(var(--u) * 36); width: 100%; height: calc(var(--u) * 34); background: #FFFFFF; box-shadow: inset 0 calc(var(--u) * -1) 0 #DADCE0; }
+    .f14-nav { position: absolute; left: calc(var(--u) * 14); top: calc(var(--u) * 9); width: calc(var(--u) * 86); height: calc(var(--u) * 16); overflow: visible; }   /* back · forward (disabled) · reload */
+    .f14-menu { position: absolute; left: calc(var(--u) * 1086); top: calc(var(--u) * 9); width: calc(var(--u) * 16); height: calc(var(--u) * 16); }
+    .f14-url {
+      position: absolute; left: calc(var(--u) * 102); top: calc(var(--u) * 4); width: calc(var(--u) * 962); height: calc(var(--u) * 26);
+      border-radius: calc(var(--u) * 13); background: #F1F3F4;
+    }
+    .f14-lock { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6.5); width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
+    .f14-url-t {
+      position: absolute; left: calc(var(--u) * 33); top: 0; height: calc(var(--u) * 26); line-height: calc(var(--u) * 26);
+      font-size: calc(var(--u) * 13); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f14-star { position: absolute; right: calc(var(--u) * 11); top: calc(var(--u) * 6); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    /* 16:9 content area — real recordings, object-fit cover (never stretch) */
+    .f14-content { position: absolute; left: 0; top: calc(var(--u) * 70); width: calc(var(--u) * 1120); height: calc(var(--u) * 630); overflow: hidden; background: #FFFFFF; }
+    .f14-media { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--fx, 50%) 50%; display: block; }
     #f14-sheen {
-      position: absolute; left: 0; top: -120px; width: 520px; height: 720px; opacity: 0.9;
-      background: linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.32) 50%, rgba(255,255,255,0) 70%);
+      position: absolute; left: 0; top: -120px; width: 520px; height: 780px; opacity: 0.9; pointer-events: none;
+      background: linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0) 70%);
     }
-    #f14-glass {
-      position: absolute; inset: 0;
-      background: linear-gradient(118deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 34%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 100%);
-    }
-    #f14-base {
-      position: absolute; left: -44px; top: 503px; width: 988px; height: 26px; border-radius: 3px 3px 24px 24px;
-      background: linear-gradient(180deg, #eef1f7 0%, #c9cfdc 40%, #9aa3b8 100%); box-shadow: 0 10px 24px rgba(4,0,40,0.35);
-    }
-    #f14-notch { position: absolute; left: 414px; top: 0; width: 160px; height: 9px; border-radius: 0 0 10px 10px; background: linear-gradient(180deg, #9aa3b8 0%, #b9c0cf 100%); }
 
     /* ---------- Dutch subtitle bubble ---------- */
     #f14-bub { position: absolute; left: 186px; top: 600px; transform-origin: 0% 100%; filter: drop-shadow(0 26px 40px rgba(4,0,40,0.45)); }
@@ -192,29 +280,38 @@
     <div id="f14-push" class="f14-full">
       <div id="f14-slide" class="f14-full">
         <div id="f14-ltail"></div>
-        <div id="f14-floor"></div>
-        <div id="f14-lapstage" class="f14-full">
-          <div id="f14-lap">
-            <div id="f14-base"><div id="f14-notch"></div></div>
-            <div id="f14-bezel">
-              <div id="f14-camdot"></div>
-              <div id="f14-screen">
-                <div id="f14-vzoom">
+        <!-- MacBook Pro mockup, screen 848 px: content 848×477 (16:9) — front view, no tilt, no zoom on the footage -->
+        <div id="f14-lap" class="f14-mbp" style="--sw:848px; left:90px; top:250px;">
+          <div class="f14-mbp-shadow"></div><div class="f14-mbp-occl"></div>
+          <div class="f14-mbp-lid">
+            <div class="f14-mbp-glass">
+              <div class="f14-mbp-screen">
+                <div class="f14-chrome">
+                  <div class="f14-tabs"><i class="f14-tl f14-tl-r"></i><i class="f14-tl f14-tl-y"></i><i class="f14-tl f14-tl-g"></i>
+                    <div class="f14-tab"><div class="f14-fav"><img src="assets/img/logo-nawar.png" alt="" /></div><div class="f14-tab-t">Holandés Nawar</div><svg class="f14-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
+                    <svg class="f14-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
+                  <div class="f14-bar"><svg class="f14-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
+                    <div class="f14-url"><svg class="f14-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="f14-url-t">holandesnawar.com</div><svg class="f14-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
+                    <svg class="f14-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
+                </div>
+                <div class="f14-content" style="--fx:12%;">
                   <!-- media 5.4–7.25 is a clean static hold (same cursor); 7.35–9.0 has recorder overlay + cursor moves, so the hold is looped from that window -->
-                  <video id="f14-vid" class="clip f14-vid" src="assets/video/inicio-home.mp4" muted playsinline
+                  <video id="f14-vid" class="clip f14-media" src="assets/video/inicio-home.mp4" muted playsinline
                     data-start="0" data-duration="3.268" data-media-start="4.0" data-hf-media-start-basis="local" data-track-index="2"></video>
-                  <video id="f14-vid2" class="clip f14-vid" src="assets/video/inicio-home.mp4" muted playsinline
+                  <video id="f14-vid2" class="clip f14-media" src="assets/video/inicio-home.mp4" muted playsinline
                     data-start="3.268" data-duration="1.806" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
-                  <video id="f14-vid3" class="clip f14-vid" src="assets/video/inicio-home.mp4" muted playsinline
+                  <video id="f14-vid3" class="clip f14-media" src="assets/video/inicio-home.mp4" muted playsinline
                     data-start="5.074" data-duration="1.952" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
-                  <video id="f14-vid4" class="clip f14-vid" src="assets/video/inicio-home.mp4" muted playsinline
+                  <video id="f14-vid4" class="clip f14-media" src="assets/video/inicio-home.mp4" muted playsinline
                     data-start="7.026" data-duration="1.054" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
                 </div>
                 <div id="f14-sheen"></div>
-                <div id="f14-glass"></div>
               </div>
+              <div class="f14-mbp-notch"><i class="f14-mbp-lens"></i></div>
+              <div class="f14-mbp-reflect"></div>
             </div>
           </div>
+          <div class="f14-mbp-base"><div class="f14-mbp-thumb"></div></div>
         </div>
       </div>
 
@@ -315,15 +412,11 @@
       tl.fromTo(bp, { v: 30 }, { v: 0, duration: MOVE, ease: "expo.out", onUpdate: writeBlur }, 0);
       tl.fromTo(q("f14-ltail"), { scaleX: 1, opacity: 1 }, { scaleX: 0.05, opacity: 0, duration: 0.36, ease: "expo.out" }, 0);
       tl.set(slide, { filter: "none" }, MOVE + 0.02);
-      // the laptop swings into its 10° tilt while it travels, then drifts a hair for life
-      tl.fromTo(q("f14-lap"), { rotationY: 26, rotationX: 3 }, { rotationY: 10, rotationX: 2, duration: 0.7, ease: "power3.out" }, 0);
-      tl.to(q("f14-lap"), { rotationY: 8, duration: D - 0.7, ease: "power1.inOut" }, 0.7);
       // a glass sheen crosses the screen once as it lands
       tl.fromTo(q("f14-sheen"), { x: -620 }, { x: 1000, duration: 0.7, ease: "power2.inOut" }, 0.36);
 
-      // macro camera: slow push-in on the laptop + deeper push into the "Hoja de ruta" on screen
+      // macro camera: barely-there drift of the whole stage (≤ 2 %). The footage itself is never zoomed (owner note v2).
       tl.fromTo(q("f14-push"), { scale: 1 }, { scale: 1.02, duration: D, ease: "power1.out" }, 0);
-      tl.fromTo(q("f14-vzoom"), { scale: 1 }, { scale: 1.26, duration: D - 1.0, ease: "power2.inOut" }, 1.0);
 
       // checklist card rides the same sweep (a farther plane: shorter travel, soft focus pull)
       tl.fromTo(q("f14-card"), { x: -240, filter: "blur(12px)" },

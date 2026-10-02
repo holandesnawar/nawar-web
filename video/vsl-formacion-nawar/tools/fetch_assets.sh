@@ -55,6 +55,7 @@ for f in gsap SplitText MotionPathPlugin CustomEase DrawSVGPlugin Flip; do cp no
 
 echo "sfx (HyperFrames media-use pack)"
 cp ~/.claude/skills/media-use/audio/assets/sfx/*.mp3 assets/sfx/ 2>/dev/null || echo "  (install the hyperframes skills first: npx hyperframes skills)"
+ffmpeg -v error -y -i assets/sfx/glitch-1.mp3 -t 0.6 -af "afade=t=out:st=0.42:d=0.18" assets/sfx/glitch-1-short.mp3   # v2: short crack
 
 echo "v2 media (same Drive folder)"
 dl 1DeeW7B-n481P_BydJD1D5i76fE30af6Q voz-v2-b.mp3        # voice B (chosen v2 take)

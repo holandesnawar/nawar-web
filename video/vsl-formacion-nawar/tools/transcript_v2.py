@@ -6,11 +6,16 @@ A few words the aligner squeezed together are re-timed by hand from the waveform
 """
 import json, os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FIX = {  # word index → (start, end) in voice-file seconds
-    396: (125.95, 126.00), 397: (126.00, 126.05), 398: (126.05, 126.25),       # "de la escuela"
-    399: (126.27, 126.31), 400: (126.31, 126.36), 401: (126.36, 126.65),       # "y te responden"
-    563: (178.74, 178.86), 564: (178.86, 178.95), 565: (178.95, 179.05),        # "ya lo has"
-    566: (179.05, 179.45), 567: (179.65, 180.50), 568: (180.82, 181.20), 569: (181.35, 182.01),  # "probado. Ahora toca hablar."
+FIX = {  # word index → (start, end) in voice-file seconds; checked against word-level Whisper (bias-corrected) + the envelope
+    194: (57.20, 57.70),                                                        # "exactamente"
+    395: (125.72, 126.00), 396: (126.00, 126.08), 397: (126.08, 126.18), 398: (126.18, 126.65),  # "dentro de la escuela"
+    399: (126.84, 126.92), 400: (126.92, 127.05), 401: (127.20, 127.63),       # "y te responden."
+    402: (127.97, 128.10), 403: (128.12, 128.50), 404: (128.56, 128.70), 405: (128.72, 128.86),
+    406: (128.88, 129.25), 407: (129.28, 129.75),                               # "Tus dudas no se quedan esperando."
+    443: (139.58, 139.83),                                                      # "saben"
+    561: (178.88, 179.18), 562: (179.20, 179.45), 563: (179.66, 179.80), 564: (179.82, 179.90),
+    565: (179.92, 180.08), 566: (180.10, 180.50),                               # "algún día … ya lo has probado."
+    567: (180.85, 181.20), 568: (181.30, 181.55), 569: (181.60, 182.01),        # "Ahora toca hablar."
 }
 def main():
     plan = json.load(open(os.path.join(ROOT, "audio_v2.json")))

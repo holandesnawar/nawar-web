@@ -390,6 +390,22 @@
 
       // "estás.": Estás aquí
       tl.fromTo("#f29-here", { opacity: 0, scale: 0.5, x: -14 }, { opacity: 1, scale: 1, x: 0, duration: 0.3, ease: "expo.out" }, 5.11);
+      // retime fix (tools/retime_fix.py): corrected word cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.27, 0.27], [0.51, 0.51], [0.64, 0.64], [0.72, 0.72], [1.15, 1.15], [1.22, 1.22], [1.27, 1.27], [1.67, 1.67], [1.87, 1.87], [1.97, 1.97], [2.12, 2.12], [2.22, 2.22], [2.62, 2.62], [2.71, 2.71], [3.47, 3.47], [3.56, 3.56], [3.98, 3.98], [4.25, 4.56], [4.81, 4.81], [5.13, 5.13], [5.78, 5.78]]);
 
       window.__timelines["29-mismo-profe"] = tl;
     })();

@@ -53,7 +53,7 @@ def main():
                     print(f"WARN {fid}: unknown sfx {name}")
                     continue
                 start = round(max(0.0, f["start"] + float(c.get("t", 0))), 3)
-                d = round(min(dur_of(src), total - start), 3)
+                d = round(min(dur_of(src), float(c.get("dur", 1e9)), total - start), 3)  # optional "dur" trims a long SFX
                 if d <= 0.05:
                     continue
                 vol = max(0.0, min(1.0, float(c.get("volume", 0.35)) * TYPE_GAIN.get(name, 1.0)))
