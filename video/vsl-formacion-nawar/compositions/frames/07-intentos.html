@@ -1,0 +1,459 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 800; font-style: normal; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+
+    /* ---------- ground: paper + indigo dot grid ---------- */
+    #f07-ground { position: absolute; inset: 0; background: #F5F7FF; overflow: hidden; }
+    #f07-dots {
+      position: absolute; left: -240px; top: -40px; right: -240px; bottom: -40px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.6px, transparent 1.8px);
+      background-size: 28px 28px; background-position: 6px 12px;
+    }
+    #f07-light {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 50% 48%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 95% 95% at 50% 50%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.06) 100%);
+    }
+
+    .f07-scene { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #f07-s2, #f07-s3 { visibility: hidden; }
+    .f07-w { display: inline-block; }
+
+    /* ================= SCENE 1 — "Y no será por falta de INTENTOS" ================= */
+    #f07-s1push { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 560px; }
+    #f07-s1cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 292px; }
+    #f07-leadwrap { position: absolute; left: 0; top: 262px; width: 1920px; height: 90px; }
+    #f07-lead {
+      position: absolute; left: 0; top: 0; width: 1920px; text-align: center; white-space: nowrap;
+      font-weight: 700; font-size: 56px; line-height: 1.1; letter-spacing: -0.02em; color: #374151;
+    }
+    #f07-leadIn { position: relative; display: inline-block; }
+    /* speed bars live in a width-matched ghost of the lead (anchored at the Y's landing spot) */
+    #f07-barswrap { position: absolute; left: 0; top: 262px; width: 1920px; height: 90px; }
+    #f07-barsLead { position: absolute; left: 0; top: 0; width: 1920px; text-align: center; white-space: nowrap;
+      font-weight: 700; font-size: 56px; line-height: 1.1; letter-spacing: -0.02em; color: #374151; }
+    #f07-barsIn { position: relative; display: inline-block; color: transparent; }  /* width-matching ghost: text invisible, never visibility:visible children (they leak outside the clip window) */
+      .f07-speed { position: absolute; border-radius: 999px; transform-origin: 100% 50%;
+      background: linear-gradient(90deg, rgba(29,0,132,0) 0%, #1D0084 40%, #1D0084 100%); }
+    #f07-sp1 { right: calc(100% + 14px); top: -2px; width: 900px; height: 10px; }
+    #f07-sp2 { right: calc(100% - 6px); top: 23px; width: 700px; height: 16px; }
+    #f07-sp3 { right: calc(100% + 22px); top: 56px; width: 1100px; height: 8px; }
+    #f07-hero {
+      position: absolute; left: 0; top: 344px; width: 1920px; text-align: center; white-space: nowrap;
+    }
+    #f07-heroTxt {
+      display: inline-block; transform-origin: 50% 60%;
+      font-weight: 900; font-size: 190px; line-height: 0.95; letter-spacing: -0.04em; color: #0C0C1E;
+      text-transform: uppercase; padding: 0 0.04em;
+      text-shadow: 0 6px 0 rgba(29,0,132,0.06), 0 34px 70px rgba(29,0,132,0.16);
+    }
+    #f07-tallyWrap { position: absolute; left: 700px; top: 602px; width: 520px; height: 272px; transform-origin: 260px 150px; }
+    #f07-tally { position: absolute; left: 0; top: 0; width: 520px; height: 272px; overflow: visible; }
+    #f07-tally path { fill: none; stroke: #E02D3C; stroke-width: 17; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ================= SCENE 2 — week strip ================= */
+    #f07-label {
+      position: absolute; left: 0; top: 256px; width: 1920px; text-align: center; white-space: nowrap;
+      font-weight: 700; font-size: 56px; line-height: 1.1; letter-spacing: -0.02em; color: #0C0C1E;
+    }
+    #f07-strip { position: absolute; left: 230px; top: 384px; width: 1460px; height: 350px; display: flex; gap: 24px; }
+    .f07-day { position: relative; width: 188px; height: 350px; }
+    .f07-dayBox {
+      position: absolute; left: 0; top: 0; width: 188px; height: 350px; border-radius: 28px;
+      border: 4px solid #C4CBDC; background: rgba(255,255,255,0.55); box-sizing: border-box; overflow: hidden;
+    }
+    .f07-ini {
+      position: absolute; left: 0; top: 38px; width: 100%; text-align: center;
+      font-weight: 800; font-size: 104px; line-height: 1; letter-spacing: -0.02em; color: #A9B1C6;
+    }
+    .f07-slot {
+      position: absolute; left: 30px; right: 30px; height: 0; border-top: 4px dashed #DCE2EE;
+    }
+    #f07-xBox { border-color: #C4CBDC; }
+    #f07-xGlow {
+      position: absolute; left: 0; top: 0; width: 188px; height: 350px; border-radius: 28px;
+      box-shadow: 0 30px 70px rgba(11,109,240,0.38), 0 6px 16px rgba(11,109,240,0.25);
+    }
+    #f07-xFill {
+      position: absolute; left: -4px; top: -4px; width: 188px; height: 350px;
+      background: linear-gradient(180deg, #1f7cf5 0%, #0b6df0 55%, #0a5fd6 100%);
+      transform-origin: 50% 100%;
+    }
+    #f07-xIniOn { color: #FFFFFF; }
+    #f07-chip {
+      position: absolute; left: 22px; top: 238px; width: 136px; height: 70px; border-radius: 999px;
+      background: #FFFFFF; box-shadow: 0 10px 24px rgba(7,4,31,0.22);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    #f07-chip svg { width: 34px; height: 34px; overflow: visible; }
+    #f07-chip span { font-weight: 800; font-size: 40px; line-height: 1; letter-spacing: -0.02em; color: #0b6df0; }
+    #f07-bracket { position: absolute; left: 230px; top: 768px; width: 1460px; height: 44px; overflow: visible; }
+    #f07-bracket path { fill: none; stroke: #1D0084; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ================= SCENE 3 — the one-size-fits-all book ================= */
+    #f07-txt3 { position: absolute; left: 164px; top: 318px; width: 1040px; }
+    #f07-upper { position: relative; transform-origin: 0 100%; }
+    #f07-pensado {
+      white-space: nowrap; font-weight: 700; font-size: 56px; line-height: 1.1; letter-spacing: -0.02em; color: #374151;
+    }
+    #f07-mundo {
+      margin-top: 8px; white-space: nowrap;
+      font-weight: 800; font-size: 132px; line-height: 1.02; letter-spacing: -0.035em; color: #0C0C1E;
+    }
+    #f07-mundo .f07-w { transform-origin: 50% 75%; }
+    #f07-nadieRow {
+      margin-top: 48px; white-space: nowrap;
+      font-weight: 800; font-size: 120px; line-height: 1.05; letter-spacing: -0.03em; color: #0C0C1E;
+    }
+    #f07-nadie { transform-origin: 30% 70%; font-weight: 900; }
+
+    #f07-bookPos { position: absolute; left: 1210px; top: 212px; width: 500px; height: 680px; }
+    #f07-bookFx { position: absolute; left: 0; top: 0; width: 500px; height: 680px; }
+    #f07-bookIn { position: absolute; left: 0; top: 0; width: 500px; height: 680px; }
+    #f07-bookShadow {
+      position: absolute; left: 30px; top: 600px; width: 470px; height: 70px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(18,0,129,0.26) 0%, rgba(18,0,129,0.10) 45%, rgba(18,0,129,0) 72%);
+    }
+    #f07-stage { position: absolute; left: 0; top: 0; width: 500px; height: 640px; perspective: 1500px; perspective-origin: 72% 42%; }
+    #f07-book { position: absolute; left: 40px; top: 40px; width: 420px; height: 560px; transform-style: preserve-3d; }
+    .f07-face { position: absolute; left: 0; top: 0; width: 420px; height: 560px; }
+    #f07-back {
+      transform: translateZ(-45px); border-radius: 6px 16px 16px 6px;
+      background: linear-gradient(180deg, #1b3a76 0%, #14005E 100%);
+    }
+    #f07-pages {
+      left: 371px; top: 7px; width: 90px; height: 546px; border-radius: 3px;
+      transform: rotateY(90deg);
+      background: linear-gradient(90deg, rgba(12,12,30,0.16) 0%, rgba(12,12,30,0) 30%, rgba(12,12,30,0) 80%, rgba(12,12,30,0.10) 100%),
+                  repeating-linear-gradient(90deg, #FFFFFF 0px, #FFFFFF 2px, #DCE1EC 2px, #DCE1EC 3px);
+      box-shadow: inset 0 0 0 1px rgba(12,12,30,0.06);
+    }
+    #f07-cover {
+      transform: translateZ(45px); border-radius: 6px 16px 16px 6px; overflow: hidden;
+      background: linear-gradient(165deg, #2b55a3 0%, #21468C 46%, #1D0084 100%);
+    }
+    #f07-band { position: absolute; left: 0; top: 0; width: 420px; height: 54px; }
+    #f07-band div { height: 18px; }
+    #f07-spine {
+      position: absolute; left: 0; top: 0; width: 34px; height: 560px;
+      background: linear-gradient(90deg, rgba(7,4,31,0.42) 0%, rgba(7,4,31,0.12) 55%, rgba(255,255,255,0.16) 78%, rgba(255,255,255,0) 100%);
+    }
+    #f07-gloss {
+      position: absolute; left: 0; top: 0; width: 420px; height: 560px;
+      background: linear-gradient(118deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.13) 44%, rgba(255,255,255,0) 58%);
+    }
+    #f07-ctitle { position: absolute; left: 58px; top: 92px; width: 340px; }
+    #f07-cDutch {
+      font-weight: 900; font-size: 92px; line-height: 0.92; letter-spacing: -0.04em; color: #FFFFFF;
+    }
+    #f07-cFor {
+      margin-top: 10px; font-family: "Inter", sans-serif; font-weight: 800; font-size: 27px; line-height: 1.15;
+      letter-spacing: 0.12em; color: #9fd5f5;
+    }
+    #f07-globe { position: absolute; left: 128px; top: 262px; width: 190px; height: 190px; overflow: visible; transform-origin: 95px 95px; }
+    #f07-globe .f07-g { fill: none; stroke: rgba(255,255,255,0.9); stroke-width: 6; stroke-linecap: round; }
+    #f07-levels { position: absolute; left: 58px; top: 484px; width: 330px; height: 34px; display: flex; gap: 7px; }
+    .f07-lv { position: relative; width: 49px; height: 34px; }
+    .f07-lv div {
+      position: absolute; left: 0; top: 0; width: 49px; height: 34px; border-radius: 9px;
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 17px; line-height: 34px; text-align: center; letter-spacing: 0.02em;
+    }
+    .f07-lvOff { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.62); }
+    .f07-lvOn { background: #9fd5f5; color: #1D0084; }
+  </style>
+
+  <div id="root" data-composition-id="07-intentos" data-width="1920" data-height="1080" data-duration="6.046">
+    <div id="f07-ground" class="clip" data-start="0" data-duration="6.046" data-track-index="0">
+      <div id="f07-dots"></div>
+      <div id="f07-light"></div>
+    </div>
+
+    <svg width="0" height="0" aria-hidden="true" style="position: absolute">
+      <filter id="f07-streak" x="-60%" y="-40%" width="220%" height="180%">
+        <feGaussianBlur id="f07-streakBlur" in="SourceGraphic" stdDeviation="26 0" />
+      </filter>
+      <filter id="f07-vblurOut" x="-5%" y="-30%" width="110%" height="160%">
+        <feGaussianBlur id="f07-vblurOutNode" in="SourceGraphic" stdDeviation="0 0" />
+      </filter>
+      <filter id="f07-vblurIn" x="-5%" y="-30%" width="110%" height="160%">
+        <feGaussianBlur id="f07-vblurInNode" in="SourceGraphic" stdDeviation="0 0" />
+      </filter>
+    </svg>
+
+    <!-- ================= SCENE 1 ================= -->
+    <div id="f07-s1" class="f07-scene">
+      <div id="f07-s1push"><div id="f07-s1cam">
+        <div id="f07-barswrap"><div id="f07-barsLead"><span id="f07-barsIn"><i class="f07-speed" id="f07-sp1"></i><i class="f07-speed" id="f07-sp2"></i><i class="f07-speed" id="f07-sp3"></i><span class="f07-w">Y</span> <span class="f07-w">no</span> <span class="f07-w">será</span> <span class="f07-w">por</span> <span class="f07-w">falta</span> <span class="f07-w">de</span></span></div></div>
+        <div id="f07-leadwrap" style="filter: url(#f07-streak)">
+          <div id="f07-lead"><span id="f07-leadIn"><span class="f07-w" id="f07-wY">Y</span> <span class="f07-w" id="f07-wNo">no</span> <span class="f07-w" id="f07-wSera">será</span> <span class="f07-w" id="f07-wPor">por</span> <span class="f07-w" id="f07-wFalta">falta</span> <span class="f07-w" id="f07-wDe">de</span></span></div>
+        </div>
+        <div id="f07-hero"><div id="f07-heroShake" style="display: inline-block"><span id="f07-heroTxt">intentos</span></div></div>
+        <div id="f07-tallyWrap">
+          <svg id="f07-tally" viewBox="0 0 520 272" xmlns="http://www.w3.org/2000/svg">
+            <path class="f07-tk" pathLength="1" d="M92 34 Q86 136 94 238" />
+            <path class="f07-tk" pathLength="1" d="M192 28 Q198 132 190 242" />
+            <path class="f07-tk" pathLength="1" d="M290 36 Q284 138 292 236" />
+            <path class="f07-tk" pathLength="1" d="M388 30 Q394 130 386 240" />
+            <path class="f07-tk" pathLength="1" d="M34 206 Q236 140 478 58" />
+          </svg>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- ================= SCENE 2 ================= -->
+    <div id="f07-s2" class="f07-scene">
+      <div id="f07-label"><span class="f07-w" id="f07-wUna">Una</span> <span class="f07-w" id="f07-wClase">clase</span> <span class="f07-w" id="f07-wA">a</span> <span class="f07-w" id="f07-wLa">la</span> <span class="f07-w" id="f07-wSemana">semana.</span></div>
+      <div id="f07-strip">
+        <div class="f07-day"><div class="f07-dayBox"><div class="f07-ini">L</div><div class="f07-slot" style="top: 196px"></div><div class="f07-slot" style="top: 246px"></div><div class="f07-slot" style="top: 296px"></div></div></div>
+        <div class="f07-day"><div class="f07-dayBox"><div class="f07-ini">M</div><div class="f07-slot" style="top: 196px"></div><div class="f07-slot" style="top: 246px"></div><div class="f07-slot" style="top: 296px"></div></div></div>
+        <div class="f07-day" id="f07-dX">
+          <div id="f07-xLift" style="position: absolute; left: 0; top: 0; width: 188px; height: 350px; transform-origin: 94px 260px">
+            <div id="f07-xGlow"></div>
+            <div class="f07-dayBox" id="f07-xBox">
+              <div class="f07-ini">X</div><div class="f07-slot" style="top: 196px"></div><div class="f07-slot" style="top: 246px"></div><div class="f07-slot" style="top: 296px"></div>
+              <div id="f07-xFill"></div>
+              <div class="f07-ini" id="f07-xIniOn">X</div>
+              <div id="f07-chip">
+                <svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg"><circle cx="17" cy="17" r="13" fill="none" stroke="#0b6df0" stroke-width="4.5" /><path d="M17 9.5 V17 L22 20.5" fill="none" stroke="#0b6df0" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <span>1h</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="f07-day"><div class="f07-dayBox"><div class="f07-ini">J</div><div class="f07-slot" style="top: 196px"></div><div class="f07-slot" style="top: 246px"></div><div class="f07-slot" style="top: 296px"></div></div></div>
+        <div class="f07-day"><div class="f07-dayBox"><div class="f07-ini">V</div><div class="f07-slot" style="top: 196px"></div><div class="f07-slot" style="top: 246px"></div><div class="f07-slot" style="top: 296px"></div></div></div>
+        <div class="f07-day"><div class="f07-dayBox"><div class="f07-ini">S</div><div class="f07-slot" style="top: 196px"></div><div class="f07-slot" style="top: 246px"></div><div class="f07-slot" style="top: 296px"></div></div></div>
+        <div class="f07-day"><div class="f07-dayBox"><div class="f07-ini">D</div><div class="f07-slot" style="top: 196px"></div><div class="f07-slot" style="top: 246px"></div><div class="f07-slot" style="top: 296px"></div></div></div>
+      </div>
+      <svg id="f07-bracket" viewBox="0 0 1460 44" xmlns="http://www.w3.org/2000/svg">
+        <path id="f07-brPath" pathLength="1" d="M8 6 V20 Q8 32 20 32 H1440 Q1452 32 1452 20 V6" />
+      </svg>
+    </div>
+
+    <!-- ================= SCENE 3 ================= -->
+    <div id="f07-s3" class="f07-scene">
+      <div id="f07-txt3">
+        <div id="f07-upper">
+          <div id="f07-pensado"><span class="f07-w" id="f07-wPensado">pensado</span> <span class="f07-w" id="f07-wPara">para</span></div>
+          <div id="f07-mundo"><span class="f07-w" id="f07-wTodo">todo</span> <span class="f07-w" id="f07-wEl">el</span> <span class="f07-w" id="f07-wMundo">mundo</span></div>
+        </div>
+        <div id="f07-nadieRow"><span class="f07-w" id="f07-wY2">y</span> <span class="f07-w" id="f07-wPara2">para</span> <span class="f07-w" id="f07-nadie">nadie.</span></div>
+      </div>
+
+      <div id="f07-bookPos">
+        <div id="f07-bookFx">
+          <div id="f07-bookIn">
+            <div id="f07-bookShadow"></div>
+            <div id="f07-stage">
+              <div id="f07-book">
+                <div class="f07-face" id="f07-back"></div>
+                <div class="f07-face" id="f07-pages"></div>
+                <div class="f07-face" id="f07-cover">
+                  <div id="f07-band"><div style="background: #AE1C27"></div><div style="background: #FFFFFF"></div><div style="background: #21468C"></div></div>
+                  <div id="f07-ctitle">
+                    <div id="f07-cDutch">DUTCH</div>
+                    <div id="f07-cFor">FOR EVERYONE</div>
+                  </div>
+                  <svg id="f07-globe" viewBox="0 0 190 190" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="f07-g" cx="95" cy="95" r="86" />
+                    <ellipse class="f07-g" cx="95" cy="95" rx="38" ry="86" />
+                    <path class="f07-g" d="M95 9 V181" />
+                    <path class="f07-g" d="M9 95 H181" />
+                    <path class="f07-g" d="M22 52 Q95 70 168 52" />
+                    <path class="f07-g" d="M22 138 Q95 120 168 138" />
+                  </svg>
+                  <div id="f07-levels">
+                    <div class="f07-lv"><div class="f07-lvOff">A1</div><div class="f07-lvOn">A1</div></div>
+                    <div class="f07-lv"><div class="f07-lvOff">A2</div><div class="f07-lvOn">A2</div></div>
+                    <div class="f07-lv"><div class="f07-lvOff">B1</div><div class="f07-lvOn">B1</div></div>
+                    <div class="f07-lv"><div class="f07-lvOff">B2</div><div class="f07-lvOn">B2</div></div>
+                    <div class="f07-lv"><div class="f07-lvOff">C1</div><div class="f07-lvOn">C1</div></div>
+                    <div class="f07-lv"><div class="f07-lvOff">C2</div><div class="f07-lvOn">C2</div></div>
+                  </div>
+                  <div id="f07-spine"></div>
+                  <div id="f07-gloss"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var $ = function (id) { return document.getElementById("f07-" + id); };
+      var q = function (root, sel) { return Array.prototype.slice.call(root.querySelectorAll(sel)); };
+      var tl = gsap.timeline({ paused: true });
+      var L = 0.04;
+      var F = 1 / 30;
+
+      // exact word cues (frame-relative s)
+      var T = { y: 0.12, no: 0.203, sera: 0.333, por: 0.555, falta: 0.731, de: 0.99, intentos: 1.092,
+                una: 1.926, clase: 2.111, a: 2.407, la: 2.453, semana: 2.555,
+                un: 3.324, libro: 3.453, pensado: 3.685, para: 4.139, todo: 4.194, el: 4.416, mundo: 4.555,
+                y2: 4.842, para2: 4.916, nadie: 5.12 };
+
+      var word = function (el, t, dx, dy) {
+        tl.fromTo(el, { x: dx || 0, y: dy || 0, opacity: 0, filter: "blur(6px)" },
+          { x: 0, y: 0, opacity: 1, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, t - L);
+      };
+      var slam = function (el, t, s, b) {
+        tl.fromTo(el, { scale: s || 1.28, opacity: 0, filter: "blur(" + (b || 10) + "px)" },
+          { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "power4.out" }, t - L);
+      };
+      var shake = function (el, t, amp) {
+        var xs = [amp, -amp * 0.7, amp * 0.4, 0];
+        var ys = [-amp * 0.4, amp * 0.3, -amp * 0.15, 0];
+        tl.fromTo(el, { x: 0, y: 0 }, { x: xs[0], y: ys[0], duration: F, ease: "none", immediateRender: false }, t);
+        tl.to(el, { x: xs[1], y: ys[1], duration: F, ease: "none" }, t + F);
+        tl.to(el, { x: xs[2], y: ys[2], duration: F, ease: "none" }, t + 2 * F);
+        tl.to(el, { x: 0, y: 0, duration: F * 2, ease: "power2.out" }, t + 3 * F);
+      };
+      var drawIn = function (el, t, dur, ease) {
+        el.setAttribute("stroke-dasharray", "1 1");
+        tl.fromTo(el, { attr: { "stroke-dashoffset": 1 } },
+          { attr: { "stroke-dashoffset": 0 }, duration: dur, ease: ease || "power2.out" }, t);
+      };
+
+      // ================= ENTRANCE: lead line streaks in from the left =================
+      var blurNode = $("streakBlur");
+      var blur = { v: 18 };
+      var writeBlur = function () { blurNode.setAttribute("stdDeviation", blur.v.toFixed(2) + " 0"); };
+      writeBlur();
+      // ground whip: the cut frame itself is moving
+      tl.fromTo($("dots"), { x: -180 }, { x: 0, duration: 0.45, ease: "expo.out" }, 0);
+      // bold indigo speed bars are on screen from frame 0, drifting right into the Y's landing spot
+      tl.fromTo($("barswrap"), { x: -60 }, { x: 0, duration: 0.3, ease: "expo.out" }, 0);
+      // the visible Y arrives as a horizontal smear riding the bars (0.06 lead on the 0.12 cue)
+      tl.fromTo($("wY"), { opacity: 0 }, { opacity: 1, duration: 0.005, ease: "none" }, 0.06);
+      tl.fromTo($("leadwrap"), { x: -180 }, { x: 0, duration: 0.34, ease: "expo.out" }, 0.06);
+      tl.fromTo(blur, { v: 18 }, { v: 0, duration: 0.34, ease: "expo.out", onUpdate: writeBlur }, 0.06);
+      // bars snap back into the Y
+      ["sp1", "sp2", "sp3"].forEach(function (id, i) {
+        tl.fromTo($(id), { scaleX: 1 }, { scaleX: 0, duration: 0.30, ease: "power3.inOut" }, 0.10 + i * 0.012);
+        tl.fromTo($(id), { opacity: 1 }, { opacity: 0, duration: 0.08, ease: "none", immediateRender: false }, 0.26 + i * 0.012);
+      });
+      // camera: lead sits huge & centred for its solo second, then pulls back hard as INTENTOS slams in
+      tl.fromTo($("s1cam"), { scale: 1.85, y: 236 }, { scale: 1.9, y: 244, duration: 1.0, ease: "none" }, 0);
+      tl.to($("s1cam"), { scale: 1, y: 0, duration: 0.46, ease: "expo.out" }, T.intentos - 0.1);
+      tl.fromTo($("s1push"), { scale: 1 }, { scale: 1.03, duration: 0.6, ease: "sine.out" }, 1.3);
+
+      // lead words on their cues
+      word($("wNo"), T.no, -26);
+      word($("wSera"), T.sera, -26);
+      word($("wPor"), T.por, -26);
+      word($("wFalta"), T.falta, -26);
+      word($("wDe"), T.de, -26);
+
+      // INTENTOS slam + 3-frame shake
+      slam($("heroTxt"), T.intentos, 1.32, 14);
+      shake($("heroShake"), T.intentos - L + 0.17, 7);
+
+      // tally: 4 verticals + 1 diagonal, 0.06 s stagger, ends ~1.6
+      var tk = q($("tally"), ".f07-tk");
+      drawIn(tk[0], 1.22, 0.11);
+      drawIn(tk[1], 1.28, 0.11);
+      drawIn(tk[2], 1.34, 0.11);
+      drawIn(tk[3], 1.40, 0.11);
+      drawIn(tk[4], 1.47, 0.14, "power2.inOut");
+      tl.fromTo($("tallyWrap"), { scale: 1 }, { scale: 1.04, duration: 0.05, ease: "power2.out", immediateRender: false }, 1.6);
+      tl.to($("tallyWrap"), { scale: 1, duration: 0.2, ease: "power3.out" }, 1.65);
+
+      // ================= SEAMS (cut-the-curve up-whip, vertical motion blur) =================
+      var vOutNode = $("vblurOutNode"), vInNode = $("vblurInNode");
+      var vOut = { v: 0 }, vIn = { v: 0 };
+      var writeOut = function () { vOutNode.setAttribute("stdDeviation", "0 " + vOut.v.toFixed(2)); };
+      var writeIn = function () { vInNode.setAttribute("stdDeviation", "0 " + vIn.v.toFixed(2)); };
+      var IN_LEAD = 0.08;   // incoming overlaps the outgoing so no frame is empty (first glyph visible at C-0.033)
+      var seam = function (outEl, inEl, C) {
+        // outgoing: accelerates up and fully clears the top before it is hidden; blur grows with speed
+        tl.set(outEl, { filter: "url(#f07-vblurOut)" }, C - 0.2);
+        tl.fromTo(outEl, { y: 0 }, { y: -950, duration: 0.2, ease: "power3.in", immediateRender: false }, C - 0.2);
+        tl.fromTo(vOut, { v: 0 }, { v: 22, duration: 0.2, ease: "power2.in", onUpdate: writeOut, immediateRender: false }, C - 0.2);
+        tl.set(outEl, { visibility: "hidden", filter: "none" }, C);
+        // incoming: continues the same upward travel, decelerating; blur sheds over its first 0.18 s
+        tl.set(inEl, { visibility: "visible", filter: "url(#f07-vblurIn)" }, C - IN_LEAD);
+        tl.fromTo(inEl, { y: 950 }, { y: 0, duration: 0.5, ease: "expo.out", immediateRender: false }, C - IN_LEAD);
+        tl.fromTo(vIn, { v: 22 }, { v: 0, duration: 0.18, ease: "power2.out", onUpdate: writeIn, immediateRender: false }, C - IN_LEAD);
+        tl.set(inEl, { filter: "none" }, C - IN_LEAD + 0.18);
+      };
+      tl.set($("s2"), { y: 950 }, 0);
+      tl.set($("s3"), { y: 950 }, 0);
+
+      // ================= SEAM A =================
+      var CA = 1.90;
+      seam($("s1"), $("s2"), CA);
+
+      // label words ("Una" rides in with the scene, landing on its 1.926 cue)
+      tl.fromTo($("wUna"), { opacity: 0.85, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, CA - IN_LEAD);
+      word($("wClase"), T.clase, 0, 34);
+      word($("wA"), T.a, 0, 34);
+      word($("wLa"), T.la, 0, 34);
+      word($("wSemana"), T.semana, 0, 34);
+
+      // day boxes waterfall in (L → D), riding the seam
+      q($("strip"), ".f07-day").forEach(function (d, i) {
+        tl.fromTo(d, { y: 110 + i * 40 }, { y: 0, duration: 0.5 + i * 0.03, ease: "expo.out" }, CA - IN_LEAD);
+      });
+
+      // on "clase": only X fills blue-vivid + white "1h" chip
+      var XT = T.clase - L;
+      tl.fromTo($("xFill"), { scaleY: 0 }, { scaleY: 1, duration: 0.24, ease: "power3.out" }, XT);
+      tl.fromTo($("xIniOn"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, XT + 0.06);
+      tl.fromTo($("xGlow"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, XT);
+      tl.fromTo($("xBox"), { borderColor: "#C4CBDC" }, { borderColor: "#0b6df0", duration: 0.1, ease: "none" }, XT);
+      tl.fromTo($("xLift"), { y: 0, scale: 1 }, { y: -20, scale: 1.06, duration: 0.34, ease: "power3.out" }, XT);
+      tl.fromTo($("chip"), { scale: 0.55, opacity: 0, y: 20 }, { scale: 1, opacity: 1, y: 0, duration: 0.32, ease: "expo.out" }, XT + 0.12);
+
+      // on "semana": a bracket spans the whole week
+      drawIn($("brPath"), T.semana - L, 0.42, "power2.inOut");
+
+      // ================= SEAM B (cut-the-curve, upward) =================
+      var CB = 3.30;
+      seam($("s2"), $("s3"), CB);
+
+      // book: lands centred on "Un libro", then glides right as the copy builds
+      tl.fromTo($("bookIn"), { y: 200 }, { y: 0, duration: 0.62, ease: "expo.out" }, CB - IN_LEAD);
+      tl.fromTo($("book"), { rotationY: -50, rotationX: 10 }, { rotationY: -20, rotationX: 0, duration: 0.8, ease: "power3.out" }, CB - IN_LEAD);
+      tl.fromTo($("bookPos"), { x: -500 }, { x: 0, duration: 0.55, ease: "power3.inOut" }, T.pensado - 0.1);
+
+      // "pensado para todo el mundo"
+      word($("wPensado"), T.pensado, 0, 38);
+      word($("wPara"), T.para, 0, 38);
+      slam($("wTodo"), T.todo, 1.26, 10);
+      slam($("wEl"), T.el, 1.26, 10);
+      slam($("wMundo"), T.mundo, 1.26, 10);
+
+      // cover reacts: every level lights up, globe pulses on "mundo"
+      q($("levels"), ".f07-lvOn").forEach(function (el, i) {
+        tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, T.todo + i * 0.06);
+      });
+      tl.fromTo($("globe"), { scale: 1 }, { scale: 1.08, duration: 0.08, ease: "power2.out", immediateRender: false }, T.mundo - L);
+      tl.to($("globe"), { scale: 1, duration: 0.26, ease: "power3.out" }, T.mundo - L + 0.08);
+
+      // "y para nadie." — the book dies to grey
+      word($("wY2"), T.y2, 0, 34);
+      word($("wPara2"), T.para2, 0, 34);
+      slam($("nadie"), T.nadie, 1.36, 12);
+      shake($("nadieRow"), T.nadie - L + 0.17, 6);
+
+      tl.fromTo($("bookFx"), { filter: "grayscale(0)", opacity: 1 },
+        { filter: "grayscale(1)", opacity: 0.55, duration: 0.5, ease: "power2.out" }, T.y2 - L);
+      tl.fromTo($("bookIn"), { y: 0 }, { y: 22, duration: 0.7, ease: "power2.out", immediateRender: false }, T.y2 - L);
+      tl.fromTo($("book"), { rotationY: -20 }, { rotationY: -26, duration: 0.7, ease: "power2.out", immediateRender: false }, T.y2 - L);
+      // payoff wins on size AND contrast: the upper block ghosts and shrinks toward its baseline
+      tl.fromTo($("upper"), { opacity: 1, scale: 1 }, { opacity: 0.32, scale: 0.76, duration: 0.4, ease: "power3.out" }, T.nadie - L);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["07-intentos"] = tl;
+    })();
+  </script>
+</template>
