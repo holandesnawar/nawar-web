@@ -91,7 +91,7 @@ export const POST: APIRoute = async ({ request }) => {
           first_name: firstName,
           last_name: lastName,
           phone,
-          source: 'llamada',
+          source: 'admision',
           recorrido: recorridoParcial,
           referrer: (body?.referrer ?? '').toString().trim().slice(0, 120),
           utm_source: (body?.utmSource ?? '').toString().trim().slice(0, 120),
@@ -103,7 +103,10 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     await avisarEscuela({
-      kind: 'agendar-empezado',
+      // El proceso de admisión es una MATRÍCULA, no una llamada (02/10,
+      // usuario): va con su propio tipo y no sale en Panel → Llamadas hasta
+      // que termina las preguntas. En la ficha dice qué vio y dónde se quedó.
+      kind: embudo === 'admision' ? 'admision' : 'agendar-empezado',
       email,
       first_name: firstName,
       last_name: lastName,
@@ -158,7 +161,7 @@ export const POST: APIRoute = async ({ request }) => {
   const solicitud = fetch(`${ESCUELA_URL}/api/v1/payments/solicitudes`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...(tokenWeb ? { 'X-Web-Token': tokenWeb } : {}) },
-    body: JSON.stringify({ email, first_name: firstName, last_name: lastName, phone, source: 'llamada', recorrido, referrer, ...utm }),
+    body: JSON.stringify({ email, first_name: firstName, last_name: lastName, phone, source: embudo === 'admision' ? 'admision' : 'llamada', recorrido, referrer, ...utm }),
     signal: AbortSignal.timeout(6000),
   }).catch((e) => console.error('[cualificacion] solicitud:', (e as Error).message))
 
