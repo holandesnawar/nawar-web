@@ -164,7 +164,9 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   }
 
   // ── Avisar a la escuela (por la misma puerta que /agendar) ───────────
-  const avisar = (video: 'empezado' | 'visto') => {
+  // `matricula`: solo al rellenar la ventanita. Ahí la escuela crea su
+  // matrícula (solicitud) con de dónde viene; lo demás la va completando.
+  const avisar = (video: 'empezado' | 'visto', matricula = false) => {
     if (!datos) return
     try {
       fetch('/api/cualificacion', {
@@ -173,6 +175,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
         keepalive: true,
         body: JSON.stringify({
           parcial: true,
+          matricula,
           embudo: 'admision',
           video,
           first_name: datos.first_name,
@@ -329,7 +332,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     if (!ok) return
     datos = { first_name: nombre, email, phone, pais: opcion.dataset.pais || '' }
     guardar(CLAVE_DATOS, datos)
-    avisar(estadoVideo)
+    avisar(estadoVideo, true)
     pixel('datos')
     cerrarModal()
     arrancarVideo()

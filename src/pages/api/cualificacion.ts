@@ -74,6 +74,34 @@ export const POST: APIRoute = async ({ request }) => {
     // (una persona = una línea en 24 h), no crea una nueva.
     const hechas = puntuar(respuestas, textos).respuestas.filter((r) => r.respuesta !== 'Sin responder')
     const ultima = PREGUNTAS.find((p) => p.clave === (body?.ultima ?? '').toString())?.etiqueta ?? ''
+    // Proceso de admisión (02/10, pedido del usuario): quien rellena la
+    // ventanita del vídeo YA es una matrícula, aunque no siga. Se crea su
+    // solicitud con de dónde viene (recorrido, web de origen y campaña) y,
+    // si sigue, la misma solicitud se va completando: la escuela reaprovecha
+    // la fila del mismo correo en 24 h, así que al terminar las preguntas no
+    // sale otra. Solo con `matricula: true` (la ventanita), no con cada
+    // respuesta, para no gastar el tope de la escuela.
+    if (body?.matricula === true) {
+      const tokenWeb = leerEnv('SCHOOL_WEB_TOKEN')
+      await fetch(`${ESCUELA_URL}/api/v1/payments/solicitudes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...(tokenWeb ? { 'X-Web-Token': tokenWeb } : {}) },
+        body: JSON.stringify({
+          email,
+          first_name: firstName,
+          last_name: lastName,
+          phone,
+          source: 'llamada',
+          recorrido: recorridoParcial,
+          referrer: (body?.referrer ?? '').toString().trim().slice(0, 120),
+          utm_source: (body?.utmSource ?? '').toString().trim().slice(0, 120),
+          utm_medium: (body?.utmMedium ?? '').toString().trim().slice(0, 120),
+          utm_campaign: (body?.utmCampaign ?? '').toString().trim().slice(0, 120),
+        }),
+        signal: AbortSignal.timeout(6000),
+      }).catch((e) => console.error('[cualificacion] matricula:', (e as Error).message))
+    }
+
     await avisarEscuela({
       kind: 'agendar-empezado',
       email,
@@ -82,6 +110,7 @@ export const POST: APIRoute = async ({ request }) => {
       phone,
       source: 'llamada',
       recorrido: recorridoParcial,
+      referrer: (body?.referrer ?? '').toString().trim().slice(0, 120),
       // La campaña también aquí: si se va a mitad, el "No terminó" dice de
       // qué anuncio venía (desde el 29/09 los anuncios llevan a /agendar).
       utm_source: (body?.utmSource ?? '').toString().trim().slice(0, 120),
