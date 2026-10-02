@@ -1,0 +1,437 @@
+---
+/**
+ * /proceso-de-admision — pasos 1 y 2 del embudo nuevo (02/10).
+ *
+ * Paso 1: el vídeo se ve bloqueado. Al darle al play sale una ventanita con
+ * tres datos (nombre, correo y WhatsApp con su prefijo). Al mandarlos, la
+ * escuela ya tiene el lead (sale en Panel → Llamadas como "No terminó",
+ * marcado "Proceso de admisión") y el vídeo arranca.
+ *
+ * Paso 2: el vídeo. El botón "Siguiente paso" está a la vista desde el
+ * principio pero BLOQUEADO, y se desbloquea y se ilumina al terminar el
+ * vídeo (pedido del usuario: que se vea que hay un paso más y que se gana
+ * viendo el vídeo). Si el reproductor no deja saber cuándo termina (un
+ * bloqueador, un fallo de red), el botón se abre solo: nadie se queda
+ * atascado por un fallo nuestro.
+ *
+ * El paso 3 vive en /proceso-de-admision/paso-3, con los datos ya puestos.
+ * Ver src/lib/admision.ts para el porqué de todo el embudo.
+ */
+import Layout from '../../layouts/Layout.astro'
+import { PREFIJOS, VIDEO_PORTADA, VIDEO_URL, leerVideo } from '../../lib/admision'
+
+export const prerender = true
+
+const video = leerVideo(VIDEO_URL)
+const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
+---
+
+<Layout
+  title="Proceso de admisión — Holandés Nawar"
+  description="Proceso de admisión a la Formación Nawar A0-A1."
+  noindex={true}
+>
+  <div class="ad-page">
+    <div class="ad-glow1" aria-hidden="true"></div>
+    <div class="ad-glow2" aria-hidden="true"></div>
+    <div class="ad-dots" aria-hidden="true"></div>
+
+    <div class="ad-shell">
+      <a href="/" class="ad-logo-link" aria-label="Volver al inicio">
+        <img src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png" alt="Holandés Nawar" class="ad-logo" width="150" height="38" />
+      </a>
+
+      <!-- Los tres pasos, siempre a la vista: que se sepa que esto es un proceso. -->
+      <div class="ad-pasos" id="ad-pasos" data-paso="1">
+        <p class="ad-eyebrow">Proceso de admisión · <span id="ad-paso-texto">Paso 1 de 3</span></p>
+        <ol class="ad-linea">
+          <li data-n="1"><span class="ad-bolita">1</span><span class="ad-paso-nombre">Tus datos</span></li>
+          <li data-n="2"><span class="ad-bolita">2</span><span class="ad-paso-nombre">El vídeo</span></li>
+          <li data-n="3"><span class="ad-bolita">3</span><span class="ad-paso-nombre">Tu admisión</span></li>
+        </ol>
+      </div>
+
+      <h1 class="ad-title">Mira cómo vas a hablar neerlandés en 16 semanas</h1>
+      <p class="ad-lead">
+        En este vídeo te enseñamos el método Nawar, cómo es la formación por dentro y para quién es.
+        <strong>Míralo entero</strong>: al terminar se abre el último paso de tu admisión.
+      </p>
+
+      <!-- El vídeo: bloqueado hasta dejar los datos. -->
+      <div class="ad-video" id="ad-video" data-proveedor={video.proveedor} data-src={video.src}>
+        <button type="button" class="ad-candado" id="ad-candado" aria-label="Desbloquear el vídeo"
+          style={VIDEO_PORTADA ? `background-image:linear-gradient(rgba(10,22,86,0.55),rgba(10,22,86,0.75)),url('${VIDEO_PORTADA}')` : undefined}>
+          <span class="ad-play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.9-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg>
+          </span>
+          <span class="ad-candado-texto">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            Haz clic para desbloquear el vídeo
+          </span>
+        </button>
+        <div class="ad-reproductor" id="ad-reproductor" hidden></div>
+      </div>
+
+      <!-- El botón del paso 3: siempre a la vista, bloqueado hasta el final del vídeo. -->
+      <div class="ad-seguir">
+        <a href="/proceso-de-admision/paso-3" class="ad-btn-seguir" id="ad-seguir" aria-disabled="true" tabindex="-1">
+          <svg class="ad-ico-candado" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          <span>Siguiente paso: completar mi admisión</span>
+          <span class="ad-flecha" aria-hidden="true">›</span>
+        </a>
+        <p class="ad-seguir-nota" id="ad-seguir-nota">Se desbloquea al terminar el vídeo.</p>
+      </div>
+    </div>
+
+    <!-- Paso 1: la ventanita de datos. -->
+    <div class="ad-modal" id="ad-modal" hidden>
+      <div class="ad-modal-fondo" data-cerrar></div>
+      <div class="ad-modal-caja" role="dialog" aria-modal="true" aria-labelledby="ad-modal-titulo">
+        <button type="button" class="ad-cerrar" data-cerrar aria-label="Cerrar">×</button>
+        <p class="ad-modal-eyebrow">Paso 1 de 3 · Tus datos</p>
+        <h2 class="ad-modal-titulo" id="ad-modal-titulo">Desbloquea el vídeo</h2>
+        <p class="ad-modal-lead">Déjanos tus datos y empieza tu proceso de admisión.</p>
+        <form id="ad-form" novalidate>
+          <div class="ad-honeypot" aria-hidden="true">
+            <label>No rellenar <input type="text" id="ad-hp" name="website" tabindex="-1" autocomplete="off" /></label>
+          </div>
+          <label class="ad-label" for="ad-nombre">Nombre</label>
+          <input id="ad-nombre" type="text" class="ad-input" placeholder="Tu nombre" autocomplete="given-name" required />
+
+          <label class="ad-label" for="ad-email">Correo</label>
+          <input id="ad-email" type="email" class="ad-input" placeholder="correo@ejemplo.com" autocomplete="email" required />
+
+          <label class="ad-label" for="ad-tel">WhatsApp</label>
+          <div class="ad-tel">
+            <!-- Cerrado enseña solo bandera y prefijo; al abrirlo, la lista con
+                 el país. El select va encima, transparente, para que el
+                 desplegable sea el del móvil (el que mejor se usa). -->
+            <div class="ad-input ad-prefijo">
+              <span id="ad-prefijo-ver" aria-hidden="true">{opciones[0].bandera} {opciones[0].prefijo}</span>
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              <select id="ad-prefijo" aria-label="Prefijo del país">
+                {opciones.map((p) => <option value={p.valor} data-prefijo={p.prefijo} data-pais={p.pais} data-bandera={p.bandera}>{p.bandera} {p.pais} ({p.prefijo})</option>)}
+              </select>
+            </div>
+            <input id="ad-tel" type="tel" class="ad-input" placeholder="6 12345678" autocomplete="tel-national" inputmode="tel" required />
+          </div>
+
+          <p class="ad-err" id="ad-err">Revisa el nombre, el correo y el número.</p>
+          <button type="submit" class="ad-btn" id="ad-enviar">
+            Ver el vídeo
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <p class="ad-legal">Al continuar aceptas la <a href="/politica-de-privacidad" target="_blank" rel="noopener">política de privacidad</a>. Nada de spam.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { leerUTM, guardarUTM } from '../../lib/utm'
+  import { contextoDelLead } from '../../lib/recorrido'
+  import { CLAVE_DATOS, CLAVE_VIDEO, telefonoCompleto, type DatosAdmision } from '../../lib/admision'
+  guardarUTM()
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T
+  const caja = $('ad-video')
+  const candado = $('ad-candado')
+  const reproductor = $('ad-reproductor')
+  const modal = $('ad-modal')
+  const form = $<HTMLFormElement>('ad-form')
+  const seguir = $<HTMLAnchorElement>('ad-seguir')
+  const nota = $('ad-seguir-nota')
+  const pasos = $('ad-pasos')
+  const pasoTexto = $('ad-paso-texto')
+  const proveedor = caja.dataset.proveedor || ''
+  const src = caja.dataset.src || ''
+
+  // ── Lo que se recuerda en el navegador ────────────────────────────────
+  // Si vuelve mañana, no tiene que volver a dar los datos ni a ver el vídeo.
+  const leer = <T,>(k: string): T | null => {
+    try { const v = localStorage.getItem(k); return v ? (JSON.parse(v) as T) : null } catch { return null }
+  }
+  const guardar = (k: string, v: unknown) => { try { localStorage.setItem(k, JSON.stringify(v)) } catch {} }
+
+  let datos = leer<DatosAdmision>(CLAVE_DATOS)
+  let estadoVideo: 'empezado' | 'visto' = leer<string>(CLAVE_VIDEO) === 'visto' ? 'visto' : 'empezado'
+
+  // ── La línea de pasos ─────────────────────────────────────────────────
+  const marcarPaso = (n: number) => {
+    pasos.dataset.paso = String(n)
+    pasoTexto.textContent = `Paso ${Math.min(n, 3)} de 3`
+  }
+
+  // ── Avisar a la escuela (por la misma puerta que /agendar) ───────────
+  const avisar = (video: 'empezado' | 'visto') => {
+    if (!datos) return
+    try {
+      fetch('/api/cualificacion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify({
+          parcial: true,
+          embudo: 'admision',
+          video,
+          first_name: datos.first_name,
+          last_name: '',
+          email: datos.email,
+          phone: datos.phone,
+          website: ($('ad-hp') as HTMLInputElement).value,
+          respuestas: {},
+          textos: {},
+          ...contextoDelLead(),
+          ...leerUTM(),
+        }),
+      }).catch(() => {})
+    } catch {}
+  }
+
+  // Píxel de Meta: dejar los datos cuenta como solicitud (el mismo evento y
+  // la misma marca de sesión que /agendar, para no contar dos veces a quien
+  // pase por los dos). Terminar el vídeo, su propio evento.
+  const pixel = (evento: 'datos' | 'video') => {
+    const fbq = (window as any).fbq
+    try {
+      if (evento === 'datos') {
+        if (sessionStorage.getItem('lead-agendar')) return
+        sessionStorage.setItem('lead-agendar', '1')
+        fbq?.('track', 'SubmitApplication', { content_name: 'Proceso de admisión' })
+      } else {
+        if (sessionStorage.getItem('admision-video')) return
+        sessionStorage.setItem('admision-video', '1')
+        fbq?.('trackCustom', 'AdmisionVideoVisto')
+      }
+    } catch {}
+  }
+
+  // ── El botón del paso 3 ───────────────────────────────────────────────
+  const desbloquear = (porFallo = false) => {
+    seguir.setAttribute('aria-disabled', 'false')
+    seguir.removeAttribute('tabindex')
+    seguir.classList.add('abierto')
+    nota.textContent = porFallo ? 'Ya puedes seguir con tu admisión.' : '¡Vídeo terminado! Ya puedes seguir con tu admisión.'
+    nota.classList.add('abierto')
+    marcarPaso(3)
+  }
+  seguir.addEventListener('click', (e) => {
+    if (seguir.getAttribute('aria-disabled') === 'true') {
+      e.preventDefault()
+      nota.classList.remove('sacudir'); void nota.offsetWidth; nota.classList.add('sacudir')
+    }
+  })
+
+  const videoTerminado = () => {
+    if (estadoVideo !== 'visto') {
+      estadoVideo = 'visto'
+      guardar(CLAVE_VIDEO, 'visto')
+      avisar('visto')
+      pixel('video')
+    }
+    desbloquear()
+  }
+
+  // ── El reproductor, según dónde esté el vídeo ─────────────────────────
+  const cargarScript = (url: string) => new Promise<void>((ok, mal) => {
+    const s = document.createElement('script')
+    s.src = url; s.async = true
+    s.onload = () => ok(); s.onerror = () => mal(new Error(url))
+    document.head.appendChild(s)
+  })
+
+  const ponerIframe = () => {
+    const f = document.createElement('iframe')
+    f.src = src
+    f.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media'
+    f.allowFullscreen = true
+    f.title = 'Vídeo del proceso de admisión'
+    f.loading = 'eager'
+    reproductor.appendChild(f)
+    return f
+  }
+
+  const arrancarVideo = async () => {
+    candado.hidden = true
+    reproductor.hidden = false
+    marcarPaso(estadoVideo === 'visto' ? 3 : 2)
+    if (!src) {
+      // Sin vídeo puesto todavía: aviso y el paso 3 abierto.
+      reproductor.innerHTML = '<p class="ad-sin-video">El vídeo se está preparando. Mientras tanto, puedes seguir con tu admisión.</p>'
+      desbloquear(true)
+      return
+    }
+    try {
+      if (proveedor === 'mp4') {
+        const v = document.createElement('video')
+        v.src = src; v.controls = true; v.playsInline = true; v.autoplay = true
+        v.addEventListener('ended', videoTerminado)
+        reproductor.appendChild(v)
+        v.play().catch(() => {})
+      } else if (proveedor === 'bunny') {
+        const f = ponerIframe()
+        await cargarScript('https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js')
+        const p = new (window as any).playerjs.Player(f)
+        p.on('ready', () => p.on('ended', videoTerminado))
+      } else if (proveedor === 'vimeo') {
+        const f = ponerIframe()
+        await cargarScript('https://player.vimeo.com/api/player.js')
+        new (window as any).Vimeo.Player(f).on('ended', videoTerminado)
+      } else if (proveedor === 'youtube') {
+        const f = ponerIframe()
+        f.id = 'ad-yt'
+        await new Promise<void>((ok, mal) => {
+          ;(window as any).onYouTubeIframeAPIReady = () => ok()
+          cargarScript('https://www.youtube.com/iframe_api').catch(mal)
+        })
+        new (window as any).YT.Player('ad-yt', {
+          events: { onStateChange: (e: { data: number }) => { if (e.data === 0) videoTerminado() } },
+        })
+      }
+    } catch {
+      // No se pudo saber cuándo termina (script bloqueado, red…): mejor
+      // abrir el paso 3 que dejar a alguien atascado.
+      desbloquear(true)
+    }
+  }
+
+  // ── Paso 1: la ventanita ──────────────────────────────────────────────
+  const abrirModal = () => {
+    modal.hidden = false
+    document.body.style.overflow = 'hidden'
+    setTimeout(() => ($('ad-nombre') as HTMLInputElement).focus(), 60)
+  }
+  const cerrarModal = () => {
+    modal.hidden = true
+    document.body.style.overflow = ''
+  }
+  const selPrefijo = $<HTMLSelectElement>('ad-prefijo')
+  selPrefijo.addEventListener('change', () => {
+    const o = selPrefijo.options[selPrefijo.selectedIndex]
+    $('ad-prefijo-ver').textContent = `${o.dataset.bandera} ${o.dataset.prefijo}`
+  })
+  modal.querySelectorAll('[data-cerrar]').forEach((el) => el.addEventListener('click', cerrarModal))
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) cerrarModal() })
+
+  candado.addEventListener('click', () => (datos ? arrancarVideo() : abrirModal()))
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const nombre = ($('ad-nombre') as HTMLInputElement).value.trim()
+    const email = ($('ad-email') as HTMLInputElement).value.trim().toLowerCase()
+    const sel = $('ad-prefijo') as HTMLSelectElement
+    const opcion = sel.options[sel.selectedIndex]
+    const numero = ($('ad-tel') as HTMLInputElement).value
+    const phone = telefonoCompleto(opcion.dataset.prefijo || '', numero)
+    const ok = nombre.length > 0 && /\S+@\S+\.\S+/.test(email) && phone.replace(/\D/g, '').length >= 8
+    $('ad-err').classList.toggle('visible', !ok)
+    if (!ok) return
+    datos = { first_name: nombre, email, phone, pais: opcion.dataset.pais || '' }
+    guardar(CLAVE_DATOS, datos)
+    avisar(estadoVideo)
+    pixel('datos')
+    cerrarModal()
+    arrancarVideo()
+  })
+
+  // ── Al volver ─────────────────────────────────────────────────────────
+  if (estadoVideo === 'visto' && datos) desbloquear()
+  else if (datos) marcarPaso(2)
+</script>
+
+<style>
+  .ad-page {
+    min-height: 100vh; background: #1D0084; position: relative; overflow: hidden;
+    display: flex; justify-content: center; padding: 44px 24px 96px;
+  }
+  .ad-glow1 { position: absolute; top: -140px; left: 50%; transform: translateX(-50%); width: 960px; height: 560px; background: radial-gradient(ellipse at center, rgba(11,109,240,0.5) 0%, transparent 65%); pointer-events: none; }
+  .ad-glow2 { position: absolute; bottom: -60px; right: -80px; width: 600px; height: 400px; background: radial-gradient(ellipse at center, rgba(77,163,255,0.16) 0%, transparent 65%); pointer-events: none; }
+  .ad-dots { position: absolute; inset: 0; pointer-events: none; opacity: 0.4; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 28px 28px; }
+  .ad-shell { position: relative; z-index: 1; width: 100%; max-width: 860px; color: #fff; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .ad-logo-link { display: inline-block; margin-bottom: 28px; }
+  .ad-logo { height: 38px; width: auto; object-fit: contain; }
+
+  /* Los pasos */
+  .ad-pasos { width: 100%; max-width: 520px; margin-bottom: 26px; }
+  .ad-eyebrow { margin: 0 0 14px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #4da3ff; }
+  .ad-linea { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); position: relative; }
+  .ad-linea::before { content: ''; position: absolute; top: 15px; left: 16.6%; right: 16.6%; height: 2px; background: rgba(255,255,255,0.18); }
+  .ad-linea li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 7px; }
+  .ad-bolita { width: 32px; height: 32px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; background: #1D0084; border: 2px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); position: relative; z-index: 1; transition: all .25s; }
+  .ad-paso-nombre { font-size: 12.5px; color: rgba(255,255,255,0.65); font-weight: 500; }
+  .ad-pasos[data-paso="1"] li[data-n="1"] .ad-bolita,
+  .ad-pasos[data-paso="2"] li[data-n="2"] .ad-bolita,
+  .ad-pasos[data-paso="3"] li[data-n="3"] .ad-bolita { background: #4da3ff; border-color: #4da3ff; color: #0a1656; }
+  .ad-pasos[data-paso="2"] li[data-n="1"] .ad-bolita,
+  .ad-pasos[data-paso="3"] li[data-n="1"] .ad-bolita,
+  .ad-pasos[data-paso="3"] li[data-n="2"] .ad-bolita { background: #fff; border-color: #fff; color: #1D0084; }
+  .ad-pasos[data-paso="1"] li[data-n="1"] .ad-paso-nombre,
+  .ad-pasos[data-paso="2"] li[data-n="2"] .ad-paso-nombre,
+  .ad-pasos[data-paso="3"] li[data-n="3"] .ad-paso-nombre { color: #fff; font-weight: 700; }
+
+  .ad-title { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(27px, 4.4vw, 44px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.12; margin: 0; max-width: 760px; }
+  .ad-lead { font-size: clamp(15px, 1.6vw, 17.5px); line-height: 1.6; color: rgba(255,255,255,0.9); margin: 14px 0 0; max-width: 640px; }
+  .ad-lead strong { color: #fff; }
+
+  /* El vídeo */
+  .ad-video { width: 100%; aspect-ratio: 16 / 9; margin-top: 28px; border-radius: 16px; overflow: hidden; position: relative; background: #0a1656; border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 30px 70px -30px rgba(0,0,0,0.6); }
+  .ad-candado { position: absolute; inset: 0; width: 100%; height: 100%; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; color: #fff; font-family: inherit;
+    background: radial-gradient(circle at 70% 20%, rgba(77,163,255,0.35), transparent 60%), radial-gradient(circle at 20% 90%, rgba(11,109,240,0.3), transparent 55%), #0a1656; background-size: cover; background-position: center; }
+  .ad-candado[hidden] { display: none; }
+  .ad-play { width: 84px; height: 84px; border-radius: 9999px; background: #4da3ff; color: #0a1656; display: inline-flex; align-items: center; justify-content: center; padding-left: 5px; box-shadow: 0 0 0 10px rgba(77,163,255,0.18); transition: transform .2s; }
+  .ad-candado:hover .ad-play { transform: scale(1.07); }
+  .ad-candado-texto { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 9999px; background: rgba(0,0,0,0.35); font-size: 13.5px; font-weight: 600; }
+  .ad-reproductor { position: absolute; inset: 0; }
+  .ad-reproductor :global(iframe), .ad-reproductor :global(video) { width: 100%; height: 100%; border: 0; display: block; background: #000; }
+  .ad-reproductor :global(.ad-sin-video) { margin: 0; height: 100%; display: flex; align-items: center; justify-content: center; padding: 24px; font-size: 15px; color: rgba(255,255,255,0.85); }
+
+  /* El botón del paso 3 */
+  .ad-seguir { margin-top: 26px; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+  .ad-btn-seguir { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 17px 30px; border-radius: 12px; font-size: 16.5px; font-weight: 700; text-decoration: none;
+    background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.55); border: 1px dashed rgba(255,255,255,0.3); cursor: not-allowed; transition: all .3s; }
+  .ad-btn-seguir .ad-flecha { font-size: 20px; line-height: 1; }
+  .ad-btn-seguir.abierto { background: #4da3ff; color: #0a1656; border: 1px solid #4da3ff; cursor: pointer; animation: ad-latido 1.8s ease-out 3; }
+  .ad-btn-seguir.abierto:hover { background: #5eb4ff; }
+  .ad-btn-seguir.abierto .ad-ico-candado { display: none; }
+  @keyframes ad-latido { 0% { box-shadow: 0 0 0 0 rgba(77,163,255,0.6); } 100% { box-shadow: 0 0 0 18px rgba(77,163,255,0); } }
+  .ad-seguir-nota { margin: 0; font-size: 13px; color: rgba(255,255,255,0.65); }
+  .ad-seguir-nota.abierto { color: #9fd0ff; font-weight: 600; }
+  .ad-seguir-nota.sacudir { animation: ad-sacudir .4s; color: #fff; }
+  @keyframes ad-sacudir { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+  /* La ventanita (blanca, como la caja de pago de la escuela) */
+  .ad-modal { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .ad-modal[hidden] { display: none; }
+  .ad-modal-fondo { position: absolute; inset: 0; background: rgba(5,10,40,0.72); backdrop-filter: blur(3px); }
+  .ad-modal-caja { position: relative; width: 100%; max-width: 440px; max-height: calc(100vh - 32px); overflow-y: auto; background: #fff; border-radius: 18px; padding: 30px 26px 24px; color: #1D0084; text-align: left; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.5); }
+  .ad-cerrar { position: absolute; top: 10px; right: 12px; width: 36px; height: 36px; border: none; background: transparent; font-size: 26px; line-height: 1; color: #6b7280; cursor: pointer; border-radius: 8px; }
+  .ad-cerrar:hover { background: #F0F5FF; }
+  .ad-modal-eyebrow { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #025dc7; }
+  .ad-modal-titulo { font-family: var(--font-poppins), system-ui, sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin: 6px 0 4px; color: #1D0084; }
+  .ad-modal-lead { margin: 0 0 18px; font-size: 14.5px; color: #0a1656; opacity: 0.8; }
+  .ad-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .ad-label { display: block; font-size: 13px; font-weight: 600; color: #0a1656; margin: 12px 0 6px; }
+  .ad-input { width: 100%; box-sizing: border-box; background: #F0F5FF; border: 1px solid transparent; border-radius: 12px; padding: 13px 14px; font-size: 16px; color: #1D0084; font-family: inherit; outline: none; transition: border-color .15s, background .15s; }
+  .ad-input::placeholder { color: rgba(29,0,132,0.42); }
+  .ad-input:focus { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
+  .ad-tel { display: grid; grid-template-columns: 112px 1fr; gap: 8px; }
+  .ad-prefijo { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 15.5px; cursor: pointer; white-space: nowrap; }
+  .ad-prefijo:focus-within { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
+  .ad-prefijo select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; }
+  .ad-err { display: none; margin: 12px 0 0; font-size: 13px; color: #b91c1c; font-weight: 500; }
+  .ad-err.visible { display: block; }
+  .ad-btn { margin-top: 18px; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 15px; border: none; border-radius: 12px; background: #4da3ff; color: #0a1656; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; }
+  .ad-btn:hover { background: #5eb4ff; }
+  .ad-legal { margin: 12px 0 0; font-size: 12px; color: #6b7280; text-align: center; }
+  .ad-legal a { color: #025dc7; text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .ad-page { padding: 28px 16px 72px; }
+    .ad-logo-link { margin-bottom: 22px; }
+    .ad-video { border-radius: 12px; margin-top: 22px; }
+    .ad-play { width: 68px; height: 68px; }
+    .ad-btn-seguir { width: 100%; padding: 16px 18px; font-size: 15.5px; }
+    .ad-tel { grid-template-columns: 104px 1fr; }
+  }
+</style>
