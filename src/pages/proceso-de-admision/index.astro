@@ -47,14 +47,14 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
         <ol class="ad-linea">
           <li data-n="1"><span class="ad-bolita">1</span><span class="ad-paso-nombre">Tus datos</span></li>
           <li data-n="2"><span class="ad-bolita">2</span><span class="ad-paso-nombre">El vídeo</span></li>
-          <li data-n="3"><span class="ad-bolita">3</span><span class="ad-paso-nombre">Tu admisión</span></li>
+          <li data-n="3"><span class="ad-bolita">3</span><span class="ad-paso-nombre">Tu matrícula</span></li>
         </ol>
       </div>
 
-      <h1 class="ad-title">Mira cómo vas a hablar neerlandés en 16 semanas</h1>
+      <h1 class="ad-title">De cero al A1 de neerlandés en&nbsp;16&nbsp;semanas</h1>
       <p class="ad-lead">
-        En este vídeo te enseñamos el método Nawar, cómo es la formación por dentro y para quién es.
-        <strong>Míralo entero</strong>: al terminar se abre el último paso de tu admisión.
+        <strong>Mira el vídeo entero:</strong> te enseñamos el método Nawar, cómo es la formación por dentro y para quién es.
+        Al terminar, se abre el último paso de tu matrícula.
       </p>
 
       <!-- El vídeo: bloqueado hasta dejar los datos. -->
@@ -76,7 +76,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
       <div class="ad-seguir">
         <a href="/proceso-de-admision/paso-3" class="ad-btn-seguir" id="ad-seguir" aria-disabled="true" tabindex="-1">
           <svg class="ad-ico-candado" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-          <span>Siguiente paso: completar mi admisión</span>
+          <span>Siguiente paso: completar mi matrícula</span>
           <span class="ad-flecha" aria-hidden="true">›</span>
         </a>
         <p class="ad-seguir-nota" id="ad-seguir-nota">Se desbloquea al terminar el vídeo.</p>
@@ -212,7 +212,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     seguir.setAttribute('aria-disabled', 'false')
     seguir.removeAttribute('tabindex')
     seguir.classList.add('abierto')
-    nota.textContent = porFallo ? 'Ya puedes seguir con tu admisión.' : '¡Vídeo terminado! Ya puedes seguir con tu admisión.'
+    nota.textContent = porFallo ? 'Ya puedes seguir con tu matrícula.' : '¡Vídeo terminado! Ya puedes seguir con tu matrícula.'
     nota.classList.add('abierto')
     marcarPaso(3)
   }
@@ -258,7 +258,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     marcarPaso(estadoVideo === 'visto' ? 3 : 2)
     if (!src) {
       // Sin vídeo puesto todavía: aviso y el paso 3 abierto.
-      reproductor.innerHTML = '<p class="ad-sin-video">El vídeo se está preparando. Mientras tanto, puedes seguir con tu admisión.</p>'
+      reproductor.innerHTML = '<p class="ad-sin-video">El vídeo se está preparando. Mientras tanto, puedes seguir con tu matrícula.</p>'
       desbloquear(true)
       return
     }
@@ -370,8 +370,8 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   .ad-pasos[data-paso="2"] li[data-n="2"] .ad-paso-nombre,
   .ad-pasos[data-paso="3"] li[data-n="3"] .ad-paso-nombre { color: #fff; font-weight: 700; }
 
-  .ad-title { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(27px, 4.4vw, 44px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.12; margin: 0; max-width: 760px; }
-  .ad-lead { font-size: clamp(15px, 1.6vw, 17.5px); line-height: 1.6; color: rgba(255,255,255,0.9); margin: 14px 0 0; max-width: 640px; }
+  .ad-title { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(26px, 4.2vw, 40px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin: 0; max-width: 860px; text-wrap: balance; }
+  .ad-lead { font-size: clamp(15px, 1.6vw, 17.5px); line-height: 1.6; color: rgba(255,255,255,0.9); margin: 16px 0 0; max-width: 860px; }
   .ad-lead strong { color: #fff; }
 
   /* El vídeo */
