@@ -533,6 +533,11 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   .ad-pasos[data-paso="3"] li[data-n="3"] .ad-paso-nombre { color: #fff; font-weight: 700; }
 
   .ad-title { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(29px, 4.7vw, 44px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.25; margin: 0; max-width: 860px; text-wrap: balance; }
+  /* En el ordenador, en una sola línea (03/10). Con Poppins Bold mide 840 px
+     a 42 px y la columna tiene 860: a 44 px ya no cabía. */
+  @media (min-width: 960px) {
+    .ad-title { font-size: 42px; white-space: nowrap; text-wrap: nowrap; }
+  }
   .ad-lead { font-size: clamp(15px, 1.6vw, 17.5px); line-height: 1.6; color: rgba(255,255,255,0.9); margin: 16px 0 0; max-width: 860px; }
   .ad-lead strong { color: #fff; }
 
