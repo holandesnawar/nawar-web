@@ -34,9 +34,9 @@ export const VIDEO_URL = ((import.meta.env.PUBLIC_ADMISION_VIDEO as string | und
 export const VIDEO_PORTADA = ''
 
 /** El trozo del vídeo que se ve de fondo, en silencio y en bucle, mientras
- *  está bloqueado (03/10: "del segundo 20 al 28, no todo el vídeo"). */
+ *  está bloqueado (03/10: "del segundo 20 al 30 y luego bucle"). */
 export const PREVIEW_DESDE = 20
-export const PREVIEW_HASTA = 28
+export const PREVIEW_HASTA = 30
 
 /** Lo que dura el vídeo, para la barra de abajo del vídeo bloqueado: que se
  *  vea un reproductor de verdad y no un botón suelto (03/10, "muy IA"). */

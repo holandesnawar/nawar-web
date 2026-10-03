@@ -330,23 +330,52 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
       await cargarScript('https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js')
     } catch {}
     if (!preview.isConnected || !caja.classList.contains('con-preview')) return
-    const f = document.createElement('iframe')
-    f.src = `${src}&muted=true&t=${desde}`
-    f.allow = 'autoplay; encrypted-media'
-    f.tabIndex = -1
-    f.title = ''
-    preview.appendChild(f)
-    try {
-      const p = new (window as any).playerjs.Player(f)
-      p.on('ready', () => {
-        p.mute?.()
-        p.setCurrentTime(desde)
-        p.play?.()
-        p.on('timeupdate', (e: { seconds: number }) => enBucle(e?.seconds, (t) => p.setCurrentTime(t)))
-      })
-    } catch {
-      // Sin player.js, sigue desde el segundo de inicio sin cortar: vale igual.
+    // Dos maneras de cortar el trozo, y van las dos a la vez (03/10: con
+    // solo la primera "se ve el vídeo entero"):
+    //  1. player.js: al pasar del segundo final, vuelve al inicial. Depende de
+    //     que Bunny mande los tiempos, y no siempre llegan.
+    //  2. El reloj: si en ese rato no ha llegado ningún tiempo, se monta un
+    //     reproductor nuevo que arranca otra vez en el segundo inicial (`t=`),
+    //     encima del viejo, y el viejo se quita cuando el nuevo ya se ve. Así
+    //     el bucle no depende de nada de Bunny salvo el `t=`.
+    let ultimaSenal = 0
+    const montar = () => {
+      const f = document.createElement('iframe')
+      f.src = `${src}&muted=true&t=${desde}`
+      f.allow = 'autoplay; encrypted-media'
+      f.tabIndex = -1
+      f.title = ''
+      preview.appendChild(f)
+      try {
+        const p = new (window as any).playerjs.Player(f)
+        p.on('ready', () => {
+          p.mute?.()
+          p.setCurrentTime(desde)
+          p.play?.()
+          p.on('timeupdate', (e: { seconds: number }) => {
+            ultimaSenal = Date.now()
+            enBucle(e?.seconds, (t) => p.setCurrentTime(t))
+          })
+        })
+      } catch {}
+      // El reproductor anterior se va cuando el nuevo ya ha tenido tiempo de
+      // arrancar: sin pantallazo negro en medio.
+      const viejos = Array.from(preview.querySelectorAll('iframe')).filter((x) => x !== f)
+      if (viejos.length) setTimeout(() => viejos.forEach((x) => x.remove()), 1800)
     }
+    montar()
+    const tramo = Math.max(3, hasta - desde) * 1000
+    let montadoEn = Date.now()
+    const reloj = window.setInterval(() => {
+      if (!caja.classList.contains('con-preview')) { clearInterval(reloj); return }
+      const conTiempos = Date.now() - ultimaSenal < 3000
+      // Se monta el nuevo un pelín antes del final del tramo, porque tarda en
+      // arrancar.
+      if (!conTiempos && Date.now() - montadoEn >= tramo - 1200) {
+        montadoEn = Date.now()
+        montar()
+      }
+    }, 500)
   }
   const quitarPreview = () => {
     preview.innerHTML = ''
@@ -513,7 +542,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     background: radial-gradient(circle at 75% 15%, rgba(77,163,255,0.22), transparent 55%), linear-gradient(180deg, #14248f 0%, #0a1656 100%); background-size: cover; background-position: center; }
   .ad-candado[hidden] { display: none; }
   .ad-preview { position: absolute; inset: -2px; pointer-events: none; overflow: hidden; }
-  .ad-preview :global(iframe), .ad-preview :global(video) { width: 100%; height: 100%; border: 0; display: block; object-fit: cover; }
+  .ad-preview :global(iframe), .ad-preview :global(video) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; object-fit: cover; }
   /* Con previsualización, el candado deja ver el vídeo detrás, oscurecido. */
   .ad-video.con-preview .ad-candado { background: linear-gradient(180deg, rgba(10,22,86,0.30) 0%, rgba(10,22,86,0.55) 100%); }
   /* Un reproductor normal: botón translúcido en el centro y una barra abajo
