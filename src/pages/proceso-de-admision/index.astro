@@ -420,7 +420,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   .ad-lead strong { color: #fff; }
 
   /* El vídeo */
-  .ad-video { width: 100%; aspect-ratio: 16 / 9; margin-top: 28px; border-radius: 16px; overflow: hidden; position: relative; background: #0a1656; border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 30px 70px -30px rgba(0,0,0,0.6); }
+  .ad-video { width: 100%; aspect-ratio: 16 / 9; margin-top: 28px; border-radius: 16px; overflow: hidden; position: relative; background: #0a1656; box-shadow: 0 30px 70px -30px rgba(0,0,0,0.6); }
   .ad-candado { position: absolute; inset: 0; width: 100%; height: 100%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-family: inherit; padding: 0;
     background: radial-gradient(circle at 75% 15%, rgba(77,163,255,0.22), transparent 55%), linear-gradient(180deg, #14248f 0%, #0a1656 100%); background-size: cover; background-position: center; }
   .ad-candado[hidden] { display: none; }
@@ -431,7 +431,9 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   .ad-barra { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 22px 16px 12px; background: linear-gradient(transparent, rgba(0,0,0,0.38)); font-size: 13px; color: rgba(255,255,255,0.85); }
   .ad-candado-texto { display: inline-flex; align-items: center; gap: 7px; font-weight: 500; }
   .ad-duracion { font-variant-numeric: tabular-nums; font-weight: 500; }
-  .ad-reproductor { position: absolute; inset: 0; }
+  /* El reproductor 2 px más grande que su caja por cada lado: así no asoma
+     el filo negro del iframe en los bordes redondeados (03/10). */
+  .ad-reproductor { position: absolute; inset: -2px; }
   .ad-reproductor :global(iframe), .ad-reproductor :global(video) { width: 100%; height: 100%; border: 0; display: block; background: #000; }
   .ad-reproductor :global(.ad-sin-video) { margin: 0; height: 100%; display: flex; align-items: center; justify-content: center; padding: 24px; font-size: 15px; color: rgba(255,255,255,0.85); }
 
