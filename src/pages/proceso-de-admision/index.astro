@@ -18,7 +18,7 @@
  * Ver src/lib/admision.ts para el porqué de todo el embudo.
  */
 import Layout from '../../layouts/Layout.astro'
-import { PREFIJOS, VIDEO_DURACION, VIDEO_PORTADA, VIDEO_URL, leerVideo } from '../../lib/admision'
+import { PREFIJOS, PREVIEW_DESDE, PREVIEW_HASTA, VIDEO_DURACION, VIDEO_PORTADA, VIDEO_URL, leerVideo } from '../../lib/admision'
 
 export const prerender = true
 
@@ -58,7 +58,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
       </p>
 
       <!-- El vídeo: bloqueado hasta dejar los datos. -->
-      <div class="ad-video" id="ad-video" data-proveedor={video.proveedor} data-src={video.src}>
+      <div class="ad-video" id="ad-video" data-proveedor={video.proveedor} data-src={video.src} data-preview-desde={PREVIEW_DESDE} data-preview-hasta={PREVIEW_HASTA}>
         <!-- La previsualización: el vídeo en silencio y en bucle, detrás del
              candado, para que se vea lo que hay dentro (03/10). -->
         <div class="ad-preview" id="ad-preview" aria-hidden="true"></div>
@@ -153,33 +153,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   const proveedor = caja.dataset.proveedor || ''
   const src = caja.dataset.src || ''
 
-  // ── La previsualización ───────────────────────────────────────────────
-  // Mientras está bloqueado, el vídeo suena en silencio y en bucle de fondo
-  // (pedido del usuario, 03/10: "que vean lo que les espera dentro"). En
-  // silencio el navegador sí deja arrancarlo solo, también en el iPhone. No
-  // se puede tocar: el clic va siempre al candado. Al desbloquear se quita y
-  // entra el reproductor de verdad, desde el principio y con sonido.
-  const preview = $('ad-preview')
-  if (src && (proveedor === 'bunny' || proveedor === 'mp4')) {
-    if (proveedor === 'bunny') {
-      const f = document.createElement('iframe')
-      f.src = `${src}&muted=true&loop=true`
-      f.allow = 'autoplay; encrypted-media'
-      f.tabIndex = -1
-      f.title = ''
-      preview.appendChild(f)
-    } else {
-      const v = document.createElement('video')
-      v.src = src; v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true
-      preview.appendChild(v)
-      v.play().catch(() => {})
-    }
-    caja.classList.add('con-preview')
-  }
-  const quitarPreview = () => {
-    preview.innerHTML = ''
-    caja.classList.remove('con-preview')
-  }
+
 
   // ── Lo que se recuerda en el navegador ────────────────────────────────
   // Si vuelve mañana, no tiene que volver a dar los datos ni a ver el vídeo.
@@ -308,6 +282,55 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     if (libre() || !isFinite(duracion) || !duracion || tope >= duracion - 4) videoTerminado()
   }
 
+  // ── La previsualización ───────────────────────────────────────────────
+  // Mientras está bloqueado, un trozo del vídeo (del segundo PREVIEW_DESDE al
+  // PREVIEW_HASTA) suena en silencio y en bucle de fondo (03/10: "que vean
+  // lo que les espera dentro", "no todo el vídeo"). En silencio el navegador
+  // sí deja arrancarlo solo, también en el iPhone. No se puede tocar: el clic
+  // va siempre al candado. Al desbloquear se quita y entra el reproductor de
+  // verdad, desde el principio y con sonido.
+  const preview = $('ad-preview')
+  const desde = Number(caja.dataset.previewDesde || 0)
+  const hasta = Number(caja.dataset.previewHasta || 0)
+  const enBucle = (t: number, irA: (s: number) => void) => {
+    if (hasta > desde && (t >= hasta || t < desde - 1)) irA(desde)
+  }
+  const ponerPreview = async () => {
+    if (!src || (proveedor !== 'bunny' && proveedor !== 'mp4')) return
+    caja.classList.add('con-preview')
+    if (proveedor === 'mp4') {
+      const v = document.createElement('video')
+      v.src = src; v.muted = true; v.autoplay = true; v.playsInline = true
+      v.addEventListener('loadedmetadata', () => { v.currentTime = desde })
+      v.addEventListener('timeupdate', () => enBucle(v.currentTime, (t) => (v.currentTime = t)))
+      preview.appendChild(v)
+      v.play().catch(() => {})
+      return
+    }
+    const f = document.createElement('iframe')
+    f.src = `${src}&muted=true&t=${desde}`
+    f.allow = 'autoplay; encrypted-media'
+    f.tabIndex = -1
+    f.title = ''
+    preview.appendChild(f)
+    try {
+      await cargarScript('https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js')
+      const p = new (window as any).playerjs.Player(f)
+      p.on('ready', () => {
+        p.mute?.()
+        p.setCurrentTime(desde)
+        p.play?.()
+        p.on('timeupdate', (e: { seconds: number }) => enBucle(e?.seconds, (t) => p.setCurrentTime(t)))
+      })
+    } catch {
+      // Sin player.js, sigue desde el segundo de inicio sin cortar: vale igual.
+    }
+  }
+  const quitarPreview = () => {
+    preview.innerHTML = ''
+    caja.classList.remove('con-preview')
+  }
+
   const arrancarVideo = async () => {
     quitarPreview()
     candado.hidden = true
@@ -418,6 +441,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   // ── Al volver ─────────────────────────────────────────────────────────
   if (estadoVideo === 'visto' && datos) desbloquear()
   else if (datos) marcarPaso(2)
+  ponerPreview()
 </script>
 
 <style>
