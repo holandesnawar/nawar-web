@@ -120,6 +120,8 @@ export function telefonoCompleto(prefijo: string, numero: string): string {
 /** Lo que se recuerda entre el paso 1-2 y el paso 3, en el navegador. */
 export const CLAVE_DATOS = 'nawar.admision.datos'
 export const CLAVE_VIDEO = 'nawar.admision.video'
+/** Por qué segundo iba, para seguir desde ahí si vuelve (03/10). */
+export const CLAVE_POSICION = 'nawar.admision.posicion'
 
 export interface DatosAdmision {
   first_name: string
