@@ -1,0 +1,238 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE + vignette (dots ride the stage so they dive with it) ---------- */
+    #f22-ground {
+      position: absolute; inset: 0;
+      background-color: #120081;
+      background-image:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
+
+    /* ---------- stage (zoom-through target: the laptop screen sat at the left third) ---------- */
+    #f22-stage { position: absolute; inset: 0; transform-origin: 640px 520px; }
+    #f22-dots {
+      position: absolute; left: -140px; top: -140px; width: 2200px; height: 1360px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px;
+    }
+
+    /* ---------- counters ---------- */
+    .f22-grp {
+      position: absolute; top: 165px; height: 216px;
+      display: flex; align-items: baseline; white-space: nowrap;
+    }
+    #f22-ga { left: 133px; transform-origin: 0px 192px; }
+    #f22-gb { left: 748px; }
+    .f22-num {
+      position: relative; display: inline-block;
+      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 240px; line-height: 0.9;
+      letter-spacing: -0.04em; color: #FFFFFF; font-variant-numeric: tabular-nums;
+    }
+    .f22-ghost { visibility: hidden; }
+    .f22-val { position: absolute; left: 0; top: 0; right: 0; }
+    #f22-valA { text-align: center; }
+    #f22-valB { text-align: left; }
+    #f22-numA { transform-origin: 50% 70%; }
+    #f22-numB { display: inline-flex; align-items: baseline; transform-origin: 0px 192px; }
+    .f22-lbl {
+      display: inline-block; margin-left: 28px;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 84px; line-height: 1;
+      letter-spacing: -0.03em; color: #4da3ff;
+    }
+    #f22-lblA { transform-origin: 0% 70%; }
+    #f22-lblB { transform-origin: 0% 70%; }
+    #f22-plus { display: inline-block; transform-origin: 50% 60%; margin-right: 10px; }
+    #f22-div {
+      position: absolute; left: 713px; top: 214px; width: 3px; height: 140px; border-radius: 2px;
+      background: rgba(255,255,255,0.28); transform-origin: 50% 50%;
+    }
+
+    /* ---------- module grid: 5 × 2, cards 310 × 210, gap 26 ---------- */
+    .f22-slot, .f22-card { position: absolute; width: 310px; height: 210px; box-sizing: border-box; border-radius: 22px; }
+    .f22-slot { background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.17); }
+    .f22-card {
+      background: #FFFFFF; padding: 22px 24px; overflow: hidden;
+      box-shadow: 0 20px 50px rgba(4,0,40,0.30), 0 4px 12px rgba(4,0,40,0.16);
+    }
+    .f22-head { display: flex; justify-content: space-between; align-items: center; height: 26px; }
+    .f22-mod {
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 18px; line-height: 1;
+      letter-spacing: 0.14em; text-transform: uppercase; color: #5A6480;
+    }
+    .f22-ic { display: block; width: 26px; height: 26px; overflow: visible; }
+    .f22-name {
+      margin-top: 9px; height: 68px;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 32px; line-height: 1.06;
+      letter-spacing: -0.02em; color: #1D0084;
+    }
+    .f22-dots {
+      position: absolute; left: 24px; right: 24px; bottom: 22px; height: 54px;
+      display: grid; grid-template-columns: repeat(12, 12px); justify-content: space-between;
+      grid-auto-rows: 12px; row-gap: 9px;
+    }
+    .f22-dot { width: 12px; height: 12px; border-radius: 50%; background: #DCE4F3; }
+
+    /* ---------- the laptop bezel we just dove through ---------- */
+    #f22-bezel {
+      position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border-radius: 40px;
+      box-shadow: 0 0 0 1400px #0C0C1E, inset 0 0 0 3px rgba(255,255,255,0.10);
+      transform-origin: 640px 520px; pointer-events: none;
+    }
+  </style>
+
+  <div id="root" data-composition-id="22-modulos" data-width="1920" data-height="1080" data-duration="2.93">
+    <div id="f22-ground" class="clip" data-start="0" data-duration="2.93" data-track-index="0"></div>
+
+    <div id="f22-stage">
+      <div id="f22-dots"></div>
+
+      <!-- counter A: 10 MÓDULOS -->
+      <div class="f22-grp" id="f22-ga">
+        <span class="f22-num" id="f22-numA"><span class="f22-ghost">10</span><span class="f22-val" id="f22-valA">0</span></span>
+        <span class="f22-lbl" id="f22-lblA">MÓDULOS</span>
+      </div>
+      <div id="f22-div"></div>
+      <!-- counter B: +360 LECCIONES -->
+      <div class="f22-grp" id="f22-gb">
+        <span id="f22-numB">
+          <span class="f22-num" id="f22-plus">+</span>
+          <span class="f22-num"><span class="f22-ghost">360</span><span class="f22-val" id="f22-valB">0</span></span>
+        </span>
+        <span class="f22-lbl" id="f22-lblB">LECCIONES</span>
+      </div>
+
+      <div id="f22-grid"></div>
+    </div>
+
+    <div id="f22-bezel"></div>
+  </div>
+
+  <script>
+    (function () {
+      // ---------- build the 10 module cards (static content, deterministic) ----------
+      const MODS = [
+        "Over jou", "Familie &amp;<br>vrienden", "Eten en drinken", "Het werk", "Hobby's &amp;<br>vrije tijd",
+        "Thuis &amp; wonen", "Gezondheid", "Vervoer &amp; reizen", "De stad &amp;<br>afspraken", "Dagelijkse<br>leven"
+      ];
+      const X0 = 133, Y0 = 452, CW = 310, CH = 210, GAP = 26;
+      const CHECK = '<svg class="f22-ic" viewBox="0 0 26 26"><circle cx="13" cy="13" r="13" fill="#16A34A"></circle>' +
+        '<path id="f22-ckp" d="M 7.5 13.5 L 11.3 17.2 L 18.6 9.4" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="18" stroke-dashoffset="18"></path></svg>';
+      const LOCK = '<svg class="f22-ic" viewBox="0 0 26 26"><path d="M 8.5 12 V 8.6 A 4.5 4.5 0 0 1 17.5 8.6 V 12" fill="none" stroke="#9AA6C2" stroke-width="2.6" stroke-linecap="round"></path>' +
+        '<rect x="5.5" y="11" width="15" height="12" rx="3" fill="#9AA6C2"></rect><circle cx="13" cy="16.6" r="1.7" fill="#FFFFFF"></circle></svg>';
+      const grid = document.getElementById("f22-grid");
+      let html = "";
+      for (let i = 0; i < 10; i++) {
+        const col = i % 5, row = Math.floor(i / 5);
+        const x = X0 + col * (CW + GAP), y = Y0 + row * (CH + GAP);
+        html += '<div class="f22-slot" style="left:' + x + 'px; top:' + y + 'px;"></div>';
+      }
+      for (let i = 0; i < 10; i++) {
+        const col = i % 5, row = Math.floor(i / 5);
+        const x = X0 + col * (CW + GAP), y = Y0 + row * (CH + GAP);
+        let dots = "";
+        for (let d = 0; d < 36; d++) dots += '<span class="f22-dot" id="f22-d' + i + '-' + d + '"></span>';
+        const name = '<div class="f22-name">' + MODS[i] + '</div>';
+        html += '<div class="f22-card" id="f22-c' + i + '" style="left:' + x + 'px; top:' + y + 'px;">' +
+          '<div class="f22-head"><span class="f22-mod">Módulo ' + (i + 1) + '</span>' + (i === 0 ? CHECK : LOCK) + '</div>' +
+          name + '<div class="f22-dots">' + dots + '</div></div>';
+      }
+      grid.innerHTML = html;
+
+      const tl = gsap.timeline({ paused: true });
+
+      // ================= ENTRANCE (0.00–0.35): zoom-through out of the laptop screen =================
+      tl.fromTo("#f22-stage", { scale: 1.6, filter: "blur(14px)" },
+        { scale: 1, filter: "blur(0px)", duration: 0.35, ease: "expo.out" }, 0);
+      tl.fromTo("#f22-bezel", { scale: 0.82, filter: "blur(0px)" },
+        { scale: 1.7, filter: "blur(8px)", duration: 0.4, ease: "power1.out" }, 0);
+      tl.fromTo("#f22-bezel", { opacity: 1 }, { opacity: 0, duration: 0.08, ease: "power1.in", immediateRender: false }, 0.06);
+
+      // ================= "Diez" (0.12): 10 slams + counts 0 → 10, landing before "módulos" =================
+      const valA = document.getElementById("f22-valA");
+      const pA = { v: 0 };
+      tl.fromTo("#f22-numA", { opacity: 0, scale: 1.1, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.1);
+      tl.fromTo(pA, { v: 0 }, {
+        v: 10, duration: 0.3, ease: "power2.out",
+        onUpdate: function () { valA.textContent = String(Math.round(pA.v)); }
+      }, 0.12);
+
+      // ================= "módulos," (0.43): MÓDULOS + the ten cards slam into their slots =================
+      // the number sat centred alone while counting; it makes room as MÓDULOS lands beside it
+      tl.fromTo("#f22-ga", { x: 709 }, { x: 491, duration: 0.34, ease: "expo.out" }, 0.42);
+      tl.fromTo("#f22-lblA", { opacity: 0, scale: 1.08, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.42);
+      for (let i = 0; i < 10; i++) {
+        tl.fromTo("#f22-c" + i, { opacity: 0, scale: 1.06, y: -10, filter: "blur(6px)" },
+          { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.43 + i * 0.04);
+      }
+      // module 1 is done: its check appears
+      tl.fromTo("#f22-c0 .f22-ic", { scale: 0.6 }, { scale: 1, duration: 0.3, ease: "power3.out" }, 0.6);
+      tl.fromTo("#f22-ckp", { strokeDashoffset: 18 }, { strokeDashoffset: 0, duration: 0.2, ease: "power2.out" }, 0.64);
+
+      // ================= "con" (0.96): 10 MÓDULOS glides left to make room (velocity-matched seam) =================
+      tl.fromTo("#f22-ga", { x: 491, scale: 1 }, { x: 0, scale: 0.8, duration: 0.42, ease: "power3.inOut", immediateRender: false }, 0.96);
+      tl.fromTo("#f22-div", { scaleY: 0, opacity: 0 }, { scaleY: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, 1.2);
+
+      // ================= "más" (1.11): the + lands =================
+      tl.fromTo("#f22-plus", { opacity: 0, scale: 1.1, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.28, ease: "expo.out" }, 1.1);
+
+      // ================= "trescientas" (1.40) → "lecciones." (2.42): count 0 → 360, lands exactly on 2.42 =================
+      const C0 = 1.40, CD = 1.02, CEASE = "power2.out";
+      const valB = document.getElementById("f22-valB");
+      const pB = { v: 0 };
+      tl.fromTo("#f22-valB", { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, C0 - 0.02);
+      tl.fromTo(pB, { v: 0 }, {
+        v: 360, duration: CD, ease: CEASE, immediateRender: false,
+        onUpdate: function () { valB.textContent = String(Math.round(pB.v)); }
+      }, C0);
+      // counting with dynamic scale: the number grows as it counts (same timing + ease)
+      tl.fromTo("#f22-numB", { scale: 0.84 }, { scale: 1, duration: CD, ease: CEASE }, C0);
+
+      // lesson dots fill inside the 10 cards in lockstep with the counter:
+      // dot n (1..360) lights when the displayed count reaches n → p = Einv((n - 0.5) / 360)
+      // power2.out: E(p) = 1 - (1 - p)^2  →  Einv(y) = 1 - sqrt(1 - y)
+      for (let n = 1; n <= 360; n++) {
+        const p = 1 - Math.sqrt(1 - (n - 0.5) / 360);
+        const c = (n - 1) % 10, d = Math.floor((n - 1) / 10);
+        tl.fromTo("#f22-d" + c + "-" + d, { backgroundColor: "#DCE4F3", scale: 0.66 },
+          { backgroundColor: "#0b6df0", scale: 1, duration: 0.12, ease: "power2.out" }, C0 + CD * p);
+      }
+
+      // ================= "lecciones." (2.42): LECCIONES lands =================
+      tl.fromTo("#f22-lblB", { opacity: 0, scale: 1.08, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, 2.41);
+
+      // ================= hold: subtle drift (≤ 2 %) =================
+      tl.fromTo("#f22-stage", { scale: 1 }, { scale: 1.012, duration: 0.7, ease: "power1.inOut", immediateRender: false }, 2.46);
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.43, 0.411], [0.96, 0.899], [1.11, 1.05], [1.27, 1.219], [1.4, 1.331], [2.04, 1.923], [2.42, 2.289], [3.16, 2.93]]);
+
+      window.__timelines["22-modulos"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,412 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE (gradient + vignette; dots live on the camera layers) ---------- */
+    #f20-ground {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
+    .f20-dots {
+      position: absolute; left: -364px; top: -364px; width: 2648px; height: 1808px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px;
+    }
+
+    /* ---------- SCENE 1: camera (dive) > heading + laptop ---------- */
+    #f20-cam { position: absolute; inset: 0; transform-origin: 904px 657px; perspective: 2200px; perspective-origin: 960px 585px; }
+    #f20-dots1 { transform-origin: 1268px 1021px; }
+
+    #f20-head {
+      position: absolute; left: 0; width: 1920px; top: 112px; height: 116px;
+      display: flex; justify-content: center; align-items: baseline; white-space: nowrap;
+    }
+    .f20-w { display: inline-block; will-change: transform, opacity; }
+    .f20-lead {
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 56px; line-height: 1.1;
+      letter-spacing: -0.02em; color: rgba(255,255,255,0.72); margin-right: 16px;
+    }
+    .f20-key {
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 88px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; margin-right: 24px;
+    }
+    .f20-key:last-child { margin-right: 0; }
+    .f20-acc { color: #4da3ff; }
+    #f20-w-dentro { transform-origin: 30% 70%; }
+
+    #f20-lap { position: absolute; inset: 0; transform-origin: 960px 585px; }
+    #f20-floor {
+      position: absolute; left: 220px; top: 900px; width: 1480px; height: 90px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 40%, rgba(4,0,40,0.55) 0%, rgba(4,0,40,0.22) 45%, rgba(4,0,40,0) 72%);
+    }
+    #f20-bezel {
+      position: absolute; left: 378px; top: 262px; width: 1164px; height: 646px; box-sizing: border-box;
+      padding: 22px; border-radius: 26px; background: #0C0C1E;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45), inset 0 0 0 2px rgba(255,255,255,0.06);
+    }
+    #f20-camdot {
+      position: absolute; left: 576px; top: 8px; width: 8px; height: 8px; border-radius: 50%;
+      background: #262a40;
+    }
+    #f20-screen {
+      position: relative; width: 1120px; height: 602px; border-radius: 8px; overflow: hidden;
+      background: #F5F7FF;
+    }
+    #f20-vid { position: absolute; left: 0; top: 0; width: 1120px; height: 602px; object-fit: cover; display: block; }
+    #f20-glass {
+      position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(118deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 34%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 100%);
+    }
+    #f20-tint {
+      position: absolute; inset: 0; pointer-events: none; opacity: 0;
+      background: radial-gradient(circle at 50% 50%, #0b6df0 0%, #025dc7 55%, #0a2fb0 100%);
+    }
+    #f20-base {
+      position: absolute; left: 290px; top: 906px; width: 1340px; height: 26px;
+      border-radius: 3px 3px 24px 24px;
+      background: linear-gradient(180deg, #eef1f7 0%, #c9cfdc 40%, #9aa3b8 100%);
+      box-shadow: 0 10px 24px rgba(4,0,40,0.35);
+    }
+    #f20-notch {
+      position: absolute; left: 570px; top: 0; width: 200px; height: 9px; border-radius: 0 0 10px 10px;
+      background: linear-gradient(180deg, #9aa3b8 0%, #b9c0cf 100%);
+    }
+
+    /* ---------- SCENE 2: the module path (shared geometry with frame 21) ---------- */
+    #f20-map { position: absolute; inset: 0; transform-origin: 904px 657px; }
+    #f20-svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+    .f20-node { position: absolute; width: 104px; height: 104px; }
+    .f20-disc { position: absolute; inset: 0; border-radius: 50%; }
+    .f20-d-lock { background: rgba(255,255,255,0.14); box-shadow: inset 0 0 0 0.75px rgba(255,255,255,0.35), 0 0 0 0.75px rgba(255,255,255,0.35); }
+    .f20-d-open { background: #4da3ff; }
+    .f20-d-done { background: #34D399; }
+    .f20-ic { position: absolute; left: 0; top: 0; width: 104px; height: 104px; overflow: visible; }
+    .f20-lockic { opacity: 0.6; }
+    .f20-glow {
+      position: absolute; left: -78px; top: -78px; width: 260px; height: 260px; border-radius: 50%; opacity: 0;
+      background: radial-gradient(circle, rgba(77,163,255,0.55) 0%, rgba(77,163,255,0.18) 42%, rgba(77,163,255,0) 70%);
+    }
+    .f20-burst {
+      position: absolute; inset: 0; border-radius: 50%; box-sizing: border-box; opacity: 0;
+      border: 4px solid #4da3ff;
+    }
+    .f20-burst-g { border-color: #34D399; }
+    .f20-lbl { font-family: "Inter", sans-serif; font-weight: 600; font-size: 26px; fill: #FFFFFF; }
+
+    /* scene-2 kinetic line (clears before the handoff) */
+    #f20-s2 {
+      position: absolute; left: 0; width: 1920px; top: 196px; height: 140px;
+      display: flex; justify-content: center; align-items: baseline; white-space: nowrap;
+    }
+    .f20-lead2 {
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 54px; line-height: 1.1;
+      letter-spacing: -0.01em; color: rgba(255,255,255,0.72); margin-right: 16px;
+    }
+    .f20-key2 {
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 108px; line-height: 1.0;
+      letter-spacing: -0.035em; color: #FFFFFF; margin-right: 26px;
+    }
+    .f20-key2:last-child { margin-right: 0; }
+    #f20-w-cada { margin-right: 14px; }
+    #f20-w-modulo { margin-right: 30px; }
+    #f20-w-abre { transform-origin: 20% 70%; }
+
+    /* pill (top-left, persists into frame 21) */
+    #f20-pill {
+      position: absolute; left: 80px; top: 70px;
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 28px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; line-height: 1;
+      letter-spacing: 0.14em; text-transform: uppercase; color: #FFFFFF; white-space: nowrap;
+    }
+    #f20-pill svg { display: block; width: 26px; height: 16px; }
+  </style>
+
+  <div id="root" data-composition-id="20-por-dentro" data-width="1920" data-height="1080" data-duration="3.805">
+    <div id="f20-ground" class="clip" data-start="0" data-duration="3.805" data-track-index="0"></div>
+
+    <!-- ================= SCENE 1 — laptop + dive ================= -->
+    <div id="f20-cam">
+      <div class="f20-dots" id="f20-dots1"></div>
+      <div id="f20-head">
+        <span class="f20-w f20-lead" id="f20-w-como">¿Cómo</span>
+        <span class="f20-w f20-lead" id="f20-w-es">es</span>
+        <span class="f20-w f20-key" id="f20-w-por">por</span>
+        <span class="f20-w f20-key f20-acc" id="f20-w-dentro">dentro?</span>
+      </div>
+      <div id="f20-lap">
+        <div id="f20-floor"></div>
+        <div id="f20-base"><div id="f20-notch"></div></div>
+        <div id="f20-bezel">
+          <div id="f20-camdot"></div>
+          <div id="f20-screen">
+            <video id="f20-vid" class="clip" src="assets/video/formacion-cv.mp4" muted playsinline
+              data-start="0" data-duration="1.3" data-media-start="0" data-track-index="2"></video>
+            <div id="f20-glass"></div>
+            <div id="f20-tint"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SCENE 2 — module path (shared geometry with frame 21) ================= -->
+    <div id="f20-map">
+      <div class="f20-dots" id="f20-dots2"></div>
+      <svg id="f20-svg" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <mask id="f20-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+            <rect x="0" y="0" width="1920" height="1080" fill="#FFFFFF"></rect>
+            <circle cx="980" cy="720" r="52" fill="#000000"></circle>
+          </mask>
+        </defs>
+        <path id="f20-road" fill="none" stroke="rgba(255,255,255,0.20)" stroke-width="14" stroke-linecap="round"
+          d="M 120 840 C 210 830 250 790 300 760 C 420 690 500 520 640 520 C 780 520 840 720 980 720 C 1120 720 1180 470 1320 470 C 1460 470 1540 660 1640 660 C 1720 660 1760 620 1820 600"></path>
+        <path id="f20-prog" fill="none" stroke="#4da3ff" stroke-width="14" stroke-linecap="round"
+          d="M 120 840 C 210 830 250 790 300 760 C 420 690 500 520 640 520 C 780 520 840 720 980 720 C 1120 720 1180 470 1320 470 C 1460 470 1540 660 1640 660 C 1720 660 1760 620 1820 600"></path>
+        <!-- transient energy streak N2 -> N3 (that segment only; vanishes into N3) -->
+        <g mask="url(#f20-mask)">
+          <path id="f20-streak-glow" fill="none" stroke="#4da3ff" stroke-width="26" stroke-linecap="round" opacity="0"
+            style="filter: blur(7px);" d="M 640 520 C 780 520 840 720 980 720"></path>
+          <path id="f20-streak-tail" fill="none" stroke="#9fd5f5" stroke-width="14" stroke-linecap="round" opacity="0"
+            d="M 640 520 C 780 520 840 720 980 720"></path>
+          <path id="f20-streak-head" fill="none" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round" opacity="0"
+            d="M 640 520 C 780 520 840 720 980 720"></path>
+        </g>
+        <!-- labels: Inter 600 26px, centered 96px below each node center -->
+        <text class="f20-lbl" id="f20-lb1" x="300" y="856" text-anchor="middle" dominant-baseline="central">1 · Over jou</text>
+        <text class="f20-lbl" id="f20-lb2" x="640" y="616" text-anchor="middle" dominant-baseline="central">2 · Familie &amp; vrienden</text>
+        <text class="f20-lbl" id="f20-lb3" x="980" y="816" text-anchor="middle" dominant-baseline="central">3 · Eten en drinken</text>
+        <text class="f20-lbl" id="f20-lb4" x="1320" y="566" text-anchor="middle" dominant-baseline="central">4 · Het werk</text>
+        <text class="f20-lbl" id="f20-lb5" x="1640" y="756" text-anchor="middle" dominant-baseline="central">5 · Hobby's &amp; vrije tijd</text>
+      </svg>
+
+      <!-- N1 — done -->
+      <div class="f20-node" id="f20-n1" style="left:248px; top:708px;">
+        <div class="f20-burst f20-burst-g" id="f20-bu1"></div>
+        <div class="f20-disc f20-d-done"></div>
+        <svg class="f20-ic" id="f20-ck1" viewBox="-52 -52 104 104"><path id="f20-ckp1" d="M -17 1 L -6 12 L 17 -12" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="50" stroke-dashoffset="50"></path></svg>
+      </div>
+
+      <!-- N2 — locked -> open ("abre") -> done ("terminas") -->
+      <div class="f20-node" id="f20-n2" style="left:588px; top:468px;">
+        <div class="f20-glow" id="f20-gl2"></div>
+        <div class="f20-burst" id="f20-bu2a"></div>
+        <div class="f20-burst f20-burst-g" id="f20-bu2b"></div>
+        <div class="f20-disc f20-d-lock"></div>
+        <div class="f20-disc f20-d-open" id="f20-op2"></div>
+        <div class="f20-disc f20-d-done" id="f20-dn2"></div>
+        <svg class="f20-ic f20-lockic" id="f20-lk2" viewBox="-52 -52 104 104">
+          <g transform="translate(0 5)">
+            <path id="f20-sh2" d="M 11 -6 V -15 A 11 11 0 0 0 -11 -15 V -6" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"></path>
+            <rect x="-17" y="-6" width="34" height="28" rx="6" fill="#FFFFFF"></rect>
+            <circle id="f20-kh2" cx="0" cy="6" r="4" fill="#4da3ff" opacity="0"></circle>
+          </g>
+        </svg>
+        <svg class="f20-ic" id="f20-ck2" viewBox="-52 -52 104 104"><path id="f20-ckp2" d="M -17 1 L -6 12 L 17 -12" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="50" stroke-dashoffset="50"></path></svg>
+      </div>
+
+      <!-- N3 — locked -> open ("anterior") -->
+      <div class="f20-node" id="f20-n3" style="left:928px; top:668px;">
+        <div class="f20-glow" id="f20-gl3"></div>
+        <div class="f20-burst" id="f20-bu3"></div>
+        <div class="f20-disc f20-d-lock"></div>
+        <div class="f20-disc f20-d-open" id="f20-op3"></div>
+        <svg class="f20-ic f20-lockic" id="f20-lk3" viewBox="-52 -52 104 104">
+          <g transform="translate(0 5)">
+            <path id="f20-sh3" d="M 11 -6 V -15 A 11 11 0 0 0 -11 -15 V -6" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"></path>
+            <rect x="-17" y="-6" width="34" height="28" rx="6" fill="#FFFFFF"></rect>
+            <circle id="f20-kh3" cx="0" cy="6" r="4" fill="#4da3ff" opacity="0"></circle>
+          </g>
+        </svg>
+      </div>
+
+      <!-- N4 — locked -->
+      <div class="f20-node" id="f20-n4" style="left:1268px; top:418px;">
+        <div class="f20-disc f20-d-lock"></div>
+        <svg class="f20-ic f20-lockic" viewBox="-52 -52 104 104">
+          <g transform="translate(0 5)">
+            <path d="M 11 -6 V -15 A 11 11 0 0 0 -11 -15 V -6" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"></path>
+            <rect x="-17" y="-6" width="34" height="28" rx="6" fill="#FFFFFF"></rect>
+          </g>
+        </svg>
+      </div>
+
+      <!-- N5 — locked -->
+      <div class="f20-node" id="f20-n5" style="left:1588px; top:608px;">
+        <div class="f20-disc f20-d-lock"></div>
+        <svg class="f20-ic f20-lockic" viewBox="-52 -52 104 104">
+          <g transform="translate(0 5)">
+            <path d="M 11 -6 V -15 A 11 11 0 0 0 -11 -15 V -6" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"></path>
+            <rect x="-17" y="-6" width="34" height="28" rx="6" fill="#FFFFFF"></rect>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- scene-2 kinetic line -->
+    <div id="f20-s2">
+      <span class="f20-w f20-lead2" id="f20-w-cada">Cada</span>
+      <span class="f20-w f20-lead2" id="f20-w-modulo">módulo</span>
+      <span class="f20-w f20-key2" id="f20-w-se">se</span>
+      <span class="f20-w f20-key2 f20-acc" id="f20-w-abre">abre</span>
+    </div>
+
+    <!-- pill -->
+    <div id="f20-pill">
+      <span>Formación Nawar A0</span>
+      <svg viewBox="0 0 26 16"><path d="M 2 8 H 22 M 15 2 L 22 8 L 15 14" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      <span>A1</span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+
+      // ---------- path lengths (deterministic bezier LUT; scaled to the browser's own length) ----------
+      const SEGS = [
+        [120, 840, 210, 830, 250, 790, 300, 760],
+        [300, 760, 420, 690, 500, 520, 640, 520],
+        [640, 520, 780, 520, 840, 720, 980, 720],
+        [980, 720, 1120, 720, 1180, 470, 1320, 470],
+        [1320, 470, 1460, 470, 1540, 660, 1640, 660],
+        [1640, 660, 1720, 660, 1760, 620, 1820, 600]
+      ];
+      function bez(s, t) {
+        const u = 1 - t;
+        return [u * u * u * s[0] + 3 * u * u * t * s[2] + 3 * u * t * t * s[4] + t * t * t * s[6],
+                u * u * u * s[1] + 3 * u * u * t * s[3] + 3 * u * t * t * s[5] + t * t * t * s[7]];
+      }
+      function segLen(s) {
+        let len = 0, p = bez(s, 0);
+        for (let i = 1; i <= 600; i++) { const q = bez(s, i / 600); len += Math.hypot(q[0] - p[0], q[1] - p[1]); p = q; }
+        return len;
+      }
+      const SL = SEGS.map(segLen);
+      let Llut = 0; SL.forEach((v) => { Llut += v; });
+      let L = Llut;
+      try { const b = document.getElementById("f20-road").getTotalLength(); if (b > 100) L = b; } catch (e) {}
+      const k = L / Llut;
+      const lenN1 = SL[0] * k;
+      const lenN2 = (SL[0] + SL[1]) * k;
+      let segL = SL[2];
+      try { const b2 = document.getElementById("f20-streak-head").getTotalLength(); if (b2 > 50) segL = b2; } catch (e) {}
+
+      const prog = document.getElementById("f20-prog");
+      prog.style.strokeDasharray = L + " " + (2 * L);
+      const TAIL = 170, HEAD = 2, BIG = segL * 4;
+      document.getElementById("f20-streak-tail").style.strokeDasharray = TAIL + " " + BIG;
+      document.getElementById("f20-streak-head").style.strokeDasharray = HEAD + " " + BIG;
+      document.getElementById("f20-streak-glow").style.strokeDasharray = 60 + " " + BIG;
+
+      // ================= ENTRANCE (0.00–0.45): laptop rushes toward camera =================
+      tl.fromTo("#f20-lap",
+        { scale: 0.4, rotationX: 16, y: 70, opacity: 0.75, filter: "blur(10px)" },
+        { scale: 1, rotationX: 0, y: 0, opacity: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 0);
+      tl.fromTo("#f20-dots1", { scale: 0.86 }, { scale: 1, duration: 0.45, ease: "expo.out" }, 0);
+
+      // ---------- heading words on their cues ----------
+      [["#f20-w-como", 0.10], ["#f20-w-es", 0.31]].forEach(([sel, t]) => {
+        tl.fromTo(sel, { opacity: 0, y: 34, filter: "blur(6px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, t);
+      });
+      tl.fromTo("#f20-w-por", { opacity: 0, y: 40, filter: "blur(6px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, 0.39);
+      tl.fromTo("#f20-w-dentro", { opacity: 0, scale: 1.3, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.51);
+
+      // ================= DIVE (0.53–1.22): camera plunges INTO the screen (zoom-through) =================
+      tl.set("#f20-cam", { scale: 1, filter: "blur(0px)", opacity: 1, immediateRender: true }, 0);
+      tl.fromTo("#f20-cam", { scale: 1 }, { scale: 4.6, duration: 0.69, ease: "power3.in", immediateRender: false }, 0.53);
+      tl.fromTo("#f20-cam", { filter: "blur(0px)" }, { filter: "blur(18px)", duration: 0.14, ease: "power2.in", immediateRender: false }, 1.04);
+      tl.fromTo("#f20-cam", { opacity: 1 }, { opacity: 0, duration: 0.10, ease: "none", immediateRender: false }, 1.12);
+      tl.set("#f20-cam", { opacity: 0 }, 1.22);
+      // the screen floods solid Nawar blue as we pass through it (fully opaque by 1.12), so no white/indigo mix
+      tl.fromTo("#f20-tint", { opacity: 0 }, { opacity: 1, duration: 0.14, ease: "power2.in" }, 0.98);
+
+      // ================= LANDING (1.06): module path grows out of the module rows, overlapping the dive =================
+      tl.set("#f20-map", { opacity: 0, scale: 0.55, filter: "blur(14px)", immediateRender: true }, 0);
+      tl.fromTo("#f20-map", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out", immediateRender: false }, 1.06);
+      tl.fromTo("#f20-map", { scale: 0.55 }, { scale: 1, duration: 0.5, ease: "expo.out", immediateRender: false }, 1.06);   // at scale 1 from ~1.55 s (handoff-exact)
+      tl.fromTo("#f20-map", { filter: "blur(14px)" }, { filter: "blur(0px)", duration: 0.3, ease: "expo.out", immediateRender: false }, 1.06);
+
+      tl.fromTo("#f20-pill", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, 1.3);
+
+      // progress overlay: start -> N1 (N1 already completed)
+      tl.fromTo(prog, { strokeDashoffset: L + 20 }, { strokeDashoffset: L - lenN1, duration: 0.16, ease: "power2.out" }, 1.16);
+
+      // nodes pop along the road on "Cada módulo"
+      const POPS = [1.30, 1.43, 1.56, 1.69, 1.82];
+      POPS.forEach((T, i) => {
+        const n = i + 1;
+        tl.fromTo("#f20-n" + n, { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.34, ease: "expo.out" }, T);
+        tl.fromTo("#f20-lb" + n, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, T + 0.06);
+      });
+      // N1 check pops in
+      tl.fromTo("#f20-ck1", { scale: 0.4 }, { scale: 1, duration: 0.34, ease: "back.out(2.4)" }, 1.32);
+      tl.fromTo("#f20-ckp1", { strokeDashoffset: 50 }, { strokeDashoffset: 0, duration: 0.2, ease: "power2.out" }, 1.36);
+      tl.fromTo("#f20-bu1", { opacity: 0.8, scale: 1 }, { opacity: 0, scale: 1.8, duration: 0.45, ease: "power2.out", immediateRender: false }, 1.34);
+
+      // ---------- scene-2 kinetic line ----------
+      [["#f20-w-cada", 1.35], ["#f20-w-modulo", 1.63]].forEach(([sel, t]) => {
+        tl.fromTo(sel, { opacity: 0, y: 34, filter: "blur(6px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, t);
+      });
+      tl.fromTo("#f20-w-se", { opacity: 0, y: 44, filter: "blur(6px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, 1.95);
+      tl.fromTo("#f20-w-abre", { opacity: 0, scale: 1.3, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 2.08);
+      // the line rides through the N2 check + streak, then clears upward well before the cut (frame 21 has no heading)
+      tl.fromTo("#f20-s2", { y: 0, opacity: 1, filter: "blur(0px)" },
+        { y: -70, opacity: 0, filter: "blur(10px)", duration: 0.2, ease: "power2.in", immediateRender: false }, 3.30);
+
+      // ================= "abre" (2.10): lock 2 opens =================
+      function unlock(n, T) {
+        // shackle springs open: right leg stays seated, left leg lifts clear (matches frame 21's open padlock)
+        tl.fromTo("#f20-sh" + n, { attr: { d: "M 11 -6 V -15 A 11 11 0 0 0 -11 -15 V -6" } },
+          { attr: { d: "M 11 -6 V -22 A 11 11 0 0 0 -11 -22 V -17" }, duration: 0.24, ease: "expo.out" }, T - 0.04);
+        tl.fromTo("#f20-kh" + n, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out" }, T);
+        tl.fromTo("#f20-lk" + n, { opacity: 0.6 }, { opacity: 1, duration: 0.14, ease: "power2.out" }, T - 0.04);
+        tl.fromTo("#f20-op" + n, { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.32, ease: "expo.out" }, T - 0.04);
+        tl.fromTo("#f20-gl" + n, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" }, T - 0.04);
+        tl.to("#f20-gl" + n, { opacity: 0, duration: 0.45, ease: "power1.out" }, T + 0.2);
+        tl.fromTo("#f20-bu" + (n === 2 ? "2a" : "3"), { opacity: 0.9, scale: 1 },
+          { opacity: 0, scale: 1.95, duration: 0.5, ease: "power2.out", immediateRender: false }, T - 0.03);
+        tl.to("#f20-n" + n, { scale: 1.14, duration: 0.08, ease: "power2.out" }, T - 0.04);
+        tl.to("#f20-n" + n, { scale: 1, duration: 0.32, ease: "power3.out" }, T + 0.04);
+      }
+      unlock(2, 2.10);
+
+      // ================= "terminas" (2.60): progress reaches N2, N2 completed =================
+      tl.to(prog, { strokeDashoffset: L - lenN2, duration: 0.3, ease: "power2.in" }, 2.3);   // fills on "cuando terminas", arrives on "terminas"
+      tl.fromTo("#f20-dn2", { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "expo.out" }, 2.57);
+      tl.to("#f20-lk2", { opacity: 0, scale: 0.4, duration: 0.14, ease: "power2.in" }, 2.57);
+      tl.fromTo("#f20-ck2", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.34, ease: "back.out(2.4)" }, 2.6);
+      tl.fromTo("#f20-ckp2", { strokeDashoffset: 50 }, { strokeDashoffset: 0, duration: 0.2, ease: "power2.out" }, 2.63);
+      tl.fromTo("#f20-bu2b", { opacity: 0.85, scale: 1 }, { opacity: 0, scale: 1.95, duration: 0.5, ease: "power2.out", immediateRender: false }, 2.58);
+      tl.to("#f20-n2", { scale: 1.12, duration: 0.08, ease: "power2.out" }, 2.57);
+      tl.to("#f20-n2", { scale: 1, duration: 0.32, ease: "power3.out" }, 2.65);
+
+      // ================= energy streak N2 -> N3, then "anterior" (3.09): lock 3 opens =================
+      const S0 = 0, S1 = segL + 30;
+      [["#f20-streak-tail", TAIL, 1], ["#f20-streak-head", HEAD, 1], ["#f20-streak-glow", 60, 0.6]].forEach(([sel, seg, op]) => {
+        tl.fromTo(sel, { strokeDashoffset: seg - S0 }, { strokeDashoffset: seg - S1, duration: 0.36, ease: "power2.in" }, 2.73);
+        tl.fromTo(sel, { opacity: 0 }, { opacity: op, duration: 0.06, ease: "none" }, 2.73);
+        tl.to(sel, { opacity: 0, duration: 0.12, ease: "power1.out" }, 3.09);
+      });
+      unlock(3, 3.09);
+
+      window.__timelines["20-por-dentro"] = tl;
+    })();
+  </script>
+</template>

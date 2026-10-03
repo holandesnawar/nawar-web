@@ -1,0 +1,164 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: paper + indigo dot grid ---------- */
+    #f02-ground { position: absolute; inset: 0; background: #F5F7FF; overflow: hidden; }
+    #f02-dots {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px;
+      background-position: 14px 14px;
+    }
+    #f02-light {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 62% 58% at 50% 46%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 70%);
+    }
+
+    /* ---------- stage (shake target) ---------- */
+    #f02-stage { position: absolute; inset: 0; }
+
+    /* ---------- hero NO ---------- */
+    .f02-center {
+      position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .f02-hero {
+      font-family: "Poppins", sans-serif; font-weight: 900;
+      font-size: 460px; line-height: 0.95; letter-spacing: -0.04em;
+      text-transform: uppercase; color: #0C0C1E; white-space: nowrap;
+      padding-right: 0.04em; /* optical: compensate trailing tracking */
+    }
+    #f02-no { text-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
+    #f02-ghost { color: transparent; -webkit-text-stroke: 5px rgba(29,0,132,0.6); }
+
+    /* ---------- the building line ---------- */
+    #f02-lines {
+      position: absolute; left: 0; width: 1920px; top: 511px;
+      display: flex; flex-direction: column; align-items: center; gap: 54px;
+    }
+    .f02-row {
+      display: flex; align-items: baseline; justify-content: center; gap: 0.26em;
+      font-size: 148px; line-height: 1.0; letter-spacing: -0.035em; white-space: nowrap;
+    }
+    .f02-w { display: inline-block; }
+    .f02-lead { font-weight: 600; color: #5A6480; }
+    .f02-key { font-weight: 800; color: #0C0C1E; }
+
+    #f02-nv { position: relative; display: inline-flex; align-items: baseline; gap: 0.26em; }
+    #f02-strike-rot {
+      position: absolute; left: -0.08em; right: -0.08em; top: calc(57% - 9px); height: 18px;
+      transform: rotate(-2deg);
+    }
+    #f02-strike {
+      position: absolute; inset: 0; border-radius: 9px; background: #E02D3C;
+      transform-origin: 0% 50%;
+      box-shadow: 0 6px 18px rgba(224,45,60,0.28);
+    }
+
+    #f02-chip {
+      display: inline-block; position: relative;
+      background: #1D0084; color: #FFFFFF; border-radius: 14px;
+      padding: 0.07em 0.2em 0.04em 0.2em; margin-left: 0.04em;
+      box-shadow: 0 30px 80px rgba(18,0,129,0.22), 0 4px 14px rgba(18,0,129,0.12);
+      transform-origin: 50% 55%;
+    }
+    #f02-chip .f02-key { color: #FFFFFF; }
+  </style>
+
+  <div id="root" data-composition-id="02-no-valgas" data-width="1920" data-height="1080" data-duration="2.657">
+    <div id="f02-ground" class="clip" data-start="0" data-duration="2.657" data-track-index="0">
+      <div id="f02-dots"></div>
+      <div id="f02-light"></div>
+    </div>
+
+    <div id="f02-stage">
+      <!-- impact ghost (outline echo of the slam) -->
+      <div class="f02-center"><div id="f02-ghost" class="f02-hero">NO</div></div>
+      <!-- hero NO -->
+      <div class="f02-center"><div id="f02-no" class="f02-hero">NO</div></div>
+
+      <!-- es que · no valgas · para los idiomas -->
+      <div id="f02-lines">
+        <div class="f02-row" id="f02-row1">
+          <span class="f02-w f02-lead" id="f02-es">es</span>
+          <span class="f02-w f02-lead" id="f02-que">que</span>
+          <span id="f02-nv">
+            <span class="f02-w f02-key" id="f02-no2">no</span>
+            <span class="f02-w f02-key" id="f02-valgas">valgas</span>
+            <span id="f02-strike-rot"><span id="f02-strike"></span></span>
+          </span>
+        </div>
+        <div class="f02-row" id="f02-row2">
+          <span class="f02-w f02-lead" id="f02-para">para</span>
+          <span class="f02-w f02-lead" id="f02-los">los</span>
+          <span id="f02-chip"><span class="f02-w f02-key" id="f02-idiomas">idiomas</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById(id);
+
+      // ---- cue table (frame-relative seconds) ----
+      const T = { Y: 0.12, no1: 0.185, no2: 0.777, es: 0.907, que: 1.083, no3: 1.203,
+                  valgas: 1.314, para: 1.638, los: 1.824, idiomas: 1.99 };
+      const LEAD = 0.04;
+
+      // ---- entrance: camera settle on the ground from the very first frame ----
+      tl.fromTo(q("f02-dots"), { scale: 1.16 }, { scale: 1, duration: 0.55, ease: "expo.out" }, 0);
+
+      // ---- Scene 1: hard slam of NO (scale 1.6 -> 1, blur -> 0) ----
+      tl.fromTo(q("f02-no"),
+        { scale: 1.6, opacity: 0, filter: "blur(22px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.26, ease: "expo.out" }, T.Y - 0.03);
+
+      // impact echo — outline copy blooms out once and is gone well before the cut
+      const F = 1 / 30, LAND = 0.23; // visual landing of the expo slam
+      tl.fromTo(q("f02-ghost"), { scale: 1, opacity: 0 },
+        { scale: 1.03, opacity: 0.75, duration: F, ease: "none" }, LAND - F);
+      tl.to(q("f02-ghost"), { scale: 1.42, opacity: 0, duration: 0.36, ease: "power2.out" }, LAND);
+
+      // deterministic 3-frame landing shake
+      tl.fromTo(q("f02-stage"), { x: 0, y: 0 }, { x: 12, y: -6, duration: F, ease: "power2.out" }, LAND);
+      tl.to(q("f02-stage"), { x: -8, y: 4, duration: F, ease: "power2.out" }, LAND + F);
+      tl.to(q("f02-stage"), { x: 0, y: 0, duration: F, ease: "power2.out" }, LAND + 2 * F);
+
+      // ---- Scene 2: NO shrinks to the top third on the 2nd "no" ----
+      tl.to(q("f02-no"), { y: -225, scale: 0.7, duration: 0.42, ease: "power3.out" }, T.no2 - LEAD);
+
+      // the line builds below, word by word (rising — velocity-matched with NO going up)
+      const rise = (id, t) => tl.fromTo(q(id),
+        { y: 56, opacity: 0, filter: "blur(8px)" },
+        { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, t - LEAD);
+      rise("f02-es", T.es);
+      rise("f02-que", T.que);
+      rise("f02-no2", T.no3);
+      rise("f02-valgas", T.valgas);
+
+      // alert-red strike draws across "no valgas"
+      tl.fromTo(q("f02-strike"), { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power2.inOut" }, T.valgas + 0.02);
+
+      rise("f02-para", T.para);
+      rise("f02-los", T.los);
+
+      // indigo word-chip pops on "idiomas"
+      tl.fromTo(q("f02-chip"), { opacity: 0 }, { opacity: 1, duration: 0.07, ease: "none" }, T.idiomas - LEAD);
+      tl.fromTo(q("f02-chip"),
+        { scale: 0.55, rotation: 5, y: 30 },
+        { scale: 1, rotation: -1.5, y: 0, duration: 0.34, ease: "expo.out" }, T.idiomas - LEAD);
+      tl.fromTo(q("f02-idiomas"), { y: 26 }, { y: 0, duration: 0.3, ease: "power3.out" }, T.idiomas - LEAD);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["02-no-valgas"] = tl;
+    })();
+  </script>
+</template>

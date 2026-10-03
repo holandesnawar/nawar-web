@@ -1,0 +1,306 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #FFFFFF; }
+
+    /* ---------- ground: NAWAR BLUE (gradient + vignette) + white dot grid ---------- */
+    #f03-ground {
+      position: absolute; inset: 0; overflow: hidden;
+      background:
+        radial-gradient(ellipse 80% 78% at 50% 50%, rgba(6,0,60,0) 58%, rgba(6,0,60,0.42) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
+    #f03-dots {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 10px 12px;
+    }
+    #f03-light {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 40% 58% at 30% 54%, rgba(77,163,255,0.30) 0%, rgba(77,163,255,0.10) 45%, rgba(77,163,255,0) 72%);
+    }
+
+    #f03-stage { position: absolute; inset: 0; transform-origin: 960px 560px; }
+
+    /* ---------- the stopwatch (760 x 860 box, case centre at 380/470) ---------- */
+    #f03-watch {
+      position: absolute; left: 186px; top: 112px; width: 760px; height: 860px;
+      transform-origin: 380px 470px;
+    }
+    #f03-shadow {
+      position: absolute; left: 46px; top: 136px; width: 668px; height: 668px; border-radius: 50%;
+    }
+    #f03-shadow { box-shadow: 0 40px 110px rgba(4,0,40,0.45); }
+    #f03-svg { position: absolute; left: 0; top: 0; width: 760px; height: 860px; overflow: visible; }
+
+    /* digital readout */
+    #f03-readout {
+      position: absolute; left: 140px; top: 230px; width: 480px; height: 480px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    #f03-digits {
+      display: flex; align-items: flex-start;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 150px; letter-spacing: -0.02em;
+      color: #0C0C1E; margin-top: 6px;
+    }
+    .f03-slot { position: relative; display: block; width: 0.6em; height: 1.1em; overflow: hidden; }
+    .f03-colon { display: block; width: 0.3em; height: 1.1em; line-height: 1.1em; text-align: center; color: #1D0084; }
+    .f03-strip { position: absolute; left: 0; top: 0; width: 100%; }
+    .f03-strip span { display: block; height: 1.1em; line-height: 1.1em; text-align: center; }
+    #f03-units {
+      display: flex; gap: 0; margin-top: -10px;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: #5A6480;
+    }
+    #f03-units span { display: block; text-align: center; }
+    #f03-uMin { width: 90px; }
+    #f03-uGap { width: 45px; }
+    #f03-uSeg { width: 180px; }
+
+    /* ---------- right column: kinetic sentence ---------- */
+    #f03-copy { position: absolute; left: 1012px; top: 366px; width: 816px; text-shadow: 0 10px 30px rgba(4,0,40,0.20); }
+    .f03-w { display: inline-block; }
+    #f03-l1 {
+      font-weight: 600; font-size: 60px; line-height: 1.15; letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
+      white-space: nowrap;
+    }
+    #f03-l2 {
+      margin-top: 10px;
+      font-weight: 700; font-size: 88px; line-height: 1.05; letter-spacing: -0.03em; color: #FFFFFF;
+      white-space: nowrap;
+    }
+    #f03-hero {
+      margin-top: 2px; display: flex; align-items: flex-end; white-space: nowrap;
+      color: #FFFFFF; font-weight: 900;
+      filter: drop-shadow(0 16px 30px rgba(4,0,40,0.24));
+    }
+    #f03-three {
+      display: block; font-size: 262px; line-height: 0.86; letter-spacing: -0.04em;
+      padding-right: 0.06em; transform-origin: 40% 88%;
+    }
+    #f03-mins {
+      display: block; position: relative; font-size: 140px; font-weight: 800; line-height: 1; letter-spacing: -0.035em;
+      padding: 0 0.04em 0 0.02em; margin-bottom: 1px;
+      clip-path: inset(-40px -40px 0px -20px);
+    }
+    #f03-mins .f03-ch { display: inline-block; }
+  </style>
+
+  <div id="root" data-composition-id="03-tres-minutos" data-width="1920" data-height="1080" data-duration="2.24">
+    <div id="f03-ground" class="clip" data-start="0" data-duration="2.24" data-track-index="0">
+      <div id="f03-dots"></div>
+      <div id="f03-light"></div>
+    </div>
+
+    <div id="f03-stage">
+      <!-- ================= STOPWATCH ================= -->
+      <div id="f03-watch">
+        <div id="f03-shadow"></div>
+        <svg id="f03-svg" viewBox="0 0 760 860" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="f03-caseGrad" x1="0" y1="0" x2="0.35" y2="1">
+              <stop offset="0" stop-color="#2A0FA0" />
+              <stop offset="1" stop-color="#14005E" />
+            </linearGradient>
+            <linearGradient id="f03-capGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2A0FA0" />
+              <stop offset="1" stop-color="#1D0084" />
+            </linearGradient>
+            <linearGradient id="f03-arcGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#4da3ff" />
+              <stop offset="1" stop-color="#0b6df0" />
+            </linearGradient>
+          </defs>
+
+          <!-- side buttons (behind the case), at 10:30 and 1:30 -->
+          <g transform="rotate(-45 380 470)">
+            <g id="f03-btnL">
+              <rect x="362" y="104" width="36" height="50" rx="6" fill="#14005E" />
+              <rect x="334" y="78" width="92" height="36" rx="12" fill="url(#f03-capGrad)" stroke="rgba(159,213,245,0.42)" stroke-width="2.5" />
+              <rect x="346" y="84" width="68" height="6" rx="3" fill="rgba(255,255,255,0.22)" />
+            </g>
+          </g>
+          <g transform="rotate(45 380 470)">
+            <g id="f03-btnR">
+              <rect x="362" y="104" width="36" height="50" rx="6" fill="#14005E" />
+              <rect x="334" y="78" width="92" height="36" rx="12" fill="url(#f03-capGrad)" stroke="rgba(159,213,245,0.42)" stroke-width="2.5" />
+              <rect x="346" y="84" width="68" height="6" rx="3" fill="rgba(255,255,255,0.22)" />
+            </g>
+          </g>
+          <!-- crown (start button) -->
+          <g id="f03-crown">
+            <rect x="354" y="90" width="52" height="64" rx="8" fill="#14005E" />
+            <rect x="310" y="44" width="140" height="56" rx="18" fill="url(#f03-capGrad)" stroke="rgba(159,213,245,0.42)" stroke-width="2.5" />
+            <rect x="326" y="52" width="108" height="8" rx="4" fill="rgba(255,255,255,0.22)" />
+          </g>
+
+          <!-- case + face -->
+          <circle cx="380" cy="470" r="334" fill="url(#f03-caseGrad)" stroke="rgba(159,213,245,0.42)" stroke-width="3" />
+          <circle cx="380" cy="470" r="318" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="4" />
+          <circle cx="380" cy="470" r="298" fill="#FFFFFF" />
+          <circle cx="380" cy="470" r="298" fill="none" stroke="#DDE6F5" stroke-width="2" />
+
+          <!-- dial ticks -->
+          <g id="f03-ticks">
+            <circle cx="380" cy="470" r="274" fill="none" stroke="rgba(29,0,132,0.26)" stroke-width="12"
+              pathLength="60" stroke-dasharray="0.09 0.91" stroke-dashoffset="0.045" transform="rotate(-90 380 470)" />
+            <circle cx="380" cy="470" r="274" fill="none" stroke="#1D0084" stroke-width="22"
+              pathLength="12" stroke-dasharray="0.03 0.97" stroke-dashoffset="0.015" transform="rotate(-90 380 470)" />
+          </g>
+
+          <!-- ring track (draws in) -->
+          <circle id="f03-track" cx="380" cy="470" r="232" fill="none" stroke="#E8ECF7" stroke-width="34"
+            pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1" transform="rotate(-90 380 470)" />
+          <!-- progress arc (sweeps from 12 o'clock) -->
+          <circle id="f03-arc" cx="380" cy="470" r="232" fill="none" stroke="url(#f03-arcGrad)" stroke-width="34"
+            stroke-linecap="round" pathLength="1" stroke-dasharray="0 1" transform="rotate(-90 380 470)" />
+          <!-- sweep head -->
+          <g id="f03-head">
+            <circle id="f03-halo" cx="380" cy="238" r="20" fill="#0b6df0" opacity="0.18" />
+            <circle cx="380" cy="238" r="11" fill="#FFFFFF" />
+          </g>
+        </svg>
+
+        <div id="f03-readout">
+          <div id="f03-digits">
+            <span class="f03-slot"><span class="f03-strip" id="f03-s1"><span>2</span><span>3</span></span></span>
+            <span class="f03-colon">:</span>
+            <span class="f03-slot"><span class="f03-strip" id="f03-s3"><span>5</span><span>0</span></span></span>
+            <span class="f03-slot"><span class="f03-strip" id="f03-s4"><span>8</span><span>9</span><span>0</span></span></span>
+          </div>
+          <div id="f03-units"><span id="f03-uMin">min</span><span id="f03-uGap"></span><span id="f03-uSeg">seg</span></div>
+        </div>
+      </div>
+
+      <!-- ================= KINETIC COPY ================= -->
+      <div id="f03-copy">
+        <div id="f03-l1"><span class="f03-w" id="f03-te">Te</span> <span class="f03-w" id="f03-lo">lo</span> <span class="f03-w" id="f03-explico">explico</span></div>
+        <div id="f03-l2"><span class="f03-w" id="f03-en">en</span> <span class="f03-w" id="f03-menos">menos</span> <span class="f03-w" id="f03-de">de</span></div>
+        <div id="f03-hero">
+          <span id="f03-three">3</span>
+          <span id="f03-mins"><span class="f03-ch">minutos</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var $ = function (id) { return document.getElementById("f03-" + id); };
+      var tl = gsap.timeline({ paused: true });
+
+      // ---- exact word cues (frame-relative s) ----
+      var T = { te: 0.12, lo: 0.167, explico: 0.259, en: 0.694, menos: 0.806, de: 1.065, tres: 1.176, minutos: 1.407 };
+      var LEAD = 0.04;
+      var DUR = 2.306;
+      var TICK1 = T.tres + 0.5, TICK2 = T.tres + 1.0;   // a tick every 0.5 s once the clock starts
+      var DIGIT = 165;                                 // 1.1em at 150px = one digit row
+
+      // ---- initial states (immediate, outside the timeline) ----
+      gsap.set($("s1"), { y: -DIGIT });
+      gsap.set($("s3"), { y: -DIGIT });
+      gsap.set($("s4"), { y: -2 * DIGIT });
+      gsap.set([$("arc"), $("head")], { opacity: 0 });
+      gsap.set($("head"), { rotation: 0, svgOrigin: "380 470" });
+
+      // ================= ENTRANCE (0 – 0.25): stopwatch zooms in from 0.6 out of blur =================
+      tl.fromTo($("watch"),
+        { scale: 0.84, opacity: 0.35, filter: "blur(12px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, 0);
+      tl.fromTo($("dots"), { scale: 1.05 }, { scale: 1, duration: 0.6, ease: "power2.out" }, 0);
+
+      // the ring track draws clockwise from 12 o'clock
+      tl.fromTo($("track"), { attr: { "stroke-dashoffset": 1 } },
+        { attr: { "stroke-dashoffset": 0 }, duration: 0.58, ease: "power2.out" }, 0.05);
+      // dial ticks settle into register
+      tl.fromTo($("ticks"), { rotation: -8, svgOrigin: "380 470", opacity: 0 },
+        { rotation: 0, svgOrigin: "380 470", opacity: 1, duration: 0.55, ease: "power3.out" }, 0.06);
+      // crown + side buttons seat into the case
+      tl.fromTo($("crown"), { y: -46 }, { y: 0, duration: 0.34, ease: "power3.out" }, 0.1);
+      tl.fromTo([$("btnL"), $("btnR")], { y: -34 }, { y: 0, duration: 0.32, ease: "power3.out", stagger: 0.04 }, 0.16);
+
+      // readout lights up on "explico"
+      tl.fromTo($("readout"), { opacity: 0, scale: 1.05, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, T.explico - LEAD);
+
+      // ================= Scene 1 copy: "Te lo explico" (lead) =================
+      var rise = function (id, t, dy) {
+        tl.fromTo($(id), { y: dy || 44, opacity: 0, filter: "blur(8px)" },
+          { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, t - LEAD);
+      };
+      rise("te", T.te);
+      rise("lo", T.lo);
+      rise("explico", T.explico);
+
+      // ================= "en menos de" (lead line 2) =================
+      rise("en", T.en, 56);
+      rise("menos", T.menos, 56);
+      rise("de", T.de, 56);
+
+      // ================= Scene 2: "tres" — START. crown press, arc sweeps, 3 slams =================
+      // crown pressed like a real start button
+      tl.to($("crown"), { y: 16, duration: 0.07, ease: "power2.in" }, T.tres - 0.1);
+      tl.to($("crown"), { y: 0, duration: 0.2, ease: "power3.out" }, T.tres - 0.03);
+      // slow, purposeful push on the hit
+      tl.fromTo($("stage"), { scale: 1 }, { scale: 1.015, duration: 0.5, ease: "power2.out" }, T.tres - 0.02);
+
+      // progress arc + head sweep clockwise, accelerating into the cut (one proxy drives both)
+      var SWEEP = 0.34;
+      tl.set([$("arc"), $("head")], { opacity: 1 }, T.tres - 0.02);
+      var prog = { p: 0 };
+      tl.fromTo(prog, { p: 0 }, {
+        p: SWEEP, duration: DUR - (T.tres - 0.02), ease: "power1.in",
+        onUpdate: function () {
+          $("arc").setAttribute("stroke-dasharray", prog.p.toFixed(5) + " 1");
+          gsap.set($("head"), { rotation: prog.p * 360, svgOrigin: "380 470" });
+        }
+      }, T.tres - 0.02);
+
+      // the dial's minute digit answers the slam
+      tl.fromTo($("s1").parentNode, { scale: 1.06 }, { scale: 1, duration: 0.32, ease: "power3.out" }, T.tres - LEAD);
+
+      // the big 3 slams
+      tl.fromTo($("three"),
+        { scale: 1.18, opacity: 0, filter: "blur(10px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, T.tres - LEAD);
+
+      // ================= "minutos" — the word rises out of the baseline mask (one move) =================
+      tl.fromTo($("mins").querySelectorAll(".f03-ch"),
+        { yPercent: 105 },
+        { yPercent: 0, duration: 0.3, ease: "power3.out" }, T.minutos - LEAD);
+
+      // ================= ticks: 3:00 -> 2:59 -> 2:58 =================
+      // tick 1 — every slot rolls (seconds first, cascading to minutes)
+      tl.to($("s4"), { y: -DIGIT, duration: 0.16, ease: "expo.out" }, TICK1);
+      tl.to($("s3"), { y: 0, duration: 0.16, ease: "expo.out" }, TICK1 + 0.03);
+      tl.to($("s1"), { y: 0, duration: 0.16, ease: "expo.out" }, TICK1 + 0.06);
+      // tick 2
+      tl.to($("s4"), { y: 0, duration: 0.16, ease: "expo.out" }, TICK2);
+
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.167, 0.17], [0.259, 0.28], [0.694, 0.715], [0.806, 0.85], [1.065, 1.17], [1.176, 1.27], [1.407, 1.53], [2.306, 2.24]]);
+      window.__timelines["03-tres-minutos"] = tl;
+    })();
+  </script>
+</template>
