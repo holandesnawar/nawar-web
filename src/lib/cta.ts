@@ -22,4 +22,7 @@
 //  · Landings sin precio (anuncios) → /agendar (LandingCaptacion y cía.).
 //  · Landings con precio → el pago.
 // Se probó a mandar todo a /agendar y se deshizo el mismo día.
-export const CTA_PRINCIPAL = '/matricula-a0-a1'
+// 03/10, lanzamiento del proceso de admisión (pedido del usuario): los
+// botones generales van a /proceso-de-admision (datos → vídeo → preguntas).
+// El formulario corto /matricula-a0-a1 sigue vivo por si hay que volver.
+export const CTA_PRINCIPAL = '/proceso-de-admision'

@@ -59,6 +59,9 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
 
       <!-- El vídeo: bloqueado hasta dejar los datos. -->
       <div class="ad-video" id="ad-video" data-proveedor={video.proveedor} data-src={video.src}>
+        <!-- La previsualización: el vídeo en silencio y en bucle, detrás del
+             candado, para que se vea lo que hay dentro (03/10). -->
+        <div class="ad-preview" id="ad-preview" aria-hidden="true"></div>
         <button type="button" class="ad-candado" id="ad-candado" aria-label="Desbloquear el vídeo"
           style={VIDEO_PORTADA ? `background-image:linear-gradient(rgba(10,22,86,0.55),rgba(10,22,86,0.75)),url('${VIDEO_PORTADA}')` : undefined}>
           <span class="ad-play" aria-hidden="true">
@@ -150,6 +153,34 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   const proveedor = caja.dataset.proveedor || ''
   const src = caja.dataset.src || ''
 
+  // ── La previsualización ───────────────────────────────────────────────
+  // Mientras está bloqueado, el vídeo suena en silencio y en bucle de fondo
+  // (pedido del usuario, 03/10: "que vean lo que les espera dentro"). En
+  // silencio el navegador sí deja arrancarlo solo, también en el iPhone. No
+  // se puede tocar: el clic va siempre al candado. Al desbloquear se quita y
+  // entra el reproductor de verdad, desde el principio y con sonido.
+  const preview = $('ad-preview')
+  if (src && (proveedor === 'bunny' || proveedor === 'mp4')) {
+    if (proveedor === 'bunny') {
+      const f = document.createElement('iframe')
+      f.src = `${src}&muted=true&loop=true`
+      f.allow = 'autoplay; encrypted-media'
+      f.tabIndex = -1
+      f.title = ''
+      preview.appendChild(f)
+    } else {
+      const v = document.createElement('video')
+      v.src = src; v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true
+      preview.appendChild(v)
+      v.play().catch(() => {})
+    }
+    caja.classList.add('con-preview')
+  }
+  const quitarPreview = () => {
+    preview.innerHTML = ''
+    caja.classList.remove('con-preview')
+  }
+
   // ── Lo que se recuerda en el navegador ────────────────────────────────
   // Si vuelve mañana, no tiene que volver a dar los datos ni a ver el vídeo.
   const leer = <T,>(k: string): T | null => {
@@ -169,7 +200,9 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   // ── Avisar a la escuela (por la misma puerta que /agendar) ───────────
   // `matricula`: solo al rellenar la ventanita. Ahí la escuela crea su
   // matrícula (solicitud) con de dónde viene; lo demás la va completando.
-  const avisar = (video: 'empezado' | 'visto', matricula = false) => {
+  // `hito`: los dos momentos que van también a systeme.io con su etiqueta
+  // (dejó los datos, vio el vídeo entero).
+  const avisar = (video: 'empezado' | 'visto', matricula = false, hito: '' | 'datos' | 'video' = '') => {
     if (!datos) return
     try {
       fetch('/api/cualificacion', {
@@ -179,6 +212,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
         body: JSON.stringify({
           parcial: true,
           matricula,
+          hito,
           embudo: 'admision',
           video,
           first_name: datos.first_name,
@@ -233,7 +267,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     if (estadoVideo !== 'visto') {
       estadoVideo = 'visto'
       guardar(CLAVE_VIDEO, 'visto')
-      avisar('visto')
+      avisar('visto', false, 'video')
       pixel('video')
     }
     desbloquear()
@@ -275,6 +309,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   }
 
   const arrancarVideo = async () => {
+    quitarPreview()
     candado.hidden = true
     reproductor.hidden = false
     marcarPaso(estadoVideo === 'visto' ? 3 : 2)
@@ -374,7 +409,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     if (!ok) return
     datos = { first_name: nombre, email, phone, pais: opcion.dataset.pais || '' }
     guardar(CLAVE_DATOS, datos)
-    avisar(estadoVideo, true)
+    avisar(estadoVideo, true, 'datos')
     pixel('datos')
     cerrarModal()
     arrancarVideo()
@@ -424,6 +459,10 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   .ad-candado { position: absolute; inset: 0; width: 100%; height: 100%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-family: inherit; padding: 0;
     background: radial-gradient(circle at 75% 15%, rgba(77,163,255,0.22), transparent 55%), linear-gradient(180deg, #14248f 0%, #0a1656 100%); background-size: cover; background-position: center; }
   .ad-candado[hidden] { display: none; }
+  .ad-preview { position: absolute; inset: -2px; pointer-events: none; overflow: hidden; }
+  .ad-preview :global(iframe), .ad-preview :global(video) { width: 100%; height: 100%; border: 0; display: block; object-fit: cover; }
+  /* Con previsualización, el candado deja ver el vídeo detrás, oscurecido. */
+  .ad-video.con-preview .ad-candado { background: linear-gradient(180deg, rgba(10,22,86,0.30) 0%, rgba(10,22,86,0.55) 100%); }
   /* Un reproductor normal: botón translúcido en el centro y una barra abajo
      con la duración. Nada de halos ni pastillas de colores. */
   .ad-play { width: 72px; height: 72px; border-radius: 9999px; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.28); color: #fff; display: inline-flex; align-items: center; justify-content: center; padding-left: 4px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: background .15s; }
