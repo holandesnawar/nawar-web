@@ -83,8 +83,8 @@ dl 1WLd2hR8-8HraTLFGOOeN6iOnQ9ZxWqDy voz-v4-4.mp3        # «Voz en off VSL Escu
 dl 1xxPfBLFdxfaBvdroRpmL51wrUuHDDmCi formacion-134.mov   # «Formacion-1.34»: course page scrolling through the lessons
 ffmpeg -v error -y -i "$RAW/voz-v4-4.mp3" -af "loudnorm=I=-16:TP=-1.5:LRA=11" -ar 48000 -ac 1 "$RAW/voz-v4-4.wav"
 ffmpeg -v error -y -i "$RAW/formacion-134.mov" -an -vf "fps=30,format=yuv420p" -c:v libx264 -preset slow -crf 16 -g 30 -movflags +faststart assets/video/formacion-134.mp4
-# 21-portatil opens straight onto the website hero: its first 2.16 s, eased to 2.5 s so the hand-over lands on the bar line
-ffmpeg -v error -y -t 2.16 -i assets/video/nuestra-vision.mp4 -vf "setpts=PTS*1.1574,fps=30" -an -c:v libx264 -crf 16 -preset slow -pix_fmt yuv420p -movflags +faststart assets/video/nuestra-vision-hero.mp4
+# 21-portatil opens straight onto the website hero: its first 1.92 s (before the page scrolls), eased to 2.5 s so the hand-over lands on the bar line
+ffmpeg -v error -y -t 1.92 -i assets/video/nuestra-vision.mp4 -vf "setpts=PTS*1.3021,fps=30" -an -c:v libx264 -crf 16 -preset slow -pix_fmt yuv420p -movflags +faststart assets/video/nuestra-vision-hero.mp4
 
 echo "v4 soundtrack: take (4) at 1.065x + the v3 music edit (writes transcript.json too)"
 python3 tools/build_audio_v4.py
