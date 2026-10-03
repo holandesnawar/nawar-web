@@ -18,7 +18,7 @@
  * Ver src/lib/admision.ts para el porqué de todo el embudo.
  */
 import Layout from '../../layouts/Layout.astro'
-import { PREFIJOS, VIDEO_PORTADA, VIDEO_URL, leerVideo } from '../../lib/admision'
+import { PREFIJOS, VIDEO_DURACION, VIDEO_PORTADA, VIDEO_URL, leerVideo } from '../../lib/admision'
 
 export const prerender = true
 
@@ -62,11 +62,14 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
         <button type="button" class="ad-candado" id="ad-candado" aria-label="Desbloquear el vídeo"
           style={VIDEO_PORTADA ? `background-image:linear-gradient(rgba(10,22,86,0.55),rgba(10,22,86,0.75)),url('${VIDEO_PORTADA}')` : undefined}>
           <span class="ad-play" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.9-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg>
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.9-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg>
           </span>
-          <span class="ad-candado-texto">
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-            Haz clic para desbloquear el vídeo
+          <span class="ad-barra">
+            <span class="ad-candado-texto">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+              Deja tus datos para verlo
+            </span>
+            {VIDEO_DURACION ? <span class="ad-duracion">{VIDEO_DURACION}</span> : null}
           </span>
         </button>
         <div class="ad-reproductor" id="ad-reproductor" hidden></div>
@@ -379,12 +382,16 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
 
   /* El vídeo */
   .ad-video { width: 100%; aspect-ratio: 16 / 9; margin-top: 28px; border-radius: 16px; overflow: hidden; position: relative; background: #0a1656; border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 30px 70px -30px rgba(0,0,0,0.6); }
-  .ad-candado { position: absolute; inset: 0; width: 100%; height: 100%; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; color: #fff; font-family: inherit;
-    background: radial-gradient(circle at 70% 20%, rgba(77,163,255,0.35), transparent 60%), radial-gradient(circle at 20% 90%, rgba(11,109,240,0.3), transparent 55%), #0a1656; background-size: cover; background-position: center; }
+  .ad-candado { position: absolute; inset: 0; width: 100%; height: 100%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-family: inherit; padding: 0;
+    background: radial-gradient(circle at 75% 15%, rgba(77,163,255,0.22), transparent 55%), linear-gradient(180deg, #14248f 0%, #0a1656 100%); background-size: cover; background-position: center; }
   .ad-candado[hidden] { display: none; }
-  .ad-play { width: 84px; height: 84px; border-radius: 9999px; background: #4da3ff; color: #0a1656; display: inline-flex; align-items: center; justify-content: center; padding-left: 5px; box-shadow: 0 0 0 10px rgba(77,163,255,0.18); transition: transform .2s; }
-  .ad-candado:hover .ad-play { transform: scale(1.07); }
-  .ad-candado-texto { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 9999px; background: rgba(0,0,0,0.35); font-size: 13.5px; font-weight: 600; }
+  /* Un reproductor normal: botón translúcido en el centro y una barra abajo
+     con la duración. Nada de halos ni pastillas de colores. */
+  .ad-play { width: 72px; height: 72px; border-radius: 9999px; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.28); color: #fff; display: inline-flex; align-items: center; justify-content: center; padding-left: 4px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: background .15s; }
+  .ad-candado:hover .ad-play { background: rgba(255,255,255,0.26); }
+  .ad-barra { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 22px 16px 12px; background: linear-gradient(transparent, rgba(0,0,0,0.38)); font-size: 13px; color: rgba(255,255,255,0.85); }
+  .ad-candado-texto { display: inline-flex; align-items: center; gap: 7px; font-weight: 500; }
+  .ad-duracion { font-variant-numeric: tabular-nums; font-weight: 500; }
   .ad-reproductor { position: absolute; inset: 0; }
   .ad-reproductor :global(iframe), .ad-reproductor :global(video) { width: 100%; height: 100%; border: 0; display: block; background: #000; }
   .ad-reproductor :global(.ad-sin-video) { margin: 0; height: 100%; display: flex; align-items: center; justify-content: center; padding: 24px; font-size: 15px; color: rgba(255,255,255,0.85); }
@@ -432,8 +439,10 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   @media (max-width: 640px) {
     .ad-page { padding: 28px 16px 72px; }
     .ad-logo-link { margin-bottom: 22px; }
-    .ad-video { border-radius: 12px; margin-top: 22px; }
-    .ad-play { width: 68px; height: 68px; }
+    /* En el móvil, el vídeo de borde a borde: 16 px a cada lado eran mucho
+       marco para una pantalla tan estrecha (03/10). */
+    .ad-video { align-self: stretch; width: auto; margin: 22px -16px 0; border-radius: 0; border-left: 0; border-right: 0; box-shadow: none; }
+    .ad-play { width: 56px; height: 56px; }
     .ad-btn-seguir { width: 100%; padding: 16px 18px; font-size: 15.5px; }
     .ad-tel { grid-template-columns: 104px 1fr; }
   }

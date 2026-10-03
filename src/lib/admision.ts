@@ -29,8 +29,13 @@
 export const VIDEO_POR_DEFECTO = 'https://player.mediadelivery.net/play/675650/fc3a2619-ce33-4ba7-8e45-d3a386273318'
 export const VIDEO_URL = ((import.meta.env.PUBLIC_ADMISION_VIDEO as string | undefined) || VIDEO_POR_DEFECTO).trim()
 
-/** Imagen de portada del vídeo bloqueado. Vacío = el fondo de la marca. */
+/** Imagen de portada del vídeo bloqueado (la miniatura de Bunny, si se pone
+ *  una). Vacío = el fondo de la marca. */
 export const VIDEO_PORTADA = ''
+
+/** Lo que dura el vídeo, para la barra de abajo del vídeo bloqueado: que se
+ *  vea un reproductor de verdad y no un botón suelto (03/10, "muy IA"). */
+export const VIDEO_DURACION = '2:57'
 
 export type Proveedor = 'bunny' | 'youtube' | 'vimeo' | 'mp4' | ''
 
