@@ -258,6 +258,22 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     return f
   }
 
+  // ── Sin saltos: solo play y pausa (03/10, pedido del usuario) ──────────
+  // Mientras no lo haya visto entero, si alguien arrastra la barra (adelante
+  // o atrás) se le devuelve a donde iba. Y el final solo cuenta si de verdad
+  // llegó hasta ahí. Quien ya lo vio entero puede moverse a su gusto.
+  let tope = 0
+  let duracion = 0
+  const libre = () => estadoVideo === 'visto'
+  const vigilar = (t: number, irA: (s: number) => void) => {
+    if (libre() || !isFinite(t)) return
+    if (Math.abs(t - tope) > 1.5) irA(tope)
+    else if (t > tope) tope = t
+  }
+  const terminadoDeVerdad = () => {
+    if (libre() || !isFinite(duracion) || !duracion || tope >= duracion - 4) videoTerminado()
+  }
+
   const arrancarVideo = async () => {
     candado.hidden = true
     reproductor.hidden = false
@@ -272,18 +288,32 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
       if (proveedor === 'mp4') {
         const v = document.createElement('video')
         v.src = src; v.controls = true; v.playsInline = true; v.autoplay = true
-        v.addEventListener('ended', videoTerminado)
+        v.addEventListener('loadedmetadata', () => (duracion = v.duration || 0))
+        v.addEventListener('timeupdate', () => vigilar(v.currentTime, (t) => (v.currentTime = t)))
+        v.addEventListener('ended', terminadoDeVerdad)
         reproductor.appendChild(v)
         v.play().catch(() => {})
       } else if (proveedor === 'bunny') {
         const f = ponerIframe()
         await cargarScript('https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js')
         const p = new (window as any).playerjs.Player(f)
-        p.on('ready', () => p.on('ended', videoTerminado))
+        p.on('ready', () => {
+          p.getDuration((d: number) => (duracion = d || 0))
+          p.on('timeupdate', (e: { seconds: number; duration?: number }) => {
+            if (e?.duration) duracion = e.duration
+            vigilar(e?.seconds, (t) => p.setCurrentTime(t))
+          })
+          p.on('ended', terminadoDeVerdad)
+        })
       } else if (proveedor === 'vimeo') {
         const f = ponerIframe()
         await cargarScript('https://player.vimeo.com/api/player.js')
-        new (window as any).Vimeo.Player(f).on('ended', videoTerminado)
+        const vp = new (window as any).Vimeo.Player(f)
+        vp.on('timeupdate', (e: { seconds: number; duration: number }) => {
+          duracion = e.duration || duracion
+          vigilar(e.seconds, (t) => vp.setCurrentTime(t))
+        })
+        vp.on('ended', terminadoDeVerdad)
       } else if (proveedor === 'youtube') {
         const f = ponerIframe()
         f.id = 'ad-yt'
@@ -291,8 +321,17 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
           ;(window as any).onYouTubeIframeAPIReady = () => ok()
           cargarScript('https://www.youtube.com/iframe_api').catch(mal)
         })
-        new (window as any).YT.Player('ad-yt', {
-          events: { onStateChange: (e: { data: number }) => { if (e.data === 0) videoTerminado() } },
+        const yt = new (window as any).YT.Player('ad-yt', {
+          events: {
+            onReady: () => {
+              // YouTube no avisa del tiempo: se mira cada medio segundo.
+              setInterval(() => {
+                duracion = yt.getDuration?.() || duracion
+                vigilar(yt.getCurrentTime?.() ?? 0, (t) => yt.seekTo(t, true))
+              }, 500)
+            },
+            onStateChange: (e: { data: number }) => { if (e.data === 0) terminadoDeVerdad() },
+          },
         })
       }
     } catch {
