@@ -50,6 +50,16 @@ Flashcards · Oefening · Lezen · Luisteren · Spreken.
 To inspect any video yourself: ffmpeg -ss <t> -i assets/video/<file>.mp4 -frames:v 1 /tmp/claude-0/-home-user-nawar-web/36d31257-d6ae-5587-b324-a9f00bcc433b/scratchpad/<name>.png  (then Read it).
 v1 frames for reference/reuse (read-only!): compositions/frames_v1/*.html (e.g. 20-por-dentro, 21-tu-ritmo,
 22-clase-directo, 25-end-card, 06-atascado).
+- paul-clase-1.mp4 10.1 s (2502×992, NEW v3) — a REAL module video lesson: platform sidebar (left ≈0–430 px) + teacher
+  PAUL's camera big (≈ x 740–1330, full height) + slide «Wat doe jij in je vrije tijd?» (matching exercise). Crop to
+  Paul's camera to use him as the live-class teacher.
+- paul-clase-2.mp4 14.3 s (2424×1238, NEW v3) — another REAL module video with PAUL: slide «De structuur» (ZIN + OM … TE +
+  infinitief) with his webcam tile top-left (≈ x 230–490, y 55–205 of a 1600-wide frame ⇒ scale ×1.515) and the video
+  player bar (play, 2:07–2:09, volume, fullscreen) at the bottom; «Ver la presentación (PDF)» card under the player.
+Device: ALWAYS use the realistic MacBook / macOS window from tools/mac_mockup.md (content area exactly 16:9, URL
+`app.holandesnawar.com`). Reference pilots: compositions/frames/12-metodo.html and 14-supervivencia.html.
+Owner's style reference (Offlesson VSL, vertical screen recording): /tmp/claude-0/-home-user-nawar-web/36d31257-d6ae-5587-b324-a9f00bcc433b/scratchpad/material/objetivo.mp4
+(contact sheet: /tmp/claude-0/-home-user-nawar-web/36d31257-d6ae-5587-b324-a9f00bcc433b/scratchpad/material/f_obj/sheet1.jpg).
 Audio: none in frames (SFX via the sidecar).
 """
 
@@ -132,8 +142,7 @@ quiz card white, radius 28, ~980×600, card-on-blue shadow; question «¿Qué si
 (A/B/C/D white Inter 800) + option text Inter 600 32 px ink: A «aburrido» · B «acogedor» · C «caro» · D «rápido».
 Die: white CSS 3D cube ~200 px, radius 26 px faces, indigo pips, soft shadow.
 """
-GEOM_FOR = {"20-pausa": "laptop", "21-portatil": "laptop", "23-camino": "path_v2",
-            "30-sin-tests": "quiz", "31-suerte": "quiz", "33-de-verdad": "quiz"}
+GEOM_FOR = {"23-camino": "path_v2", "33-de-verdad": "quiz"}
 
 def storyboard_blocks():
     s = open(os.path.join(ROOT, "STORYBOARD.md"), encoding="utf-8").read()
@@ -155,7 +164,7 @@ def main():
     delta = open(os.path.join(ROOT, "tools", "role_delta.md"), encoding="utf-8").read()
     open(os.path.join(OUT, "_role.md"), "w").write(core.rstrip() + "\n\n---\n\n" + delta)
     for k, f in enumerate(frames):
-        n = k + 1
+        n = int(f['id'].split('-')[0])
         fid = f["id"]
         prefix = f"f{fid.split('-')[0]}-"
         ws = f["words"]

@@ -1,14 +1,13 @@
 ---
 format: 1920x1080
-duration: 202.9s
+duration: 177.1s
 message: "El neerlandés no se te da mal: te lo estaban enseñando desde el inglés. Nawar te lo enseña desde el español — y esto es exactamente lo que hay dentro."
 arc: Hook → Pain → Reframe → Nawar → 3 phases → Sounds → PAUSE «¿y qué hay dentro?» → DROP: laptop reveal → 16 weeks · 10 modules · +360 lessons → path → short videos → practice → flashcards → consultas → weekly live class (same teachers) → no A/B/C/D tests → outcomes → promise → CTA → end card
 audience: hispanohablantes en Países Bajos / Flandes, atascados con el neerlandés
 mode: autonomous
-music: owner's track, re-edited on its own bar grid (audio_v2.json): STOP at 97.70 (start of frame 20), DROP at 100.92 (start of frame 21), breakdown from 168.12, riser 182.52, tension bar 184.92, RE-DROP 187.32 (start of frame 38), final hit 199.32 (frame 39 + 3.60)
----
+music: owner's track re-edited on its bar grid (audio_v3.json, calmer mix): STOP at 88.35 (start of frame 20), DROP at 91.16 (start of frame 21), breakdown from 148.76, riser 163.16, tension 165.56, RE-DROP 167.96 (start of frame 38), final hit 175.16 (on «…cuando lo HABLAS»)
 
-# STORYBOARD v2 — Nawar VSL (Formación Nawar A0–A1)
+# STORYBOARD v3 — Nawar VSL (Formación Nawar A0–A1)
 
 All times inside a frame are **frame-relative seconds**. Exact per-word cue times for every frame are
 in `timing.json` and are inlined into each frame packet — every reveal must land on its word's cue
@@ -63,6 +62,33 @@ animations, no Math.random.
 purposeful). The drop/re-drop already hit hard in the music — add at most a whoosh/impact that
 *supports* them, never fights them. Frame 20 must stay nearly silent (one soft click on the pause, one
 click on the play at the end).
+
+
+### v3 polish — a top studio, not an AI template
+
+Owner (v3 brief, verbatim): «quitar todo lo que haga parecer este vídeo muy notable hecho con IA o hagan parecer la
+formación algo barato y estúpido … que se vea que somos los mejores, detalles mínimos, cosas realistas no tan IAs,
+recuerda que me gustó el estilo, solo mini cosas que se podrían mejorar a algo más chulo hecho por profesional».
+Reference of the level he wants: the Offlesson VSL (material/objetivo.mp4): restraint, clean type, real people and
+the real platform, few effects.
+
+Rules for every frame (new or touched):
+- **Restraint.** One accent per beat. NO lens flares, light-ray bursts, sparkle/star particles, confetti, shockwave
+  rings, neon/outer glows on text, speed-line "anime" streaks, chromatic/glitch effects, or camera shakes. Soft,
+  physically plausible shadows only. A gentle light sweep across glass/devices is OK (once).
+- **Real over fake.** Show the real platform inside the realistic MacBook / macOS window from tools/mac_mockup.md
+  (content area exactly 16:9, URL `app.holandesnawar.com`). Props that aren't the platform must read as clean product
+  UI or physical objects — never clip-art.
+- **Type.** Poppins 700/800 for headlines (900 only for big numbers), Inter for UI/labels. Sentence case for
+  headlines; ALL CAPS only for short labels. Max 2 type sizes + 1 label size per frame. Generous spacing, 96 px side
+  margins, align to a grid. White on blue; #4da3ff as the single accent.
+- **Motion.** Smooth and confident: power2/power3.out, expo.out only for one hero move. One move per element per
+  beat, no bounce/elastic/back eases, no wiggles, no pop-overshoot on every element, no per-letter gimmicks. Elements
+  settle and breathe; camera moves are slow and purposeful.
+- **Icons.** Thin, consistent line icons (≈2.5 px stroke at 48 px), never emoji-like or cartoonish.
+- **Sound.** ≤ 2 SFX per frame, soft (volume ≤ 0.25): UI clicks/taps and an occasional soft whoosh. Never glitch or
+  "error" noises, never sparkle/chime sweeteners except the end card chime.
+- **Credibility.** No invented numbers, no student names/faces, correct Dutch (copy verbatim), no fake brands.
 
 ---
 
@@ -356,18 +382,8 @@ a bracket connecting them; gloss "Ayer trabajé." SFX click on each tile landing
 
 ## Frame 17 — "Todo con un objetivo: que dejes de traducir en tu cabeza."
 
-- src: compositions/frames/17-traducir.html
-- ground: nawar-blue
-- entrance: target icon spins in (rotation -90→0, scale)
-
-Scene 1 (0.0–1.5s): a bullseye target icon (white rings + blue-light center) center-top; lead
-"Todo con un objetivo:" (0.12–0.57).
-Scene 2 (1.5–3.29s): a head silhouette in profile (SVG, white 12 % fill + white outline) center; inside
-it a two-arrow loop "ES ⇄ NL" that rotates (finite, ~1.5 turns) while "que dejes de **traducir**"
-builds (1.56–2.12); on "traducir" (2.12) the loop snaps/breaks (arrows fly apart) and a single clean
-arrow → a white speech bubble «Ja, natuurlijk!» pops out of the mouth area on "cabeza" (2.73).
-
-**v2 change:** the voice now says «Todo para que dejes de traducir en tu cabeza.» (no «con un objetivo»). Drop the target/dart scene; open directly on the head + ES⇄NL loop scene with the line «Todo para que dejes de / TRADUCIR / en tu cabeza.», timed to the v2 cues.
+- src: compositions/frames/17-traducir.html — the v1 design is back (target + dart on «OBJETIVO», then the head
+  with the ES⇄NL loop and «que dejes de TRADUCIR en tu cabeza»), retimed v1 → v3 by tools/retime_v2.py.
 
 ## Frame 18 — "Y desde el primer día, los sonidos que el español no tiene: la ge, la ui, la uu, la eu…"
 
@@ -403,65 +419,33 @@ SFX click per ✓.
 
 **v2:** unchanged design, retimed to the v2 voice.
 
-## Frame 20 — PAUSE: "Vale, ¿y qué hay dentro? Te lo cuento."
+## Frame 20 — PAUSE: "Vale, ¿y qué hay dentro? Te lo enseño."
 
-- src: compositions/frames/20-pausa.html
-- ground: nawar-blue, slightly darker (stronger vignette) — the film is PAUSED
-- entrance: none moving — a hard cut to a frozen, still image (that IS the effect). Only the player bar slides up.
-- music: the music STOPPED at t=0 (silence until the drop at the end of this frame = start of 21)
-- reference: Offlesson VSL — closed laptop lid lying diagonally across the frame with a big ▶ on it
-  and the question under it; a cursor clicks ▶ and the lid opens on the drop. Contact sheets of the
-  reference (look, do not copy their branding): /tmp/claude-0/-home-user-nawar-web/36d31257-d6ae-5587-b324-a9f00bcc433b/scratchpad/material/v2/f/efecto.jpg,
-  efecto-zoom1.jpg, efecto-zoom2.jpg (same folder).
+- src: compositions/frames/20-pausa.html (+ 21 from the same generator: tools/gen_laptop_20_21.py — update it)
+- ground: nawar-blue, darker (vignette) — the film is PAUSED; the music STOPPED at t=0
+- device: the REALISTIC MacBook (tools/mac_mockup.md look), CLOSED, seen from above: silver aluminium lid (no logo,
+  no text), soft studio reflection, real shadow on the ground — lying diagonally across the frame like the
+  Offlesson reference (material/v2/f/efecto*.jpg), a glassy ▶ disc on the lid.
+- Same choreography as v2 (pause glyph flash + player bar «1:28 / 2:57», «Vale,» · «¿Y qué hay» · «dentro?» · «Te lo
+  enseño.», cursor glides in and clicks ▶ just before the end, lid lifts a few degrees on the last frames) — but
+  «dentro?» WITHOUT neon glow (solid blue-light, Poppins 800), and the text is the new line «Te lo enseño.».
 
-Scene 1 (0.0–0.6s): STILL. The closed laptop lid (see shared geometry "laptop") lies diagonally across
-the frame, seen from above; a big glassy ▶ play disc in its middle. At t=0 a pause glyph ❚❚ (white,
-120 px) flashes at center for 0.25 s (opacity 1 → 0, scale 1 → 1.15) as if someone hit pause, and a
-video-player control bar slides up from the bottom (y 1080 → its rest at bottom 40 px, 0.3 s
-power3.out): ▶ icon · scrubber (white 30 % track, white fill at 48 %, round knob) · timecode
-"1:37 / 3:22" (Inter 600 24 px white-72). Everything else is frozen — no drift.
-Scene 2 (0.6–2.2s): the question builds ON the lid, under the ▶: "Vale," (Caveat 700 64 px, sky,
-slight -4° tilt) above-left on its cue; then "¿Y qué hay" (display-h2, white) word by word on
-"y · qué · hay", and **DENTRO?** (display-hero-ish 150 px, Poppins 900, blue-light #4da3ff with a soft
-glow) slams on "dentro?" (scale 1.25 → 1 + blur 10 → 0, 3-frame micro-shake of the text only).
-Scene 3 (2.2–3.22s): "Te lo cuento." (lead, white-72) fades in small under it on its cue. A white
-arrow cursor (macOS style, black 2 px outline, 46 px) enters from the bottom-right at 2.3 s and glides
-(power2.inOut) to the ▶ arriving at 2.95 s; at 3.05 s it clicks (cursor scale 0.86 and back; ▶ disc
-darkens; a white ring ripples out from the ▶ 1 → 1.8, opacity 0.7 → 0); at 3.12 the player bar's
-icon flips to ❚❚ (playing). The last 0.1 s: the lid starts to lift (hinge side) by 3–4° — the
-opening continues in frame 21.
-SFX: click-soft @0.0 (0.25) · click @3.05 (0.35).
-Handoff_out to 21: lid, ▶ and cursor exactly as at 3.22 s (shared geometry "laptop"); the text and the
-player bar are cut away by the drop.
+## Frame 21 — THE DROP: the Mac opens on the school · "Dieciséis semanas de formación guiada."
 
-## Frame 21 — THE DROP: laptop opens on the school · "Dieciséis semanas de formación guiada."
-
-- src: compositions/frames/21-portatil.html
-- ground: nawar-blue (full brightness on the drop)
-- handoff_in: the closed lid + ▶ from frame 20 (shared geometry "laptop")
-- music: the DROP lands at t=0 — this is the biggest visual moment of the film.
-
-Scene 1 (0.0–1.0s): ON THE DROP: a white flash (opacity 0.55 → 0 in 0.25 s) and the lid swings open
-in CSS 3D: it rotates up around its hinge while the whole laptop rotates from the top-down diagonal
-to a 3/4 front view (lid ≈ upright facing camera, keyboard deck foreshortened below it), the ▶ and
-cursor fly off with the lid's motion; the camera pushes in a little (scale 0.92 → 1). Motion 0.0–0.9,
-expo.out — fast start, soft landing. Light streak (light-sweep-pass) crosses the screen glass at 0.6.
-Scene 2 (0.9–2.0s): the screen is black with the Nawar logo (assets/img/logo-nawar.png, ~520 px wide
-on the screen) blooming in with a blue-light glow behind it (like a boot screen): scale 0.85 → 1,
-glow 0 → 1; a slow 3D orbit of the laptop starts (rotateY ~18° → -12° over the rest of the frame).
-Scene 3 (2.0–3.9s): the logo dissolves into the school: the screen plays assets/video/nuestra-vision.mp4
-(the website hero with the real "Nawar" 3D sign on the building, «Ayudarte a aprender neerlandés»,
-media-start 0) for ~1.3 s, then cuts (inside the screen) to the platform dashboard
-assets/video/inicio-home.mp4 (media-start 0.0 — «Hola, Team», continue lesson, «Tu repaso de hoy»).
-The laptop keeps orbiting (it should feel like the reference's rotating laptop: the screen catches a
-light sweep as it turns).
-Scene 4 (3.9–6.22s): the laptop glides to the left third (x center ≈ 640, scale ≈ 0.78, still 3D);
-on the right: **16** (Poppins 900 ~300 px, white with a blue-light glow) slams on "Dieciséis" — a
-quick count 1 → 16 in 0.35 s is fine; **SEMANAS** (display-h2, white, letter-spacing 0.04em) on
-"semanas"; "de formación guiada" (lead, white-72; "guiada" in blue-light) on "formación"/"guiada".
-Under them a row of 16 small rounded week pills (each 34×12, white 22 %) fills left → right in
-blue-light between "semanas" and "guiada" (stagger ~0.05 s) — a 16-week guided route.
-SFX: impact-bass-1 @0.0 (0.5) · whoosh-cinematic @0.02 (0.35) · sparkle @1.0 (0.25) · pop @4.19 (0.3).
+- src: compositions/frames/21-portatil.html (same generator as 20)
+- music: the DROP lands at t=0 (calmer mix than v2). Voice comes back at 2.79 s.
+- 0.0–1.0 s: the lid swings open toward the camera while the camera settles STRAIGHT ON — ending exactly in the
+  front-view MacBook of tools/mac_mockup.md (screen + thin base lip). The keyboard must never be seen (the owner
+  explicitly asked: «sin que se le vean las teclas, simplemente de frente»): e.g. keep the camera at deck height so
+  the deck is hidden behind the front lip, or let the lid hinge up past the camera axis while the body is already
+  front-on. No white flash (a soft light lift is enough), no shock rings.
+- 0.9–1.9 s: screen boot: the Nawar logo fades in on the dark screen (no glow halo — a faint screen bloom only).
+- 1.9–4.0 s: the macOS browser appears (traffic lights, `app.holandesnawar.com`) with the website hero
+  (assets/video/nuestra-vision.mp4 — the school building with the Nawar sign) and then the platform dashboard
+  (assets/video/inicio-home.mp4 from media 1.4). At most a very slow push (≤ 3 %) — no zoom inside the screen.
+- From «Dieciséis» (2.79): the Mac glides to the left (still front-on, no 3D tilt); right column: «16» (Poppins 900),
+  «semanas» (Poppins 800), «de formación guiada» (Poppins 600, white-72, «guiada» in #4da3ff), and the row of 16
+  week pills filling left → right between «semanas» and «guiada».
 
 ## Frame 22 — "Diez módulos, con más de trescientas sesenta lecciones."
 
@@ -508,197 +492,85 @@ heading swaps to **CON TUS COMPAÑEROS** ("compañeros" blue-light) and "en el m
 white-72) lands under it on "mismo · camino.". Hold.
 SFX: click @0.79 (0.3) · pop @3.15 (0.25) · pop @4.74 (0.3).
 
-## Frame 24 — "Aprendes con vídeos cortos que te explican cada tema, y después practicas de verdad."
+## Frame 24 — "Microlearning. Vídeos cortos que te explican cada tema. Y después, práctica de verdad."
 
 - src: compositions/frames/24-videos.html
-- ground: nawar-blue
-- entrance: browser window swings in (rotationY -22° → -8°, x +300 → 0, 0.35 s)
-
-Scene 1 (0.0–2.8s): a large browser window (browser-device-stage look: dark chrome, 3 dots, URL pill
-"holandesnawar.com/escuela") on the right ~60 % of the frame, slightly 3D-tilted, playing
-assets/video/clases-video-dentro.mp4 from media-start 0.0 (the video lesson slide «Dit is / Dit zijn»
-with the NATIVE TEACHER's webcam tile at its top-left). On "vídeos cortos" a white pill
-**MICROLEARNING** (label typography, indigo text, a small ▶ icon) pops on the window's top-left corner
-and a thin progress bar under the video fills (short video). Left column, big type: "Aprendes con"
-(lead, white) → **VÍDEOS CORTOS** (display-h1, white; "CORTOS" blue-light) on "vídeos · cortos";
-"que te explican **cada tema**" (lead; "cada tema" white bold) on "explican · cada · tema,". Push the
-camera slightly toward the teacher tile on "explican" (scale 1 → 1.08 focused on the webcam tile).
-Scene 2 (2.8–4.4s): seam: the browser window flips on its Y axis (rotationY → 90°, then the back face
-from -90° → 0) on "después" to reveal an exercise screen: assets/img/ui-lezen-texto.png (real reading
-exercise). Left type swaps to **PRACTICAS DE VERDAD** ("DE VERDAD" in a white word-chip with indigo
-text) on "practicas" / "verdad.". Hold.
-SFX: whoosh-short @0.0 (0.3) · pop @0.71 (0.25) · whoosh @2.95 (0.3).
+- device: a macOS window (tools/mac_mockup.md `.fNN-win`, 16:9, `app.holandesnawar.com`) — right ~60 % of the frame,
+  front-on (no 3D tilt).
+- Inside: assets/video/paul-clase-2.mp4 — a REAL module video with teacher Paul (small webcam top-left of the slide
+  «De structuur», player bar with time) — the same teacher the viewer will see again in the live class (28/29).
+- Left column: label pill «Microlearning» on «Microlearning», headline «Vídeos cortos» on «Vídeos · cortos», line «que
+  te explican cada tema» on its words.
+- «Y después, práctica de verdad.»: the window content cuts (a clean horizontal slide inside the window, not a 3D
+  flip) to the real reading exercise (assets/img/ui-lezen-texto.png); the left text swaps to «Y después,» /
+  «práctica de verdad.» («de verdad» in #4da3ff). Hold.
 
 ## Frame 25 — "Lectura, escritura y escucha activa."
 
-- src: compositions/frames/25-practica.html
-- ground: nawar-blue
-- entrance: first card slams in from the left with motion-blur streak (0.25 s)
+- src: compositions/frames/25-practica.html — 2.33 s, three quick beats.
+- Three macOS windows (`.fNN-win`, 16:9, ~560 px wide) arranged in a slight overlapping cascade or a clean row,
+  each with a REAL exercise and a label under/over it: «Lectura» (ui-lezen-texto.png) on «Lectura», «Escritura»
+  (completa-frase.mp4 from 6.85 — the student types «alstublieft») on «escritura», «Escucha activa»
+  (ui-luisteren-audio.png with a moving playhead) on «escucha · activa». Smooth slides, no motion-blur streaks.
 
-Three tall cards (white, radius 28, ~520 × 640, card-on-blue shadow, gap 40, centered) each showing a
-REAL exercise inside its top area and a big label under it:
-1. on "Lectura," → card 1 slams in from the left: assets/img/ui-lezen-texto.png (crop to the Dutch
-   text + question) — label **Lectura** (Poppins 800 54 px, indigo) + tiny "Lezen" (label, muted).
-2. on "escritura" → card 2 slams down from the top: assets/video/completa-frase.mp4 (media-start 4.0:
-   the student types the missing word «alstublieft» into «Een koffie, ___ (por favor)»; crop to the
-   sentence + input) — label **Escritura** + tiny "Schrijven".
-3. on "escucha" → card 3 slams in from the right: assets/img/ui-luisteren-audio.png (crop to the
-   waveform player) with an animated playhead sweeping the waveform — label **Escucha activa**
-   ("activa" in blue-vivid) on "activa." + tiny "Luisteren".
-Each landing gives the previous cards a small recoil (x ±12 px). The labels land on their cues. Hold
-on the trio.
-SFX: whoosh-short @0.10 (0.3) · whoosh-short @0.74 (0.3) · whoosh-short @1.53 (0.3) · pop @1.97 (0.25).
-
-## Frame 26 — "Además tienes flashcards para que el vocabulario se quede y no se te escape a la semana."
+## Frame 26 — "Flashcards incluidas, para que el vocabulario se quede y no se te escape a la semana."
 
 - src: compositions/frames/26-flashcards.html
-- ground: nawar-blue
-- entrance: a 3D flashcard flips in from edge-on (rotationY 90° → 0, 0.3 s)
+- Left: the front-view MacBook (mac_mockup.md) playing the REAL flashcards tool assets/video/flashcards.mp4 (from
+  ≈0.8 so the card flips «el bocadillo» → «het broodje» on «Flashcards»).
+- Right column: «Flashcards» (headline) + «incluidas» (pill or second line) on their words; «para que el vocabulario
+  se quede» (line) with a clean stack of 3 real word cards (het broodje · de vis · komen) settling into place on
+  «quede»; «y no se te escape a la semana.» → a minimal week strip L M X J V S D whose days tick in #4da3ff. No
+  strings/pins/escaping-card gimmicks.
 
-Scene 1 (0.0–1.8s): left: a laptop/browser playing the REAL flashcards tool
-assets/video/flashcards.mp4 (media-start 0.0: card «el bocadillo» → flips to «het broodje»,
-«Repasar» / «Ya lo sé» buttons; 1718×842 source, the card sits around x≈1030, y≈310 — inspect frames
-with ffmpeg to place your crop/zoom). Right: big kinetic type: "Además tienes" (lead, white) →
-**FLASHCARDS** (display-h1, white) on "flashcards". In front, a crafted 3D flashcard prop (white card
-420 × 260, radius 24) flips on "flashcards": front «el bocadillo» (Poppins 700 48 px, ink) → back
-«het broodje» (Poppins 800 52 px, indigo) with a small Dutch flag tag.
-Scene 2 (1.8–2.8s): "para que el vocabulario" (lead) → **SE QUEDE** (display-h2) on "quede": a
-deck of four word cards (het broodje · de vis · komen · geen — real words from the tool) snaps into a
-neat stack with a pin/lock tick (svg check) — the vocabulary stays.
-Scene 3 (2.8–4.55s): on "no se te escape": the top two cards try to fly away (rise + rotate, slight
-blur) and get pulled back into the stack on "escape" (spring back, power3.out) — they don't escape;
-"a la semana." (lead, white-72) on "semana."; a tiny weekly calendar strip under the deck (L M X J V S
-D) with every day ticked blue-light. Hold.
-SFX: whoosh-short @0.78 (0.25) · pop @2.51 (0.25) · whoosh-short @3.37 (0.25).
+## Frame 27 — "Consultas dentro de la escuela. ¿Te atascas y necesitas ayuda? Preguntas, y te responden. Tus dudas no se quedan esperando, y se quedan guardadas para todos."
 
-## Frame 27 — "¿Te atascas un martes por la noche? Preguntas dentro de la escuela y te responden. Tus dudas no se quedan esperando."
+- src: compositions/frames/27-consultas.html — 9.13 s, nawar-blue (the v2 night/23:14 idea is DROPPED: the owner
+  said consultas don't work like that).
+- 0 → «¿Te atascas…»: headline «Consultas dentro de la escuela» (on «Consultas … escuela»); the front-view MacBook
+  rises with the REAL «Nueva consulta» form (assets/video/consulta-nueva.mp4 from ≈3.5: category «Gramática»,
+  typing «cómo se traduce gezellig?»). «¿Te atascas y necesitas ayuda?» as a supporting line.
+- «Preguntas, y te responden.»: the REAL answered consulta (assets/img/ui-consulta-respondida.png, crop the modal
+  ≈ x 560–1510, y 250–700; the student's name is already blurred) slides in front with a «Respondida» status pill.
+- «Tus dudas no se quedan esperando,»: a clean status change «Pendiente» → «Respondida» (no hourglass gimmick).
+- «y se quedan guardadas para todos.»: the answered consulta files itself into a shared library — a tidy list of 4–5
+  answered consultas in the platform's own card style (titles only, e.g. «¿Cuándo se usa "er"?», «hij werkt / werk
+  jij», «¿De of het?», «¿Cómo se traduce "gezellig"?», each with a topic chip and a «Respondida» tag, NO names or
+  avatars), with a small «Visible para todos los alumnos» label. Hold.
 
-- src: compositions/frames/27-consultas.html
-- ground: NIGHT (night-glow) for scene 1, flooding to nawar-blue in scene 2 (the doubt gets light)
-- entrance: a phone-lock-screen style clock zooms in from blur (scale 1.2 → 1, 0.3 s)
+## Frame 28 — "Y una clase en directo cada semana, con los mismos profesores que te explican en los módulos."
 
-Scene 1 (0.0–1.8s): night ground with a few fine stars (deterministic dots) and a crescent moon (svg)
-top-right. Center: a lock-screen style clock **23:14** (Poppins 300-ish → use 600 at 200 px, white)
-with "martes" (lead, white-72) above it on "martes"; "¿Te atascas…" (lead, white) on "Te · atascas";
-"…por la noche?" on "noche?" (the moon glows on "noche").
-Scene 2 (1.8–3.4s): seam up: a laptop rises showing assets/video/consulta-nueva.mp4 (media-start 1.0:
-the real "Nueva consulta" form, category «Gramática», typing «cómo se traduce gezellig?», «Publicar
-consulta»); the ground floods from night to nawar-blue (radial wipe from the screen). Type:
-**PREGUNTAS** (display-h2, white) on "Preguntas"; "dentro de la escuela" (lead) on "dentro · escuela".
-On "responden." an answer card pops in front (assets/img/ui-consulta-respondida.png — the real
-answered consulta; crop to the modal ≈ x 560–1510, y 250–700) with a success pill "✓ Respondida"
-(success-on-dark fill, ink text, svg check).
-Scene 3 (3.4–6.57s): **Tus dudas** (display-h2) on "Tus · dudas"; an hourglass/"esperando…" chip with
-three animated dots (finite) is struck out on "no se quedan" and replaced by the ✓; **NO SE QUEDAN
-ESPERANDO.** builds on "no · quedan · esperando." (key word "ESPERANDO" in a white chip / indigo text).
-Hold.
-SFX: notification @0.70 (0.2) · typing @1.9 (0.18) · ping @3.0 (0.3) · pop @5.39 (0.25).
+- src: compositions/frames/28-directo.html — 4.54 s.
+- «Y una clase en directo cada semana»: the real «Eventos» calendar (assets/img/ui-eventos-calendario.png) in a macOS
+  window; the weekly «Clase en directo» entries get a soft highlight one after another (weekly rhythm); «● En directo»
+  pill (red dot) on «directo».
+- «con los mismos profesores que te explican en los módulos.»: cut to the live class: a macOS window / call layout
+  with teacher Paul big (assets/video/paul-clase-1.mp4, crop to his camera — left part of the slide, ≈ x 740–1330 of
+  2502, full height) with «● En directo»; on «módulos» a smaller window with the module video
+  (assets/video/paul-clase-2.mp4 — Paul's webcam on «De structuur») slides in beside it: the same teacher in both.
 
-## Frame 28 — "Y cada semana una clase en directo, con los mismos profesores que te explican en los módulos."
+## Frame 29 — "La cara que te enseña en el vídeo es la que te corrige en directo. Te conocen y saben dónde estás. Además, queda grabada por si no pudiste asistir."
 
-- src: compositions/frames/28-directo.html
-- ground: nawar-blue
-- entrance: calendar card swings in (rotationX 25° → 0, 0.3 s)
-- REUSE: v1 frame compositions/frames_v1/22-clase-directo.html built the calendar + "● EN DIRECTO" +
-  video-call look — re-use its look and pieces, re-timed to THIS voice.
+- src: compositions/frames/29-mismo-profe.html — 7.78 s.
+- Two windows side by side: LEFT «En el vídeo del módulo» (paul-clase-2.mp4, the player with Paul's webcam),
+  RIGHT «En directo» (paul-clase-1.mp4 cropped to Paul, live-call chrome: mic/cam controls, red «● En directo»).
+  Two different videos, same face — that's the point. On «cara» a thin face-frame (four corner marks) on the left
+  Paul; on «es la que» the same frame appears on the right Paul (a clean match line between them, no glow).
+- «te corrige en directo»: a correction chip by the live window: «Werkt jij?» (struck in red) → «Werk jij?» ✓.
+- «Te conocen y saben dónde estás.»: a small progress card «Tu progreso · Módulo 3 · Eten en drinken» with a
+  location marker «Estás aquí».
+- «Además, queda grabada por si no pudiste asistir.»: the live window gets a «● Grabando» tag, then it slides into a
+  «Grabaciones» list as a recording card «Clase en directo · martes» with a ▶ and duration bar. Hold.
 
-Scene 1 (0.0–2.3s): a laptop showing assets/img/ui-eventos-calendario.png (the real "Eventos" calendar
-with "Clase en directo" entries); **CADA SEMANA** (display-h2, white) on "cada · semana"; on "semana"
-a blue-vivid highlight ring finds one "Clase en directo" entry and the camera zooms toward it; on
-"directo," a red pill "● EN DIRECTO" (alert dot + white text on #E02D3C… keep it as v1) pops; type
-"una clase **en directo**" on "clase · directo,".
-Scene 2 (2.3–5.09s): seam left: a video-call card (rounded, dark bezel, "● EN DIRECTO" tag) plays
-assets/video/clases-video-dentro.mp4 framed on the NATIVE TEACHER's webcam tile (source region ≈ x
-840–1190, y 175–375 of 2560×1376; media-start 1.0) — big, centered-right; next to it a smaller card
-"Módulo · vídeo" showing the same lesson slide (same video, full frame, media-start 3.0). Type:
-"con los" (lead) → **MISMOS PROFESORES** (display-h2, "MISMOS" blue-light) on "mismos · profesores";
-"que te explican en los módulos." (lead, white-72) on "explican · módulos.". A thin connector line
-draws between the two cards on "módulos." (same person in both). Hold.
-SFX: whoosh-short @0.0 (0.25) · pop @1.71 (0.3) · whoosh-short @2.3 (0.25).
+## Frame 32 — "Y no menos importante, los ejercicios. Aquí escribes, ordenas frases, escuchas y respondes, completas sin pistas."
 
-## Frame 29 — "La cara que te enseña en el vídeo es la que te corrige en directo. Te conocen y saben dónde estás."
-
-- src: compositions/frames/29-mismo-profe.html
-- ground: nawar-blue
-- entrance: split-screen slam — two portrait cards slide in from left and right and meet (0.3 s)
-
-Scene 1 (0.0–3.3s): two big cards side by side (~760 × 480 each, gap 40): LEFT "EN EL VÍDEO"
-(label pill) — the teacher's webcam tile from assets/video/clases-video-dentro.mp4 (media-start 0.5,
-cropped to the webcam region ≈ x 840–1190, y 175–375), with a ▶ progress bar; RIGHT "EN DIRECTO"
-(red "● EN DIRECTO" pill) — the SAME teacher crop (media-start 4.0, slightly different moment) with a
-video-call UI (mic/cam icons, 2 small participant placeholder tiles with initials, no real names).
-On "cara" a white face-frame bracket (four corner marks) snaps around the teacher's face on the LEFT
-card; on "vídeo" the bracket is copied (a clean match-cut line sweeps) onto the RIGHT card on "es la
-que"; on "corrige" a correction chip pops by the right card: «Werkt jij?» with an alert strike →
-«Werk jij?» with a success ✓. Headline across the top: **LA MISMA CARA** (display-h2, white; "MISMA"
-blue-light) building on "La · cara … es · la · que".
-Scene 2 (3.3–5.78s): **TE CONOCEN** (display-h2) on "Te · conocen"; under the right card a small
-progress card "Tu progreso · Módulo 3 · Eten en drinken" with a ring at 40 % and a location pin
-"Estás aquí" pops on "dónde · estás." — they know where you are. Hold.
-SFX: whoosh-short @0.0 (0.3) · click @0.27 (0.25) · pop @2.22 (0.3) · ping @5.13 (0.25).
-
-## Frame 30 — "Y una cosa más. Aquí no hay tests de la a, la be, la ce o la de."
-
-- src: compositions/frames/30-sin-tests.html
-- ground: nawar-blue
-- entrance: "Y una cosa más." — a single raised-finger "1" (svg, white) pops center with the words (it
-  is the beat itself; 0.2 s spring-pop)
-
-Scene 1 (0.0–1.25s): center: "Y una cosa más." (display-h3 → lead size, white) word by word with a
-small "+1" badge (blue-light). Quick and light.
-Scene 2 (1.25–4.57s): seam down: a generic multiple-choice quiz card (shared "quiz card" design in
-your packet — NOT the Nawar platform) slams in on "tests": question «¿Qué significa "gezellig"?» and
-four options A «aburrido» · B «acogedor» · C «caro» · D «rápido». Above it: **AQUÍ NO HAY TESTS**
-(display-h2, white; "NO" in an alert-red word-chip) on "Aquí · no · hay · tests". Then each option's
-letter badge gets an alert-red ✕ that draws over it EXACTLY on its spoken letter: A on "a,"
-(2.43), B on "be," (3.02), C on "ce" (3.55), D on "de." (4.16) — each with a tiny shake of that row
-and the row greys out. Hold on the fully crossed card.
-SFX: pop @0.70 (0.25) · whoosh-short @1.78 (0.25) · error @2.43 (0.15) · error @4.16 (0.15).
-
-## Frame 31 — "Estamos cansados de esos ejercicios en los que aciertas por pura suerte y te crees que vas avanzando."
-
-- src: compositions/frames/31-suerte.html
-- ground: nawar-blue
-- entrance: the quiz card (same design as 30, fresh/uncrossed, smaller, left side) drops in with a
-  slight 3D tilt (0.3 s)
-
-Scene 1 (0.0–2.2s): **CANSADOS** (display-h2, white) lands on "cansados"; "de esos ejercicios" (lead)
-on "ejercicios"; the quiz card sits left (scale ~0.8) with a cursor hovering indecisively between
-options (eeny-meeny path B→D→A→C, deterministic).
-Scene 2 (2.2–3.8s): on "aciertas" the cursor clicks C at random → the row turns success green with
-"¡Correcto!" and small confetti (svg rectangles, deterministic) — but on "pura suerte" a big white 3D
-die (CSS cube, 200 px, indigo pips) tumbles in from the right and lands showing 4 — **PURA SUERTE**
-(display-h1; "SUERTE" blue-light) on "pura · suerte".
-Scene 3 (3.8–5.41s): "y te crees que vas" (lead) → a progress bar "Tu progreso" fills fast to 80 %
-with a "+10 %" pop on "avanzando." … and then visibly CRACKS/glitches (glitch-1 sfx, bar flickers
-alert-red, drops back to 20 %) — fake progress. **AVANZANDO** with quote marks «avanzando» (lead,
-white-72, italic) on "avanzando.". Hold on the cracked bar.
-SFX: click @2.31 (0.3) · sparkle @2.4 (0.2) · whoosh-short @2.9 (0.25) · glitch-1 @4.9 (0.25).
-
-## Frame 32 — "En Nawar escribes, ordenas frases, escuchas y respondes, completas sin pistas."
-
-- src: compositions/frames/32-practicas.html
-- ground: nawar-blue
-- entrance: "En Nawar" slides in with a light sweep (0.25 s)
-
-Left column: a vertical list of four verbs that stack in on their cues (display-h2, white, each with
-a small blue-light numeral 01–04 and a check that draws when it lands): **ESCRIBES** (0.56) ·
-**ORDENAS FRASES** (1.47) · **ESCUCHAS Y RESPONDES** (2.46) · **COMPLETAS SIN PISTAS** (3.82; "SIN
-PISTAS" blue-light). The active verb is full white; previous ones dim to 45 %.
-Right column: ONE device/card whose content swaps with each verb (scale-swap-transition / fast slide
-up), always the REAL product:
-1. escribes → assets/video/completa-frase.mp4 (media-start 4.0, typing the word in «Een koffie, ___
-   (por favor)»), zoomed on the input.
-2. ordenas frases → assets/img/ui-ordena-palabras.png (the real «Ordena las palabras» exercise:
-   «Quiero un vaso de agua, por favor.»); animate crafted word chips (same style as the screenshot's
-   chips: wil · een · glas · alsjeblieft. · water, · Ik) flying from the chip row into the dashed
-   answer area in the correct order «Ik wil een glas water, alsjeblieft.» on "ordenas · frases,".
-3. escuchas y respondes → assets/img/ui-luisteren-audio.png with an animated playhead + 3 small
-   speaker waves.
-4. completas sin pistas → assets/video/completa-frase.mp4 (media-start 11.0: the second sentence,
-   student fills it, «Comprobar», green «¡Correcto!» bar) and a "pista" lightbulb icon struck out with
-   an alert line on "sin · pistas.".
-SFX: key-press @0.56 (0.25) · click @1.47 (0.25) · pop @2.46 (0.25) · key-press @3.82 (0.25).
+- src: compositions/frames/32-practicas.html — 7.28 s. Same idea as v2 (verb list + one device whose real content
+  swaps per verb) but: the lead line is «Y no menos importante, los ejercicios.» (no Nawar logo header); the
+  device is the macOS window (`.fNN-win`, 16:9, `app.holandesnawar.com`), front-on; verbs «Escribes» · «Ordenas
+  frases» · «Escuchas y respondes» · «Completas sin pistas» each land on its word with a clean check; contents as v2
+  (completa-frase typing, «Ordena las palabras» with the chips flying into «Ik wil een glas water, alsjeblieft.»,
+  luisteren with playhead, completa-frase «¡Correcto!» on «pistas»). Read compositions/frames/32-practicas.html (v2)
+  and keep what works.
 
 ## Frame 33 — "No puedes jugar al azar. O lo sabes, o lo practicas hasta saberlo. Y cuando avanzas, sabes que es de verdad."
 
@@ -796,29 +668,14 @@ and a few voice bars. The last 0.25 s: everything accelerates toward the camera 
 1.4, blur up) — we are sucked into the RE-DROP that opens frame 38.
 SFX: whoosh-short @0.83 (0.25) · riser @1.5 (0.35) · whoosh-cinematic @3.85 (0.3).
 
-## Frame 38 — CTA (RE-DROP): "Completa tu matrícula en el siguiente paso y contactamos contigo. Vemos tu nivel, tu situación y si la formación encaja contigo. Sin compromiso."
+## Frame 38 — CTA (RE-DROP): "Completa tu matrícula en el siguiente paso y contactamos contigo. Sin compromiso."
 
-- src: compositions/frames/38-cta.html
-- ground: nawar-blue, full brightness (the RE-DROP lands at t=0)
-- entrance: ON THE DROP: a white flash (0.5 → 0, 0.2 s) and a huge CTA button slams in (scale 1.6 →
-  1, blur → 0, expo.out) with a shockwave ring.
-
-Scene 1 (0.0–2.0s): the CTA button (white pill ~1100 × 150, radius 999, indigo text Poppins 800 64 px)
-"Completa tu matrícula" + a blue-vivid circle with a → arrow at its right end; it lands on "Completa"
-and its text builds "Completa · tu · matrícula" (or it is fully there and the word "matrícula" gets
-the accent on its cue). A white cursor glides in and CLICKS the button on "siguiente paso" (1.18–1.57):
-button presses (scale 0.96), ripple. Under it: "en el siguiente paso" (lead, white-72) with a small
-"↓ debajo de este vídeo" hint? NO — keep only "en el siguiente paso" (we don't know the page layout).
-Scene 2 (2.0–3.4s): the button morphs (Flip or scale swap) into a contact card: a phone/chat icon in a
-blue-vivid circle ringing (3 finite wiggles) + **TE CONTACTAMOS** (display-h2, white) on
-"contactamos · contigo." — a small "Equipo Nawar" label with the logo (logo-nawar.png, ~180 px).
-Scene 3 (3.4–7.2s): "Vemos" (lead) then three check-chips land in a row (white pills, indigo text,
-success ✓ circle): **Tu nivel** on "nivel," · **Tu situación** on "situación" · **¿Encaja contigo?**
-on "encaja · contigo.".
-Scene 4 (7.2–8.4s): **SIN COMPROMISO.** (display-h1, white; inside a success-on-dark outline stamp,
-rotated -3°) stamps on "Sin · compromiso." (7.27–7.53) with a 3-frame shake. Hold.
-NO PRICE anywhere.
-SFX: impact-bass-1 @0.0 (0.45) · click @1.30 (0.35) · notification @2.07 (0.3) · impact-bass-2 @7.30 (0.3).
+- src: compositions/frames/38-cta.html — 4.27 s, starts exactly on the re-drop.
+- Keep v2's idea (big «Completa tu matrícula →» button, cursor click on «siguiente paso», morph into the «Te
+  contactamos» card with the team logo, «Sin compromiso.» stamp at the end) but: REMOVE the three «Tu nivel / Tu
+  situación / ¿Encaja contigo?» chips (no longer in the voice), REMOVE the spark streaks/shock rings/rays; the drop
+  is carried by a clean, confident button entrance. «Sin compromiso.» on «Sin · compromiso.» as a clean outlined
+  label (no shake). NO PRICE.
 
 ## Frame 39 — End card: "Formación Nawar. Tu neerlandés empieza cuando lo hablas."
 

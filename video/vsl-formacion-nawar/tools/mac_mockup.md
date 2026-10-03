@@ -22,7 +22,7 @@ frame prefix (`f12-`, `f14-`, …) and set `--sw`. Pilots: `compositions/frames/
 - **Browser inside, macOS style (Chrome-like).** Tab strip 36u with traffic lights (12u, 20u pitch:
   red `#FF5F57`, yellow `#FEBC2E`, green `#28C840`), the active tab (Nawar favicon rebuilt from
   `assets/img/logo-nawar.png` on the site's blue tile + «Holandés Nawar» + ×), «+»; toolbar 34u with back /
-  forward (disabled) / reload and the URL pill (lock + `holandesnawar.com` + star) and ⋮. Chrome = **70u**.
+  forward (disabled) / reload and the URL pill (lock + `app.holandesnawar.com` (the real platform address) + star) and ⋮. Chrome = **70u**.
 - **Content area = exactly 16:9.** 1120u × 630u (chrome = screen height − width·9/16 = 700u − 630u). Real
   recordings go in with `object-fit: cover`: our 2560×1376 (1.86:1) recordings lose 4.4 % of their width in total,
   never stretched or squashed.

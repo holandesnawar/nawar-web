@@ -1,8 +1,8 @@
-"""Frame timing plan derived from the word-aligned voiceover (v2).
+"""Frame timing plan derived from the word-aligned voiceover (v3).
 
 Master timeline: the voiceover file starts at VO_OFFSET. Each frame starts LEAD seconds before its
 first spoken word (inside the preceding pause), so the cut lands just ahead of the voice — except the
-cuts the soundtrack dictates (audio_v2.json): the music STOP (20-pausa), the DROP (21-portatil) and the
+cuts the soundtrack dictates (audio_v3.json): the music STOP (20-pausa), the DROP (21-portatil) and the
 re-drop on the call to action (38-cta). The end card runs to the end of the soundtrack.
 Writes timing.json with per-frame windows and frame-relative word cues.
 """
@@ -29,22 +29,20 @@ FRAMES = [
     ("14-supervivencia", "Presentarte"),
     ("15-vocabulario", "Luego vocabulario"),
     ("16-estructura", "Y después estructura"),
-    ("17-traducir", "Todo para que"),
+    ("17-traducir", "Todo con un"),
     ("18-sonidos", "Y desde el primer"),
     ("19-delatan", "Son los que"),
     ("20-pausa", "Vale"),
     ("21-portatil", "Dieciséis semanas"),
     ("22-modulos", "Diez módulos"),
     ("23-camino", "Cada módulo se"),
-    ("24-videos", "Aprendes con vídeos"),
+    ("24-videos", "Microlearning"),
     ("25-practica", "Lectura escritura"),
-    ("26-flashcards", "Además tienes"),
-    ("27-consultas", "Te atascas"),
-    ("28-directo", "Y cada semana"),
+    ("26-flashcards", "Flashcards incluidas"),
+    ("27-consultas", "Consultas dentro"),
+    ("28-directo", "Y una clase"),
     ("29-mismo-profe", "La cara que"),
-    ("30-sin-tests", "Y una cosa más"),
-    ("31-suerte", "Estamos cansados"),
-    ("32-practicas", "En Nawar escribes"),
+    ("32-practicas", "Y no menos"),
     ("33-de-verdad", "No puedes jugar"),
     ("34-al-terminar", "Al terminar"),
     ("35-sin-ingles", "Y cuando el otro"),
@@ -63,7 +61,7 @@ def find(words, phrase, start_at):
     raise SystemExit(f"phrase not found: {phrase}")
 
 def main():
-    plan = json.load(open(os.path.join(ROOT, "audio_v2.json")))
+    plan = json.load(open(os.path.join(ROOT, "audio_v3.json")))
     VO_OFFSET = plan["vo_offset"]
     FORCED = {"20-pausa": plan["stop"], "21-portatil": plan["drop"], "38-cta": plan["redrop"]}
     words = json.load(open(os.path.join(ROOT, "transcript.json")))
@@ -89,7 +87,7 @@ def main():
         f["duration"] = round(f["end"] - f["start"], 3)
         f.pop("w0", None); f.pop("w1", None)
     total = frames[-1]["end"]
-    music = {k: plan[k] for k in ("stop", "drop", "redrop", "final_hit", "breakdown", "riser")}
+    music = {k: plan[k] for k in ("stop", "drop", "redrop", "final_hit", "breakdown", "riser", "tension")}
     json.dump({"vo_offset": VO_OFFSET, "total": total, "music": music, "frames": frames},
               open(os.path.join(ROOT, "timing.json"), "w"), ensure_ascii=False, indent=1)
     for f in frames:

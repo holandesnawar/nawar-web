@@ -71,6 +71,13 @@ ffmpeg -v error -y -i "$RAW/ejercicios2.mov" -an -vf "fps=30,format=yuv420p" -c:
 ffmpeg -v error -y -i "$RAW/nuestra-vision.mov" -an -vf "fps=30,scale=1722:904,format=yuv420p" -c:v libx264 -preset slow -crf 16 -g 30 -movflags +faststart assets/video/nuestra-vision.mp4
 python3 -c "from PIL import Image; Image.open('$RAW/ejercicios3.jpg').convert('RGB').save('assets/img/ui-ordena-palabras.png')"
 
-echo "v2 soundtrack: voice takes + re-edited music + ducking"
-python3 tools/build_audio_v2.py
-echo "done. Word timings are versioned in transcript.json / timing.json (tools/transcript_v2.py + tools/timing.py)."
+echo "v3 media: voice B v3 + teacher Paul clips"
+dl 1LfVaUbFxWRoDAfmucWIfkDhVLJF-1HeY voz-v3-b.mp3        # «Voz en off VSL Escuela Oct 2 (1)» (chosen v3 take)
+dl 1gPl6VFSRBTefCX0lBJhw9bsEcaoCkIOt paul-clase-1.mov
+dl 1tdK1eKjcEPxTcmB5b1-a2CtnN1mguk67 paul-clase-2.mov
+ffmpeg -v error -y -i "$RAW/voz-v3-b.mp3" -af "loudnorm=I=-16:TP=-1.5:LRA=11" -ar 48000 -ac 1 "$RAW/voz-v3-b.wav"
+for n in 1 2; do ffmpeg -v error -y -i "$RAW/paul-clase-$n.mov" -an -vf "fps=30,format=yuv420p" -c:v libx264 -preset slow -crf 16 -g 30 -movflags +faststart assets/video/paul-clase-$n.mp4; done
+
+echo "v3 soundtrack: voice 1.09x + re-edited, calmer music + ducking (writes transcript.json too)"
+python3 tools/build_audio_v3.py
+echo "done. Then: python3 tools/timing.py && python3 tools/assemble.py"

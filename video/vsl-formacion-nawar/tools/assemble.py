@@ -13,8 +13,9 @@ import json, os, subprocess, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SFX_DIR = os.path.join(ROOT, "assets", "sfx")
 # Film-level SFX policy (mix pass): bass impacts only on the key beats; whooshes softer overall.
-IMPACT_FRAMES = {"01-hook", "02-no-valgas", "07-intentos", "11-nawar-nace", "21-portatil", "33-de-verdad", "38-cta"}
-TYPE_GAIN = {"whoosh-short": 0.7, "whoosh": 0.7, "pop": 0.85}
+IMPACT_FRAMES = {"11-nawar-nace"}   # v3: calmer — the drops are carried by the music alone
+TYPE_GAIN = {"whoosh-short": 0.6, "whoosh": 0.6, "whoosh-cinematic": 0.6, "pop": 0.7, "click": 0.85, "click-soft": 0.9}
+SFX_MASTER = 0.85                    # v3: whole SFX layer a touch lower
 
 def dur_of(path):
     out = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", path],
@@ -56,7 +57,7 @@ def main():
                 d = round(min(dur_of(src), float(c.get("dur", 1e9)), total - start), 3)  # optional "dur" trims a long SFX
                 if d <= 0.05:
                     continue
-                vol = max(0.0, min(1.0, float(c.get("volume", 0.35)) * TYPE_GAIN.get(name, 1.0)))
+                vol = max(0.0, min(1.0, float(c.get("volume", 0.35)) * TYPE_GAIN.get(name, 1.0) * SFX_MASTER))
                 sfx_lines.append(f'      <audio id="el-sfx-{sfx_n}" src="assets/sfx/{name}.mp3" data-start="{start}" data-duration="{d}" '
                                  f'data-track-index="{20 + sfx_n}" data-volume="{vol}"></audio>')
                 sfx_n += 1
