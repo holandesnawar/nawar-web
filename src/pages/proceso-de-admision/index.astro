@@ -137,7 +137,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
 <script>
   import { leerUTM, guardarUTM } from '../../lib/utm'
   import { contextoDelLead } from '../../lib/recorrido'
-  import { CLAVE_DATOS, CLAVE_VIDEO, telefonoCompleto, type DatosAdmision } from '../../lib/admision'
+  import { CLAVE_DATOS, CLAVE_POSICION, CLAVE_VIDEO, telefonoCompleto, type DatosAdmision } from '../../lib/admision'
   guardarUTM()
 
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T
@@ -241,6 +241,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     if (estadoVideo !== 'visto') {
       estadoVideo = 'visto'
       guardar(CLAVE_VIDEO, 'visto')
+      try { localStorage.removeItem(CLAVE_POSICION) } catch {}
       avisar('visto', false, 'video')
       pixel('video')
     }
@@ -248,12 +249,15 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   }
 
   // ── El reproductor, según dónde esté el vídeo ─────────────────────────
-  const cargarScript = (url: string) => new Promise<void>((ok, mal) => {
+  // Una sola carga por script, aunque lo pidan la previsualización y el
+  // reproductor a la vez.
+  const scripts: Record<string, Promise<void>> = {}
+  const cargarScript = (url: string) => (scripts[url] ??= new Promise<void>((ok, mal) => {
     const s = document.createElement('script')
     s.src = url; s.async = true
-    s.onload = () => ok(); s.onerror = () => mal(new Error(url))
+    s.onload = () => ok(); s.onerror = () => { delete scripts[url]; mal(new Error(url)) }
     document.head.appendChild(s)
-  })
+  }))
 
   const ponerIframe = () => {
     const f = document.createElement('iframe')
@@ -270,14 +274,26 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   // Mientras no lo haya visto entero, si alguien arrastra la barra (adelante
   // o atrás) se le devuelve a donde iba. Y el final solo cuenta si de verdad
   // llegó hasta ahí. Quien ya lo vio entero puede moverse a su gusto.
-  let tope = 0
+  //
+  // Seguir donde lo dejó (03/10: "que no tenga que volver a iniciar"): el
+  // segundo al que llegó se guarda en el navegador y, si vuelve, el vídeo
+  // arranca desde ahí. Sin eso, como no se puede adelantar, tendría que
+  // verlo entero otra vez.
+  let tope = Math.max(0, Number(leer<number>(CLAVE_POSICION)) || 0)
   let duracion = 0
+  let guardadoEn = 0
   const libre = () => estadoVideo === 'visto'
   const vigilar = (t: number, irA: (s: number) => void) => {
     if (libre() || !isFinite(t)) return
     if (Math.abs(t - tope) > 1.5) irA(tope)
-    else if (t > tope) tope = t
+    else if (t > tope) {
+      tope = t
+      if (tope - guardadoEn >= 2) { guardadoEn = tope; guardar(CLAVE_POSICION, Math.floor(tope)) }
+    }
   }
+  /** Desde dónde arranca el reproductor: donde lo dejó (un pelín antes, para
+   *  que no empiece a media palabra), o desde el principio. */
+  const inicio = () => (libre() || tope < 3 ? 0 : Math.max(0, tope - 2))
   const terminadoDeVerdad = () => {
     if (libre() || !isFinite(duracion) || !duracion || tope >= duracion - 4) videoTerminado()
   }
@@ -307,6 +323,13 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
       v.play().catch(() => {})
       return
     }
+    // ⚠️ player.js PRIMERO y el iframe después: si el reproductor termina de
+    // cargar antes que el script, su aviso de "listo" se pierde, no llegan
+    // los tiempos y el trozo no se corta (pasó: se veía el vídeo entero).
+    try {
+      await cargarScript('https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js')
+    } catch {}
+    if (!preview.isConnected || !caja.classList.contains('con-preview')) return
     const f = document.createElement('iframe')
     f.src = `${src}&muted=true&t=${desde}`
     f.allow = 'autoplay; encrypted-media'
@@ -314,7 +337,6 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     f.title = ''
     preview.appendChild(f)
     try {
-      await cargarScript('https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js')
       const p = new (window as any).playerjs.Player(f)
       p.on('ready', () => {
         p.mute?.()
@@ -346,16 +368,21 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
       if (proveedor === 'mp4') {
         const v = document.createElement('video')
         v.src = src; v.controls = true; v.playsInline = true; v.autoplay = true
-        v.addEventListener('loadedmetadata', () => (duracion = v.duration || 0))
+        v.addEventListener('loadedmetadata', () => {
+          duracion = v.duration || 0
+          if (inicio() > 0) { tope = inicio(); v.currentTime = tope }
+        })
         v.addEventListener('timeupdate', () => vigilar(v.currentTime, (t) => (v.currentTime = t)))
         v.addEventListener('ended', terminadoDeVerdad)
         reproductor.appendChild(v)
         v.play().catch(() => {})
       } else if (proveedor === 'bunny') {
-        const f = ponerIframe()
+        // player.js antes que el iframe (ver la previsualización).
         await cargarScript('https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js')
+        const f = ponerIframe()
         const p = new (window as any).playerjs.Player(f)
         p.on('ready', () => {
+          if (inicio() > 0) { tope = inicio(); p.setCurrentTime(tope) }
           p.getDuration((d: number) => (duracion = d || 0))
           p.on('timeupdate', (e: { seconds: number; duration?: number }) => {
             if (e?.duration) duracion = e.duration
@@ -367,6 +394,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
         const f = ponerIframe()
         await cargarScript('https://player.vimeo.com/api/player.js')
         const vp = new (window as any).Vimeo.Player(f)
+        if (inicio() > 0) { tope = inicio(); vp.setCurrentTime(tope).catch(() => {}) }
         vp.on('timeupdate', (e: { seconds: number; duration: number }) => {
           duracion = e.duration || duracion
           vigilar(e.seconds, (t) => vp.setCurrentTime(t))
@@ -382,6 +410,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
         const yt = new (window as any).YT.Player('ad-yt', {
           events: {
             onReady: () => {
+              if (inicio() > 0) { tope = inicio(); yt.seekTo(tope, true) }
               // YouTube no avisa del tiempo: se mira cada medio segundo.
               setInterval(() => {
                 duracion = yt.getDuration?.() || duracion
@@ -489,7 +518,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   .ad-video.con-preview .ad-candado { background: linear-gradient(180deg, rgba(10,22,86,0.30) 0%, rgba(10,22,86,0.55) 100%); }
   /* Un reproductor normal: botón translúcido en el centro y una barra abajo
      con la duración. Nada de halos ni pastillas de colores. */
-  .ad-play { width: 72px; height: 72px; border-radius: 9999px; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.28); color: #fff; display: inline-flex; align-items: center; justify-content: center; padding-left: 4px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: background .15s; }
+  .ad-play { width: 72px; height: 72px; border-radius: 9999px; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.28); color: #fff; display: inline-flex; align-items: center; justify-content: center; padding: 0; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: background .15s; }
   .ad-candado:hover .ad-play { background: rgba(255,255,255,0.26); }
   .ad-barra { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 22px 16px 12px; background: linear-gradient(transparent, rgba(0,0,0,0.38)); font-size: 13px; color: rgba(255,255,255,0.85); }
   .ad-candado-texto { display: inline-flex; align-items: center; gap: 7px; font-weight: 500; }
