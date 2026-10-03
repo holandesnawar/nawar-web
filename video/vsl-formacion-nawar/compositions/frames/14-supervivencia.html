@@ -232,8 +232,8 @@
     }
   </style>
 
-  <div id="root" data-composition-id="14-supervivencia" data-width="1920" data-height="1080" data-duration="7.11">
-    <div id="f14-ground" class="clip" data-start="0" data-duration="7.11" data-track-index="0"></div>
+  <div id="root" data-composition-id="14-supervivencia" data-width="1920" data-height="1080" data-duration="7.183">
+    <div id="f14-ground" class="clip" data-start="0" data-duration="7.183" data-track-index="0"></div>
 
     <svg width="0" height="0" aria-hidden="true" style="position:absolute">
       <filter id="f14-sb" x="-0.4" y="-0.1" width="1.8" height="1.2"><feGaussianBlur id="f14-sbn" in="SourceGraphic" stdDeviation="14 0" /></filter>
@@ -269,13 +269,13 @@
                 <div class="f14-content" style="--fx:12%;">
                   <!-- media 5.4–7.25 is a clean static hold (same cursor); 7.35–9.0 has recorder overlay + cursor moves, so the hold is looped from that window -->
                   <video id="f14-vid" class="clip f14-media" src="assets/video/inicio-home.mp4" muted playsinline
-                    data-start="0" data-duration="2.96" data-media-start="4.0" data-hf-media-start-basis="local" data-track-index="2"></video>
+                    data-start="0" data-duration="3.022" data-media-start="4.0" data-hf-media-start-basis="local" data-track-index="2"></video>
                   <video id="f14-vid2" class="clip f14-media" src="assets/video/inicio-home.mp4" muted playsinline
-                    data-start="2.96" data-duration="1.575" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
+                    data-start="3.022" data-duration="1.628" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
                   <video id="f14-vid3" class="clip f14-media" src="assets/video/inicio-home.mp4" muted playsinline
-                    data-start="4.535" data-duration="1.688" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
+                    data-start="4.65" data-duration="1.723" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
                   <video id="f14-vid4" class="clip f14-media" src="assets/video/inicio-home.mp4" muted playsinline
-                    data-start="6.223" data-duration="0.887" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
+                    data-start="6.373" data-duration="0.81" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
                 </div>
                 <div id="f14-sheen"></div>
               </div>
@@ -460,7 +460,7 @@
         { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.32, ease: "expo.out" }, 7.23);
 
       window.__timelines = window.__timelines || {};
-      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
       ((tl, A) => {
         const f = (t) => {
           if (t <= A[0][0]) return t - A[0][0] + A[0][1];
@@ -475,23 +475,7 @@
           }
           c.startTime(ns);
         });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.99, 0.93], [1.435, 1.37], [1.814, 1.79], [1.879, 1.85], [2.463, 2.48], [2.694, 2.72], [2.87, 2.88], [3.389, 3.41], [3.648, 3.66], [3.731, 3.75], [4.426, 4.35], [4.861, 4.85], [5.139, 5.11], [5.259, 5.25], [6.0, 6.05], [6.12, 6.18], [6.213, 6.29], [6.324, 6.4], [6.546, 6.58], [6.884, 6.94], [7.259, 7.43], [8.028, 8.08]]);
-      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
-      ((tl, A) => {
-        const f = (t) => {
-          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
-          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
-          const [a, b] = A[A.length - 1]; return b + (t - a);
-        };
-        tl.getChildren(false, true, true).forEach((c) => {
-          const s = c.startTime(), d = c.duration(), ns = f(s);
-          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
-            const nd = Math.max(0.05, f(s + d) - ns);
-            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
-          }
-          c.startTime(ns);
-        });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.93, 0.881], [1.37, 1.285], [1.79, 1.652], [1.85, 1.716], [2.48, 2.276], [2.72, 2.477], [2.88, 2.624], [3.41, 3.083], [3.66, 3.294], [3.75, 3.377], [4.35, 3.863], [4.85, 4.321], [5.11, 4.569], [5.25, 4.698], [6.05, 5.386], [6.18, 5.496], [6.29, 5.606], [6.4, 5.688], [6.58, 5.826], [6.94, 6.147], [7.43, 6.578], [8.08, 7.11]]);
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.99, 0.927], [1.435, 1.331], [1.814, 1.678], [1.879, 1.735], [2.463, 2.298], [2.694, 2.514], [2.87, 2.664], [3.389, 3.153], [3.648, 3.397], [3.731, 3.491], [4.426, 3.998], [4.861, 4.439], [5.139, 4.683], [5.259, 4.777], [6.0, 5.463], [6.12, 5.575], [6.213, 5.716], [6.324, 5.81], [6.546, 5.979], [6.884, 6.298], [7.259, 6.721], [8.028, 7.183]]);
       window.__timelines["14-supervivencia"] = tl;
     })();
   </script>

@@ -98,8 +98,8 @@
     #f36-chiptx span { display: inline-block; }
   </style>
 
-  <div id="root" data-composition-id="36-promesa" data-width="1920" data-height="1080" data-duration="5.211">
-    <div id="f36-ground" class="clip" data-start="0" data-duration="5.211" data-track-index="0">
+  <div id="root" data-composition-id="36-promesa" data-width="1920" data-height="1080" data-duration="5.07">
+    <div id="f36-ground" class="clip" data-start="0" data-duration="5.07" data-track-index="0">
       <div id="f36-dots"></div>
       <div id="f36-bright"></div>
       <div id="f36-vig"></div>
@@ -278,7 +278,7 @@
       tl.fromTo(q("f36-dots"), { y: 0 }, { y: -40, duration: RD, ease: "power1.in" }, T.riser);
 
       window.__timelines = window.__timelines || {};
-      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
       ((tl, A) => {
         const f = (t) => {
           if (t <= A[0][0]) return t - A[0][0] + A[0][1];
@@ -293,7 +293,7 @@
           }
           c.startTime(ns);
         });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.37, 0.341], [0.93, 0.873], [1.7, 1.57], [2.23, 2.084], [2.99, 2.836], [3.82, 3.515], [3.9, 3.579], [4.07, 3.781], [4.44, 4.13], [4.97, 4.653], [5.15, 4.836], [5.6, 5.211]]);
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.37, 0.308], [0.93, 0.862], [1.7, 1.613], [2.23, 2.12], [2.99, 2.806], [3.82, 3.416], [3.9, 3.482], [4.07, 3.641], [4.44, 4.083], [4.97, 4.543], [5.15, 4.702], [5.6, 5.07]]);
       window.__timelines["36-promesa"] = tl;
     })();
   </script>

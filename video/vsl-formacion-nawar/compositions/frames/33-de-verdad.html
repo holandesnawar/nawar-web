@@ -104,8 +104,8 @@
     }
   </style>
 
-  <div id="root" data-composition-id="33-de-verdad" data-width="1920" data-height="1080" data-duration="6.063">
-    <div id="f33-ground" class="clip" data-start="0" data-duration="6.063" data-track-index="0"></div>
+  <div id="root" data-composition-id="33-de-verdad" data-width="1920" data-height="1080" data-duration="5.926">
+    <div id="f33-ground" class="clip" data-start="0" data-duration="5.926" data-track-index="0"></div>
     <svg width="0" height="0" aria-hidden="true" style="position:absolute"><filter id="f33-vb" x="-0.2" y="-0.6" width="1.4" height="2.2"><feGaussianBlur id="f33-vbN" in="SourceGraphic" stdDeviation="0 0" /></filter></svg>
     <div id="f33-par"><div id="f33-dots"></div><div id="f33-amb"></div></div>
 
@@ -293,7 +293,7 @@
       tl.fromTo($("stage"), { scale: 1 }, { scale: 1.015, duration: D - ST - 0.3, ease: "sine.out" }, ST + 0.3);
 
       window.__timelines = window.__timelines || {};
-      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
       ((tl, A) => {
         const f = (t) => {
           if (t <= A[0][0]) return t - A[0][0] + A[0][1];
@@ -308,7 +308,7 @@
           }
           c.startTime(ns);
         });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.35, 0.276], [0.69, 0.588], [1.01, 0.845], [1.1, 0.927], [1.75, 1.45], [1.83, 1.533], [1.94, 1.634], [2.57, 2.193], [2.64, 2.267], [2.76, 2.367], [3.29, 2.863], [3.51, 3.056], [4.25, 3.716], [4.31, 3.789], [4.63, 4.083], [5.31, 4.698], [5.78, 5.092], [5.9, 5.248], [6.05, 5.423], [6.14, 5.514], [6.78, 6.063]]);
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.35, 0.28], [0.69, 0.562], [1.01, 0.89], [1.1, 0.956], [1.75, 1.491], [1.83, 1.566], [1.94, 1.66], [2.57, 2.196], [2.64, 2.261], [2.76, 2.374], [3.29, 2.862], [3.51, 3.05], [4.25, 3.754], [4.31, 3.839], [4.63, 4.064], [5.31, 4.656], [5.78, 5.078], [5.9, 5.191], [6.05, 5.304], [6.14, 5.397], [6.78, 5.926]]);
       window.__timelines["33-de-verdad"] = tl;
     })();
   </script>

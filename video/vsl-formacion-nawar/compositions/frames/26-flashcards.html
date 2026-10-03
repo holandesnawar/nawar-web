@@ -184,8 +184,8 @@
     .f26-dk path { fill: none; stroke: #FFFFFF; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100 100; stroke-dashoffset: 100; }
   </style>
 
-  <div id="root" data-composition-id="26-flashcards" data-width="1920" data-height="1080" data-duration="3.89">
-    <div id="f26-ground" class="clip" data-start="0" data-duration="3.89" data-track-index="0"><div id="f26-dots"></div></div>
+  <div id="root" data-composition-id="26-flashcards" data-width="1920" data-height="1080" data-duration="3.907">
+    <div id="f26-ground" class="clip" data-start="0" data-duration="3.907" data-track-index="0"><div id="f26-dots"></div></div>
     <div id="f26-amb"></div>
 
     <!-- ===== MacBook Pro (front view) with the REAL flashcards tool ===== -->
@@ -206,7 +206,7 @@
               <div class="f26-content" style="--fx:0%;">
                 <!-- source 1.1–4.99: «el bocadillo» flips to «het broodje» at ≈0.5–0.75 (on «Flashcards … incluidas») -->
                 <video id="f26-vid" class="clip f26-media" src="assets/video/flashcards.mp4" muted playsinline
-                  data-start="0" data-duration="3.89" data-media-start="1.1" data-hf-media-start-basis="local" data-track-index="2"></video>
+                  data-start="0" data-duration="3.907" data-media-start="1.1" data-hf-media-start-basis="local" data-track-index="2"></video>
               </div>
             </div>
             <div class="f26-mbp-notch"><i class="f26-mbp-lens"></i></div>
@@ -291,6 +291,22 @@
       }
 
       window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.616, 0.59], [1.285, 1.247], [1.423, 1.379], [1.496, 1.473], [1.57, 1.557], [2.083, 2.102], [2.194, 2.186], [2.437, 2.444], [2.588, 2.609], [2.726, 2.75], [2.863, 2.89], [2.946, 2.966], [3.294, 3.322], [3.34, 3.369], [3.414, 3.444], [3.89, 3.907]]);
       window.__timelines["26-flashcards"] = tl;
     })();
   </script>

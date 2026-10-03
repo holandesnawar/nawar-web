@@ -137,8 +137,8 @@
     .f32-tick { fill: none; stroke: #FFFFFF; stroke-width: 3.6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 24; }
   </style>
 
-  <div id="root" data-composition-id="32-practicas" data-width="1920" data-height="1080" data-duration="7.275">
-    <div id="f32-ground" class="clip" data-start="0" data-duration="7.275" data-track-index="0"><div id="f32-dots"></div><div id="f32-amb"></div><div id="f32-vig"></div></div>
+  <div id="root" data-composition-id="32-practicas" data-width="1920" data-height="1080" data-duration="7.192">
+    <div id="f32-ground" class="clip" data-start="0" data-duration="7.192" data-track-index="0"><div id="f32-dots"></div><div id="f32-amb"></div><div id="f32-vig"></div></div>
 
     <svg width="0" height="0" aria-hidden="true" style="position:absolute">
       <filter id="f32-tintf" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.043  0 0 0 0 0.427  0 0 0 0 0.941  -5.5 0 0 0 5.5" /></filter>
@@ -160,7 +160,7 @@
             <!-- 1 · escribes — «Ik ___ elke dag koffie.»: the student types «drink» (media 15.4–16.4 = 2.40–3.40) -->
             <div class="f32-pane" id="f32-p1">
               <video id="f32-vid1" class="clip f32-cf" src="assets/video/completa-frase.mp4" muted playsinline
-                data-start="0" data-duration="4.0" data-media-start="13.0" data-hf-media-start-basis="local" data-track-index="2"></video>
+                data-start="0" data-duration="4.022" data-media-start="13.0" data-hf-media-start-basis="local" data-track-index="2"></video>
             </div>
             <!-- 2 · ordenas frases — the chips fly into «Ik wil een glas water, alsjeblieft.» -->
             <div class="f32-pane" id="f32-p2">
@@ -189,9 +189,9 @@
             <!-- 4 · completas sin pistas — «Een koffie, alsjeblieft!» → Comprobar (6.24) → ¡Correcto! (6.74) -->
             <div class="f32-pane" id="f32-p4">
               <video id="f32-vid4" class="clip f32-cf" src="assets/video/completa-frase.mp4" muted playsinline
-                data-start="5.8" data-duration="1.475" data-media-start="8.76" data-hf-media-start-basis="local" data-track-index="2"></video>
+                data-start="5.817" data-duration="1.375" data-media-start="8.76" data-hf-media-start-basis="local" data-track-index="2"></video>
               <div id="f32-hint"><video id="f32-vidh" class="clip" src="assets/video/completa-frase.mp4" muted playsinline
-                data-start="5.82" data-duration="1.455" data-media-start="0" data-hf-media-start-basis="local" data-track-index="3"></video></div>
+                data-start="5.836" data-duration="1.356" data-media-start="0" data-hf-media-start-basis="local" data-track-index="3"></video></div>
             </div>
           </div>
           <div class="f32-win-edge"></div>
@@ -297,6 +297,22 @@
       check(4, 6.78);
 
       window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.285, 0.204], [0.413, 0.336], [0.927, 0.58], [1.431, 1.388], [1.679, 1.66], [2.615, 2.618], [2.863, 2.89], [3.597, 3.604], [3.954, 3.979], [4.56, 4.552], [5.064, 5.097], [5.138, 5.172], [5.909, 5.923], [6.459, 6.458], [6.679, 6.646], [7.275, 7.192]]);
       window.__timelines["32-practicas"] = tl;
     })();
   </script>

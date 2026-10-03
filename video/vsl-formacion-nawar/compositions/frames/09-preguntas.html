@@ -140,8 +140,8 @@
     }
   </style>
 
-  <div id="root" data-composition-id="09-preguntas" data-width="1920" data-height="1080" data-duration="6.1">
-    <div id="f09-ground" class="clip" data-start="0" data-duration="6.1" data-track-index="0"></div>
+  <div id="root" data-composition-id="09-preguntas" data-width="1920" data-height="1080" data-duration="6.245">
+    <div id="f09-ground" class="clip" data-start="0" data-duration="6.245" data-track-index="0"></div>
     <div id="f09-glow"></div>
     <div id="f09-vignette"></div>
 
@@ -341,7 +341,7 @@
         { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "power3.out" }, 6.17);
 
       window.__timelines = window.__timelines || {};
-      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
       ((tl, A) => {
         const f = (t) => {
           if (t <= A[0][0]) return t - A[0][0] + A[0][1];
@@ -356,23 +356,7 @@
           }
           c.startTime(ns);
         });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.342, 0.4], [1.027, 1.05], [1.333, 1.38], [1.5, 1.57], [1.814, 1.87], [1.907, 1.92], [2.314, 2.37], [2.564, 2.57], [2.759, 2.78], [2.907, 2.93], [3.148, 3.2], [3.481, 3.54], [3.685, 3.75], [3.833, 3.92], [4.481, 4.65], [4.555, 4.72], [4.74, 4.9], [4.907, 5.06], [5.046, 5.14], [5.314, 5.39], [5.444, 5.54], [5.555, 5.65], [5.611, 5.76], [5.731, 5.87], [6.018, 6.26], [6.064, 6.36], [6.166, 6.44], [6.759, 7.13]]);
-      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
-      ((tl, A) => {
-        const f = (t) => {
-          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
-          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
-          const [a, b] = A[A.length - 1]; return b + (t - a);
-        };
-        tl.getChildren(false, true, true).forEach((c) => {
-          const s = c.startTime(), d = c.duration(), ns = f(s);
-          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
-            const nd = Math.max(0.05, f(s + d) - ns);
-            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
-          }
-          c.startTime(ns);
-        });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.4, 0.377], [1.05, 0.835], [1.38, 1.12], [1.57, 1.285], [1.87, 1.542], [1.92, 1.606], [2.37, 2.01], [2.57, 2.184], [2.78, 2.358], [2.93, 2.487], [3.2, 2.716], [3.54, 3.065], [3.75, 3.257], [3.92, 3.413], [4.65, 4.01], [4.72, 4.074], [4.9, 4.239], [5.06, 4.368], [5.14, 4.432], [5.39, 4.679], [5.54, 4.817], [5.65, 4.909], [5.76, 5.001], [5.87, 5.092], [6.26, 5.377], [6.36, 5.459], [6.44, 5.533], [7.13, 6.1]]);
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.342, 0.393], [1.027, 0.9], [1.333, 1.2], [1.5, 1.369], [1.814, 1.651], [1.907, 1.698], [2.314, 2.13], [2.564, 2.299], [2.759, 2.468], [2.907, 2.618], [3.148, 2.89], [3.481, 3.2], [3.685, 3.369], [3.833, 3.519], [4.481, 4.167], [4.555, 4.28], [4.74, 4.458], [4.907, 4.571], [5.046, 4.656], [5.314, 4.89], [5.444, 5.031], [5.555, 5.106], [5.611, 5.21], [5.731, 5.294], [6.018, 5.548], [6.064, 5.641], [6.166, 5.717], [6.759, 6.245]]);
       window.__timelines["09-preguntas"] = tl;
     })();
   </script>

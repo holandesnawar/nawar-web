@@ -15,6 +15,10 @@ share (same functions, only the id prefix changes), so 20's last frame and 21's 
           aluminium edge layers + the silver outer face (no logo)
 
 Straight on (body 0, lid 0) the rig IS the 2D mockup (lid at z=0, lip projected 1:1).
+v4 — no boot screen: the lid opens straight onto the website (nuestra-vision.mp4), which hands over to the
+course page (formacion-134.mp4) on the bar line SWITCH. Durations and every word cue are read from timing.json,
+so a new voice only needs `python3 tools/timing.py && python3 tools/gen_laptop_20_21.py`.
+
 Run:  python3 tools/gen_laptop_20_21.py   (rewrites both frames + both sidecars)
 """
 import os, json, math
@@ -22,7 +26,19 @@ import os, json, math
 PROJ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(PROJ, "compositions", "frames")
 
-D20, D21 = 2.809, 4.627
+_T = {f["id"]: f for f in json.load(open(os.path.join(PROJ, "timing.json")))["frames"]}
+D20, D21 = round(_T["20-pausa"]["duration"], 3), round(_T["21-portatil"]["duration"], 3)
+W20, W21 = _T["20-pausa"]["words"], _T["21-portatil"]["words"]
+_TOTAL = json.load(open(os.path.join(PROJ, "timing.json")))["total"]
+PAUSED_AT = _T["20-pausa"]["start"]                       # the player in 20 shows where the film paused
+PLAYER_TIME = "%d:%02d / %d:%02d" % (int(PAUSED_AT) // 60, int(PAUSED_AT) % 60, int(_TOTAL) // 60, int(_TOTAL) % 60)
+PLAYER_PCT = "%.1f%%" % (100 * PAUSED_AT / _TOTAL)
+SWITCH = 2.4                  # 21: website -> course page (one bar after the drop, before the voice returns)
+
+
+def cue(words, i, lead=0.02):
+    """frame-relative reveal time for word i (lands `lead` s before the word)."""
+    return round(words[i]["t"] - lead, 3)
 
 # ---------------------------------------------------------------- device geometry (mac_mockup.md units)
 SW = 896                      # --sw: screen width (px)
@@ -71,7 +87,7 @@ DISC_X, DISC_Y = 500.0, 515.0                        # on-canvas centre of the c
 TOP = dict(zip(("x", "y"), pose((0, LIDC), (DISC_X, DISC_Y), S0, ROT0)), rotation=ROT0, scale=S0)
 S1 = 1.10                     # straight on, centred
 CEN = dict(zip(("x", "y"), pose((0, BOX_H / 2 - HY), (960, 520), S1, 0)), rotation=0, scale=S1)
-S2 = S1 * 1.02                # slow push (<= 3 %) while the screen boots
+S2 = S1 * 1.02                # slow push (<= 3 %) while the website plays
 CEN2 = dict(zip(("x", "y"), pose((0, BOX_H / 2 - HY), (960, 520), S2, 0)), rotation=0, scale=S2)
 LEFT = dict(x=0, y=0, rotation=0, scale=1)
 PAN = 960 - (HOME_L + BOX_W / 2)   # the right column rides in with the camera's pan (velocity-matched)
@@ -286,8 +302,8 @@ def ui_css(P):
     .{P}-ic svg {{ position: absolute; left: 0; top: 0; width: 26px; height: 26px; display: block; }}
     #{P}-time {{ font-weight: 600; font-size: 22px; line-height: 1; color: rgba(255,255,255,0.80); white-space: nowrap; font-variant-numeric: tabular-nums; }}
     #{P}-track {{ position: relative; flex: 1 1 auto; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.26); }}
-    #{P}-fill {{ position: absolute; left: 0; top: 0; width: 49.9%; height: 5px; border-radius: 3px; background: #FFFFFF; }}
-    #{P}-knob {{ position: absolute; left: 49.9%; top: 2.5px; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 2px 6px rgba(0,0,0,0.35); }}
+    #{P}-fill {{ position: absolute; left: 0; top: 0; width: {PLAYER_PCT}; height: 5px; border-radius: 3px; background: #FFFFFF; }}
+    #{P}-knob {{ position: absolute; left: {PLAYER_PCT}; top: 2.5px; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 2px 6px rgba(0,0,0,0.35); }}
 """
 
 
@@ -340,7 +356,7 @@ def ui_html(P):
     <div id="{P}-ctl">
       <div class="{P}-ic"><svg id="{P}-bplay" viewBox="0 0 26 26" aria-hidden="true"><path d="M 7 4.2 L 7 21.8 Q 7 23.8 8.8 22.8 L 22.2 14.4 Q 23.8 13 22.2 11.6 L 8.8 3.2 Q 7 2.2 7 4.2 Z" fill="#FFFFFF"></path></svg>
         <svg id="{P}-bpause" viewBox="0 0 26 26" aria-hidden="true"><rect x="5.5" y="4" width="5.5" height="18" rx="1.6" fill="#FFFFFF"></rect><rect x="15" y="4" width="5.5" height="18" rx="1.6" fill="#FFFFFF"></rect></svg></div>
-      <div id="{P}-time">1:28 / 2:57</div>
+      <div id="{P}-time">{PLAYER_TIME}</div>
       <div id="{P}-track"><div id="{P}-fill"></div><div id="{P}-knob"></div></div>
       <div class="{P}-ic"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M 3.5 9.5 L 7.8 9.5 L 13 4.8 L 13 21.2 L 7.8 16.5 L 3.5 16.5 Z" fill="#FFFFFF"></path><path d="M 17 9 Q 19.8 13 17 17 M 19.8 6.2 Q 24.6 13 19.8 19.8" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"></path></svg></div>
       <div class="{P}-ic"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M 4 9.5 L 4 4 L 9.5 4 M 16.5 4 L 22 4 L 22 9.5 M 22 16.5 L 22 22 L 16.5 22 M 9.5 22 L 4 22 L 4 16.5" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
@@ -361,6 +377,9 @@ def rig_state_js(P, cam, body, lid):
 # ======================================================================== FRAME 20
 def frame20():
     P = "f20"
+    CUR0 = round(W20[4]["end"] + 0.018, 3)       # the cursor sets off as «dentro?» ends
+    PRESS = round(W20[7]["end"] + 0.011, 3)      # ... and presses play as «enseño.» ends
+    LIFT_T = PRESS + 0.10                        # the lid starts to lift
     css = fonts([("Poppins", 600, "poppins-latin-600-normal.woff2"), ("Poppins", 800, "poppins-latin-800-normal.woff2"),
                  ("Inter", 600, "inter-latin-600-normal.woff2")])
     css += rig_css(P) + mockup_css(P) + ui_css(P)
@@ -408,23 +427,23 @@ def frame20():
       tl.fromTo($("{P}-ctl"), {{ opacity: 0, y: 40 }}, {{ opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }}, 0.02);
 {init_js(P, "bpause", {"opacity": 0})}{init_js(P, "dpress", {"opacity": 0})}
       // ===== Scene 2 (0.5-1.9): Vale, / ¿Y qué hay / dentro? on the voice =====
-      [["{P}-w0", 0.48], ["{P}-w1", 0.89], ["{P}-w2", 1.09], ["{P}-w3", 1.25], ["{P}-dentro", 1.35]].forEach(([id, t]) => {{
+      [["{P}-w0", {cue(W20, 0)}], ["{P}-w1", {cue(W20, 1)}], ["{P}-w2", {cue(W20, 2)}], ["{P}-w3", {cue(W20, 3)}], ["{P}-dentro", {cue(W20, 4)}]].forEach(([id, t]) => {{
         tl.fromTo($(id), {{ opacity: 0, y: 28 }}, {{ opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }}, t);
       }});
 
       // ===== Scene 3 (1.9-2.81): Te lo enseño. + the cursor presses play; the lid starts to lift =====
-      [["{P}-w5", 1.91], ["{P}-w6", 1.99], ["{P}-w7", 2.06]].forEach(([id, t]) => {{
+      [["{P}-w5", {cue(W20, 5)}], ["{P}-w6", {cue(W20, 6)}], ["{P}-w7", {cue(W20, 7)}]].forEach(([id, t]) => {{
         tl.fromTo($(id), {{ opacity: 0, y: 18 }}, {{ opacity: 1, y: 0, duration: 0.26, ease: "power2.out" }}, t);
       }});
-      tl.fromTo($("{P}-cursor"), {{ x: 1000, y: 640 }}, {{ x: 0, y: 0, duration: 0.74, ease: "power2.inOut" }}, 1.72);
-      tl.fromTo($("{P}-cursori"), {{ scale: 1 }}, {{ scale: 0.86, duration: 0.05, ease: "power2.out" }}, 2.52);
-      tl.to($("{P}-cursori"), {{ scale: 1, duration: 0.1, ease: "power2.out" }}, 2.6);
-      tl.fromTo($("{P}-dpress"), {{ opacity: 0 }}, {{ opacity: 1, duration: 0.05, ease: "power2.out", immediateRender: false }}, 2.52);
-      tl.fromTo($("{P}-disc"), {{ scale: 1 }}, {{ scale: 0.95, duration: 0.05, ease: "power2.out", immediateRender: false }}, 2.52);
-      tl.to($("{P}-disc"), {{ scale: 1, duration: 0.12, ease: "power2.out" }}, 2.6);
-      tl.set($("{P}-bplay"), {{ opacity: 0 }}, 2.58);
-      tl.set($("{P}-bpause"), {{ opacity: 1 }}, 2.58);
-      tl.fromTo($("{P}-lid"), {{ rotationX: -90 }}, {{ rotationX: {LIFT}, duration: {D20 - 2.62:.3f}, ease: "power2.in", immediateRender: false }}, 2.62);
+      tl.fromTo($("{P}-cursor"), {{ x: 1000, y: 640 }}, {{ x: 0, y: 0, duration: {PRESS - 0.06 - CUR0:.3f}, ease: "power2.inOut" }}, {CUR0});
+      tl.fromTo($("{P}-cursori"), {{ scale: 1 }}, {{ scale: 0.86, duration: 0.05, ease: "power2.out" }}, {PRESS});
+      tl.to($("{P}-cursori"), {{ scale: 1, duration: 0.1, ease: "power2.out" }}, {PRESS + 0.08:.3f});
+      tl.fromTo($("{P}-dpress"), {{ opacity: 0 }}, {{ opacity: 1, duration: 0.05, ease: "power2.out", immediateRender: false }}, {PRESS});
+      tl.fromTo($("{P}-disc"), {{ scale: 1 }}, {{ scale: 0.95, duration: 0.05, ease: "power2.out", immediateRender: false }}, {PRESS});
+      tl.to($("{P}-disc"), {{ scale: 1, duration: 0.12, ease: "power2.out" }}, {PRESS + 0.08:.3f});
+      tl.set($("{P}-bplay"), {{ opacity: 0 }}, {PRESS + 0.06:.3f});
+      tl.set($("{P}-bpause"), {{ opacity: 1 }}, {PRESS + 0.06:.3f});
+      tl.fromTo($("{P}-lid"), {{ rotationX: -90 }}, {{ rotationX: {LIFT}, duration: {D20 - LIFT_T:.3f}, ease: "power2.in", immediateRender: false }}, {LIFT_T:.3f});
 
       window.__timelines["20-pausa"] = tl;
     }})();
@@ -437,17 +456,14 @@ def frame20():
 # ======================================================================== FRAME 21
 def frame21():
     P = "f21"
+    PAN_T = cue(W21, 0, 0.023)                  # the camera pans as «Dieciséis» starts
     css = fonts([("Poppins", 600, "poppins-latin-600-normal.woff2"), ("Poppins", 800, "poppins-latin-800-normal.woff2"),
                  ("Poppins", 900, "poppins-latin-900-normal.woff2"), ("Inter", 500, "inter-latin-500-normal.woff2"),
                  ("Inter", 600, "inter-latin-600-normal.woff2")])
     css += rig_css(P) + mockup_css(P) + chrome_css(P) + ui_css(P)
     css += f"""
-    /* ---------- screen: boot (logo on black) over the browser ---------- */
+    /* ---------- screen: the browser (website, then the course page) ---------- */
     #{P}-browser {{ position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #FFFFFF; }}
-    #{P}-boot {{ position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #000000; }}
-    #{P}-bloom {{ position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: radial-gradient(ellipse 46% 40% at 50% 50%, rgba(60,90,170,0.16) 0%, rgba(60,90,170,0) 100%); }}
-    #{P}-logo {{ position: absolute; left: {(1120 * U - 380) / 2:.1f}px; top: {(700 * U - 380 * 269 / 754) / 2:.1f}px; width: 380px; height: {380 * 269 / 754:.1f}px;
-      background: url("assets/img/logo-nawar.png") center / 100% 100% no-repeat; }}
     #{P}-url2 {{ opacity: 0; }}
 
     /* ---------- right column: 16 / semanas / de formación guiada ---------- */
@@ -472,11 +488,10 @@ def frame21():
                         <svg class="{P}-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
                     </div>
                     <div class="{P}-content" style="--fx:50%;">
-                      <video id="{P}-vid1" class="clip {P}-media" src="assets/video/nuestra-vision.mp4" muted playsinline data-start="1.8" data-duration="1.25" data-media-start="0" data-hf-media-start-basis="local" data-track-index="2"></video>
-                      <video id="{P}-vid2" class="clip {P}-media" style="--fx:12%;" src="assets/video/inicio-home.mp4" muted playsinline data-start="3.05" data-duration="{D21 - 3.05:.3f}" data-media-start="1.4" data-hf-media-start-basis="local" data-track-index="2"></video>
+                      <video id="{P}-vid1" class="clip {P}-media" src="assets/video/nuestra-vision-hero.mp4" muted playsinline data-start="0" data-duration="{SWITCH}" data-media-start="0" data-hf-media-start-basis="local" data-track-index="2"></video>
+                      <video id="{P}-vid2" class="clip {P}-media" src="assets/video/formacion-134.mp4" muted playsinline data-start="{SWITCH}" data-duration="{D21 - SWITCH:.3f}" data-media-start="0" data-hf-media-start-basis="local" data-track-index="2"></video>
                     </div>
-                  </div>
-                  <div id="{P}-boot"><div id="{P}-bloom"></div><div id="{P}-logo" role="img" aria-label="Nawar"></div></div>"""
+                  </div>"""
     pills = "".join('<div class="%s-pill" style="left: %dpx;"><div id="%s-pf%d" class="%s-pf"></div></div>' % (P, i * 42, P, i, P) for i in range(16))
     html = f"""<template>
   <script src="assets/vendor/gsap.min.js"></script>
@@ -520,28 +535,24 @@ def frame21():
       tl.fromTo($("{P}-tsp"), {{ opacity: 1 }}, {{ opacity: 0, duration: 0.35, ease: "power1.in" }}, 0.05);
       tl.fromTo([$("{P}-csh"), $("{P}-coc")], {{ opacity: 0 }}, {{ opacity: 1, duration: 0.55, ease: "power2.out" }}, 0.4);
 
-      // ===== Scene 2 (0.9-1.8): boot — the Nawar logo on the dark screen =====
-      tl.fromTo($("{P}-logo"), {{ opacity: 0, scale: 0.97 }}, {{ opacity: 1, scale: 1, duration: 0.55, ease: "power2.out" }}, 0.9);
-      tl.fromTo($("{P}-bloom"), {{ opacity: 0 }}, {{ opacity: 1, duration: 0.6, ease: "power1.out" }}, 0.9);
-      tl.fromTo($("{P}-cam"), {js(CEN)}, {{ {js(CEN2)[2:-2]}, duration: 1.74, ease: "sine.inOut", immediateRender: false }}, 1.05);
+      // ===== Scene 2 (1.05-SWITCH): the website plays while the camera pushes in slowly =====
+      tl.fromTo($("{P}-cam"), {js(CEN)}, {{ {js(CEN2)[2:-2]}, duration: {PAN_T + 0.02 - 1.05:.3f}, ease: "sine.inOut", immediateRender: false }}, 1.05);
 
-      // ===== Scene 3 (1.8-4.0): the browser — website hero, then the platform dashboard =====
-      tl.to($("{P}-logo"), {{ opacity: 0, duration: 0.16, ease: "power1.in" }}, 1.7);
-      tl.fromTo($("{P}-boot"), {{ opacity: 1 }}, {{ opacity: 0, duration: 0.24, ease: "power1.out" }}, 1.82);
-      tl.set($("{P}-url1"), {{ opacity: 0 }}, 3.05);
-      tl.set($("{P}-url2"), {{ opacity: 1 }}, 3.05);
+      // ===== Scene 3 (SWITCH): the browser navigates to the course page =====
+      tl.set($("{P}-url1"), {{ opacity: 0 }}, {SWITCH});
+      tl.set($("{P}-url2"), {{ opacity: 1 }}, {SWITCH});
 
-      // ===== Scene 4 (2.79-4.63): the Mac glides left; 16 semanas de formación guiada =====
-      tl.fromTo($("{P}-cam"), {js(CEN2)}, {{ x: 0, y: 0, rotation: 0, scale: 1, duration: 0.8, ease: "power3.inOut", immediateRender: false }}, 2.77);
-      tl.fromTo($("{P}-col"), {{ x: {PAN:.1f} }}, {{ x: 0, duration: 0.8, ease: "power3.inOut" }}, 2.77);
-      tl.fromTo($("{P}-num"), {{ opacity: 0, y: 40 }}, {{ opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }}, 2.78);
-      tl.fromTo($("{P}-sem"), {{ opacity: 0, y: 30 }}, {{ opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }}, 3.33);
-      tl.fromTo($("{P}-w3"), {{ opacity: 0, y: 20 }}, {{ opacity: 1, y: 0, duration: 0.26, ease: "power2.out" }}, 3.63);
-      tl.fromTo($("{P}-w4"), {{ opacity: 0, y: 20 }}, {{ opacity: 1, y: 0, duration: 0.26, ease: "power2.out" }}, 3.73);
-      tl.fromTo($("{P}-guiada"), {{ opacity: 0, y: 20 }}, {{ opacity: 1, y: 0, duration: 0.28, ease: "power2.out" }}, 4.24);
-      tl.fromTo($("{P}-pills"), {{ opacity: 0 }}, {{ opacity: 1, duration: 0.25, ease: "power1.out" }}, 3.36);
+      // ===== Scene 4 (voice back): the Mac glides left; 16 semanas de formación guiada =====
+      tl.fromTo($("{P}-cam"), {js(CEN2)}, {{ x: 0, y: 0, rotation: 0, scale: 1, duration: 0.8, ease: "power3.inOut", immediateRender: false }}, {PAN_T});
+      tl.fromTo($("{P}-col"), {{ x: {PAN:.1f} }}, {{ x: 0, duration: 0.8, ease: "power3.inOut" }}, {PAN_T});
+      tl.fromTo($("{P}-num"), {{ opacity: 0, y: 40 }}, {{ opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }}, {cue(W21, 0, 0.013)});
+      tl.fromTo($("{P}-sem"), {{ opacity: 0, y: 30 }}, {{ opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }}, {cue(W21, 1, 0.023)});
+      tl.fromTo($("{P}-w3"), {{ opacity: 0, y: 20 }}, {{ opacity: 1, y: 0, duration: 0.26, ease: "power2.out" }}, {cue(W21, 2, 0.025)});
+      tl.fromTo($("{P}-w4"), {{ opacity: 0, y: 20 }}, {{ opacity: 1, y: 0, duration: 0.26, ease: "power2.out" }}, {cue(W21, 3, 0.017)});
+      tl.fromTo($("{P}-guiada"), {{ opacity: 0, y: 20 }}, {{ opacity: 1, y: 0, duration: 0.28, ease: "power2.out" }}, {cue(W21, 4, 0.021)});
+      tl.fromTo($("{P}-pills"), {{ opacity: 0 }}, {{ opacity: 1, duration: 0.25, ease: "power1.out" }}, {cue(W21, 1, -0.007)});
       for (let i = 0; i < 16; i++) {{
-        tl.fromTo($("{P}-pf" + i), {{ scaleX: 0 }}, {{ scaleX: 1, duration: 0.14, ease: "power2.out" }}, 3.42 + i * 0.054);
+        tl.fromTo($("{P}-pf" + i), {{ scaleX: 0 }}, {{ scaleX: 1, duration: 0.14, ease: "power2.out" }}, {cue(W21, 1, -0.067)} + i * 0.054);
       }}
 
       window.__timelines["21-portatil"] = tl;

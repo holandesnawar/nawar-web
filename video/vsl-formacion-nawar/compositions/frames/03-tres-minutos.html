@@ -92,8 +92,8 @@
     #f03-mins .f03-ch { display: inline-block; }
   </style>
 
-  <div id="root" data-composition-id="03-tres-minutos" data-width="1920" data-height="1080" data-duration="2.045">
-    <div id="f03-ground" class="clip" data-start="0" data-duration="2.045" data-track-index="0">
+  <div id="root" data-composition-id="03-tres-minutos" data-width="1920" data-height="1080" data-duration="2.123">
+    <div id="f03-ground" class="clip" data-start="0" data-duration="2.123" data-track-index="0">
       <div id="f03-dots"></div>
       <div id="f03-light"></div>
     </div>
@@ -284,7 +284,7 @@
       tl.to($("s4"), { y: 0, duration: 0.16, ease: "expo.out" }, TICK2);
 
       window.__timelines = window.__timelines || {};
-      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
       ((tl, A) => {
         const f = (t) => {
           if (t <= A[0][0]) return t - A[0][0] + A[0][1];
@@ -299,23 +299,7 @@
           }
           c.startTime(ns);
         });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.167, 0.18], [0.259, 0.28], [0.694, 0.7], [0.806, 0.81], [1.065, 1.1], [1.176, 1.2], [1.407, 1.49], [2.306, 2.31]]);
-      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
-      ((tl, A) => {
-        const f = (t) => {
-          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
-          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
-          const [a, b] = A[A.length - 1]; return b + (t - a);
-        };
-        tl.getChildren(false, true, true).forEach((c) => {
-          const s = c.startTime(), d = c.duration(), ns = f(s);
-          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
-            const nd = Math.max(0.05, f(s + d) - ns);
-            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
-          }
-          c.startTime(ns);
-        });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.18, 0.157], [0.28, 0.24], [0.7, 0.634], [0.81, 0.726], [1.1, 0.992], [1.2, 1.065], [1.49, 1.359], [2.31, 2.045]]);
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.167, 0.167], [0.259, 0.27], [0.694, 0.678], [0.806, 0.805], [1.065, 1.106], [1.176, 1.2], [1.407, 1.444], [2.306, 2.123]]);
       window.__timelines["03-tres-minutos"] = tl;
     })();
   </script>

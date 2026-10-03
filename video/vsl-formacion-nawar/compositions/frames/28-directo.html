@@ -133,8 +133,8 @@
     .f28-vm { position: absolute; left: calc(var(--u) * -164.1); top: 0; width: calc(var(--u) * 1473.0); height: calc(var(--u) * 752.3); display: block; object-fit: fill; }
   </style>
 
-  <div id="root" data-composition-id="28-directo" data-width="1920" data-height="1080" data-duration="4.542">
-    <div id="f28-ground" class="clip" data-start="0" data-duration="4.542" data-track-index="0"><div id="f28-dots"></div><div id="f28-vig"></div></div>
+  <div id="root" data-composition-id="28-directo" data-width="1920" data-height="1080" data-duration="4.582">
+    <div id="f28-ground" class="clip" data-start="0" data-duration="4.582" data-track-index="0"><div id="f28-dots"></div><div id="f28-vig"></div></div>
 
     <!-- headline A: Una clase / en directo / cada semana -->
     <div id="f28-ha">
@@ -162,7 +162,7 @@
       </div>
       <div class="f28-content">
         <video id="f28-vmod" class="clip f28-vm" src="assets/video/paul-clase-2.mp4" muted playsinline
-          data-start="3.9" data-duration="0.642" data-media-start="1.2" data-hf-media-start-basis="local" data-track-index="2"></video>
+          data-start="3.935" data-duration="0.647" data-media-start="1.2" data-hf-media-start-basis="local" data-track-index="2"></video>
       </div>
       <div class="f28-win-edge"></div>
     </div>
@@ -184,13 +184,13 @@
           <div class="f28-avs"><div class="f28-av" style="background:#0b6df0;">AL</div><div class="f28-av" style="background:#5A6480;">MR</div><div class="f28-av" style="background:#1D0084;">JS</div></div>
           <div class="f28-tile f28-tp" id="f28-tileP">
             <video id="f28-vpaul" class="clip f28-vp" src="assets/video/paul-clase-1.mp4" muted playsinline
-              data-start="1.9" data-duration="2.642" data-media-start="0.15" data-hf-media-start-basis="local" data-track-index="2"></video>
+              data-start="1.839" data-duration="2.743" data-media-start="0.15" data-hf-media-start-basis="local" data-track-index="2"></video>
             <div class="f28-name"><svg viewBox="0 0 12 12" aria-hidden="true"><rect x="4.2" y="1" width="3.6" height="6.2" rx="1.8" fill="#FFFFFF" /><path d="M2.4 5.6 A3.6 3.6 0 0 0 9.6 5.6 M6 9.2 V11" fill="none" stroke="#FFFFFF" stroke-width="1.1" stroke-linecap="round" /></svg>Paul</div>
             <div class="f28-spk" id="f28-spk"></div>
           </div>
           <div class="f28-tile f28-ts" id="f28-tileS">
             <video id="f28-vslide" class="clip f28-vs" src="assets/video/paul-clase-1.mp4" muted playsinline
-              data-start="1.92" data-duration="2.622" data-media-start="0.17" data-hf-media-start-basis="local" data-track-index="2"></video>
+              data-start="1.855" data-duration="2.727" data-media-start="0.17" data-hf-media-start-basis="local" data-track-index="2"></video>
           </div>
           <div class="f28-ctl">
             <div class="f28-b"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5.5 11 A6.5 6.5 0 0 0 18.5 11 M12 17.5 V21" /></g></svg></div>
@@ -260,6 +260,22 @@
       tl.fromTo(q("f28-mod"), { x: -720 }, { x: 0, duration: 0.56, ease: "power3.out" }, 3.92);
 
       window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.203, 0.186], [0.386, 0.383], [0.653, 0.693], [0.744, 0.796], [1.13, 1.162], [1.432, 1.463], [1.992, 1.913], [2.139, 2.111], [2.276, 2.28], [2.542, 2.571], [3.065, 3.078], [3.175, 3.2], [3.249, 3.247], [3.68, 3.697], [3.818, 3.838], [3.946, 3.989], [4.542, 4.582]]);
       window.__timelines["28-directo"] = tl;
     })();
   </script>

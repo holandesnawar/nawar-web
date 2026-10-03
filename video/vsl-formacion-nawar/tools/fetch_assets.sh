@@ -78,6 +78,14 @@ dl 1tdK1eKjcEPxTcmB5b1-a2CtnN1mguk67 paul-clase-2.mov
 ffmpeg -v error -y -i "$RAW/voz-v3-b.mp3" -af "loudnorm=I=-16:TP=-1.5:LRA=11" -ar 48000 -ac 1 "$RAW/voz-v3-b.wav"
 for n in 1 2; do ffmpeg -v error -y -i "$RAW/paul-clase-$n.mov" -an -vf "fps=30,format=yuv420p" -c:v libx264 -preset slow -crf 16 -g 30 -movflags +faststart assets/video/paul-clase-$n.mp4; done
 
-echo "v3 soundtrack: voice 1.09x + re-edited, calmer music + ducking (writes transcript.json too)"
-python3 tools/build_audio_v3.py
-echo "done. Then: python3 tools/timing.py && python3 tools/assemble.py"
+echo "v4 media: voice take (4) + the course-page recording for 21-portatil"
+dl 1WLd2hR8-8HraTLFGOOeN6iOnQ9ZxWqDy voz-v4-4.mp3        # «Voz en off VSL Escuela (4)» (chosen v4 take; (5) and «Oct 3» were the others)
+dl 1xxPfBLFdxfaBvdroRpmL51wrUuHDDmCi formacion-134.mov   # «Formacion-1.34»: course page scrolling through the lessons
+ffmpeg -v error -y -i "$RAW/voz-v4-4.mp3" -af "loudnorm=I=-16:TP=-1.5:LRA=11" -ar 48000 -ac 1 "$RAW/voz-v4-4.wav"
+ffmpeg -v error -y -i "$RAW/formacion-134.mov" -an -vf "fps=30,format=yuv420p" -c:v libx264 -preset slow -crf 16 -g 30 -movflags +faststart assets/video/formacion-134.mp4
+# 21-portatil opens straight onto the website hero: its first 2.16 s, eased to 2.5 s so the hand-over lands on the bar line
+ffmpeg -v error -y -t 2.16 -i assets/video/nuestra-vision.mp4 -vf "setpts=PTS*1.1574,fps=30" -an -c:v libx264 -crf 16 -preset slow -pix_fmt yuv420p -movflags +faststart assets/video/nuestra-vision-hero.mp4
+
+echo "v4 soundtrack: take (4) at 1.065x + the v3 music edit (writes transcript.json too)"
+python3 tools/build_audio_v4.py
+echo "done. Then: python3 tools/timing.py && python3 tools/gen_laptop_20_21.py && python3 tools/assemble.py"

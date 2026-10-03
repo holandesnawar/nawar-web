@@ -147,8 +147,8 @@
     #f20-dentro { color: #4da3ff; }
   </style>
 
-  <div id="root" data-composition-id="20-pausa" data-width="1920" data-height="1080" data-duration="2.809">
-    <div id="f20-ground" class="clip" data-start="0" data-duration="2.809" data-track-index="0"><div id="f20-dots"></div><div id="f20-vig"></div></div>
+  <div id="root" data-composition-id="20-pausa" data-width="1920" data-height="1080" data-duration="2.856">
+    <div id="f20-ground" class="clip" data-start="0" data-duration="2.856" data-track-index="0"><div id="f20-dots"></div><div id="f20-vig"></div></div>
     <div id="f20-cam">
       <div id="f20-stage" class="f20-mbp">
         <div id="f20-csh" class="f20-mbp-shadow"></div><div id="f20-coc" class="f20-mbp-occl"></div>
@@ -213,23 +213,23 @@
       tl.fromTo($("f20-dpress"), { opacity: 0 }, { opacity: 0, duration: 0.001 }, 0);
 
       // ===== Scene 2 (0.5-1.9): Vale, / ¿Y qué hay / dentro? on the voice =====
-      [["f20-w0", 0.48], ["f20-w1", 0.89], ["f20-w2", 1.09], ["f20-w3", 1.25], ["f20-dentro", 1.35]].forEach(([id, t]) => {
+      [["f20-w0", 0.48], ["f20-w1", 0.949], ["f20-w2", 1.109], ["f20-w3", 1.278], ["f20-dentro", 1.381]].forEach(([id, t]) => {
         tl.fromTo($(id), { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, t);
       });
 
       // ===== Scene 3 (1.9-2.81): Te lo enseño. + the cursor presses play; the lid starts to lift =====
-      [["f20-w5", 1.91], ["f20-w6", 1.99], ["f20-w7", 2.06]].forEach(([id, t]) => {
+      [["f20-w5", 1.954], ["f20-w6", 2.038], ["f20-w7", 2.142]].forEach(([id, t]) => {
         tl.fromTo($(id), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.26, ease: "power2.out" }, t);
       });
-      tl.fromTo($("f20-cursor"), { x: 1000, y: 640 }, { x: 0, y: 0, duration: 0.74, ease: "power2.inOut" }, 1.72);
-      tl.fromTo($("f20-cursori"), { scale: 1 }, { scale: 0.86, duration: 0.05, ease: "power2.out" }, 2.52);
-      tl.to($("f20-cursori"), { scale: 1, duration: 0.1, ease: "power2.out" }, 2.6);
-      tl.fromTo($("f20-dpress"), { opacity: 0 }, { opacity: 1, duration: 0.05, ease: "power2.out", immediateRender: false }, 2.52);
-      tl.fromTo($("f20-disc"), { scale: 1 }, { scale: 0.95, duration: 0.05, ease: "power2.out", immediateRender: false }, 2.52);
-      tl.to($("f20-disc"), { scale: 1, duration: 0.12, ease: "power2.out" }, 2.6);
-      tl.set($("f20-bplay"), { opacity: 0 }, 2.58);
-      tl.set($("f20-bpause"), { opacity: 1 }, 2.58);
-      tl.fromTo($("f20-lid"), { rotationX: -90 }, { rotationX: -85, duration: 0.189, ease: "power2.in", immediateRender: false }, 2.62);
+      tl.fromTo($("f20-cursor"), { x: 1000, y: 640 }, { x: 0, y: 0, duration: 0.722, ease: "power2.inOut" }, 1.785);
+      tl.fromTo($("f20-cursori"), { scale: 1 }, { scale: 0.86, duration: 0.05, ease: "power2.out" }, 2.567);
+      tl.to($("f20-cursori"), { scale: 1, duration: 0.1, ease: "power2.out" }, 2.647);
+      tl.fromTo($("f20-dpress"), { opacity: 0 }, { opacity: 1, duration: 0.05, ease: "power2.out", immediateRender: false }, 2.567);
+      tl.fromTo($("f20-disc"), { scale: 1 }, { scale: 0.95, duration: 0.05, ease: "power2.out", immediateRender: false }, 2.567);
+      tl.to($("f20-disc"), { scale: 1, duration: 0.12, ease: "power2.out" }, 2.647);
+      tl.set($("f20-bplay"), { opacity: 0 }, 2.627);
+      tl.set($("f20-bpause"), { opacity: 1 }, 2.627);
+      tl.fromTo($("f20-lid"), { rotationX: -90 }, { rotationX: -85, duration: 0.189, ease: "power2.in", immediateRender: false }, 2.667);
 
       window.__timelines["20-pausa"] = tl;
     })();

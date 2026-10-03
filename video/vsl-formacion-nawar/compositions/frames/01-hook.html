@@ -131,8 +131,8 @@
     #f01-cap .f01-key { font-weight: 800; color: #0C0C1E; }
   </style>
 
-  <div id="root" data-composition-id="01-hook" data-width="1920" data-height="1080" data-duration="5.536">
-    <div id="f01-ground" class="clip" data-start="0" data-duration="5.536" data-track-index="0">
+  <div id="root" data-composition-id="01-hook" data-width="1920" data-height="1080" data-duration="5.539">
+    <div id="f01-ground" class="clip" data-start="0" data-duration="5.539" data-track-index="0">
       <div id="f01-dots"></div>
       <div id="f01-glow"></div>
     </div>
@@ -321,7 +321,7 @@
       tl.fromTo($("x2"), { strokeDashoffset: 1.05 }, { strokeDashoffset: 0, duration: 0.14, ease: "power2.out" }, J + 0.18);
 
       window.__timelines = window.__timelines || {};
-      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
       ((tl, A) => {
         const f = (t) => {
           if (t <= A[0][0]) return t - A[0][0] + A[0][1];
@@ -336,23 +336,7 @@
           }
           c.startTime(ns);
         });
-      })(tl, [[0.0, 0.0], [0.428, 0.42], [0.548, 0.58], [0.724, 0.73], [0.993, 1.03], [1.122, 1.18], [1.604, 1.63], [1.733, 1.81], [1.983, 2.08], [2.326, 2.4], [2.696, 2.74], [3.03, 3.08], [3.28, 3.32], [3.826, 3.98], [3.891, 4.09], [4.233, 4.37], [4.372, 4.6], [4.743, 5.03], [4.844, 5.12], [5.956, 6.01]]);
-      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
-      ((tl, A) => {
-        const f = (t) => {
-          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
-          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
-          const [a, b] = A[A.length - 1]; return b + (t - a);
-        };
-        tl.getChildren(false, true, true).forEach((c) => {
-          const s = c.startTime(), d = c.duration(), ns = f(s);
-          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
-            const nd = Math.max(0.05, f(s + d) - ns);
-            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
-          }
-          c.startTime(ns);
-        });
-      })(tl, [[0.0, 0.0], [0.42, 0.418], [0.58, 0.574], [0.73, 0.703], [1.03, 1.006], [1.18, 1.152], [1.63, 1.547], [1.81, 1.712], [2.08, 1.941], [2.4, 2.235], [2.74, 2.556], [3.08, 2.868], [3.32, 3.116], [3.98, 3.712], [4.09, 3.863], [4.37, 4.125], [4.6, 4.336], [5.03, 4.721], [5.12, 4.804], [6.01, 5.536]]);
+      })(tl, [[-0.0, 0.0], [0.428, 0.419], [0.548, 0.578], [0.724, 0.71], [0.993, 0.992], [1.122, 1.123], [1.604, 1.546], [1.733, 1.715], [1.983, 1.94], [2.326, 2.203], [2.696, 2.503], [3.03, 2.851], [3.28, 3.057], [3.826, 3.686], [3.891, 3.855], [4.233, 4.118], [4.372, 4.353], [4.743, 4.738], [4.844, 4.823], [5.956, 5.539]]);
       window.__timelines["01-hook"] = tl;
     })();
   </script>

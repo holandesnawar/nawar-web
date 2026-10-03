@@ -65,8 +65,8 @@
     #f11-w-eso { font-weight: 800; }
   </style>
 
-  <div id="root" data-composition-id="11-nawar-nace" data-width="1920" data-height="1080" data-duration="1.771">
-    <div id="f11-ground" class="clip" data-start="0" data-duration="1.771" data-track-index="0">
+  <div id="root" data-composition-id="11-nawar-nace" data-width="1920" data-height="1080" data-duration="1.793">
+    <div id="f11-ground" class="clip" data-start="0" data-duration="1.793" data-track-index="0">
       <div id="f11-paper-dots"></div>
       <div id="f11-blue">
         <div id="f11-blue-grad"></div>
@@ -144,7 +144,7 @@
       tl.fromTo(q("f11-stage"), { scale: 1 }, { scale: 1.025, duration: D - 0.38, ease: "power1.inOut" }, 0.38);
 
       window.__timelines = window.__timelines || {};
-      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
       ((tl, A) => {
         const f = (t) => {
           if (t <= A[0][0]) return t - A[0][0] + A[0][1];
@@ -159,23 +159,7 @@
           }
           c.startTime(ns);
         });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.509, 0.585], [0.778, 0.92], [0.963, 1.1], [1.296, 1.48], [1.954, 1.97]]);
-      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
-      ((tl, A) => {
-        const f = (t) => {
-          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
-          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
-          const [a, b] = A[A.length - 1]; return b + (t - a);
-        };
-        tl.getChildren(false, true, true).forEach((c) => {
-          const s = c.startTime(), d = c.duration(), ns = f(s);
-          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
-            const nd = Math.max(0.05, f(s + d) - ns);
-            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
-          }
-          c.startTime(ns);
-        });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.585, 0.574], [0.92, 0.891], [1.1, 1.047], [1.48, 1.405], [1.97, 1.771]]);
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.509, 0.566], [0.778, 0.899], [0.963, 1.077], [1.296, 1.425], [1.954, 1.793]]);
       window.__timelines["11-nawar-nace"] = tl;
     })();
   </script>

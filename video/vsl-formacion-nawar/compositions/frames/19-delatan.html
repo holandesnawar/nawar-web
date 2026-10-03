@@ -97,8 +97,8 @@
     #f19-hair-r { left: 1215px; width: 477px; transform-origin: 0% 50%; }
   </style>
 
-  <div id="root" data-composition-id="19-delatan" data-width="1920" data-height="1080" data-duration="2.937">
-    <div id="f19-ground" class="clip" data-start="0" data-duration="2.937" data-track-index="0"></div>
+  <div id="root" data-composition-id="19-delatan" data-width="1920" data-height="1080" data-duration="2.907">
+    <div id="f19-ground" class="clip" data-start="0" data-duration="2.907" data-track-index="0"></div>
 
     <div id="f19-cam">
       <!-- headline: scene 1 -->
@@ -248,7 +248,7 @@
         tl.fromTo(sel, { opacity: 0, y: 44, filter: "blur(6px)" },
           { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, t);
       });
-      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
       ((tl, A) => {
         const f = (t) => {
           if (t <= A[0][0]) return t - A[0][0] + A[0][1];
@@ -263,23 +263,7 @@
           }
           c.startTime(ns);
         });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.333, 0.38], [0.491, 0.53], [0.583, 0.64], [0.703, 0.76], [1.222, 1.42], [1.296, 1.51], [1.472, 1.66], [2.194, 2.35], [2.37, 2.63], [2.426, 2.69], [2.871, 3.23]]);
-      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
-      ((tl, A) => {
-        const f = (t) => {
-          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
-          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
-          const [a, b] = A[A.length - 1]; return b + (t - a);
-        };
-        tl.getChildren(false, true, true).forEach((c) => {
-          const s = c.startTime(), d = c.duration(), ns = f(s);
-          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
-            const nd = Math.max(0.05, f(s + d) - ns);
-            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
-          }
-          c.startTime(ns);
-        });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.38, 0.349], [0.53, 0.487], [0.64, 0.579], [0.76, 0.689], [1.42, 1.294], [1.51, 1.368], [1.66, 1.514], [2.35, 2.175], [2.63, 2.413], [2.69, 2.469], [3.23, 2.937]]);
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.333, 0.317], [0.491, 0.496], [0.583, 0.59], [0.703, 0.683], [1.222, 1.247], [1.296, 1.322], [1.472, 1.491], [2.194, 2.176], [2.37, 2.345], [2.426, 2.411], [2.871, 2.907]]);
 
       window.__timelines["19-delatan"] = tl;
     })();

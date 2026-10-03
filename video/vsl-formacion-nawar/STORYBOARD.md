@@ -5,9 +5,14 @@ message: "El neerlandés no se te da mal: te lo estaban enseñando desde el ingl
 arc: Hook → Pain → Reframe → Nawar → 3 phases → Sounds → PAUSE «¿y qué hay dentro?» → DROP: laptop reveal → 16 weeks · 10 modules · +360 lessons → path → short videos → practice → flashcards → consultas → weekly live class (same teachers) → no A/B/C/D tests → outcomes → promise → CTA → end card
 audience: hispanohablantes en Países Bajos / Flandes, atascados con el neerlandés
 mode: autonomous
-music: owner's track re-edited on its bar grid (audio_v3.json, calmer mix): STOP at 88.35 (start of frame 20), DROP at 91.16 (start of frame 21), breakdown from 148.76, riser 163.16, tension 165.56, RE-DROP 167.96 (start of frame 38), final hit 175.16 (on «…cuando lo HABLAS»)
+music: owner's track re-edited on its bar grid (audio_v4.json, calmer mix): STOP at 88.37 (start of frame 20), DROP at 91.23 (start of frame 21), breakdown from 148.83, riser 163.23, tension 165.63, RE-DROP 168.03 (start of frame 38), final hit 175.23 (on «…cuando lo HABLAS»)
 
-# STORYBOARD v3 — Nawar VSL (Formación Nawar A0–A1)
+# STORYBOARD v4 — Nawar VSL (Formación Nawar A0–A1)
+
+**v4 changes** (owner): voice take (4) of the new script, which drops «sacas adelante a tu familia» and «el colegio
+de tus hijos» so nobody feels left out → frame 04 says «tienes tu vida montada», frame 15 «el ayuntamiento y tu día a
+día». Frame 21 opens straight onto the website (no Nawar logo on a black screen) and hands over to the course page
+(assets/video/formacion-134.mp4). Everything else as v3, retimed to the new take (tools/retime_v4.py).
 
 All times inside a frame are **frame-relative seconds**. Exact per-word cue times for every frame are
 in `timing.json` and are inlined into each frame packet — every reveal must land on its word's cue
@@ -141,7 +146,7 @@ counts down 3:00 → 2:59 → 2:58 (a tick each 0.5 s, deterministic). SFX click
 
 **v2 change:** ground NAWAR BLUE instead of paper. Same layout and motion; the stopwatch keeps its white face.
 
-## Frame 4 — "Llevas años aquí. Trabajas, pagas tus impuestos, sacas adelante a tu familia."
+## Frame 4 — "Llevas años aquí. Trabajas, pagas tus impuestos, tienes tu vida montada."
 
 - src: compositions/frames/04-llevas-anos.html
 - ground: paper
@@ -344,7 +349,10 @@ with a white word-chip, indigo text) lands on "mañana" (6.88) with small lead "
 
 **v2:** unchanged design, retimed to the v2 voice.
 
-## Frame 15 — "Vocabulario real. El del trabajo, el médico, el colegio de tus hijos y el ayuntamiento. Nada de la manzana es roja."
+**v4:** third card = «Tienes tu vida / **montada**»: the same house, without the three figures —
+the door rises on «vida», the two windows light up (blue) on «montada». No family, no children.
+
+## Frame 15 — "Vocabulario real. El del trabajo, el médico, el ayuntamiento y tu día a día. Nada de la manzana es roja."
 
 - src: compositions/frames/15-vocabulario.html
 - ground: paper (contrast beat)
@@ -361,6 +369,9 @@ and gloss "La manzana es roja." pops center (5.21); on "roja" (6.48) an alert-re
 it and the card tips (rotate 8°) and drops away 200 px with fade — "nada de esto". SFX whoosh-short.
 
 **v2 voice:** «Luego, vocabulario real. …» — design unchanged (retimed).
+
+**v4:** tiles = het werk · de huisarts · **de gemeente / el ayuntamiento** (on «ayuntamiento») · **de routine / tu día a día** (on «día», a mug with steam and a
+small blue heart). The school tile is gone.
 
 ## Frame 16 — "Estructura y soltura. Ahora sí, la gramática: dónde va el verbo, las frases invertidas, cómo hablar del pasado."
 
@@ -433,17 +444,17 @@ SFX click per ✓.
 ## Frame 21 — THE DROP: the Mac opens on the school · "Dieciséis semanas de formación guiada."
 
 - src: compositions/frames/21-portatil.html (same generator as 20)
-- music: the DROP lands at t=0 (calmer mix than v2). Voice comes back at 2.79 s.
+- music: the DROP lands at t=0 (calmer mix than v2). Voice comes back at 2.91 s (v4).
 - 0.0–1.0 s: the lid swings open toward the camera while the camera settles STRAIGHT ON — ending exactly in the
   front-view MacBook of tools/mac_mockup.md (screen + thin base lip). The keyboard must never be seen (the owner
   explicitly asked: «sin que se le vean las teclas, simplemente de frente»): e.g. keep the camera at deck height so
   the deck is hidden behind the front lip, or let the lid hinge up past the camera axis while the body is already
   front-on. No white flash (a soft light lift is enough), no shock rings.
-- 0.9–1.9 s: screen boot: the Nawar logo fades in on the dark screen (no glow halo — a faint screen bloom only).
-- 1.9–4.0 s: the macOS browser appears (traffic lights, `app.holandesnawar.com`) with the website hero
-  (assets/video/nuestra-vision.mp4 — the school building with the Nawar sign) and then the platform dashboard
-  (assets/video/inicio-home.mp4 from media 1.4). At most a very slow push (≤ 3 %) — no zoom inside the screen.
-- From «Dieciséis» (2.79): the Mac glides to the left (still front-on, no 3D tilt); right column: «16» (Poppins 900),
+- v4 (owner): NO boot screen. As the lid opens the macOS browser already shows the website hero
+  (assets/video/nuestra-vision-hero.mp4 — the school building with the Nawar sign, `holandesnawar.com`); on the bar
+  line 2.4 s it navigates to the course page (assets/video/formacion-134.mp4: «Formación Nawar A0–A1» and the lesson
+  list scrolling, `app.holandesnawar.com`). At most a very slow push (≤ 3 %) — no zoom inside the screen.
+- From «Dieciséis» (2.91): the Mac glides to the left (still front-on, no 3D tilt); right column: «16» (Poppins 900),
   «semanas» (Poppins 800), «de formación guiada» (Poppins 600, white-72, «guiada» in #4da3ff), and the row of 16
   week pills filling left → right between «semanas» and «guiada».
 

@@ -76,8 +76,8 @@
     #f02-chip .f02-key { color: #1D0084; text-shadow: none; }
   </style>
 
-  <div id="root" data-composition-id="02-no-valgas" data-width="1920" data-height="1080" data-duration="2.512">
-    <div id="f02-ground" class="clip" data-start="0" data-duration="2.512" data-track-index="0">
+  <div id="root" data-composition-id="02-no-valgas" data-width="1920" data-height="1080" data-duration="2.508">
+    <div id="f02-ground" class="clip" data-start="0" data-duration="2.508" data-track-index="0">
       <div id="f02-dots"></div>
       <div id="f02-light"></div>
     </div>
@@ -151,7 +151,7 @@
       tl.fromTo(q("f02-idiomas"), { y: 26 }, { y: 0, duration: 0.3, ease: "power3.out" }, T.idiomas - LEAD);
 
       window.__timelines = window.__timelines || {};
-      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
       ((tl, A) => {
         const f = (t) => {
           if (t <= A[0][0]) return t - A[0][0] + A[0][1];
@@ -166,23 +166,7 @@
           }
           c.startTime(ns);
         });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.185, 0.21], [0.777, 0.76], [0.907, 0.92], [1.083, 1.11], [1.203, 1.21], [1.314, 1.32], [1.638, 1.67], [1.824, 1.84], [1.99, 2.02], [2.657, 2.76]]);
-      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
-      ((tl, A) => {
-        const f = (t) => {
-          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
-          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
-          const [a, b] = A[A.length - 1]; return b + (t - a);
-        };
-        tl.getChildren(false, true, true).forEach((c) => {
-          const s = c.startTime(), d = c.duration(), ns = f(s);
-          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
-            const nd = Math.max(0.05, f(s + d) - ns);
-            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
-          }
-          c.startTime(ns);
-        });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.21, 0.202], [0.76, 0.707], [0.92, 0.9], [1.11, 1.037], [1.21, 1.138], [1.32, 1.248], [1.67, 1.542], [1.84, 1.698], [2.02, 1.854], [2.76, 2.512]]);
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.185, 0.223], [0.777, 0.721], [0.907, 0.852], [1.083, 1.031], [1.203, 1.115], [1.314, 1.2], [1.638, 1.519], [1.824, 1.679], [1.99, 1.848], [2.657, 2.508]]);
       window.__timelines["02-no-valgas"] = tl;
     })();
   </script>

@@ -174,8 +174,8 @@
     .f10-x svg { width: 46%; height: 46%; overflow: visible; }
   </style>
 
-  <div id="root" data-composition-id="10-escuelas" data-width="1920" data-height="1080" data-duration="5.926">
-    <div id="f10-ground" class="clip" data-start="0" data-duration="5.926" data-track-index="0">
+  <div id="root" data-composition-id="10-escuelas" data-width="1920" data-height="1080" data-duration="5.953">
+    <div id="f10-ground" class="clip" data-start="0" data-duration="5.953" data-track-index="0">
       <div id="f10-dots"></div>
       <div id="f10-light"></div>
     </div>
@@ -427,7 +427,7 @@
       });
 
       window.__timelines = window.__timelines || {};
-      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
       ((tl, A) => {
         const f = (t) => {
           if (t <= A[0][0]) return t - A[0][0] + A[0][1];
@@ -442,23 +442,7 @@
           }
           c.startTime(ns);
         });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.361, 0.34], [0.782, 0.68], [1.213, 1.1], [1.555, 1.44], [1.592, 1.55], [2.204, 2.12], [2.287, 2.2], [2.574, 2.55], [2.694, 2.65], [3.046, 3.0], [3.241, 3.23], [3.389, 3.36], [3.713, 3.72], [3.815, 3.83], [4.528, 4.45], [4.574, 4.54], [4.87, 4.85], [4.991, 4.93], [5.342, 5.23], [5.667, 5.56], [5.861, 5.71], [6.055, 5.87], [6.611, 6.65]]);
-      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
-      ((tl, A) => {
-        const f = (t) => {
-          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
-          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
-          const [a, b] = A[A.length - 1]; return b + (t - a);
-        };
-        tl.getChildren(false, true, true).forEach((c) => {
-          const s = c.startTime(), d = c.duration(), ns = f(s);
-          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
-            const nd = Math.max(0.05, f(s + d) - ns);
-            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
-          }
-          c.startTime(ns);
-        });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.34, 0.321], [0.68, 0.698], [1.1, 1.074], [1.44, 1.377], [1.55, 1.459], [2.12, 1.881], [2.2, 1.955], [2.55, 2.257], [2.65, 2.349], [3.0, 2.661], [3.23, 2.844], [3.36, 2.955], [3.72, 3.312], [3.83, 3.413], [4.45, 3.973], [4.54, 4.046], [4.85, 4.321], [4.93, 4.432], [5.23, 4.707], [5.56, 5.0], [5.71, 5.138], [5.87, 5.285], [6.65, 5.926]]);
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.361, 0.335], [0.782, 0.683], [1.213, 1.04], [1.555, 1.35], [1.592, 1.453], [2.204, 1.885], [2.287, 1.941], [2.574, 2.27], [2.694, 2.382], [3.046, 2.692], [3.241, 2.899], [3.389, 3.03], [3.713, 3.359], [3.815, 3.462], [4.528, 4.007], [4.574, 4.082], [4.87, 4.373], [4.991, 4.458], [5.342, 4.72], [5.667, 5.04], [5.861, 5.19], [6.055, 5.35], [6.611, 5.953]]);
       window.__timelines["10-escuelas"] = tl;
     })();
   </script>

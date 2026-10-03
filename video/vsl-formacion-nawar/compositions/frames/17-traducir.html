@@ -106,8 +106,8 @@
     #f17-lead3 .f17-key { color: #FFFFFF; }
   </style>
 
-  <div id="root" data-composition-id="17-traducir" data-width="1920" data-height="1080" data-duration="3.055">
-    <div id="f17-ground" class="clip" data-start="0" data-duration="3.055" data-track-index="0"></div>
+  <div id="root" data-composition-id="17-traducir" data-width="1920" data-height="1080" data-duration="3.033">
+    <div id="f17-ground" class="clip" data-start="0" data-duration="3.033" data-track-index="0"></div>
 
     <svg width="0" height="0" aria-hidden="true" style="position:absolute">
       <filter id="f17-vb1" x="-0.1" y="-0.6" width="1.2" height="2.2"><feGaussianBlur id="f17-vb1n" in="SourceGraphic" stdDeviation="0 0" /></filter>
@@ -341,7 +341,7 @@
       tl.fromTo(q("f17-s2cam"), { scale: 1 }, { scale: 1.02, duration: D - 1.9, ease: "power1.out" }, 1.9);
 
       window.__timelines = window.__timelines || {};
-      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
       ((tl, A) => {
         const f = (t) => {
           if (t <= A[0][0]) return t - A[0][0] + A[0][1];
@@ -356,7 +356,7 @@
           }
           c.startTime(ns);
         });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.352, 0.34], [0.454, 0.487], [0.574, 0.611], [1.565, 1.34], [1.704, 1.469], [2.028, 1.771], [2.12, 1.872], [2.556, 2.304], [2.658, 2.395], [2.732, 2.496], [3.288, 3.055]]);
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.352, 0.345], [0.454, 0.486], [0.574, 0.608], [1.565, 1.35], [1.704, 1.463], [2.028, 1.772], [2.12, 1.876], [2.556, 2.308], [2.658, 2.383], [2.732, 2.477], [3.288, 3.033]]);
       window.__timelines["17-traducir"] = tl;
     })();
   </script>

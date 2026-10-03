@@ -2,7 +2,7 @@
 
 Master timeline: the voiceover file starts at VO_OFFSET. Each frame starts LEAD seconds before its
 first spoken word (inside the preceding pause), so the cut lands just ahead of the voice — except the
-cuts the soundtrack dictates (audio_v3.json): the music STOP (20-pausa), the DROP (21-portatil) and the
+cuts the soundtrack dictates (audio_v4.json): the music STOP (20-pausa), the DROP (21-portatil) and the
 re-drop on the call to action (38-cta). The end card runs to the end of the soundtrack.
 Writes timing.json with per-frame windows and frame-relative word cues.
 """
@@ -61,7 +61,7 @@ def find(words, phrase, start_at):
     raise SystemExit(f"phrase not found: {phrase}")
 
 def main():
-    plan = json.load(open(os.path.join(ROOT, "audio_v3.json")))
+    plan = json.load(open(os.path.join(ROOT, "audio_v4.json")))
     VO_OFFSET = plan["vo_offset"]
     FORCED = {"20-pausa": plan["stop"], "21-portatil": plan["drop"], "38-cta": plan["redrop"]}
     words = json.load(open(os.path.join(ROOT, "transcript.json")))

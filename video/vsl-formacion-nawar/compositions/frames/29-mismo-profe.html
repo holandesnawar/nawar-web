@@ -194,8 +194,8 @@
     #f29-play svg { position: absolute; left: 25px; top: 21px; width: 28px; height: 30px; display: block; }
   </style>
 
-  <div id="root" data-composition-id="29-mismo-profe" data-width="1920" data-height="1080" data-duration="7.78">
-    <div id="f29-ground" class="clip" data-start="0" data-duration="7.78" data-track-index="0"><div id="f29-dots"></div><div id="f29-vig"></div></div>
+  <div id="root" data-composition-id="29-mismo-profe" data-width="1920" data-height="1080" data-duration="7.634">
+    <div id="f29-ground" class="clip" data-start="0" data-duration="7.634" data-track-index="0"><div id="f29-dots"></div><div id="f29-vig"></div></div>
 
     <!-- headlines (two columns, each swaps once) -->
     <div class="f29-hd" id="f29-hL1" style="left:96px;"><span class="f29-w" id="f29-wL1">Te</span> <span class="f29-w" id="f29-wL2">enseña</span></div>
@@ -228,7 +228,7 @@
       </div>
       <div class="f29-content">
         <video id="f29-vmod" class="clip f29-vm" src="assets/video/paul-clase-2.mp4" muted playsinline
-          data-start="0" data-duration="7.78" data-media-start="1.842" data-hf-media-start-basis="local" data-track-index="2"></video>
+          data-start="0" data-duration="7.634" data-media-start="1.842" data-hf-media-start-basis="local" data-track-index="2"></video>
         <div class="f29-ff" id="f29-ffL"><i></i><i></i><i></i><i></i></div>
       </div>
       <div class="f29-win-edge"></div>
@@ -252,17 +252,17 @@
               <div class="f29-avs"><div class="f29-av" style="background:#0b6df0;">AL</div><div class="f29-av" style="background:#5A6480;">MR</div><div class="f29-av" style="background:#1D0084;">JS</div></div></div>
             <div class="f29-tile f29-tp">
               <video id="f29-vpaul" class="clip f29-vp" src="assets/video/paul-clase-1.mp4" muted playsinline
-                data-start="0" data-duration="7.0" data-media-start="2.792" data-hf-media-start-basis="local" data-track-index="2"></video>
+                data-start="0" data-duration="6.843" data-media-start="2.792" data-hf-media-start-basis="local" data-track-index="2"></video>
               <video id="f29-vpaul2" class="clip f29-vp" src="assets/video/paul-clase-1.mp4" muted playsinline
-                data-start="7.0" data-duration="0.78" data-media-start="0.3" data-hf-media-start-basis="local" data-track-index="2"></video>
+                data-start="6.843" data-duration="0.791" data-media-start="0.3" data-hf-media-start-basis="local" data-track-index="2"></video>
               <div class="f29-name" id="f29-name"><svg viewBox="0 0 12 12" aria-hidden="true"><rect x="4.2" y="1" width="3.6" height="6.2" rx="1.8" fill="#FFFFFF" /><path d="M2.4 5.6 A3.6 3.6 0 0 0 9.6 5.6 M6 9.2 V11" fill="none" stroke="#FFFFFF" stroke-width="1.1" stroke-linecap="round" /></svg>Paul</div>
               <div class="f29-spk" id="f29-spk"></div>
             </div>
             <div class="f29-tile f29-ts">
               <video id="f29-vslide" class="clip f29-vs" src="assets/video/paul-clase-1.mp4" muted playsinline
-                data-start="0" data-duration="6.98" data-media-start="2.792" data-hf-media-start-basis="local" data-track-index="2"></video>
+                data-start="0" data-duration="6.822" data-media-start="2.792" data-hf-media-start-basis="local" data-track-index="2"></video>
               <video id="f29-vslide2" class="clip f29-vs" src="assets/video/paul-clase-1.mp4" muted playsinline
-                data-start="6.98" data-duration="0.8" data-media-start="0.28" data-hf-media-start-basis="local" data-track-index="2"></video>
+                data-start="6.822" data-duration="0.812" data-media-start="0.28" data-hf-media-start-basis="local" data-track-index="2"></video>
             </div>
             <div class="f29-ctl" id="f29-ctl">
               <div class="f29-b"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5.5 11 A6.5 6.5 0 0 0 18.5 11 M12 17.5 V21" /></g></svg></div>
@@ -380,6 +380,22 @@
       tl.fromTo(q("f29-play"), { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 7.2);
 
       window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.225, 0.261], [0.459, 0.477], [0.597, 0.59], [0.679, 0.674], [1.01, 1.059], [1.056, 1.087], [1.175, 1.191], [1.578, 1.576], [1.753, 1.735], [1.844, 1.829], [1.964, 1.961], [2.056, 2.054], [2.404, 2.421], [2.496, 2.533], [3.221, 3.256], [3.303, 3.341], [3.945, 3.932], [4.056, 4.05], [4.413, 4.392], [4.744, 4.637], [5.422, 5.238], [5.9, 5.763], [6.12, 5.951], [6.487, 6.327], [6.643, 6.468], [6.789, 6.618], [6.881, 6.721], [7.23, 7.078], [7.78, 7.634]]);
       window.__timelines["29-mismo-profe"] = tl;
     })();
   </script>

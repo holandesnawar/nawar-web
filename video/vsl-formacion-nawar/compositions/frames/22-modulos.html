@@ -89,8 +89,8 @@
     }
   </style>
 
-  <div id="root" data-composition-id="22-modulos" data-width="1920" data-height="1080" data-duration="2.918">
-    <div id="f22-ground" class="clip" data-start="0" data-duration="2.918" data-track-index="0"></div>
+  <div id="root" data-composition-id="22-modulos" data-width="1920" data-height="1080" data-duration="2.93">
+    <div id="f22-ground" class="clip" data-start="0" data-duration="2.93" data-track-index="0"></div>
 
     <div id="f22-stage">
       <div id="f22-dots"></div>
@@ -215,7 +215,7 @@
 
       // ================= hold: subtle drift (≤ 2 %) =================
       tl.fromTo("#f22-stage", { scale: 1 }, { scale: 1.012, duration: 0.7, ease: "power1.inOut", immediateRender: false }, 2.46);
-      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
       ((tl, A) => {
         const f = (t) => {
           if (t <= A[0][0]) return t - A[0][0] + A[0][1];
@@ -230,7 +230,7 @@
           }
           c.startTime(ns);
         });
-      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.43, 0.405], [0.96, 0.9], [1.11, 1.038], [1.27, 1.23], [1.4, 1.331], [2.04, 1.937], [2.42, 2.304], [3.16, 2.918]]);
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.43, 0.411], [0.96, 0.899], [1.11, 1.05], [1.27, 1.219], [1.4, 1.331], [2.04, 1.923], [2.42, 2.289], [3.16, 2.93]]);
 
       window.__timelines["22-modulos"] = tl;
     })();
