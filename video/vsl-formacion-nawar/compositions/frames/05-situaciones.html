@@ -76,7 +76,7 @@
       position: absolute; left: 28px; top: 412px; padding: 16px 24px 17px 22px; border-radius: 24px 24px 24px 6px;
       background: #1D0084; color: #FFFFFF; transform-origin: 0% 100%;
       font-family: "Inter", sans-serif; font-weight: 600; font-size: 27px; line-height: 1.28; white-space: nowrap;
-      box-shadow: 0 16px 34px rgba(29,0,132,0.22), 0 3px 8px rgba(29,0,132,0.12);
+      box-shadow: 0 10px 24px rgba(29,0,132,0.16), 0 2px 6px rgba(29,0,132,0.10);
     }
     .f05-me {
       position: absolute; right: 28px; top: 532px; width: 156px; height: 70px; border-radius: 26px 26px 6px 26px;
@@ -94,8 +94,8 @@
     .f05-dot { display: block; width: 17px; height: 17px; border-radius: 50%; background: #374151; }
   </style>
 
-  <div id="root" data-composition-id="05-situaciones" data-width="1920" data-height="1080" data-duration="4.43">
-    <div id="f05-ground" class="clip" data-start="0" data-duration="4.43" data-track-index="0">
+  <div id="root" data-composition-id="05-situaciones" data-width="1920" data-height="1080" data-duration="3.991">
+    <div id="f05-ground" class="clip" data-start="0" data-duration="3.991" data-track-index="0">
       <div id="f05-dots"></div>
       <div id="f05-light"></div>
     </div>
@@ -276,18 +276,18 @@
         { scale: 1.0, x: 0 }              // all four, centred
       ];
       var cam = $("cam");
-      tl.fromTo(cam, CAM[0], Object.assign({ duration: 0.75, ease: "expo.out" }, CAM[1]), 0);
-      tl.fromTo(cam, CAM[1], Object.assign({ duration: 0.55, ease: "expo.out", immediateRender: false }, CAM[2]), T.medico - 0.05);
-      tl.fromTo(cam, CAM[2], Object.assign({ duration: 0.55, ease: "expo.out", immediateRender: false }, CAM[3]), T.reunion - 0.05);
-      tl.fromTo(cam, CAM[3], Object.assign({ duration: 0.5, ease: "expo.out", immediateRender: false }, CAM[4]), T.entrevista - 0.05);
+      tl.fromTo(cam, CAM[0], Object.assign({ duration: 0.75, ease: "power3.out" }, CAM[1]), 0);
+      tl.fromTo(cam, CAM[1], Object.assign({ duration: 0.55, ease: "power3.out", immediateRender: false }, CAM[2]), T.medico - 0.05);
+      tl.fromTo(cam, CAM[2], Object.assign({ duration: 0.55, ease: "power3.out", immediateRender: false }, CAM[3]), T.reunion - 0.05);
+      tl.fromTo(cam, CAM[3], Object.assign({ duration: 0.5, ease: "power3.out", immediateRender: false }, CAM[4]), T.entrevista - 0.05);
 
       // ---- ground settles with the cut ----
-      tl.fromTo($("dots"), { scale: 1.08 }, { scale: 1, duration: 0.7, ease: "expo.out" }, 0);
+      tl.fromTo($("dots"), { scale: 1.04 }, { scale: 1, duration: 0.7, ease: "power2.out" }, 0);
 
       // ================= ENTRANCE: card 1 slides up from below with blur =================
       tl.fromTo($("c1"),
-        { y: 340, rotation: -3, opacity: 0.7, filter: "blur(16px)" },
-        { y: 0, rotation: 0, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "expo.out" }, 0);
+        { y: 260, opacity: 0.7, filter: "blur(10px)" },
+        { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 0);
 
       // ---- lead-in "Pero llegas a…" ----
       function rise(id, t) {
@@ -299,28 +299,28 @@
       rise("h3", T.a);
       // seam: the lead-in rides the conveyor out to the left as card 2 arrives (velocity-matched)
       tl.fromTo($("lead"), { x: 0, filter: "blur(0px)" },
-        { x: -460, filter: "blur(16px)", duration: 0.26, ease: "power2.in", immediateRender: false }, T.medico - 0.08);
+        { x: -460, filter: "blur(8px)", duration: 0.26, ease: "power2.in", immediateRender: false }, T.medico - 0.08);
       tl.fromTo($("lead"), { opacity: 1 },
         { opacity: 0, duration: 0.2, ease: "power1.in", immediateRender: false }, T.medico - 0.04);
 
       // ---- per-card beats ----
       function word(i, t) {
-        tl.fromTo($("w" + i), { yPercent: 110 }, { yPercent: 0, duration: 0.3, ease: "expo.out" }, t - LEAD);
+        tl.fromTo($("w" + i), { yPercent: 110 }, { yPercent: 0, duration: 0.3, ease: "power3.out" }, t - LEAD);
         tl.fromTo($("nl" + i), { x: -18, opacity: 0 }, { x: 0, opacity: 1, duration: 0.26, ease: "power3.out" }, t + 0.06);
       }
       function bubble(i, t) {
-        tl.fromTo($("b" + i), { scale: 0.62, y: 16, opacity: 0 },
+        tl.fromTo($("b" + i), { scale: 0.88, y: 14, opacity: 0 },
           { scale: 1, y: 0, opacity: 1, duration: 0.28, ease: "power3.out" }, t);
       }
       function reply(i, t) {
-        tl.fromTo($("r" + i), { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.22, ease: "power3.out" }, t);
+        tl.fromTo($("r" + i), { scale: 0.88, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.22, ease: "power3.out" }, t);
         tl.fromTo($("r" + i).querySelectorAll(".f05-dot"), { opacity: 0, y: 7 },
           { opacity: 1, y: 0, duration: 0.14, ease: "power2.out", stagger: 0.12 }, t + 0.07);
       }
       function enter(i, t) {
         tl.fromTo($("c" + i),
-          { x: 300, y: 40, rotation: 5, opacity: 0, filter: "blur(14px)" },
-          { x: 0, y: 0, rotation: 0, opacity: 1, filter: "blur(0px)", duration: 0.42, ease: "expo.out" }, t);
+          { x: 240, y: 30, opacity: 0, filter: "blur(8px)" },
+          { x: 0, y: 0, opacity: 1, filter: "blur(0px)", duration: 0.42, ease: "power3.out" }, t);
       }
 
       // ================= 1 · "caja del supermercado" =================
@@ -347,7 +347,7 @@
       enter(3, T.reunion - 0.05);
       word(3, T.reunion);
       tl.fromTo($("bars").querySelectorAll(".f05-bar"), { scaleY: 0, transformOrigin: "50% 100%" },
-        { scaleY: 1, transformOrigin: "50% 100%", duration: 0.3, ease: "expo.out", stagger: 0.06 }, T.reunion + 0.08);
+        { scaleY: 1, transformOrigin: "50% 100%", duration: 0.3, ease: "power3.out", stagger: 0.06 }, T.reunion + 0.08);
       tl.fromTo($("chalk"), { attr: { "stroke-dashoffset": 1 } },
         { attr: { "stroke-dashoffset": 0 }, duration: 0.3, ease: "power2.out" }, T.reunion + 0.16);
       bubble(3, T.reunion + 0.18);
@@ -358,10 +358,10 @@
       word(4, T.entrevista);
       // climax accent: "entrevista" lands oversized and settles, so the last word hits hardest.
       // A gentler settle than expo so the oversize still reads once the card's entrance blur clears (~3.85 s).
-      tl.fromTo($("w4"), { scale: 1.24, transformOrigin: "0% 100%" },
+      tl.fromTo($("w4"), { scale: 1.1, transformOrigin: "0% 100%" },
         { scale: 1, transformOrigin: "0% 100%", duration: 0.6, ease: "power2.out" }, T.entrevista - 0.04);
-      tl.fromTo($("hand"), { rotation: -240, svgOrigin: "188 50" },
-        { rotation: 0, svgOrigin: "188 50", duration: 0.7, ease: "expo.out" }, T.entrevista + 0.08);
+      tl.fromTo($("hand"), { rotation: -60, svgOrigin: "188 50" },
+        { rotation: 0, svgOrigin: "188 50", duration: 0.7, ease: "power2.out" }, T.entrevista + 0.08);
       bubble(4, T.entrevista + 0.18);
       reply(4, T.entrevista + 0.36);
 
@@ -382,6 +382,22 @@
           c.startTime(ns);
         });
       })(tl, [[0.0, 0.0], [0.12, 0.12], [0.287, 0.27], [0.537, 0.58], [0.583, 0.62], [0.666, 0.71], [0.944, 0.98], [1.028, 1.08], [2.0, 1.95], [2.12, 2.07], [2.778, 2.68], [2.842, 2.74], [3.055, 2.94], [3.379, 3.39], [3.481, 3.5], [3.551, 3.57], [3.745, 3.76], [4.796, 4.43]]);
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.27, 0.239], [0.58, 0.533], [0.62, 0.569], [0.71, 0.661], [0.98, 0.909], [1.08, 1.001], [1.95, 1.808], [2.07, 1.891], [2.68, 2.441], [2.74, 2.469], [2.94, 2.652], [3.39, 3.065], [3.5, 3.175], [3.57, 3.239], [3.76, 3.413], [4.43, 3.991]]);
       window.__timelines["05-situaciones"] = tl;
     })();
   </script>

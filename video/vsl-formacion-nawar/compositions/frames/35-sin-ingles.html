@@ -19,7 +19,7 @@
     #f35-world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 520px; }
     #f35-glow {
       position: absolute; left: 460px; top: 180px; width: 1000px; height: 680px;
-      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(77,163,255,0.34) 0%, rgba(77,163,255,0.10) 45%, rgba(77,163,255,0) 72%);
+      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(77,163,255,0.22) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 72%);
     }
 
     /* ---------- the other person (callback to 06) ---------- */
@@ -39,8 +39,6 @@
     #f35-dots { display: flex; align-items: center; gap: 14px; }
     .f35-dot { display: block; width: 18px; height: 18px; border-radius: 50%; background: #374151; }
     #f35-txt { display: block; }
-    #f35-smile { display: none; margin-left: 20px; }
-    #f35-smile svg { display: block; width: 60px; height: 60px; }
 
     /* ---------- the NL / EN toggle ---------- */
     #f35-tpos { position: absolute; left: 700px; top: 434px; width: 520px; height: 160px; transform: scale(1.34); transform-origin: 50% 50%; }
@@ -66,10 +64,6 @@
       font-family: "Poppins", sans-serif; font-weight: 800; font-size: 40px; line-height: 1; letter-spacing: 0.02em; color: #1D0084;
       padding-top: 3px; box-sizing: border-box;
     }
-    #f35-shock {
-      position: absolute; left: 10px; top: 10px; width: 140px; height: 140px; border-radius: 50%; box-sizing: border-box;
-      border: 5px solid rgba(255,255,255,0.95);
-    }
     #f35-lock {
       position: absolute; left: 104px; top: -26px; width: 72px; height: 72px; border-radius: 50%; background: #0b6df0;
       box-shadow: 0 0 0 5px #FFFFFF, 0 12px 26px rgba(4,0,40,0.4);
@@ -86,8 +80,8 @@
     #f35-h6 { color: #4da3ff; }
   </style>
 
-  <div id="root" data-composition-id="35-sin-ingles" data-width="1920" data-height="1080" data-duration="3.44">
-    <div id="f35-ground" class="clip" data-start="0" data-duration="3.44" data-track-index="0"></div>
+  <div id="root" data-composition-id="35-sin-ingles" data-width="1920" data-height="1080" data-duration="3.229">
+    <div id="f35-ground" class="clip" data-start="0" data-duration="3.229" data-track-index="0"></div>
 
     <div id="f35-world">
       <div id="f35-glow"></div>
@@ -103,14 +97,6 @@
         <div id="f35-bub">
           <span id="f35-dots"><span class="f35-dot"></span><span class="f35-dot"></span><span class="f35-dot"></span></span>
           <span id="f35-txt"></span>
-          <span id="f35-smile">
-            <svg viewBox="0 0 60 60" aria-hidden="true">
-              <circle cx="30" cy="30" r="25" fill="#9fd5f5" stroke="#1D0084" stroke-width="5" />
-              <circle cx="21.5" cy="25" r="3.8" fill="#1D0084" />
-              <circle cx="38.5" cy="25" r="3.8" fill="#1D0084" />
-              <path d="M17.5 35 Q30 47 42.5 35" stroke="#1D0084" stroke-width="5" stroke-linecap="round" fill="none" />
-            </svg>
-          </span>
           <svg id="f35-tail" viewBox="0 0 92 64" aria-hidden="true"><path d="M92 50 C68 50 42 60 0 64 C18 48 22 28 22 0 L25 0 L25 47 L92 47 Z" fill="#FFFFFF" /></svg>
         </div>
       </div>
@@ -120,7 +106,6 @@
         <div id="f35-toggle">
           <div id="f35-track"></div>
           <div id="f35-en"><span id="f35-uk"><svg viewBox="0 0 40 27" aria-hidden="true"><rect width="40" height="27" fill="#21468C" /><path d="M0 0 L40 27 M40 0 L0 27" stroke="#FFFFFF" stroke-width="6" /><path d="M0 0 L40 27 M40 0 L0 27" stroke="#AE1C27" stroke-width="2.2" /><path d="M20 0 V27 M0 13.5 H40" stroke="#FFFFFF" stroke-width="9" /><path d="M20 0 V27 M0 13.5 H40" stroke="#AE1C27" stroke-width="5" /></svg></span><span id="f35-en-t">EN</span></div>
-          <div id="f35-shock"></div>
           <div id="f35-knob">
             <div class="f35-stripe" style="top:0; height:47px; background:#AE1C27;"></div>
             <div class="f35-stripe" style="top:47px; height:46px; background:#FFFFFF;"></div>
@@ -138,7 +123,7 @@
       </div>
 
       <!-- headline -->
-      <div id="f35-head"><span class="f35-hw" id="f35-h1">NO</span><span class="f35-hw" id="f35-h2">LE</span><span class="f35-hw" id="f35-h3">VA</span><span class="f35-hw" id="f35-h4">A</span><span class="f35-hw" id="f35-h5">HACER</span><span class="f35-hw" id="f35-h6">FALTA.</span></div>
+      <div id="f35-head"><span class="f35-hw" id="f35-h1">No</span><span class="f35-hw" id="f35-h2">le</span><span class="f35-hw" id="f35-h3">va</span><span class="f35-hw" id="f35-h4">a</span><span class="f35-hw" id="f35-h5">hacer</span><span class="f35-hw" id="f35-h6">falta.</span></div>
     </div>
   </div>
 
@@ -156,8 +141,7 @@
         { y: 0, scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, 0);
       tl.fromTo($("world"), { scale: 1.03 }, { scale: 1, duration: 1.2, ease: "power2.out" }, 0);
       tl.fromTo($("glow"), { opacity: 0.4 }, { opacity: 0.75, duration: 1.0, ease: "power2.out" }, 0.1);
-      tl.set([$("lock"), $("shock")], { scale: 0.4, opacity: 0 }, 0);
-      tl.set($("smile"), { display: "none" }, 0);
+      tl.set($("lock"), { scale: 0.4, opacity: 0 }, 0);
       tl.set($("txt"), { textContent: "" }, 0);
       tl.set($("dots"), { display: "flex" }, 0);
 
@@ -185,28 +169,17 @@
       // …and the knob slides toward EN
       tl.fromTo($("knob"), { x: 0 }, { x: HALF, duration: T.ingles - T.cambiar, ease: "power1.inOut" }, T.cambiar);
       // "inglés": EN lights up as the knob reaches it…
-      tl.fromTo($("en"), { color: "#5A6480", scale: 1 }, { color: "#1D0084", scale: 1.12, duration: 0.24, ease: "power3.out" }, T.ingles - 0.06);
+      tl.fromTo($("en"), { color: "#5A6480", scale: 1 }, { color: "#1D0084", scale: 1.05, duration: 0.24, ease: "power3.out" }, T.ingles - 0.06);
       tl.fromTo($("uk"), { filter: "grayscale(1)", opacity: 0.45 }, { filter: "grayscale(0)", opacity: 1, duration: 0.24, ease: "power2.out" }, T.ingles - 0.06);
-      // …but it stalls halfway: recoil + strain
-      tl.fromTo($("knob"), { x: HALF }, { x: HALF - 12, duration: 0.09, ease: "power2.out", immediateRender: false }, T.ingles);
-      tl.fromTo($("knob"), { x: HALF - 12 }, { x: HALF - 3, duration: 0.2, ease: "power2.inOut", immediateRender: false }, T.ingles + 0.09);
-      var JIT = [HALF - 3, HALF + 2, HALF - 6, HALF + 1, HALF - 5, HALF - 2, HALF - 4];
-      for (var j = 1; j < JIT.length; j++) {
-        tl.fromTo($("knob"), { x: JIT[j - 1] }, { x: JIT[j], duration: FR, ease: "none", immediateRender: false }, 1.8 + (j - 1) * FR);
-      }
+      // …but it stalls halfway (a quiet hold, no strain jitter)
+      tl.fromTo($("knob"), { x: HALF }, { x: HALF - 4, duration: 0.3, ease: "power2.out", immediateRender: false }, T.ingles);
 
       // ================= SCENE 2: no le va a hacer falta =================
       var SNAP = T.no - 0.06, HIT = SNAP + 0.13;
-      tl.fromTo($("knob"), { x: HALF - 4 }, { x: 0, duration: HIT - SNAP, ease: "power3.in", immediateRender: false }, SNAP);
-      // squash against the wall + satisfying overshoot
-      tl.fromTo($("knob"), { scaleX: 0.84, scaleY: 1.1 }, { scaleX: 1, scaleY: 1, duration: 0.45, ease: "back.out(3.2)", immediateRender: false }, HIT);
-      tl.fromTo($("knob"), { x: 0 }, { x: 9, duration: 0.08, ease: "power2.out", immediateRender: false }, HIT);
-      tl.fromTo($("knob"), { x: 9 }, { x: 0, duration: 0.22, ease: "power2.inOut", immediateRender: false }, HIT + 0.08);
-      tl.fromTo($("toggle"), { x: -8 }, { x: 0, duration: 0.3, ease: "power3.out", immediateRender: false }, HIT);
-      tl.fromTo($("shock"), { scale: 1, opacity: 0.9 }, { scale: 1.7, opacity: 0, duration: 0.5, ease: "power2.out", immediateRender: false }, HIT);
-      tl.fromTo($("en"), { color: "#1D0084", scale: 1.12, opacity: 1 }, { color: "#5A6480", scale: 1, opacity: 0.55, duration: 0.25, ease: "power2.out", immediateRender: false }, HIT);
+      tl.fromTo($("knob"), { x: HALF - 4 }, { x: 0, duration: HIT - SNAP + 0.06, ease: "power3.inOut", immediateRender: false }, SNAP);
+      // the knob lands firmly back on NL (no squash, no overshoot, no shock ring)
+      tl.fromTo($("en"), { color: "#1D0084", scale: 1.05, opacity: 1 }, { color: "#5A6480", scale: 1, opacity: 0.55, duration: 0.25, ease: "power2.out", immediateRender: false }, HIT);
       tl.fromTo($("uk"), { filter: "grayscale(0)" }, { filter: "grayscale(1)", duration: 0.25, ease: "power2.out", immediateRender: false }, HIT);
-      tl.fromTo($("glow"), { opacity: 0.75 }, { opacity: 1, duration: 0.6, ease: "power2.out", immediateRender: false }, HIT);
 
       // the bubble deletes itself back to "O"… and rewrites in Dutch
       var NL = "Oké, gewoon in het Nederlands!";
@@ -214,9 +187,6 @@
       for (var k = 1; k <= del; k++) tl.set($("txt"), { textContent: EN.slice(0, EN.length - k) }, T.no - 0.02 + k * 0.009);
       var T2 = 2.47;
       for (var n = 2; n <= NL.length; n++) tl.set($("txt"), { textContent: NL.slice(0, n) }, T2 + (n - 2) * 0.0155);
-      var SMILE = T2 + (NL.length - 1) * 0.0155 + 0.03;
-      tl.set($("smile"), { display: "block" }, SMILE);
-      tl.fromTo($("smile"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.36, ease: "back.out(2.6)", immediateRender: false }, SMILE);
 
       // headline builds word by word on the voice
       function rise(id, t) {
@@ -228,17 +198,31 @@
       rise("h3", T.va);
       rise("h4", T.a);
       rise("h5", T.hacer + 0.02);
-      tl.fromTo($("h6"), { scale: 1.35, opacity: 0, filter: "blur(12px)" },
-        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "power4.out" }, T.falta - 0.04);
+      tl.fromTo($("h6"), { y: 46, opacity: 0, filter: "blur(8px)" },
+        { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, T.falta - 0.04);
 
       // "falta.": the padlock locks NL in
-      tl.fromTo($("lock"), { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.34, ease: "back.out(2.4)", immediateRender: false }, T.falta - 0.06);
+      tl.fromTo($("lock"), { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, T.falta - 0.06);
       tl.fromTo($("shackle"), { y: -9 }, { y: 0, duration: 0.12, ease: "power3.in" }, T.falta + 0.1);
-      tl.fromTo($("lock"), { rotation: 0 }, { rotation: -8, duration: 0.06, ease: "power2.out", immediateRender: false }, T.falta + 0.22);
-      tl.fromTo($("lock"), { rotation: -8 }, { rotation: 0, duration: 0.2, ease: "power2.out", immediateRender: false }, T.falta + 0.28);
 
       tl.set({}, {}, D);
       window.__timelines = window.__timelines || {};
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.21, 0.193], [0.51, 0.478], [0.61, 0.56], [0.76, 0.781], [0.98, 0.982], [1.04, 1.028], [1.36, 1.313], [1.46, 1.395], [2.24, 2.065], [2.44, 2.239], [2.55, 2.368], [2.64, 2.487], [2.83, 2.671], [3.44, 3.229]]);
       window.__timelines["35-sin-ingles"] = tl;
     })();
   </script>

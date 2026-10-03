@@ -92,9 +92,9 @@
     }
     #f04-anos {
       display: inline-block; margin-top: 6px; margin-left: -6px;
-      font-weight: 900; font-size: 270px; line-height: 0.86; letter-spacing: -0.045em; color: #1D0084;
+      font-weight: 800; font-size: 270px; line-height: 0.86; letter-spacing: -0.045em; color: #1D0084;
       white-space: nowrap; transform-origin: 6% 78%; padding-right: 0.04em;
-      text-shadow: 0 6px 0 rgba(29,0,132,0.08), 0 36px 70px rgba(29,0,132,0.18);
+      text-shadow: 0 20px 50px rgba(29,0,132,0.12);
     }
     #f04-aquiRow { display: flex; align-items: center; margin-top: 18px; height: 150px; }
     #f04-aqui {
@@ -140,26 +140,22 @@
     /* check badge */
     .f04-badge { position: absolute; right: -30px; top: -30px; width: 92px; height: 92px; }
     .f04-ph { position: absolute; left: 0; top: 0; width: 92px; height: 92px; overflow: visible; }
-    .f04-burst {
-      position: absolute; left: 0; top: 0; width: 92px; height: 92px; border-radius: 50%;
-      border: 5px solid #16A34A; box-sizing: border-box; opacity: 0;
-    }
     .f04-disc {
       position: absolute; left: 0; top: 0; width: 92px; height: 92px; border-radius: 50%;
-      background: #16A34A; box-shadow: 0 14px 30px rgba(22,163,74,0.35), 0 0 0 6px #FFFFFF;
+      background: #16A34A; box-shadow: 0 6px 14px rgba(18,0,129,0.14), 0 0 0 6px #FFFFFF;
     }
     .f04-disc svg { position: absolute; left: 0; top: 0; width: 92px; height: 92px; overflow: visible; }
   </style>
 
-  <div id="root" data-composition-id="04-llevas-anos" data-width="1920" data-height="1080" data-duration="4.91">
-    <div id="f04-ground" class="clip" data-start="0" data-duration="4.91" data-track-index="0">
+  <div id="root" data-composition-id="04-llevas-anos" data-width="1920" data-height="1080" data-duration="4.248">
+    <div id="f04-ground" class="clip" data-start="0" data-duration="4.248" data-track-index="0">
       <div id="f04-dots"></div>
       <div id="f04-light"></div>
     </div>
 
     <svg width="0" height="0" aria-hidden="true" style="position: absolute">
       <filter id="f04-streak" x="-60%" y="-30%" width="220%" height="160%">
-        <feGaussianBlur id="f04-streakBlur" in="SourceGraphic" stdDeviation="36 0" />
+        <feGaussianBlur id="f04-streakBlur" in="SourceGraphic" stdDeviation="12 0" />
       </filter>
       <filter id="f04-vstreak" x="-5%" y="-20%" width="110%" height="140%">
         <feGaussianBlur id="f04-vstreakBlur" in="SourceGraphic" stdDeviation="0 0" />
@@ -238,7 +234,7 @@
           </div>
           <div class="f04-key" id="f04-k0">Trabajas</div>
         </div>
-        <div class="f04-badge" id="f04-b0"><svg class="f04-ph" viewBox="0 0 92 92"><circle cx="46" cy="46" r="40" fill="none" stroke="rgba(29,0,132,0.22)" stroke-width="3" stroke-dasharray="7 7" /></svg><div class="f04-burst"></div><div class="f04-disc"><svg viewBox="0 0 92 92"><path class="f04-tk" pathLength="1" d="M27 47 L40 60 L66 33" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" /></svg></div></div>
+        <div class="f04-badge" id="f04-b0"><svg class="f04-ph" viewBox="0 0 92 92"><circle cx="46" cy="46" r="40" fill="none" stroke="rgba(29,0,132,0.22)" stroke-width="3" stroke-dasharray="7 7" /></svg><div class="f04-disc"><svg viewBox="0 0 92 92"><path class="f04-tk" pathLength="1" d="M27 47 L40 60 L66 33" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" /></svg></div></div>
       </div>
 
       <!-- card 2: Pagas tus impuestos (envelope + document) -->
@@ -262,7 +258,7 @@
           <div class="f04-lead" id="f04-l1"><span class="f04-w" id="f04-wPagas">Pagas</span> <span class="f04-w" id="f04-wTus">tus</span></div>
           <div class="f04-key" id="f04-k1">impuestos</div>
         </div>
-        <div class="f04-badge" id="f04-b1"><svg class="f04-ph" viewBox="0 0 92 92"><circle cx="46" cy="46" r="40" fill="none" stroke="rgba(29,0,132,0.22)" stroke-width="3" stroke-dasharray="7 7" /></svg><div class="f04-burst"></div><div class="f04-disc"><svg viewBox="0 0 92 92"><path class="f04-tk" pathLength="1" d="M27 47 L40 60 L66 33" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" /></svg></div></div>
+        <div class="f04-badge" id="f04-b1"><svg class="f04-ph" viewBox="0 0 92 92"><circle cx="46" cy="46" r="40" fill="none" stroke="rgba(29,0,132,0.22)" stroke-width="3" stroke-dasharray="7 7" /></svg><div class="f04-disc"><svg viewBox="0 0 92 92"><path class="f04-tk" pathLength="1" d="M27 47 L40 60 L66 33" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" /></svg></div></div>
       </div>
 
       <!-- card 3: Sacas adelante a tu familia (house + three figures) -->
@@ -291,7 +287,7 @@
           <div class="f04-lead" id="f04-l2"><span class="f04-w" id="f04-wSacas">Sacas</span> <span class="f04-w" id="f04-wAdel">adelante</span> <span class="f04-w" id="f04-wA">a</span> <span class="f04-w" id="f04-wTu">tu</span></div>
           <div class="f04-key" id="f04-k2">familia</div>
         </div>
-        <div class="f04-badge" id="f04-b2"><svg class="f04-ph" viewBox="0 0 92 92"><circle cx="46" cy="46" r="40" fill="none" stroke="rgba(29,0,132,0.22)" stroke-width="3" stroke-dasharray="7 7" /></svg><div class="f04-burst"></div><div class="f04-disc"><svg viewBox="0 0 92 92"><path class="f04-tk" pathLength="1" d="M27 47 L40 60 L66 33" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" /></svg></div></div>
+        <div class="f04-badge" id="f04-b2"><svg class="f04-ph" viewBox="0 0 92 92"><circle cx="46" cy="46" r="40" fill="none" stroke="rgba(29,0,132,0.22)" stroke-width="3" stroke-dasharray="7 7" /></svg><div class="f04-disc"><svg viewBox="0 0 92 92"><path class="f04-tk" pathLength="1" d="M27 47 L40 60 L66 33" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" /></svg></div></div>
       </div>
     </div>
   </div>
@@ -309,12 +305,12 @@
 
       // ================= ENTRANCE: calendar whips in from the right with a directional streak =================
       var blurNode = $("streakBlur");
-      var blur = { v: 36 };
+      var blur = { v: 12 };
       var writeBlur = function () { blurNode.setAttribute("stdDeviation", blur.v.toFixed(2) + " 0"); };
       writeBlur();
-      tl.fromTo($("calwrap"), { x: 380, opacity: 0.9 }, { x: 0, opacity: 1, duration: 0.3, ease: "expo.out" }, 0);
-      tl.fromTo(blur, { v: 36 }, { v: 0, duration: 0.3, ease: "expo.out", onUpdate: writeBlur }, 0);
-      tl.fromTo($("dots"), { x: 56 }, { x: 0, duration: 0.45, ease: "expo.out" }, 0);
+      tl.fromTo($("calwrap"), { x: 260, opacity: 0.9 }, { x: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, 0);
+      tl.fromTo(blur, { v: 12 }, { v: 0, duration: 0.24, ease: "power2.out", onUpdate: writeBlur }, 0);
+      tl.fromTo($("dots"), { x: 24 }, { x: 0, duration: 0.45, ease: "power3.out" }, 0);
       // slow camera push under scene 1
       tl.fromTo($("s1cam"), { scale: 1 }, { scale: 1.035, duration: 1.2, ease: "power1.inOut" }, 0.05);
 
@@ -356,14 +352,12 @@
       // ================= copy: "Llevas años aquí." =================
       tl.fromTo($("llevas"), { y: 56, opacity: 0, filter: "blur(8px)" },
         { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, T.llevas - LEAD);
-      tl.fromTo($("anos"), { scale: 1.4, opacity: 0, filter: "blur(10px)" },
+      tl.fromTo($("anos"), { scale: 1.14, opacity: 0, filter: "blur(8px)" },
         { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "expo.out" }, T.anos - LEAD);
       tl.fromTo($("aqui"), { y: 60, opacity: 0, filter: "blur(8px)" },
         { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, T.aqui - LEAD);
-      tl.fromTo($("pin"), { y: -110, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power4.out" }, T.aqui + 0.06);
-      tl.fromTo($("pin"), { scaleY: 1, scaleX: 1 }, { scaleY: 0.9, scaleX: 1.06, duration: 0.06, ease: "power2.out", immediateRender: false }, T.aqui + 0.2);
-      tl.to($("pin"), { scaleY: 1, scaleX: 1, duration: 0.22, ease: "power3.out" }, T.aqui + 0.26);
-      tl.fromTo($("pinShadow"), { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, T.aqui + 0.08);
+      tl.fromTo($("pin"), { y: -36, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, T.aqui + 0.06);
+      tl.fromTo($("pinShadow"), { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, T.aqui + 0.08);
 
       // ================= SEAM (cut-the-curve, upward push) =================
       // Both scenes ride one vertical strip (s2 sits 1000 px below s1): the outgoing accelerates up
@@ -381,8 +375,8 @@
       var vNode = $("vstreakBlur");
       var vb = { v: 0 };
       var writeV = function () { vNode.setAttribute("stdDeviation", "0 " + vb.v.toFixed(2)); };
-      tl.fromTo(vb, { v: 0 }, { v: 18, duration: S1, ease: "power2.in", onUpdate: writeV, immediateRender: false }, S0);
-      tl.fromTo(vb, { v: 18 }, { v: 0, duration: 0.22, ease: "power2.out", onUpdate: writeV, immediateRender: false }, S0 + S1);
+      tl.fromTo(vb, { v: 0 }, { v: 8, duration: S1, ease: "power2.in", onUpdate: writeV, immediateRender: false }, S0);
+      tl.fromTo(vb, { v: 8 }, { v: 0, duration: 0.22, ease: "power2.out", onUpdate: writeV, immediateRender: false }, S0 + S1);
       var CUT = 1.51;   // "Trabajas" content leads its 1.564 cue by 0.054 s
       // ================= draw helpers =================
       var drawIn = function (els, t, dur, stagger) {
@@ -392,15 +386,12 @@
       };
       var check = function (i, t) {
         var b = $("b" + i);
-        var disc = b.querySelector(".f04-disc"), burst = b.querySelector(".f04-burst"), tk = b.querySelector(".f04-tk"), ph = b.querySelector(".f04-ph");
-        tl.fromTo(disc, { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.34, ease: "back.out(2.4)" }, t);
+        var disc = b.querySelector(".f04-disc"), tk = b.querySelector(".f04-tk"), ph = b.querySelector(".f04-ph");
+        tl.fromTo(disc, { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, t);
         tl.fromTo(ph, { opacity: 1 }, { opacity: 0, duration: 0.12, ease: "none", immediateRender: false }, t);
-        tl.fromTo(burst, { scale: 0.9, opacity: 0.8 }, { scale: 1.7, opacity: 0, duration: 0.45, ease: "power2.out", immediateRender: false }, t + 0.04);
         tk.setAttribute("stroke-dasharray", "1 1");
         tl.fromTo(tk, { attr: { "stroke-dashoffset": 1 } },
           { attr: { "stroke-dashoffset": 0 }, duration: 0.2, ease: "power2.out" }, t + 0.08);
-        tl.fromTo($("c" + i), { scale: 1 }, { scale: 1.02, duration: 0.07, ease: "power2.out", immediateRender: false }, t);
-        tl.to($("c" + i), { scale: 1, duration: 0.3, ease: "power3.out" }, t + 0.07);
       };
 
       // ================= CARD 1 — "Trabajas" (rides the seam) =================
@@ -410,26 +401,26 @@
       check(0, 2.08);
 
       // ================= CARD 2 — "Pagas tus impuestos" =================
-      tl.fromTo($("c1"), { y: 170, opacity: 0, scale: 0.94, filter: "blur(10px)" },
-        { y: 0, opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.42, ease: "expo.out" }, T.pagas - LEAD);
+      tl.fromTo($("c1"), { y: 110, opacity: 0, scale: 0.97, filter: "blur(6px)" },
+        { y: 0, opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.42, ease: "power3.out" }, T.pagas - LEAD);
       drawIn(q($("c1"), ".f04-d1"), T.pagas + 0.02, 0.4, 0.06);
       tl.fromTo($("envFill"), { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, T.pagas);
-      tl.fromTo($("doc"), { y: 96, opacity: 0 }, { y: 0, opacity: 1, duration: 0.42, ease: "expo.out" }, T.impuestos - LEAD);
+      tl.fromTo($("doc"), { y: 96, opacity: 0 }, { y: 0, opacity: 1, duration: 0.42, ease: "power3.out" }, T.impuestos - LEAD);
       tl.fromTo($("wTus"), { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.24, ease: "power3.out" }, T.tus - LEAD);
-      tl.fromTo($("k1"), { scale: 1.22, opacity: 0, filter: "blur(10px)" },
-        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, T.impuestos - LEAD);
+      tl.fromTo($("k1"), { scale: 1.06, opacity: 0, filter: "blur(6px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, T.impuestos - LEAD);
       check(1, 3.12);
 
       // ================= CARD 3 — "Sacas adelante a tu familia" =================
-      tl.fromTo($("c2"), { y: 170, opacity: 0, scale: 0.94, filter: "blur(10px)" },
-        { y: 0, opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.42, ease: "expo.out" }, T.sacas - LEAD);
+      tl.fromTo($("c2"), { y: 110, opacity: 0, scale: 0.97, filter: "blur(6px)" },
+        { y: 0, opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.42, ease: "power3.out" }, T.sacas - LEAD);
       drawIn(q($("c2"), ".f04-d2"), T.sacas + 0.02, 0.45, 0.07);
       tl.fromTo($("houseFill"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, T.sacas + 0.25);
       tl.fromTo($("wAdel"), { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.24, ease: "power3.out" }, T.adelante - LEAD);
       tl.fromTo($("wA"), { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.2, ease: "power3.out" }, T.a - LEAD);
       tl.fromTo($("wTu"), { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.2, ease: "power3.out" }, T.tu - LEAD);
-      tl.fromTo($("k2"), { scale: 1.22, opacity: 0, filter: "blur(10px)" },
-        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, T.familia - LEAD);
+      tl.fromTo($("k2"), { scale: 1.06, opacity: 0, filter: "blur(6px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, T.familia - LEAD);
       ["fam0", "fam1", "fam2"].forEach(function (id, i) {
         tl.fromTo($(id), { y: 46, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, T.familia - LEAD + i * 0.06);
       });
@@ -452,6 +443,22 @@
           c.startTime(ns);
         });
       })(tl, [[0.0, 0.0], [0.12, 0.12], [0.472, 0.54], [0.731, 0.93], [1.564, 1.49], [2.361, 2.13], [2.62, 2.39], [2.787, 2.53], [3.5, 3.33], [3.879, 3.65], [4.231, 4.08], [4.296, 4.11], [4.388, 4.2], [5.296, 4.91]]);
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.54, 0.478], [0.93, 0.762], [1.49, 1.285], [2.13, 1.928], [2.39, 2.157], [2.53, 2.304], [3.33, 2.964], [3.65, 3.203], [4.08, 3.579], [4.11, 3.606], [4.2, 3.689], [4.91, 4.248]]);
       window.__timelines["04-llevas-anos"] = tl;
     })();
   </script>

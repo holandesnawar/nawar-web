@@ -34,24 +34,14 @@
       font-weight: 700; font-size: 56px; line-height: 1.1; letter-spacing: -0.02em; color: #374151;
     }
     #f07-leadIn { position: relative; display: inline-block; }
-    /* speed bars live in a width-matched ghost of the lead (anchored at the Y's landing spot) */
-    #f07-barswrap { position: absolute; left: 0; top: 262px; width: 1920px; height: 90px; }
-    #f07-barsLead { position: absolute; left: 0; top: 0; width: 1920px; text-align: center; white-space: nowrap;
-      font-weight: 700; font-size: 56px; line-height: 1.1; letter-spacing: -0.02em; color: #374151; }
-    #f07-barsIn { position: relative; display: inline-block; color: transparent; }  /* width-matching ghost: text invisible, never visibility:visible children (they leak outside the clip window) */
-      .f07-speed { position: absolute; border-radius: 999px; transform-origin: 100% 50%;
-      background: linear-gradient(90deg, rgba(29,0,132,0) 0%, #1D0084 40%, #1D0084 100%); }
-    #f07-sp1 { right: calc(100% + 14px); top: -2px; width: 900px; height: 10px; }
-    #f07-sp2 { right: calc(100% - 6px); top: 23px; width: 700px; height: 16px; }
-    #f07-sp3 { right: calc(100% + 22px); top: 56px; width: 1100px; height: 8px; }
     #f07-hero {
       position: absolute; left: 0; top: 344px; width: 1920px; text-align: center; white-space: nowrap;
     }
     #f07-heroTxt {
       display: inline-block; transform-origin: 50% 60%;
-      font-weight: 900; font-size: 190px; line-height: 0.95; letter-spacing: -0.04em; color: #0C0C1E;
-      text-transform: uppercase; padding: 0 0.04em;
-      text-shadow: 0 6px 0 rgba(29,0,132,0.06), 0 34px 70px rgba(29,0,132,0.16);
+      font-weight: 800; font-size: 190px; line-height: 1.0; letter-spacing: -0.04em; color: #0C0C1E;
+      padding: 0 0.04em;
+      text-shadow: 0 20px 50px rgba(29,0,132,0.10);
     }
     #f07-tallyWrap { position: absolute; left: 700px; top: 602px; width: 520px; height: 272px; transform-origin: 260px 150px; }
     #f07-tally { position: absolute; left: 0; top: 0; width: 520px; height: 272px; overflow: visible; }
@@ -78,7 +68,7 @@
     #f07-xBox { border-color: #C4CBDC; }
     #f07-xGlow {
       position: absolute; left: 0; top: 0; width: 188px; height: 350px; border-radius: 28px;
-      box-shadow: 0 30px 70px rgba(11,109,240,0.38), 0 6px 16px rgba(11,109,240,0.25);
+      box-shadow: 0 16px 36px rgba(11,109,240,0.20), 0 4px 10px rgba(11,109,240,0.14);
     }
     #f07-xFill {
       position: absolute; left: -4px; top: -4px; width: 188px; height: 350px;
@@ -111,7 +101,7 @@
       margin-top: 48px; white-space: nowrap;
       font-weight: 800; font-size: 120px; line-height: 1.05; letter-spacing: -0.03em; color: #0C0C1E;
     }
-    #f07-nadie { transform-origin: 30% 70%; font-weight: 900; }
+    #f07-nadie { transform-origin: 30% 70%; font-weight: 800; }
 
     #f07-bookPos { position: absolute; left: 1210px; top: 212px; width: 500px; height: 680px; }
     #f07-bookFx { position: absolute; left: 0; top: 0; width: 500px; height: 680px; }
@@ -168,15 +158,15 @@
     .f07-lvOn { background: #9fd5f5; color: #1D0084; }
   </style>
 
-  <div id="root" data-composition-id="07-intentos" data-width="1920" data-height="1080" data-duration="5.82">
-    <div id="f07-ground" class="clip" data-start="0" data-duration="5.82" data-track-index="0">
+  <div id="root" data-composition-id="07-intentos" data-width="1920" data-height="1080" data-duration="5.156">
+    <div id="f07-ground" class="clip" data-start="0" data-duration="5.156" data-track-index="0">
       <div id="f07-dots"></div>
       <div id="f07-light"></div>
     </div>
 
     <svg width="0" height="0" aria-hidden="true" style="position: absolute">
       <filter id="f07-streak" x="-60%" y="-40%" width="220%" height="180%">
-        <feGaussianBlur id="f07-streakBlur" in="SourceGraphic" stdDeviation="26 0" />
+        <feGaussianBlur id="f07-streakBlur" in="SourceGraphic" stdDeviation="8 0" />
       </filter>
       <filter id="f07-vblurOut" x="-5%" y="-30%" width="110%" height="160%">
         <feGaussianBlur id="f07-vblurOutNode" in="SourceGraphic" stdDeviation="0 0" />
@@ -189,7 +179,6 @@
     <!-- ================= SCENE 1 ================= -->
     <div id="f07-s1" class="f07-scene">
       <div id="f07-s1push"><div id="f07-s1cam">
-        <div id="f07-barswrap"><div id="f07-barsLead"><span id="f07-barsIn"><i class="f07-speed" id="f07-sp1"></i><i class="f07-speed" id="f07-sp2"></i><i class="f07-speed" id="f07-sp3"></i><span class="f07-w">Y</span> <span class="f07-w">no</span> <span class="f07-w">será</span> <span class="f07-w">por</span> <span class="f07-w">falta</span> <span class="f07-w">de</span></span></div></div>
         <div id="f07-leadwrap" style="filter: url(#f07-streak)">
           <div id="f07-lead"><span id="f07-leadIn"><span class="f07-w" id="f07-wY">Y</span> <span class="f07-w" id="f07-wNo">no</span> <span class="f07-w" id="f07-wSera">será</span> <span class="f07-w" id="f07-wPor">por</span> <span class="f07-w" id="f07-wFalta">falta</span> <span class="f07-w" id="f07-wDe">de</span></span></div>
         </div>
@@ -307,15 +296,7 @@
       };
       var slam = function (el, t, s, b) {
         tl.fromTo(el, { scale: s || 1.28, opacity: 0, filter: "blur(" + (b || 10) + "px)" },
-          { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "power4.out" }, t - L);
-      };
-      var shake = function (el, t, amp) {
-        var xs = [amp, -amp * 0.7, amp * 0.4, 0];
-        var ys = [-amp * 0.4, amp * 0.3, -amp * 0.15, 0];
-        tl.fromTo(el, { x: 0, y: 0 }, { x: xs[0], y: ys[0], duration: F, ease: "none", immediateRender: false }, t);
-        tl.to(el, { x: xs[1], y: ys[1], duration: F, ease: "none" }, t + F);
-        tl.to(el, { x: xs[2], y: ys[2], duration: F, ease: "none" }, t + 2 * F);
-        tl.to(el, { x: 0, y: 0, duration: F * 2, ease: "power2.out" }, t + 3 * F);
+          { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, t - L);
       };
       var drawIn = function (el, t, dur, ease) {
         el.setAttribute("stroke-dasharray", "1 1");
@@ -325,22 +306,15 @@
 
       // ================= ENTRANCE: lead line streaks in from the left =================
       var blurNode = $("streakBlur");
-      var blur = { v: 18 };
+      var blur = { v: 8 };
       var writeBlur = function () { blurNode.setAttribute("stdDeviation", blur.v.toFixed(2) + " 0"); };
       writeBlur();
       // ground whip: the cut frame itself is moving
-      tl.fromTo($("dots"), { x: -180 }, { x: 0, duration: 0.45, ease: "expo.out" }, 0);
-      // bold indigo speed bars are on screen from frame 0, drifting right into the Y's landing spot
-      tl.fromTo($("barswrap"), { x: -60 }, { x: 0, duration: 0.3, ease: "expo.out" }, 0);
-      // the visible Y arrives as a horizontal smear riding the bars (0.06 lead on the 0.12 cue)
-      tl.fromTo($("wY"), { opacity: 0 }, { opacity: 1, duration: 0.005, ease: "none" }, 0.06);
-      tl.fromTo($("leadwrap"), { x: -180 }, { x: 0, duration: 0.34, ease: "expo.out" }, 0.06);
-      tl.fromTo(blur, { v: 18 }, { v: 0, duration: 0.34, ease: "expo.out", onUpdate: writeBlur }, 0.06);
-      // bars snap back into the Y
-      ["sp1", "sp2", "sp3"].forEach(function (id, i) {
-        tl.fromTo($(id), { scaleX: 1 }, { scaleX: 0, duration: 0.30, ease: "power3.inOut" }, 0.10 + i * 0.012);
-        tl.fromTo($(id), { opacity: 1 }, { opacity: 0, duration: 0.08, ease: "none", immediateRender: false }, 0.26 + i * 0.012);
-      });
+      tl.fromTo($("dots"), { x: -40 }, { x: 0, duration: 0.45, ease: "power3.out" }, 0);
+      // the Y slides in with a light motion blur (0.06 lead on the 0.12 cue)
+      tl.fromTo($("wY"), { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, 0.06);
+      tl.fromTo($("leadwrap"), { x: -120 }, { x: 0, duration: 0.34, ease: "power3.out" }, 0.06);
+      tl.fromTo(blur, { v: 8 }, { v: 0, duration: 0.3, ease: "power2.out", onUpdate: writeBlur }, 0.06);
       // camera: lead sits huge & centred for its solo second, then pulls back hard as INTENTOS slams in
       tl.fromTo($("s1cam"), { scale: 1.85, y: 236 }, { scale: 1.9, y: 244, duration: 1.0, ease: "none" }, 0);
       tl.to($("s1cam"), { scale: 1, y: 0, duration: 0.46, ease: "expo.out" }, T.intentos - 0.1);
@@ -353,9 +327,8 @@
       word($("wFalta"), T.falta, -26);
       word($("wDe"), T.de, -26);
 
-      // INTENTOS slam + 3-frame shake
-      slam($("heroTxt"), T.intentos, 1.32, 14);
-      shake($("heroShake"), T.intentos - L + 0.17, 7);
+      // "intentos" lands (the camera pull-back carries the energy — no shake)
+      slam($("heroTxt"), T.intentos, 1.12, 8);
 
       // tally: 4 verticals + 1 diagonal, 0.06 s stagger, ends ~1.6
       var tk = q($("tally"), ".f07-tk");
@@ -364,8 +337,6 @@
       drawIn(tk[2], 1.34, 0.11);
       drawIn(tk[3], 1.40, 0.11);
       drawIn(tk[4], 1.47, 0.14, "power2.inOut");
-      tl.fromTo($("tallyWrap"), { scale: 1 }, { scale: 1.04, duration: 0.05, ease: "power2.out", immediateRender: false }, 1.6);
-      tl.to($("tallyWrap"), { scale: 1, duration: 0.2, ease: "power3.out" }, 1.65);
 
       // ================= SEAMS (cut-the-curve up-whip, vertical motion blur) =================
       var vOutNode = $("vblurOutNode"), vInNode = $("vblurInNode");
@@ -377,12 +348,12 @@
         // outgoing: accelerates up and fully clears the top before it is hidden; blur grows with speed
         tl.set(outEl, { filter: "url(#f07-vblurOut)" }, C - 0.2);
         tl.fromTo(outEl, { y: 0 }, { y: -950, duration: 0.2, ease: "power3.in", immediateRender: false }, C - 0.2);
-        tl.fromTo(vOut, { v: 0 }, { v: 22, duration: 0.2, ease: "power2.in", onUpdate: writeOut, immediateRender: false }, C - 0.2);
+        tl.fromTo(vOut, { v: 0 }, { v: 12, duration: 0.2, ease: "power2.in", onUpdate: writeOut, immediateRender: false }, C - 0.2);
         tl.set(outEl, { visibility: "hidden", filter: "none" }, C);
         // incoming: continues the same upward travel, decelerating; blur sheds over its first 0.18 s
         tl.set(inEl, { visibility: "visible", filter: "url(#f07-vblurIn)" }, C - IN_LEAD);
         tl.fromTo(inEl, { y: 950 }, { y: 0, duration: 0.5, ease: "expo.out", immediateRender: false }, C - IN_LEAD);
-        tl.fromTo(vIn, { v: 22 }, { v: 0, duration: 0.18, ease: "power2.out", onUpdate: writeIn, immediateRender: false }, C - IN_LEAD);
+        tl.fromTo(vIn, { v: 12 }, { v: 0, duration: 0.18, ease: "power2.out", onUpdate: writeIn, immediateRender: false }, C - IN_LEAD);
         tl.set(inEl, { filter: "none" }, C - IN_LEAD + 0.18);
       };
       tl.set($("s2"), { y: 950 }, 0);
@@ -401,7 +372,7 @@
 
       // day boxes waterfall in (L → D), riding the seam
       q($("strip"), ".f07-day").forEach(function (d, i) {
-        tl.fromTo(d, { y: 110 + i * 40 }, { y: 0, duration: 0.5 + i * 0.03, ease: "expo.out" }, CA - IN_LEAD);
+        tl.fromTo(d, { y: 110 + i * 40 }, { y: 0, duration: 0.5 + i * 0.03, ease: "power3.out" }, CA - IN_LEAD);
       });
 
       // on "clase": only X fills blue-vivid + white "1h" chip
@@ -410,8 +381,8 @@
       tl.fromTo($("xIniOn"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, XT + 0.06);
       tl.fromTo($("xGlow"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, XT);
       tl.fromTo($("xBox"), { borderColor: "#C4CBDC" }, { borderColor: "#0b6df0", duration: 0.1, ease: "none" }, XT);
-      tl.fromTo($("xLift"), { y: 0, scale: 1 }, { y: -20, scale: 1.06, duration: 0.34, ease: "power3.out" }, XT);
-      tl.fromTo($("chip"), { scale: 0.55, opacity: 0, y: 20 }, { scale: 1, opacity: 1, y: 0, duration: 0.32, ease: "expo.out" }, XT + 0.12);
+      tl.fromTo($("xLift"), { y: 0, scale: 1 }, { y: -16, scale: 1.04, duration: 0.34, ease: "power3.out" }, XT);
+      tl.fromTo($("chip"), { scale: 0.88, opacity: 0, y: 14 }, { scale: 1, opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, XT + 0.12);
 
       // on "semana": a bracket spans the whole week
       drawIn($("brPath"), T.semana - L, 0.42, "power2.inOut");
@@ -428,22 +399,19 @@
       // "pensado para todo el mundo"
       word($("wPensado"), T.pensado, 0, 38);
       word($("wPara"), T.para, 0, 38);
-      slam($("wTodo"), T.todo, 1.26, 10);
-      slam($("wEl"), T.el, 1.26, 10);
-      slam($("wMundo"), T.mundo, 1.26, 10);
+      slam($("wTodo"), T.todo, 1.08, 6);
+      slam($("wEl"), T.el, 1.08, 6);
+      slam($("wMundo"), T.mundo, 1.08, 6);
 
       // cover reacts: every level lights up, globe pulses on "mundo"
       q($("levels"), ".f07-lvOn").forEach(function (el, i) {
         tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, T.todo + i * 0.06);
       });
-      tl.fromTo($("globe"), { scale: 1 }, { scale: 1.08, duration: 0.08, ease: "power2.out", immediateRender: false }, T.mundo - L);
-      tl.to($("globe"), { scale: 1, duration: 0.26, ease: "power3.out" }, T.mundo - L + 0.08);
 
       // "y para nadie." — the book dies to grey
       word($("wY2"), T.y2, 0, 34);
       word($("wPara2"), T.para2, 0, 34);
-      slam($("nadie"), T.nadie, 1.36, 12);
-      shake($("nadieRow"), T.nadie - L + 0.17, 6);
+      slam($("nadie"), T.nadie, 1.12, 8);
 
       tl.fromTo($("bookFx"), { filter: "grayscale(0)", opacity: 1 },
         { filter: "grayscale(1)", opacity: 0.55, duration: 0.5, ease: "power2.out" }, T.y2 - L);
@@ -469,6 +437,22 @@
           c.startTime(ns);
         });
       })(tl, [[0.0, 0.0], [0.12, 0.12], [0.203, 0.21], [0.333, 0.35], [0.555, 0.58], [0.731, 0.75], [0.99, 1.04], [1.092, 1.1], [1.926, 1.92], [2.111, 2.12], [2.407, 2.46], [2.453, 2.52], [2.555, 2.6], [3.324, 3.26], [3.453, 3.38], [3.685, 3.63], [4.139, 4.05], [4.194, 4.25], [4.416, 4.47], [4.555, 4.59], [4.842, 4.9], [4.916, 5.01], [5.12, 5.24], [6.046, 5.82]]);
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.21, 0.212], [0.35, 0.331], [0.58, 0.533], [0.75, 0.68], [1.04, 0.946], [1.1, 0.992], [1.92, 1.698], [2.12, 1.881], [2.46, 2.203], [2.52, 2.248], [2.6, 2.313], [3.26, 2.891], [3.38, 2.982], [3.63, 3.212], [4.05, 3.606], [4.25, 3.762], [4.47, 3.973], [4.59, 4.083], [4.9, 4.368], [5.01, 4.478], [5.24, 4.707], [5.82, 5.156]]);
       window.__timelines["07-intentos"] = tl;
     })();
   </script>

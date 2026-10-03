@@ -23,60 +23,7 @@
     .f24-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
 
     /* ================= macOS window (tools/mac_mockup.md) ================= */
-    .f24-win { --u: calc(var(--sw) / 1120); }
-    /* standalone macOS window (same chrome, 16:10 overall, 16:9 content) */
-    .f24-win {
-      --sw: 1120px;
-      position: absolute; width: calc(var(--u) * 1120); height: calc(var(--u) * 700);
-      border-radius: calc(var(--u) * 12); overflow: hidden; background: #FFFFFF;
-      box-shadow: 0 0 0 calc(var(--u) * 1) rgba(10,10,30,0.28), 0 calc(var(--u) * 30) calc(var(--u) * 90) rgba(4,0,40,0.50), 0 calc(var(--u) * 10) calc(var(--u) * 26) rgba(4,0,40,0.30);
-    }
-    .f24-win-edge {
-      position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: calc(var(--u) * 12); pointer-events: none;
-      box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(255,255,255,0.45);
-    }
-    
-    /* browser chrome (shared): tab strip 36u + toolbar 34u = 70u */
-    .f24-chrome { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 70); font-family: "Inter", sans-serif; }
-    .f24-tabs { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--u) * 36); background: #DEE1E6; }
-    .f24-tl { position: absolute; top: calc(var(--u) * 12); width: calc(var(--u) * 12); height: calc(var(--u) * 12); border-radius: 50%; }
-    .f24-tl-r { left: calc(var(--u) * 13); background: #FF5F57; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #E0443E; }
-    .f24-tl-y { left: calc(var(--u) * 33); background: #FEBC2E; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #DEA123; }
-    .f24-tl-g { left: calc(var(--u) * 53); background: #28C840; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #1AAB29; }
-    .f24-tab {
-      position: absolute; left: calc(var(--u) * 82); top: calc(var(--u) * 7); width: calc(var(--u) * 232); height: calc(var(--u) * 29);
-      border-radius: calc(var(--u) * 9) calc(var(--u) * 9) 0 0; background: #FFFFFF;
-    }
-    .f24-tab::before, .f24-tab::after { content: ""; position: absolute; bottom: 0; width: calc(var(--u) * 9); height: calc(var(--u) * 9); }
-    .f24-tab::before { left: calc(var(--u) * -9); background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
-    .f24-tab::after { right: calc(var(--u) * -9); background: radial-gradient(circle at 100% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
-    .f24-fav {
-      position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 7); width: calc(var(--u) * 15); height: calc(var(--u) * 15);
-      border-radius: calc(var(--u) * 3.5); overflow: hidden; background: radial-gradient(circle at 50% 45%, #2fb6f2 0%, #0b6df0 80%);
-    }
-    .f24-fav img { position: absolute; left: calc(var(--u) * 1.2); top: calc(var(--u) * 5.2); width: calc(var(--u) * 12.6); height: auto; display: block; }
-    .f24-tab-t {
-      position: absolute; left: calc(var(--u) * 35); top: 0; height: calc(var(--u) * 29); line-height: calc(var(--u) * 29);
-      font-size: calc(var(--u) * 12); font-weight: 500; color: #202124; white-space: nowrap;
-    }
-    .f24-tab-x { position: absolute; right: calc(var(--u) * 10); top: calc(var(--u) * 9.5); width: calc(var(--u) * 10); height: calc(var(--u) * 10); }
-    .f24-plus { position: absolute; left: calc(var(--u) * 330); top: calc(var(--u) * 11); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
-    .f24-bar { position: absolute; left: 0; top: calc(var(--u) * 36); width: 100%; height: calc(var(--u) * 34); background: #FFFFFF; box-shadow: inset 0 calc(var(--u) * -1) 0 #DADCE0; }
-    .f24-nav { position: absolute; left: calc(var(--u) * 14); top: calc(var(--u) * 9); width: calc(var(--u) * 86); height: calc(var(--u) * 16); overflow: visible; }   /* back · forward (disabled) · reload */
-    .f24-menu { position: absolute; left: calc(var(--u) * 1086); top: calc(var(--u) * 9); width: calc(var(--u) * 16); height: calc(var(--u) * 16); }
-    .f24-url {
-      position: absolute; left: calc(var(--u) * 102); top: calc(var(--u) * 4); width: calc(var(--u) * 962); height: calc(var(--u) * 26);
-      border-radius: calc(var(--u) * 13); background: #F1F3F4;
-    }
-    .f24-lock { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6.5); width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
-    .f24-url-t {
-      position: absolute; left: calc(var(--u) * 33); top: 0; height: calc(var(--u) * 26); line-height: calc(var(--u) * 26);
-      font-size: calc(var(--u) * 13); font-weight: 500; color: #202124; white-space: nowrap;
-    }
-    .f24-star { position: absolute; right: calc(var(--u) * 11); top: calc(var(--u) * 6); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
-    /* 16:9 content area — real recordings, object-fit cover (never stretch) */
-    .f24-content { position: absolute; left: 0; top: calc(var(--u) * 70); width: calc(var(--u) * 1120); height: calc(var(--u) * 630); overflow: hidden; background: #FFFFFF; }
-    .f24-media { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--fx, 50%) var(--fy, 50%); display: block; }
+    {{WINCSS}}
     #f24-stage { transform-origin: 1296px 536px; }
     .f24-pane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: hidden; background: #FFFFFF; }
     #f24-sheen {
@@ -121,14 +68,7 @@
     <div id="f24-stage" class="f24-full">
       <div id="f24-rise" class="f24-full">
         <div id="f24-win" class="f24-win" style="--sw:1056px; left:768px; top:206px;">
-          <div class="f24-chrome">
-    <div class="f24-tabs"><i class="f24-tl f24-tl-r"></i><i class="f24-tl f24-tl-y"></i><i class="f24-tl f24-tl-g"></i>
-      <div class="f24-tab"><div class="f24-fav"><img src="assets/img/logo-nawar.png" alt="" /></div><div class="f24-tab-t">Holandés Nawar</div><svg class="f24-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
-      <svg class="f24-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
-    <div class="f24-bar"><svg class="f24-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
-      <div class="f24-url"><svg class="f24-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="f24-url-t">app.holandesnawar.com</div><svg class="f24-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
-      <svg class="f24-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
-  </div>
+          {{CHROME}}
           <div class="f24-content">
             <div class="f24-pane" id="f24-pa">
               <!-- media 9.2: the player bar appears at 10.2 (= frame 1.0, on «Vídeos») and fades at 12.3 (= 3.1, under the slide) -->

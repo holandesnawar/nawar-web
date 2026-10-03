@@ -53,16 +53,6 @@
       position: absolute; left: 160px; top: 703px; width: 1600px; height: 4px; border-radius: 2px;
       background: rgba(29,0,132,0.16); transform-origin: 0 50%;
     }
-    /* motion-blur head that draws the waveform in (glow lives on the head only, not the clear tail) */
-    #f18-streak { position: absolute; left: 160px; top: 696px; width: 560px; height: 18px; }
-    #f18-streak-tail {
-      position: absolute; inset: 0; border-radius: 9px;
-      background: linear-gradient(90deg, rgba(11,109,240,0) 0%, rgba(11,109,240,0.35) 45%, rgba(11,109,240,0.85) 85%, #0b6df0 100%);
-    }
-    #f18-streak-head {
-      position: absolute; right: 0; top: 0; width: 150px; height: 18px; border-radius: 9px;
-      background: #0b6df0; box-shadow: 0 0 34px rgba(11,109,240,0.6), 0 0 80px rgba(11,109,240,0.3);
-    }
     .f18-bar {
       position: absolute; width: 16px; border-radius: 8px; background: #1D0084;
       transform-origin: 50% 50%;
@@ -71,11 +61,11 @@
     #f18-play-in { position: absolute; inset: 0; transform-origin: 50% 50%; }
     #f18-play-line {
       position: absolute; left: 0; top: 18px; width: 6px; height: 352px; border-radius: 3px;
-      background: #0b6df0; box-shadow: 0 0 22px rgba(11,109,240,0.55);
+      background: #0b6df0;
     }
     #f18-play-head {
       position: absolute; left: -11px; top: 0; width: 28px; height: 28px; border-radius: 999px;
-      background: #0b6df0; border: 5px solid #FFFFFF; box-shadow: 0 6px 18px rgba(11,109,240,0.45);
+      background: #0b6df0; border: 5px solid #FFFFFF; box-shadow: 0 4px 10px rgba(18,0,129,0.22);
     }
 
     /* ---------- scene 2: sound keycaps (shared geometry with 19-delatan) ---------- */
@@ -86,11 +76,6 @@
     }
     .f18-burst { position: absolute; width: 300px; height: 160px; }
     .f18-burst i { position: absolute; width: 14px; border-radius: 7px; background: #0b6df0; opacity: 0; transform-origin: 50% 50%; }
-    .f18-ring {
-      position: absolute; width: 328px; height: 328px; border-radius: 34px;
-      border: 4px solid #0b6df0; box-shadow: 0 0 46px rgba(11,109,240,0.55), inset 0 0 26px rgba(11,109,240,0.25);
-      opacity: 0;
-    }
     .f18-cap {
       position: absolute; width: 300px; height: 300px; border-radius: 22px; box-sizing: border-box;
       background: #FFFFFF; border: 1px solid #DDE6F5;
@@ -99,7 +84,7 @@
       transform-origin: 50% 50%;
     }
     .f18-letter {
-      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 150px; line-height: 1;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 150px; line-height: 1;
       letter-spacing: -0.04em; color: #1D0084;
     }
     .f18-ex {
@@ -116,8 +101,8 @@
       font-family: "Inter", sans-serif; font-weight: 600; font-size: 26px; letter-spacing: 0.04em;
     }
   </style>
-  <div id="root" data-composition-id="18-sonidos" data-width="1920" data-height="1080" data-duration="6.29">
-    <div id="f18-ground" class="clip" data-start="0" data-duration="6.29" data-track-index="0"></div>
+  <div id="root" data-composition-id="18-sonidos" data-width="1920" data-height="1080" data-duration="5.99">
+    <div id="f18-ground" class="clip" data-start="0" data-duration="5.99" data-track-index="0"></div>
     <div id="f18-stage">
       <div id="f18-wave">
         <div id="f18-base"></div>
@@ -181,7 +166,6 @@
       <div class="f18-bar" style="left:1690.3px;top:657px;height:96px"></div>
       <div class="f18-bar" style="left:1717.2px;top:667px;height:76px"></div>
       <div class="f18-bar" style="left:1744.0px;top:680px;height:50px"></div>
-        <div id="f18-streak"><div id="f18-streak-tail"></div><div id="f18-streak-head"></div></div>
         <div id="f18-play"><div id="f18-play-in"><div id="f18-play-line"></div><div id="f18-play-head"></div></div></div>
       </div>
       <div id="f18-head">
@@ -198,28 +182,24 @@
       <div id="f18-row">
       <div class="f18-slot" style="left:282px;top:430px"></div>
       <div class="f18-burst" id="f18-burst0" style="left:282px;top:230px"><i id="f18-b0-0" style="left:13px;top:58px;height:44px"></i><i id="f18-b0-1" style="left:39px;top:52px;height:56px"></i><i id="f18-b0-2" style="left:65px;top:36px;height:88px"></i><i id="f18-b0-3" style="left:91px;top:19px;height:122px"></i><i id="f18-b0-4" style="left:117px;top:35px;height:90px"></i><i id="f18-b0-5" style="left:143px;top:6px;height:148px"></i><i id="f18-b0-6" style="left:169px;top:36px;height:88px"></i><i id="f18-b0-7" style="left:195px;top:15px;height:130px"></i><i id="f18-b0-8" style="left:221px;top:39px;height:82px"></i><i id="f18-b0-9" style="left:247px;top:49px;height:62px"></i><i id="f18-b0-10" style="left:273px;top:58px;height:44px"></i></div>
-      <div class="f18-ring" id="f18-ring0" style="left:268px;top:416px"></div>
       <div class="f18-cap" id="f18-cap0" style="left:282px;top:430px">
         <div class="f18-letter" id="f18-letter0">G</div>
         <div class="f18-ex">goed</div>
       </div>
       <div class="f18-slot" style="left:652px;top:430px"></div>
       <div class="f18-burst" id="f18-burst1" style="left:652px;top:230px"><i id="f18-b1-0" style="left:13px;top:60px;height:40px"></i><i id="f18-b1-1" style="left:39px;top:19px;height:122px"></i><i id="f18-b1-2" style="left:65px;top:31px;height:98px"></i><i id="f18-b1-3" style="left:91px;top:6px;height:148px"></i><i id="f18-b1-4" style="left:117px;top:30px;height:100px"></i><i id="f18-b1-5" style="left:143px;top:20px;height:120px"></i><i id="f18-b1-6" style="left:169px;top:42px;height:76px"></i><i id="f18-b1-7" style="left:195px;top:50px;height:60px"></i><i id="f18-b1-8" style="left:221px;top:59px;height:42px"></i><i id="f18-b1-9" style="left:247px;top:58px;height:44px"></i><i id="f18-b1-10" style="left:273px;top:58px;height:44px"></i></div>
-      <div class="f18-ring" id="f18-ring1" style="left:638px;top:416px"></div>
       <div class="f18-cap" id="f18-cap1" style="left:652px;top:430px">
         <div class="f18-letter" id="f18-letter1">UI</div>
         <div class="f18-ex">huis</div>
       </div>
       <div class="f18-slot" style="left:1022px;top:430px"></div>
       <div class="f18-burst" id="f18-burst2" style="left:1022px;top:230px"><i id="f18-b2-0" style="left:13px;top:60px;height:40px"></i><i id="f18-b2-1" style="left:39px;top:8px;height:144px"></i><i id="f18-b2-2" style="left:65px;top:28px;height:104px"></i><i id="f18-b2-3" style="left:91px;top:15px;height:130px"></i><i id="f18-b2-4" style="left:117px;top:37px;height:86px"></i><i id="f18-b2-5" style="left:143px;top:50px;height:60px"></i><i id="f18-b2-6" style="left:169px;top:61px;height:38px"></i><i id="f18-b2-7" style="left:195px;top:59px;height:42px"></i><i id="f18-b2-8" style="left:221px;top:50px;height:60px"></i><i id="f18-b2-9" style="left:247px;top:34px;height:92px"></i><i id="f18-b2-10" style="left:273px;top:58px;height:44px"></i></div>
-      <div class="f18-ring" id="f18-ring2" style="left:1008px;top:416px"></div>
       <div class="f18-cap" id="f18-cap2" style="left:1022px;top:430px">
         <div class="f18-letter" id="f18-letter2">UU</div>
         <div class="f18-ex">uur</div>
       </div>
       <div class="f18-slot" style="left:1392px;top:430px"></div>
       <div class="f18-burst" id="f18-burst3" style="left:1392px;top:230px"><i id="f18-b3-0" style="left:13px;top:58px;height:44px"></i><i id="f18-b3-1" style="left:39px;top:21px;height:118px"></i><i id="f18-b3-2" style="left:65px;top:37px;height:86px"></i><i id="f18-b3-3" style="left:91px;top:49px;height:62px"></i><i id="f18-b3-4" style="left:117px;top:60px;height:40px"></i><i id="f18-b3-5" style="left:143px;top:58px;height:44px"></i><i id="f18-b3-6" style="left:169px;top:53px;height:54px"></i><i id="f18-b3-7" style="left:195px;top:34px;height:92px"></i><i id="f18-b3-8" style="left:221px;top:23px;height:114px"></i><i id="f18-b3-9" style="left:247px;top:32px;height:96px"></i><i id="f18-b3-10" style="left:273px;top:59px;height:42px"></i></div>
-      <div class="f18-ring" id="f18-ring3" style="left:1378px;top:416px"></div>
       <div class="f18-cap" id="f18-cap3" style="left:1392px;top:430px">
         <div class="f18-letter" id="f18-letter3">EU</div>
         <div class="f18-ex">leuk</div>
@@ -242,7 +222,7 @@
       var BAR_T = [0.115, 0.164, 0.214, 0.264, 0.313, 0.363, 0.413, 0.462, 0.512, 0.562, 0.612, 0.661, 0.711, 0.76, 0.81, 0.86, 0.91, 0.959, 1.009, 1.058, 1.108, 1.158, 1.207, 1.257, 1.307, 1.357, 1.406, 1.456, 1.505, 1.555, 1.605, 1.655, 1.704, 1.754, 1.803, 1.853, 1.903, 1.953, 2.002, 2.052, 2.102, 2.151, 2.201, 2.25, 2.3, 2.35, 2.4, 2.449, 2.499, 2.548, 2.598, 2.648, 2.698, 2.747, 2.797, 2.847, 2.896, 2.946, 2.996, 3.045];
       var bars = document.querySelectorAll("#f18-wave .f18-bar");
 
-      /* ===== Entrance (0-0.25s): stage punch + a motion-blur head whips across and the whole
+      /* ===== Entrance (0-0.25s): stage settles + the track line draws across and the whole
                waveform blooms in behind it as a faint "ghost" the playhead later records over ===== */
       tl.fromTo("#f18-stage", { scale: 1.05, filter: "blur(6px)" },
         { scale: 1, filter: "blur(0px)", duration: 0.28, ease: "expo.out" }, 0);
@@ -262,8 +242,6 @@
         for (var n = 0; n < 24; n++) { var m = (lo + hi) / 2; if (headX(m) < px) { lo = m; } else { hi = m; } }
         return hi * HEAD_D;
       };
-      tl.fromTo("#f18-streak", { x: X0, opacity: 1 }, { x: X1, duration: HEAD_D, ease: "power2.out" }, 0);
-      tl.to("#f18-streak", { opacity: 0, duration: 0.1, ease: "power1.in" }, 0.15);
       /* the track line is drawn exactly up to the head */
       tl.fromTo("#f18-base", { scaleX: (headX(0) - 160) / 1600 }, { scaleX: 1, duration: HEAD_D,
         ease: function (s) {
@@ -291,8 +269,8 @@
       }
 
       /* ===== Pill: "DESDE EL DIA" on "primer" (0.56), the "1" stamps on "dia" (0.83) ===== */
-      tl.fromTo("#f18-pill", { scale: 0.35, opacity: 0, y: 20 }, { scale: 1, opacity: 1, y: 0, duration: 0.34, ease: "expo.out" }, 0.51);
-      tl.fromTo("#f18-one", { scale: 0, rotation: -35 }, { scale: 1, rotation: 0, duration: 0.3, ease: "expo.out" }, 0.79);
+      tl.fromTo("#f18-pill", { scale: 0.94, opacity: 0, y: 20 }, { scale: 1, opacity: 1, y: 0, duration: 0.34, ease: "power3.out" }, 0.51);
+      tl.fromTo("#f18-one", { scale: 0.6, opacity: 0, rotation: 0 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.3, ease: "power3.out" }, 0.79);
 
       /* ===== Lead line: los / sonidos / que ===== */
       [["#f18-w-los", 1.14], ["#f18-w-sonidos", 1.31], ["#f18-w-que", 1.71]].forEach(function (p) {
@@ -302,7 +280,7 @@
       tl.fromTo("#f18-w-el", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, 1.79);
       tl.fromTo("#f18-w-espanol", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, 1.85);
       [["#f18-w-no", 2.22], ["#f18-w-tiene", 2.36]].forEach(function (p) {
-        tl.fromTo(p[0], { scale: 1.35, opacity: 0, filter: "blur(12px)" },
+        tl.fromTo(p[0], { scale: 1.1, opacity: 0, filter: "blur(6px)" },
           { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, p[1]);
       });
 
@@ -325,22 +303,19 @@
       var S_REST = "0px 18px 0px #DDE6F5, 0px 30px 60px rgba(18,0,129,0.16)";
       var CUES = [3.45, 4.0, 4.8, 6.0];
       CUES.forEach(function (c, k) {
-        var cap = $("f18-cap" + k), ring = $("f18-ring" + k), letter = $("f18-letter" + k);
+        var cap = $("f18-cap" + k), letter = $("f18-letter" + k);
         var hit = c + 0.1;
         tl.fromTo(cap, { opacity: 0 }, { opacity: 1, duration: 0.035, ease: "none" }, c);
         if (k === 0) {
           /* the first key continues the seam: it drops from high up, stretched by its own speed */
           tl.fromTo(cap, { y: -300, boxShadow: S_AIR },
             { y: 18, boxShadow: S_DOWN, duration: 0.1, ease: "power1.in" }, c);
-          tl.fromTo(cap, { scaleX: 0.96, scaleY: 1.14 }, { scaleX: 1, scaleY: 1, duration: 0.07, ease: "power1.out" }, c + 0.03);
         } else {
-          tl.fromTo(cap, { y: -90, scale: 1.08, boxShadow: S_AIR },
+          tl.fromTo(cap, { y: -90, scale: 1.03, boxShadow: S_AIR },
             { y: 18, scale: 1, boxShadow: S_DOWN, duration: 0.1, ease: "power2.in" }, c);
         }
         tl.to(cap, { y: 0, boxShadow: S_REST, duration: 0.34, ease: "power3.out" }, hit);
         tl.fromTo(letter, { color: "#0b6df0" }, { color: "#1D0084", duration: 0.6, ease: "power1.in" }, hit);
-        tl.fromTo(ring, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.07, ease: "power2.out" }, hit - 0.02);
-        tl.to(ring, { opacity: 0, scale: 1.12, duration: 0.5, ease: "power2.out" }, hit + 0.06);
         /* the pressed key "sounds": a mini waveform bursts out of it, centre-out ... */
         for (var j = 0; j < 11; j++) {
           tl.fromTo("#f18-b" + k + "-" + j, { opacity: 0, scaleY: 0.08, y: 26 },
@@ -349,10 +324,6 @@
         /* ... and dies away as one unit (no orphan edge bars) */
         tl.fromTo("#f18-burst" + k, { opacity: 1, y: 0 },
           { opacity: 0, y: -14, duration: 0.2, ease: "power2.in", immediateRender: false }, hit + 0.3);
-        /* three-frame impact jolt on the row */
-        tl.to("#f18-row", { y: 5, duration: 0.033, ease: "none" }, hit);
-        tl.to("#f18-row", { y: -3, duration: 0.033, ease: "none" }, hit + 0.033);
-        tl.to("#f18-row", { y: 0, duration: 0.05, ease: "power1.out" }, hit + 0.066);
       });
 
       /* ===== 6.30: the rest of the new sounds, dim chips under the row (centred on the key axis) ===== */
@@ -376,6 +347,22 @@
           c.startTime(ns);
         });
       })(tl, [[0.0, 0.0], [0.12, 0.12], [0.212, 0.22], [0.444, 0.43], [0.555, 0.5], [0.832, 0.8], [1.184, 1.15], [1.351, 1.34], [1.749, 1.72], [1.832, 1.82], [1.888, 1.89], [2.258, 2.41], [2.397, 2.62], [3.45, 3.22], [3.55, 3.35], [4.0, 3.89], [4.12, 3.99], [4.8, 4.66], [4.92, 4.83], [6.0, 5.47], [6.12, 5.63], [6.879, 6.29]]);
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.22, 0.212], [0.43, 0.405], [0.5, 0.487], [0.8, 0.781], [1.15, 1.065], [1.34, 1.23], [1.72, 1.634], [1.82, 1.716], [1.89, 1.772], [2.41, 2.258], [2.62, 2.395], [3.22, 2.964], [3.35, 3.083], [3.89, 3.579], [3.99, 3.689], [4.66, 4.367], [4.83, 4.569], [5.47, 5.202], [5.63, 5.325], [6.29, 5.99]]);
 
       window.__timelines["18-sonidos"] = tl;
     })();

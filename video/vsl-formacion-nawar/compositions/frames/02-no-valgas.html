@@ -25,7 +25,7 @@
       background: radial-gradient(ellipse 58% 54% at 50% 46%, rgba(77,163,255,0.22) 0%, rgba(77,163,255,0.08) 45%, rgba(77,163,255,0) 72%);
     }
 
-    /* ---------- stage (shake target) ---------- */
+    /* ---------- stage ---------- */
     #f02-stage { position: absolute; inset: 0; }
 
     /* ---------- hero NO ---------- */
@@ -34,13 +34,12 @@
       display: flex; align-items: center; justify-content: center;
     }
     .f02-hero {
-      font-family: "Poppins", sans-serif; font-weight: 900;
+      font-family: "Poppins", sans-serif; font-weight: 800;
       font-size: 460px; line-height: 0.95; letter-spacing: -0.04em;
-      text-transform: uppercase; color: #FFFFFF; white-space: nowrap;
+      color: #FFFFFF; white-space: nowrap;
       padding-right: 0.04em; /* optical: compensate trailing tracking */
     }
-    #f02-no { text-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 6px 18px rgba(4,0,40,0.22); }
-    #f02-ghost { color: transparent; -webkit-text-stroke: 5px rgba(255,255,255,0.6); }
+    #f02-no { text-shadow: 0 24px 70px rgba(4,0,40,0.30); }
 
     /* ---------- the building line ---------- */
     #f02-lines {
@@ -54,7 +53,7 @@
     .f02-w { display: inline-block; }
     .f02-lead { font-weight: 600; color: rgba(255,255,255,0.72); }
     .f02-key { font-weight: 800; color: #FFFFFF; }
-    .f02-row { text-shadow: 0 18px 50px rgba(4,0,40,0.30); }
+    .f02-row { text-shadow: 0 10px 30px rgba(4,0,40,0.20); }
 
     #f02-nv { position: relative; display: inline-flex; align-items: baseline; gap: 0.26em; }
     #f02-strike-rot {
@@ -64,30 +63,28 @@
     #f02-strike {
       position: absolute; inset: 0; border-radius: 9px; background: #E02D3C;
       transform-origin: 0% 50%;
-      box-shadow: 0 6px 18px rgba(4,0,40,0.35);
+      box-shadow: 0 3px 8px rgba(4,0,40,0.18);
     }
 
     #f02-chip {
       display: inline-block; position: relative;
       background: #FFFFFF; color: #1D0084; border-radius: 14px;
       padding: 0.07em 0.2em 0.04em 0.2em; margin-left: 0.04em;
-      box-shadow: 0 40px 110px rgba(4,0,40,0.45);
+      box-shadow: 0 18px 44px rgba(4,0,40,0.26);
       transform-origin: 50% 55%;
     }
     #f02-chip .f02-key { color: #1D0084; text-shadow: none; }
   </style>
 
-  <div id="root" data-composition-id="02-no-valgas" data-width="1920" data-height="1080" data-duration="2.76">
-    <div id="f02-ground" class="clip" data-start="0" data-duration="2.76" data-track-index="0">
+  <div id="root" data-composition-id="02-no-valgas" data-width="1920" data-height="1080" data-duration="2.512">
+    <div id="f02-ground" class="clip" data-start="0" data-duration="2.512" data-track-index="0">
       <div id="f02-dots"></div>
       <div id="f02-light"></div>
     </div>
 
     <div id="f02-stage">
-      <!-- impact ghost (outline echo of the slam) -->
-      <div class="f02-center"><div id="f02-ghost" class="f02-hero">NO</div></div>
       <!-- hero NO -->
-      <div class="f02-center"><div id="f02-no" class="f02-hero">NO</div></div>
+      <div class="f02-center"><div id="f02-no" class="f02-hero">No</div></div>
 
       <!-- es que · no valgas · para los idiomas -->
       <div id="f02-lines">
@@ -120,23 +117,13 @@
       const LEAD = 0.04;
 
       // ---- entrance: camera settle on the ground from the very first frame ----
-      tl.fromTo(q("f02-dots"), { scale: 1.16 }, { scale: 1, duration: 0.55, ease: "expo.out" }, 0);
+      tl.fromTo(q("f02-dots"), { scale: 1.05 }, { scale: 1, duration: 0.55, ease: "power2.out" }, 0);
 
       // ---- Scene 1: hard slam of NO (scale 1.6 -> 1, blur -> 0) ----
       tl.fromTo(q("f02-no"),
-        { scale: 1.6, opacity: 0, filter: "blur(22px)" },
+        { scale: 1.22, opacity: 0, filter: "blur(10px)" },
         { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.26, ease: "expo.out" }, T.Y - 0.03);
 
-      // impact echo — outline copy blooms out once and is gone well before the cut
-      const F = 1 / 30, LAND = 0.23; // visual landing of the expo slam
-      tl.fromTo(q("f02-ghost"), { scale: 1, opacity: 0 },
-        { scale: 1.03, opacity: 0.75, duration: F, ease: "none" }, LAND - F);
-      tl.to(q("f02-ghost"), { scale: 1.42, opacity: 0, duration: 0.36, ease: "power2.out" }, LAND);
-
-      // deterministic 3-frame landing shake
-      tl.fromTo(q("f02-stage"), { x: 0, y: 0 }, { x: 12, y: -6, duration: F, ease: "power2.out" }, LAND);
-      tl.to(q("f02-stage"), { x: -8, y: 4, duration: F, ease: "power2.out" }, LAND + F);
-      tl.to(q("f02-stage"), { x: 0, y: 0, duration: F, ease: "power2.out" }, LAND + 2 * F);
 
       // ---- Scene 2: NO shrinks to the top third on the 2nd "no" ----
       tl.to(q("f02-no"), { y: -225, scale: 0.7, duration: 0.42, ease: "power3.out" }, T.no2 - LEAD);
@@ -156,11 +143,11 @@
       rise("f02-para", T.para);
       rise("f02-los", T.los);
 
-      // indigo word-chip pops on "idiomas"
+      // white word-chip settles in on "idiomas"
       tl.fromTo(q("f02-chip"), { opacity: 0 }, { opacity: 1, duration: 0.07, ease: "none" }, T.idiomas - LEAD);
       tl.fromTo(q("f02-chip"),
-        { scale: 0.55, rotation: 5, y: 30 },
-        { scale: 1, rotation: -1.5, y: 0, duration: 0.34, ease: "expo.out" }, T.idiomas - LEAD);
+        { scale: 0.9, rotation: -1.5, y: 24 },
+        { scale: 1, rotation: -1.5, y: 0, duration: 0.34, ease: "power3.out" }, T.idiomas - LEAD);
       tl.fromTo(q("f02-idiomas"), { y: 26 }, { y: 0, duration: 0.3, ease: "power3.out" }, T.idiomas - LEAD);
 
       window.__timelines = window.__timelines || {};
@@ -180,6 +167,22 @@
           c.startTime(ns);
         });
       })(tl, [[0.0, 0.0], [0.12, 0.12], [0.185, 0.21], [0.777, 0.76], [0.907, 0.92], [1.083, 1.11], [1.203, 1.21], [1.314, 1.32], [1.638, 1.67], [1.824, 1.84], [1.99, 2.02], [2.657, 2.76]]);
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.21, 0.202], [0.76, 0.707], [0.92, 0.9], [1.11, 1.037], [1.21, 1.138], [1.32, 1.248], [1.67, 1.542], [1.84, 1.698], [2.02, 1.854], [2.76, 2.512]]);
       window.__timelines["02-no-valgas"] = tl;
     })();
   </script>

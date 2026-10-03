@@ -33,11 +33,10 @@
       position: absolute; left: 186px; top: 112px; width: 760px; height: 860px;
       transform-origin: 380px 470px;
     }
-    #f03-shadow, #f03-pulse {
+    #f03-shadow {
       position: absolute; left: 46px; top: 136px; width: 668px; height: 668px; border-radius: 50%;
     }
     #f03-shadow { box-shadow: 0 40px 110px rgba(4,0,40,0.45); }
-    #f03-pulse { border: 8px solid #FFFFFF; }
     #f03-svg { position: absolute; left: 0; top: 0; width: 760px; height: 860px; overflow: visible; }
 
     /* digital readout */
@@ -65,7 +64,7 @@
     #f03-uSeg { width: 180px; }
 
     /* ---------- right column: kinetic sentence ---------- */
-    #f03-copy { position: absolute; left: 1012px; top: 366px; width: 816px; text-shadow: 0 16px 44px rgba(4,0,40,0.28); }
+    #f03-copy { position: absolute; left: 1012px; top: 366px; width: 816px; text-shadow: 0 10px 30px rgba(4,0,40,0.20); }
     .f03-w { display: inline-block; }
     #f03-l1 {
       font-weight: 600; font-size: 60px; line-height: 1.15; letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
@@ -79,23 +78,22 @@
     #f03-hero {
       margin-top: 2px; display: flex; align-items: flex-end; white-space: nowrap;
       color: #FFFFFF; font-weight: 900;
-      filter: drop-shadow(0 28px 34px rgba(4,0,40,0.36));
+      filter: drop-shadow(0 16px 30px rgba(4,0,40,0.24));
     }
     #f03-three {
       display: block; font-size: 262px; line-height: 0.86; letter-spacing: -0.04em;
       padding-right: 0.06em; transform-origin: 40% 88%;
-      text-shadow: 0 6px 0 rgba(4,0,40,0.16);
     }
     #f03-mins {
-      display: block; position: relative; font-size: 136px; line-height: 1; letter-spacing: -0.035em;
+      display: block; position: relative; font-size: 140px; font-weight: 800; line-height: 1; letter-spacing: -0.035em;
       padding: 0 0.04em 0 0.02em; margin-bottom: 1px;
       clip-path: inset(-40px -40px 0px -20px);
     }
     #f03-mins .f03-ch { display: inline-block; }
   </style>
 
-  <div id="root" data-composition-id="03-tres-minutos" data-width="1920" data-height="1080" data-duration="2.31">
-    <div id="f03-ground" class="clip" data-start="0" data-duration="2.31" data-track-index="0">
+  <div id="root" data-composition-id="03-tres-minutos" data-width="1920" data-height="1080" data-duration="2.045">
+    <div id="f03-ground" class="clip" data-start="0" data-duration="2.045" data-track-index="0">
       <div id="f03-dots"></div>
       <div id="f03-light"></div>
     </div>
@@ -103,7 +101,6 @@
     <div id="f03-stage">
       <!-- ================= STOPWATCH ================= -->
       <div id="f03-watch">
-        <div id="f03-pulse"></div>
         <div id="f03-shadow"></div>
         <svg id="f03-svg" viewBox="0 0 760 860" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -165,7 +162,7 @@
             stroke-linecap="round" pathLength="1" stroke-dasharray="0 1" transform="rotate(-90 380 470)" />
           <!-- sweep head -->
           <g id="f03-head">
-            <circle id="f03-halo" cx="380" cy="238" r="24" fill="#0b6df0" opacity="0.28" />
+            <circle id="f03-halo" cx="380" cy="238" r="20" fill="#0b6df0" opacity="0.18" />
             <circle cx="380" cy="238" r="11" fill="#FFFFFF" />
           </g>
         </svg>
@@ -187,7 +184,7 @@
         <div id="f03-l2"><span class="f03-w" id="f03-en">en</span> <span class="f03-w" id="f03-menos">menos</span> <span class="f03-w" id="f03-de">de</span></div>
         <div id="f03-hero">
           <span id="f03-three">3</span>
-          <span id="f03-mins"><span class="f03-ch">M</span><span class="f03-ch">I</span><span class="f03-ch">N</span><span class="f03-ch">U</span><span class="f03-ch">T</span><span class="f03-ch">O</span><span class="f03-ch">S</span></span>
+          <span id="f03-mins"><span class="f03-ch">minutos</span></span>
         </div>
       </div>
     </div>
@@ -211,26 +208,25 @@
       gsap.set($("s4"), { y: -2 * DIGIT });
       gsap.set([$("arc"), $("head")], { opacity: 0 });
       gsap.set($("head"), { rotation: 0, svgOrigin: "380 470" });
-      gsap.set($("pulse"), { opacity: 0 });
 
       // ================= ENTRANCE (0 – 0.25): stopwatch zooms in from 0.6 out of blur =================
       tl.fromTo($("watch"),
-        { scale: 0.6, opacity: 0.35, filter: "blur(26px)" },
-        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0);
-      tl.fromTo($("dots"), { scale: 1.14 }, { scale: 1, duration: 0.6, ease: "expo.out" }, 0);
+        { scale: 0.84, opacity: 0.35, filter: "blur(12px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, 0);
+      tl.fromTo($("dots"), { scale: 1.05 }, { scale: 1, duration: 0.6, ease: "power2.out" }, 0);
 
       // the ring track draws clockwise from 12 o'clock
       tl.fromTo($("track"), { attr: { "stroke-dashoffset": 1 } },
         { attr: { "stroke-dashoffset": 0 }, duration: 0.58, ease: "power2.out" }, 0.05);
-      // dial ticks spin into register
-      tl.fromTo($("ticks"), { rotation: -50, svgOrigin: "380 470", opacity: 0 },
+      // dial ticks settle into register
+      tl.fromTo($("ticks"), { rotation: -8, svgOrigin: "380 470", opacity: 0 },
         { rotation: 0, svgOrigin: "380 470", opacity: 1, duration: 0.55, ease: "power3.out" }, 0.06);
       // crown + side buttons seat into the case
       tl.fromTo($("crown"), { y: -46 }, { y: 0, duration: 0.34, ease: "power3.out" }, 0.1);
       tl.fromTo([$("btnL"), $("btnR")], { y: -34 }, { y: 0, duration: 0.32, ease: "power3.out", stagger: 0.04 }, 0.16);
 
       // readout lights up on "explico"
-      tl.fromTo($("readout"), { opacity: 0, scale: 1.18, filter: "blur(10px)" },
+      tl.fromTo($("readout"), { opacity: 0, scale: 1.05, filter: "blur(6px)" },
         { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, T.explico - LEAD);
 
       // ================= Scene 1 copy: "Te lo explico" (lead) =================
@@ -251,10 +247,8 @@
       // crown pressed like a real start button
       tl.to($("crown"), { y: 16, duration: 0.07, ease: "power2.in" }, T.tres - 0.1);
       tl.to($("crown"), { y: 0, duration: 0.2, ease: "power3.out" }, T.tres - 0.03);
-      // start ripple off the case (one shot)
-      tl.fromTo($("pulse"), { scale: 1, opacity: 0.5 }, { scale: 1.2, opacity: 0, duration: 0.55, ease: "power2.out" }, T.tres - 0.02);
-      // camera kick on the hit
-      tl.fromTo($("stage"), { scale: 1 }, { scale: 1.018, duration: 0.5, ease: "expo.out" }, T.tres - 0.02);
+      // slow, purposeful push on the hit
+      tl.fromTo($("stage"), { scale: 1 }, { scale: 1.015, duration: 0.5, ease: "power2.out" }, T.tres - 0.02);
 
       // progress arc + head sweep clockwise, accelerating into the cut (one proxy drives both)
       var SWEEP = 0.34;
@@ -269,28 +263,25 @@
       }, T.tres - 0.02);
 
       // the dial's minute digit answers the slam
-      tl.fromTo($("s1").parentNode, { scale: 1.22 }, { scale: 1, duration: 0.32, ease: "expo.out" }, T.tres - LEAD);
+      tl.fromTo($("s1").parentNode, { scale: 1.06 }, { scale: 1, duration: 0.32, ease: "power3.out" }, T.tres - LEAD);
 
       // the big 3 slams
       tl.fromTo($("three"),
-        { scale: 1.55, opacity: 0, filter: "blur(16px)" },
+        { scale: 1.18, opacity: 0, filter: "blur(10px)" },
         { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, T.tres - LEAD);
 
-      // ================= "minutos" — letters punch up out of the baseline mask =================
+      // ================= "minutos" — the word rises out of the baseline mask (one move) =================
       tl.fromTo($("mins").querySelectorAll(".f03-ch"),
         { yPercent: 105 },
-        { yPercent: 0, duration: 0.26, ease: "expo.out", stagger: 0.022 }, T.minutos - LEAD);
+        { yPercent: 0, duration: 0.3, ease: "power3.out" }, T.minutos - LEAD);
 
       // ================= ticks: 3:00 -> 2:59 -> 2:58 =================
       // tick 1 — every slot rolls (seconds first, cascading to minutes)
       tl.to($("s4"), { y: -DIGIT, duration: 0.16, ease: "expo.out" }, TICK1);
       tl.to($("s3"), { y: 0, duration: 0.16, ease: "expo.out" }, TICK1 + 0.03);
       tl.to($("s1"), { y: 0, duration: 0.16, ease: "expo.out" }, TICK1 + 0.06);
-      tl.fromTo($("halo"), { attr: { r: 40 }, opacity: 0.5 }, { attr: { r: 24 }, opacity: 0.28, duration: 0.3, ease: "power2.out" }, TICK1);
       // tick 2
       tl.to($("s4"), { y: 0, duration: 0.16, ease: "expo.out" }, TICK2);
-      tl.to($("halo"), { attr: { r: 40 }, opacity: 0.5, duration: 0.02, ease: "none" }, TICK2 - 0.02);
-      tl.to($("halo"), { attr: { r: 24 }, opacity: 0.28, duration: 0.3, ease: "power2.out" }, TICK2);
 
       window.__timelines = window.__timelines || {};
       // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
@@ -309,6 +300,22 @@
           c.startTime(ns);
         });
       })(tl, [[0.0, 0.0], [0.12, 0.12], [0.167, 0.18], [0.259, 0.28], [0.694, 0.7], [0.806, 0.81], [1.065, 1.1], [1.176, 1.2], [1.407, 1.49], [2.306, 2.31]]);
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.18, 0.157], [0.28, 0.24], [0.7, 0.634], [0.81, 0.726], [1.1, 0.992], [1.2, 1.065], [1.49, 1.359], [2.31, 2.045]]);
       window.__timelines["03-tres-minutos"] = tl;
     })();
   </script>

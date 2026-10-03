@@ -57,11 +57,6 @@
       position: absolute; top: 400px; width: 396px; height: 500px; border-radius: 28px; box-sizing: border-box;
       border: 2px dashed rgba(29,0,132,0.16); background: rgba(29,0,132,0.022);
     }
-    .f15-ring {
-      position: absolute; top: 388px; width: 420px; height: 524px; border-radius: 38px; box-sizing: border-box;
-      border: 4px solid #0b6df0; box-shadow: 0 0 40px rgba(11,109,240,0.40), inset 0 0 22px rgba(11,109,240,0.18);
-      opacity: 0;
-    }
     .f15-tile {
       position: absolute; top: 400px; width: 396px; height: 500px; border-radius: 28px; box-sizing: border-box;
       background: #FFFFFF; border: 1px solid #DDE6F5;
@@ -88,8 +83,6 @@
       margin-top: 12px; font-family: "Inter", sans-serif; font-weight: 500; font-size: 28px; line-height: 1.35;
       color: #5A6480; white-space: nowrap;
     }
-    #f15-kids { position: absolute; left: 156px; top: 118px; width: 132px; height: 114px; overflow: visible; }
-    #f15-kids path, #f15-kids circle { fill: #0b6df0; stroke: #FFFFFF; stroke-width: 4; paint-order: stroke; }
 
     /* ---------- scene 3: the textbook card ---------- */
     #f15-s3 { position: absolute; left: 0; top: 396px; width: 1920px; display: flex; justify-content: center; }
@@ -125,8 +118,8 @@
     }
   </style>
 
-  <div id="root" data-composition-id="15-vocabulario" data-width="1920" data-height="1080" data-duration="7.74">
-    <div id="f15-ground" class="clip" data-start="0" data-duration="7.74" data-track-index="0">
+  <div id="root" data-composition-id="15-vocabulario" data-width="1920" data-height="1080" data-duration="6.98">
+    <div id="f15-ground" class="clip" data-start="0" data-duration="6.98" data-track-index="0">
       <div id="f15-dots"></div>
       <div id="f15-vig"></div>
     </div>
@@ -142,7 +135,6 @@
           <div class="f15-slot" style="left:1404px"></div>
 
           <!-- het werk : briefcase -->
-          <div class="f15-ring" id="f15-r0" style="left:108px"></div>
           <div class="f15-tile" id="f15-t0" style="left:120px">
             <div class="f15-badge" id="f15-bg0">
               <svg class="f15-ico" viewBox="0 0 120 120">
@@ -158,7 +150,6 @@
           </div>
 
           <!-- de huisarts : stethoscope -->
-          <div class="f15-ring" id="f15-r1" style="left:536px"></div>
           <div class="f15-tile" id="f15-t1" style="left:548px">
             <div class="f15-badge" id="f15-bg1">
               <svg class="f15-ico" viewBox="0 0 120 120">
@@ -175,7 +166,6 @@
           </div>
 
           <!-- de school : school building (+ kids on "hijos") -->
-          <div class="f15-ring" id="f15-r2" style="left:964px"></div>
           <div class="f15-tile" id="f15-t2" style="left:976px">
             <div class="f15-badge" id="f15-bg2">
               <svg class="f15-ico" viewBox="0 0 120 120">
@@ -189,17 +179,12 @@
                 <path class="f15-d" pathLength="1" d="M54 52 A6 6 0 1 0 66 52 A6 6 0 1 0 54 52 Z"/>
                 <path class="f15-f" fill="#0b6df0" d="M60 8 L80 14 L60 20 Z"/>
               </svg>
-              <svg id="f15-kids" viewBox="0 0 100 86">
-                <g id="f15-kid0"><circle cx="26" cy="16" r="11"/><path d="M12 84 V52 Q12 34 26 34 Q40 34 40 52 V84 Z"/></g>
-                <g id="f15-kid1"><circle cx="70" cy="36" r="9"/><path d="M58 84 V64 Q58 50 70 50 Q82 50 82 64 V84 Z"/></g>
-              </svg>
             </div>
             <div class="f15-nl"><span class="f15-art">de</span> school</div>
             <div class="f15-es">el colegio</div>
           </div>
 
           <!-- de gemeente : town hall with columns + Dutch flag -->
-          <div class="f15-ring" id="f15-r3" style="left:1392px"></div>
           <div class="f15-tile" id="f15-t3" style="left:1404px">
             <div class="f15-badge" id="f15-bg3">
               <svg class="f15-ico" viewBox="0 0 120 120">
@@ -275,25 +260,17 @@
       var $ = function (id) { return document.getElementById(id); };
       var D = 7.213;
 
-      function shake(t, a) {
-        tl.to("#f15-shake", { x: 7 * a, y: -5 * a, duration: 0.033, ease: "none" }, t);
-        tl.to("#f15-shake", { x: -5 * a, y: 3 * a, duration: 0.033, ease: "none" }, t + 0.033);
-        tl.to("#f15-shake", { x: 0, y: 0, duration: 0.06, ease: "power1.out" }, t + 0.066);
-      }
-
-      /* ===== Scene 1 — entrance: camera settles, pill pops, title SLAMS (scale 1.3 -> 1 + blur) ===== */
-      tl.fromTo("#f15-dots", { scale: 1.1 }, { scale: 1, duration: 0.7, ease: "expo.out" }, 0);
-      tl.fromTo("#f15-pill", { opacity: 0, scale: 0.6, y: 26 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "expo.out" }, 0);
+      /* ===== Scene 1 — entrance: camera settles, pill rises, title lands (scale 1.1 -> 1 + light blur) ===== */
+      tl.fromTo("#f15-dots", { scale: 1.05 }, { scale: 1, duration: 0.7, ease: "expo.out" }, 0);
+      tl.fromTo("#f15-pill", { opacity: 0, scale: 0.94, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "power3.out" }, 0);
 
       var VOC_SHIFT = 190; // half of (chip width + gap): "Vocabulario" lands centred, then makes room for "real."
-      tl.fromTo("#f15-wvoc", { x: VOC_SHIFT, scale: 1.3, opacity: 0, filter: "blur(18px)" },
+      tl.fromTo("#f15-wvoc", { x: VOC_SHIFT, scale: 1.1, opacity: 0, filter: "blur(8px)" },
         { x: VOC_SHIFT, scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.34, ease: "expo.out" }, 0.06);
-      shake(0.22, 1);
 
       tl.fromTo("#f15-wvoc", { x: VOC_SHIFT }, { x: 0, duration: 0.34, ease: "expo.out", immediateRender: false }, 0.69);
-      tl.fromTo("#f15-chip", { scale: 1.55, rotation: -9, opacity: 0, filter: "blur(14px)" },
-        { scale: 1, rotation: -1.5, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "expo.out" }, 0.69);
-      shake(0.86, 0.6);
+      tl.fromTo("#f15-chip", { scale: 1.1, rotation: -1.5, opacity: 0, filter: "blur(6px)" },
+        { scale: 1, rotation: -1.5, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "power4.out" }, 0.69);
 
       /* ===== Seam 1 -> 2 (silence 1.25-1.51): header lifts, empty slots rise on "El" ===== */
       tl.fromTo("#f15-pillrow", { y: 0 }, { y: -190, duration: 0.5, ease: "power3.inOut" }, 1.27);
@@ -304,27 +281,21 @@
       /* slow push under the list */
       tl.fromTo("#f15-cam", { scale: 1 }, { scale: 1.03, duration: 3.2, ease: "sine.inOut" }, 1.8);
 
-      /* ===== Scene 2 — four icon tiles pop on their nouns ===== */
+      /* ===== Scene 2 — four icon tiles rise on their nouns ===== */
       var CUES = [1.76, 2.52, 3.21, 4.40];
-      var ROT = [-5, 4, -4, 5];
       CUES.forEach(function (c, i) {
         var t0 = c - 0.05;
         var tile = $("f15-t" + i);
-        tl.fromTo(tile, { opacity: 0, y: 110, scale: 0.6, rotation: ROT[i] },
-          { opacity: 1, y: 0, scale: 1, rotation: 0, duration: 0.46, ease: "expo.out" }, t0);
-        tl.fromTo("#f15-r" + i, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.08, ease: "power2.out" }, t0 + 0.14);
-        tl.to("#f15-r" + i, { opacity: 0, scale: 1.08, duration: 0.5, ease: "power2.out" }, t0 + 0.22);
-        tl.fromTo("#f15-bg" + i, { scale: 0.55 }, { scale: 1, duration: 0.5, ease: "expo.out" }, t0 + 0.03);
+        tl.fromTo(tile, { opacity: 0, y: 60, scale: 0.96 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.46, ease: "power3.out" }, t0);
+        tl.fromTo("#f15-bg" + i, { scale: 0.88 }, { scale: 1, duration: 0.5, ease: "power3.out" }, t0 + 0.03);
         tl.fromTo(tile.querySelectorAll(".f15-d"), { strokeDashoffset: 1 },
           { strokeDashoffset: 0, duration: 0.46, ease: "power2.out", stagger: 0.045 }, t0 + 0.06);
-        tl.fromTo(tile.querySelectorAll(".f15-f"), { opacity: 0, scale: 0.3, transformOrigin: "50% 50%" },
-          { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, t0 + 0.34);
+        tl.fromTo(tile.querySelectorAll(".f15-f"), { opacity: 0, scale: 0.8, transformOrigin: "50% 50%" },
+          { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, t0 + 0.34);
         tl.fromTo(tile.querySelector(".f15-nl"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, t0 + 0.08);
         tl.fromTo(tile.querySelector(".f15-es"), { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, t0 + 0.16);
       });
-      /* "...de tus hijos": two kids pop in front of the school */
-      tl.fromTo("#f15-kid0", { scale: 0, y: 12, transformOrigin: "50% 100%" }, { scale: 1, y: 0, duration: 0.3, ease: "expo.out" }, 3.84);
-      tl.fromTo("#f15-kid1", { scale: 0, y: 12, transformOrigin: "50% 100%" }, { scale: 1, y: 0, duration: 0.3, ease: "expo.out" }, 3.93);
 
       /* ===== Seam 2 -> 3 (4.86): header leaves up, tiles shrink + slide up into a top shelf ===== */
       tl.fromTo("#f15-pillrow", { y: -190, opacity: 1 }, { y: -460, opacity: 0, duration: 0.3, ease: "power2.in", immediateRender: false }, 4.86);
@@ -335,10 +306,10 @@
       /* ===== Scene 3 — "Nada de" + the textbook card ===== */
       tl.fromTo("#f15-l0", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 5.17);
       tl.fromTo("#f15-l1", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 5.56);
-      tl.fromTo("#f15-card", { opacity: 0, y: 190, scale: 0.84, rotation: -2.5 },
-        { opacity: 1, y: 0, scale: 1, rotation: 0, duration: 0.5, ease: "expo.out" }, 5.21);
-      tl.fromTo("#f15-apple", { scale: 0.4, rotation: -24, transformOrigin: "50% 60%" },
-        { scale: 1, rotation: 0, duration: 0.5, ease: "expo.out" }, 5.27);
+      tl.fromTo("#f15-card", { opacity: 0, y: 80, scale: 0.96, rotation: 0 },
+        { opacity: 1, y: 0, scale: 1, rotation: 0, duration: 0.5, ease: "power3.out" }, 5.21);
+      tl.fromTo("#f15-apple", { scale: 0.88, rotation: 0, transformOrigin: "50% 60%" },
+        { scale: 1, rotation: 0, duration: 0.5, ease: "power3.out" }, 5.27);
       [["#f15-g0", 5.74], ["#f15-g1", 5.87], ["#f15-g2", 6.29], ["#f15-g3", 6.46]].forEach(function (p) {
         tl.fromTo(p[0], { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, p[1]);
       });
@@ -346,8 +317,7 @@
       /* "roja." — alert strike draws, the sentence dies, the card tips and drops away */
       tl.fromTo("#f15-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power3.out" }, 6.44);
       tl.fromTo("#f15-cnl", { color: "#0C0C1E" }, { color: "#5A6480", duration: 0.2, ease: "power1.out" }, 6.5);
-      shake(6.6, 0.45);
-      tl.fromTo("#f15-drop", { rotation: 0 }, { rotation: 8, duration: D - 6.7, ease: "power2.inOut" }, 6.7);
+      tl.fromTo("#f15-drop", { rotation: 0 }, { rotation: 6, duration: D - 6.7, ease: "power2.inOut" }, 6.7);
       tl.fromTo("#f15-drop", { y: 0, opacity: 1 }, { y: 200, opacity: 0.12, duration: D - 6.7, ease: "power2.in", immediateRender: false }, 6.7);
       // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
       ((tl, A) => {
@@ -365,6 +335,22 @@
           c.startTime(ns);
         });
       })(tl, [[0.0, 0.0], [0.12, 0.61], [0.74, 1.25], [1.509, 1.86], [1.564, 1.97], [1.759, 2.13], [2.388, 2.78], [2.518, 2.9], [3.148, 3.52], [3.212, 3.64], [3.555, 4.02], [3.675, 4.11], [3.879, 4.29], [4.231, 4.64], [4.296, 4.71], [4.398, 4.8], [5.212, 5.69], [5.601, 6.15], [5.759, 6.39], [5.888, 6.53], [6.314, 6.94], [6.481, 7.12], [7.213, 7.74]]);
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.61, 0.569], [1.25, 1.166], [1.86, 1.744], [1.97, 1.845], [2.13, 1.991], [2.78, 2.569], [2.9, 2.652], [3.52, 3.184], [3.64, 3.267], [4.02, 3.606], [4.11, 3.698], [4.29, 3.863], [4.64, 4.193], [4.71, 4.257], [4.8, 4.331], [5.69, 5.166], [6.15, 5.569], [6.39, 5.776], [6.53, 5.89], [6.94, 6.285], [7.12, 6.45], [7.74, 6.98]]);
 
       window.__timelines["15-vocabulario"] = tl;
     })();

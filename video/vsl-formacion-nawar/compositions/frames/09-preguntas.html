@@ -36,7 +36,6 @@
       display: flex; justify-content: center; align-items: center; gap: 20px;
       font-family: "Poppins"; font-weight: 600; font-size: 60px; line-height: 1; letter-spacing: -0.01em;
       color: #FFFFFF;
-      text-shadow: 0 0 28px rgba(159,213,245,0.55), 0 0 70px rgba(77,163,255,0.45);
       transform-origin: 50% 50%;
     }
     .f09-lw { display: inline-block; }
@@ -55,7 +54,7 @@
     #f09-keyJ { left: 1050px; }
     .f09-keyglow {
       position: absolute; left: -120px; top: -120px; width: 500px; height: 500px; border-radius: 50%; opacity: 0;
-      background: radial-gradient(circle at 50% 50%, rgba(77,163,255,0.36) 0%, rgba(77,163,255,0.11) 40%, rgba(77,163,255,0) 68%);
+      background: radial-gradient(circle at 50% 50%, rgba(77,163,255,0.14) 0%, rgba(77,163,255,0.05) 40%, rgba(77,163,255,0) 68%);
     }
     .f09-press { position: absolute; inset: 0; }
     .f09-face {
@@ -63,27 +62,20 @@
       background: linear-gradient(180deg, rgba(255,255,255,0.17) 0%, rgba(255,255,255,0.06) 62%, rgba(255,255,255,0.04) 100%);
       border: 2px solid rgba(255,255,255,0.32);
       box-shadow:
-        inset 0 2px 0 rgba(255,255,255,0.38),
-        inset 0 -14px 26px rgba(4,0,40,0.40),
-        0 12px 0 rgba(150,170,255,0.16),
-        0 44px 90px rgba(0,0,0,0.55);
+        inset 0 1px 0 rgba(255,255,255,0.30),
+        inset 0 -10px 20px rgba(4,0,40,0.30),
+        0 5px 0 rgba(150,170,255,0.12),
+        0 24px 50px rgba(0,0,0,0.40);
     }
     .f09-glyph {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
       font-family: "Poppins"; line-height: 1;
-      font-weight: 900; font-size: 190px; letter-spacing: -0.04em; color: #FFFFFF;
-      text-shadow: 0 0 18px rgba(77,163,255,0.40), 0 0 60px rgba(77,163,255,0.30);
+      font-weight: 800; font-size: 190px; letter-spacing: -0.04em; color: #FFFFFF;
     }
     .f09-keyname {
       position: absolute; left: 22px; top: 18px; opacity: 0;
       font-family: "Inter"; font-weight: 600; font-size: 24px; line-height: 1; color: rgba(255,255,255,0.72);
-    }
-    /* sound waves: circles leaving the key (pass behind the opaque [x] pill) */
-    .f09-ring {
-      position: absolute; inset: -30px; border-radius: 50%;
-      border: 2.5px solid rgba(159,213,245,0.85);
-      opacity: 0;
     }
     .f09-pill {
       position: absolute; left: 0; width: 260px; top: 306px; height: 62px;
@@ -111,7 +103,7 @@
     #f09-trail { position: absolute; inset: 0; z-index: 0; overflow: visible; }
     .f09-tdot {
       position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%;
-      background: #4da3ff; box-shadow: 0 0 12px rgba(77,163,255,0.8);
+      background: #4da3ff;
     }
     .f09-slot { position: absolute; top: 0; height: 124px; z-index: 1; opacity: 0; }
     #f09-sGaan { z-index: 3; }
@@ -119,7 +111,7 @@
     .f09-tile {
       position: absolute; inset: 0; border-radius: 20px;
       background: #FFFFFF;
-      box-shadow: 0 9px 0 0 #b9c3e8, 0 26px 50px 0 rgba(0,0,0,0.45);
+      box-shadow: 0 4px 0 0 #c3cce9, 0 18px 36px 0 rgba(0,0,0,0.34);
       display: flex; align-items: center; justify-content: center;
       font-family: "Poppins"; font-weight: 800; font-size: 76px; line-height: 1; letter-spacing: -0.02em;
       color: #1D0084; white-space: nowrap;
@@ -137,12 +129,7 @@
     }
     #f09-period {
       position: absolute; left: 1644px; top: 66px; width: 28px; height: 28px; border-radius: 50%;
-      background: #FFFFFF; box-shadow: 0 0 22px rgba(159,213,245,0.7);
-      z-index: 2;
-    }
-    #f09-pring {
-      position: absolute; left: 1634px; top: 56px; width: 48px; height: 48px; border-radius: 50%;
-      border: 3px solid #9fd5f5; opacity: 0;
+      background: #FFFFFF;
       z-index: 2;
     }
     #f09-gloss {
@@ -153,8 +140,8 @@
     }
   </style>
 
-  <div id="root" data-composition-id="09-preguntas" data-width="1920" data-height="1080" data-duration="7.13">
-    <div id="f09-ground" class="clip" data-start="0" data-duration="7.13" data-track-index="0"></div>
+  <div id="root" data-composition-id="09-preguntas" data-width="1920" data-height="1080" data-duration="6.1">
+    <div id="f09-ground" class="clip" data-start="0" data-duration="6.1" data-track-index="0"></div>
     <div id="f09-glow"></div>
     <div id="f09-vignette"></div>
 
@@ -171,8 +158,6 @@
 
         <div class="f09-keypos" id="f09-keyG">
           <div class="f09-keyglow" id="f09-glowG"></div>
-          <div class="f09-ring" id="f09-ringG1"></div>
-          <div class="f09-ring" id="f09-ringG2"></div>
           <div class="f09-press" id="f09-pressG">
             <div class="f09-face" id="f09-faceG"></div>
             <div class="f09-keyname" id="f09-nameG">ge</div>
@@ -188,7 +173,6 @@
 
         <div class="f09-keypos" id="f09-keyJ">
           <div class="f09-keyglow" id="f09-glowJ"></div>
-          <div class="f09-ring" id="f09-ringJ1"></div>
           <div class="f09-press" id="f09-pressJ">
             <div class="f09-face" id="f09-faceJ"></div>
             <div class="f09-keyname" id="f09-nameJ">jota</div>
@@ -216,7 +200,6 @@
       </div>
       <div class="f09-slot" id="f09-sMorgen" style="left:633px; width:369px;"><div class="f09-in" id="f09-iMorgen"><div class="f09-tile">morgen</div></div></div>
       <div class="f09-slot" id="f09-sMarkt" style="left:1022px; width:609px;"><div class="f09-in" id="f09-iMarkt"><div class="f09-tile">naar de markt</div></div></div>
-      <div id="f09-pring"></div>
       <div id="f09-period"></div>
     </div>
     <div id="f09-gloss">Mañana quiero ir al mercado.</div>
@@ -234,13 +217,11 @@
       /* resting baselines for every element that carries more than one tween */
       tl.set("#f09-cam", { scale: 1.06 }, 0);
       tl.set(["#f09-pressG", "#f09-pressJ"], { y: 0 }, 0);
-      tl.set(["#f09-ringG1", "#f09-ringG2", "#f09-ringJ1"], { opacity: 0, scale: 1 }, 0);
       tl.set("#f09-s12", { y: 0, opacity: 1, filter: "blur(0px)" }, 0);
       tl.set(["#f09-sIk", "#f09-sWil", "#f09-sGaan", "#f09-sMorgen", "#f09-sMarkt"], { x: 0 }, 0);
       tl.set("#f09-gaan", { scaleX: 1, scaleY: 1, backgroundColor: "#FFFFFF" }, 0);
       tl.set("#f09-arc", { x: 0, y: 0, rotation: 0, scale: 1 }, 0);
       tl.set("#f09-row", { y: 0 }, 0);
-      tl.set("#f09-pring", { opacity: 0, scale: 0.6 }, 0);
 
       /* ---------- Scene 1 (0.0–0.95): soft fade from black, "Ahora dime:" glows in ---------- */
       tl.fromTo("#f09-veil", { opacity: 1 }, { opacity: 0, duration: 0.22, ease: "power1.out" }, 0);
@@ -255,7 +236,7 @@
       /* ---------- Scene 2 (1.0–4.4): lead steps back, question builds, G ≈ J ---------- */
       // the lead whips up and recedes so the question being spoken is the active line
       tl.fromTo("#f09-lead", { y: 0, scale: 1, opacity: 1 },
-        { y: -50, scale: 0.62, opacity: 0.6, duration: 0.55, ease: "expo.out" }, 0.84);
+        { y: -50, scale: 0.62, opacity: 0.6, duration: 0.55, ease: "power3.out" }, 0.84);
 
       const qCues = [1.03, 1.33, 1.50, 1.81, 1.91, 2.31, 2.56, 2.76];
       $$("#f09-q .f09-qw").forEach((el, i) => {
@@ -265,26 +246,22 @@
 
       // a keycap pops in on its letter: the whole key slams from small + blurred, then the glyph lands in it
       function popKey(k, t) {
-        tl.fromTo("#f09-key" + k, { opacity: 0, scale: 0.55, y: 30, filter: "blur(10px)" },
-          { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 0.32, ease: "expo.out" }, t);
-        tl.fromTo("#f09-glyph" + k, { opacity: 0, scale: 1.5, filter: "blur(12px)" },
-          { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, t + 0.05);
+        tl.fromTo("#f09-key" + k, { opacity: 0, scale: 0.9, y: 24, filter: "blur(6px)" },
+          { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, t);
+        tl.fromTo("#f09-glyph" + k, { opacity: 0, scale: 1.08, filter: "blur(6px)" },
+          { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, t + 0.05);
         tl.fromTo("#f09-name" + k, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power1.out" }, t + 0.12);
         tl.fromTo("#f09-glow" + k, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.out" }, t);
       }
 
       // "ge" (2.91): G key pops center-left; small camera punch on the slam
-      tl.fromTo("#f09-head", { y: 0 }, { y: -246, duration: 0.45, ease: "expo.out" }, 2.84);
+      tl.fromTo("#f09-head", { y: 0 }, { y: -246, duration: 0.45, ease: "power3.out" }, 2.84);
       popKey("G", 2.88);
-      tl.fromTo("#f09-cam", { scale: 1 }, { scale: 1.015, duration: 0.4, ease: "expo.out", immediateRender: false }, 2.88);
+      tl.fromTo("#f09-cam", { scale: 1 }, { scale: 1.015, duration: 0.4, ease: "power2.out", immediateRender: false }, 2.88);
 
       // "suena" (3.15): the key is pressed, sound waves leave it, its sound [x] appears
       tl.fromTo("#f09-pressG", { y: 0 }, { y: 10, duration: 0.07, ease: "power2.in", immediateRender: false }, 3.12);
       tl.fromTo("#f09-pressG", { y: 10 }, { y: 0, duration: 0.24, ease: "power3.out", immediateRender: false }, 3.19);
-      tl.fromTo("#f09-ringG1", { opacity: 0, scale: 1 }, { opacity: 0.9, scale: 1.08, duration: 0.06, ease: "none", immediateRender: false }, 3.17);
-      tl.fromTo("#f09-ringG1", { opacity: 0.9, scale: 1.08 }, { opacity: 0, scale: 1.34, duration: 0.45, ease: "power2.out", immediateRender: false }, 3.23);
-      tl.fromTo("#f09-ringG2", { opacity: 0, scale: 1 }, { opacity: 0.7, scale: 1.08, duration: 0.06, ease: "none", immediateRender: false }, 3.30);
-      tl.fromTo("#f09-ringG2", { opacity: 0.7, scale: 1.08 }, { opacity: 0, scale: 1.34, duration: 0.45, ease: "power2.out", immediateRender: false }, 3.36);
       tl.fromTo("#f09-pillG", { opacity: 0, y: 16, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power3.out" }, 3.15);
 
       // "como una" (3.48): ≈ draws between them, with the small "¿por qué suena igual?" caption
@@ -294,9 +271,7 @@
 
       // "jota" (3.83): J key pops to its right, same [x]; second camera punch
       popKey("J", 3.80);
-      tl.fromTo("#f09-cam", { scale: 1.015 }, { scale: 1.03, duration: 0.4, ease: "expo.out", immediateRender: false }, 3.80);
-      tl.fromTo("#f09-ringJ1", { opacity: 0, scale: 1 }, { opacity: 0.85, scale: 1.08, duration: 0.06, ease: "none", immediateRender: false }, 3.86);
-      tl.fromTo("#f09-ringJ1", { opacity: 0.85, scale: 1.08 }, { opacity: 0, scale: 1.3, duration: 0.4, ease: "power2.out", immediateRender: false }, 3.92);
+      tl.fromTo("#f09-cam", { scale: 1.015 }, { scale: 1.03, duration: 0.4, ease: "power2.out", immediateRender: false }, 3.80);
       tl.fromTo("#f09-pillJ", { opacity: 0, y: 16, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power3.out" }, 3.95);
 
       /* ---------- seam up (velocity-matched, upward) ---------- */
@@ -316,9 +291,9 @@
 
       // "verbo" (5.05): gaan turns blue-light, VERBO tag appears
       tl.fromTo("#f09-gaan",
-        { backgroundColor: "#FFFFFF", boxShadow: "0 9px 0 0 #b9c3e8, 0 26px 50px 0 rgba(0,0,0,0.45)" },
-        { backgroundColor: "#4da3ff", boxShadow: "0 9px 0 0 #2a6fc4, 0 26px 64px 0 rgba(77,163,255,0.50)", duration: 0.22, ease: "power2.out", immediateRender: false }, 5.03);
-      tl.fromTo("#f09-gaan", { scale: 1.1 }, { scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, 5.03);
+        { backgroundColor: "#FFFFFF", boxShadow: "0 4px 0 0 #c3cce9, 0 18px 36px 0 rgba(0,0,0,0.34)" },
+        { backgroundColor: "#4da3ff", boxShadow: "0 4px 0 0 #2a6fc4, 0 18px 36px 0 rgba(0,0,0,0.34)", duration: 0.22, ease: "power2.out", immediateRender: false }, 5.03);
+      tl.fromTo("#f09-gaan", { scale: 1.04 }, { scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, 5.03);
       tl.fromTo("#f09-tag", { opacity: 0, y: 14, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "power3.out" }, 5.05);
 
       // "se te va al final" (5.31–5.73): lift, arc over, drop at the end
@@ -327,15 +302,9 @@
       tl.fromTo("#f09-arc", { y: 0 }, { y: PEAK, duration: D_UP, ease: "power2.out", immediateRender: false }, T_UP);
       tl.fromTo("#f09-arc", { y: PEAK }, { y: 0, duration: D_DN, ease: "power2.in", immediateRender: false }, T_DN);
       tl.fromTo("#f09-arc", { x: 0 }, { x: DX, duration: D_X, ease: "power1.inOut", immediateRender: false }, T_X);
-      tl.fromTo("#f09-arc", { rotation: 0, scale: 1 }, { rotation: -8, scale: 1.1, duration: 0.2, ease: "power2.out", immediateRender: false }, T_UP);
-      tl.fromTo("#f09-arc", { rotation: -8 }, { rotation: 5, duration: 0.2, ease: "sine.inOut", immediateRender: false }, 5.51);
-      tl.fromTo("#f09-arc", { rotation: 5, scale: 1.1 }, { rotation: 0, scale: 1, duration: 0.1, ease: "power2.out", immediateRender: false }, 5.71);
-      // landing squash + tiny impact on the row
-      tl.fromTo("#f09-gaan", { scaleX: 1.1, scaleY: 0.86, transformOrigin: "50% 100%" },
-        { scaleX: 1, scaleY: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, 5.74);
-      tl.fromTo("#f09-row", { y: 0 }, { y: 7, duration: 0.04, ease: "none", immediateRender: false }, 5.74);
-      tl.fromTo("#f09-row", { y: 7 }, { y: -3, duration: 0.04, ease: "none", immediateRender: false }, 5.78);
-      tl.fromTo("#f09-row", { y: -3 }, { y: 0, duration: 0.06, ease: "power2.out", immediateRender: false }, 5.82);
+      tl.fromTo("#f09-arc", { rotation: 0, scale: 1 }, { rotation: -3, scale: 1.04, duration: 0.2, ease: "power2.out", immediateRender: false }, T_UP);
+      tl.fromTo("#f09-arc", { rotation: -3 }, { rotation: 0, duration: 0.2, ease: "sine.inOut", immediateRender: false }, 5.51);
+      tl.fromTo("#f09-arc", { scale: 1.04 }, { scale: 1, duration: 0.1, ease: "power2.out", immediateRender: false }, 5.71);
 
       // the others close the gap (FLIP-style)
       const SHIFT = -(265 + 20);
@@ -360,16 +329,14 @@
         d.style.left = px.toFixed(1) + "px";
         d.style.top = py.toFixed(1) + "px";
         trail.appendChild(d);
-        tl.fromTo(d, { opacity: 0, scale: 0 }, { opacity: 0.75 - i * 0.02, scale: 1, duration: 0.12, ease: "power2.out" }, t + 0.02);
+        tl.fromTo(d, { opacity: 0, scale: 0.6 }, { opacity: 0.5 - i * 0.015, scale: 0.8, duration: 0.12, ease: "power2.out" }, t + 0.02);
       }
       // once the verb has landed, the path dissolves so the held sentence reads clean
       tl.fromTo("#f09-trail", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.out" }, 5.85);
 
       // "frase" (6.17): the period pops, Spanish gloss appears
-      tl.fromTo("#f09-period", { opacity: 0, scale: 3, filter: "blur(6px)" },
-        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 6.15);
-      tl.fromTo("#f09-pring", { opacity: 0, scale: 0.6 }, { opacity: 0.95, scale: 0.85, duration: 0.04, ease: "none", immediateRender: false }, 6.15);
-      tl.fromTo("#f09-pring", { opacity: 0.95, scale: 0.85 }, { opacity: 0, scale: 2.4, duration: 0.3, ease: "power2.out", immediateRender: false }, 6.19);
+      tl.fromTo("#f09-period", { opacity: 0, scale: 1.4 },
+        { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 6.15);
       tl.fromTo("#f09-gloss", { opacity: 0, y: 18, filter: "blur(6px)" },
         { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "power3.out" }, 6.17);
 
@@ -390,6 +357,22 @@
           c.startTime(ns);
         });
       })(tl, [[0.0, 0.0], [0.12, 0.12], [0.342, 0.4], [1.027, 1.05], [1.333, 1.38], [1.5, 1.57], [1.814, 1.87], [1.907, 1.92], [2.314, 2.37], [2.564, 2.57], [2.759, 2.78], [2.907, 2.93], [3.148, 3.2], [3.481, 3.54], [3.685, 3.75], [3.833, 3.92], [4.481, 4.65], [4.555, 4.72], [4.74, 4.9], [4.907, 5.06], [5.046, 5.14], [5.314, 5.39], [5.444, 5.54], [5.555, 5.65], [5.611, 5.76], [5.731, 5.87], [6.018, 6.26], [6.064, 6.36], [6.166, 6.44], [6.759, 7.13]]);
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.4, 0.377], [1.05, 0.835], [1.38, 1.12], [1.57, 1.285], [1.87, 1.542], [1.92, 1.606], [2.37, 2.01], [2.57, 2.184], [2.78, 2.358], [2.93, 2.487], [3.2, 2.716], [3.54, 3.065], [3.75, 3.257], [3.92, 3.413], [4.65, 4.01], [4.72, 4.074], [4.9, 4.239], [5.06, 4.368], [5.14, 4.432], [5.39, 4.679], [5.54, 4.817], [5.65, 4.909], [5.76, 5.001], [5.87, 5.092], [6.26, 5.377], [6.36, 5.459], [6.44, 5.533], [7.13, 6.1]]);
       window.__timelines["09-preguntas"] = tl;
     })();
   </script>

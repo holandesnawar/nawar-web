@@ -15,10 +15,6 @@
       background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.6px, transparent 1.7px);
       background-size: 28px 28px;
     }
-    #f19-redglow {
-      position: absolute; inset: 0; opacity: 0;
-      background: radial-gradient(ellipse 58% 46% at 51.4% 54%, rgba(224,45,60,0.13) 0%, rgba(224,45,60,0.05) 45%, rgba(224,45,60,0) 72%);
-    }
 
     /* ---------- camera ---------- */
     #f19-cam { position: absolute; inset: 0; transform-origin: 987px 580px; }
@@ -44,13 +40,6 @@
     #f19-w-delatan { transform-origin: 0% 75%; }
     .f19-ind { color: #1D0084; }
 
-    /* ---------- rings layer (behind every key) ---------- */
-    .f19-ring {
-      position: absolute; top: 417px; width: 326px; height: 343px; border-radius: 34px;
-      border: 5px solid #E02D3C;
-      opacity: 0; box-sizing: border-box;
-    }
-
     /* ---------- keycaps (shared geometry with frame 18) ---------- */
     .f19-slot { position: absolute; top: 430px; width: 300px; height: 300px; }
     .f19-shake { position: absolute; inset: 0; }
@@ -64,7 +53,7 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
     .f19-glyph {
-      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 150px; line-height: 1;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 150px; line-height: 1;
       letter-spacing: -0.04em; color: #1D0084;
     }
     .f19-ex {
@@ -81,20 +70,15 @@
     .f19-fill .f19-ex { color: rgba(255,255,255,0.72); }
     .f19-alert {
       position: absolute; left: -13px; right: -13px; top: -13px; bottom: -30px;
-      border: 6px solid #E02D3C; border-radius: 34px; opacity: 0; box-sizing: border-box;
-      box-shadow: 0 0 34px rgba(224,45,60,0.35);
+      border: 5px solid #E02D3C; border-radius: 34px; opacity: 0; box-sizing: border-box;
     }
     .f19-badge {
       position: absolute; right: -22px; top: -22px; width: 56px; height: 56px;
       border: 5px solid #FFFFFF; border-radius: 50%; background: #16A34A;
-      box-shadow: 0 10px 24px rgba(22,163,74,0.35), 0 2px 6px rgba(12,12,30,0.18);
+      box-shadow: 0 6px 14px rgba(12,12,30,0.18);
       opacity: 0;
     }
     .f19-badge svg { position: absolute; inset: 0; width: 56px; height: 56px; }
-    .f19-burst {
-      position: absolute; right: -27px; top: -27px; width: 66px; height: 66px; border-radius: 50%;
-      border: 4px solid #16A34A; box-sizing: border-box; opacity: 0;
-    }
 
     /* ---------- "uno a uno" (below the keys) ---------- */
     #f19-uno {
@@ -113,9 +97,8 @@
     #f19-hair-r { left: 1215px; width: 477px; transform-origin: 0% 50%; }
   </style>
 
-  <div id="root" data-composition-id="19-delatan" data-width="1920" data-height="1080" data-duration="3.23">
-    <div id="f19-ground" class="clip" data-start="0" data-duration="3.23" data-track-index="0"></div>
-    <div id="f19-redglow"></div>
+  <div id="root" data-composition-id="19-delatan" data-width="1920" data-height="1080" data-duration="2.937">
+    <div id="f19-ground" class="clip" data-start="0" data-duration="2.937" data-track-index="0"></div>
 
     <div id="f19-cam">
       <!-- headline: scene 1 -->
@@ -135,12 +118,6 @@
       </div>
       </div>
 
-      <!-- radar rings (behind all keys) -->
-      <div class="f19-ring" id="f19-ring-0" style="left:269px"></div>
-      <div class="f19-ring" id="f19-ring-1" style="left:639px"></div>
-      <div class="f19-ring" id="f19-ring-2" style="left:1009px"></div>
-      <div class="f19-ring" id="f19-ring-3" style="left:1379px"></div>
-
       <!-- keycaps -->
       <div class="f19-slot" style="left:282px">
         <div class="f19-shake" id="f19-shake-0">
@@ -148,7 +125,6 @@
             <div class="f19-face"><div class="f19-glyph">G</div><div class="f19-ex">goed</div></div>
             <div class="f19-tint" id="f19-tint-0"></div>
             <div class="f19-fill" id="f19-fill-0"><div class="f19-face"><div class="f19-glyph">G</div><div class="f19-ex">goed</div></div></div>
-            <div class="f19-burst" id="f19-burst-0"></div>
             <div class="f19-badge" id="f19-badge-0"><svg viewBox="0 0 56 56"><path class="f19-tick" id="f19-tick-0" d="M16 29 L24.5 37.5 L41 20" fill="none" stroke="#FFFFFF" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg></div>
           </div>
           <div class="f19-alert" id="f19-alert-0"></div>
@@ -160,7 +136,6 @@
             <div class="f19-face"><div class="f19-glyph">UI</div><div class="f19-ex">huis</div></div>
             <div class="f19-tint" id="f19-tint-1"></div>
             <div class="f19-fill" id="f19-fill-1"><div class="f19-face"><div class="f19-glyph">UI</div><div class="f19-ex">huis</div></div></div>
-            <div class="f19-burst" id="f19-burst-1"></div>
             <div class="f19-badge" id="f19-badge-1"><svg viewBox="0 0 56 56"><path class="f19-tick" id="f19-tick-1" d="M16 29 L24.5 37.5 L41 20" fill="none" stroke="#FFFFFF" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg></div>
           </div>
           <div class="f19-alert" id="f19-alert-1"></div>
@@ -172,7 +147,6 @@
             <div class="f19-face"><div class="f19-glyph">UU</div><div class="f19-ex">uur</div></div>
             <div class="f19-tint" id="f19-tint-2"></div>
             <div class="f19-fill" id="f19-fill-2"><div class="f19-face"><div class="f19-glyph">UU</div><div class="f19-ex">uur</div></div></div>
-            <div class="f19-burst" id="f19-burst-2"></div>
             <div class="f19-badge" id="f19-badge-2"><svg viewBox="0 0 56 56"><path class="f19-tick" id="f19-tick-2" d="M16 29 L24.5 37.5 L41 20" fill="none" stroke="#FFFFFF" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg></div>
           </div>
           <div class="f19-alert" id="f19-alert-2"></div>
@@ -184,7 +158,6 @@
             <div class="f19-face"><div class="f19-glyph">EU</div><div class="f19-ex">leuk</div></div>
             <div class="f19-tint" id="f19-tint-3"></div>
             <div class="f19-fill" id="f19-fill-3"><div class="f19-face"><div class="f19-glyph">EU</div><div class="f19-ex">leuk</div></div></div>
-            <div class="f19-burst" id="f19-burst-3"></div>
             <div class="f19-badge" id="f19-badge-3"><svg viewBox="0 0 56 56"><path class="f19-tick" id="f19-tick-3" d="M16 29 L24.5 37.5 L41 20" fill="none" stroke="#FFFFFF" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg></div>
           </div>
           <div class="f19-alert" id="f19-alert-3"></div>
@@ -207,13 +180,13 @@
       const tl = gsap.timeline({ paused: true });
       const $ = (id) => document.getElementById(id);
 
-      // ---------- camera: punch-in on the cut (start state == frame 18's end) + steady push,
-      //            punch on "delatan", exhale on "y", small button at the end
-      tl.fromTo("#f19-cam", { scale: 1 }, { scale: 1.035, duration: 0.24, ease: "expo.out" }, 0);
-      tl.to("#f19-cam", { scale: 1.045, duration: 0.42, ease: "none" }, 0.24);
-      tl.to("#f19-cam", { scale: 1.10, duration: 0.42, ease: "expo.out" }, 0.68);
-      tl.to("#f19-cam", { scale: 1.05, duration: 0.5, ease: "power2.inOut" }, 1.2);
-      tl.to("#f19-cam", { scale: 1.065, duration: 0.4, ease: "expo.out" }, 2.42);
+      // ---------- camera: gentle push from frame 18's end state, a little closer on "delatan",
+      //            eases back on "y" (no punches)
+      tl.fromTo("#f19-cam", { scale: 1 }, { scale: 1.015, duration: 0.24, ease: "power2.out" }, 0);
+      tl.to("#f19-cam", { scale: 1.02, duration: 0.42, ease: "none" }, 0.24);
+      tl.to("#f19-cam", { scale: 1.045, duration: 0.42, ease: "power3.out" }, 0.68);
+      tl.to("#f19-cam", { scale: 1.03, duration: 0.5, ease: "power2.inOut" }, 1.2);
+      tl.to("#f19-cam", { scale: 1.035, duration: 0.4, ease: "power2.out" }, 2.42);
 
       // ---------- Scene 1 lead-in words: "Son los que"
       [["#f19-w-son", 0.08], ["#f19-w-los", 0.30], ["#f19-w-que", 0.46]].forEach(([sel, t]) => {
@@ -222,34 +195,21 @@
       });
       // "te" rises, "delatan" slams
       tl.fromTo("#f19-w-te", { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 0.55);
-      tl.fromTo("#f19-w-delatan", { opacity: 0, scale: 1.3, filter: "blur(12px)" },
+      tl.fromTo("#f19-w-delatan", { opacity: 0, scale: 1.1, filter: "blur(6px)" },
         { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.67);
 
       // ---------- "delatan": red alert on every key
-      tl.fromTo("#f19-redglow", { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "power2.out" }, 0.68);
       for (let i = 0; i < 4; i++) {
         const t0 = 0.68 + i * 0.015;
-        tl.fromTo("#f19-alert-" + i, { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.22, ease: "expo.out" }, t0);
+        tl.fromTo("#f19-alert-" + i, { opacity: 0, scale: 1.03 }, { opacity: 1, scale: 1, duration: 0.22, ease: "power3.out" }, t0);
         tl.fromTo("#f19-tint-" + i, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out" }, t0);
         // the ledge turns red with the face so the alert box reads fully filled
         tl.fromTo("#f19-key-" + i,
           { boxShadow: "0px 18px 0px rgb(221,230,245), 0px 30px 60px rgba(18,0,129,0.16)" },
           { boxShadow: "0px 18px 0px rgb(246,200,206), 0px 30px 60px rgba(224,45,60,0.18)", duration: 0.12, ease: "power2.out" }, t0);
-        // radar ring pulses once out of each key
-        // (echo of the alert box: starts on the red outline, fades before it reaches the neighbour)
-        tl.fromTo("#f19-ring-" + i, { scale: 1 }, { scale: 1.2, duration: 0.55, ease: "power2.out", immediateRender: false }, t0);
-        tl.fromTo("#f19-ring-" + i, { opacity: 0.85 }, { opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, t0);
-        // short error shake
-        const dir = i % 2 === 0 ? 1 : -1;
-        tl.fromTo("#f19-shake-" + i, { x: 0 }, { x: -9 * dir, duration: 0.045, ease: "power1.out" }, t0 + 0.01);
-        tl.to("#f19-shake-" + i, { x: 8 * dir, duration: 0.07, ease: "power1.inOut" }, t0 + 0.055);
-        tl.to("#f19-shake-" + i, { x: -5 * dir, duration: 0.06, ease: "power1.inOut" }, t0 + 0.125);
-        tl.to("#f19-shake-" + i, { x: 2 * dir, duration: 0.05, ease: "power1.inOut" }, t0 + 0.185);
-        tl.to("#f19-shake-" + i, { x: 0, duration: 0.06, ease: "power1.out" }, t0 + 0.235);
       }
 
       // ---------- Scene 2 seam (1.22 "y"): red clears, headline line rolls up into the next one
-      tl.to("#f19-redglow", { opacity: 0, duration: 0.4, ease: "power2.out" }, 1.2);
       for (let i = 0; i < 4; i++) {
         tl.to("#f19-alert-" + i, { opacity: 0, scale: 1.03, duration: 0.2, ease: "power2.out" }, 1.2 + i * 0.02);
         tl.to("#f19-tint-" + i, { opacity: 0, duration: 0.2, ease: "power2.out" }, 1.2 + i * 0.02);
@@ -266,11 +226,10 @@
       // ---------- checks: one by one (1.50, 1.85, 2.20, 2.45)
       const CHECKS = [1.50, 1.85, 2.20, 2.45];
       CHECKS.forEach((T, i) => {
-        // badge stamps in (overshoot allowed for check pops)
-        tl.fromTo("#f19-badge-" + i, { opacity: 0, scale: 0, rotation: -30 },
-          { opacity: 1, scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.4)" }, T - 0.04);
+        // badge appears (no overshoot) and its tick draws
+        tl.fromTo("#f19-badge-" + i, { opacity: 0, scale: 0.6, rotation: 0 },
+          { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "power3.out" }, T - 0.04);
         tl.fromTo("#f19-tick-" + i, { strokeDashoffset: 40 }, { strokeDashoffset: 0, duration: 0.2, ease: "power2.out" }, T + 0.04);
-        tl.fromTo("#f19-burst-" + i, { opacity: 0.8, scale: 1 }, { opacity: 0, scale: 2.3, duration: 0.45, ease: "power2.out", immediateRender: false }, T - 0.01);
         // indigo floods out of the badge corner
         tl.fromTo("#f19-fill-" + i, { clipPath: "circle(0px at 96% 4%)" },
           { clipPath: "circle(440px at 96% 4%)", duration: 0.34, ease: "power2.out" }, T - 0.03);
@@ -305,6 +264,22 @@
           c.startTime(ns);
         });
       })(tl, [[0.0, 0.0], [0.12, 0.12], [0.333, 0.38], [0.491, 0.53], [0.583, 0.64], [0.703, 0.76], [1.222, 1.42], [1.296, 1.51], [1.472, 1.66], [2.194, 2.35], [2.37, 2.63], [2.426, 2.69], [2.871, 3.23]]);
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.38, 0.349], [0.53, 0.487], [0.64, 0.579], [0.76, 0.689], [1.42, 1.294], [1.51, 1.368], [1.66, 1.514], [2.35, 2.175], [2.63, 2.413], [2.69, 2.469], [3.23, 2.937]]);
 
       window.__timelines["19-delatan"] = tl;
     })();

@@ -1,7 +1,11 @@
-# VSL Formación Nawar A0–A1 — proyecto HyperFrames (v2)
+# VSL Formación Nawar A0–A1 — proyecto HyperFrames (v3)
 
-Vídeo de venta (16:9, 1920×1080, ~3:23) hecho con [HyperFrames](https://hyperframes.heygen.com):
+Vídeo de venta (16:9, 1920×1080, 2:57) hecho con [HyperFrames](https://hyperframes.heygen.com):
 cada escena es una página HTML animada con GSAP que se renderiza a MP4.
+
+**v3** (2:57): voz nueva (toma B a 1,09×), música más suave, MacBook realista con ventana de macOS y contenido 16:9
+en todas las escenas con ordenador, consultas y clase en directo nuevas (con el profe Paul), bloque de ejercicios
+recortado, CTA más corta y un repaso de pulido en todas las escenas (fuera brillos, rayos, temblores y rebotes).
 
 **v2** (sobre la v1 aprobada): voz nueva (toma B), música del cliente reeditada por compases, pausa estilo
 Offlesson en «Vale, ¿y qué hay dentro?» con la música parada, apertura del portátil justo en el drop, y una
@@ -14,9 +18,9 @@ tests A/B/C/D). Las escenas 01–19 son las de la v1 reajustadas a la nueva voz;
 | Ruta | Qué es |
 |---|---|
 | `BRIEF.md` | Intención, público, reglas de marca (sin naranja, sin precio, profesores nativos…) |
-| `STORYBOARD.md` | Las 39 escenas, plano a plano, atadas a la voz y a la música |
+| `STORYBOARD.md` | Las 37 escenas, plano a plano, atadas a la voz y a la música, + reglas de pulido v3 |
 | `frame.md` | Sistema de diseño: colores, tipografías, componentes |
-| `audio_v2.json` | Plan de montaje de audio: tomas de voz, parada, drop, re-drop, golpe final |
+| `audio_v3.json` | Plan de montaje de audio (v3): velocidad, parada, drop, re-drop, golpe final |
 | `transcript.json` | Tiempos de cada palabra de la locución (alineación forzada, tiempo del archivo de voz) |
 | `timing.json` | Ventana de cada escena en la línea de tiempo y sus palabras |
 | `compositions/frames/NN-*.html` | Una escena por archivo (+ `.sfx.json` con sus efectos de sonido) |
@@ -29,14 +33,13 @@ tests A/B/C/D). Las escenas 01–19 son las de la v1 reajustadas a la nueva voz;
 ```bash
 bash tools/fetch_assets.sh            # todos los medios desde el Drive (vídeos, capturas, voz B, música, fuentes, gsap, sfx)
                                       # y monta la banda sonora v2 (tools/build_audio_v2.py → assets/audio/, audio_v2.json)
-python3 tools/transcript_v2.py        # transcript.json en el tiempo de la locución montada
 python3 tools/timing.py               # timing.json (cortes forzados en la parada, el drop y el re-drop)
 python3 tools/retime_v2.py            # escenas de la v1 → tiempos de la voz v2 sin tocar el diseño (salta 01–03 y 17,
                                       # retocadas a mano después; nómbralas para forzarlas)
 python3 tools/gen_laptop_20_21.py     # escenas 20 y 21 (el portátil) salen de un único generador
 python3 tools/assemble.py             # index.html
 npx hyperframes lint
-npx hyperframes render . --quality high -o renders/vsl-nawar-v2.mp4
+npx hyperframes render . --quality high -o renders/vsl-nawar-v3.mp4
 ```
 
 Previsualizar una escena suelta: `python3 tools/preview_frame.py 21-portatil`.
@@ -49,3 +52,11 @@ Previsualizar una escena suelta: `python3 tools/preview_frame.py 21-portatil`.
 - Después: sección completa (28 compases) → breakdown desde «Al terminar…» (168,12 s) → subida → tensión en
   «Ahora toca hablar» → re-drop en «Completa tu matrícula» (187,32 s) → golpe final justo tras «…cuando lo hablas»
   (199,32 s) y cola hasta el final.
+
+## v3: cómo se llevaron las escenas a la voz nueva
+
+- Escenas que no cambiaban: `python3 tools/retime_stack.py <timing anterior> <ids…>` añade un bloque de reajuste
+  de tiempos (las escenas de la v1 llevan dos: v1→v2 y v2→v3). El diseño no se toca.
+- Escenas rehechas: 20–21 (`tools/gen_laptop_20_21.py`), 24/25/32 y 26/27 (fuentes de referencia en
+  `tools/frame_sources/`), 28/29 y 38 escritas directamente sobre los tiempos v3.
+- MacBook y ventana de macOS: `tools/mac_mockup.md` (contenido 16:9, URL `app.holandesnawar.com`).

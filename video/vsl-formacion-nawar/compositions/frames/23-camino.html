@@ -24,10 +24,6 @@
       background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
       background-size: 28px 28px;
     }
-    #f23-halo {
-      position: absolute; left: 430px; top: 400px; width: 1100px; height: 440px; opacity: 0;
-      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(77,163,255,0.30) 0%, rgba(77,163,255,0.12) 45%, rgba(77,163,255,0) 72%);
-    }
     #f23-svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
     .f23-lbl { font-family: "Inter", sans-serif; font-weight: 600; font-size: 26px; fill: #FFFFFF; }
 
@@ -40,30 +36,20 @@
     .f23-ic { position: absolute; left: 0; top: 0; width: 104px; height: 104px; overflow: visible; }
     .f23-lockic { opacity: 0.6; }
     .f23-ckic { opacity: 0; }
-    .f23-glow {
-      position: absolute; left: -78px; top: -78px; width: 260px; height: 260px; border-radius: 50%; opacity: 0;
-      background: radial-gradient(circle, rgba(77,163,255,0.55) 0%, rgba(77,163,255,0.18) 42%, rgba(77,163,255,0) 70%);
-    }
-    .f23-burst { position: absolute; inset: 0; border-radius: 50%; box-sizing: border-box; opacity: 0; border: 4px solid #4da3ff; }
-    .f23-burst-g { border-color: #34D399; }
-    .f23-ring { position: absolute; width: 132px; height: 132px; border-radius: 50%; box-sizing: border-box; opacity: 0; }
-    #f23-ring-n2 { left: 574px; top: 454px; border: 5px solid rgba(255,255,255,0.95); }
-    #f23-ring-n3 { left: 914px; top: 654px; border: 6px solid #4da3ff; box-shadow: 0 0 24px rgba(77,163,255,0.6); }
 
     /* ---------- companions (same fills as v1 21) ---------- */
     .f23-c { position: absolute; width: 80px; height: 80px; }
     .f23-pop { position: absolute; inset: 0; opacity: 0; }
-    .f23-cring { position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(255,255,255,0.85); box-sizing: border-box; opacity: 0; }
     .f23-av {
       position: absolute; left: 4px; top: 4px; width: 72px; height: 72px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       font-family: "Poppins", sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -0.01em; line-height: 1;
-      box-shadow: 0 0 0 4px #FFFFFF, 0 14px 26px rgba(4,0,40,0.42);
+      box-shadow: 0 0 0 4px #FFFFFF, 0 10px 20px rgba(4,0,40,0.30);
     }
     .f23-av span { display: block; padding-top: 3px; }
     .f23-av-vivid { background: #0b6df0; color: #FFFFFF; }
     .f23-av-sky   { background: #9fd5f5; color: #1D0084; }
-    .f23-av-white { background: #FFFFFF; color: #1D0084; box-shadow: 0 0 0 4px #9fd5f5, 0 14px 26px rgba(4,0,40,0.42); }
+    .f23-av-white { background: #FFFFFF; color: #1D0084; box-shadow: 0 0 0 4px #9fd5f5, 0 10px 20px rgba(4,0,40,0.30); }
     .f23-av-light { background: #4da3ff; color: #1D0084; }
     .f23-av-nl    { background: #21468C; color: #FFFFFF; }
     .f23-av-ind   { background: #1D0084; color: #FFFFFF; }
@@ -74,14 +60,11 @@
     #f23-tu {
       position: absolute; left: 6px; top: 6px; width: 120px; height: 120px; border-radius: 50%;
       background: #FFFFFF; color: #1D0084; display: flex; align-items: center; justify-content: center;
-      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 50px; letter-spacing: -0.03em; line-height: 1;
-      box-shadow: 0 0 0 6px #4da3ff, 0 0 46px 8px rgba(77,163,255,0.55), 0 24px 44px rgba(4,0,40,0.5);
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 50px; letter-spacing: -0.03em; line-height: 1;
+      box-shadow: 0 0 0 6px #4da3ff, 0 16px 32px rgba(4,0,40,0.36);
     }
     #f23-tu span { display: block; padding-top: 6px; }
 
-    /* ---------- entrance streaks ---------- */
-    .f23-stk { position: absolute; left: 1100px; height: 4px; border-radius: 2px; opacity: 0;
-      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.65) 55%, rgba(159,213,245,0) 100%); }
 
     /* ---------- HUD: pill + kinetic heading ---------- */
     #f23-pill {
@@ -114,35 +97,22 @@
     }
   </style>
 
-  <div id="root" data-composition-id="23-camino" data-width="1920" data-height="1080" data-duration="6.46">
-    <div id="f23-ground" class="clip" data-start="0" data-duration="6.46" data-track-index="0"></div>
+  <div id="root" data-composition-id="23-camino" data-width="1920" data-height="1080" data-duration="5.844">
+    <div id="f23-ground" class="clip" data-start="0" data-duration="5.844" data-track-index="0"></div>
 
     <svg width="0" height="0" style="position:absolute;" aria-hidden="true">
-      <filter id="f23-mblur" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur id="f23-mblur-g" stdDeviation="22 0"></feGaussianBlur></filter>
+      <filter id="f23-mblur" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur id="f23-mblur-g" stdDeviation="12 0"></feGaussianBlur></filter>
     </svg>
 
     <div id="f23-cam"><div id="f23-shake">
       <div id="f23-dots"></div>
-      <div id="f23-halo"></div>
       <svg id="f23-svg" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <mask id="f23-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
-            <rect x="0" y="0" width="1920" height="1080" fill="#FFFFFF"></rect>
-            <circle cx="640" cy="520" r="52" fill="#000000"></circle>
-          </mask>
-        </defs>
         <path id="f23-road" fill="none" stroke="rgba(255,255,255,0.20)" stroke-width="14" stroke-linecap="round"
           d="M 120 840 C 210 830 250 790 300 760 C 420 690 500 520 640 520 C 780 520 840 720 980 720 C 1120 720 1180 470 1320 470 C 1460 470 1540 660 1640 660 C 1720 660 1760 620 1820 600"></path>
         <path id="f23-prog" fill="none" stroke="#4da3ff" stroke-width="14" stroke-linecap="round"
           d="M 120 840 C 210 830 250 790 300 760 C 420 690 500 520 640 520 C 780 520 840 720 980 720 C 1120 720 1180 470 1320 470 C 1460 470 1540 660 1640 660 C 1720 660 1760 620 1820 600"></path>
-        <!-- energy streak N1 -> N2 (vanishes into N2) -->
-        <g mask="url(#f23-mask)">
-          <path id="f23-sk-glow" fill="none" stroke="#4da3ff" stroke-width="26" stroke-linecap="round" opacity="0" style="filter: blur(7px);" d="M 300 760 C 420 690 500 520 640 520"></path>
-          <path id="f23-sk-tail" fill="none" stroke="#9fd5f5" stroke-width="14" stroke-linecap="round" opacity="0" d="M 300 760 C 420 690 500 520 640 520"></path>
-          <path id="f23-sk-head" fill="none" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round" opacity="0" d="M 300 760 C 420 690 500 520 640 520"></path>
-        </g>
         <!-- "mismo camino": one light pulse along the whole road -->
-        <path id="f23-pulse" fill="none" stroke="#bfe6ff" stroke-width="12" stroke-linecap="round" opacity="0" style="filter: blur(1.5px);"
+        <path id="f23-pulse" fill="none" stroke="#bfe6ff" stroke-width="12" stroke-linecap="round" opacity="0"
           d="M 120 840 C 210 830 250 790 300 760 C 420 690 500 520 640 520 C 780 520 840 720 980 720 C 1120 720 1180 470 1320 470 C 1460 470 1540 660 1640 660 C 1720 660 1760 620 1820 600"></path>
         <text class="f23-lbl" id="f23-lb1" x="300" y="856" text-anchor="middle" dominant-baseline="central">1 · Over jou</text>
         <text class="f23-lbl" id="f23-lb2" x="640" y="616" text-anchor="middle" dominant-baseline="central">2 · Familie &amp; vrienden</text>
@@ -151,13 +121,9 @@
         <text class="f23-lbl" id="f23-lb5" x="1640" y="756" text-anchor="middle" dominant-baseline="central">5 · Hobby's &amp; vrije tijd</text>
       </svg>
       <div id="f23-nodes"></div>
-      <div class="f23-ring" id="f23-ring-n2"></div>
-      <div class="f23-ring" id="f23-ring-n3"></div>
       <div id="f23-comps"></div>
       <div id="f23-tu-pos"><div id="f23-tu-drop"><div id="f23-tu"><span>TÚ</span></div></div></div>
     </div></div>
-
-    <div id="f23-stks"></div>
 
     <div id="f23-pill">
       <span>Formación Nawar A0</span>
@@ -198,8 +164,7 @@
       NODES.forEach(([cx, cy], i) => {
         const k = i + 1;
         h += '<div class="f23-node" id="f23-n' + k + '" style="left:' + (cx - 52) + 'px; top:' + (cy - 52) + 'px;">' +
-          '<div class="f23-glow" id="f23-gl' + k + '"></div><div class="f23-burst" id="f23-bu' + k + '"></div>' +
-          '<div class="f23-burst f23-burst-g" id="f23-bg' + k + '"></div><div class="f23-disc f23-d-lock"></div>' +
+          '<div class="f23-disc f23-d-lock"></div>' +
           '<div class="f23-disc f23-d-open" id="f23-op' + k + '"></div><div class="f23-disc f23-d-done" id="f23-dn' + k + '"></div>' +
           '<svg class="f23-ic f23-lockic" id="f23-lk' + k + '" viewBox="-52 -52 104 104"><g transform="translate(0 5)">' +
           '<path id="f23-sh' + k + '" d="' + SH_CLOSED + '" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"></path>' +
@@ -219,14 +184,10 @@
       ];
       h = "";
       C.forEach(([n, f, x, y]) => {
-        h += '<div class="f23-c" id="f23-c-' + n + '" style="left:' + x + 'px; top:' + y + 'px"><div class="f23-cring" id="f23-cring-' + n + '"></div>' +
+        h += '<div class="f23-c" id="f23-c-' + n + '" style="left:' + x + 'px; top:' + y + 'px">' +
           '<div class="f23-pop" id="f23-pop-' + n + '"><div class="f23-av f23-av-' + f + '"><span>' + n + '</span></div></div></div>';
       });
       $("comps").innerHTML = h;
-      const STK = [[250, 520], [430, 380], [610, 760], [705, 300], [845, 640], [960, 460]];
-      h = "";
-      STK.forEach(([y, w], i) => { h += '<div class="f23-stk" id="f23-stk' + i + '" style="top:' + y + 'px; width:' + w + 'px;"></div>'; });
-      $("stks").innerHTML = h;
 
       // ---------- path lengths (bezier LUT scaled to the browser's own length) ----------
       const SEGS = [
@@ -243,34 +204,26 @@
       const kk = L / Llut;
       const lenN = []; let acc = 0;
       for (let i = 0; i < 5; i++) { acc += SL[i]; lenN.push(acc * kk); }
-      const seg1 = SL[1] * kk;
       ["road", "prog", "pulse"].forEach((id) => { $(id).style.strokeDasharray = L + " " + (2 * L); });
       $("pulse").style.strokeDasharray = "240 " + (3 * L);
-      const TAIL = 170, HEAD = 2, BIG = seg1 * 4;
-      $("sk-tail").style.strokeDasharray = TAIL + " " + BIG;
-      $("sk-head").style.strokeDasharray = HEAD + " " + BIG;
-      $("sk-glow").style.strokeDasharray = 60 + " " + BIG;
 
       const tl = gsap.timeline({ paused: true });
 
-      // ================= ENTRANCE (0.00–0.30): camera slides in from the right under motion blur =================
-      const mb = { v: 22 };
+      // ================= ENTRANCE (0.00–0.30): camera slides in from the right under a light motion blur =================
+      const mb = { v: 12 };
       const mbg = $("mblur-g");
-      tl.fromTo(mb, { v: 22 }, { v: 0, duration: 0.3, ease: "expo.out", onUpdate: function () { mbg.setAttribute("stdDeviation", mb.v.toFixed(2) + " 0"); } }, 0);
+      tl.fromTo(mb, { v: 12 }, { v: 0, duration: 0.3, ease: "expo.out", onUpdate: function () { mbg.setAttribute("stdDeviation", mb.v.toFixed(2) + " 0"); } }, 0);
       tl.set("#f23-cam", { filter: "none" }, 0.31);
       tl.fromTo("#f23-cam", { x: 240 }, { x: 0, duration: 0.3, ease: "expo.out" }, 0);
       tl.fromTo("#f23-pill", { x: 120, opacity: 0.4 }, { x: 0, opacity: 1, duration: 0.3, ease: "expo.out" }, 0);
-      STK.forEach((s, i) => {
-        tl.fromTo("#f23-stk" + i, { x: 300 + i * 40, opacity: 0.75 }, { x: -1300, opacity: 0, duration: 0.26 + (i % 3) * 0.03, ease: "power2.out" }, 0);
-      });
-      // the road draws in from the left; each node pops as the line reaches it
+      // the road draws in from the left; each node appears as the line reaches it
       const DRAW = 0.5;
       tl.fromTo("#f23-road", { strokeDashoffset: L }, { strokeDashoffset: 0, duration: DRAW, ease: "power2.out" }, 0);
       tl.set("#f23-prog", { strokeDashoffset: L + 20 }, 0);
       lenN.forEach((len, i) => {
         const T = DRAW * (1 - Math.sqrt(1 - len / L));   // power2.out inverse
         const k = i + 1;
-        tl.fromTo("#f23-n" + k, { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.34, ease: "expo.out" }, T);
+        tl.fromTo("#f23-n" + k, { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.34, ease: "power3.out" }, T);
         tl.fromTo("#f23-lb" + k, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, T + 0.06);
       });
       // node 1 is the open module at the start
@@ -285,61 +238,41 @@
       });
       // ================= "se · desbloquea" — key line + inline padlock =================
       tl.fromTo("#f23-w-se", { opacity: 0, y: 44, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, 0.65);
-      tl.fromTo("#f23-w-desb", { opacity: 0, scale: 1.25, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.78);
-      tl.fromTo("#f23-klock", { opacity: 0, scale: 1.4, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.84);
+      tl.fromTo("#f23-w-desb", { opacity: 0, scale: 1.08, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.78);
+      tl.fromTo("#f23-klock", { opacity: 0, scale: 1.1, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.84);
       tl.fromTo("#f23-ksh", { attr: { d: "M 14 -6 V -17 A 14 14 0 0 0 -14 -17 V -6" } },
         { attr: { d: "M 14 -6 V -27 A 14 14 0 0 0 -14 -27 V -20" }, duration: 0.24, ease: "expo.out" }, 1.06);
       tl.fromTo("#f23-ksh", { stroke: "#FFFFFF" }, { stroke: "#4da3ff", duration: 0.2, ease: "power2.out", immediateRender: false }, 1.06);
       tl.fromTo("#f23-kbody", { fill: "#FFFFFF" }, { fill: "#4da3ff", duration: 0.2, ease: "power2.out" }, 1.06);
-      // node 2's padlock rattles: still locked
-      tl.fromTo("#f23-lk2", { rotation: 0 }, { rotation: -12, duration: 0.06, ease: "power2.out" }, 0.86);
-      tl.to("#f23-lk2", { rotation: 9, duration: 0.08, ease: "power2.inOut" }, 0.92);
-      tl.to("#f23-lk2", { rotation: -5, duration: 0.08, ease: "power2.inOut" }, 1.0);
-      tl.to("#f23-lk2", { rotation: 0, duration: 0.12, ease: "power2.out" }, 1.08);
 
       // ================= "cuando terminas" — progress reaches node 1, node 1 completed =================
       function complete(k, T) {
-        tl.fromTo("#f23-dn" + k, { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "expo.out" }, T);
-        tl.to("#f23-lk" + k, { opacity: 0, scale: 0.4, duration: 0.14, ease: "power2.in" }, T);
-        tl.fromTo("#f23-ck" + k, { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.34, ease: "back.out(2.4)" }, T + 0.03);
+        tl.fromTo("#f23-dn" + k, { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, T);
+        tl.to("#f23-lk" + k, { opacity: 0, scale: 0.7, duration: 0.14, ease: "power2.in" }, T);
+        tl.fromTo("#f23-ck" + k, { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, T + 0.03);
         tl.fromTo("#f23-ckp" + k, { strokeDashoffset: 50 }, { strokeDashoffset: 0, duration: 0.2, ease: "power2.out" }, T + 0.06);
-        tl.fromTo("#f23-bg" + k, { opacity: 0.85, scale: 1 }, { opacity: 0, scale: 1.95, duration: 0.5, ease: "power2.out", immediateRender: false }, T + 0.01);
-        tl.to("#f23-n" + k, { scale: 1.12, duration: 0.08, ease: "power2.out" }, T);
+        tl.to("#f23-n" + k, { scale: 1.05, duration: 0.08, ease: "power2.out" }, T);
         tl.to("#f23-n" + k, { scale: 1, duration: 0.32, ease: "power3.out" }, T + 0.08);
       }
       function unlock(k, T) {
         tl.fromTo("#f23-sh" + k, { attr: { d: SH_CLOSED } }, { attr: { d: SH_OPEN }, duration: 0.24, ease: "expo.out" }, T - 0.04);
         tl.fromTo("#f23-kh" + k, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out" }, T);
         tl.to("#f23-lk" + k, { opacity: 1, duration: 0.14, ease: "power2.out" }, T - 0.04);
-        tl.fromTo("#f23-op" + k, { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.32, ease: "expo.out" }, T - 0.04);
-        tl.fromTo("#f23-gl" + k, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" }, T - 0.04);
-        tl.to("#f23-gl" + k, { opacity: 0, duration: 0.45, ease: "power1.out" }, T + 0.2);
-        tl.fromTo("#f23-bu" + k, { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 1.95, duration: 0.5, ease: "power2.out", immediateRender: false }, T - 0.03);
-        tl.to("#f23-n" + k, { scale: 1.14, duration: 0.08, ease: "power2.out" }, T - 0.04);
+        tl.fromTo("#f23-op" + k, { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.32, ease: "power3.out" }, T - 0.04);
+        tl.to("#f23-n" + k, { scale: 1.05, duration: 0.08, ease: "power2.out" }, T - 0.04);
         tl.to("#f23-n" + k, { scale: 1, duration: 0.32, ease: "power3.out" }, T + 0.04);
       }
       tl.to("#f23-prog", { strokeDashoffset: L - lenN[0], duration: 0.26, ease: "power2.in" }, 1.29);
       complete(1, 1.55);
 
-      // ================= "el anterior," — energy runs node 1 → node 2, lock 2 opens =================
+      // ================= "el anterior," — progress runs node 1 → node 2, lock 2 opens =================
       tl.to("#f23-prog", { strokeDashoffset: L - lenN[1], duration: 0.33, ease: "power2.in" }, 1.72);
-      [["#f23-sk-tail", TAIL, 1], ["#f23-sk-head", HEAD, 1], ["#f23-sk-glow", 60, 0.6]].forEach(([sel, seg, op]) => {
-        tl.fromTo(sel, { strokeDashoffset: seg }, { strokeDashoffset: seg - (seg1 + 30), duration: 0.33, ease: "power2.in" }, 1.72);
-        tl.fromTo(sel, { opacity: 0 }, { opacity: op, duration: 0.06, ease: "none", immediateRender: false }, 1.72);
-        tl.to(sel, { opacity: 0, duration: 0.12, ease: "power1.out" }, 2.05);
-      });
       unlock(2, 2.05);
 
       // ================= "así que" — TÚ drops onto node 2 =================
       const DROP = 2.93;
-      tl.fromTo("#f23-tu-drop", { scale: 2.7, filter: "blur(16px)" }, { scale: 1, filter: "blur(0px)", duration: 0.17, ease: "power2.in" }, DROP);
+      tl.fromTo("#f23-tu-drop", { scale: 1.3, filter: "blur(6px)" }, { scale: 1, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, DROP);
       tl.fromTo("#f23-tu-drop", { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none", immediateRender: false }, DROP + 0.02);
-      tl.to("#f23-tu-drop", { scale: 0.9, duration: 0.05, ease: "power2.out" }, DROP + 0.171);
-      tl.to("#f23-tu-drop", { scale: 1, duration: 0.24, ease: "power3.out" }, DROP + 0.223);
-      tl.fromTo("#f23-ring-n2", { scale: 1, opacity: 0.95 }, { scale: 2.3, opacity: 0, duration: 0.5, ease: "power2.out", immediateRender: false }, DROP + 0.17);
-      tl.fromTo("#f23-shake", { y: 0 }, { y: 7, duration: 0.04, ease: "power1.out" }, DROP + 0.17);
-      tl.to("#f23-shake", { y: -3, duration: 0.06, ease: "power1.inOut" }, DROP + 0.212);
-      tl.to("#f23-shake", { y: 0, duration: 0.08, ease: "power1.out" }, DROP + 0.274);
 
       // ================= "avanzas a tu ritmo," — TÚ travels node 2 → node 3, arriving on "ritmo" =================
       const TA = 3.15, TD = 0.68, TE = "power1.inOut";
@@ -347,9 +280,6 @@
       tl.to("#f23-prog", { strokeDashoffset: L - lenN[2], duration: TD, ease: TE }, TA);
       complete(2, 3.28);     // node 2 done as TÚ leaves it
       unlock(3, 3.44);       // ... which opens node 3 ahead of TÚ
-      tl.to("#f23-tu-drop", { scale: 0.92, duration: 0.05, ease: "power2.out" }, TA + TD);
-      tl.to("#f23-tu-drop", { scale: 1, duration: 0.24, ease: "power3.out" }, TA + TD + 0.052);
-      tl.fromTo("#f23-ring-n3", { scale: 1, opacity: 1 }, { scale: 2.2, opacity: 0, duration: 0.55, ease: "power2.out", immediateRender: false }, TA + TD);
 
       // kinetic-type-swap: masked slots roll up to the next phrase
       function rollOut(sel, dist, T) {
@@ -361,30 +291,44 @@
       }
       rollOut("#f23-L1", 70, 3.11); rollIn("#f23-L2", 72, 3.15);
       rollOut("#f23-K1", 140, 3.6); rollIn("#f23-K2", 142, 3.65);
-      tl.fromTo("#f23-w-ritmo", { opacity: 0, scale: 1.3, filter: "blur(12px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 3.82);
+      tl.fromTo("#f23-w-ritmo", { opacity: 0, scale: 1.08, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 3.82);
 
       // ================= "pero con tus compañeros" =================
       rollOut("#f23-L2", 70, 4.22); rollIn("#f23-L3", 72, 4.26);
       rollOut("#f23-K2", 140, 4.38); rollIn("#f23-K3", 142, 4.43);
       tl.fromTo("#f23-w-tus", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 4.6);
-      tl.fromTo("#f23-w-comp", { opacity: 0, scale: 1.3, filter: "blur(12px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 4.73);
-      // companions pop around TÚ (nearest first, ahead / behind), all advancing a bit together
+      tl.fromTo("#f23-w-comp", { opacity: 0, scale: 1.08, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 4.73);
+      // companions appear around TÚ (nearest first, ahead / behind), all advancing a bit together
       const SETTLE = 6.1;
       C.forEach(([n, f, x, y, t, dx, dy]) => {
-        tl.fromTo("#f23-pop-" + n, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.32, ease: "expo.out" }, t);
-        tl.fromTo("#f23-cring-" + n, { scale: 1, opacity: 0.8 }, { scale: 1.9, opacity: 0, duration: 0.45, ease: "power2.out", immediateRender: false }, t + 0.03);
+        tl.fromTo("#f23-pop-" + n, { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.32, ease: "power3.out" }, t);
         tl.fromTo("#f23-c-" + n, { x: 0, y: 0 }, { x: dx, y: dy, duration: SETTLE - t, ease: "power1.out" }, t);
       });
       tl.fromTo("#f23-tu-drop", { x: 0 }, { x: 18, duration: SETTLE - 4.74, ease: "power1.out", immediateRender: false }, 4.74);
       // purposeful camera: push in on the group
-      tl.fromTo("#f23-cam", { scale: 1 }, { scale: 1.05, duration: 0.9, ease: "power3.out", immediateRender: false }, 4.74);
+      tl.fromTo("#f23-cam", { scale: 1 }, { scale: 1.03, duration: 0.9, ease: "power2.out", immediateRender: false }, 4.74);
 
       // ================= "en el mismo camino." =================
       tl.fromTo("#f23-w-mismo", { opacity: 0, y: 30, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, 5.5);
       tl.fromTo("#f23-w-camino", { opacity: 0, y: 30, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, 5.83);
-      tl.fromTo("#f23-halo", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.42, ease: "power2.out" }, 5.52);
       tl.fromTo("#f23-pulse", { strokeDashoffset: 240 }, { strokeDashoffset: 240 - L, duration: 0.55, ease: "power1.inOut" }, 5.84);
-      tl.fromTo("#f23-pulse", { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none", immediateRender: false }, 5.84);
+      tl.fromTo("#f23-pulse", { opacity: 0 }, { opacity: 0.7, duration: 0.08, ease: "none", immediateRender: false }, 5.84);
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.29, 0.276], [0.65, 0.597], [0.79, 0.725], [1.29, 1.184], [1.55, 1.432], [1.96, 1.817], [2.05, 1.89], [2.69, 2.459], [2.93, 2.688], [3.15, 2.899], [3.65, 3.285], [3.71, 3.349], [3.83, 3.441], [4.26, 3.863], [4.43, 4.01], [4.6, 4.156], [4.74, 4.294], [5.31, 4.844], [5.37, 4.872], [5.52, 5.046], [5.84, 5.34], [6.46, 5.844]]);
 
       window.__timelines["23-camino"] = tl;
     })();

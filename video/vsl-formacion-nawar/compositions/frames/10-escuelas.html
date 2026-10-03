@@ -62,7 +62,7 @@
       position: absolute; top: 26px; right: 26px; padding: 7px 14px 6px; border-radius: 10px;
       background: #0C0C1E; color: #FFFFFF; font-family: "Inter", sans-serif; font-weight: 800; font-size: 24px;
       line-height: 1; letter-spacing: 0.08em;
-      box-shadow: 0 10px 24px rgba(12,12,30,0.28);
+      box-shadow: 0 4px 10px rgba(12,12,30,0.16);
     }
 
     #f10-band { position: absolute; left: 0; top: 401px; width: 1920px; height: 278px; z-index: 1; }
@@ -81,7 +81,7 @@
     #f10-ti {
       display: inline-block; background: #1D0084; color: #FFFFFF; border-radius: 14px;
       padding: 0.06em 0.2em 0.08em; margin-left: 0.02em; transform-origin: 18% 55%;
-      box-shadow: 0 24px 60px rgba(18,0,129,0.28), 0 4px 14px rgba(18,0,129,0.14);
+      box-shadow: 0 12px 28px rgba(18,0,129,0.18), 0 3px 8px rgba(18,0,129,0.10);
     }
 
     /* ================= SCENE 2 — the detour ================= */
@@ -92,14 +92,14 @@
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; line-height: 1; letter-spacing: 0.14em;
       text-transform: uppercase; color: #5A6480;
     }
-    #f10-route-shadow { fill: none; stroke: rgba(224,45,60,0.16); stroke-width: 26; stroke-linecap: round; stroke-linejoin: round;
+    #f10-route-shadow { fill: none; stroke: rgba(224,45,60,0.07); stroke-width: 20; stroke-linecap: round; stroke-linejoin: round;
       stroke-dasharray: 1000 1000; stroke-dashoffset: 1000; }
     #f10-route { fill: none; stroke: #E02D3C; stroke-width: 11; stroke-linecap: round; stroke-linejoin: round;
       stroke-dasharray: 1000 1000; stroke-dashoffset: 1000; }
     #f10-dot {
       position: absolute; left: 0; top: 0; width: 38px; height: 38px; margin: -19px 0 0 -19px; border-radius: 50%;
       background: #FFFFFF; border: 8px solid #E02D3C; box-sizing: border-box;
-      box-shadow: 0 0 0 10px rgba(224,45,60,0.16), 0 8px 18px rgba(224,45,60,0.35);
+      box-shadow: 0 4px 10px rgba(18,0,129,0.18);
     }
     .f10-node { position: absolute; width: 180px; height: 180px; margin: -90px 0 0 -90px; }
     .f10-disc {
@@ -108,8 +108,7 @@
       color: #FFFFFF; background: #1D0084;
       box-shadow: 0 30px 80px rgba(18,0,129,0.22), 0 4px 14px rgba(18,0,129,0.10), inset 0 0 0 8px rgba(255,255,255,0.12);
     }
-    #f10-n-en .f10-disc { background: #E02D3C; box-shadow: 0 30px 80px rgba(224,45,60,0.30), 0 4px 14px rgba(224,45,60,0.18), inset 0 0 0 8px rgba(255,255,255,0.16); }
-    .f10-ring { position: absolute; inset: -6px; border-radius: 50%; border: 6px solid #E02D3C; opacity: 0; }
+    #f10-n-en .f10-disc { background: #E02D3C; box-shadow: 0 30px 80px rgba(18,0,129,0.18), 0 4px 14px rgba(18,0,129,0.08), inset 0 0 0 8px rgba(255,255,255,0.16); }
     .f10-label {
       position: absolute; left: 50%; top: 204px; width: 400px; margin-left: -200px; text-align: center;
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.14em; color: #0C0C1E;
@@ -140,8 +139,8 @@
     .f10-lead { font-family: "Poppins", sans-serif; font-weight: 600; font-size: 58px; letter-spacing: -0.01em; color: #374151; line-height: 1.1; }
     .f10-lead-g { display: flex; gap: 0.26em; }
     .f10-hero {
-      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 196px; line-height: 0.95;
-      letter-spacing: -0.04em; text-transform: uppercase; color: #1D0084; padding-right: 0.04em;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 196px; line-height: 0.95;
+      letter-spacing: -0.04em; color: #1D0084; padding-right: 0.04em;
       transform-origin: 0% 62%;
     }
     #f10-errores { color: #E02D3C; }
@@ -170,13 +169,13 @@
     .f10-sq path { fill: none; stroke: #E02D3C; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100 100; stroke-dashoffset: 100; }
     .f10-x {
       position: absolute; border-radius: 50%; background: #E02D3C; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 16px 36px rgba(224,45,60,0.38), 0 0 0 8px rgba(224,45,60,0.14);
+      box-shadow: 0 8px 18px rgba(18,0,129,0.16), 0 0 0 6px #FFFFFF;
     }
     .f10-x svg { width: 46%; height: 46%; overflow: visible; }
   </style>
 
-  <div id="root" data-composition-id="10-escuelas" data-width="1920" data-height="1080" data-duration="6.65">
-    <div id="f10-ground" class="clip" data-start="0" data-duration="6.65" data-track-index="0">
+  <div id="root" data-composition-id="10-escuelas" data-width="1920" data-height="1080" data-duration="5.926">
+    <div id="f10-ground" class="clip" data-start="0" data-duration="5.926" data-track-index="0">
       <div id="f10-dots"></div>
       <div id="f10-light"></div>
     </div>
@@ -223,11 +222,9 @@
         <div class="f10-disc">ES</div><div class="f10-label">ESPAÑOL</div>
       </div>
       <div class="f10-node" id="f10-n-en" style="left:960px; top:250px;">
-        <div class="f10-ring" id="f10-ring-en"></div>
         <div class="f10-disc" id="f10-disc-en">EN</div><div class="f10-label">INGLÉS</div>
       </div>
       <div class="f10-node" id="f10-n-nl" style="left:1500px; top:560px;">
-        <div class="f10-ring" id="f10-ring-nl"></div>
         <div class="f10-disc" id="f10-disc-nl">NL</div><div class="f10-label">NEERLANDÉS</div>
       </div>
       <div id="f10-s2-text">
@@ -310,13 +307,7 @@
       // slam: oversized + blurred -> rest
       const slam = (id, t, from) => tl.fromTo(q(id),
         { scale: from || 1.6, opacity: 0, filter: "blur(10px)" },
-        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.34, ease: "power4.out" }, t - LEAD);
-      // deterministic 3-frame shake
-      const shake = (id, t, a) => {
-        tl.fromTo(q(id), { x: 0, y: 0 }, { x: a, y: -a * 0.5, duration: F, ease: "power2.out", immediateRender: false }, t);
-        tl.to(q(id), { x: -a * 0.7, y: a * 0.35, duration: F, ease: "power2.out" }, t + F);
-        tl.to(q(id), { x: 0, y: 0, duration: F, ease: "power2.out" }, t + 2 * F);
-      };
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.34, ease: "power3.out" }, t - LEAD);
 
       // ================= SCENE 1 (0.00 – 2.17) =================
       // entrance: the course wall cascades in from the top, row by row (stagger 0.04)
@@ -326,12 +317,12 @@
         const t0 = 0.0 + i * 0.03;
         const first = i < 4;
         tl.fromTo(q("f10-c" + i),
-          { y: first ? -110 : -220, scale: 1.06, rotation: ROT[i], filter: "blur(6px)" },
-          { y: 0, scale: 1, rotation: 0, filter: "blur(0px)", duration: 0.38, ease: "power4.out" }, t0);
+          { y: first ? -110 : -220, scale: 1.02, rotation: ROT[i] * 0.2, filter: "blur(4px)" },
+          { y: 0, scale: 1, rotation: 0, filter: "blur(0px)", duration: 0.38, ease: "power3.out" }, t0);
         tl.fromTo(q("f10-c" + i), { opacity: first ? 0.5 : 0 }, { opacity: 1, duration: first ? 0.1 : 0.12, ease: "power1.out" }, t0);
       }
       // white band wipes in under "Casi", then the words rise into it
-      tl.fromTo(q("f10-band-bg"), { scaleX: 0 }, { scaleX: 1, duration: 0.34, ease: "power4.out" }, 0.04);
+      tl.fromTo(q("f10-band-bg"), { scaleX: 0 }, { scaleX: 1, duration: 0.34, ease: "power3.out" }, 0.04);
       rise("f10-w-casi", T.casi);
       rise("f10-w-ninguna", T.ninguna);
       rise("f10-w-escuela", T.escuela);
@@ -340,15 +331,14 @@
       // "piensa en ti": every card gets its EN badge and goes grey
       for (let i = 0; i < 12; i++) {
         const t = T.piensa - LEAD + [0, 1, 2, 3, 1, 2, 3, 4, 2, 3, 4, 5][i] * 0.035;
-        tl.fromTo(q("f10-g" + i), { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.26, ease: "power3.out" }, t);
+        tl.fromTo(q("f10-g" + i), { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.26, ease: "power3.out" }, t);
         tl.fromTo(q("f10-b" + i), { filter: "grayscale(0)", opacity: 1 },
           { filter: "grayscale(1)", opacity: 0.5, duration: 0.42, ease: "power2.out" }, t);
       }
-      // "ti." — indigo word-chip slams in, band takes the hit
+      // "ti." — indigo word-chip lands
       tl.fromTo(q("f10-ti"),
-        { scale: 1.8, opacity: 0, rotation: -7, filter: "blur(10px)" },
-        { scale: 1, opacity: 1, rotation: -1.5, filter: "blur(0px)", duration: 0.32, ease: "power4.out" }, T.ti - LEAD);
-      shake("f10-band", T.ti + 0.1, 7);
+        { scale: 1.12, opacity: 0, rotation: -1.5, filter: "blur(6px)" },
+        { scale: 1, opacity: 1, rotation: -1.5, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, T.ti - LEAD);
 
       // ---- full-screen push seam (no opacity): outgoing + incoming stacked 1080 px apart, moving as ONE sheet.
       // Accelerate on power3.in for the first half (0 -> -540), cut at peak velocity, decelerate on power4.out
@@ -390,20 +380,15 @@
       rise("f10-w-vinieras", T.vinieras);
       rise("f10-w-del", T.del);
       // "inglés": the word slams, the EN node pulses once, the route continues to NEERLANDÉS
-      slam("f10-ingles", T.ingles, 1.5);
-      tl.fromTo(q("f10-disc-en"), { scale: 1 }, { scale: 1.12, duration: 0.14, ease: "power2.out" }, T.ingles - LEAD);
+      slam("f10-ingles", T.ingles, 1.1);
+      tl.fromTo(q("f10-disc-en"), { scale: 1 }, { scale: 1.06, duration: 0.14, ease: "power2.out" }, T.ingles - LEAD);
       tl.to(q("f10-disc-en"), { scale: 1, duration: 0.3, ease: "power2.inOut" }, T.ingles - LEAD + 0.14);
-      // pulse ring capped at 1.24 (outer r ≈ 119 px) so it never strikes through the label below the disc
-      tl.fromTo(q("f10-ring-en"), { scale: 1, opacity: 0 }, { scale: 1.03, opacity: 0.85, duration: F, ease: "none" }, T.ingles - LEAD);
-      tl.to(q("f10-ring-en"), { scale: 1.24, opacity: 0, duration: 0.45, ease: "power2.out" }, T.ingles - LEAD + F);
       // EN -> NL lands at ~4.09 so the arrival gets a real beat before the seam
       const T_NL = T.ingles - LEAD + D2;
       tl.to([q("f10-route"), q("f10-route-shadow")], { strokeDashoffset: 0, duration: D2, ease: "power2.inOut" }, T.ingles - LEAD);
       tl.to(q("f10-dot"), { motionPath: { path: ROUTE, start: F1, end: 1 }, duration: D2, ease: "power2.inOut" }, T.ingles - LEAD);
-      tl.fromTo(q("f10-disc-nl"), { scale: 1 }, { scale: 1.08, duration: 0.12, ease: "power2.out" }, T_NL);
+      tl.fromTo(q("f10-disc-nl"), { scale: 1 }, { scale: 1.04, duration: 0.12, ease: "power2.out" }, T_NL);
       tl.to(q("f10-disc-nl"), { scale: 1, duration: 0.2, ease: "power2.inOut" }, T_NL + 0.12);
-      tl.fromTo(q("f10-ring-nl"), { scale: 1, opacity: 0 }, { scale: 1.03, opacity: 0.8, duration: F, ease: "none" }, T_NL);
-      tl.to(q("f10-ring-nl"), { scale: 1.24, opacity: 0, duration: 0.4, ease: "power2.out" }, T_NL + F);
 
       // seam 2 -> 3 (cut at 4.53, exactly on "y")
       push("f10-s2", "f10-s3", 4.29, 0.24, 0.36);
@@ -416,23 +401,22 @@
       tl.fromTo(q("f10-sq1"), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.34, ease: "power2.out" }, 4.6);
       tl.fromTo(q("f10-sq2"), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.28, ease: "power2.out" }, 4.9);
       // "solo": the word slams, the world around the lone learner dims
-      slam("f10-solo", T.solo, 1.45);
+      slam("f10-solo", T.solo, 1.12);
       tl.fromTo(q("f10-vig"), { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "power2.out" }, T.solo - LEAD);
       tl.to(q("f10-top-lead"), { opacity: 0.3, duration: 0.4, ease: "power2.out" }, T.solo + 0.06);
       tl.fromTo(q("f10-dots"), { opacity: 1 }, { opacity: 0.3, duration: 0.5, ease: "power2.out" }, T.solo - LEAD);
       rise("f10-w-con", T.con);
       rise("f10-w-tus", T.tus);
       // "errores": red slam + three ✕ pop around the card
-      slam("f10-errores", T.errores, 1.4);
-      [["f10-x1", 0.0, -10], ["f10-x2", 0.06, 8], ["f10-x3", 0.12, -6]].forEach(([id, dt, r]) => {
-        tl.fromTo(q(id), { scale: 0, opacity: 0, rotation: r - 35 },
-          { scale: 1, opacity: 1, rotation: r, duration: 0.3, ease: "power3.out" }, T.errores - LEAD + dt);
+      slam("f10-errores", T.errores, 1.12);
+      [["f10-x1", 0.0], ["f10-x2", 0.06], ["f10-x3", 0.12]].forEach(([id, dt]) => {
+        tl.fromTo(q(id), { scale: 0.7, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, T.errores - LEAD + dt);
       });
-      shake("f10-card3", T.errores + 0.08, 6);
       // hold — lonely.
 
       // ---- line re-centering: each line slides so its visible words stay centered ----
-      const STEPS = {"f10-band-line": [[null, 672.5], [0.36, 476.6, 0.34], [0.78, 295.2, 0.34], [1.21, 136.5, 0.34], [1.55, 0.0, 0.34]], "f10-s2-lead": [[null, 113.5], [2.57, 87.4, 0.12], [2.69, 0.0, 0.34]], "f10-s2-main": [[null, 512.1], [3.24, 459.3, 0.15], [3.39, 247.7, 0.32], [3.71, 0.0, 0.34]], "f10-top": [[null, 395.1], [4.87, 359.0, 0.12], [4.99, 268.5, 0.34], [5.34, 0.0, 0.34]], "f10-bot": [[null, 516.1], [5.86, 463.3, 0.19], [6.05, 0.0, 0.34]]};
+      const STEPS = {"f10-band-line": [[null, 672.5], [0.36, 476.6, 0.34], [0.78, 295.2, 0.34], [1.21, 136.5, 0.34], [1.55, 0.0, 0.34]], "f10-s2-lead": [[null, 113.5], [2.57, 87.4, 0.12], [2.69, 0.0, 0.34]], "f10-s2-main": [[null, 512.1], [3.24, 459.3, 0.15], [3.39, 247.7, 0.32], [3.71, 0.0, 0.34]], "f10-top": [[null, 340.3], [4.87, 304.2, 0.12], [4.99, 213.7, 0.34], [5.34, 0.0, 0.34]], "f10-bot": [[null, 440.1], [5.86, 387.3, 0.19], [6.05, 0.0, 0.34]]};
       Object.keys(STEPS).forEach((id) => {
         const st = STEPS[id];
         for (let k = 1; k < st.length; k++) {
@@ -459,6 +443,22 @@
           c.startTime(ns);
         });
       })(tl, [[0.0, 0.0], [0.12, 0.12], [0.361, 0.34], [0.782, 0.68], [1.213, 1.1], [1.555, 1.44], [1.592, 1.55], [2.204, 2.12], [2.287, 2.2], [2.574, 2.55], [2.694, 2.65], [3.046, 3.0], [3.241, 3.23], [3.389, 3.36], [3.713, 3.72], [3.815, 3.83], [4.528, 4.45], [4.574, 4.54], [4.87, 4.85], [4.991, 4.93], [5.342, 5.23], [5.667, 5.56], [5.861, 5.71], [6.055, 5.87], [6.611, 6.65]]);
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.34, 0.321], [0.68, 0.698], [1.1, 1.074], [1.44, 1.377], [1.55, 1.459], [2.12, 1.881], [2.2, 1.955], [2.55, 2.257], [2.65, 2.349], [3.0, 2.661], [3.23, 2.844], [3.36, 2.955], [3.72, 3.312], [3.83, 3.413], [4.45, 3.973], [4.54, 4.046], [4.85, 4.321], [4.93, 4.432], [5.23, 4.707], [5.56, 5.0], [5.71, 5.138], [5.87, 5.285], [6.65, 5.926]]);
       window.__timelines["10-escuelas"] = tl;
     })();
   </script>

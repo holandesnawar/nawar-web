@@ -2,453 +2,264 @@
   <script src="assets/vendor/gsap.min.js"></script>
   <style>
     @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
-    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
     @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
     @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
     @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
-    @font-face { font-family: "Inter"; font-weight: 800; font-style: normal; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
 
     #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
 
-    /* ---------- ground: NAWAR BLUE (gradient + vignette); dots on their own layer ---------- */
-    #f28-ground {
-      position: absolute; inset: 0;
-      background-color: #120081;
-      background-image:
-        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
-        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
-      background-size: 100% 100%, 100% 100%;
-    }
+    /* ---------- ground: nawar-blue + white dot grid + vignette ---------- */
+    #f28-ground { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 50% 46%, #025dc7 0%, #120081 72%); }
     #f28-dots {
-      position: absolute; left: -240px; top: -140px; width: 2400px; height: 1360px;
+      position: absolute; left: -160px; top: -100px; width: 2240px; height: 1280px;
       background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
-      background-size: 28px 28px;
+      background-size: 28px 28px; background-position: 14px 14px;
     }
+    #f28-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 72% 70% at 50% 46%, rgba(4,0,40,0) 52%, rgba(4,0,40,0.42) 100%); }
 
-    /* ---------- shared type ---------- */
-    .f28-w { display: inline-block; will-change: transform, opacity; }
-    .f28-lead {
-      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 54px; line-height: 1.1;
-      letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
-    }
-    .f28-key {
-      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 88px; line-height: 1.0;
-      letter-spacing: -0.03em; color: #FFFFFF;
-    }
-    .f28-caps { text-transform: uppercase; }
-    .f28-cline {
-      position: absolute; left: 0; width: 1920px;
-      display: flex; justify-content: center; align-items: baseline; white-space: nowrap;
-    }
+    /* ---------- type: 88 px key · 44 px lead (+ UI labels inside the windows) ---------- */
+    .f28-line { position: absolute; left: 96px; white-space: nowrap; }
+    .f28-key { height: 96px; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 88px; line-height: 96px; letter-spacing: -0.035em; color: #FFFFFF; }
+    .f28-lead { height: 54px; font-family: "Poppins", sans-serif; font-weight: 600; font-size: 44px; line-height: 54px; letter-spacing: -0.01em; color: rgba(255,255,255,0.72); }
+    .f28-w { display: inline-block; }
+    .f28-acc { color: #4da3ff; }
 
-    /* =================== SCENE 1 — laptop + Eventos calendar (v1 look) =================== */
-    #f28-s1 { position: absolute; inset: 0; }
-    #f28-h1a { top: 78px; height: 92px; }
-    #f28-h1a .f28-w { margin: 0 10px; }
-    #f28-h1b { top: 172px; height: 100px; }
-    #f28-h1b .f28-w { margin: 0 12px; }
-    #f28-w-directo { transform-origin: 40% 70%; }
+    /* ================= MAC MOCKUP (tools/mac_mockup.md) — standalone macOS window ================= */
+    .f28-win { --u: calc(var(--sw) / 1120); }
+    .f28-win {
+      --sw: 1120px;
+      position: absolute; width: calc(var(--u) * 1120); height: calc(var(--u) * 700);
+      border-radius: calc(var(--u) * 12); overflow: hidden; background: #FFFFFF;
+      box-shadow: 0 0 0 calc(var(--u) * 1) rgba(10,10,30,0.28), 0 calc(var(--u) * 30) calc(var(--u) * 90) rgba(4,0,40,0.50), 0 calc(var(--u) * 10) calc(var(--u) * 26) rgba(4,0,40,0.30);
+    }
+    .f28-win-edge {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: calc(var(--u) * 12); pointer-events: none;
+      box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(255,255,255,0.45);
+    }
+    .f28-chrome { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 70); font-family: "Inter", sans-serif; }
+    .f28-tabs { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--u) * 36); background: #DEE1E6; }
+    .f28-tl { position: absolute; top: calc(var(--u) * 12); width: calc(var(--u) * 12); height: calc(var(--u) * 12); border-radius: 50%; }
+    .f28-tl-r { left: calc(var(--u) * 13); background: #FF5F57; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #E0443E; }
+    .f28-tl-y { left: calc(var(--u) * 33); background: #FEBC2E; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #DEA123; }
+    .f28-tl-g { left: calc(var(--u) * 53); background: #28C840; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #1AAB29; }
+    .f28-tab {
+      position: absolute; left: calc(var(--u) * 82); top: calc(var(--u) * 7); width: calc(var(--u) * 232); height: calc(var(--u) * 29);
+      border-radius: calc(var(--u) * 9) calc(var(--u) * 9) 0 0; background: #FFFFFF;
+    }
+    .f28-tab::before, .f28-tab::after { content: ""; position: absolute; bottom: 0; width: calc(var(--u) * 9); height: calc(var(--u) * 9); }
+    .f28-tab::before { left: calc(var(--u) * -9); background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f28-tab::after { right: calc(var(--u) * -9); background: radial-gradient(circle at 100% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f28-fav {
+      position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 7); width: calc(var(--u) * 15); height: calc(var(--u) * 15);
+      border-radius: calc(var(--u) * 3.5); overflow: hidden;
+      background: url("assets/img/logo-nawar.png") no-repeat calc(var(--u) * 1.2) calc(var(--u) * 5.2) / calc(var(--u) * 12.6) auto, radial-gradient(circle at 50% 45%, #2fb6f2 0%, #0b6df0 80%);
+    }
+    .f28-tab-t {
+      position: absolute; left: calc(var(--u) * 35); top: 0; height: calc(var(--u) * 29); line-height: calc(var(--u) * 29);
+      font-size: calc(var(--u) * 12); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f28-tab-x { position: absolute; right: calc(var(--u) * 10); top: calc(var(--u) * 9.5); width: calc(var(--u) * 10); height: calc(var(--u) * 10); }
+    .f28-tab-rec { position: absolute; right: calc(var(--u) * 28); top: calc(var(--u) * 11); width: calc(var(--u) * 7); height: calc(var(--u) * 7); border-radius: 50%; background: #E02D3C; }
+    .f28-plus { position: absolute; left: calc(var(--u) * 330); top: calc(var(--u) * 11); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    .f28-bar { position: absolute; left: 0; top: calc(var(--u) * 36); width: 100%; height: calc(var(--u) * 34); background: #FFFFFF; box-shadow: inset 0 calc(var(--u) * -1) 0 #DADCE0; }
+    .f28-nav { position: absolute; left: calc(var(--u) * 14); top: calc(var(--u) * 9); width: calc(var(--u) * 86); height: calc(var(--u) * 16); overflow: visible; }
+    .f28-menu { position: absolute; left: calc(var(--u) * 1086); top: calc(var(--u) * 9); width: calc(var(--u) * 16); height: calc(var(--u) * 16); }
+    .f28-url {
+      position: absolute; left: calc(var(--u) * 102); top: calc(var(--u) * 4); width: calc(var(--u) * 962); height: calc(var(--u) * 26);
+      border-radius: calc(var(--u) * 13); background: #F1F3F4;
+    }
+    .f28-lock { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6.5); width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
+    .f28-url-t {
+      position: absolute; left: calc(var(--u) * 33); top: 0; height: calc(var(--u) * 26); line-height: calc(var(--u) * 26);
+      font-size: calc(var(--u) * 13); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f28-star { position: absolute; right: calc(var(--u) * 11); top: calc(var(--u) * 6); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    .f28-content { position: absolute; left: 0; top: calc(var(--u) * 70); width: calc(var(--u) * 1120); height: calc(var(--u) * 630); overflow: hidden; background: #FFFFFF; }
 
-    #f28-push { position: absolute; inset: 0; perspective: 2200px; perspective-origin: 960px 560px; transform-origin: 920px 616px; }
-    #f28-lap { position: absolute; inset: 0; transform-origin: 960px 903px; }
-    #f28-floor {
-      position: absolute; left: 230px; top: 905px; width: 1460px; height: 84px; border-radius: 50%;
-      background: radial-gradient(ellipse at 50% 40%, rgba(4,0,40,0.55) 0%, rgba(4,0,40,0.22) 45%, rgba(4,0,40,0) 72%);
+    /* ---------- page A: the real «Eventos» calendar (2048×978 → 1120u wide, page continues below) ---------- */
+    #f28-pageA { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #F1F2F8; }
+    #f28-cal { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 534.84); display: block; }
+    #f28-calside { position: absolute; left: 0; top: calc(var(--u) * 534); width: calc(var(--u) * 198.6); height: calc(var(--u) * 96); background: #0A2199; box-shadow: inset calc(var(--u) * -0.6) 0 0 #2C3EA8; }
+    .f28-hl {
+      position: absolute; left: calc(var(--u) * 600.2); width: calc(var(--u) * 120.3); height: calc(var(--u) * 24.4); box-sizing: border-box;
+      border-radius: calc(var(--u) * 5); border: calc(var(--u) * 2) solid #0b6df0; background: rgba(11,109,240,0.10);
     }
-    #f28-base {
-      position: absolute; left: 292px; top: 903px; width: 1336px; height: 26px;
-      border-radius: 3px 3px 24px 24px;
-      background: linear-gradient(180deg, #eef1f7 0%, #c9cfdc 40%, #9aa3b8 100%);
-      box-shadow: 0 10px 24px rgba(4,0,40,0.35);
+    #f28-livetag {
+      position: absolute; left: calc(var(--u) * 732); top: calc(var(--u) * 279); height: calc(var(--u) * 38); box-sizing: border-box;
+      padding: 0 calc(var(--u) * 16) 0 calc(var(--u) * 14); border-radius: calc(var(--u) * 19); background: #FFFFFF;
+      display: flex; align-items: center; gap: calc(var(--u) * 10); white-space: nowrap; transform-origin: 0% 50%;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: calc(var(--u) * 17); letter-spacing: 0.12em; color: #0C0C1E;
+      box-shadow: 0 0 0 calc(var(--u) * 1) rgba(12,12,30,0.08), 0 calc(var(--u) * 10) calc(var(--u) * 26) rgba(18,0,129,0.22);
     }
-    #f28-notch {
-      position: absolute; left: 568px; top: 0; width: 200px; height: 9px; border-radius: 0 0 10px 10px;
-      background: linear-gradient(180deg, #9aa3b8 0%, #b9c0cf 100%);
-    }
-    #f28-bezel {
-      position: absolute; left: 378px; top: 324px; width: 1164px; height: 579px; box-sizing: border-box;
-      padding: 22px; border-radius: 26px; background: #0C0C1E;
-      box-shadow: 0 40px 110px rgba(4,0,40,0.45), inset 0 0 0 2px rgba(255,255,255,0.06);
-    }
-    #f28-camdot { position: absolute; left: 578px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: #262a40; }
-    #f28-scr { position: relative; width: 1120px; height: 535px; border-radius: 8px; overflow: hidden; background: #0C0C1E; }
-    #f28-zo { position: absolute; left: 0; top: 0; width: 1120px; height: 535px; transform-origin: 560px 267.5px; }
-    #f28-zi { position: absolute; left: 0; top: 0; width: 1120px; height: 535px; }
-    #f28-cal { position: absolute; left: 0; top: 0; width: 1120px; height: 534.84px; display: block; }
-    .f28-ring { position: absolute; box-sizing: border-box; border-radius: 7px; border: 2px solid #0b6df0; }
-    #f28-r24 { box-shadow: 0 0 0 3px rgba(11,109,240,0.18), 0 0 14px rgba(11,109,240,0.55); }
-    #f28-glass {
-      position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(118deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 34%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 100%);
-    }
-    /* EN DIRECTO pill (screen space, not zoomed) */
-    #f28-live { position: absolute; left: 652px; top: 250px; width: 300px; height: 60px; transform-origin: 20% 50%; }
-    #f28-liveburst { position: absolute; inset: 0; border-radius: 999px; box-sizing: border-box; border: 4px solid #E02D3C; }
-    .f28-livepill {
-      position: absolute; inset: 0; border-radius: 999px; background: #E02D3C;
-      display: flex; align-items: center; justify-content: center; gap: 14px;
-      font-family: "Inter", sans-serif; font-weight: 800; font-size: 28px; line-height: 1;
-      letter-spacing: 0.1em; color: #FFFFFF; white-space: nowrap;
-      box-shadow: 0 16px 34px rgba(4,0,40,0.38), 0 0 0 3px rgba(255,255,255,0.9);
-    }
-    .f28-livedot-wrap { position: relative; width: 16px; height: 16px; flex: none; }
-    .f28-livedot { position: absolute; inset: 0; border-radius: 50%; background: #FFFFFF; }
-    #f28-liveping { position: absolute; inset: 0; border-radius: 50%; border: 2px solid #FFFFFF; box-sizing: border-box; }
+    #f28-livetag i { width: calc(var(--u) * 10); height: calc(var(--u) * 10); border-radius: 50%; background: #E02D3C; display: block; }
 
-    /* =================== SCENE 2 — module video  =  live class (same teacher) =================== */
-    #f28-s2 { position: absolute; inset: 0; opacity: 0; }
-    #f28-h2a { position: absolute; left: 128px; top: 90px; height: 100px; display: flex; align-items: baseline; white-space: nowrap; }
-    #f28-h2a .f28-lead { margin-right: 16px; }
-    #f28-h2a .f28-key { margin-right: 24px; }
-    #f28-w-mismos { color: #4da3ff; transform-origin: 30% 70%; }
-    #f28-w-profesores { transform-origin: 20% 70%; }
-    #f28-h2b { position: absolute; left: 132px; top: 206px; height: 60px; display: flex; align-items: baseline; white-space: nowrap; }
-    #f28-h2b .f28-w { font-size: 46px; margin-right: 13px; }
-    #f28-w-modulos { color: #FFFFFF; }
+    /* ---------- page B: live class (call layout) — Paul (paul-clase-1) + his shared slide ---------- */
+    #f28-pageB { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #0E1124; font-family: "Inter", sans-serif; }
+    .f28-cpill {
+      position: absolute; left: calc(var(--u) * 20); top: calc(var(--u) * 14); height: calc(var(--u) * 24); box-sizing: border-box;
+      padding: 0 calc(var(--u) * 10) 0 calc(var(--u) * 9); border-radius: calc(var(--u) * 6); background: #E02D3C;
+      display: flex; align-items: center; gap: calc(var(--u) * 6); white-space: nowrap;
+      font-weight: 700; font-size: calc(var(--u) * 11); letter-spacing: 0.12em; color: #FFFFFF;
+    }
+    .f28-cpill i { width: calc(var(--u) * 7); height: calc(var(--u) * 7); border-radius: 50%; background: #FFFFFF; display: block; }
+    .f28-ctitle { position: absolute; left: calc(var(--u) * 138); top: 0; height: calc(var(--u) * 52); line-height: calc(var(--u) * 52); white-space: nowrap; font-weight: 600; font-size: calc(var(--u) * 15); color: rgba(255,255,255,0.9); }
+    .f28-avs { position: absolute; right: calc(var(--u) * 20); top: calc(var(--u) * 13); display: flex; }
+    .f28-av {
+      width: calc(var(--u) * 26); height: calc(var(--u) * 26); margin-left: calc(var(--u) * 5); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 calc(var(--u) * 2) #0E1124;
+      font-weight: 700; font-size: calc(var(--u) * 9.5); color: #FFFFFF; letter-spacing: 0.02em;
+    }
+    .f28-tile { position: absolute; top: calc(var(--u) * 52); height: calc(var(--u) * 500); border-radius: calc(var(--u) * 12); overflow: hidden; background: #1A1D33; }
+    .f28-tp { left: calc(var(--u) * 20); width: calc(var(--u) * 400); }
+    .f28-ts { left: calc(var(--u) * 432); width: calc(var(--u) * 668); }
+    /* Paul's camera: source x 770–1325, y 120–814 of 2502×992 → 400u × 500u (scale 0.7207u) */
+    .f28-vp { position: absolute; left: calc(var(--u) * -555.0); top: calc(var(--u) * -86.5); width: calc(var(--u) * 1803.2); height: calc(var(--u) * 714.9); display: block; object-fit: fill; }
+    /* his slide: source x 1347–2456, y 125–955 → 668u × 500u (scale 0.6024u) */
+    .f28-vs { position: absolute; left: calc(var(--u) * -811.4); top: calc(var(--u) * -75.3); width: calc(var(--u) * 1507.2); height: calc(var(--u) * 597.6); display: block; object-fit: fill; }
+    .f28-name {
+      position: absolute; left: calc(var(--u) * 12); bottom: calc(var(--u) * 12); height: calc(var(--u) * 26); box-sizing: border-box;
+      padding: 0 calc(var(--u) * 10) 0 calc(var(--u) * 8); border-radius: calc(var(--u) * 7); background: rgba(12,12,30,0.58);
+      display: flex; align-items: center; gap: calc(var(--u) * 6); white-space: nowrap; font-weight: 600; font-size: calc(var(--u) * 13); color: #FFFFFF;
+    }
+    .f28-name svg { width: calc(var(--u) * 12); height: calc(var(--u) * 12); display: block; }
+    .f28-spk { position: absolute; left: 0; top: 0; width: 100%; height: 100%; box-sizing: border-box; border-radius: calc(var(--u) * 12); border: calc(var(--u) * 3) solid #4da3ff; }
+    .f28-ctl { position: absolute; left: 0; top: calc(var(--u) * 562); width: 100%; height: calc(var(--u) * 56); display: flex; justify-content: center; align-items: center; gap: calc(var(--u) * 12); }
+    .f28-b { width: calc(var(--u) * 40); height: calc(var(--u) * 40); border-radius: 50%; background: rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; }
+    .f28-b svg { width: calc(var(--u) * 20); height: calc(var(--u) * 20); display: block; }
+    .f28-b.f28-end { width: calc(var(--u) * 58); border-radius: calc(var(--u) * 20); background: #E02D3C; }
 
-    /* --- big live-class card --- */
-    #f28-callw { position: absolute; left: 776px; top: 366px; width: 1026px; height: 558px; }
-    #f28-call {
-      position: absolute; inset: 0; box-sizing: border-box; border-radius: 34px; background: #0C0C1E;
-      box-shadow: 0 40px 110px rgba(4,0,40,0.45), inset 0 0 0 2px rgba(255,255,255,0.06);
-    }
-    #f28-stage { position: absolute; left: 16px; top: 16px; width: 812px; height: 462px; border-radius: 20px; overflow: hidden; background: #d9d4cc; }
-    /* teacher webcam tile: source x 850–1175, y 186–371 of 2560×1376, scale 2.5 */
-    #f28-vcall { position: absolute; left: -2125px; top: -465px; width: 6400px; height: 3440px; display: block; }
-    #f28-sglass {
-      position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(118deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 30%, rgba(255,255,255,0) 31%, rgba(255,255,255,0) 100%),
-                  linear-gradient(180deg, rgba(12,12,30,0) 72%, rgba(12,12,30,0.35) 100%);
-    }
-    #f28-speaker { position: absolute; left: 16px; top: 16px; width: 812px; height: 462px; box-sizing: border-box; border: 5px solid #34D399; border-radius: 20px; }
-    #f28-stagelive { position: absolute; left: 22px; top: 22px; width: 232px; height: 50px; transform-origin: 0% 50%; }
-    #f28-stagelive .f28-livepill { font-size: 22px; gap: 11px; box-shadow: 0 10px 24px rgba(4,0,40,0.35), 0 0 0 2px rgba(255,255,255,0.9); }
-    #f28-stagelive .f28-livedot-wrap { width: 13px; height: 13px; }
-    #f28-tag {
-      position: absolute; left: 22px; top: 392px; height: 48px; box-sizing: border-box;
-      display: flex; align-items: center; gap: 11px; padding: 0 20px 0 13px; border-radius: 999px;
-      background: #FFFFFF; color: #1D0084; transform-origin: 0% 50%;
-      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; white-space: nowrap;
-      box-shadow: 0 10px 24px rgba(4,0,40,0.35);
-    }
-    #f28-tag svg { display: block; width: 32px; height: 22px; }
-    #f28-face {
-      position: absolute; left: 355px; top: 40px; width: 290px; height: 330px; box-sizing: border-box;
-      border: 4px solid #4da3ff; border-radius: 26px;
-      box-shadow: 0 0 0 3px rgba(77,163,255,0.22), 0 0 26px rgba(77,163,255,0.65);
-    }
-    .f28-ptile {
-      position: absolute; left: 840px; width: 170px; height: 146px; border-radius: 16px; background: #1B1E3A;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
-    }
-    .f28-pav {
-      position: absolute; left: 50px; top: 31px; width: 70px; height: 70px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; line-height: 1; color: #FFFFFF; letter-spacing: 0.02em;
-    }
-    .f28-pmic { position: absolute; left: 12px; bottom: 11px; width: 20px; height: 20px; }
-    #f28-ctrl {
-      position: absolute; left: 16px; width: 812px; top: 478px; height: 80px;
-      display: flex; align-items: center; justify-content: center; gap: 18px;
-    }
-    .f28-btn { width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; }
-    .f28-btn svg { display: block; width: 24px; height: 24px; }
-    #f28-btn-end { background: #E02D3C; width: 64px; border-radius: 24px; }
-
-    /* --- module video card (white player) --- */
-    #f28-modw { position: absolute; left: 130px; top: 447px; width: 606px; height: 395px; transform-origin: 50% 60%; }
-    #f28-mod {
-      position: absolute; inset: 0; border-radius: 28px; background: #FFFFFF;
-      box-shadow: 0 40px 110px rgba(4,0,40,0.45);
-    }
-    #f28-mscr { position: absolute; left: 14px; top: 14px; width: 578px; height: 325px; border-radius: 16px; overflow: hidden; background: #120081; }
-    /* lesson slide only: source x 785–2375, y 100–994, scale 0.36352 */
-    #f28-vmod { position: absolute; left: -285.4px; top: -36.4px; width: 930.6px; height: 500.2px; display: block; }
-    #f28-mfoot { position: absolute; left: 14px; right: 18px; top: 339px; height: 56px; display: flex; align-items: center; gap: 14px; }
-    #f28-mplay { width: 38px; height: 38px; flex: none; border-radius: 50%; background: #0b6df0; display: flex; align-items: center; justify-content: center; }
-    #f28-mplay svg { display: block; width: 16px; height: 16px; }
-    #f28-mlabel { font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; line-height: 1; color: #1D0084; white-space: nowrap; }
-    #f28-mtrack { position: relative; flex: 1; height: 8px; border-radius: 4px; background: #DDE6F5; overflow: hidden; }
-    #f28-mfill { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: 4px; background: #0b6df0; transform-origin: 0% 50%; }
-    #f28-mring {
-      position: absolute; left: 17px; top: 25px; width: 131px; height: 79px; box-sizing: border-box;
-      border: 3px solid #4da3ff; border-radius: 12px;
-      box-shadow: 0 0 0 3px rgba(77,163,255,0.22), 0 0 18px rgba(77,163,255,0.75);
-    }
-
-    /* --- connector: same person in both --- */
-    #f28-link { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
-    #f28-eq {
-      position: absolute; left: 722px; top: 300px; width: 76px; height: 76px; border-radius: 50%;
-      background: #FFFFFF; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 0 0 6px rgba(77,163,255,0.35), 0 18px 40px rgba(4,0,40,0.45);
-    }
-    #f28-eq svg { display: block; width: 36px; height: 36px; }
+    /* ---------- module window: paul-clase-2 lesson page, source x 270–2113, y 0–1037 → 16:9 ---------- */
+    .f28-vm { position: absolute; left: calc(var(--u) * -164.1); top: 0; width: calc(var(--u) * 1473.0); height: calc(var(--u) * 752.3); display: block; object-fit: fill; }
   </style>
 
-  <div id="root" data-composition-id="28-directo" data-width="1920" data-height="1080" data-duration="5.09">
-    <div id="f28-ground" class="clip" data-start="0" data-duration="5.09" data-track-index="0"></div>
-    <div id="f28-dots"></div>
+  <div id="root" data-composition-id="28-directo" data-width="1920" data-height="1080" data-duration="4.542">
+    <div id="f28-ground" class="clip" data-start="0" data-duration="4.542" data-track-index="0"><div id="f28-dots"></div><div id="f28-vig"></div></div>
 
-    <!-- ================= SCENE 1 — calendar ================= -->
-    <div id="f28-s1">
-      <div id="f28-push">
-        <div id="f28-lap">
-          <div id="f28-floor"></div>
-          <div id="f28-base"><div id="f28-notch"></div></div>
-          <div id="f28-bezel">
-            <div id="f28-camdot"></div>
-            <div id="f28-scr">
-              <div id="f28-zo">
-                <div id="f28-zi">
-                  <img id="f28-cal" src="assets/img/ui-eventos-calendario.png" alt="" />
-                  <div class="f28-ring" id="f28-r17"></div>
-                  <div class="f28-ring" id="f28-r01"></div>
-                  <div class="f28-ring" id="f28-r08"></div>
-                  <div class="f28-ring" id="f28-r24"></div>
-                </div>
-              </div>
-              <div id="f28-glass"></div>
-              <div id="f28-live">
-                <div id="f28-liveburst"></div>
-                <div class="f28-livepill">
-                  <div class="f28-livedot-wrap"><div id="f28-liveping"></div><div class="f28-livedot"></div></div>
-                  <span>EN DIRECTO</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="f28-cline" id="f28-h1a">
-        <span class="f28-w f28-key f28-caps" id="f28-w-cada">Cada</span>
-        <span class="f28-w f28-key f28-caps" id="f28-w-semana">semana</span>
-      </div>
-      <div class="f28-cline" id="f28-h1b">
-        <span class="f28-w f28-lead" id="f28-w-una">una</span>
-        <span class="f28-w f28-lead" id="f28-w-clase">clase</span>
-        <span class="f28-w f28-key" id="f28-w-en">en</span>
-        <span class="f28-w f28-key" id="f28-w-directo">directo</span>
-      </div>
+    <!-- headline A: Una clase / en directo / cada semana -->
+    <div id="f28-ha">
+      <div class="f28-line f28-key" style="top:396px;"><span class="f28-w" id="f28-wa1">Una</span> <span class="f28-w" id="f28-wa2">clase</span></div>
+      <div class="f28-line f28-key" style="top:492px;"><span class="f28-w" id="f28-wa3">en</span> <span class="f28-w" id="f28-wa4">directo</span></div>
+      <div class="f28-line f28-key f28-acc" style="top:588px;"><span class="f28-w" id="f28-wa5">cada</span> <span class="f28-w" id="f28-wa6">semana</span></div>
+    </div>
+    <!-- headline B: Los mismos / profesores / que te explican / en los módulos -->
+    <div id="f28-hb">
+      <div class="f28-line f28-key" style="top:200px;"><span class="f28-w" id="f28-wb1">Los</span> <span class="f28-w f28-acc" id="f28-wb2">mismos</span></div>
+      <div class="f28-line f28-key" style="top:296px;"><span class="f28-w" id="f28-wb3">profesores</span></div>
+      <div class="f28-line f28-lead" style="top:412px;"><span class="f28-w" id="f28-wb4">que</span> <span class="f28-w" id="f28-wb5">te</span> <span class="f28-w" id="f28-wb6">explican</span></div>
+      <div class="f28-line f28-lead" style="top:466px;"><span class="f28-w" id="f28-wb7">en</span> <span class="f28-w" id="f28-wb8">los</span> <span class="f28-w" id="f28-wb9">módulos</span></div>
     </div>
 
-    <!-- ================= SCENE 2 — module video = live class ================= -->
-    <div id="f28-s2">
-      <div id="f28-h2a">
-        <span class="f28-w f28-lead" id="f28-w-con">con</span>
-        <span class="f28-w f28-lead" id="f28-w-los">los</span>
-        <span class="f28-w f28-key f28-caps" id="f28-w-mismos">mismos</span>
-        <span class="f28-w f28-key f28-caps" id="f28-w-profesores">profesores</span>
+    <!-- module window (enters on «módulos») -->
+    <div id="f28-mod" class="f28-win" style="--sw:592px; left:96px; top:560px;">
+      <div class="f28-chrome">
+        <div class="f28-tabs"><i class="f28-tl f28-tl-r"></i><i class="f28-tl f28-tl-y"></i><i class="f28-tl f28-tl-g"></i>
+          <div class="f28-tab"><div class="f28-fav"></div><div class="f28-tab-t">Holandés Nawar</div><svg class="f28-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
+          <svg class="f28-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
+        <div class="f28-bar"><svg class="f28-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
+          <div class="f28-url"><svg class="f28-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="f28-url-t">app.holandesnawar.com</div><svg class="f28-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
+          <svg class="f28-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
       </div>
-      <div id="f28-h2b">
-        <span class="f28-w f28-lead" id="f28-w-que">que</span>
-        <span class="f28-w f28-lead" id="f28-w-te">te</span>
-        <span class="f28-w f28-lead" id="f28-w-explican">explican</span>
-        <span class="f28-w f28-lead" id="f28-w-en2">en</span>
-        <span class="f28-w f28-lead" id="f28-w-los2">los</span>
-        <span class="f28-w f28-lead" id="f28-w-modulos">módulos.</span>
+      <div class="f28-content">
+        <video id="f28-vmod" class="clip f28-vm" src="assets/video/paul-clase-2.mp4" muted playsinline
+          data-start="3.9" data-duration="0.642" data-media-start="1.2" data-hf-media-start-basis="local" data-track-index="2"></video>
       </div>
+      <div class="f28-win-edge"></div>
+    </div>
 
-      <!-- module video card -->
-      <div id="f28-modw">
-        <div id="f28-mod">
-          <div id="f28-mscr">
-            <video id="f28-vmod" class="clip" src="assets/video/clases-video-dentro.mp4" muted playsinline
-              data-start="3.5" data-duration="1.59" data-media-start="3.0" data-hf-media-start-basis="local" data-track-index="2"></video>
-            <div id="f28-mring"></div>
+    <!-- main window: Eventos calendar → (click) → the live class -->
+    <div id="f28-main" class="f28-win" style="--sw:1088px; left:752px; top:200px;">
+      <div class="f28-chrome">
+        <div class="f28-tabs"><i class="f28-tl f28-tl-r"></i><i class="f28-tl f28-tl-y"></i><i class="f28-tl f28-tl-g"></i>
+          <div class="f28-tab"><div class="f28-fav"></div><div class="f28-tab-t" id="f28-tt1">Holandés Nawar</div><div class="f28-tab-t" id="f28-tt2">Clase en directo</div><i class="f28-tab-rec" id="f28-trec"></i><svg class="f28-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
+          <svg class="f28-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
+        <div class="f28-bar"><svg class="f28-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
+          <div class="f28-url"><svg class="f28-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="f28-url-t">app.holandesnawar.com</div><svg class="f28-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
+          <svg class="f28-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
+      </div>
+      <div class="f28-content">
+        <div id="f28-pageB">
+          <div class="f28-cpill"><i></i>EN DIRECTO</div>
+          <div class="f28-ctitle">Clase en directo · Hobby’s &amp; vrije tijd</div>
+          <div class="f28-avs"><div class="f28-av" style="background:#0b6df0;">AL</div><div class="f28-av" style="background:#5A6480;">MR</div><div class="f28-av" style="background:#1D0084;">JS</div></div>
+          <div class="f28-tile f28-tp" id="f28-tileP">
+            <video id="f28-vpaul" class="clip f28-vp" src="assets/video/paul-clase-1.mp4" muted playsinline
+              data-start="1.9" data-duration="2.642" data-media-start="0.15" data-hf-media-start-basis="local" data-track-index="2"></video>
+            <div class="f28-name"><svg viewBox="0 0 12 12" aria-hidden="true"><rect x="4.2" y="1" width="3.6" height="6.2" rx="1.8" fill="#FFFFFF" /><path d="M2.4 5.6 A3.6 3.6 0 0 0 9.6 5.6 M6 9.2 V11" fill="none" stroke="#FFFFFF" stroke-width="1.1" stroke-linecap="round" /></svg>Paul</div>
+            <div class="f28-spk" id="f28-spk"></div>
           </div>
-          <div id="f28-mfoot">
-            <div id="f28-mplay"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M 4 2.2 L 13.4 8 L 4 13.8 Z" fill="#FFFFFF"></path></svg></div>
-            <div id="f28-mlabel">Módulo · vídeo</div>
-            <div id="f28-mtrack"><div id="f28-mfill"></div></div>
+          <div class="f28-tile f28-ts" id="f28-tileS">
+            <video id="f28-vslide" class="clip f28-vs" src="assets/video/paul-clase-1.mp4" muted playsinline
+              data-start="1.92" data-duration="2.622" data-media-start="0.17" data-hf-media-start-basis="local" data-track-index="2"></video>
+          </div>
+          <div class="f28-ctl">
+            <div class="f28-b"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5.5 11 A6.5 6.5 0 0 0 18.5 11 M12 17.5 V21" /></g></svg></div>
+            <div class="f28-b"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6.5" width="12.5" height="11" rx="2.5" /><path d="M15.5 10.5 L20.5 7.5 V16.5 L15.5 13.5 Z" /></g></svg></div>
+            <div class="f28-b"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12.5" rx="2" /><path d="M12 14 V8 M9 10.5 L12 7.5 L15 10.5 M8.5 20.5 H15.5" /></g></svg></div>
+            <div class="f28-b"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5 H20 V16 H10.5 L6.5 19.5 V16 H4 Z" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linejoin="round" /></svg></div>
+            <div class="f28-b f28-end"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 14 C7.5 9.5 16.5 9.5 21 14 L18.6 16.4 L15.4 14.6 V12.6 C13.2 11.8 10.8 11.8 8.6 12.6 V14.6 L5.4 16.4 Z" fill="#FFFFFF" /></svg></div>
           </div>
         </div>
-      </div>
-
-      <!-- live class card -->
-      <div id="f28-callw">
-        <div id="f28-call">
-          <div id="f28-stage">
-            <video id="f28-vcall" class="clip" src="assets/video/clases-video-dentro.mp4" muted playsinline
-              data-start="2.3" data-duration="2.79" data-media-start="1.0" data-hf-media-start-basis="local" data-track-index="2"></video>
-            <div id="f28-sglass"></div>
-            <div id="f28-face"></div>
-            <div id="f28-stagelive">
-              <div class="f28-livepill">
-                <div class="f28-livedot-wrap"><div class="f28-livedot"></div></div>
-                <span>EN DIRECTO</span>
-              </div>
-            </div>
-            <div id="f28-tag">
-              <svg viewBox="0 0 32 22" aria-hidden="true">
-                <rect x="0" y="0" width="32" height="7.6" fill="#AE1C27"></rect>
-                <rect x="0" y="7.3" width="32" height="7.6" fill="#FFFFFF"></rect>
-                <rect x="0" y="14.6" width="32" height="7.4" fill="#21468C"></rect>
-                <rect x="0.5" y="0.5" width="31" height="21" rx="3.5" fill="none" stroke="rgba(12,12,30,0.18)" stroke-width="1"></rect>
-              </svg>
-              <span>Profesor nativo</span>
-            </div>
-          </div>
-          <div id="f28-speaker"></div>
-
-          <div class="f28-ptile" id="f28-pt0" style="top: 16px;">
-            <div class="f28-pav" style="background: #0b6df0;">AL</div>
-            <svg class="f28-pmic" viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="2" width="6" height="10" rx="3" fill="rgba(255,255,255,0.7)"></rect><path d="M 4.5 9.5 A 5.5 5.5 0 0 0 15.5 9.5 M 10 15 V 18" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round"></path></svg>
-          </div>
-          <div class="f28-ptile" id="f28-pt1" style="top: 174px;">
-            <div class="f28-pav" style="background: #1D0084; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.25);">MR</div>
-            <svg class="f28-pmic" viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="2" width="6" height="10" rx="3" fill="rgba(255,255,255,0.7)"></rect><path d="M 4.5 9.5 A 5.5 5.5 0 0 0 15.5 9.5 M 10 15 V 18" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round"></path></svg>
-          </div>
-          <div class="f28-ptile" id="f28-pt2" style="top: 332px;">
-            <div class="f28-pav" style="background: #025dc7;">JS</div>
-            <svg class="f28-pmic" viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="2" width="6" height="10" rx="3" fill="rgba(255,255,255,0.7)"></rect><path d="M 4.5 9.5 A 5.5 5.5 0 0 0 15.5 9.5 M 10 15 V 18" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round"></path></svg>
-          </div>
-
-          <div id="f28-ctrl">
-            <div class="f28-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="2.5" width="7" height="12" rx="3.5" fill="#FFFFFF"></rect><path d="M 5 11.5 A 7 7 0 0 0 19 11.5 M 12 18.5 V 21.5" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"></path></svg></div>
-            <div class="f28-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="13" height="12" rx="3" fill="#FFFFFF"></rect><path d="M 16.5 10.5 L 21.5 7.5 V 16.5 L 16.5 13.5 Z" fill="#FFFFFF"></path></svg></div>
-            <div class="f28-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M 4 5.5 H 20 V 16 H 10 L 6 19.5 V 16 H 4 Z" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linejoin="round"></path></svg></div>
-            <div class="f28-btn" id="f28-btn-end"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M 3 14 C 7.5 9.5 16.5 9.5 21 14 L 18.6 16.4 L 15.4 14.6 V 12.6 C 13.2 11.8 10.8 11.8 8.6 12.6 V 14.6 L 5.4 16.4 Z" fill="#FFFFFF"></path></svg></div>
-          </div>
+        <div id="f28-pageA">
+          <img id="f28-cal" src="assets/img/ui-eventos-calendario.png" alt="" />
+          <div id="f28-calside"></div>
+          <div class="f28-hl" id="f28-h17" style="top:calc(var(--u) * 280.8);"></div>
+          <div class="f28-hl" id="f28-h24" style="top:calc(var(--u) * 345.9);"></div>
+          <div class="f28-hl" id="f28-h01" style="top:calc(var(--u) * 411.1);"></div>
+          <div class="f28-hl" id="f28-h08" style="top:calc(var(--u) * 476.2);"></div>
+          <div id="f28-livetag"><i></i>EN DIRECTO</div>
         </div>
       </div>
-
-      <!-- connector: same person -->
-      <svg id="f28-link" viewBox="0 0 1920 1080" aria-hidden="true">
-        <path id="f28-linkglow" d="M 222 491 C 222 320, 1292 286, 1292 422" pathLength="1" fill="none" stroke="rgba(77,163,255,0.45)" stroke-width="12" stroke-linecap="round" stroke-dasharray="1 1" stroke-dashoffset="1"></path>
-        <path id="f28-linkline" d="M 222 491 C 222 320, 1292 286, 1292 422" pathLength="1" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 1" stroke-dashoffset="1"></path>
-        <circle id="f28-dotA" cx="222" cy="491" r="9" fill="#FFFFFF"></circle>
-        <circle id="f28-dotB" cx="1292" cy="422" r="9" fill="#FFFFFF"></circle>
-      </svg>
-      <div id="f28-eq"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M 7 12.5 H 29 M 7 23.5 H 29" fill="none" stroke="#1D0084" stroke-width="5.5" stroke-linecap="round"></path></svg></div>
+      <div class="f28-win-edge"></div>
     </div>
   </div>
 
   <script>
     (function () {
+      const q = (id) => document.getElementById(id);
       const tl = gsap.timeline({ paused: true });
+      const D = 4.542;
+      const word = (id, t, dy) => tl.fromTo(q(id), { opacity: 0, y: dy || 28 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, t);
 
-      // ---------- calendar geometry (source px of ui-eventos-calendario.png, 2048×978) ----------
-      const S0 = 1120 / 2048;
-      const CX = 560, CY = 267.5;
-      const ZOOM = 2.1;
-      const ENTRY = { x0: 1103, x1: 1312, y: { r17: [519, 552], r24: [638, 671], r01: [757, 791], r08: [876, 910] } };
-      Object.keys(ENTRY.y).forEach((k) => {
-        const el = document.getElementById("f28-" + k);
-        el.style.left = (ENTRY.x0 * S0 - 4) + "px";
-        el.style.width = ((ENTRY.x1 - ENTRY.x0) * S0 + 8) + "px";
-        el.style.top = (ENTRY.y[k][0] * S0 - 4) + "px";
-        el.style.height = ((ENTRY.y[k][1] - ENTRY.y[k][0]) * S0 + 8) + "px";
+      // ---------- entrance: the Eventos window rises into place (the one hero move) ----------
+      tl.fromTo(q("f28-main"), { y: 70, scale: 0.965 }, { y: 0, scale: 1, duration: 0.7, ease: "expo.out" }, 0);
+      tl.fromTo(q("f28-main"), { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "power1.out" }, 0);
+      tl.fromTo(q("f28-dots"), { y: 26 }, { y: 0, duration: D, ease: "power1.out" }, 0);
+
+      // ---------- «Una clase en directo» ----------
+      word("f28-wa1", 0.18); word("f28-wa2", 0.37); word("f28-wa3", 0.63); word("f28-wa4", 0.72);
+      // «directo»: the live tag lands on the first weekly class
+      tl.fromTo(q("f28-livetag"), { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.34, ease: "power3.out" }, 0.74);
+
+      // ---------- «cada semana»: every Thursday's «Clase en directo» lights up, week after week ----------
+      word("f28-wa5", 1.11); word("f28-wa6", 1.41);
+      [["f28-h17", 1.13], ["f28-h24", 1.27], ["f28-h01", 1.41], ["f28-h08", 1.55]].forEach(([id, t]) => {
+        tl.fromTo(q(id), { opacity: 0 }, { opacity: 1, duration: 0.26, ease: "power2.out" }, t);
       });
-      const ex = (ENTRY.x0 + ENTRY.x1) / 2 * S0, ey = (638 + 671) / 2 * S0;
-      const pcx = ex - (520 - CX) / ZOOM, pcy = ey - (270 - CY) / ZOOM;
-      const TX = CX - pcx, TY = CY - pcy;
 
-      // =====================================================================
-      // SCENE 1 (0.00–2.33) — calendar swings in; ring finds the class; push in
-      // =====================================================================
-      tl.fromTo("#f28-lap",
-        { rotationX: 25, rotationY: -12, y: 140, scale: 0.9, filter: "blur(6px)" },
-        { rotationX: 0, rotationY: -6, y: 0, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0);
-      tl.fromTo("#f28-dots", { scale: 0.92, x: 0 }, { scale: 1, x: 0, duration: 0.5, ease: "expo.out" }, 0);
+      // ---------- seam (1.84–2.02): headline A lifts away; the page opens the live class ----------
+      tl.fromTo(q("f28-ha"), { opacity: 1, y: 0 }, { opacity: 0, y: -26, duration: 0.18, ease: "power2.in" }, 1.82);
+      // page navigation is instant (like a real click); the two streams then connect
+      tl.set(q("f28-pageA"), { opacity: 1 }, 0);
+      tl.set(q("f28-pageA"), { opacity: 0 }, 1.96);
+      tl.set([q("f28-tt2"), q("f28-trec")], { opacity: 0 }, 0);
+      tl.set(q("f28-tt1"), { opacity: 0 }, 1.96);
+      tl.set([q("f28-tt2"), q("f28-trec")], { opacity: 1 }, 1.96);
+      tl.fromTo(q("f28-tileP"), { opacity: 0 }, { opacity: 1, duration: 0.24, ease: "power1.out" }, 1.97);
+      tl.fromTo(q("f28-tileS"), { opacity: 0 }, { opacity: 1, duration: 0.24, ease: "power1.out" }, 2.05);
 
-      // CADA SEMANA (cues 0.21 / 0.49)
-      [["#f28-w-cada", 0.17], ["#f28-w-semana", 0.45]].forEach(([sel, t]) => {
-        tl.fromTo(sel, { opacity: 0, y: 44, filter: "blur(8px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, t);
-      });
-      // una clase (lead) · en directo (key)
-      tl.fromTo("#f28-w-una", { opacity: 0, y: 34, filter: "blur(6px)" },
-        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, 0.96);
-      tl.fromTo("#f28-w-clase", { opacity: 0, y: 34, filter: "blur(6px)" },
-        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, 1.16);
-      tl.fromTo("#f28-w-en", { opacity: 0, y: 40, filter: "blur(6px)" },
-        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, 1.53);
-      tl.fromTo("#f28-w-directo", { opacity: 0, scale: 1.3, filter: "blur(10px)" },
-        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 1.67);
+      // ---------- «con los mismos profesores» ----------
+      word("f28-wb1", 2.12); word("f28-wb2", 2.26); word("f28-wb3", 2.52);
+      // «profesores»: Paul is the active speaker
+      tl.fromTo(q("f28-spk"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 2.56);
 
-      // "semana": the Thursday column lights up week after week, the ring locks on the 24th
-      [["#f28-r17", 0.49], ["#f28-r01", 0.61], ["#f28-r08", 0.67]].forEach(([sel, t]) => {
-        tl.fromTo(sel, { opacity: 0, scale: 1.5 }, { opacity: 0.95, scale: 1, duration: 0.18, ease: "expo.out" }, t);
-        tl.to(sel, { opacity: 0, duration: 0.3, ease: "power1.out" }, t + 0.22);
-      });
-      tl.fromTo("#f28-r24", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: 0.26, ease: "expo.out" }, 0.55);
-      tl.to("#f28-r24", { scale: 1.12, duration: 0.07, ease: "power2.out" }, 0.82);
-      tl.to("#f28-r24", { scale: 1, duration: 0.3, ease: "power3.out" }, 0.892);
+      // ---------- «que te explican en los módulos» ----------
+      word("f28-wb4", 3.04, 18); word("f28-wb5", 3.15, 18); word("f28-wb6", 3.23, 18);
+      word("f28-wb7", 3.66, 18); word("f28-wb8", 3.80, 18); word("f28-wb9", 3.93, 18);
+      // «módulos»: the module video window slides in beside the live class — same teacher
+      tl.fromTo(q("f28-mod"), { x: -720 }, { x: 0, duration: 0.56, ease: "power3.out" }, 3.92);
 
-      // camera pushes toward the entry (device push + nested screen zoom)
-      tl.fromTo("#f28-push", { scale: 1 }, { scale: 1.1, duration: 0.94, ease: "power3.inOut" }, 0.53);
-      tl.to("#f28-push", { scale: 1.125, duration: 0.74, ease: "none" }, 1.47);
-      tl.to("#f28-lap", { rotationY: 0, duration: 0.94, ease: "power3.inOut" }, 0.53);
-      tl.fromTo("#f28-zo", { scale: 1 }, { scale: ZOOM, duration: 0.94, ease: "power3.inOut" }, 0.53);
-      tl.fromTo("#f28-zi", { x: 0, y: 0 }, { x: TX, y: TY, duration: 0.94, ease: "power3.inOut" }, 0.53);
-
-      // "directo,": the red EN DIRECTO pill pops on the class
-      tl.fromTo("#f28-live", { opacity: 0, scale: 0.35, rotation: -10 },
-        { opacity: 1, scale: 1, rotation: -3, duration: 0.34, ease: "expo.out" }, 1.69);
-      tl.set("#f28-liveburst", { opacity: 0 }, 0);
-      tl.fromTo("#f28-liveburst", { opacity: 0.9, scale: 1 },
-        { opacity: 0, scale: 1.4, duration: 0.34, ease: "power2.out", immediateRender: false }, 1.75);
-      tl.fromTo("#f28-liveping", { opacity: 0.9, scale: 1 },
-        { opacity: 0, scale: 2.6, duration: 0.5, ease: "power2.out" }, 1.79);
-
-      // ---------- seam 1 -> 2 (cut-the-curve whip, leftward) before "con" ----------
-      const WHIP1 = 2.21, CUT1 = 2.33;
-      tl.set("#f28-s1", { opacity: 1 }, 0);
-      tl.set("#f28-s2", { opacity: 0 }, 0);
-      tl.to("#f28-s1", { x: -700, filter: "blur(14px)", duration: CUT1 - WHIP1, ease: "power3.in" }, WHIP1);
-      tl.set("#f28-s1", { opacity: 0 }, CUT1);
-      tl.set("#f28-s2", { opacity: 1 }, CUT1);
-      tl.to("#f28-dots", { x: -90, duration: 0.6, ease: "power2.inOut" }, WHIP1);
-
-      // =====================================================================
-      // SCENE 2 (2.33–5.09) — the live class, then the module video: same teacher
-      // =====================================================================
-      tl.fromTo("#f28-callw", { x: 400, filter: "blur(14px)" }, { x: -300, filter: "blur(0px)", duration: 0.38, ease: "power4.out" }, CUT1);
-      // on "explican" the live card slides right to make room for the module video
-      tl.to("#f28-callw", { x: 0, duration: 0.44, ease: "power3.inOut" }, 3.66);
-      [["#f28-w-con", 2.33], ["#f28-w-los", 2.45]].forEach(([sel, t]) => {
-        tl.fromTo(sel, { opacity: 0, x: 220 }, { opacity: 1, x: 0, duration: 0.32, ease: "power4.out" }, t);
-      });
-      // MISMOS (blue-light) · PROFESORES slam on their cues
-      tl.fromTo("#f28-w-mismos", { opacity: 0, scale: 1.35, filter: "blur(10px)" },
-        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 2.62);
-      tl.fromTo("#f28-w-profesores", { opacity: 0, scale: 1.3, filter: "blur(10px)" },
-        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 2.94);
-
-      // live-call details: EN DIRECTO tag with the card, speaker + native-teacher tag on "profesores"
-      tl.fromTo("#f28-stagelive", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 2.50);
-      [["#f28-pt0", 2.44], ["#f28-pt1", 2.50], ["#f28-pt2", 2.56]].forEach(([sel, t]) => {
-        tl.fromTo(sel, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.28, ease: "power3.out" }, t);
-      });
-      tl.fromTo("#f28-speaker", { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power2.out" }, 3.0);
-      tl.fromTo("#f28-tag", { opacity: 0, scale: 0.6, x: -12 },
-        { opacity: 1, scale: 1, x: 0, duration: 0.3, ease: "expo.out" }, 3.04);
-
-      // "que te explican": the module video card arrives
-      [["#f28-w-que", 3.52], ["#f28-w-te", 3.64], ["#f28-w-explican", 3.70]].forEach(([sel, t]) => {
-        tl.fromTo(sel, { opacity: 0, y: 30, filter: "blur(6px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, t);
-      });
-      tl.fromTo("#f28-modw", { opacity: 0, x: -260, y: 40, rotation: -4, scale: 0.9 },
-        { opacity: 1, x: 0, y: 0, rotation: -1.5, scale: 1, duration: 0.42, ease: "power4.out" }, 3.70);
-      tl.fromTo("#f28-mfill", { scaleX: 0.16 }, { scaleX: 0.3, duration: 1.39, ease: "none" }, 3.70);
-
-      // "en los módulos.": the connector draws module tile -> live face (same person)
-      [["#f28-w-en2", 4.15], ["#f28-w-los2", 4.28], ["#f28-w-modulos", 4.42]].forEach(([sel, t]) => {
-        tl.fromTo(sel, { opacity: 0, y: 30, filter: "blur(6px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, t);
-      });
-      tl.fromTo("#f28-mring", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.24, ease: "expo.out" }, 4.44);
-      tl.fromTo("#f28-dotA", { opacity: 0, scale: 0, transformOrigin: "50% 50%" },
-        { opacity: 1, scale: 1, duration: 0.2, ease: "expo.out" }, 4.48);
-      tl.fromTo(["#f28-linkline", "#f28-linkglow"], { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.4, ease: "power2.inOut" }, 4.50);
-      tl.fromTo("#f28-dotB", { opacity: 0, scale: 0, transformOrigin: "50% 50%" },
-        { opacity: 1, scale: 1, duration: 0.2, ease: "expo.out" }, 4.86);
-      tl.fromTo("#f28-face", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.26, ease: "expo.out" }, 4.84);
-      tl.fromTo("#f28-eq", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 4.72);
-
+      window.__timelines = window.__timelines || {};
       window.__timelines["28-directo"] = tl;
     })();
   </script>

@@ -52,7 +52,7 @@
       position: absolute; display: flex; align-items: center; gap: 13px; height: 68px; padding: 0 28px 0 18px;
       border-radius: 999px; background: #1D0084; color: #FFFFFF; white-space: nowrap;
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: 0.14em;
-      box-shadow: 0 12px 26px rgba(29,0,132,0.26), 0 0 0 5px #FFFFFF;
+      box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
     }
     .f06-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
     .f06-flag svg { display: block; width: 40px; height: 27px; }
@@ -63,7 +63,7 @@
     #f06-stamp-pos { position: absolute; left: 740px; top: 320px; width: 620px; height: 150px; }
     #f06-stamp {
       position: absolute; left: 0; top: 0; width: 620px; height: 150px; border-radius: 24px;
-      background: rgba(255,255,255,0.9); box-shadow: 0 18px 40px rgba(224,45,60,0.16);
+      background: rgba(255,255,255,0.9); box-shadow: 0 10px 24px rgba(18,0,129,0.10);
     }
     #f06-stamp-ink {
       position: absolute; left: 0; top: 0; width: 620px; height: 150px; border-radius: 24px; box-sizing: border-box;
@@ -95,12 +95,11 @@
     #f06-otra-t {
       display: inline-block; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 120px; line-height: 1;
       letter-spacing: -0.035em; color: #0C0C1E; white-space: nowrap;
-      text-shadow: 0 0 18px rgba(245,247,255,0.95), 0 0 42px rgba(245,247,255,0.9);
     }
   </style>
 
-  <div id="root" data-composition-id="06-atascado" data-width="1920" data-height="1080" data-duration="4.86">
-    <div id="f06-ground" class="clip" data-start="0" data-duration="4.86" data-track-index="0">
+  <div id="root" data-composition-id="06-atascado" data-width="1920" data-height="1080" data-duration="4.384">
+    <div id="f06-ground" class="clip" data-start="0" data-duration="4.384" data-track-index="0">
       <div id="f06-light"></div>
     </div>
 
@@ -167,7 +166,7 @@
       </div>
     </div>
 
-    <div id="f06-otra"><span id="f06-otra-t">OTRA VEZ.</span></div>
+    <div id="f06-otra"><span id="f06-otra-t">Otra vez.</span></div>
   </div>
 
   <script>
@@ -216,22 +215,22 @@
       var FX = 730, FY = 338;
       function camAt(s) { return { scale: s, x: s * (960 - FX), y: s * (540 - FY) }; }
       var cam = $("cam");
-      tl.fromTo(cam, camAt(1.52), Object.assign({ duration: 0.75, ease: "expo.out" }, camAt(1.36)), 0);
+      tl.fromTo(cam, camAt(1.46), Object.assign({ duration: 0.75, ease: "power3.out" }, camAt(1.36)), 0);
       // seam into scene 2: pull back + pan (you slide up-left, the other side opens from bottom-right)
       tl.fromTo(cam, camAt(1.36), { scale: 1, x: 0, y: 70, duration: 0.40, ease: "power3.inOut", immediateRender: false }, 1.86);
       // déjà-vu: the thread scrolls up + punches in as the copies cascade
-      tl.fromTo(cam, { scale: 1, x: 0, y: 70 }, { scale: 1.03, x: 0, y: -42, duration: 0.45, ease: "expo.out", immediateRender: false }, T.otra - 0.03);
+      tl.fromTo(cam, { scale: 1, x: 0, y: 70 }, { scale: 1.03, x: 0, y: -42, duration: 0.45, ease: "power3.out", immediateRender: false }, T.otra - 0.03);
 
       // ================= SCENE 1 =================
       // ENTRANCE: your bubble pops in from the left, growing from its tail corner
       tl.fromTo($("me"), { x: -170, scale: 0.75, opacity: 0.6, filter: "blur(8px)" },
         { x: 0, scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, 0);
-      tl.fromTo($("av-me"), { x: -120, scale: 0.6, opacity: 0 },
+      tl.fromTo($("av-me"), { x: -120, scale: 0.85, opacity: 0 },
         { x: 0, scale: 1, opacity: 1, duration: 0.24, ease: "power3.out" }, 0.03);
 
       // "neerlandés": NL pill pops on the bubble
-      tl.fromTo($("nl"), { scale: 0.4, rotation: -10, opacity: 0 },
-        { scale: 1, rotation: 0, opacity: 1, duration: 0.26, ease: "power3.out" }, T.neer - 0.04);
+      tl.fromTo($("nl"), { scale: 0.85, y: 8, opacity: 0 },
+        { scale: 1, y: 0, opacity: 1, duration: 0.26, ease: "power3.out" }, T.neer - 0.04);
 
       // typing Dutch, decelerating into the stall
       var STR = "Ik wil graag een af…";
@@ -242,24 +241,16 @@
       // caret: 3 finite blinks while stuck
       [1.42, 1.62, 1.84, 2.04, 2.26, 2.46].forEach(function (t, k) { tl.set($("caret"), { opacity: k % 2 ? 1 : 0 }, t); });
 
-      // "atascado": red border + stamp thump + bubble shake
+      // "atascado": red border + the stamp presses down (no shake)
       tl.fromTo($("me-ring"), { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, T.atas - 0.01);
       var SST = 1.12, LAND = 1.24;
-      tl.fromTo($("stamp"), { scale: 2.5, rotation: -15 }, { scale: 0.96, rotation: -6, duration: LAND - SST, ease: "power3.in" }, SST);
-      tl.fromTo($("stamp"), { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: LAND - SST, ease: "power2.in" }, SST);
-      tl.fromTo($("stamp"), { scale: 0.96 }, { scale: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, LAND);
-      var JIT = [0, -18, 15, -11, 7, -3, 0];
-      for (var j = 1; j < JIT.length; j++) {
-        tl.fromTo($("me-shk"), { x: JIT[j - 1] }, { x: JIT[j], duration: FR, ease: "none", immediateRender: j === 1 }, LAND + (j - 1) * FR);
-      }
-      var CJ = [0, 7, -5, 3, 0];
-      for (var q = 1; q < CJ.length; q++) {
-        tl.fromTo($("dots"), { y: CJ[q - 1] }, { y: CJ[q], duration: FR, ease: "none", immediateRender: q === 1 }, LAND + (q - 1) * FR);
-      }
+      tl.fromTo($("stamp"), { scale: 1.3, rotation: -6 }, { scale: 0.98, rotation: -6, duration: LAND - SST, ease: "power2.in" }, SST);
+      tl.fromTo($("stamp"), { opacity: 0, filter: "blur(4px)" }, { opacity: 1, filter: "blur(0px)", duration: LAND - SST, ease: "power2.in" }, SST);
+      tl.fromTo($("stamp"), { scale: 0.98 }, { scale: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, LAND);
 
       // ================= SCENE 2 =================
-      tl.fromTo($("av-ot"), { x: 60, scale: 0.6, opacity: 0 }, { x: 0, scale: 1, opacity: 1, duration: 0.22, ease: "power3.out" }, T.Y);
-      tl.fromTo($("typing"), { scale: 0.55, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.12, ease: "power3.out" }, T.el - 0.03);
+      tl.fromTo($("av-ot"), { x: 60, scale: 0.85, opacity: 0 }, { x: 0, scale: 1, opacity: 1, duration: 0.22, ease: "power3.out" }, T.Y);
+      tl.fromTo($("typing"), { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.12, ease: "power3.out" }, T.el - 0.03);
       tl.fromTo($("typing").querySelectorAll(".f06-tdot"), { y: 9, opacity: 0.25 },
         { y: 0, opacity: 1, duration: 0.08, ease: "power2.out", stagger: 0.03 }, T.el + 0.01);
       // "cambia": the reply replaces the typing indicator, growing from the same tail corner
@@ -270,7 +261,7 @@
       tl.fromTo($("dim"), { opacity: 1 }, { opacity: 0.72, duration: 0.4, ease: "power2.out" }, T.cambia);
 
       // "inglés": EN pill flips in
-      tl.fromTo($("en"), { rotationX: -100, y: 12, opacity: 0, transformPerspective: 600 },
+      tl.fromTo($("en"), { rotationX: -70, y: 10, opacity: 0, transformPerspective: 600 },
         { rotationX: 0, y: 0, opacity: 1, transformPerspective: 600, duration: 0.32, ease: "power3.out" }, T.ingles - 0.04);
 
       // ================= SCENE 3 =================
@@ -279,18 +270,13 @@
         tl.fromTo($("k" + k), { x: 0, y: 0, rotation: 0, opacity: 0 },
           { x: 24 * k, y: 18 * k, rotation: -2 * k, opacity: 1, duration: 0.2, ease: "power3.out" }, T.otra - 0.03 + (k - 1) * 0.07);
       }
-      tl.fromTo($("reply"), { scale: 1.04 }, { scale: 1, duration: 0.3, ease: "expo.out", immediateRender: false }, T.otra - 0.03);
 
       // "vez.": OTRA VEZ. slams bottom-centre over the stack, then holds
-      tl.fromTo($("otra-t"), { scale: 1.6, y: -16, opacity: 0, filter: "blur(16px)" },
+      tl.fromTo($("otra-t"), { scale: 1.12, y: -10, opacity: 0, filter: "blur(8px)" },
         { scale: 1, y: 0, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, T.vez - 0.04);
       // the earlier context recedes most, the déjà-vu stack stays as the echo under the type
       tl.fromTo($("left"), { opacity: 1 }, { opacity: 0.4, duration: 0.3, ease: "power2.out", immediateRender: false }, T.vez - 0.04);
       tl.fromTo([$("stack"), $("av-ot")], { opacity: 1 }, { opacity: 0.6, duration: 0.3, ease: "power2.out", immediateRender: false }, T.vez - 0.04);
-      var OJ = [0, 6, -4, 2, 0];
-      for (var o = 1; o < OJ.length; o++) {
-        tl.fromTo($("stack"), { y: OJ[o - 1] }, { y: OJ[o], duration: FR, ease: "none", immediateRender: o === 1 }, T.vez + 0.08 + (o - 1) * FR);
-      }
 
       tl.set({}, {}, D);
       window.__timelines = window.__timelines || {};
@@ -310,6 +296,22 @@
           c.startTime(ns);
         });
       })(tl, [[0.0, 0.0], [0.12, 0.12], [0.185, 0.19], [0.296, 0.27], [0.796, 0.82], [0.935, 0.94], [0.972, 1.06], [1.213, 1.28], [2.111, 2.16], [2.176, 2.24], [2.278, 2.36], [2.435, 2.63], [2.806, 3.02], [2.908, 3.09], [3.759, 3.84], [4.093, 4.17], [5.056, 4.86]]);
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.19, 0.184], [0.27, 0.276], [0.82, 0.753], [0.94, 0.89], [1.06, 0.982], [1.28, 1.202], [2.16, 1.936], [2.24, 2.0], [2.36, 2.129], [2.63, 2.386], [3.02, 2.762], [3.09, 2.789], [3.84, 3.487], [4.17, 3.789], [4.86, 4.384]]);
       window.__timelines["06-atascado"] = tl;
     })();
   </script>

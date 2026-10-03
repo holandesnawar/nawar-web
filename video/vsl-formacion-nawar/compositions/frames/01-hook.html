@@ -30,7 +30,7 @@
 
     /* resting state for everything not yet revealed (frame 0 = poster frame; GSAP overrides inline) */
     #f01-l1 .f01-w, #f01-l2 .f01-w, #f01-cap .f01-w, #f01-hero, #f01-flag, #f01-card, #f01-arrow,
-    #f01-fillRed, #f01-badge, #f01-ring { opacity: 0; }
+    #f01-fillRed, #f01-badge { opacity: 0; }
 
     /* opening anchor: a white text caret where "Si" will land */
     #f01-caret {
@@ -43,7 +43,7 @@
     #f01-l1 {
       position: absolute; left: 0; right: 0; top: 344px; text-align: center;
       font-weight: 800; font-size: 112px; line-height: 1.1; letter-spacing: -0.03em; white-space: nowrap;
-      text-shadow: 0 18px 50px rgba(4,0,40,0.30);
+      text-shadow: 0 10px 30px rgba(4,0,40,0.20);
     }
     .f01-w { display: inline-block; }
     #f01-arrowWrap { position: absolute; inset: 0; transform-origin: 1568px 494px; }
@@ -52,14 +52,14 @@
       fill: none; stroke: #E02D3C; stroke-width: 13; stroke-linecap: round; stroke-linejoin: round;
       stroke-dasharray: 1 1.3; stroke-dashoffset: 1.05;
     }
-    #f01-arrow { filter: drop-shadow(0 8px 16px rgba(4,0,40,0.40)); }
+    #f01-arrow { filter: drop-shadow(0 4px 10px rgba(4,0,40,0.22)); }
 
     /* ---------- scene 2 ---------- */
     #f01-l2 {
       position: absolute; left: 0; right: 0; top: 196px; text-align: center; transform-origin: 50% 0%;
       font-weight: 700; font-size: 80px; line-height: 1.1; letter-spacing: -0.02em; white-space: nowrap;
     }
-    #f01-l2 { text-shadow: 0 14px 40px rgba(4,0,40,0.28); }
+    #f01-l2 { text-shadow: 0 10px 30px rgba(4,0,40,0.20); }
     #f01-l2 .f01-lead { color: rgba(255,255,255,0.72); font-weight: 600; }
     #f01-v4 { position: relative; }
     #f01-ul {
@@ -70,9 +70,9 @@
     #f01-heroRow { position: absolute; left: 0; right: 0; top: 462px; display: flex; justify-content: center; }
     #f01-heroBox { display: flex; flex-direction: column; align-items: stretch; transform-origin: 50% 50%; }
     #f01-hero {
-      font-weight: 900; font-size: 196px; line-height: 0.95; letter-spacing: -0.045em; text-transform: uppercase;
+      font-weight: 800; font-size: 196px; line-height: 1.0; letter-spacing: -0.04em;
       color: #FFFFFF; white-space: nowrap; padding-right: 0.03em;
-      text-shadow: 0 5px 0 rgba(4,0,40,0.16), 0 34px 70px rgba(4,0,40,0.40);
+      text-shadow: 0 20px 50px rgba(4,0,40,0.26);
       transform-origin: 50% 55%;
     }
     #f01-flag {
@@ -114,20 +114,16 @@
     }
     #f01-fillRed {
       position: absolute; inset: 0; border-radius: 999px;
-      background: repeating-linear-gradient(-45deg, rgba(255,255,255,0.10) 0 14px, rgba(255,255,255,0) 14px 28px),
-                  linear-gradient(90deg, #E02D3C, #E02D3C);
-      box-shadow: inset 0 -6px 0 rgba(12,12,30,0.12);
+      background: #E02D3C;
     }
-    #f01-shine { position: absolute; left: 24px; right: 24px; top: 8px; height: 9px; border-radius: 999px; background: rgba(255,255,255,0.28); }
-    #f01-ring, #f01-badge { position: absolute; left: calc(68% - 48px); top: -23px; width: 96px; height: 96px; border-radius: 50%; }
-    #f01-ring { border: 5px solid #E02D3C; }
+    #f01-badge { position: absolute; left: calc(68% - 48px); top: -23px; width: 96px; height: 96px; border-radius: 50%; }
     #f01-badge {
-      background: #E02D3C; border: 7px solid #FFFFFF;
-      box-shadow: 0 12px 28px rgba(224,45,60,0.40);
+      background: #E02D3C; border: 6px solid #FFFFFF;
+      box-shadow: 0 6px 16px rgba(4,0,40,0.18);
       display: flex; align-items: center; justify-content: center;
     }
     #f01-badge svg { width: 40px; height: 40px; overflow: visible; }
-    #f01-badge path { stroke: #FFFFFF; stroke-width: 9; stroke-linecap: round; fill: none; }
+    #f01-badge path { stroke: #FFFFFF; stroke-width: 6; stroke-linecap: round; fill: none; }
     #f01-cap {
       margin-top: 42px; font-weight: 600; font-size: 50px; line-height: 1.1; letter-spacing: -0.015em;
       color: #374151; white-space: nowrap;
@@ -135,8 +131,8 @@
     #f01-cap .f01-key { font-weight: 800; color: #0C0C1E; }
   </style>
 
-  <div id="root" data-composition-id="01-hook" data-width="1920" data-height="1080" data-duration="6.01">
-    <div id="f01-ground" class="clip" data-start="0" data-duration="6.01" data-track-index="0">
+  <div id="root" data-composition-id="01-hook" data-width="1920" data-height="1080" data-duration="5.536">
+    <div id="f01-ground" class="clip" data-start="0" data-duration="5.536" data-track-index="0">
       <div id="f01-dots"></div>
       <div id="f01-glow"></div>
     </div>
@@ -186,10 +182,8 @@
           <div id="f01-track">
             <div id="f01-fill">
               <div id="f01-fillRed"></div>
-              <div id="f01-shine"></div>
             </div>
           </div>
-          <div id="f01-ring"></div>
           <div id="f01-badge">
             <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
               <path id="f01-x1" pathLength="1" d="M 6 6 L 34 34" />
@@ -218,7 +212,7 @@
       tl.set($("card"), { opacity: 0 }, 0);
       tl.set($("fill"), { xPercent: -100 }, 0);
       tl.set($("fillRed"), { opacity: 0 }, 0);
-      tl.set([$("badge"), $("ring")], { opacity: 0, scale: 0 }, 0);
+      tl.set($("badge"), { opacity: 0, scale: 0.6 }, 0);
       tl.set([$("x1"), $("x2")], { strokeDasharray: "1 1.3", strokeDashoffset: 1.05 }, 0);
       tl.set($("arrow"), { opacity: 0 }, 0);
 
@@ -227,7 +221,7 @@
       tl.set($("caret"), { opacity: 0 }, 0.17);
       tl.set($("caret"), { opacity: 1 }, 0.30);
       tl.fromTo($("caret"), { opacity: 1 }, { opacity: 0, duration: 0.1, ease: "power1.in" }, 0.39);
-      tl.fromTo($("dots"), { scale: 1.45, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.9, ease: "expo.out" }, 0);
+      tl.fromTo($("dots"), { scale: 1.08, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.9, ease: "power2.out" }, 0);
       tl.fromTo($("glow"), { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power3.out" }, 0);
 
       // ---------- Scene 1: line builds word by word ----------
@@ -243,7 +237,7 @@
         tl.to($("l1"), { x: L1X[a], duration: 0.34, ease: "power3.out" }, s1[a][1] - 0.04);
       }
       // "aquí," lands a touch heavier
-      tl.fromTo($("w5"), { scale: 1.18 }, { scale: 1, duration: 0.4, ease: "power4.out" }, 1.082);
+      tl.fromTo($("w5"), { scale: 1.06 }, { scale: 1, duration: 0.4, ease: "power3.out" }, 1.082);
       // macro push under scene 1
       tl.fromTo($("s1"), { scale: 0.985 }, { scale: 1.035, duration: 1.1, ease: "power1.inOut" }, 0.3);
 
@@ -286,18 +280,13 @@
       tl.fromTo($("ul"), { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 2.33);
 
       // NEERLANDÉS slams in (3.28)
-      tl.fromTo($("hero"), { opacity: 0, scale: 1.3, filter: "blur(12px)" },
+      tl.fromTo($("hero"), { opacity: 0, scale: 1.12, filter: "blur(8px)" },
         { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.46, ease: "expo.out" }, 3.25);
-      // impact: deterministic 3-frame stage shake
-      tl.set($("stage"), { x: 14, y: -6 }, 3.34);
-      tl.set($("stage"), { x: -10, y: 5 }, 3.34 + FPS);
-      tl.set($("stage"), { x: 5, y: -2 }, 3.34 + 2 * FPS);
-      tl.set($("stage"), { x: 0, y: 0 }, 3.34 + 3 * FPS);
       // Dutch tricolor wipes in left → right under it
       tl.set($("flag"), { opacity: 1 }, 3.36);
-      tl.fromTo($("sR"), { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "expo.out" }, 3.36);
-      tl.fromTo($("sW"), { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "expo.out" }, 3.41);
-      tl.fromTo($("sB"), { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "expo.out" }, 3.46);
+      tl.fromTo($("sR"), { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "power3.out" }, 3.36);
+      tl.fromTo($("sW"), { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "power3.out" }, 3.41);
+      tl.fromTo($("sB"), { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "power3.out" }, 3.46);
 
       // ---------- Scene 3: NEERLANDÉS lifts, the progress card arrives ----------
       tl.fromTo($("heroBox"), { y: 0, scale: 1 }, { y: -150, scale: 0.7, duration: 0.5, ease: "power3.out" }, 3.79);
@@ -321,20 +310,15 @@
         tl.fromTo($(w[0]), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, w[1] - 0.04);
       });
 
-      // "funcionar" (4.844): jitter, alert red, ✕ pops at the bar's end
+      // "funcionar" (4.844): the bar turns alert red, a quiet ✕ badge appears at the bar's end
       var J = 4.844;
-      tl.set($("card"), { x: 16 }, J);
-      tl.set($("card"), { x: -12 }, J + FPS);
-      tl.set($("card"), { x: 7 }, J + 2 * FPS);
-      tl.set($("card"), { x: 0 }, J + 3 * FPS);
       // hard switch to alert red (a crossfade would pass through purple)
       tl.set($("fillRed"), { opacity: 1 }, J);
       tl.set($("pct"), { color: "#E02D3C" }, J);
       tl.set($("c5"), { color: "#E02D3C" }, J - 0.04);
-      tl.fromTo($("badge"), { opacity: 1, scale: 0, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.36, ease: "expo.out" }, J + 0.02);
+      tl.fromTo($("badge"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.36, ease: "power3.out" }, J + 0.02);
       tl.fromTo($("x1"), { strokeDashoffset: 1.05 }, { strokeDashoffset: 0, duration: 0.14, ease: "power2.out" }, J + 0.1);
       tl.fromTo($("x2"), { strokeDashoffset: 1.05 }, { strokeDashoffset: 0, duration: 0.14, ease: "power2.out" }, J + 0.18);
-      tl.fromTo($("ring"), { opacity: 0.7, scale: 0.9 }, { opacity: 0, scale: 2.3, duration: 0.7, ease: "power2.out" }, J + 0.06);
 
       window.__timelines = window.__timelines || {};
       // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
@@ -353,6 +337,22 @@
           c.startTime(ns);
         });
       })(tl, [[0.0, 0.0], [0.428, 0.42], [0.548, 0.58], [0.724, 0.73], [0.993, 1.03], [1.122, 1.18], [1.604, 1.63], [1.733, 1.81], [1.983, 2.08], [2.326, 2.4], [2.696, 2.74], [3.03, 3.08], [3.28, 3.32], [3.826, 3.98], [3.891, 4.09], [4.233, 4.37], [4.372, 4.6], [4.743, 5.03], [4.844, 5.12], [5.956, 6.01]]);
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.42, 0.418], [0.58, 0.574], [0.73, 0.703], [1.03, 1.006], [1.18, 1.152], [1.63, 1.547], [1.81, 1.712], [2.08, 1.941], [2.4, 2.235], [2.74, 2.556], [3.08, 2.868], [3.32, 3.116], [3.98, 3.712], [4.09, 3.863], [4.37, 4.125], [4.6, 4.336], [5.03, 4.721], [5.12, 4.804], [6.01, 5.536]]);
       window.__timelines["01-hook"] = tl;
     })();
   </script>

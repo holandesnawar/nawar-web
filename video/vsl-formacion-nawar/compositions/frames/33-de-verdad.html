@@ -3,7 +3,6 @@
   <style>
     @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
     @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
-    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
     @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
 
     #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
@@ -57,23 +56,21 @@
       background: #1D0084; box-shadow: inset 0 4px 6px rgba(0,0,0,0.38), 0 1px 0 rgba(255,255,255,0.8);
     }
     #f33-x { position: absolute; left: 790px; top: 450px; width: 340px; height: 340px; overflow: visible; }
-    #f33-x path { fill: none; stroke: #E02D3C; stroke-width: 30; stroke-linecap: round; }
-    #f33-ring { position: absolute; left: 810px; top: 470px; width: 300px; height: 300px; border-radius: 50%; border: 6px solid rgba(255,255,255,0.85); opacity: 0; }
+    #f33-x path { fill: none; stroke: #E02D3C; stroke-width: 22; stroke-linecap: round; }
 
     /* ================= SCENE 2 — SABES | PRACTICAS ================= */
     .f33-half { position: absolute; top: 0; width: 960px; height: 1080px; }
     #f33-hL { left: 0; }
     #f33-hR { left: 960px; }
     .f33-glow { position: absolute; left: 80px; top: 170px; width: 800px; height: 760px; border-radius: 50%; }
-    #f33-hL .f33-glow { background: radial-gradient(ellipse at 50% 50%, rgba(52,211,153,0.20) 0%, rgba(52,211,153,0) 66%); }
-    #f33-hR .f33-glow { background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.26) 0%, rgba(77,163,255,0) 66%); }
+    .f33-glow { display: none; }
     .f33-hrow { position: absolute; left: 0; width: 960px; display: flex; justify-content: center; gap: 0.26em; white-space: nowrap; }
     .f33-ico { position: absolute; left: 400px; top: 296px; width: 160px; height: 160px; }
     .f33-sm { font-size: 56px; color: rgba(255,255,255,0.72); }
     .f33-big { top: 572px; font-size: 128px; }
-    #f33-ck { border-radius: 50%; background: #34D399; box-shadow: 0 0 70px rgba(52,211,153,0.5); }
+    #f33-ck { border-radius: 50%; background: #34D399; box-shadow: 0 18px 40px rgba(4,0,40,0.3); }
     #f33-ck svg, #f33-rep svg { position: absolute; inset: 0; width: 160px; height: 160px; overflow: visible; }
-    #f33-rep { border-radius: 50%; background: rgba(255,255,255,0.10); box-shadow: inset 0 0 0 3px rgba(77,163,255,0.7), 0 0 70px rgba(77,163,255,0.4); }
+    #f33-rep { border-radius: 50%; background: rgba(255,255,255,0.08); box-shadow: inset 0 0 0 2px rgba(77,163,255,0.55); }
     #f33-repMini { position: absolute; left: 112px; top: 108px; width: 60px; height: 60px; border-radius: 50%; background: #34D399; box-shadow: 0 0 0 5px #120081; }
     #f33-divider { position: absolute; left: 958px; top: 220px; width: 4px; height: 700px; border-radius: 2px; background: rgba(255,255,255,0.28); }
 
@@ -87,32 +84,28 @@
     #f33-fill {
       position: absolute; left: 0; top: 0; width: 1200px; height: 34px; border-radius: 999px; overflow: hidden;
       background: linear-gradient(90deg, #34D399 0%, #4da3ff 100%); clip-path: inset(0px 1200px 0px 0px round 17px);
-      box-shadow: 0 0 40px rgba(52,211,153,0.4);
     }
-    #f33-shine { position: absolute; left: -260px; top: 0; width: 220px; height: 34px; background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%); }
-    #f33-knob { position: absolute; left: 0; top: -9px; width: 52px; height: 52px; margin-left: -26px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 0 0 6px rgba(77,163,255,0.35), 0 0 40px rgba(77,163,255,0.7); }
+    #f33-shine { position: absolute; left: -260px; top: 0; width: 220px; height: 34px; background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%); }
+    #f33-knob { position: absolute; left: 0; top: -9px; width: 52px; height: 52px; margin-left: -26px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 0 0 6px rgba(77,163,255,0.3), 0 6px 16px rgba(4,0,40,0.35); }
     .f33-mk {
       position: absolute; top: -17px; width: 68px; height: 68px; margin-left: -34px; border-radius: 50%;
       background: #1a1290; box-shadow: inset 0 0 0 3px rgba(255,255,255,0.45);
       display: flex; align-items: center; justify-content: center;
       font-family: "Poppins", sans-serif; font-weight: 800; font-size: 30px; color: rgba(255,255,255,0.8);
     }
-    .f33-mkOn { position: absolute; inset: 0; border-radius: 50%; background: #34D399; box-shadow: 0 0 0 4px #FFFFFF, 0 0 30px rgba(52,211,153,0.6); opacity: 0; }
+    .f33-mkOn { position: absolute; inset: 0; border-radius: 50%; background: #34D399; box-shadow: 0 0 0 4px #FFFFFF; opacity: 0; }
     .f33-mkOn svg { position: absolute; left: 14px; top: 14px; width: 40px; height: 40px; }
     #f33-l3 { top: 494px; }
     #f33-stampPos { position: absolute; left: 0; top: 600px; width: 1920px; height: 220px; display: flex; justify-content: center; align-items: center; }
     #f33-stamp {
-      position: relative; padding: 16px 56px 10px 56px; border: 9px solid #FFFFFF; border-radius: 28px;
-      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 150px; line-height: 1; letter-spacing: -0.035em;
-      color: #FFFFFF; white-space: nowrap; word-spacing: 0.16em; box-shadow: 0 30px 90px rgba(4,0,40,0.35);
-    }
-    #f33-stampGhost {
-      position: absolute; left: -9px; top: -9px; right: -9px; bottom: -9px; border: 6px solid rgba(255,255,255,0.7); border-radius: 30px; opacity: 0;
+      position: relative; padding: 18px 60px 14px 60px; border: 5px solid #FFFFFF; border-radius: 28px;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 150px; line-height: 1; letter-spacing: -0.035em;
+      color: #FFFFFF; white-space: nowrap; word-spacing: 0.12em; box-shadow: 0 30px 90px rgba(4,0,40,0.3);
     }
   </style>
 
-  <div id="root" data-composition-id="33-de-verdad" data-width="1920" data-height="1080" data-duration="6.78">
-    <div id="f33-ground" class="clip" data-start="0" data-duration="6.78" data-track-index="0"></div>
+  <div id="root" data-composition-id="33-de-verdad" data-width="1920" data-height="1080" data-duration="6.063">
+    <div id="f33-ground" class="clip" data-start="0" data-duration="6.063" data-track-index="0"></div>
     <svg width="0" height="0" aria-hidden="true" style="position:absolute"><filter id="f33-vb" x="-0.2" y="-0.6" width="1.4" height="2.2"><feGaussianBlur id="f33-vbN" in="SourceGraphic" stdDeviation="0 0" /></filter></svg>
     <div id="f33-par"><div id="f33-dots"></div><div id="f33-amb"></div></div>
 
@@ -120,28 +113,27 @@
       <!-- ============ SCENE 1 ============ -->
       <div id="f33-s1" class="f33-scene">
         <div id="f33-l1" class="f33-row f33-lead"><span class="f33-w" id="f33-wNo">No</span><span class="f33-w" id="f33-wPuedes">puedes</span><span class="f33-w" id="f33-wJugar">jugar</span></div>
-        <div id="f33-l2" class="f33-row f33-h1"><span class="f33-w" id="f33-wAl">AL</span><span class="f33-w" id="f33-wAzar">AZAR.</span></div>
+        <div id="f33-l2" class="f33-row f33-h1"><span class="f33-w" id="f33-wAl">al</span><span class="f33-w" id="f33-wAzar">azar.</span></div>
       </div>
       <div id="f33-dieX"><div id="f33-dieSc"><div id="f33-dieShadow"></div><div id="f33-dieP"><div id="f33-cube"></div></div></div></div>
-      <div id="f33-ring"></div>
       <svg id="f33-x" viewBox="0 0 340 340"><path id="f33-xa" d="M80 80 L260 260" /><path id="f33-xb" d="M260 80 L80 260" /></svg>
 
       <!-- ============ SCENE 2 — two halves ============ -->
       <div id="f33-hL" class="f33-half">
         <div class="f33-glow"></div>
-        <div id="f33-ck" class="f33-ico"><svg viewBox="0 0 160 160"><path id="f33-ckP" pathLength="1" d="M48 82 L70 104 L114 58" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+        <div id="f33-ck" class="f33-ico"><svg viewBox="0 0 160 160"><path id="f33-ckP" pathLength="1" d="M48 82 L70 104 L114 58" fill="none" stroke="#FFFFFF" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
         <div class="f33-hrow f33-lead f33-sm" style="top: 490px;"><span class="f33-w" id="f33-wO1">O</span><span class="f33-w" id="f33-wLo1">lo</span></div>
-        <div class="f33-hrow f33-h1 f33-big"><span class="f33-w" id="f33-wSabes">SABES</span></div>
+        <div class="f33-hrow f33-h1 f33-big"><span class="f33-w" id="f33-wSabes">sabes</span></div>
       </div>
       <div id="f33-hR" class="f33-half">
         <div class="f33-glow"></div>
         <div id="f33-rep" class="f33-ico">
-          <svg viewBox="0 0 160 160" id="f33-repSvg"><g fill="none" stroke="#4da3ff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 160 160" id="f33-repSvg"><g fill="none" stroke="#4da3ff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
             <path d="M118 62 A44 44 0 0 0 40 70" /><path d="M42 98 A44 44 0 0 0 120 90" /><path d="M120 40 L120 64 L96 64" /><path d="M40 120 L40 96 L64 96" /></g></svg>
           <div id="f33-repMini"><svg viewBox="0 0 60 60" style="position:absolute; inset:0; width:60px; height:60px;"><path d="M17 31 L26 40 L43 21" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
         </div>
         <div class="f33-hrow f33-lead f33-sm" style="top: 490px;"><span class="f33-w" id="f33-wO2">o</span><span class="f33-w" id="f33-wLo2">lo</span></div>
-        <div class="f33-hrow f33-h1 f33-big" style="color: #4da3ff;"><span class="f33-w" id="f33-wPract">PRACTICAS</span></div>
+        <div class="f33-hrow f33-h1 f33-big" style="color: #4da3ff;"><span class="f33-w" id="f33-wPract">practicas</span></div>
         <div class="f33-hrow f33-lead f33-sm" style="top: 726px; font-size: 54px;"><span class="f33-w" id="f33-wHasta">hasta</span><span class="f33-w" id="f33-wSaberlo">saberlo.</span></div>
       </div>
       <div id="f33-divider"></div>
@@ -154,7 +146,7 @@
           <div id="f33-knob"></div>
         </div>
         <div id="f33-l3" class="f33-row f33-lead"><span class="f33-w" id="f33-wSabes2">sabes</span><span class="f33-w" id="f33-wQue">que</span><span class="f33-w" id="f33-wEs">es</span></div>
-        <div id="f33-stampPos"><div id="f33-stamp">DE VERDAD.<div id="f33-stampGhost"></div></div></div>
+        <div id="f33-stampPos"><div id="f33-stamp">de verdad.</div></div>
       </div>
     </div>
   </div>
@@ -172,16 +164,10 @@
         tl.fromTo(el, { y: dy || 40, opacity: 0, filter: "blur(8px)" },
           { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, t - L);
       };
-      var slam = function (el, t, s, b) {
-        tl.fromTo(el, { scale: s || 1.3, opacity: 0, filter: "blur(" + (b || 12) + "px)" },
-          { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, t - L);
-      };
-      var shake = function (el, t, amp) {
-        var xs = [amp, -amp * 0.7, amp * 0.4, 0], ys = [-amp * 0.3, amp * 0.25, -amp * 0.1, 0];
-        tl.fromTo(el, { x: 0, y: 0 }, { x: xs[0], y: ys[0], duration: F, ease: "none", immediateRender: false }, t);
-        tl.to(el, { x: xs[1], y: ys[1], duration: F, ease: "none" }, t + F);
-        tl.to(el, { x: xs[2], y: ys[2], duration: F, ease: "none" }, t + 2 * F);
-        tl.to(el, { x: 0, y: 0, duration: F * 2, ease: "power2.out" }, t + 3 * F);
+      // v3 polish: one calm landing per key word (no hard slams, no shakes)
+      var slam = function (el, t) {
+        tl.fromTo(el, { scale: 1.1, opacity: 0, filter: "blur(6px)" },
+          { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, t - L);
       };
 
       // ---- build the die: core planes + 6 faces, each face in its own wrapper so it can fly off ----
@@ -219,27 +205,18 @@
 
       // ================= SCENE 1 — No puedes jugar · AL AZAR. =================
       word($("wNo"), T.no); word($("wPuedes"), T.puedes); word($("wJugar"), T.jugar);
-      slam($("wAl"), T.al, 1.3, 10);
-      slam($("wAzar"), T.azar, 1.35, 14);
-      // red ✕ stamps over the die on "azar."
-      tl.fromTo($("x"), { scale: 1.8, opacity: 0, rotation: -18 }, { scale: 1, opacity: 1, rotation: -4, duration: 0.14, ease: "power3.in" }, T.azar - L);
-      shake($("stage"), T.azar + 0.1, 9);
-      // the die shatters: its 6 faces fly apart and fall away (deterministic)
+      slam($("wAl"), T.al);
+      slam($("wAzar"), T.azar);
+      // a clean red ✕ draws over the die on "azar." and the die steps back (no shatter, no shake)
+      var xa = $("xa"), xb = $("xb");
+      [xa, xb].forEach(function (p) { p.setAttribute("pathLength", "1"); p.setAttribute("stroke-dasharray", "1 1"); });
+      tl.fromTo($("x"), { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, T.azar - L);
+      tl.fromTo(xa, { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.16, ease: "power2.out" }, T.azar - L);
+      tl.fromTo(xb, { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.16, ease: "power2.out" }, T.azar + 0.08);
       var SH = T.azar + 0.12;
-      tl.set(cores, { opacity: 0 }, SH);
-      tl.to($("dieShadow"), { opacity: 0, duration: 0.15, ease: "none" }, SH);
-      tl.fromTo($("ring"), { opacity: 0 }, { opacity: 0.9, duration: 0.01, ease: "none" }, SH);
-      tl.fromTo($("ring"), { scale: 0.4 }, { scale: 1.6, duration: 0.4, ease: "power2.out" }, SH);
-      tl.to($("ring"), { opacity: 0, duration: 0.38, ease: "power2.out" }, SH + 0.02);
-      wraps.forEach(function (w, i) {
-        var n = FACES[i][2], k = 210 + (i % 3) * 40;
-        var spinX = ((i * 97) % 260) - 130, spinY = ((i * 151) % 300) - 150, spinZ = ((i * 71) % 200) - 100;
-        tl.fromTo(w, { x: 0, y: 0, z: 0 }, { x: n[0] * k + (i - 2.5) * 30, y: n[1] * k - 60, z: n[2] * k, duration: 0.3, ease: "power3.out", immediateRender: false }, SH);
-        tl.to(w, { y: "+=" + (760 + i * 40), duration: 0.5, ease: "power2.in" }, SH + 0.16);
-        tl.fromTo(w, { rotationX: 0, rotationY: 0, rotation: 0 }, { rotationX: spinX, rotationY: spinY, rotation: spinZ, duration: 0.66, ease: "power1.out", immediateRender: false }, SH);
-      });
-      tl.set($("dieX"), { visibility: "hidden" }, SH + 0.68);
-      tl.to($("x"), { scale: 1.15, opacity: 0, duration: 0.24, ease: "power2.in" }, 1.42);
+      tl.fromTo($("dieP"), { opacity: 1, scale: 1 }, { opacity: 0.45, scale: 0.94, duration: 0.3, ease: "power2.out", immediateRender: false }, SH);
+      tl.to($("dieShadow"), { opacity: 0.4, duration: 0.3, ease: "power2.out" }, SH);
+      tl.to($("x"), { opacity: 0, duration: 0.24, ease: "power2.in" }, 1.42);
 
       // ---- seam: scene 1 copy whips up, the two halves slide in from the sides ----
       var vb = { v: 0 }, vbN = $("vbN");
@@ -249,25 +226,28 @@
       tl.set($("s1"), { filter: "url(#f33-vb)" }, C - 0.2);
       tl.fromTo($("s1"), { y: 0 }, { y: -720, duration: 0.2, ease: "power3.in", immediateRender: false }, C - 0.2);
       tl.fromTo(vb, { v: 0 }, { v: 22, duration: 0.2, ease: "power2.in", onUpdate: wv, immediateRender: false }, C - 0.2);
+      tl.to([$("dieX"), $("x")], { y: -720, duration: 0.2, ease: "power3.in" }, C - 0.2);
+      tl.to([$("dieX"), $("x")], { opacity: 0, duration: 0.12, ease: "power1.out" }, C - 0.2);
       tl.set($("s1"), { visibility: "hidden", filter: "none" }, C);
+      tl.set($("dieX"), { visibility: "hidden" }, C);
       tl.fromTo($("hL"), { x: -980 }, { x: 0, duration: 0.5, ease: "expo.out" }, C - 0.06);
       tl.fromTo($("hR"), { x: 980 }, { x: 0, duration: 0.5, ease: "expo.out" }, C - 0.06);
       tl.fromTo($("divider"), { scaleY: 0, opacity: 1 }, { scaleY: 1, opacity: 1, duration: 0.45, ease: "power3.out" }, C);
 
       // ================= SCENE 2 — O lo SABES | o lo PRACTICAS hasta saberlo. =================
       word($("wO1"), T.o1, 30); word($("wLo1"), T.lo1, 30);
-      slam($("wSabes"), T.sabes, 1.3, 12);
-      tl.fromTo($("ck"), { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.34, ease: "back.out(2.2)" }, T.sabes - L);
+      slam($("wSabes"), T.sabes);
+      tl.fromTo($("ck"), { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.34, ease: "power3.out" }, T.sabes - L);
       var ckP = $("ckP"); ckP.setAttribute("stroke-dasharray", "1 1");
       tl.fromTo(ckP, { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.26, ease: "power2.out" }, T.sabes + 0.06);
       word($("wO2"), T.o2, 30); word($("wLo2"), T.lo2, 30);
-      slam($("wPract"), T.practicas, 1.3, 12);
-      tl.fromTo($("rep"), { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, T.practicas - L);
-      tl.fromTo($("repSvg"), { rotation: -40 }, { rotation: 360, duration: 0.8, ease: "power2.inOut" }, T.practicas - L);
+      slam($("wPract"), T.practicas);
+      tl.fromTo($("rep"), { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, T.practicas - L);
+      tl.fromTo($("repSvg"), { rotation: -150 }, { rotation: 0, duration: 0.8, ease: "power3.out" }, T.practicas - L);
       word($("wHasta"), T.hasta, 30);
       word($("wSaberlo"), T.saberlo, 30);
       // ...until you know it: the repeat earns a check
-      tl.fromTo($("repMini"), { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2.4)" }, T.saberlo - L);
+      tl.fromTo($("repMini"), { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, T.saberlo - L);
       tl.fromTo([$("hL"), $("hR")], { scale: 1 }, { scale: 1.03, duration: 2.2, ease: "sine.inOut", transformOrigin: "50% 50%" }, 1.9);
 
       // ================= SCENE 3 — halves slide away; real progress fills; DE VERDAD stamps =================
@@ -292,7 +272,7 @@
         // fill uses sine.inOut → invert it to find when the fill reaches this marker
         var tk = F0 + FD * Math.acos(1 - 2 * (f / TARGET)) / Math.PI;
         tl.fromTo(on, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: "none" }, tk - 0.02);
-        tl.fromTo(m, { scale: 1 }, { scale: 1.28, duration: 0.07, ease: "power2.out", immediateRender: false }, tk - 0.02);
+        tl.fromTo(m, { scale: 1 }, { scale: 1.08, duration: 0.07, ease: "power2.out", immediateRender: false }, tk - 0.02);
         tl.to(m, { scale: 1, duration: 0.26, ease: "power3.out" }, tk + 0.05);
       });
       var fp = { p: 0 }, fill = $("fill"), knob = $("knob");
@@ -308,14 +288,27 @@
       // "sabes que es" → DE VERDAD. stamp
       word($("wSabes2"), T.sabes2); word($("wQue"), T.que); word($("wEs"), T.es);
       var ST = T.de - 0.04;
-      tl.fromTo($("stamp"), { scale: 2.3, opacity: 0, rotation: -12 }, { scale: 1, opacity: 1, rotation: -4, duration: 0.12, ease: "power2.in" }, ST);
-      tl.fromTo($("stamp"), { filter: "blur(10px)" }, { filter: "blur(0px)", duration: 0.12, ease: "power2.in" }, ST);
-      tl.fromTo($("stampGhost"), { scale: 1, opacity: 0 }, { scale: 1.04, opacity: 0.9, duration: F, ease: "none", immediateRender: false }, ST + 0.12 - F);
-      tl.to($("stampGhost"), { scale: 1.32, opacity: 0, duration: 0.4, ease: "power2.out" }, ST + 0.12);
-      shake($("stage"), ST + 0.12, 12);
+      tl.fromTo($("stamp"), { scale: 1.12, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: -3, duration: 0.32, ease: "power3.out" }, ST);
+      tl.fromTo($("stamp"), { filter: "blur(6px)" }, { filter: "blur(0px)", duration: 0.24, ease: "power2.out" }, ST);
       tl.fromTo($("stage"), { scale: 1 }, { scale: 1.015, duration: D - ST - 0.3, ease: "sine.out" }, ST + 0.3);
 
       window.__timelines = window.__timelines || {};
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.35, 0.276], [0.69, 0.588], [1.01, 0.845], [1.1, 0.927], [1.75, 1.45], [1.83, 1.533], [1.94, 1.634], [2.57, 2.193], [2.64, 2.267], [2.76, 2.367], [3.29, 2.863], [3.51, 3.056], [4.25, 3.716], [4.31, 3.789], [4.63, 4.083], [5.31, 4.698], [5.78, 5.092], [5.9, 5.248], [6.05, 5.423], [6.14, 5.514], [6.78, 6.063]]);
       window.__timelines["33-de-verdad"] = tl;
     })();
   </script>

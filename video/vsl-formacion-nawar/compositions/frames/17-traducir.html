@@ -20,7 +20,27 @@
     .f17-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
     .f17-w { display: inline-block; }
 
-    /* ================= the head ================= */
+    /* ================= SCENE 1 — the target ================= */
+    #f17-s1cam { transform-origin: 960px 470px; }
+    #f17-tgt { position: absolute; left: 730px; top: 100px; width: 460px; height: 460px; transform-origin: 50% 50%; }
+    #f17-tgt-in { position: absolute; inset: 0; transform-origin: 50% 50%; }
+    #f17-tgt svg { display: block; width: 460px; height: 460px; overflow: visible; }
+
+    #f17-dart { position: absolute; left: 960px; top: 330px; width: 0; height: 0; transform-origin: 0 0; }
+    #f17-dart svg { position: absolute; left: -405.6px; top: -52px; width: 416px; height: 104px; overflow: visible; filter: drop-shadow(0 8px 12px rgba(4,0,40,0.32)); }
+
+    #f17-lead1 {
+      position: absolute; left: 0; top: 588px; width: 1920px; display: flex; justify-content: center; gap: 0.26em;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 60px; line-height: 1.1; letter-spacing: -0.01em;
+      color: rgba(255,255,255,0.72); white-space: nowrap;
+    }
+    #f17-objrow { position: absolute; left: 0; top: 652px; width: 1920px; display: flex; justify-content: center; }
+    #f17-obj {
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 226px; line-height: 0.95; letter-spacing: -0.04em;
+      color: #FFFFFF; white-space: nowrap; transform-origin: 50% 60%;
+    }
+
+    /* ================= SCENE 2 — the head ================= */
     #f17-s2cam { transform-origin: 960px 520px; }
     #f17-head { position: absolute; left: 300px; top: 170px; width: 682px; height: 836px; overflow: visible;
       -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 80%, rgba(0,0,0,0) 97%);
@@ -29,17 +49,12 @@
     #f17-head-line { fill: none; stroke: #FFFFFF; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
 
     #f17-loop { position: absolute; left: 450px; top: 287px; width: 360px; height: 360px; transform-origin: 50% 50%; }
-    #f17-bglow {
-      position: absolute; left: -110px; top: -110px; width: 580px; height: 580px; border-radius: 50%; opacity: 0.6;
-      background: radial-gradient(circle, rgba(77,163,255,0.55) 0%, rgba(77,163,255,0.18) 40%, rgba(77,163,255,0) 68%);
-    }
     .f17-sq { position: absolute; left: 0; top: 0; width: 360px; height: 360px; transform-origin: 50% 50%; }
     .f17-sq svg { display: block; width: 360px; height: 360px; overflow: visible; }
-    .f17-arc { fill: none; stroke: #FFFFFF; stroke-width: 18; stroke-linecap: round; }
-    .f17-ahd { fill: #FFFFFF; stroke: #FFFFFF; stroke-width: 6; stroke-linejoin: round; }
+    .f17-arc { fill: none; stroke: #FFFFFF; stroke-width: 12; stroke-linecap: round; }
+    .f17-ahd { fill: #FFFFFF; stroke: #FFFFFF; stroke-width: 4; stroke-linejoin: round; }
     .f17-arc2 { stroke: #9fd5f5; }
     .f17-ahd2 { fill: #9fd5f5; stroke: #9fd5f5; }
-    .f17-ghost { opacity: 0; }
 
     .f17-lbl {
       position: absolute; top: 140px; width: 130px; height: 80px; text-align: center;
@@ -47,22 +62,15 @@
       transform-origin: 50% 50%;
     }
     #f17-es { left: 52px; color: rgba(255,255,255,0.78); }
-    #f17-nl { left: 178px; color: #FFFFFF; text-shadow: 0 0 30px rgba(159,213,245,0.55); }
+    #f17-nl { left: 178px; color: #FFFFFF; }
 
-    .f17-shw { position: absolute; left: 180px; top: 180px; width: 0; height: 0; }
-    .f17-sh { position: absolute; left: -5px; top: -18px; width: 10px; height: 36px; border-radius: 5px; background: #FFFFFF; }
-    #f17-flash {
-      position: absolute; left: -40px; top: -40px; width: 440px; height: 440px; border-radius: 50%; opacity: 0;
-      background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(159,213,245,0.45) 26%, rgba(159,213,245,0) 62%);
-    }
 
     #f17-arrowsvg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
-    #f17-cglow { fill: none; stroke: #9fd5f5; stroke-opacity: 0.45; stroke-width: 30; stroke-linecap: round; }
-    #f17-cline { fill: none; stroke: #FFFFFF; stroke-width: 12; stroke-linecap: round; }
-    #f17-chead { fill: #FFFFFF; stroke: #FFFFFF; stroke-width: 5; stroke-linejoin: round; }
+    #f17-cline { fill: none; stroke: #FFFFFF; stroke-width: 7; stroke-linecap: round; }
+    #f17-chead { fill: #FFFFFF; stroke: #FFFFFF; stroke-width: 3; stroke-linejoin: round; }
 
     /* speech bubble */
-    #f17-bub { position: absolute; left: 1010px; top: 632px; transform-origin: 0% 50%; filter: drop-shadow(0 26px 44px rgba(4,0,40,0.45)); }
+    #f17-bub { position: absolute; left: 1010px; top: 632px; transform-origin: 0% 50%; filter: drop-shadow(0 18px 34px rgba(4,0,40,0.30)); }
     #f17-bub-card {
       position: relative; display: flex; align-items: center; gap: 28px; padding: 30px 56px 30px 36px;
       background: #FFFFFF; border-radius: 30px; white-space: nowrap;
@@ -71,7 +79,6 @@
     #f17-flag { width: 76px; height: 54px; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; flex: 0 0 76px; box-shadow: inset 0 0 0 1px rgba(12,12,30,0.08); }
     #f17-flag i { display: block; flex: 1 1 0; }
     #f17-nltext { font-family: "Inter", sans-serif; font-weight: 600; font-size: 84px; line-height: 1.12; letter-spacing: -0.015em; color: #0C0C1E; }
-    .f17-spk { position: absolute; height: 9px; border-radius: 5px; background: #FFFFFF; transform-origin: 0% 50%; }
 
     /* text column */
     #f17-lead2 {
@@ -84,8 +91,8 @@
     #f17-tradfade { position: relative; }
     #f17-trad {
       display: inline-block; transform-origin: 0% 60%;
-      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 148px; line-height: 1; letter-spacing: -0.04em;
-      color: #FFFFFF; white-space: nowrap; text-shadow: 0 16px 46px rgba(4,0,40,0.38);
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 148px; line-height: 1; letter-spacing: -0.04em;
+      color: #FFFFFF; white-space: nowrap;
     }
     #f17-strike {
       position: absolute; left: -14px; right: -8px; top: 74px; height: 16px; border-radius: 8px;
@@ -99,23 +106,55 @@
     #f17-lead3 .f17-key { color: #FFFFFF; }
   </style>
 
-  <div id="root" data-composition-id="17-traducir" data-width="1920" data-height="1080" data-duration="2.45">
-    <div id="f17-ground" class="clip" data-start="0" data-duration="2.45" data-track-index="0"></div>
+  <div id="root" data-composition-id="17-traducir" data-width="1920" data-height="1080" data-duration="3.055">
+    <div id="f17-ground" class="clip" data-start="0" data-duration="3.055" data-track-index="0"></div>
 
     <svg width="0" height="0" aria-hidden="true" style="position:absolute">
-      <filter id="f17-vb2" x="-0.1" y="-0.6" width="1.2" height="2.2"><feGaussianBlur id="f17-vb2n" in="SourceGraphic" stdDeviation="0 36" /></filter>
-      <symbol id="f17-arcs" viewBox="-180 -180 360 360">
-        <path class="f17-arc" d="M -136.9 -29.1 A 140 140 0 0 1 125.8 -61.4" />
-        <path class="f17-ahd" d="M 143.4 -25.4 L 146.6 -82.6 L 96.3 -58.1 Z" />
-        <path class="f17-arc f17-arc2" d="M 136.9 29.1 A 140 140 0 0 1 -125.8 61.4" />
-        <path class="f17-ahd f17-ahd2" d="M -143.4 25.4 L -146.6 82.6 L -96.3 58.1 Z" />
-      </symbol>
+      <filter id="f17-vb1" x="-0.1" y="-0.6" width="1.2" height="2.2"><feGaussianBlur id="f17-vb1n" in="SourceGraphic" stdDeviation="0 0" /></filter>
+      <filter id="f17-vb2" x="-0.1" y="-0.6" width="1.2" height="2.2"><feGaussianBlur id="f17-vb2n" in="SourceGraphic" stdDeviation="0 20" /></filter>
     </svg>
 
     <div id="f17-dots"></div>
     <div id="f17-vig"></div>
 
-    <!-- ================= the head + ES⇄NL loop ================= -->
+    <!-- ================= SCENE 1 ================= -->
+    <div id="f17-s1" class="f17-full">
+      <div id="f17-s1cam" class="f17-full">
+        <div id="f17-s1shake" class="f17-full">
+          <div id="f17-tgt">
+            <div id="f17-tgt-in">
+              <svg viewBox="-200 -200 400 400">
+                <circle cx="0" cy="0" r="160" fill="rgba(255,255,255,0.07)" stroke="#FFFFFF" stroke-width="6" />
+                <circle cx="0" cy="0" r="122" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.55)" stroke-width="3" />
+                <circle cx="0" cy="0" r="84" fill="rgba(255,255,255,0.07)" stroke="#FFFFFF" stroke-width="5" />
+                <circle cx="0" cy="0" r="46" fill="#FFFFFF" />
+                <circle cx="0" cy="0" r="22" fill="#4da3ff" />
+                <g stroke="rgba(255,255,255,0.7)" stroke-width="4" stroke-linecap="round">
+                  <path d="M 0 -176 L 0 -194 M 176 0 L 194 0 M 0 176 L 0 194 M -176 0 L -194 0" />
+                </g>
+              </svg>
+            </div>
+          </div>
+          <div id="f17-dart">
+            <svg viewBox="0 0 320 80">
+              <path d="M 132 37.5 L 84 12 C 72 6 58 6 50 10 L 72 37.5 Z" fill="#9fd5f5" />
+              <path d="M 132 42.5 L 84 68 C 72 74 58 74 50 70 L 72 42.5 Z" fill="#4da3ff" />
+              <rect x="108" y="37.5" width="128" height="5" rx="2.5" fill="#FFFFFF" />
+              <defs><linearGradient id="f17-brl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F7FC" /><stop offset="0.55" stop-color="#C9D2E4" /><stop offset="1" stop-color="#8E9AB5" /></linearGradient></defs>
+              <rect x="232" y="32" width="68" height="16" rx="8" fill="url(#f17-brl)" />
+              <path d="M 248 33 V 47 M 258 33 V 47 M 268 33 V 47" stroke="rgba(29,0,132,0.28)" stroke-width="2" />
+              <path d="M 312 40 L 298 34.5 L 298 45.5 Z" fill="#7D89A6" />
+            </svg>
+          </div>
+          <div id="f17-lead1">
+            <span class="f17-w" id="f17-w-todo">Todo</span><span class="f17-w" id="f17-w-con">con</span><span class="f17-w" id="f17-w-un">un</span>
+          </div>
+          <div id="f17-objrow"><div id="f17-obj">OBJETIVO</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SCENE 2 ================= -->
     <div id="f17-s2cam" class="f17-full">
       <div id="f17-s2shake" class="f17-full">
         <div id="f17-s2rise" class="f17-full">
@@ -125,11 +164,7 @@
           </svg>
 
           <div id="f17-loop">
-            <div id="f17-bglow"></div>
-            <div id="f17-flash"></div>
             <div id="f17-spin" class="f17-sq">
-              <div class="f17-sq f17-ghost" id="f17-gh2" style="transform: rotate(-28deg);"><svg viewBox="-180 -180 360 360"><use href="#f17-arcs" x="-180" y="-180" width="360" height="360" /></svg></div>
-              <div class="f17-sq f17-ghost" id="f17-gh1" style="transform: rotate(-14deg);"><svg viewBox="-180 -180 360 360"><use href="#f17-arcs" x="-180" y="-180" width="360" height="360" /></svg></div>
               <div class="f17-sq" id="f17-arcA"><svg viewBox="-180 -180 360 360">
                 <path class="f17-arc" d="M -136.9 -29.1 A 140 140 0 0 1 125.8 -61.4" />
                 <path class="f17-ahd" d="M 143.4 -25.4 L 146.6 -82.6 L 96.3 -58.1 Z" />
@@ -139,16 +174,14 @@
                 <path class="f17-ahd f17-ahd2" d="M -143.4 25.4 L -146.6 82.6 L -96.3 58.1 Z" />
               </svg></div>
             </div>
-            <div id="f17-shards"></div>
             <div class="f17-lbl" id="f17-es"><div id="f17-es-in">ES</div></div>
             <div class="f17-lbl" id="f17-nl">NL</div>
           </div>
 
           <svg id="f17-arrowsvg" viewBox="0 0 1920 1080">
             <g id="f17-carrow" opacity="0">
-              <path id="f17-cglow" d="M 700 480 C 800 500 850 690 982 709" />
               <path id="f17-cline" d="M 700 480 C 800 500 850 690 982 709" />
-              <path id="f17-chead" d="M 20 0 L -22 -22 L -12 0 L -22 22 Z" />
+              <path id="f17-chead" d="M 14 0 L -14 -14 L -7 0 L -14 14 Z" />
             </g>
           </svg>
 
@@ -158,15 +191,12 @@
               <div id="f17-flag"><i style="background:#AE1C27"></i><i style="background:#FFFFFF"></i><i style="background:#21468C"></i></div>
               <div id="f17-nltext"><span class="f17-w" id="f17-b-ja">Ja,</span> <span class="f17-w" id="f17-b-nat">natuurlijk!</span></div>
             </div>
-            <div class="f17-spk" id="f17-spk1" style="left: 728px; top: -30px; width: 46px;"></div>
-            <div class="f17-spk" id="f17-spk2" style="left: 752px; top: 14px; width: 50px;"></div>
-            <div class="f17-spk" id="f17-spk3" style="left: 758px; top: 66px; width: 40px;"></div>
           </div>
         </div>
 
         <!-- text column -->
         <div id="f17-lead2">
-          <span class="f17-w" id="f17-w-todo">Todo</span><span class="f17-w" id="f17-w-para">para</span><span class="f17-w" id="f17-w-que">que</span><span class="f17-w f17-key" id="f17-w-dejes">dejes</span><span class="f17-w" id="f17-w-de">de</span>
+          <span class="f17-w" id="f17-w-que">que</span><span class="f17-w f17-key" id="f17-w-dejes">dejes</span><span class="f17-w" id="f17-w-de">de</span>
         </div>
         <div id="f17-tradwrap">
           <div id="f17-tradfade"><div id="f17-trad">TRADUCIR</div></div>
@@ -183,98 +213,99 @@
     (function () {
       const q = (id) => document.getElementById(id);
       const tl = gsap.timeline({ paused: true });
-      const D = 2.45;
-      // v2 word cues (frame-relative s) — written directly, no retime shim
-      const T = { todo: 0.12, para: 0.35, que: 0.53, dejes: 0.69, de: 1.02, traducir: 1.13, en: 1.58, tu: 1.69, cabeza: 1.77 };
+      const D = 3.288;
       // one shared word-entrance (each word lands on its VO cue, ≤ 40 ms early)
       const wordIn = (el, t) => tl.fromTo(el, { opacity: 0, y: 44, filter: "blur(6px)" },
         { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, t - 0.04);
 
-      // ================= ENTRANCE (t = 0): the head rises fast out of a vertical motion blur =================
-      // ground travels with it (dots ride up and settle) so the hard cut lands as one upward move
-      tl.fromTo(q("f17-dots"), { y: 140, scale: 1.08 }, { y: 0, scale: 1, duration: 0.6, ease: "expo.out" }, 0);
+      // ================= GROUND =================
+      tl.fromTo(q("f17-dots"), { scale: 1.05 }, { scale: 1, duration: 0.7, ease: "expo.out" }, 0);
+
+      // ================= SCENE 1 — ENTRANCE: the target settles in (0.00–0.42) =================
+      tl.fromTo(q("f17-tgt"), { rotation: 0, scale: 0.88, filter: "blur(8px)" },
+        { rotation: 0, scale: 1, filter: "blur(0px)", duration: 0.42, ease: "expo.out" }, 0);
+      tl.fromTo(q("f17-tgt"), { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "none" }, 0);
+
+      // lead-in words
+      [["f17-w-todo", 0.12], ["f17-w-con", 0.352], ["f17-w-un", 0.454]].forEach(([id, t]) => wordIn(q(id), t));
+
+      // the dart flies in along its own axis (30deg) and lands in the bullseye on "objetivo"
+      const HIT = 0.574;
+      const dart = q("f17-dart");
+      const A = 30 * Math.PI / 180, BACK = 950;
+      tl.fromTo(dart, { x: -Math.cos(A) * BACK, y: -Math.sin(A) * BACK, rotation: 30 },
+        { x: 0, y: 0, rotation: 30, duration: 0.2, ease: "power1.in" }, HIT - 0.2);
+      // the board takes the hit: a small, physical give
+      const tin = q("f17-tgt-in");
+      tl.fromTo(tin, { scale: 1, x: 0, y: 0 }, { scale: 0.985, x: 4, y: 2, duration: 0.05, ease: "power2.out" }, HIT);
+      tl.to(tin, { scale: 1, x: 0, y: 0, duration: 0.4, ease: "power3.out" }, HIT + 0.05);
+
+      // OBJETIVO lands on its cue
+      tl.fromTo(q("f17-obj"), { opacity: 0, scale: 1.1, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, HIT - 0.03);
+
+      // hold: slow push-in on the target
+      tl.fromTo(q("f17-s1cam"), { scale: 1 }, { scale: 1.02, duration: 0.8, ease: "power1.inOut" }, 0.6);
+
+      // ================= SEAM (1.36–1.98): scene 1 whips up, the head rises in the same direction =================
+      const s1 = q("f17-s1");
+      const vb1 = q("f17-vb1n"), vb2 = q("f17-vb2n");
+      const b1 = { v: 0 }, b2 = { v: 20 };
+      function w1() { vb1.setAttribute("stdDeviation", "0 " + b1.v.toFixed(2)); }
+      function w2() { vb2.setAttribute("stdDeviation", "0 " + b2.v.toFixed(2)); }
+      w1(); w2();
+      tl.set(s1, { filter: "none" }, 0);
+      tl.set(s1, { filter: "url(#f17-vb1)" }, 1.36);
+      tl.fromTo(s1, { y: 0 }, { y: -1100, duration: 0.2, ease: "power2.in" }, 1.36);
+      tl.fromTo(b1, { v: 0 }, { v: 22, duration: 0.2, ease: "power2.in", onUpdate: w1, immediateRender: false }, 1.36);
+      tl.fromTo(s1, { opacity: 1 }, { opacity: 0, duration: 0.02, ease: "none" }, 1.56);
+      tl.fromTo(q("f17-dots"), { y: 0 }, { y: -150, duration: 0.6, ease: "power3.inOut" }, 1.34);
 
       const rise = q("f17-s2rise");
-      const vb2 = q("f17-vb2n");
-      const b2 = { v: 36 };
-      function w2() { vb2.setAttribute("stdDeviation", "0 " + b2.v.toFixed(2)); }
-      w2();
-      tl.set(rise, { filter: "url(#f17-vb2)" }, 0);
-      // starts just under the frame edge so the very first frame already carries the blurred rise
-      tl.fromTo(rise, { y: 820 }, { y: 0, duration: 0.55, ease: "expo.out" }, 0);
-      tl.fromTo(b2, { v: 36 }, { v: 0, duration: 0.55, ease: "expo.out", onUpdate: w2, immediateRender: false }, 0);
-      tl.set(rise, { filter: "none" }, 0.56);
+      tl.set(rise, { filter: "none" }, 0);
+      tl.set(rise, { filter: "url(#f17-vb2)" }, 1.44);
+      tl.fromTo(rise, { y: 1000 }, { y: 0, duration: 0.55, ease: "expo.out" }, 1.44);
+      tl.fromTo(b2, { v: 20 }, { v: 0, duration: 0.55, ease: "expo.out", onUpdate: w2, immediateRender: false }, 1.44);
+      tl.set(rise, { filter: "none" }, 2.0);
 
-      // head outline finishes drawing while it rises (back of the head + crown already traced at t=0); fill blooms in
+      // head outline draws while it rises; fill blooms in
       const hl = q("f17-head-line");
       const HL = hl.getTotalLength();
       hl.style.strokeDasharray = HL + " " + HL;
-      tl.fromTo(hl, { strokeDashoffset: HL * 0.55 }, { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, 0);
-      tl.fromTo(q("f17-head-fill"), { opacity: 0.4 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 0);
+      tl.fromTo(hl, { strokeDashoffset: HL }, { strokeDashoffset: 0, duration: 0.6, ease: "power2.out" }, 1.44);
+      tl.fromTo(q("f17-head-fill"), { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power1.out" }, 1.48);
 
-      // ================= the ES⇄NL loop spins (~1.5 turns, accelerating) while the line builds =================
-      const BREAK = T.traducir;
-      tl.fromTo(q("f17-loop"), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, 0.04);
-      tl.fromTo(q("f17-spin"), { rotation: 0 }, { rotation: 540, duration: BREAK - 0.06, ease: "power1.in" }, 0.06);
-      tl.fromTo(q("f17-gh1"), { opacity: 0 }, { opacity: 0.34, duration: 0.24, ease: "power1.in" }, 0.6);
-      tl.fromTo(q("f17-gh2"), { opacity: 0 }, { opacity: 0.16, duration: 0.24, ease: "power1.in" }, 0.6);
-      tl.to([q("f17-gh1"), q("f17-gh2")], { opacity: 0, duration: 0.02, ease: "none" }, BREAK);
+      // ================= SCENE 2 — the ES⇄NL loop spins while the line builds =================
+      tl.fromTo(q("f17-loop"), { opacity: 0, scale: 0.88 }, { opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, 1.52);
+      const BREAK = 2.12;
+      tl.fromTo(q("f17-spin"), { rotation: 0 }, { rotation: 360, duration: BREAK - 1.5, ease: "power1.inOut" }, 1.5);
 
-      // «Todo para que dejes de»
-      [["f17-w-todo", T.todo], ["f17-w-para", T.para], ["f17-w-que", T.que], ["f17-w-dejes", T.dejes], ["f17-w-de", T.de]]
-        .forEach(([id, t]) => wordIn(q(id), t));
+      [["f17-w-que", 1.565], ["f17-w-dejes", 1.704], ["f17-w-de", 2.028]].forEach(([id, t]) => wordIn(q(id), t));
 
-      // ================= BREAK on "traducir" =================
-      tl.fromTo(q("f17-trad"), { opacity: 0, scale: 1.34, filter: "blur(14px)" },
+      // ================= BREAK on "traducir" (2.12) =================
+      tl.fromTo(q("f17-trad"), { opacity: 0, scale: 1.1, filter: "blur(6px)" },
         { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, BREAK - 0.03);
-      const sh2 = q("f17-s2shake");
-      tl.set(sh2, { x: 0, y: 0 }, 0);
-      tl.set(sh2, { x: 7, y: -3 }, BREAK + 0.04);
-      tl.set(sh2, { x: -5, y: 2 }, BREAK + 0.073);
-      tl.set(sh2, { x: 2, y: -1 }, BREAK + 0.106);
-      tl.set(sh2, { x: 0, y: 0 }, BREAK + 0.14);
 
       // the two arcs fly apart (local coords — the spinner sits at 180deg, so these read down-left / up-right)
       tl.fromTo(q("f17-arcA"), { x: 0, y: 0, rotation: 0, filter: "blur(0px)" },
-        { x: 120, y: -210, rotation: 80, filter: "blur(5px)", duration: 0.4, ease: "power3.out" }, BREAK);
+        { x: 90, y: -160, rotation: 40, filter: "blur(3px)", duration: 0.4, ease: "power3.out" }, BREAK);
       tl.fromTo(q("f17-arcB"), { x: 0, y: 0, rotation: 0, filter: "blur(0px)" },
-        { x: -120, y: 210, rotation: 80, filter: "blur(5px)", duration: 0.4, ease: "power3.out" }, BREAK);
+        { x: -90, y: 160, rotation: 40, filter: "blur(3px)", duration: 0.4, ease: "power3.out" }, BREAK);
       tl.fromTo([q("f17-arcA"), q("f17-arcB")], { opacity: 1 }, { opacity: 0, duration: 0.34, ease: "power2.in" }, BREAK + 0.02);
-      tl.fromTo(q("f17-flash"), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.05, ease: "power1.out" }, BREAK);
-      tl.to(q("f17-flash"), { opacity: 0, scale: 1.5, duration: 0.32, ease: "power2.out" }, BREAK + 0.05);
-
-      // snap shards (deterministic by index)
-      const shards = q("f17-shards");
-      const NS = 10;
-      tl.fromTo(shards, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: "none" }, BREAK);
-      for (let i = 0; i < NS; i++) {
-        const w = document.createElement("div");
-        w.className = "f17-shw";
-        w.style.transform = "rotate(" + (i * 36 + 14) + "deg)";
-        const s = document.createElement("div");
-        s.className = "f17-sh";
-        w.appendChild(s);
-        shards.appendChild(w);
-        const dist = 170 + (i % 4) * 26;
-        tl.fromTo(s, { y: -40, scaleY: 1 }, { y: -dist, scaleY: 0.35, duration: 0.42, ease: "power3.out" }, BREAK);
-        tl.to(s, { opacity: 0, duration: 0.26, ease: "power1.in" }, BREAK + 0.14);
-      }
 
       // ES is thrown out, NL takes the centre of the head
       tl.fromTo(q("f17-es-in"), { x: 0, scale: 1, opacity: 1, filter: "blur(0px)" },
         { x: -80, scale: 0.4, opacity: 0, filter: "blur(8px)", duration: 0.3, ease: "power3.out" }, BREAK);
       tl.fromTo(q("f17-nl"), { x: 0, scale: 1 }, { x: -63, scale: 1.45, duration: 0.38, ease: "power3.out" }, BREAK + 0.02);
-      tl.fromTo(q("f17-bglow"), { opacity: 0.6, scale: 1 }, { opacity: 1, scale: 1.2, duration: 0.45, ease: "power2.out" }, BREAK + 0.02);
 
       // red strike draws through TRADUCIR, the word dims
-      tl.fromTo(q("f17-strike"), { scaleX: 0, rotation: -1.2 }, { scaleX: 1, rotation: -1.2, duration: 0.2, ease: "power3.inOut" }, BREAK + 0.1);
-      tl.fromTo(q("f17-tradfade"), { opacity: 1 }, { opacity: 0.55, duration: 0.3, ease: "power2.out" }, BREAK + 0.22);
+      tl.fromTo(q("f17-strike"), { scaleX: 0, rotation: -1.2 }, { scaleX: 1, rotation: -1.2, duration: 0.2, ease: "power3.inOut" }, 2.22);
+      tl.fromTo(q("f17-tradfade"), { opacity: 1 }, { opacity: 0.55, duration: 0.3, ease: "power2.out" }, 2.34);
 
-      // ================= one clean arrow: NL -> mouth (lands just before "cabeza") =================
-      const cl = q("f17-cline"), cg = q("f17-cglow"), ch = q("f17-chead");
+      // ================= one clean arrow: NL -> mouth (2.38–2.70) =================
+      const cl = q("f17-cline"), ch = q("f17-chead");
       const CL = cl.getTotalLength();
       cl.style.strokeDasharray = CL + " " + CL;
-      cg.style.strokeDasharray = CL + " " + CL;
       // sample the (static) path once at build time — the callback only interpolates numbers
       const NSMP = 160, PX = [], PY = [];
       for (let i = 0; i <= NSMP; i++) {
@@ -290,32 +321,42 @@
         const ang = Math.atan2(PY[i0 + 1] - PY[i0], PX[i0 + 1] - PX[i0]) * 180 / Math.PI;
         const off = (CL * (1 - ap.p)).toFixed(2);
         cl.style.strokeDashoffset = off;
-        cg.style.strokeDashoffset = off;
         ch.setAttribute("transform", "translate(" + x.toFixed(2) + " " + y.toFixed(2) + ") rotate(" + ang.toFixed(2) + ")");
       }
       writeArrow();
-      const ARW = BREAK + 0.26;
-      tl.fromTo(q("f17-carrow"), { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, ARW);
-      tl.fromTo(ap, { p: 0 }, { p: 1, duration: 0.32, ease: "power2.inOut", onUpdate: writeArrow, immediateRender: false }, ARW);
+      tl.fromTo(q("f17-carrow"), { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, 2.38);
+      tl.fromTo(ap, { p: 0 }, { p: 1, duration: 0.32, ease: "power2.inOut", onUpdate: writeArrow, immediateRender: false }, 2.38);
 
-      // «en tu cabeza.»
-      [["f17-w-en", T.en], ["f17-w-tu", T.tu], ["f17-w-cabeza", T.cabeza]].forEach(([id, t]) => wordIn(q(id), t));
-
-      // ================= «Ja, natuurlijk!» pops out of the mouth on "cabeza" =================
-      const CAB = T.cabeza;
-      tl.fromTo(q("f17-bub"), { opacity: 0, scale: 0.22, x: -40 },
-        { opacity: 1, scale: 1, x: 0, duration: 0.4, ease: "expo.out" }, CAB - 0.04);
+      // ================= «Ja, natuurlijk!» comes out of the mouth on "cabeza" =================
+      const CAB = 2.732;
+      tl.fromTo(q("f17-bub"), { opacity: 0, scale: 0.9, x: -30 },
+        { opacity: 1, scale: 1, x: 0, duration: 0.4, ease: "power3.out" }, CAB - 0.04);
       tl.fromTo(q("f17-b-ja"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, CAB);
       tl.fromTo(q("f17-b-nat"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, CAB + 0.07);
-      ["f17-spk1", "f17-spk2", "f17-spk3"].forEach((id, i) => {
-        const rot = [-58, -24, 8][i];
-        tl.fromTo(q(id), { scaleX: 0, rotation: rot, opacity: 0 }, { scaleX: 1, rotation: rot, opacity: 1, duration: 0.22, ease: "power3.out" }, CAB + 0.12 + i * 0.035);
-      });
 
-      // macro camera: a slow push once the head has landed, holding into the cut
-      tl.fromTo(q("f17-s2cam"), { scale: 1 }, { scale: 1.02, duration: D - 0.6, ease: "power1.out" }, 0.6);
+      // lead-out words
+      [["f17-w-en", 2.556], ["f17-w-tu", 2.658], ["f17-w-cabeza", 2.732]].forEach(([id, t]) => wordIn(q(id), t));
+
+      // macro camera for scene 2
+      tl.fromTo(q("f17-s2cam"), { scale: 1 }, { scale: 1.02, duration: D - 1.9, ease: "power1.out" }, 1.9);
 
       window.__timelines = window.__timelines || {};
+      // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.352, 0.34], [0.454, 0.487], [0.574, 0.611], [1.565, 1.34], [1.704, 1.469], [2.028, 1.771], [2.12, 1.872], [2.556, 2.304], [2.658, 2.395], [2.732, 2.496], [3.288, 3.055]]);
       window.__timelines["17-traducir"] = tl;
     })();
   </script>

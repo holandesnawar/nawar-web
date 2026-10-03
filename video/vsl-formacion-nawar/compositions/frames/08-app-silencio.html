@@ -87,7 +87,7 @@
 
     #f08-cta {
       position: absolute; left: 22px; top: 688px; width: 338px; height: 76px; border-radius: 22px; background: #0b6df0;
-      box-shadow: 0 7px 0 #0846A8, 0 16px 26px rgba(11,109,240,0.28);
+      box-shadow: 0 8px 18px rgba(11,109,240,0.22);
       display: flex; align-items: center; justify-content: center;
       font-weight: 800; font-size: 23px; letter-spacing: 0.1em; color: #FFFFFF;
     }
@@ -114,7 +114,7 @@
     #f08-chip { position: relative; display: inline-block; margin-left: 0.45em; transform-origin: 20% 60%; }
     #f08-chipBg {
       position: absolute; left: -28px; right: -28px; top: 14px; bottom: 4px; border-radius: 20px; background: #1D0084;
-      transform-origin: 0 50%; box-shadow: 0 18px 40px rgba(29,0,132,0.28);
+      transform-origin: 0 50%; box-shadow: 0 12px 28px rgba(29,0,132,0.18);
     }
     #f08-chipTxt { position: relative; display: inline-block; color: #FFFFFF; transform-origin: 50% 60%; }
 
@@ -195,7 +195,7 @@
     #f08-greys .f08-day { color: #7D87A3; }
 
     #f08-b0lift { position: absolute; left: 0; top: 0; width: 196px; height: 380px; transform-origin: 98px 300px; }
-    #f08-b0glow { position: absolute; left: 0; top: 0; width: 196px; height: 380px; border-radius: 28px; box-shadow: 0 34px 80px rgba(11,109,240,0.42), 0 8px 18px rgba(11,109,240,0.26); }
+    #f08-b0glow { position: absolute; left: 0; top: 0; width: 196px; height: 380px; border-radius: 28px; box-shadow: 0 16px 36px rgba(11,109,240,0.20), 0 4px 10px rgba(11,109,240,0.14); }
     #f08-b0box {
       position: absolute; left: 0; top: 0; width: 196px; height: 380px; border-radius: 28px; box-sizing: border-box;
       border: 4px solid #1D0084; background: #FFFFFF; overflow: hidden;
@@ -230,9 +230,9 @@
     }
   </style>
 
-  <div id="root" data-composition-id="08-app-silencio" data-width="1920" data-height="1080" data-duration="6.85">
-    <div id="f08-ground" class="clip" data-start="0" data-duration="6.85" data-track-index="0"><div id="f08-dots"></div><div id="f08-light"></div></div>
-    <svg width="0" height="0" aria-hidden="true" style="position: absolute"><filter id="f08-rise" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur id="f08-riseBlur" in="SourceGraphic" stdDeviation="0 24" /></filter><filter id="f08-whipO" x="-5%" y="-30%" width="110%" height="160%"><feGaussianBlur id="f08-whipOBlur" in="SourceGraphic" stdDeviation="0 0" /></filter><filter id="f08-whipI" x="-5%" y="-30%" width="110%" height="160%"><feGaussianBlur id="f08-whipIBlur" in="SourceGraphic" stdDeviation="0 18" /></filter></svg>
+  <div id="root" data-composition-id="08-app-silencio" data-width="1920" data-height="1080" data-duration="6.21">
+    <div id="f08-ground" class="clip" data-start="0" data-duration="6.21" data-track-index="0"><div id="f08-dots"></div><div id="f08-light"></div></div>
+    <svg width="0" height="0" aria-hidden="true" style="position: absolute"><filter id="f08-rise" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur id="f08-riseBlur" in="SourceGraphic" stdDeviation="0 10" /></filter><filter id="f08-whipO" x="-5%" y="-30%" width="110%" height="160%"><feGaussianBlur id="f08-whipOBlur" in="SourceGraphic" stdDeviation="0 0" /></filter><filter id="f08-whipI" x="-5%" y="-30%" width="110%" height="160%"><feGaussianBlur id="f08-whipIBlur" in="SourceGraphic" stdDeviation="0 10" /></filter></svg>
 
     <!-- ================= SCENES 1 + 2 ================= -->
     <div id="f08-s12" class="f08-scene">
@@ -256,15 +256,15 @@
             <div id="f08-cdiv"></div>
             <!-- flashcard states: rood → blauw → geel (cartoon paint blobs) -->
             <div class="f08-cv" id="f08-cvR">
-              <svg class="f08-sw" viewBox="0 0 216 190" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="f08-gR" cx="35%" cy="30%" r="78%"><stop offset="0" stop-color="#FF6B75" /><stop offset="0.55" stop-color="#E02D3C" /><stop offset="1" stop-color="#B81E2B" /></radialGradient></defs><path d="M104 12 C146 8 192 34 196 82 C200 126 172 168 118 174 C70 180 24 160 16 112 C8 66 50 16 104 12 Z" fill="url(#f08-gR)" /><circle cx="196" cy="160" r="12" fill="#E02D3C" /><circle cx="206" cy="134" r="6" fill="#E02D3C" /><ellipse cx="72" cy="56" rx="30" ry="15" fill="#FFFFFF" opacity="0.45" transform="rotate(-28 72 56)" /><circle cx="110" cy="38" r="6" fill="#FFFFFF" opacity="0.5" /></svg>
+              <svg class="f08-sw" viewBox="0 0 216 190" xmlns="http://www.w3.org/2000/svg"><circle cx="108" cy="96" r="78" fill="#E02D3C" /><circle cx="108" cy="96" r="78" fill="none" stroke="rgba(12,12,30,0.06)" stroke-width="2" /></svg>
               <div class="f08-cw">rood</div><div class="f08-cg">rojo</div>
             </div>
             <div class="f08-cv" id="f08-cvB" style="opacity: 0">
-              <svg class="f08-sw" viewBox="0 0 216 190" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="f08-gB" cx="35%" cy="30%" r="78%"><stop offset="0" stop-color="#5AAAFF" /><stop offset="0.55" stop-color="#0b6df0" /><stop offset="1" stop-color="#0752BA" /></radialGradient></defs><path d="M110 10 C156 14 198 50 192 100 C186 146 146 176 98 172 C50 168 14 136 18 88 C22 42 64 6 110 10 Z" fill="url(#f08-gB)" /><circle cx="20" cy="164" r="11" fill="#0b6df0" /><circle cx="8" cy="142" r="5" fill="#0b6df0" /><ellipse cx="76" cy="54" rx="30" ry="15" fill="#FFFFFF" opacity="0.45" transform="rotate(-28 76 54)" /><circle cx="114" cy="36" r="6" fill="#FFFFFF" opacity="0.5" /></svg>
+              <svg class="f08-sw" viewBox="0 0 216 190" xmlns="http://www.w3.org/2000/svg"><circle cx="108" cy="96" r="78" fill="#0b6df0" /><circle cx="108" cy="96" r="78" fill="none" stroke="rgba(12,12,30,0.06)" stroke-width="2" /></svg>
               <div class="f08-cw">blauw</div><div class="f08-cg">azul</div>
             </div>
             <div class="f08-cv" id="f08-cvG" style="opacity: 0">
-              <svg class="f08-sw" viewBox="0 0 216 190" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="f08-gG" cx="35%" cy="30%" r="78%"><stop offset="0" stop-color="#FFF7A8" /><stop offset="0.55" stop-color="#FDE047" /><stop offset="1" stop-color="#E2CC1E" /></radialGradient></defs><path d="M100 14 C138 6 182 26 192 70 C202 114 180 162 126 174 C74 186 24 164 16 116 C8 70 56 22 100 14 Z" fill="url(#f08-gG)" /><circle cx="198" cy="28" r="11" fill="#FDE047" /><circle cx="182" cy="10" r="5" fill="#FDE047" /><ellipse cx="70" cy="60" rx="30" ry="15" fill="#FFFFFF" opacity="0.5" transform="rotate(-28 70 60)" /><circle cx="108" cy="40" r="6" fill="#FFFFFF" opacity="0.55" /></svg>
+              <svg class="f08-sw" viewBox="0 0 216 190" xmlns="http://www.w3.org/2000/svg"><circle cx="108" cy="96" r="78" fill="#FDE047" /><circle cx="108" cy="96" r="78" fill="none" stroke="rgba(12,12,30,0.06)" stroke-width="2" /></svg>
               <div class="f08-cw">geel</div><div class="f08-cg">amarillo</div>
             </div>
           </div>
@@ -316,7 +316,7 @@
         <div id="f08-greys"></div>
         <div id="f08-mute"><div id="f08-muteDisc"></div><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><path d="M30 50 H44 L60 36 V84 L44 70 H30 Z" fill="#5A6480" stroke="#5A6480" stroke-width="4" stroke-linejoin="round" /><path id="f08-mx1" pathLength="1" d="M72 50 L92 70" stroke="#5A6480" stroke-width="7" stroke-linecap="round" fill="none" /><path id="f08-mx2" pathLength="1" d="M92 50 L72 70" stroke="#5A6480" stroke-width="7" stroke-linecap="round" fill="none" /></svg></div>
       </div>
-      <div id="f08-sil"><div id="f08-silShake" style="display: inline-block"><span id="f08-silTxt">SILENCIO.</span></div></div>
+      <div id="f08-sil"><div id="f08-silShake" style="display: inline-block"><span id="f08-silTxt">Silencio.</span></div></div>
     </div></div>
   </div>
 
@@ -338,12 +338,7 @@
       };
       var slam = function (el, t, s, b) {
         tl.fromTo(el, { scale: s || 1.28, opacity: 0, filter: "blur(" + (b || 10) + "px)" },
-          { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "power4.out" }, t - L);
-      };
-      var shake = function (el, t, a) { // deterministic 3-frame shake
-        tl.fromTo(el, { x: 0, y: 0 }, { x: a, y: -a * 0.4, duration: F, ease: "none", immediateRender: false }, t);
-        tl.to(el, { x: -a * 0.7, y: a * 0.3, duration: F, ease: "none" }, t + F).to(el, { x: a * 0.4, y: -a * 0.15, duration: F, ease: "none" }, t + 2 * F);
-        tl.to(el, { x: 0, y: 0, duration: F * 2, ease: "power2.out" }, t + 3 * F);
+          { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, t - L);
       };
       var drawIn = function (el, t, dur, ease) {
         el.setAttribute("stroke-dasharray", "1 1");
@@ -376,36 +371,34 @@
       });
 
       // ================= ENTRANCE — phone rises from below (y 520 → 0, power4) under a vertical streak =================
-      var riseNode = $("riseBlur"), rb = { v: 24 };
+      var riseNode = $("riseBlur"), rb = { v: 10 };
       var writeRise = function () { riseNode.setAttribute("stdDeviation", "0 " + rb.v.toFixed(2)); };
       writeRise();
       tl.fromTo($("phoneRise"), { y: 520 }, { y: 0, duration: 0.62, ease: "power4.out" }, 0);
-      tl.fromTo(rb, { v: 24 }, { v: 0, duration: 0.34, ease: "power3.out", onUpdate: writeRise }, 0);
-      tl.fromTo($("phoneTilt"), { rotationX: 26, rotationY: -4, rotationZ: 3 }, { rotationX: 3, rotationY: 12, rotationZ: -2, duration: 0.9, ease: "power3.out" }, 0);
-      tl.fromTo($("dots"), { y: 90 }, { y: 0, duration: 0.6, ease: "expo.out" }, 0);
+      tl.fromTo(rb, { v: 10 }, { v: 0, duration: 0.3, ease: "power3.out", onUpdate: writeRise }, 0);
+      tl.fromTo($("phoneTilt"), { rotationX: 16, rotationY: 2, rotationZ: 1 }, { rotationX: 3, rotationY: 12, rotationZ: -2, duration: 0.9, ease: "power3.out" }, 0);
+      tl.fromTo($("dots"), { y: 30 }, { y: 0, duration: 0.6, ease: "power3.out" }, 0);
 
       // the screen boots as the phone lands
       tl.fromTo($("fill"), { scaleX: 0 }, { scaleX: 0.5, duration: 0.5, ease: "power3.out" }, 0.16);
-      tl.fromTo($("card"), { scale: 0.82, y: 40, opacity: 0 }, { scale: 1, y: 0, opacity: 1, duration: 0.4, ease: "expo.out" }, 0.14);
-      tl.fromTo($("streak"), { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "expo.out" }, T.app - L);
+      tl.fromTo($("card"), { scale: 0.94, y: 30, opacity: 0 }, { scale: 1, y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 0.14);
+      tl.fromTo($("streak"), { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, T.app - L);
       tl.fromTo($("cta"), { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.34, ease: "power3.out" }, 0.26);
 
       // "Una app" / "que te enseña" — the card speaks on "enseña"
       word($("wUna"), T.una, 0, 40);
-      slam($("wApp"), T.app, 1.3, 10);
+      slam($("wApp"), T.app, 1.1, 8);
       word($("wQue"), T.que, 0, 34); word($("wTe"), T.te, 0, 34); word($("wEnsena"), T.ensena, 0, 34);
       tl.fromTo([$("arc1"), $("arc2")], { opacity: 0.25 }, { opacity: 1, duration: 0.12, ease: "none", stagger: 0.08 }, T.ensena - L);
-      tl.fromTo($("spkBtn"), { scale: 1 }, { scale: 1.14, duration: 0.1, ease: "power2.out", immediateRender: false }, T.ensena - L);
-      tl.to($("spkBtn"), { scale: 1, duration: 0.24, ease: "power3.out" }, T.ensena - L + 0.1);
 
       // "los colores" — word-chip slams, the card flips through the colours (hard swaps 0.18 s apart)
       word($("wLos"), T.los, 0, 40);
       tl.fromTo($("chipBg"), { scaleX: 0 }, { scaleX: 1, duration: 0.24, ease: "power3.out" }, T.colores - L);
-      tl.fromTo($("chip"), { rotation: -6 }, { rotation: -1.5, duration: 0.32, ease: "power4.out" }, T.colores - L);
-      slam($("chipTxt"), T.colores, 1.3, 10);
+      tl.set($("chip"), { rotation: -1.5 }, 0);
+      slam($("chipTxt"), T.colores, 1.08, 6);
       var swapAt = function (t, from, to, idx) {
         tl.set(from, { opacity: 0 }, t).set(to, { opacity: 1 }, t);
-        tl.fromTo($("card"), { scale: 0.93, rotation: idx % 2 ? 2.5 : -2.5 }, { scale: 1, rotation: 0, duration: 0.17, ease: "power3.out", immediateRender: false }, t);
+        tl.fromTo($("card"), { scale: 0.97 }, { scale: 1, duration: 0.17, ease: "power3.out", immediateRender: false }, t);
         tl.fromTo($("fill"), { scaleX: 0.36 + 0.14 * idx }, { scaleX: 0.5 + 0.14 * idx, duration: 0.16, ease: "power3.out", immediateRender: false }, t);
         tl.set($("pdOn"), { x: 29 * idx }, t);
       };
@@ -431,19 +424,18 @@
       });
 
       // "pero NO a pedirle" — "no" lands as a beat; the Dutch you'd need appears faded / disabled on "pedirle"
-      slam($("wNo"), T.no, 1.3, 8);
+      slam($("wNo"), T.no, 1.1, 6);
       word($("wA"), T.a, 0, 34); word($("wPedirle"), T.pedirle, 0, 34);
       tl.fromTo($("typ"), { scale: 1, opacity: 1 }, { scale: 0.7, opacity: 0, duration: 0.06, ease: "power2.in", immediateRender: false }, T.pedirle - 0.06);
       tl.fromTo($("bub"), { scale: 0.75, opacity: 0 }, { scale: 1, opacity: 0.35, duration: 0.2, ease: "power2.out" }, T.pedirle - L);
       // "un día libre"
-      slam($("wUn"), T.un, 1.26, 10); slam($("wDia"), T.dia, 1.26, 10); slam($("wLibre"), T.libre, 1.26, 10);
+      slam($("wUn"), T.un, 1.08, 6); slam($("wDia"), T.dia, 1.08, 6); slam($("wLibre"), T.libre, 1.08, 6);
       // "...a tu jefe" — the name lands, the red ✕ pops on the bubble
       word($("wJefe"), T.jefe, -30, 0);
       tl.fromTo($("skel"), { opacity: 1 }, { opacity: 0, duration: 0.05, ease: "none", immediateRender: false }, T.jefe - L);
-      tl.fromTo($("xb"), { scale: 0, rotation: -60, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.3, ease: "back.out(2.2)" }, T.jefe - 0.02);
+      tl.fromTo($("xb"), { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, T.jefe - 0.02);
       drawIn($("x1"), T.jefe + 0.04, 0.1);
       drawIn($("x2"), T.jefe + 0.1, 0.1);
-      shake($("bubPos"), T.jefe + 0.04, 9);
 
       // ================= SEAM B (cut-the-curve, upward): everything rips up, the week continues up =================
       var CB = 4.04;
@@ -453,11 +445,11 @@
       tl.set($("s3"), { visibility: "visible" }, CB - 0.06);
       tl.fromTo($("s3in"), { y: 420 }, { y: 0, duration: 0.42, ease: "power4.out" }, CB - 0.06);
       // vertical whip blur: outgoing streaks up into the cut, incoming resolves out of it
-      var woN = $("whipOBlur"), wiN = $("whipIBlur"), wo = { v: 0 }, wi = { v: 18 };
+      var woN = $("whipOBlur"), wiN = $("whipIBlur"), wo = { v: 0 }, wi = { v: 10 };
       var writeWO = function () { woN.setAttribute("stdDeviation", "0 " + wo.v.toFixed(2)); };
       var writeWI = function () { wiN.setAttribute("stdDeviation", "0 " + wi.v.toFixed(2)); };
-      tl.set($("s12"), { filter: "url(#f08-whipO)" }, CB - 0.16).fromTo(wo, { v: 0 }, { v: 18, duration: 0.16, ease: "power2.in", onUpdate: writeWO, immediateRender: false }, CB - 0.16);
-      tl.set($("s3in"), { filter: "url(#f08-whipI)" }, CB - 0.06).fromTo(wi, { v: 18 }, { v: 0, duration: 0.18, ease: "power2.out", onUpdate: writeWI, immediateRender: false }, CB - 0.06);
+      tl.set($("s12"), { filter: "url(#f08-whipO)" }, CB - 0.16).fromTo(wo, { v: 0 }, { v: 10, duration: 0.16, ease: "power2.in", onUpdate: writeWO, immediateRender: false }, CB - 0.16);
+      tl.set($("s3in"), { filter: "url(#f08-whipI)" }, CB - 0.06).fromTo(wi, { v: 10 }, { v: 0, duration: 0.18, ease: "power2.out", onUpdate: writeWI, immediateRender: false }, CB - 0.06);
       tl.set($("s3in"), { filter: "none" }, CB + 0.13);
       tl.fromTo($("dots"), { y: 0 }, { y: -30, duration: 0.16, ease: "power3.in", immediateRender: false }, CB - 0.22);
       tl.to($("dots"), { y: -80, duration: 0.42, ease: "power4.out" }, CB - 0.06);
@@ -480,7 +472,7 @@
       tl.fromTo($("b0glow"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, HT);
       tl.fromTo($("b0box"), { borderColor: "#1D0084" }, { borderColor: "#0b6df0", duration: 0.1, ease: "none" }, HT);
       tl.fromTo($("b0lift"), { y: 0, scale: 1 }, { y: -12, scale: 1.04, duration: 0.34, ease: "power3.out" }, HT);
-      tl.fromTo($("b0h"), { scale: 0.6, opacity: 0, y: 20 }, { scale: 1, opacity: 1, y: 0, duration: 0.34, ease: "expo.out" }, HT + 0.06);
+      tl.fromTo($("b0h"), { scale: 0.9, opacity: 0, y: 16 }, { scale: 1, opacity: 1, y: 0, duration: 0.34, ease: "power3.out" }, HT + 0.06);
       tl.fromTo($("b0cl"), { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.26, ease: "power3.out" }, T.clase - L);
       // the class is alive: its waveform swells in and runs, then freezes on SILENCIO
       var b0p = $("b0path"), lv = { a: 0, p: 0 };
@@ -494,7 +486,7 @@
       drawIn($("brC"), ST, 0.08, "none");
       drawIn($("brL"), ST + 0.04, 0.4, "power2.inOut");
       drawIn($("brR"), ST + 0.04, 0.4, "power2.inOut");
-      slam($("w6"), T.seis, 1.32, 10);
+      slam($("w6"), T.seis, 1.1, 6);
       word($("wDias"), T.dias, 0, 30);
       G.forEach(function (g, i) {
         var t0 = ST + i * 0.045, k = i + 2, st = { a: 0.78, p: 0.6 * i };
@@ -508,13 +500,12 @@
       });
 
       // muted speaker at the end of the week
-      tl.fromTo($("mute"), { scale: 0.55, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "expo.out" }, T.de2 - L - 0.04);
+      tl.fromTo($("mute"), { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, T.de2 - L - 0.04);
       drawIn($("mx1"), T.de2 + 0.02, 0.1);
       drawIn($("mx2"), T.de2 + 0.08, 0.1);
 
       // SILENCIO. lands — then the frame holds dead still
-      slam($("silTxt"), T.silencio, 1.3, 12);
-      shake($("silShake"), T.silencio - L + 0.17, 5);
+      slam($("silTxt"), T.silencio, 1.12, 8);
 
       window.__timelines = window.__timelines || {};
       // v2 retime (tools/retime_v2.py): v1 voice cues → v2 voice cues, piecewise linear. Design untouched.
@@ -533,6 +524,22 @@
           c.startTime(ns);
         });
       })(tl, [[0.0, 0.0], [0.12, 0.12], [0.268, 0.35], [0.463, 0.5], [0.611, 0.61], [0.713, 0.68], [1.111, 1.04], [1.213, 1.19], [1.815, 1.67], [2.074, 1.86], [2.268, 2.1], [2.324, 2.16], [2.574, 2.58], [2.722, 2.74], [2.898, 2.9], [3.102, 3.14], [3.167, 3.21], [3.268, 3.33], [4.13, 4.01], [4.421, 4.25], [4.593, 4.42], [4.833, 4.55], [5.185, 4.935], [5.259, 5.17], [5.518, 5.57], [5.796, 5.87], [5.917, 5.95], [6.667, 6.85]]);
+      // v3 retime (tools/retime_stack.py): previous voice cues → v3 voice cues, piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[0.0, 0.0], [0.12, 0.12], [0.35, 0.313], [0.5, 0.441], [0.61, 0.588], [0.68, 0.652], [1.04, 0.964], [1.19, 1.111], [1.67, 1.569], [1.86, 1.836], [2.1, 1.982], [2.16, 2.037], [2.58, 2.395], [2.74, 2.514], [2.9, 2.661], [3.14, 2.881], [3.21, 2.946], [3.33, 3.037], [4.01, 3.661], [4.25, 3.9], [4.42, 4.056], [4.55, 4.157], [4.935, 4.56], [5.17, 4.716], [5.57, 5.102], [5.87, 5.404], [5.95, 5.478], [6.85, 6.21]]);
       window.__timelines["08-app-silencio"] = tl;
     })();
   </script>
