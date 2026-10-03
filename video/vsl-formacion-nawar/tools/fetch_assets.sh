@@ -86,6 +86,9 @@ ffmpeg -v error -y -i "$RAW/formacion-134.mov" -an -vf "fps=30,format=yuv420p" -
 # 21-portatil opens straight onto the website hero: its first 1.92 s (before the page scrolls), eased to 2.5 s so the hand-over lands on the bar line
 ffmpeg -v error -y -t 1.92 -i assets/video/nuestra-vision.mp4 -vf "setpts=PTS*1.3021,fps=30" -an -c:v libx264 -crf 16 -preset slow -pix_fmt yuv420p -movflags +faststart assets/video/nuestra-vision-hero.mp4
 
+# 14-supervivencia: the «Inicio» dashboard stitched into one tall page (hold at the top, then a smooth scroll)
+python3 tools/stitch_page.py
+
 echo "v4 soundtrack: take (4) at 1.065x + the v3 music edit (writes transcript.json too)"
 python3 tools/build_audio_v4.py
 echo "done. Then: python3 tools/timing.py && python3 tools/gen_laptop_20_21.py && python3 tools/assemble.py"

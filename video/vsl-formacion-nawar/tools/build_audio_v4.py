@@ -36,6 +36,7 @@ REDROP = [24, 25, 47]                                  # 3 bars: re-drop → fin
 FINAL = 48
 MUSIC_RMS_DB = -21.0      # bed level with no voice on top (v2: −18)
 DUCK_DB = -11.0           # extra attenuation under the voice → ≈ −32 dBFS RMS under speech (as v2)
+PAUSE_LEAD = 0.30         # v4: 20-pausa opens this long before the stop — the cursor clicks pause ON the stop
 TAIL = 1.9                # seconds of the final hit's ring-out (faded) after the hit
 
 def words():
@@ -146,7 +147,7 @@ def main():
     i_dieci = i_ens + 1; i_comp = find(W, "completa tu", i_dieci); i_form = find(W, "formación nawar", i_comp)
     i_hab = len(W) - 1
     cut1 = (W[i_uno]["end"] + W[i_vale]["start"]) / 2; cut2 = (W[i_ens]["end"] + W[i_dieci]["start"]) / 2
-    S = W[i_uno]["end"] + VO_OFFSET + 0.12                      # music stop (master)
+    S = W[i_uno]["end"] + VO_OFFSET + 0.12 + PAUSE_LEAD         # music stop (master) = the click on pause
     shift2 = S + 0.50 - W[i_vale]["start"]                      # "Vale" 0.5 s into the silence
     D = W[i_ens]["end"] + shift2 + 0.30                         # the drop
     redrop = D + BAR * len(POST)
@@ -207,7 +208,7 @@ def main():
         tr.append({"id": f"w{w['i']}", "text": w["text"], "start": round(place(w["start"]), 3),
                    "end": round(place(w["end"]), 3), "punct": p[:1] if p else ""})
     json.dump(tr, open(os.path.join(ROOT, "transcript.json"), "w"), ensure_ascii=False, indent=1)
-    plan = {"vo_offset": VO_OFFSET, "speed": SPEED, "total": total, "stop": round(S, 3), "drop": round(D, 3),
+    plan = {"vo_offset": VO_OFFSET, "speed": SPEED, "total": total, "stop": round(S, 3), "pause_cut": round(S - PAUSE_LEAD, 3), "drop": round(D, 3),
             "voice_back_after_drop": round(G, 3), "redrop": round(redrop, 3), "final_hit": round(final_hit, 3),
             "breakdown": round(D + BAR * 24, 3), "riser": round(D + BAR * 30, 3), "tension": round(D + BAR * 31, 3),
             "pre_bar0": round(pre_bar0, 3), "bar": BAR, "removed_pause_s": round(removed, 3), "formacion_gap_extra": round(extra, 3)}

@@ -267,15 +267,14 @@
                     <svg class="f14-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
                 </div>
                 <div class="f14-content" style="--fx:12%;">
-                  <!-- media 5.4–7.25 is a clean static hold (same cursor); 7.35–9.0 has recorder overlay + cursor moves, so the hold is looped from that window -->
-                  <video id="f14-vid" class="clip f14-media" src="assets/video/inicio-home.mp4" muted playsinline
-                    data-start="0" data-duration="3.022" data-media-start="4.0" data-hf-media-start-basis="local" data-track-index="2"></video>
-                  <video id="f14-vid2" class="clip f14-media" src="assets/video/inicio-home.mp4" muted playsinline
-                    data-start="3.022" data-duration="1.628" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
-                  <video id="f14-vid3" class="clip f14-media" src="assets/video/inicio-home.mp4" muted playsinline
-                    data-start="4.65" data-duration="1.723" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
-                  <video id="f14-vid4" class="clip f14-media" src="assets/video/inicio-home.mp4" muted playsinline
-                    data-start="6.373" data-duration="0.81" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
+                  <!-- v4: the «Inicio» page stitched from inicio-home.mp4 (tools/stitch_page.py): it holds at the top, then
+                       scrolls in two smooth moves to «Tus cursos · Comunidad · Próximos eventos» — never to the bottom -->
+                  <div id="f14-page" style="position: absolute; left: -4.73px; top: 0; width: 887.44px; height: 477px;">
+                    <img src="assets/img/ui-inicio-sidebar.png" alt="" style="position: absolute; left: 0; top: 0; width: 159.46px; height: 477px;" />
+                    <div style="position: absolute; left: 159.46px; top: 0; width: 727.98px; height: 477px; overflow: hidden; background: #F3F4F8;">
+                      <img id="f14-pimg" src="assets/img/ui-inicio-page.png" alt="" style="position: absolute; left: 0; top: 0; width: 727.98px; height: 1516.27px;" />
+                    </div>
+                  </div>
                 </div>
                 <div id="f14-sheen"></div>
               </div>
@@ -458,6 +457,11 @@
       // MISMO — lands on "mismo."
       tl.fromTo(q("f14-mis"), { opacity: 0, y: 40, scale: 1.06, filter: "blur(6px)" },
         { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.32, ease: "expo.out" }, 7.23);
+
+      // ================= the screen: hold on the top of the dashboard, then scroll like a person would =================
+      tl.fromTo(q("f14-pimg"), { y: 0 }, { y: 0, duration: 0.001 }, 0);
+      tl.fromTo(q("f14-pimg"), { y: 0.0 }, { y: -208.0, duration: 0.952, ease: "power2.inOut", immediateRender: false }, 1.674);
+      tl.fromTo(q("f14-pimg"), { y: -208.0 }, { y: -596.2, duration: 1.252, ease: "power2.inOut", immediateRender: false }, 4.086);
 
       window.__timelines = window.__timelines || {};
       // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.

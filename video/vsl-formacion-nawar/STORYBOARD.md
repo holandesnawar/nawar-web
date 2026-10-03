@@ -5,7 +5,7 @@ message: "El neerlandés no se te da mal: te lo estaban enseñando desde el ingl
 arc: Hook → Pain → Reframe → Nawar → 3 phases → Sounds → PAUSE «¿y qué hay dentro?» → DROP: laptop reveal → 16 weeks · 10 modules · +360 lessons → path → short videos → practice → flashcards → consultas → weekly live class (same teachers) → no A/B/C/D tests → outcomes → promise → CTA → end card
 audience: hispanohablantes en Países Bajos / Flandes, atascados con el neerlandés
 mode: autonomous
-music: owner's track re-edited on its bar grid (audio_v4.json, calmer mix): STOP at 88.37 (start of frame 20), DROP at 91.23 (start of frame 21), breakdown from 148.83, riser 163.23, tension 165.63, RE-DROP 168.03 (start of frame 38), final hit 175.23 (on «…cuando lo HABLAS»)
+music: owner's track re-edited on its bar grid (audio_v4.json, calmer mix): frame 20 opens at 88.37, STOP at 88.67 (= the cursor's click on pause), DROP at 91.53 (start of frame 21), breakdown from 149.13, riser 163.53, tension 165.93, RE-DROP 168.33 (start of frame 38), final hit 175.53 (on «…cuando lo HABLAS»)
 
 # STORYBOARD v4 — Nawar VSL (Formación Nawar A0–A1)
 
@@ -13,6 +13,13 @@ music: owner's track re-edited on its bar grid (audio_v4.json, calmer mix): STOP
 de tus hijos» so nobody feels left out → frame 04 says «tienes tu vida montada», frame 15 «el ayuntamiento y tu día a
 día». Frame 21 opens straight onto the website (no Nawar logo on a black screen) and hands over to the course page
 (assets/video/formacion-134.mp4). Everything else as v3, retimed to the new take (tools/retime_v4.py).
+
+**v4.1 changes** (owner): 01 — no white text caret at the start (it read as a glitch). 14 — the laptop shows the
+«Inicio» dashboard from the very top and scrolls smoothly (two moves) to «Tus cursos · Comunidad · Próximos eventos»;
+the page is stitched from inicio-home.mp4 by tools/stitch_page.py (the raw recording scrolled fast to the bottom).
+18 — no row of extra sound chips under G · UI · UU · EU. 20 — the film is still playing when 20 opens (❚❚ on the disc
+and in the bar); the cursor glides onto the disc and clicks at 0.30 s: the click SFX, the ❚❚ → ▶ swap and the music
+stop are one instant.
 
 All times inside a frame are **frame-relative seconds**. Exact per-word cue times for every frame are
 in `timing.json` and are inlined into each frame packet — every reveal must land on its word's cue

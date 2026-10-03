@@ -9,6 +9,12 @@ estructura musical de la v3 por debajo de 2:58). En 1:31 el portátil se abre di
 («nuestra visión», sin el logo sobre negro) y pasa a la página de la formación (`formacion-134.mp4`). Escena 04:
 «Tienes tu vida montada» (casa con ventanas y puerta); escena 15: «de gemeente» + «de routine · tu día a día».
 
+**v4.1** (2:57): en 0:56 el portátil arranca arriba del todo del panel («Hola, Team · Les 1») y baja con un scroll
+suave hasta «Tus cursos · Comunidad · Próximos eventos» (página reconstruida desde la grabación con
+`tools/stitch_page.py`); en 1:28 el cursor pulsa pausa y el clic, el cambio de icono y la parada de la música caen en
+el mismo instante (la música para 0,30 s más tarde, `PAUSE_LEAD`); fuera el cursor de texto del arranque y la fila de
+sonidos extra bajo G · UI · UU · EU.
+
 **v3** (2:57): voz nueva (toma B a 1,09×), música más suave, MacBook realista con ventana de macOS y contenido 16:9
 en todas las escenas con ordenador, consultas y clase en directo nuevas (con el profe Paul), bloque de ejercicios
 recortado, CTA más corta y un repaso de pulido en todas las escenas (fuera brillos, rayos, temblores y rebotes).
@@ -51,11 +57,11 @@ Previsualizar una escena suelta: `python3 tools/preview_frame.py 21-portatil`.
 ## Música (reedición por compases, 100 BPM, compás = 2,4 s)
 
 - Antes del drop (37 compases): intro (9) → hats (8) → breakdown sin bombo (5) → hats (7) → breakdown + subida +
-  tensión (8). La música se para en seco en 88,37 s, al acabar «…los entrenamos uno a uno».
-- «Vale, ¿y qué hay dentro? Te lo enseño.» suena en silencio; el drop entra en 91,23 s con el portátil.
-- Después: sección completa (24 compases) → breakdown desde «Al terminar…» (148,83 s) → subida (163,23 s) →
-  tensión bajo «…probado. Ahora toca hablar» (165,63 s) → re-drop en «Completa tu matrícula» (168,03 s) → golpe
-  final en «…cuando lo HAblas» (175,23 s) y cola hasta 177,13 s.
+  tensión (8). Tras «…los entrenamos uno a uno» el cursor pulsa pausa y la música se para en seco (88,67 s).
+- «Vale, ¿y qué hay dentro? Te lo enseño.» suena en silencio; el drop entra en 91,53 s con el portátil.
+- Después: sección completa (24 compases) → breakdown desde «Al terminar…» (149,13 s) → subida (163,53 s) →
+  tensión bajo «…probado. Ahora toca hablar» (165,93 s) → re-drop en «Completa tu matrícula» (168,33 s) → golpe
+  final en «…cuando lo HAblas» (175,53 s) y cola hasta 177,43 s.
 
 ## v3: cómo se llevaron las escenas a la voz nueva
 

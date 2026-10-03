@@ -134,8 +134,8 @@
     .f20-ic svg { position: absolute; left: 0; top: 0; width: 26px; height: 26px; display: block; }
     #f20-time { font-weight: 600; font-size: 22px; line-height: 1; color: rgba(255,255,255,0.80); white-space: nowrap; font-variant-numeric: tabular-nums; }
     #f20-track { position: relative; flex: 1 1 auto; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.26); }
-    #f20-fill { position: absolute; left: 0; top: 0; width: 49.9%; height: 5px; border-radius: 3px; background: #FFFFFF; }
-    #f20-knob { position: absolute; left: 49.9%; top: 2.5px; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 2px 6px rgba(0,0,0,0.35); }
+    #f20-fill { position: absolute; left: 0; top: 0; width: 49.8%; height: 5px; border-radius: 3px; background: #FFFFFF; }
+    #f20-knob { position: absolute; left: 49.8%; top: 2.5px; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 2px 6px rgba(0,0,0,0.35); }
 
     /* ---------- the question (right column, on the blue) ---------- */
     #f20-q { position: absolute; left: 1232px; top: 300px; width: 620px; }
@@ -147,8 +147,8 @@
     #f20-dentro { color: #4da3ff; }
   </style>
 
-  <div id="root" data-composition-id="20-pausa" data-width="1920" data-height="1080" data-duration="2.856">
-    <div id="f20-ground" class="clip" data-start="0" data-duration="2.856" data-track-index="0"><div id="f20-dots"></div><div id="f20-vig"></div></div>
+  <div id="root" data-composition-id="20-pausa" data-width="1920" data-height="1080" data-duration="3.156">
+    <div id="f20-ground" class="clip" data-start="0" data-duration="3.156" data-track-index="0"><div id="f20-dots"></div><div id="f20-vig"></div></div>
     <div id="f20-cam">
       <div id="f20-stage" class="f20-mbp">
         <div id="f20-csh" class="f20-mbp-shadow"></div><div id="f20-coc" class="f20-mbp-occl"></div>
@@ -203,33 +203,45 @@
       tl.fromTo($("f20-body"), { rotationX: -66 }, { rotationX: -66, duration: 0.001 }, 0);
       tl.fromTo($("f20-lid"), { rotationX: -90 }, { rotationX: -90, duration: 0.001 }, 0);
 
-      // ===== Scene 1 (0.0-0.5): the film PAUSES — scrim settles, pause flash in the disc, controls rise =====
-      tl.fromTo($("f20-scrim"), { opacity: 0.35 }, { opacity: 1, duration: 0.35, ease: "power2.out" }, 0);
-      tl.fromTo($("f20-disc"), { opacity: 0, scale: 1.14 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 0);
-      tl.fromTo($("f20-dpause"), { opacity: 1 }, { opacity: 0, duration: 0.1, ease: "power1.in" }, 0.3);
-      tl.fromTo($("f20-dplay"), { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power2.out" }, 0.4);
-      tl.fromTo($("f20-ctl"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, 0.02);
-      tl.fromTo($("f20-bpause"), { opacity: 0 }, { opacity: 0, duration: 0.001 }, 0);
+      // ===== Scene 1 (0 → PAUSE_T): the film is still playing — controls up, ❚❚ on the disc, the cursor glides onto it =====
+      tl.fromTo($("f20-bplay"), { opacity: 0 }, { opacity: 0, duration: 0.001 }, 0);
+      tl.fromTo($("f20-dplay"), { opacity: 0 }, { opacity: 0, duration: 0.001 }, 0);
       tl.fromTo($("f20-dpress"), { opacity: 0 }, { opacity: 0, duration: 0.001 }, 0);
+      tl.fromTo($("f20-scrim"), { opacity: 0.35 }, { opacity: 0.35, duration: 0.001 }, 0);
 
+      tl.fromTo($("f20-disc"), { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.18, ease: "power3.out" }, 0);
+      tl.fromTo($("f20-ctl"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 0);
+      tl.fromTo($("f20-cursor"), { x: 120, y: 86 }, { x: 0, y: 0, duration: 0.250, ease: "power2.out" }, 0);
+      // ===== PAUSE_T: click → pause (the click SFX transient and the music stop land here) =====
+      tl.fromTo($("f20-cursori"), { scale: 1 }, { scale: 0.86, duration: 0.05, ease: "power2.out" }, 0.3);
+      tl.to($("f20-cursori"), { scale: 1, duration: 0.1, ease: "power2.out" }, 0.380);
+      tl.fromTo($("f20-disc"), { scale: 1 }, { scale: 0.95, duration: 0.05, ease: "power2.out", immediateRender: false }, 0.3);
+      tl.to($("f20-disc"), { scale: 1, duration: 0.12, ease: "power2.out" }, 0.380);
+      tl.fromTo($("f20-dpause"), { opacity: 1 }, { opacity: 0, duration: 0.07, ease: "power1.in", immediateRender: false }, 0.3);
+      tl.fromTo($("f20-dplay"), { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power2.out", immediateRender: false }, 0.330);
+      tl.set($("f20-bpause"), { opacity: 0 }, 0.3);
+      tl.set($("f20-bplay"), { opacity: 1 }, 0.3);
+      tl.fromTo($("f20-scrim"), { opacity: 0.35 }, { opacity: 1, duration: 0.35, ease: "power2.out", immediateRender: false }, 0.3);
+      // the cursor steps away while the voice asks
+      tl.fromTo($("f20-cursor"), { x: 0, y: 0 }, { x: 1000, y: 640, duration: 0.6, ease: "power2.in", immediateRender: false }, 0.600);
       // ===== Scene 2 (0.5-1.9): Vale, / ¿Y qué hay / dentro? on the voice =====
-      [["f20-w0", 0.48], ["f20-w1", 0.949], ["f20-w2", 1.109], ["f20-w3", 1.278], ["f20-dentro", 1.381]].forEach(([id, t]) => {
+      [["f20-w0", 0.78], ["f20-w1", 1.249], ["f20-w2", 1.409], ["f20-w3", 1.578], ["f20-dentro", 1.681]].forEach(([id, t]) => {
         tl.fromTo($(id), { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, t);
       });
 
       // ===== Scene 3 (1.9-2.81): Te lo enseño. + the cursor presses play; the lid starts to lift =====
-      [["f20-w5", 1.954], ["f20-w6", 2.038], ["f20-w7", 2.142]].forEach(([id, t]) => {
+      [["f20-w5", 2.254], ["f20-w6", 2.338], ["f20-w7", 2.442]].forEach(([id, t]) => {
         tl.fromTo($(id), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.26, ease: "power2.out" }, t);
       });
-      tl.fromTo($("f20-cursor"), { x: 1000, y: 640 }, { x: 0, y: 0, duration: 0.722, ease: "power2.inOut" }, 1.785);
-      tl.fromTo($("f20-cursori"), { scale: 1 }, { scale: 0.86, duration: 0.05, ease: "power2.out" }, 2.567);
-      tl.to($("f20-cursori"), { scale: 1, duration: 0.1, ease: "power2.out" }, 2.647);
-      tl.fromTo($("f20-dpress"), { opacity: 0 }, { opacity: 1, duration: 0.05, ease: "power2.out", immediateRender: false }, 2.567);
-      tl.fromTo($("f20-disc"), { scale: 1 }, { scale: 0.95, duration: 0.05, ease: "power2.out", immediateRender: false }, 2.567);
-      tl.to($("f20-disc"), { scale: 1, duration: 0.12, ease: "power2.out" }, 2.647);
-      tl.set($("f20-bplay"), { opacity: 0 }, 2.627);
-      tl.set($("f20-bpause"), { opacity: 1 }, 2.627);
-      tl.fromTo($("f20-lid"), { rotationX: -90 }, { rotationX: -85, duration: 0.189, ease: "power2.in", immediateRender: false }, 2.667);
+      tl.fromTo($("f20-cursor"), { x: 1000, y: 640 }, { x: 0, y: 0, duration: 0.722, ease: "power2.inOut", immediateRender: false }, 2.085);
+      tl.fromTo($("f20-cursori"), { scale: 1 }, { scale: 0.86, duration: 0.05, ease: "power2.out" }, 2.867);
+      tl.to($("f20-cursori"), { scale: 1, duration: 0.1, ease: "power2.out" }, 2.947);
+      tl.fromTo($("f20-dpress"), { opacity: 0 }, { opacity: 1, duration: 0.05, ease: "power2.out", immediateRender: false }, 2.867);
+      tl.fromTo($("f20-disc"), { scale: 1 }, { scale: 0.95, duration: 0.05, ease: "power2.out", immediateRender: false }, 2.867);
+      tl.to($("f20-disc"), { scale: 1, duration: 0.12, ease: "power2.out" }, 2.947);
+      tl.set($("f20-bplay"), { opacity: 0 }, 2.927);
+      tl.set($("f20-bpause"), { opacity: 1 }, 2.927);
+      tl.fromTo($("f20-lid"), { rotationX: -90 }, { rotationX: -85, duration: 0.189, ease: "power2.in", immediateRender: false }, 2.967);
 
       window.__timelines["20-pausa"] = tl;
     })();

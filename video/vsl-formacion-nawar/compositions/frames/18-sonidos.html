@@ -91,15 +91,6 @@
       margin-top: 10px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 26px; line-height: 1;
       color: #5A6480;
     }
-    #f18-chips {
-      position: absolute; left: 282px; top: 800px; width: 1410px;
-      display: flex; justify-content: center; gap: 16px;
-    }
-    .f18-chip {
-      height: 58px; padding: 0 28px; border-radius: 999px; display: flex; align-items: center;
-      background: rgba(255,255,255,0.8); border: 1px solid #DDE6F5; color: #5A6480;
-      font-family: "Inter", sans-serif; font-weight: 600; font-size: 26px; letter-spacing: 0.04em;
-    }
   </style>
   <div id="root" data-composition-id="18-sonidos" data-width="1920" data-height="1080" data-duration="5.408">
     <div id="f18-ground" class="clip" data-start="0" data-duration="5.408" data-track-index="0"></div>
@@ -204,14 +195,6 @@
         <div class="f18-letter" id="f18-letter3">EU</div>
         <div class="f18-ex">leuk</div>
       </div>
-      </div>
-      <div id="f18-chips">
-        <div class="f18-chip">G/CH</div>
-        <div class="f18-chip">NG-NK</div>
-        <div class="f18-chip">SCH-ISCH</div>
-        <div class="f18-chip">A-AA</div>
-        <div class="f18-chip">E-EE</div>
-        <div class="f18-chip">O-OO</div>
       </div>
     </div>
   </div>
@@ -326,9 +309,7 @@
           { opacity: 0, y: -14, duration: 0.2, ease: "power2.in", immediateRender: false }, hit + 0.3);
       });
 
-      /* ===== 6.30: the rest of the new sounds, dim chips under the row (centred on the key axis) ===== */
-      tl.fromTo("#f18-chips .f18-chip", { y: 18, opacity: 0 },
-        { y: 0, opacity: 0.88, duration: 0.26, ease: "power3.out", stagger: 0.045 }, 6.3);
+      /* v4: no extra row of sounds under the keys (owner: it flashed by and added nothing) */
       /* the label clears the top band before the cut, so the end state == 19-delatan's start */
       tl.to("#f18-main", { y: -235, opacity: 0, duration: 0.22, ease: "power2.in" }, 6.56);
       // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.

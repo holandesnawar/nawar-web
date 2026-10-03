@@ -32,12 +32,6 @@
     #f01-l1 .f01-w, #f01-l2 .f01-w, #f01-cap .f01-w, #f01-hero, #f01-flag, #f01-card, #f01-arrow,
     #f01-fillRed, #f01-badge { opacity: 0; }
 
-    /* opening anchor: a white text caret where "Si" will land */
-    #f01-caret {
-      position: absolute; left: 903px; top: 350px; width: 8px; height: 104px; border-radius: 4px;
-      background: #FFFFFF;
-    }
-
     /* ---------- scene 1 ---------- */
     #f01-s1 { position: absolute; inset: 0; transform-origin: 960px 400px; }
     #f01-l1 {
@@ -138,7 +132,6 @@
     </div>
 
     <div id="f01-stage">
-      <div id="f01-caret"></div>
 
       <!-- Scene 1 — "Si has llegado hasta aquí," + arrow at the viewer -->
       <div id="f01-s1">
@@ -216,11 +209,7 @@
       tl.set([$("x1"), $("x2")], { strokeDasharray: "1 1.3", strokeDashoffset: 1.05 }, 0);
       tl.set($("arrow"), { opacity: 0 }, 0);
 
-      // ---------- opening: a caret blinks where the first word will land, the paper focuses in ----------
-      tl.set($("caret"), { opacity: 1 }, 0);
-      tl.set($("caret"), { opacity: 0 }, 0.17);
-      tl.set($("caret"), { opacity: 1 }, 0.30);
-      tl.fromTo($("caret"), { opacity: 1 }, { opacity: 0, duration: 0.1, ease: "power1.in" }, 0.39);
+      // ---------- opening: the ground focuses in (v4: no caret — it read as a glitch) ----------
       tl.fromTo($("dots"), { scale: 1.08, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.9, ease: "power2.out" }, 0);
       tl.fromTo($("glow"), { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power3.out" }, 0);
 

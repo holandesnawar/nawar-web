@@ -1,14 +1,14 @@
 {
  "vo_offset": 0.4,
- "total": 177.129,
+ "total": 177.429,
  "music": {
-  "stop": 88.373,
-  "drop": 91.229,
-  "redrop": 168.029,
-  "final_hit": 175.229,
-  "breakdown": 148.829,
-  "riser": 163.229,
-  "tension": 165.629
+  "stop": 88.673,
+  "drop": 91.529,
+  "redrop": 168.329,
+  "final_hit": 175.529,
+  "breakdown": 149.129,
+  "riser": 163.529,
+  "tension": 165.929
  },
  "frames": [
   {
@@ -1706,55 +1706,55 @@
   {
    "id": "20-pausa",
    "start": 88.373,
-   "end": 91.229,
+   "end": 91.529,
    "words": [
     {
      "text": "Vale,",
-     "t": 0.5,
-     "end": 0.95
+     "t": 0.8,
+     "end": 1.25
     },
     {
      "text": "y",
-     "t": 0.969,
-     "end": 1.11
+     "t": 1.269,
+     "end": 1.41
     },
     {
      "text": "qué",
-     "t": 1.129,
-     "end": 1.279
+     "t": 1.429,
+     "end": 1.579
     },
     {
      "text": "hay",
-     "t": 1.298,
-     "end": 1.382
+     "t": 1.598,
+     "end": 1.682
     },
     {
      "text": "dentro?",
-     "t": 1.401,
-     "end": 1.767
+     "t": 1.701,
+     "end": 2.067
     },
     {
      "text": "Te",
-     "t": 1.974,
-     "end": 2.04
+     "t": 2.274,
+     "end": 2.34
     },
     {
      "text": "lo",
-     "t": 2.058,
-     "end": 2.143
+     "t": 2.358,
+     "end": 2.443
     },
     {
      "text": "enseño.",
-     "t": 2.162,
-     "end": 2.556
+     "t": 2.462,
+     "end": 2.856
     }
    ],
-   "duration": 2.856
+   "duration": 3.156
   },
   {
    "id": "21-portatil",
-   "start": 91.229,
-   "end": 96.092,
+   "start": 91.529,
+   "end": 96.392,
    "words": [
     {
      "text": "Dieciséis",
@@ -1786,8 +1786,8 @@
   },
   {
    "id": "22-modulos",
-   "start": 96.092,
-   "end": 99.022,
+   "start": 96.392,
+   "end": 99.322,
    "words": [
     {
      "text": "Diez",
@@ -1834,8 +1834,8 @@
   },
   {
    "id": "23-camino",
-   "start": 99.022,
-   "end": 105.069,
+   "start": 99.322,
+   "end": 105.369,
    "words": [
     {
      "text": "Cada",
@@ -1952,8 +1952,8 @@
   },
   {
    "id": "24-videos",
-   "start": 105.069,
-   "end": 109.641,
+   "start": 105.369,
+   "end": 109.941,
    "words": [
     {
      "text": "Microlearning.",
@@ -2025,8 +2025,8 @@
   },
   {
    "id": "25-practica",
-   "start": 109.641,
-   "end": 111.885,
+   "start": 109.941,
+   "end": 112.185,
    "words": [
     {
      "text": "Lectura,",
@@ -2058,8 +2058,8 @@
   },
   {
    "id": "26-flashcards",
-   "start": 111.885,
-   "end": 115.792,
+   "start": 112.185,
+   "end": 116.092,
    "words": [
     {
      "text": "Flashcards",
@@ -2146,8 +2146,8 @@
   },
   {
    "id": "27-consultas",
-   "start": 115.792,
-   "end": 124.628,
+   "start": 116.092,
+   "end": 124.928,
    "words": [
     {
      "text": "Consultas",
@@ -2284,8 +2284,8 @@
   },
   {
    "id": "28-directo",
-   "start": 124.628,
-   "end": 129.21,
+   "start": 124.928,
+   "end": 129.51,
    "words": [
     {
      "text": "Y",
@@ -2377,8 +2377,8 @@
   },
   {
    "id": "29-mismo-profe",
-   "start": 129.21,
-   "end": 136.844,
+   "start": 129.51,
+   "end": 137.144,
    "words": [
     {
      "text": "La",
@@ -2530,8 +2530,8 @@
   },
   {
    "id": "32-practicas",
-   "start": 136.844,
-   "end": 144.036,
+   "start": 137.144,
+   "end": 144.336,
    "words": [
     {
      "text": "Y",
@@ -2618,8 +2618,8 @@
   },
   {
    "id": "33-de-verdad",
-   "start": 144.036,
-   "end": 149.962,
+   "start": 144.336,
+   "end": 150.262,
    "words": [
     {
      "text": "No",
@@ -2731,8 +2731,8 @@
   },
   {
    "id": "34-al-terminar",
-   "start": 149.962,
-   "end": 155.756,
+   "start": 150.262,
+   "end": 156.056,
    "words": [
     {
      "text": "Al",
@@ -2834,8 +2834,8 @@
   },
   {
    "id": "35-sin-ingles",
-   "start": 155.756,
-   "end": 159.052,
+   "start": 156.056,
+   "end": 159.352,
    "words": [
     {
      "text": "Y",
@@ -2917,8 +2917,8 @@
   },
   {
    "id": "36-promesa",
-   "start": 159.052,
-   "end": 164.122,
+   "start": 159.352,
+   "end": 164.422,
    "words": [
     {
      "text": "No",
@@ -2985,8 +2985,8 @@
   },
   {
    "id": "37-ahora",
-   "start": 164.122,
-   "end": 168.029,
+   "start": 164.422,
+   "end": 168.329,
    "words": [
     {
      "text": "El",
@@ -3043,8 +3043,8 @@
   },
   {
    "id": "38-cta",
-   "start": 168.029,
-   "end": 172.358,
+   "start": 168.329,
+   "end": 172.658,
    "words": [
     {
      "text": "Completa",
@@ -3111,8 +3111,8 @@
   },
   {
    "id": "39-end-card",
-   "start": 172.358,
-   "end": 177.129,
+   "start": 172.658,
+   "end": 177.429,
    "words": [
     {
      "text": "Formación",

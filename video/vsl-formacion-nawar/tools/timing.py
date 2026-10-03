@@ -63,7 +63,7 @@ def find(words, phrase, start_at):
 def main():
     plan = json.load(open(os.path.join(ROOT, "audio_v4.json")))
     VO_OFFSET = plan["vo_offset"]
-    FORCED = {"20-pausa": plan["stop"], "21-portatil": plan["drop"], "38-cta": plan["redrop"]}
+    FORCED = {"20-pausa": plan.get("pause_cut", plan["stop"]), "21-portatil": plan["drop"], "38-cta": plan["redrop"]}
     words = json.load(open(os.path.join(ROOT, "transcript.json")))
     starts, idx = [], 0
     for fid, phrase in FRAMES:

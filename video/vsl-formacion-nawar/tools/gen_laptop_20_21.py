@@ -31,6 +31,9 @@ D20, D21 = round(_T["20-pausa"]["duration"], 3), round(_T["21-portatil"]["durati
 W20, W21 = _T["20-pausa"]["words"], _T["21-portatil"]["words"]
 _TOTAL = json.load(open(os.path.join(PROJ, "timing.json")))["total"]
 PAUSED_AT = _T["20-pausa"]["start"]                       # the player in 20 shows where the film paused
+_TIMING = json.load(open(os.path.join(PROJ, "timing.json")))
+PAUSE_T = round(_TIMING["music"]["stop"] - _T["20-pausa"]["start"], 3)   # 20: the cursor clicks pause = the music stops
+CLICK_ONSET = 0.048                                        # click(-soft).mp3: the transient sits 48 ms into the file
 PLAYER_TIME = "%d:%02d / %d:%02d" % (int(PAUSED_AT) // 60, int(PAUSED_AT) % 60, int(_TOTAL) // 60, int(_TOTAL) % 60)
 PLAYER_PCT = "%.1f%%" % (100 * PAUSED_AT / _TOTAL)
 SWITCH = 2.4                  # 21: website -> course page (one bar after the drop, before the voice returns)
@@ -419,13 +422,23 @@ def frame20():
 
       // the frozen frame: closed MacBook seen from above, diagonal (shared rig state with 21's t=0)
 {rig_state_js(P, TOP, BODY0, -90)}
-      // ===== Scene 1 (0.0-0.5): the film PAUSES — scrim settles, pause flash in the disc, controls rise =====
-      tl.fromTo($("{P}-scrim"), {{ opacity: 0.35 }}, {{ opacity: 1, duration: 0.35, ease: "power2.out" }}, 0);
-      tl.fromTo($("{P}-disc"), {{ opacity: 0, scale: 1.14 }}, {{ opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }}, 0);
-      tl.fromTo($("{P}-dpause"), {{ opacity: 1 }}, {{ opacity: 0, duration: 0.1, ease: "power1.in" }}, 0.3);
-      tl.fromTo($("{P}-dplay"), {{ opacity: 0, scale: 0.86 }}, {{ opacity: 1, scale: 1, duration: 0.16, ease: "power2.out" }}, 0.4);
-      tl.fromTo($("{P}-ctl"), {{ opacity: 0, y: 40 }}, {{ opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }}, 0.02);
-{init_js(P, "bpause", {"opacity": 0})}{init_js(P, "dpress", {"opacity": 0})}
+      // ===== Scene 1 (0 → PAUSE_T): the film is still playing — controls up, ❚❚ on the disc, the cursor glides onto it =====
+{init_js(P, "bplay", {"opacity": 0})}{init_js(P, "dplay", {"opacity": 0})}{init_js(P, "dpress", {"opacity": 0})}{init_js(P, "scrim", {"opacity": 0.35})}
+      tl.fromTo($("{P}-disc"), {{ opacity: 0, scale: 1.06 }}, {{ opacity: 1, scale: 1, duration: 0.18, ease: "power3.out" }}, 0);
+      tl.fromTo($("{P}-ctl"), {{ opacity: 0, y: 24 }}, {{ opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }}, 0);
+      tl.fromTo($("{P}-cursor"), {{ x: 120, y: 86 }}, {{ x: 0, y: 0, duration: {PAUSE_T - 0.05:.3f}, ease: "power2.out" }}, 0);
+      // ===== PAUSE_T: click → pause (the click SFX transient and the music stop land here) =====
+      tl.fromTo($("{P}-cursori"), {{ scale: 1 }}, {{ scale: 0.86, duration: 0.05, ease: "power2.out" }}, {PAUSE_T});
+      tl.to($("{P}-cursori"), {{ scale: 1, duration: 0.1, ease: "power2.out" }}, {PAUSE_T + 0.08:.3f});
+      tl.fromTo($("{P}-disc"), {{ scale: 1 }}, {{ scale: 0.95, duration: 0.05, ease: "power2.out", immediateRender: false }}, {PAUSE_T});
+      tl.to($("{P}-disc"), {{ scale: 1, duration: 0.12, ease: "power2.out" }}, {PAUSE_T + 0.08:.3f});
+      tl.fromTo($("{P}-dpause"), {{ opacity: 1 }}, {{ opacity: 0, duration: 0.07, ease: "power1.in", immediateRender: false }}, {PAUSE_T});
+      tl.fromTo($("{P}-dplay"), {{ opacity: 0, scale: 0.86 }}, {{ opacity: 1, scale: 1, duration: 0.16, ease: "power2.out", immediateRender: false }}, {PAUSE_T + 0.03:.3f});
+      tl.set($("{P}-bpause"), {{ opacity: 0 }}, {PAUSE_T});
+      tl.set($("{P}-bplay"), {{ opacity: 1 }}, {PAUSE_T});
+      tl.fromTo($("{P}-scrim"), {{ opacity: 0.35 }}, {{ opacity: 1, duration: 0.35, ease: "power2.out", immediateRender: false }}, {PAUSE_T});
+      // the cursor steps away while the voice asks
+      tl.fromTo($("{P}-cursor"), {{ x: 0, y: 0 }}, {{ x: 1000, y: 640, duration: 0.6, ease: "power2.in", immediateRender: false }}, {PAUSE_T + 0.3:.3f});
       // ===== Scene 2 (0.5-1.9): Vale, / ¿Y qué hay / dentro? on the voice =====
       [["{P}-w0", {cue(W20, 0)}], ["{P}-w1", {cue(W20, 1)}], ["{P}-w2", {cue(W20, 2)}], ["{P}-w3", {cue(W20, 3)}], ["{P}-dentro", {cue(W20, 4)}]].forEach(([id, t]) => {{
         tl.fromTo($(id), {{ opacity: 0, y: 28 }}, {{ opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }}, t);
@@ -435,7 +448,7 @@ def frame20():
       [["{P}-w5", {cue(W20, 5)}], ["{P}-w6", {cue(W20, 6)}], ["{P}-w7", {cue(W20, 7)}]].forEach(([id, t]) => {{
         tl.fromTo($(id), {{ opacity: 0, y: 18 }}, {{ opacity: 1, y: 0, duration: 0.26, ease: "power2.out" }}, t);
       }});
-      tl.fromTo($("{P}-cursor"), {{ x: 1000, y: 640 }}, {{ x: 0, y: 0, duration: {PRESS - 0.06 - CUR0:.3f}, ease: "power2.inOut" }}, {CUR0});
+      tl.fromTo($("{P}-cursor"), {{ x: 1000, y: 640 }}, {{ x: 0, y: 0, duration: {PRESS - 0.06 - CUR0:.3f}, ease: "power2.inOut", immediateRender: false }}, {CUR0});
       tl.fromTo($("{P}-cursori"), {{ scale: 1 }}, {{ scale: 0.86, duration: 0.05, ease: "power2.out" }}, {PRESS});
       tl.to($("{P}-cursori"), {{ scale: 1, duration: 0.1, ease: "power2.out" }}, {PRESS + 0.08:.3f});
       tl.fromTo($("{P}-dpress"), {{ opacity: 0 }}, {{ opacity: 1, duration: 0.05, ease: "power2.out", immediateRender: false }}, {PRESS});
@@ -563,7 +576,9 @@ def frame21():
     return html
 
 
-SFX20 = [{"t": 0.0, "sfx": "click-soft", "volume": 0.2}, {"t": 2.52, "sfx": "click", "volume": 0.25}]
+# clicks land on the visible presses: pause (= the music stop) and play
+SFX20 = [{"t": round(PAUSE_T - CLICK_ONSET, 3), "sfx": "click-soft", "volume": 0.2},
+         {"t": round(W20[7]["end"] + 0.011 - CLICK_ONSET, 3), "sfx": "click", "volume": 0.25}]
 SFX21 = [{"t": 0.0, "sfx": "whoosh", "volume": 0.18}]
 
 if __name__ == "__main__":
