@@ -28,6 +28,49 @@ export const prerender = false
 const ETIQUETA = 'Llamada'
 const PRESUPUESTO_MS = 8000
 
+/**
+ * Las etiquetas del proceso de admisión en systeme.io (03/10: "¿se añade al
+ * CRM con etiqueta de que vio el vídeo?"). Antes, quien dejaba sus datos en
+ * el vídeo NO entraba en systeme.io hasta terminar las preguntas, así que no
+ * había forma de mandarle un correo si se iba a mitad. Ahora entra en cada
+ * hito, con su etiqueta, y las secuencias se pueden colgar de ellas:
+ *  - datos: dejó nombre, correo y WhatsApp en la ventanita del vídeo;
+ *  - video: vio el vídeo entero (el VSL);
+ *  - completada: terminó las preguntas (además de "Llamada", como /agendar).
+ * Si la etiqueta no existe, systeme.io la crea al primer uso.
+ */
+const ETIQUETAS_ADMISION = {
+  datos: 'Admisión - datos',
+  video: 'Admisión - vio el vídeo',
+  completada: 'Admisión - completada',
+} as const
+
+/** Alta en systeme.io con sus etiquetas, en blando: si falla, lo dice en el
+ *  log y sigue. El lead ya está en la escuela para entonces. */
+async function alCRM(
+  persona: { email: string; firstName: string; lastName: string; phone: string },
+  etiquetas: string[],
+  campos: { slug: string; value: string }[] = []
+) {
+  const apiKey = leerEnv('SYSTEME_API_KEY')
+  if (!apiKey) return
+  const ctx: Ctx = { apiKey, reloj: relojDe(PRESUPUESTO_MS) }
+  try {
+    const [contacto, ...tags] = await Promise.all([
+      crearOBuscarContacto(persona.email, persona.firstName, persona.lastName, ctx),
+      ...etiquetas.map((e) => resolverEtiqueta(e, ctx)),
+    ])
+    if (contacto.id === null) return
+    // Nombre y teléfono por un lado y lo demás por otro: si un slug
+    // personalizado fallara, que no se lleve por delante el nombre.
+    await escribirCampos(contacto.id, camposDePersona(persona.firstName, persona.lastName, persona.phone), ctx)
+    if (campos.length) await escribirCampos(contacto.id, campos, ctx)
+    for (const t of tags) if (t.id !== null) await asignarEtiqueta(contacto.id, t.id, ctx)
+  } catch (e) {
+    console.error('[cualificacion] crm:', (e as Error).message)
+  }
+}
+
 export const POST: APIRoute = async ({ request }) => {
   const body = await request.json().catch(() => null)
   if ((body?.website ?? '').toString().trim()) return json({ ok: true, apto: false })
@@ -102,6 +145,25 @@ export const POST: APIRoute = async ({ request }) => {
       }).catch((e) => console.error('[cualificacion] matricula:', (e as Error).message))
     }
 
+    // systeme.io, solo en los dos hitos del proceso de admisión (la web los
+    // marca con `hito`), no con cada respuesta: así no se gastan llamadas.
+    const hito = (body?.hito ?? '').toString()
+    const crmHito =
+      embudo === 'admision' && (hito === 'datos' || hito === 'video')
+        ? alCRM(
+            { email, firstName, lastName, phone },
+            [ETIQUETAS_ADMISION[hito]],
+            hito === 'datos'
+              ? [
+                  { slug: 'origen', value: 'proceso-de-admision' },
+                  ...(['utm_source', 'utm_medium', 'utm_campaign'] as const)
+                    .map((k) => ({ slug: k, value: (body?.[k === 'utm_source' ? 'utmSource' : k === 'utm_medium' ? 'utmMedium' : 'utmCampaign'] ?? '').toString().trim().slice(0, 120) }))
+                    .filter((c) => c.value),
+                ]
+              : []
+          )
+        : Promise.resolve()
+
     await avisarEscuela({
       // El proceso de admisión es una MATRÍCULA, no una llamada (02/10,
       // usuario): va con su propio tipo y no sale en Panel → Llamadas hasta
@@ -121,6 +183,7 @@ export const POST: APIRoute = async ({ request }) => {
       utm_campaign: (body?.utmCampaign ?? '').toString().trim().slice(0, 120),
       ...(hechas.length || embudo ? { extra: { ...marcaEmbudo, ...(hechas.length ? { respuestas: hechas, ultima } : {}) } } : {}),
     })
+    await crmHito
     return json({ ok: true })
   }
 
@@ -179,20 +242,11 @@ export const POST: APIRoute = async ({ request }) => {
     extra: { ...marcaEmbudo, puntuacion: resultado.puntuacion, apto: resultado.apto, motivo_fuera: resultado.motivo_fuera, respuestas: resultado.respuestas },
   })
 
-  // 2) systeme.io, en blando.
-  const crm = (async () => {
-    const apiKey = leerEnv('SYSTEME_API_KEY')
-    if (!apiKey) return
-    const ctx: Ctx = { apiKey, reloj: relojDe(PRESUPUESTO_MS) }
-    try {
-      const [contacto, tag] = await Promise.all([crearOBuscarContacto(email, firstName, lastName, ctx), resolverEtiqueta(ETIQUETA, ctx)])
-      if (contacto.id === null) return
-      await escribirCampos(contacto.id, camposDePersona(firstName, lastName, phone), ctx)
-      if (tag.id !== null) await asignarEtiqueta(contacto.id, tag.id, ctx)
-    } catch (e) {
-      console.error('[cualificacion] crm:', (e as Error).message)
-    }
-  })()
+  // 2) systeme.io, en blando. Del proceso de admisión, además, su etiqueta.
+  const crm = alCRM(
+    { email, firstName, lastName, phone },
+    embudo === 'admision' ? [ETIQUETA, ETIQUETAS_ADMISION.completada] : [ETIQUETA]
+  )
 
   await Promise.all([solicitud, evento, crm])
 
