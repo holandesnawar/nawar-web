@@ -422,10 +422,13 @@ footer { background: #1D0084; border-top: 1px solid rgba(255,255,255,0.08); font
 }
 .footer-perk-check svg { stroke: #1D0084; stroke-width: 3; }
 .footer-signup-form {
-  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 14px;
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 0;
 }
 @media (max-width: 600px) {
   .footer-signup-form { flex-direction: column; align-items: stretch; }
+  /* En el móvil sobraba aire bajo el botón (03/10): el hueco era del texto de
+     privacidad del formulario viejo, que ya no está. */
+  .footer-signup-card { padding: 44px 20px 28px; }
   .footer-signup-input, .footer-signup-btn { width: 100%; min-width: unset; }
 }
 .footer-signup-input {
