@@ -30,21 +30,38 @@ GAP_MAX = 0.32            # sped-up pauses longer than this are tightened to it
 FIX = {541: (171.34, 171.70), 542: (171.80, 172.30), 543: (172.52, 172.62), 544: (172.64, 172.72), 545: (172.74, 172.86),
        546: (172.88, 173.34), 547: (173.70, 174.10), 548: (174.22, 174.42), 549: (174.46, 174.86)}
 
-PRE = [0, 4, 1, 2, 3, 4, 5, 6, 7] + list(range(8, 16)) + [16, 17, 18, 20, 21] + [8, 9, 10, 11, 12, 14, 15] + list(range(16, 24))
+# v4.1: [3] = a lead-in bar (only its tail plays) so the music still starts at 0 with the slower hook
+PRE = [3] + [0, 4, 1, 2, 3, 4, 5, 6, 7] + list(range(8, 16)) + [16, 17, 18, 20, 21] + [8, 9, 10, 11, 12, 14, 15] + list(range(16, 24))
 POST = list(range(24, 48)) + list(range(16, 24))      # 32 bars: drop → re-drop
 REDROP = [24, 25, 47]                                  # 3 bars: re-drop → final hit
 FINAL = 48
 MUSIC_RMS_DB = -21.0      # bed level with no voice on top (v2: −18)
 DUCK_DB = -11.0           # extra attenuation under the voice → ≈ −32 dBFS RMS under speech (as v2)
 PAUSE_LEAD = 0.30         # v4: 20-pausa opens this long before the stop — the cursor clicks pause ON the stop
-TAIL = 1.9                # seconds of the final hit's ring-out (faded) after the hit
+TAIL = 1.9                # seconds of the final hit's ring-out (faded) after the hit (shortened if needed for MAX_TOTAL)
+MAX_TOTAL = 177.95        # keep the film under 2:58
+# v4.1 (owner: «el inicio va algo rápido»): the hook — up to «…en menos de tres minutos.» (frames 01–03) — plays at
+# the take's natural speed with its own pauses, plus a little air after two sentences; the speed-up starts after it
+INTRO_LAST = "minutos"
+INTRO_AIR = {"funcionar": 0.18, "idiomas": 0.15}
+
+def intro_cut():
+    """(index of the hook's last word, cut time in the raw take: the middle of the pause after it)."""
+    W = json.load(open(ALIGN))["words"]
+    i = next(k for k, w in enumerate(W) if w["text"].lower().strip("¿?,.…") == INTRO_LAST)
+    return i, (W[i]["end"] + W[i + 1]["start"]) / 2
+
+def to_fast(t, cut):
+    """raw take time → processed voice time (natural speed up to the cut, SPEED after it)."""
+    return t if t <= cut else cut + (t - cut) / SPEED
 
 def words():
     W = json.load(open(ALIGN))["words"]
+    _, cut = intro_cut()
     out = []
     for i, w in enumerate(W):
         s, e = FIX.get(i, (w["start"], w["end"])); e = max(e, s + 0.05)
-        out.append({"i": i, "text": w["text"], "punct": w.get("punct", ""), "start": s / SPEED, "end": e / SPEED})
+        out.append({"i": i, "text": w["text"], "punct": w.get("punct", ""), "start": to_fast(s, cut), "end": to_fast(e, cut)})
     for a, b in zip(out, out[1:]):                        # keep order after fixes
         if a["end"] > b["start"]: a["end"] = b["start"]
     return out
@@ -109,20 +126,33 @@ def main():
     tmp = os.path.join(ROOT, ".raw"); os.makedirs(tmp, exist_ok=True)
     fast = os.path.join(tmp, "voz-v4-fast.wav")
     plan_only = "--plan" in sys.argv
-    if not plan_only:
-      subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", VOICE, "-af",
-                    f"rubberband=tempo={SPEED}:pitch=1:formant=preserved:transients=crisp:detector=compound:phase=laminar:window=standard",
-                    "-ar", "48000", "-ac", "1", fast], check=True)
-    v, vsr = sf.read(fast if os.path.exists(fast) and not plan_only else VOICE, dtype="float32")
-    if plan_only: v = v[: int(len(v) / SPEED)]
+    i_last, cut = intro_cut()
+    raw, vsr = sf.read(VOICE, dtype="float32")
+    k = int(round(cut * vsr))
+    if plan_only:
+        v = np.zeros(k + int((len(raw) - k) / SPEED), dtype=np.float32)
+    else:
+        rest = os.path.join(tmp, "voz-v4-rest.wav"); sf.write(rest, raw[k:], vsr)
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", rest, "-af",
+                        f"rubberband=tempo={SPEED}:pitch=1:formant=preserved:transients=crisp:detector=compound:phase=laminar:window=standard",
+                        "-ar", str(vsr), "-ac", "1", fast], check=True)
+        sped, _ = sf.read(fast, dtype="float32")
+        v = np.concatenate([raw[:k], sped])           # the cut sits in a pause: a plain join is silent
     W = words()
     # ---- tighten long pauses (keep GAP_MAX of silence, centred) → keep-intervals + time map
     keep, removed = [], 0.0
     cur = 0.0
     shifts = []                                   # (time in fast voice, cumulative removed before it)
+    air = {}
+    for name, sec in INTRO_AIR.items():
+        air[next(w["i"] for w in W if w["text"].lower().strip("¿?,.…") == name)] = sec
     for a, b in zip(W, W[1:]):
         g = b["start"] - a["end"]
-        if g > GAP_MAX:
+        if b["i"] <= i_last:                       # inside the hook: natural pauses, plus the extra air
+            if a["i"] in air:
+                c = (a["end"] + b["start"]) / 2
+                keep.append((cur, c)); keep.append(("air", air[a["i"]])); cur = c; removed -= air[a["i"]]
+        elif g > GAP_MAX:
             c0 = a["end"] + GAP_MAX / 2; c1 = b["start"] - GAP_MAX / 2
             keep.append((cur, c0)); cur = c1; removed += c1 - c0
         shifts.append((b["start"], removed))
@@ -137,6 +167,8 @@ def main():
         w["start"], w["end"] = tc(w["start"]), tc(w["end"])
     f = int(0.008 * vsr); pieces = []
     for a, b in keep:
+        if a == "air":
+            pieces.append(np.zeros(int(round(b * vsr)), dtype=np.float32)); continue
         s = v[int(a * vsr):int(b * vsr)].copy()
         if len(s) > 2 * f:
             s[:f] *= np.linspace(0, 1, f); s[-f:] *= np.linspace(1, 0, f)
@@ -159,7 +191,8 @@ def main():
     assert -0.05 < extra < 0.9, f"final-hit gap {extra:.2f}s out of range"
     cut3 = (W[i_form - 1]["end"] + W[i_form]["start"]) / 2
     shift4 = shift3 + max(0.0, extra)
-    total = round(final_hit + TAIL, 3)
+    tail_s = round(min(TAIL, MAX_TOTAL - final_hit), 3)
+    total = round(final_hit + tail_s, 3)
     pre_bar0 = S - BAR * len(PRE)
     i_at = find(W, "al terminar", i_dieci); i_ah = find(W, "ahora toca", i_at)
     rel = {"S": S, "D": D, "G": G, "redrop": redrop, "final_hit": final_hit, "total": total, "pre_bar0": pre_bar0, "extra": extra,
@@ -180,8 +213,8 @@ def main():
     # ---- music
     y, sr = sf.read(MUSIC, dtype="float32")
     pre = bars_to_audio(PRE, y, sr); post = bars_to_audio(POST + REDROP, y, sr)
-    a = int(round((BAR0 + BAR * FINAL) * sr)); tail = y[a:a + int((TAIL + 0.3) * sr)].copy()
-    fo = np.ones(len(tail)); k0 = int(0.6 * sr); fo[k0:] = np.linspace(1, 0, len(tail) - k0) ** 2
+    a = int(round((BAR0 + BAR * FINAL) * sr)); tail = y[a:a + int((tail_s + 0.3) * sr)].copy()
+    fo = np.ones(len(tail)); k0 = int(0.6 * sr); fo[k0:] = np.linspace(1, 0, len(tail) - k0) ** 2; fo[int(tail_s * sr):] = 0
     tail *= fo[:, None]
     mus = np.zeros((int(round(total * sr)) + 1, 2), dtype=np.float32)
     skip = int(round(max(0.0, -pre_bar0) * sr)); off = int(round(max(0.0, pre_bar0) * sr))
