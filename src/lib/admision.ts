@@ -24,9 +24,9 @@
  * Vacío = el hueco del vídeo con un aviso de "vídeo en preparación", y el
  * botón de seguir abierto (para no dejar a nadie atascado).
  * PUBLIC_ADMISION_VIDEO en Vercel lo cambia sin tocar código; si no está,
- * vale el de abajo (el vídeo de matrícula, Bunny, 03/10).
+ * vale el de abajo (el vídeo de matrícula, en su propia biblioteca de Bunny, 03/10).
  */
-export const VIDEO_POR_DEFECTO = 'https://player.mediadelivery.net/play/675650/fc3a2619-ce33-4ba7-8e45-d3a386273318'
+export const VIDEO_POR_DEFECTO = 'https://player.mediadelivery.net/play/769328/90342e57-d3b6-4e08-ad96-0f664cbcf531'
 export const VIDEO_URL = ((import.meta.env.PUBLIC_ADMISION_VIDEO as string | undefined) || VIDEO_POR_DEFECTO).trim()
 
 /** Imagen de portada del vídeo bloqueado (la miniatura de Bunny, si se pone
