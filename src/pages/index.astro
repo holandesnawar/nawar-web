@@ -4,7 +4,6 @@ import landing from '../data/landing.json'
 
 import NavbarLanding from '../components/NavbarLanding'
 import HeroNuevo from '../components/HeroNuevo.astro'
-import GuidePopup from '../components/GuidePopup.astro'
 // PainPointsSection eliminada temporalmente — para restaurar: import PainPointsSection from '../components/PainPointsSection.astro'
 import StickyComparisonSection from '../components/StickyComparisonSection'
 import TestimonialsSection from '../components/TestimonialsSection.astro'
@@ -58,7 +57,6 @@ const faq          = (landing as any).faq          ?? null
     }
   })} />
   <NavbarLanding client:load />
-  <GuidePopup />
 
   <HeroNuevo data={hero} />
   <PorQueNawar data={porQueNawar} />

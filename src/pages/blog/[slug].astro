@@ -3,6 +3,7 @@ import { getCollection, getEntry } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
 import NavbarLanding from '../../components/NavbarLanding'
 import FooterNuevo from '../../components/FooterNuevo.astro'
+import GuidePopup from '../../components/GuidePopup.astro'
 import '../../styles/nawar-sections.css'
 import BlogTOC from '../../components/BlogTOC'
 import BlogShare from '../../components/BlogShare'
@@ -271,6 +272,7 @@ const canonicalURL = `https://www.holandesnawar.com/blog/${slug}`
   )}
 
   <FooterNuevo />
+  <GuidePopup />
 </Layout>
 
 <style>

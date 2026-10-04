@@ -3,13 +3,13 @@ interface Props { data?: any }
 const { data } = Astro.props
 const badge = data?.badge ?? 'Por qué existe Nawar'
 const title = data?.title ?? 'El método que nadie\nte había ofrecido'
-const subtitle = data?.subtitle ?? 'Las academias tradicionales no están pensadas para ti. Nawar nació para cambiar eso: neerlandés desde el español, con método real y comunidad que te acompaña.'
+const subtitle = data?.subtitle ?? 'Los cursos tradicionales no están pensados para ti. Nawar nació para cambiar eso: neerlandés desde el español, con método real y comunidad que te acompaña.'
 // Sin el "90 %": era una cifra inventada (ver landing-08-08-2026/PorQueNawar.astro).
 const leftTitle = data?.leftCardTitle ?? 'Por qué lo dejaste las otras veces'
 const leftItems = data?.leftCardItems ?? [
   'Clases genéricas diseñadas para angloparlantes',
   'Profesores que no hablan ni entienden español',
-  'Precios elevados sin garantías ni resultados claros',
+  'Nadie te sigue: no sabes si avanzas ni qué te toca después',
   'Sin comunidad: aprendes solo y abandonas a mitad',
   'Memorización de reglas sin contexto cultural real',
 ]
@@ -33,7 +33,7 @@ const rightItems = data?.rightCardItems ?? [
 
     <div class="porq-cards">
 
-      <!-- Tarjeta izquierda: academias tradicionales -->
+      <!-- Tarjeta izquierda: cursos tradicionales -->
       <div class="porq-card porq-card--light sr">
         <h3 class="porq-card-title porq-card-title--light">{leftTitle}</h3>
         <ul class="porq-list porq-list--bad">
