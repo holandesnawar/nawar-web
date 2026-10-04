@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 
-// El botón "Apúntate" (los tres: escritorio, tablet y menú móvil) sale del
+// El botón "Matricularme" (los tres: escritorio, tablet y menú móvil) sale del
 // mismo sitio que los demás botones de la web, en src/lib/cta.ts. Antes tenía
 // aquí su propia constante y eso hacía que el menú y el cuerpo de la página
 // pudieran apuntar a destinos distintos sin que nadie se diera cuenta.
@@ -135,7 +135,7 @@ export default function NavbarLanding() {
                 href={CTA_PRINCIPAL}
                 className="inline-flex items-center gap-2 px-7 py-3 text-[15px] font-semibold rounded-lg bg-[#4da3ff] text-[#1D0084] transition-colors duration-200"
               >
-                Apúntate
+                Matricularme
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -148,7 +148,7 @@ export default function NavbarLanding() {
                 href={CTA_PRINCIPAL}
                 className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-[#4da3ff] text-[#1D0084] text-[14px] font-semibold hover:bg-[#5eb4ff] transition-all duration-200"
               >
-                Apúntate
+                Matricularme
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -219,7 +219,7 @@ export default function NavbarLanding() {
                 onClick={handleLink}
                 className="flex w-full items-center justify-center gap-2.5 px-6 py-4 text-[16px] font-semibold rounded-lg bg-[#4da3ff] text-[#1D0084] hover:bg-[#5eb4ff] transition-all duration-200 shadow-[0_4px_20px_rgba(77,163,255,0.30)]"
               >
-                Apúntate
+                Matricularme
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>

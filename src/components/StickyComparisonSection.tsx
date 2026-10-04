@@ -17,13 +17,13 @@ const DEFAULT_ITEMS: ComparisonItem[] = [
     icon: '🇪🇸',
     title: 'Explicado desde el español',
     nawarText: 'El método parte de tu idioma. Comparamos estructuras, resolvemos dudas en español y conectamos lo que ya sabes con lo que vas a aprender.',
-    classicText: 'Las academias tradicionales enseñan neerlandés desde el inglés o con materiales genéricos que no tienen en cuenta tu punto de partida.',
+    classicText: 'Los cursos tradicionales enseñan neerlandés desde el inglés o con materiales genéricos que no tienen en cuenta tu punto de partida.',
   },
   {
     icon: '🎥',
-    title: 'Clases en vivo, no grabaciones pasivas',
+    title: 'Clases en vivo cada semana',
     nawarText: 'Sesiones en directo donde puedes preguntar, practicar y recibir feedback inmediato. Aprendes interactuando, no solo escuchando.',
-    classicText: 'Cursos grabados donde avanzas solo, sin posibilidad de preguntar ni corregir en tiempo real. El aprendizaje se vuelve pasivo y poco efectivo.',
+    classicText: 'Nadie te escucha hablar ni te corrige en el momento: estudias la teoría y la conversación llega, si llega, mucho después.',
   },
   {
     icon: '🤝',
@@ -56,7 +56,7 @@ export default function StickyComparisonSection({ items }: Props) {
               className="lg:sticky lg:top-[72px] space-y-6 w-full pt-10 pb-2 lg:py-20 lg:pr-16"
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}
             >
-              <span className="badge-light eyebrow">Nawar vs academias clásicas</span>
+              <span className="badge-light eyebrow">Nawar vs cursos clásicos</span>
 
               <h2 className="title text-[#1D0084]" style={{ fontSize: 'clamp(26px, 3.2vw, 42px)' }}>
                 Lo que nos hace<br />diferente al resto
@@ -99,7 +99,7 @@ export default function StickyComparisonSection({ items }: Props) {
                 </div>
 
                 <div className="p-4 rounded-2xl bg-[#F8FAFC]">
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-[#9CA3AF] mb-2">Academia clásica</p>
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-[#9CA3AF] mb-2">Curso clásico</p>
                   <div className="flex gap-3 items-start">
                     {/* La cruz va en rojo, como en la landing. Antes era un
                         disco gris con la cruz gris encima: no se distinguía

@@ -1,11 +1,11 @@
 ---
 interface Props { data?: any }
 const { data } = Astro.props
-const badge = data?.badge ?? 'Así de sencillo'
-const title = data?.title ?? 'Dos clics. Listo.'
-const subtitle = data?.subtitle ?? 'Reserva tu plaza en minutos y recibirás acceso prioritario antes del lanzamiento.'
+const badge = data?.badge ?? 'Proceso de admisión'
+const title = data?.title ?? 'Tres pasos.'
+const subtitle = data?.subtitle ?? 'Para iniciar tu matrícula solo te pedimos tres datos. Después la completas y hablamos contigo: las plazas son limitadas y queremos que cada persona que entra esté en el sitio adecuado.'
 const guaranteeText = data?.guaranteeText ?? 'Garantía de devolución 15 días'
-const ctaText = data?.ctaText ?? 'Unirte'
+const ctaText = data?.ctaText ?? 'Matricularme'
 import { CTA_PRINCIPAL } from '../lib/cta'
 ---
 <div class="proceso-wrapper">
@@ -28,33 +28,32 @@ import { CTA_PRINCIPAL } from '../lib/cta'
       <div class="proceso-steps">
 
         {/* ⚠️ Los tres pasos describen el camino REAL desde esta página:
-            el botón (CTA_PRINCIPAL) lleva al formulario corto de contacto
-            (nombre, correo y teléfono), que NO cobra. Luego hablamos con la
-            persona y, si encaja, entra. Si CTA_PRINCIPAL cambia de destino,
-            hay que reescribir estos pasos (ver src/lib/cta.ts).
-            Antes el paso 2 era "Paga seguro, como prefieras": falso aquí,
-            porque desde la home nadie llega a la caja de pago. Si algún
-            día el botón vuelve a ir a la matrícula que cobra, hay que
-            reescribir los pasos (ver src/lib/cta.ts).
-            Las pantallitas blancas enseñan lo que la persona ve de
-            verdad en cada paso; nada inventado. */}
+            el botón (CTA_PRINCIPAL) lleva a /proceso-de-admision. Ahí la
+            persona deja nombre, correo y WhatsApp para ver el vídeo del
+            método (paso 1), contesta las preguntas de la matrícula y reserva
+            hora (paso 2) y tiene la llamada de admisión, que es el filtro:
+            solo si encaja, paga y entra (paso 3). Si CTA_PRINCIPAL cambia de
+            destino, hay que reescribir estos pasos (ver src/lib/cta.ts).
+            "Tres pasos" y no "Dos clics" (04/10/2026): lo premium selecciona,
+            no presume de fácil. Las pantallitas blancas enseñan lo que la
+            persona ve de verdad en cada paso; nada inventado. */}
         <!-- Paso 01 -->
         <div class="proceso-card sr">
           <div class="proceso-card-glow" aria-hidden="true"></div>
           <div class="proceso-num">01</div>
-          <h3 class="proceso-card-title">Matricúlate en dos minutos</h3>
+          <h3 class="proceso-card-title">Inicia tu matrícula</h3>
           <ul class="proceso-perks">
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Nombre, correo y teléfono. Nada más
+              Para empezar, solo nombre, correo y WhatsApp
             </li>
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Sin cuenta ni contraseña todavía
+              Ves por dentro cómo funciona el método
             </li>
             <li>
               <span class="proceso-check">
@@ -70,12 +69,12 @@ import { CTA_PRINCIPAL } from '../lib/cta'
                 <span class="pm-value">María García</span>
               </div>
               <div class="pm-row">
-                <span class="pm-label">Correo</span>
-                <span class="pm-value">maria@gmail.com</span>
+                <span class="pm-label">WhatsApp</span>
+                <span class="pm-value">+31 6 1234 5678</span>
               </div>
               <div class="pm-row">
-                <span class="pm-label">Solicitud</span>
-                <span class="pm-badge">Enviada</span>
+                <span class="pm-label">Vídeo del método</span>
+                <span class="pm-badge">Desbloqueado</span>
               </div>
             </div>
           </div>
@@ -85,40 +84,40 @@ import { CTA_PRINCIPAL } from '../lib/cta'
         <div class="proceso-card sr d1">
           <div class="proceso-card-glow" aria-hidden="true"></div>
           <div class="proceso-num">02</div>
-          <h3 class="proceso-card-title">Hablamos contigo</h3>
+          <h3 class="proceso-card-title">Completa tu matrícula</h3>
           <ul class="proceso-perks">
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Nos ponemos en contacto contigo
+              Unas preguntas sobre tu nivel, tu objetivo y tu tiempo
             </li>
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Vemos tu nivel, tu objetivo y el tiempo que tienes
+              Con eso preparamos la llamada contigo
             </li>
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Comprobamos si es realmente lo que necesitas
+              Eliges el día y la hora que te van bien
             </li>
           </ul>
           <div class="proceso-mockup">
             <div class="proceso-mockup-inner">
               <div class="pm-row">
-                <span class="pm-label">Contacto</span>
-                <span class="pm-value">Llamada o WhatsApp</span>
+                <span class="pm-label">Nivel</span>
+                <span class="pm-value">Desde cero</span>
               </div>
               <div class="pm-row">
-                <span class="pm-label">Hablamos de</span>
-                <span class="pm-value">Tu nivel y tu objetivo</span>
+                <span class="pm-label">Objetivo</span>
+                <span class="pm-value">Trabajo e inburgering</span>
               </div>
               <div class="pm-row">
-                <span class="pm-label">Compromiso</span>
-                <span class="pm-badge">Ninguno</span>
+                <span class="pm-label">Llamada</span>
+                <span class="pm-badge">Reservada</span>
               </div>
             </div>
           </div>
@@ -128,40 +127,40 @@ import { CTA_PRINCIPAL } from '../lib/cta'
         <div class="proceso-card sr d2">
           <div class="proceso-card-glow" aria-hidden="true"></div>
           <div class="proceso-num">03</div>
-          <h3 class="proceso-card-title">Entras a la escuela y empiezas</h3>
+          <h3 class="proceso-card-title">Llamada de admisión</h3>
           <ul class="proceso-perks">
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Tu acceso a la escuela llega por correo
+              Media hora con nuestro equipo, sin compromiso
             </li>
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              El material ya está disponible para empezar
+              Vemos juntos si la formación encaja contigo
             </li>
             <li>
               <span class="proceso-check">
                 <svg width="10" height="10" fill="none" stroke="#4da3ff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </span>
-              Clases en vivo con profesores que hablan tu idioma
+              Si encaja, entras a la escuela y empiezas
             </li>
           </ul>
           <div class="proceso-mockup">
             <div class="proceso-mockup-inner">
               <div class="pm-row">
-                <span class="pm-label">Progreso</span>
-                <span class="pm-value">Módulo 1 · Lección 1</span>
+                <span class="pm-label">Duración</span>
+                <span class="pm-value">Media hora</span>
               </div>
               <div class="pm-row">
-                <span class="pm-label">Próxima clase en vivo</span>
-                <span class="pm-badge">Esta semana</span>
+                <span class="pm-label">Compromiso</span>
+                <span class="pm-value">Ninguno</span>
               </div>
               <div class="pm-row">
-                <span class="pm-label">Racha</span>
-                <span class="pm-value">Día 1</span>
+                <span class="pm-label">Si encaja</span>
+                <span class="pm-badge">Entras a la escuela</span>
               </div>
             </div>
           </div>
