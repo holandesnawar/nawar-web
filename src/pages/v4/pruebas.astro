@@ -1,0 +1,690 @@
+---
+/*
+ * ⚠️ PÁGINA DE PRUEBAS (/v4/pruebas, 04/10/2026). Copia de
+ * /proceso-de-admision con un bloque de confianza debajo del botón: una línea
+ * de credibilidad, tres opiniones y «sin compromiso». La de verdad NO se ha
+ * tocado. Los datos que se dejen aquí llegan a la escuela igual que los de la
+ * de verdad (mismo /api/cualificacion): son leads reales.
+ * Si gusta, se pasa el bloque a /proceso-de-admision y se borra esta.
+ */
+/**
+ * /proceso-de-admision — pasos 1 y 2 del embudo nuevo (02/10).
+ *
+ * Paso 1: el vídeo se ve bloqueado. Al darle al play sale una ventanita con
+ * tres datos (nombre, correo y WhatsApp con su prefijo). Al mandarlos, la
+ * escuela ya tiene el lead (sale en Panel → Llamadas como "No terminó",
+ * marcado "Proceso de admisión") y el vídeo arranca.
+ *
+ * Paso 2: el vídeo. El botón "Siguiente paso" está a la vista desde el
+ * principio pero BLOQUEADO, y se desbloquea y se ilumina al terminar el
+ * vídeo (pedido del usuario: que se vea que hay un paso más y que se gana
+ * viendo el vídeo). Si el reproductor no deja saber cuándo termina (un
+ * bloqueador, un fallo de red), el botón se abre solo: nadie se queda
+ * atascado por un fallo nuestro.
+ *
+ * El paso 3 vive en /proceso-de-admision/paso-3, con los datos ya puestos.
+ * Ver src/lib/admision.ts para el porqué de todo el embudo.
+ */
+import Layout from '../../layouts/Layout.astro'
+import { PREFIJOS, PREVIEW_DESDE, PREVIEW_HASTA, VIDEO_DURACION, VIDEO_PORTADA, VIDEO_URL, leerVideo } from '../../lib/admision'
+
+export const prerender = true
+
+const video = leerVideo(VIDEO_URL)
+const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
+
+// Las tres opiniones de las landings. La de Carlos decía "me ascendieron a los
+// 4 meses": con la formación recién empezada no se sostiene, así que va lo que
+// el usuario pidió (04/10). Cortas a propósito: dos frases leen; un párrafo no.
+const OPINIONES = [
+  {
+    nombre: 'Manuel Torres',
+    ciudad: 'La Haya',
+    foto: 'https://d1yei2z3i6k35z.cloudfront.net/9533860/69e0053ba5da56.21234955_67d4ee1d66e49_-Manuel.png',
+    titulo: 'Por fin entiendo a mis vecinos',
+    texto: 'Llevaba un año en los Países Bajos y apenas podía comunicarme. Con Nawar empecé desde cero y ya puedo hacer la compra y entender las cartas que me llegan a casa.',
+  },
+  {
+    nombre: 'Carlos R.',
+    ciudad: 'Rotterdam',
+    foto: 'https://d1yei2z3i6k35z.cloudfront.net/9533860/69e0053ba534a9.03913994_685dd8fdb2a472025-06-27013229-carlos.png',
+    titulo: 'Ya voy al dentista sin traductor',
+    texto: 'Noto que ya puedo, por lo menos, ir al dentista sin tener que llamar a nadie para que me traduzca.',
+  },
+  {
+    nombre: 'Lucía V.',
+    ciudad: 'Ámsterdam',
+    foto: 'https://d1yei2z3i6k35z.cloudfront.net/9533860/69e0053ba629e4.43150312_67d4f1119f7db_9a2d6c00ff1cfacea35572fac1288ffa-luc%C3%ADa.png',
+    titulo: 'Dejé de estudiar a ciegas',
+    texto: 'Antes, si me surgía una duda, tenía que esperar una semana a la siguiente clase. Ahora la dejo escrita y cuando vuelvo ya está respondida.',
+  },
+]
+---
+
+<Layout
+  title="Proceso de admisión — Holandés Nawar"
+  description="Proceso de admisión a la Formación Nawar A0-A1."
+  noindex={true}
+>
+  <div class="ad-page">
+    <div class="ad-glow1" aria-hidden="true"></div>
+    <div class="ad-glow2" aria-hidden="true"></div>
+    <div class="ad-dots" aria-hidden="true"></div>
+
+    <div class="ad-shell">
+      <a href="/" class="ad-logo-link" aria-label="Volver al inicio">
+        <img src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png" alt="Holandés Nawar" class="ad-logo" width="150" height="38" />
+      </a>
+
+      <!-- Los tres pasos, siempre a la vista: que se sepa que esto es un proceso. -->
+      <div class="ad-pasos" id="ad-pasos" data-paso="1">
+        <p class="ad-eyebrow">Proceso de admisión · <span id="ad-paso-texto">Paso 1 de 3</span></p>
+        <ol class="ad-linea">
+          <li data-n="1"><span class="ad-bolita">1</span><span class="ad-paso-nombre">Datos</span></li>
+          <li data-n="2"><span class="ad-bolita">2</span><span class="ad-paso-nombre">Método</span></li>
+          <li data-n="3"><span class="ad-bolita">3</span><span class="ad-paso-nombre">Matrícula</span></li>
+        </ol>
+      </div>
+
+      <h1 class="ad-title">El método para llegar al A1 en&nbsp;16&nbsp;semanas</h1>
+      <p class="ad-lead">
+        <strong>Mira el vídeo entero:</strong> verás cómo es la formación por dentro y si encaja contigo.
+        Al terminar, se abre el último paso de tu matrícula.
+      </p>
+
+      <!-- El vídeo: bloqueado hasta dejar los datos. -->
+      <div class="ad-video" id="ad-video" data-proveedor={video.proveedor} data-src={video.src} data-preview-desde={PREVIEW_DESDE} data-preview-hasta={PREVIEW_HASTA}>
+        <!-- La previsualización: el vídeo en silencio y en bucle, detrás del
+             candado, para que se vea lo que hay dentro (03/10). -->
+        <div class="ad-preview" id="ad-preview" aria-hidden="true"></div>
+        <button type="button" class="ad-candado" id="ad-candado" aria-label="Desbloquear el vídeo"
+          style={VIDEO_PORTADA ? `background-image:linear-gradient(rgba(10,22,86,0.55),rgba(10,22,86,0.75)),url('${VIDEO_PORTADA}')` : undefined}>
+          <span class="ad-play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.9-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg>
+          </span>
+          <span class="ad-barra">
+            <span class="ad-candado-texto">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+              Deja tus datos para verlo
+            </span>
+            {VIDEO_DURACION ? <span class="ad-duracion">{VIDEO_DURACION}</span> : null}
+          </span>
+        </button>
+        <div class="ad-reproductor" id="ad-reproductor" hidden></div>
+      </div>
+
+      <!-- El botón del paso 3: siempre a la vista, bloqueado hasta el final del vídeo. -->
+      <div class="ad-seguir">
+        <a href="/proceso-de-admision/paso-3" class="ad-btn-seguir" id="ad-seguir" aria-disabled="true" tabindex="-1">
+          <svg class="ad-ico-candado" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          <span>Completar mi matrícula</span>
+          <span class="ad-flecha" aria-hidden="true">›</span>
+        </a>
+        <p class="ad-seguir-nota" id="ad-seguir-nota">Se desbloquea al terminar el vídeo.</p>
+      </div>
+
+      <!-- Confianza: para quien duda antes de dejar sus datos (prueba 04/10). -->
+      <section class="ad-confianza" aria-label="Quiénes somos">
+        <p class="ad-cred">Más de 2 años ayudando a hispanohablantes a aprender neerlandés.</p>
+        <ul class="ad-opiniones">
+          {OPINIONES.map((o) => (
+            <li class="ad-opinion">
+              <p class="ad-estrellas" aria-label="5 de 5 estrellas">★★★★★</p>
+              <p class="ad-op-titulo">{o.titulo}</p>
+              <p class="ad-op-texto">«{o.texto}»</p>
+              <div class="ad-op-quien">
+                <img src={o.foto} alt="" width="36" height="36" loading="lazy" onerror="this.style.display='none'" />
+                <span><strong>{o.nombre}</strong><br />{o.ciudad}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="ad-sin-compromiso">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          Sin compromiso: ver el vídeo no te obliga a nada.
+        </p>
+      </section>
+    </div>
+
+    <!-- Paso 1: la ventanita de datos. -->
+    <div class="ad-modal" id="ad-modal" hidden>
+      <div class="ad-modal-fondo" data-cerrar></div>
+      <div class="ad-modal-caja" role="dialog" aria-modal="true" aria-labelledby="ad-modal-titulo">
+        <button type="button" class="ad-cerrar" data-cerrar aria-label="Cerrar">×</button>
+        <p class="ad-modal-eyebrow">Paso 1 de 3 · Tus datos</p>
+        <h2 class="ad-modal-titulo" id="ad-modal-titulo">Desbloquea el vídeo</h2>
+        <p class="ad-modal-lead">Déjanos tus datos y empieza tu proceso de admisión. Sin compromiso.</p>
+        <form id="ad-form" novalidate>
+          <div class="ad-honeypot" aria-hidden="true">
+            <label>No rellenar <input type="text" id="ad-hp" name="website" tabindex="-1" autocomplete="off" /></label>
+          </div>
+          <label class="ad-label" for="ad-nombre">Nombre</label>
+          <input id="ad-nombre" type="text" class="ad-input" placeholder="Tu nombre" autocomplete="given-name" required />
+
+          <label class="ad-label" for="ad-email">Correo</label>
+          <input id="ad-email" type="email" class="ad-input" placeholder="correo@ejemplo.com" autocomplete="email" required />
+
+          <label class="ad-label" for="ad-tel">WhatsApp</label>
+          <div class="ad-tel">
+            <!-- Cerrado enseña solo bandera y prefijo; al abrirlo, la lista con
+                 el país. El select va encima, transparente, para que el
+                 desplegable sea el del móvil (el que mejor se usa). -->
+            <div class="ad-input ad-prefijo">
+              <span id="ad-prefijo-ver" aria-hidden="true">{opciones[0].bandera} {opciones[0].prefijo}</span>
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              <select id="ad-prefijo" aria-label="Prefijo del país">
+                {opciones.map((p) => <option value={p.valor} data-prefijo={p.prefijo} data-pais={p.pais} data-bandera={p.bandera}>{p.bandera} {p.pais} ({p.prefijo})</option>)}
+              </select>
+            </div>
+            <input id="ad-tel" type="tel" class="ad-input" placeholder="6 12345678" autocomplete="tel-national" inputmode="tel" required />
+          </div>
+
+          <p class="ad-err" id="ad-err">Revisa el nombre, el correo y el número.</p>
+          <button type="submit" class="ad-btn" id="ad-enviar">
+            Ver el vídeo
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <p class="ad-legal">Al continuar aceptas la <a href="/politica-de-privacidad" target="_blank" rel="noopener">política de privacidad</a>. Nada de spam.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { leerUTM, guardarUTM } from '../../lib/utm'
+  import { contextoDelLead } from '../../lib/recorrido'
+  import { CLAVE_DATOS, CLAVE_POSICION, CLAVE_VIDEO, telefonoCompleto, type DatosAdmision } from '../../lib/admision'
+  guardarUTM()
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T
+  const caja = $('ad-video')
+  const candado = $('ad-candado')
+  const reproductor = $('ad-reproductor')
+  const modal = $('ad-modal')
+  const form = $<HTMLFormElement>('ad-form')
+  const seguir = $<HTMLAnchorElement>('ad-seguir')
+  const nota = $('ad-seguir-nota')
+  const pasos = $('ad-pasos')
+  const pasoTexto = $('ad-paso-texto')
+  const proveedor = caja.dataset.proveedor || ''
+  const src = caja.dataset.src || ''
+
+
+
+  // ── Lo que se recuerda en el navegador ────────────────────────────────
+  // Si vuelve mañana, no tiene que volver a dar los datos ni a ver el vídeo.
+  const leer = <T,>(k: string): T | null => {
+    try { const v = localStorage.getItem(k); return v ? (JSON.parse(v) as T) : null } catch { return null }
+  }
+  const guardar = (k: string, v: unknown) => { try { localStorage.setItem(k, JSON.stringify(v)) } catch {} }
+
+  let datos = leer<DatosAdmision>(CLAVE_DATOS)
+  let estadoVideo: 'empezado' | 'visto' = leer<string>(CLAVE_VIDEO) === 'visto' ? 'visto' : 'empezado'
+
+  // ── La línea de pasos ─────────────────────────────────────────────────
+  const marcarPaso = (n: number) => {
+    pasos.dataset.paso = String(n)
+    pasoTexto.textContent = `Paso ${Math.min(n, 3)} de 3`
+  }
+
+  // ── Avisar a la escuela (por la misma puerta que /agendar) ───────────
+  // `matricula`: solo al rellenar la ventanita. Ahí la escuela crea su
+  // matrícula (solicitud) con de dónde viene; lo demás la va completando.
+  // `hito`: los dos momentos que van también a systeme.io con su etiqueta
+  // (dejó los datos, vio el vídeo entero).
+  const avisar = (video: 'empezado' | 'visto', matricula = false, hito: '' | 'datos' | 'video' = '') => {
+    if (!datos) return
+    try {
+      fetch('/api/cualificacion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify({
+          parcial: true,
+          matricula,
+          hito,
+          embudo: 'admision',
+          video,
+          first_name: datos.first_name,
+          last_name: '',
+          email: datos.email,
+          phone: datos.phone,
+          website: ($('ad-hp') as HTMLInputElement).value,
+          respuestas: {},
+          textos: {},
+          ...contextoDelLead(),
+          ...leerUTM(),
+        }),
+      }).catch(() => {})
+    } catch {}
+  }
+
+  // Píxel de Meta: dejar los datos cuenta como solicitud (el mismo evento y
+  // la misma marca de sesión que /agendar, para no contar dos veces a quien
+  // pase por los dos). Terminar el vídeo, su propio evento.
+  const pixel = (evento: 'datos' | 'video') => {
+    const fbq = (window as any).fbq
+    try {
+      if (evento === 'datos') {
+        if (sessionStorage.getItem('lead-agendar')) return
+        sessionStorage.setItem('lead-agendar', '1')
+        fbq?.('track', 'SubmitApplication', { content_name: 'Proceso de admisión' })
+      } else {
+        if (sessionStorage.getItem('admision-video')) return
+        sessionStorage.setItem('admision-video', '1')
+        fbq?.('trackCustom', 'AdmisionVideoVisto')
+      }
+    } catch {}
+  }
+
+  // ── El botón del paso 3 ───────────────────────────────────────────────
+  const desbloquear = (porFallo = false) => {
+    seguir.setAttribute('aria-disabled', 'false')
+    seguir.removeAttribute('tabindex')
+    seguir.classList.add('abierto')
+    nota.textContent = porFallo ? 'Ya puedes seguir con tu matrícula.' : '¡Vídeo terminado! Ya puedes seguir con tu matrícula.'
+    nota.classList.add('abierto')
+    marcarPaso(3)
+  }
+  seguir.addEventListener('click', (e) => {
+    if (seguir.getAttribute('aria-disabled') === 'true') {
+      e.preventDefault()
+      nota.classList.remove('sacudir'); void nota.offsetWidth; nota.classList.add('sacudir')
+    }
+  })
+
+  const videoTerminado = () => {
+    if (estadoVideo !== 'visto') {
+      estadoVideo = 'visto'
+      guardar(CLAVE_VIDEO, 'visto')
+      try { localStorage.removeItem(CLAVE_POSICION) } catch {}
+      avisar('visto', false, 'video')
+      pixel('video')
+    }
+    desbloquear()
+  }
+
+  // ── El reproductor, según dónde esté el vídeo ─────────────────────────
+  // Una sola carga por script, aunque lo pidan la previsualización y el
+  // reproductor a la vez.
+  const scripts: Record<string, Promise<void>> = {}
+  const cargarScript = (url: string) => (scripts[url] ??= new Promise<void>((ok, mal) => {
+    const s = document.createElement('script')
+    s.src = url; s.async = true
+    s.onload = () => ok(); s.onerror = () => { delete scripts[url]; mal(new Error(url)) }
+    document.head.appendChild(s)
+  }))
+
+  const ponerIframe = () => {
+    const f = document.createElement('iframe')
+    f.src = src
+    f.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media'
+    f.allowFullscreen = true
+    f.title = 'Vídeo del proceso de admisión'
+    f.loading = 'eager'
+    reproductor.appendChild(f)
+    return f
+  }
+
+  // ── Sin saltos: solo play y pausa (03/10, pedido del usuario) ──────────
+  // Mientras no lo haya visto entero, si alguien arrastra la barra (adelante
+  // o atrás) se le devuelve a donde iba. Y el final solo cuenta si de verdad
+  // llegó hasta ahí. Quien ya lo vio entero puede moverse a su gusto.
+  //
+  // Seguir donde lo dejó (03/10: "que no tenga que volver a iniciar"): el
+  // segundo al que llegó se guarda en el navegador y, si vuelve, el vídeo
+  // arranca desde ahí. Sin eso, como no se puede adelantar, tendría que
+  // verlo entero otra vez.
+  let tope = Math.max(0, Number(leer<number>(CLAVE_POSICION)) || 0)
+  let duracion = 0
+  let guardadoEn = 0
+  const libre = () => estadoVideo === 'visto'
+  const vigilar = (t: number, irA: (s: number) => void) => {
+    if (libre() || !isFinite(t)) return
+    if (Math.abs(t - tope) > 1.5) irA(tope)
+    else if (t > tope) {
+      tope = t
+      if (tope - guardadoEn >= 2) { guardadoEn = tope; guardar(CLAVE_POSICION, Math.floor(tope)) }
+    }
+  }
+  /** Desde dónde arranca el reproductor: donde lo dejó (un pelín antes, para
+   *  que no empiece a media palabra), o desde el principio. */
+  const inicio = () => (libre() || tope < 3 ? 0 : Math.max(0, tope - 2))
+  const terminadoDeVerdad = () => {
+    if (libre() || !isFinite(duracion) || !duracion || tope >= duracion - 4) videoTerminado()
+  }
+
+  // ── La previsualización ───────────────────────────────────────────────
+  // Mientras está bloqueado, un trozo del vídeo (del segundo PREVIEW_DESDE al
+  // PREVIEW_HASTA) suena en silencio y en bucle de fondo (03/10: "que vean
+  // lo que les espera dentro", "no todo el vídeo"). En silencio el navegador
+  // sí deja arrancarlo solo, también en el iPhone. No se puede tocar: el clic
+  // va siempre al candado. Al desbloquear se quita y entra el reproductor de
+  // verdad, desde el principio y con sonido.
+  const preview = $('ad-preview')
+  const desde = Number(caja.dataset.previewDesde || 0)
+  const hasta = Number(caja.dataset.previewHasta || 0)
+  const enBucle = (t: number, irA: (s: number) => void) => {
+    if (hasta > desde && (t >= hasta || t < desde - 1)) irA(desde)
+  }
+  const ponerPreview = async () => {
+    if (!src || (proveedor !== 'bunny' && proveedor !== 'mp4')) return
+    caja.classList.add('con-preview')
+    if (proveedor === 'mp4') {
+      const v = document.createElement('video')
+      v.src = src; v.muted = true; v.autoplay = true; v.playsInline = true
+      v.addEventListener('loadedmetadata', () => { v.currentTime = desde })
+      v.addEventListener('timeupdate', () => enBucle(v.currentTime, (t) => (v.currentTime = t)))
+      preview.appendChild(v)
+      v.play().catch(() => {})
+      return
+    }
+    // ⚠️ player.js PRIMERO y el iframe después: si el reproductor termina de
+    // cargar antes que el script, su aviso de "listo" se pierde, no llegan
+    // los tiempos y el trozo no se corta (pasó: se veía el vídeo entero).
+    try {
+      await cargarScript('https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js')
+    } catch {}
+    if (!preview.isConnected || !caja.classList.contains('con-preview')) return
+    // Dos maneras de cortar el trozo, y van las dos a la vez (03/10: con
+    // solo la primera "se ve el vídeo entero"):
+    //  1. player.js: al pasar del segundo final, vuelve al inicial. Depende de
+    //     que Bunny mande los tiempos, y no siempre llegan.
+    //  2. El reloj: si en ese rato no ha llegado ningún tiempo, se monta un
+    //     reproductor nuevo que arranca otra vez en el segundo inicial (`t=`),
+    //     encima del viejo, y el viejo se quita cuando el nuevo ya se ve. Así
+    //     el bucle no depende de nada de Bunny salvo el `t=`.
+    let ultimaSenal = 0
+    const montar = () => {
+      const f = document.createElement('iframe')
+      f.src = `${src}&muted=true&t=${desde}`
+      f.allow = 'autoplay; encrypted-media'
+      f.tabIndex = -1
+      f.title = ''
+      preview.appendChild(f)
+      try {
+        const p = new (window as any).playerjs.Player(f)
+        p.on('ready', () => {
+          p.mute?.()
+          p.setCurrentTime(desde)
+          p.play?.()
+          p.on('timeupdate', (e: { seconds: number }) => {
+            ultimaSenal = Date.now()
+            enBucle(e?.seconds, (t) => p.setCurrentTime(t))
+          })
+        })
+      } catch {}
+      // El reproductor anterior se va cuando el nuevo ya ha tenido tiempo de
+      // arrancar: sin pantallazo negro en medio.
+      const viejos = Array.from(preview.querySelectorAll('iframe')).filter((x) => x !== f)
+      if (viejos.length) setTimeout(() => viejos.forEach((x) => x.remove()), 1800)
+    }
+    montar()
+    const tramo = Math.max(3, hasta - desde) * 1000
+    let montadoEn = Date.now()
+    const reloj = window.setInterval(() => {
+      if (!caja.classList.contains('con-preview')) { clearInterval(reloj); return }
+      const conTiempos = Date.now() - ultimaSenal < 3000
+      // Se monta el nuevo un pelín antes del final del tramo, porque tarda en
+      // arrancar.
+      if (!conTiempos && Date.now() - montadoEn >= tramo - 1200) {
+        montadoEn = Date.now()
+        montar()
+      }
+    }, 500)
+  }
+  const quitarPreview = () => {
+    preview.innerHTML = ''
+    caja.classList.remove('con-preview')
+  }
+
+  const arrancarVideo = async () => {
+    quitarPreview()
+    candado.hidden = true
+    reproductor.hidden = false
+    marcarPaso(estadoVideo === 'visto' ? 3 : 2)
+    if (!src) {
+      // Sin vídeo puesto todavía: aviso y el paso 3 abierto.
+      reproductor.innerHTML = '<p class="ad-sin-video">El vídeo se está preparando. Mientras tanto, puedes seguir con tu matrícula.</p>'
+      desbloquear(true)
+      return
+    }
+    try {
+      if (proveedor === 'mp4') {
+        const v = document.createElement('video')
+        v.src = src; v.controls = true; v.playsInline = true; v.autoplay = true
+        v.addEventListener('loadedmetadata', () => {
+          duracion = v.duration || 0
+          if (inicio() > 0) { tope = inicio(); v.currentTime = tope }
+        })
+        v.addEventListener('timeupdate', () => vigilar(v.currentTime, (t) => (v.currentTime = t)))
+        v.addEventListener('ended', terminadoDeVerdad)
+        reproductor.appendChild(v)
+        v.play().catch(() => {})
+      } else if (proveedor === 'bunny') {
+        // player.js antes que el iframe (ver la previsualización).
+        await cargarScript('https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js')
+        const f = ponerIframe()
+        const p = new (window as any).playerjs.Player(f)
+        p.on('ready', () => {
+          if (inicio() > 0) { tope = inicio(); p.setCurrentTime(tope) }
+          p.getDuration((d: number) => (duracion = d || 0))
+          p.on('timeupdate', (e: { seconds: number; duration?: number }) => {
+            if (e?.duration) duracion = e.duration
+            vigilar(e?.seconds, (t) => p.setCurrentTime(t))
+          })
+          p.on('ended', terminadoDeVerdad)
+        })
+      } else if (proveedor === 'vimeo') {
+        const f = ponerIframe()
+        await cargarScript('https://player.vimeo.com/api/player.js')
+        const vp = new (window as any).Vimeo.Player(f)
+        if (inicio() > 0) { tope = inicio(); vp.setCurrentTime(tope).catch(() => {}) }
+        vp.on('timeupdate', (e: { seconds: number; duration: number }) => {
+          duracion = e.duration || duracion
+          vigilar(e.seconds, (t) => vp.setCurrentTime(t))
+        })
+        vp.on('ended', terminadoDeVerdad)
+      } else if (proveedor === 'youtube') {
+        const f = ponerIframe()
+        f.id = 'ad-yt'
+        await new Promise<void>((ok, mal) => {
+          ;(window as any).onYouTubeIframeAPIReady = () => ok()
+          cargarScript('https://www.youtube.com/iframe_api').catch(mal)
+        })
+        const yt = new (window as any).YT.Player('ad-yt', {
+          events: {
+            onReady: () => {
+              if (inicio() > 0) { tope = inicio(); yt.seekTo(tope, true) }
+              // YouTube no avisa del tiempo: se mira cada medio segundo.
+              setInterval(() => {
+                duracion = yt.getDuration?.() || duracion
+                vigilar(yt.getCurrentTime?.() ?? 0, (t) => yt.seekTo(t, true))
+              }, 500)
+            },
+            onStateChange: (e: { data: number }) => { if (e.data === 0) terminadoDeVerdad() },
+          },
+        })
+      }
+    } catch {
+      // No se pudo saber cuándo termina (script bloqueado, red…): mejor
+      // abrir el paso 3 que dejar a alguien atascado.
+      desbloquear(true)
+    }
+  }
+
+  // ── Paso 1: la ventanita ──────────────────────────────────────────────
+  const abrirModal = () => {
+    modal.hidden = false
+    document.body.style.overflow = 'hidden'
+    setTimeout(() => ($('ad-nombre') as HTMLInputElement).focus(), 60)
+  }
+  const cerrarModal = () => {
+    modal.hidden = true
+    document.body.style.overflow = ''
+  }
+  const selPrefijo = $<HTMLSelectElement>('ad-prefijo')
+  selPrefijo.addEventListener('change', () => {
+    const o = selPrefijo.options[selPrefijo.selectedIndex]
+    $('ad-prefijo-ver').textContent = `${o.dataset.bandera} ${o.dataset.prefijo}`
+  })
+  modal.querySelectorAll('[data-cerrar]').forEach((el) => el.addEventListener('click', cerrarModal))
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) cerrarModal() })
+
+  candado.addEventListener('click', () => (datos ? arrancarVideo() : abrirModal()))
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const nombre = ($('ad-nombre') as HTMLInputElement).value.trim()
+    const email = ($('ad-email') as HTMLInputElement).value.trim().toLowerCase()
+    const sel = $('ad-prefijo') as HTMLSelectElement
+    const opcion = sel.options[sel.selectedIndex]
+    const numero = ($('ad-tel') as HTMLInputElement).value
+    const phone = telefonoCompleto(opcion.dataset.prefijo || '', numero)
+    const ok = nombre.length > 0 && /\S+@\S+\.\S+/.test(email) && phone.replace(/\D/g, '').length >= 8
+    $('ad-err').classList.toggle('visible', !ok)
+    if (!ok) return
+    datos = { first_name: nombre, email, phone, pais: opcion.dataset.pais || '' }
+    guardar(CLAVE_DATOS, datos)
+    avisar(estadoVideo, true, 'datos')
+    pixel('datos')
+    cerrarModal()
+    arrancarVideo()
+  })
+
+  // ── Al volver ─────────────────────────────────────────────────────────
+  if (estadoVideo === 'visto' && datos) desbloquear()
+  else if (datos) marcarPaso(2)
+  ponerPreview()
+</script>
+
+<style>
+  .ad-page {
+    min-height: 100vh; background: #1D0084; position: relative; overflow: hidden;
+    display: flex; justify-content: center; padding: 44px 24px 96px;
+  }
+  .ad-glow1 { position: absolute; top: -140px; left: 50%; transform: translateX(-50%); width: 960px; height: 560px; background: radial-gradient(ellipse at center, rgba(11,109,240,0.5) 0%, transparent 65%); pointer-events: none; }
+  .ad-glow2 { position: absolute; bottom: -60px; right: -80px; width: 600px; height: 400px; background: radial-gradient(ellipse at center, rgba(77,163,255,0.16) 0%, transparent 65%); pointer-events: none; }
+  .ad-dots { position: absolute; inset: 0; pointer-events: none; opacity: 0.4; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 28px 28px; }
+  .ad-shell { position: relative; z-index: 1; width: 100%; max-width: 860px; color: #fff; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .ad-logo-link { display: inline-block; margin-bottom: 28px; }
+  .ad-logo { height: 38px; width: auto; object-fit: contain; }
+
+  /* Los pasos */
+  .ad-pasos { width: 100%; max-width: 520px; margin-bottom: 26px; }
+  .ad-eyebrow { margin: 0 0 14px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #4da3ff; }
+  .ad-linea { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); position: relative; }
+  .ad-linea::before { content: ''; position: absolute; top: 15px; left: 16.6%; right: 16.6%; height: 2px; background: rgba(255,255,255,0.18); }
+  .ad-linea li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 7px; }
+  .ad-bolita { width: 32px; height: 32px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; background: #1D0084; border: 2px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); position: relative; z-index: 1; transition: all .25s; }
+  .ad-paso-nombre { font-size: 12.5px; color: rgba(255,255,255,0.65); font-weight: 500; }
+  .ad-pasos[data-paso="1"] li[data-n="1"] .ad-bolita,
+  .ad-pasos[data-paso="2"] li[data-n="2"] .ad-bolita,
+  .ad-pasos[data-paso="3"] li[data-n="3"] .ad-bolita { background: #4da3ff; border-color: #4da3ff; color: #0a1656; }
+  .ad-pasos[data-paso="2"] li[data-n="1"] .ad-bolita,
+  .ad-pasos[data-paso="3"] li[data-n="1"] .ad-bolita,
+  .ad-pasos[data-paso="3"] li[data-n="2"] .ad-bolita { background: #fff; border-color: #fff; color: #1D0084; }
+  .ad-pasos[data-paso="1"] li[data-n="1"] .ad-paso-nombre,
+  .ad-pasos[data-paso="2"] li[data-n="2"] .ad-paso-nombre,
+  .ad-pasos[data-paso="3"] li[data-n="3"] .ad-paso-nombre { color: #fff; font-weight: 700; }
+
+  .ad-title { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(29px, 4.7vw, 44px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.25; margin: 0; max-width: 860px; text-wrap: balance; }
+  /* En el ordenador, en una sola línea (03/10). Con Poppins Bold mide 840 px
+     a 42 px y la columna tiene 860: a 44 px ya no cabía. */
+  @media (min-width: 960px) {
+    .ad-title { font-size: 42px; white-space: nowrap; text-wrap: nowrap; }
+  }
+  .ad-lead { font-size: clamp(15px, 1.6vw, 17.5px); line-height: 1.6; color: rgba(255,255,255,0.9); margin: 16px 0 0; max-width: 860px; }
+  .ad-lead strong { color: #fff; }
+
+  /* El vídeo */
+  .ad-video { width: 100%; aspect-ratio: 16 / 9; margin-top: 28px; border-radius: 16px; overflow: hidden; position: relative; background: #0a1656; }
+  .ad-candado { position: absolute; inset: 0; width: 100%; height: 100%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-family: inherit; padding: 0;
+    background: radial-gradient(circle at 75% 15%, rgba(77,163,255,0.22), transparent 55%), linear-gradient(180deg, #14248f 0%, #0a1656 100%); background-size: cover; background-position: center; }
+  .ad-candado[hidden] { display: none; }
+  .ad-preview { position: absolute; inset: -2px; pointer-events: none; overflow: hidden; }
+  .ad-preview :global(iframe), .ad-preview :global(video) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; object-fit: cover; }
+  /* Con previsualización, el candado deja ver el vídeo detrás, oscurecido. */
+  .ad-video.con-preview .ad-candado { background: linear-gradient(180deg, rgba(10,22,86,0.30) 0%, rgba(10,22,86,0.55) 100%); }
+  /* Un reproductor normal: botón translúcido en el centro y una barra abajo
+     con la duración. Nada de halos ni pastillas de colores. */
+  .ad-play { width: 72px; height: 72px; border-radius: 9999px; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.28); color: #fff; display: inline-flex; align-items: center; justify-content: center; padding: 0; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: background .15s; }
+  .ad-candado:hover .ad-play { background: rgba(255,255,255,0.26); }
+  .ad-barra { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 22px 16px 12px; background: linear-gradient(transparent, rgba(0,0,0,0.38)); font-size: 13px; color: rgba(255,255,255,0.85); }
+  .ad-candado-texto { display: inline-flex; align-items: center; gap: 7px; font-weight: 500; }
+  .ad-duracion { font-variant-numeric: tabular-nums; font-weight: 500; }
+  /* El reproductor 2 px más grande que su caja por cada lado: así no asoma
+     el filo negro del iframe en los bordes redondeados (03/10). */
+  .ad-reproductor { position: absolute; inset: -2px; }
+  .ad-reproductor :global(iframe), .ad-reproductor :global(video) { width: 100%; height: 100%; border: 0; display: block; background: #000; }
+  .ad-reproductor :global(.ad-sin-video) { margin: 0; height: 100%; display: flex; align-items: center; justify-content: center; padding: 24px; font-size: 15px; color: rgba(255,255,255,0.85); }
+
+  /* El botón del paso 3 */
+  .ad-seguir { margin-top: 26px; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+  .ad-btn-seguir { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 17px 30px; border-radius: 12px; font-size: 16.5px; font-weight: 700; text-decoration: none;
+    background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.55); border: 1px dashed rgba(255,255,255,0.3); cursor: not-allowed; transition: all .3s; }
+  .ad-btn-seguir .ad-flecha { font-size: 20px; line-height: 1; }
+  .ad-btn-seguir.abierto { background: #4da3ff; color: #0a1656; border: 1px solid #4da3ff; cursor: pointer; animation: ad-latido 1.8s ease-out 3; }
+  .ad-btn-seguir.abierto:hover { background: #5eb4ff; }
+  .ad-btn-seguir.abierto .ad-ico-candado { display: none; }
+  @keyframes ad-latido { 0% { box-shadow: 0 0 0 0 rgba(77,163,255,0.6); } 100% { box-shadow: 0 0 0 18px rgba(77,163,255,0); } }
+  .ad-seguir-nota { margin: 0; font-size: 13px; color: rgba(255,255,255,0.65); }
+  .ad-confianza { margin-top: 56px; width: 100%; text-align: center; }
+  .ad-cred { margin: 0 auto; max-width: 620px; font-family: var(--font-poppins), system-ui, sans-serif; font-weight: 600; font-size: clamp(17px, 2vw, 21px); line-height: 1.4; color: #fff; }
+  .ad-opiniones { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; text-align: left; }
+  .ad-opinion { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 18px 18px 16px; display: flex; flex-direction: column; }
+  .ad-estrellas { margin: 0; color: #F58220; font-size: 14px; letter-spacing: 2px; }
+  .ad-op-titulo { margin: 8px 0 0; font-weight: 700; font-size: 15px; color: #fff; }
+  .ad-op-texto { margin: 6px 0 0; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.82); flex: 1; }
+  .ad-op-quien { margin-top: 14px; display: flex; align-items: center; gap: 10px; font-size: 12.5px; line-height: 1.35; color: rgba(255,255,255,0.65); }
+  .ad-op-quien strong { color: #fff; font-weight: 600; }
+  .ad-op-quien img { width: 36px; height: 36px; border-radius: 9999px; object-fit: cover; border: 1px solid rgba(255,255,255,0.2); }
+  .ad-sin-compromiso { margin: 22px auto 0; max-width: 520px; font-size: 13.5px; line-height: 1.5; color: rgba(255,255,255,0.75); }
+  /* El escudo va dentro de la línea: con flex, en el móvil se quedaba suelto a la izquierda. */
+  .ad-sin-compromiso svg { color: #4da3ff; display: inline; vertical-align: -3px; margin-right: 6px; }
+  @media (max-width: 760px) {
+    .ad-confianza { margin-top: 44px; }
+    .ad-opiniones { grid-template-columns: 1fr; }
+  }
+  .ad-seguir-nota.abierto { color: #9fd0ff; font-weight: 600; }
+  .ad-seguir-nota.sacudir { animation: ad-sacudir .4s; color: #fff; }
+  @keyframes ad-sacudir { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+  /* La ventanita (blanca, como la caja de pago de la escuela) */
+  .ad-modal { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .ad-modal[hidden] { display: none; }
+  .ad-modal-fondo { position: absolute; inset: 0; background: rgba(5,10,40,0.72); backdrop-filter: blur(3px); }
+  .ad-modal-caja { position: relative; width: 100%; max-width: 440px; max-height: calc(100vh - 32px); overflow-y: auto; background: #fff; border-radius: 18px; padding: 30px 26px 24px; color: #1D0084; text-align: left; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.5); }
+  .ad-cerrar { position: absolute; top: 10px; right: 12px; width: 36px; height: 36px; border: none; background: transparent; font-size: 26px; line-height: 1; color: #6b7280; cursor: pointer; border-radius: 8px; }
+  .ad-cerrar:hover { background: #F0F5FF; }
+  .ad-modal-eyebrow { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #025dc7; }
+  .ad-modal-titulo { font-family: var(--font-poppins), system-ui, sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin: 6px 0 4px; color: #1D0084; }
+  .ad-modal-lead { margin: 0 0 18px; font-size: 14.5px; color: #0a1656; opacity: 0.8; }
+  .ad-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .ad-label { display: block; font-size: 13px; font-weight: 600; color: #0a1656; margin: 12px 0 6px; }
+  .ad-input { width: 100%; box-sizing: border-box; background: #F0F5FF; border: 1px solid transparent; border-radius: 12px; padding: 13px 14px; font-size: 16px; color: #1D0084; font-family: inherit; outline: none; transition: border-color .15s, background .15s; }
+  .ad-input::placeholder { color: rgba(29,0,132,0.42); }
+  .ad-input:focus { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
+  .ad-tel { display: grid; grid-template-columns: 112px 1fr; gap: 8px; }
+  .ad-prefijo { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 15.5px; cursor: pointer; white-space: nowrap; }
+  .ad-prefijo:focus-within { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
+  .ad-prefijo select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; }
+  .ad-err { display: none; margin: 12px 0 0; font-size: 13px; color: #b91c1c; font-weight: 500; }
+  .ad-err.visible { display: block; }
+  .ad-btn { margin-top: 18px; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 15px; border: none; border-radius: 12px; background: #4da3ff; color: #0a1656; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; }
+  .ad-btn:hover { background: #5eb4ff; }
+  .ad-legal { margin: 12px 0 0; font-size: 12px; color: #6b7280; text-align: center; }
+  .ad-legal a { color: #025dc7; text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .ad-page { padding: 28px 16px 72px; }
+    .ad-logo-link { margin-bottom: 22px; }
+    /* Con su margen a los lados, como el resto de la página (03/10: de
+       borde a borde no gustó). */
+    .ad-video { border-radius: 12px; margin-top: 22px; }
+    .ad-play { width: 56px; height: 56px; }
+    .ad-btn-seguir { width: 100%; padding: 16px 18px; font-size: 15.5px; }
+    .ad-tel { grid-template-columns: 104px 1fr; }
+  }
+</style>
