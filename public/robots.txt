@@ -17,5 +17,7 @@ Disallow: /ebook-a0-a1/
 Disallow: /formacion-
 # El proceso de admisión (embudo nuevo, 02/10): solo por enlace.
 Disallow: /proceso-de-admision
+# Páginas de pruebas (04/10): solo para mirar, nunca en Google.
+Disallow: /v4/
 
 Sitemap: https://www.holandesnawar.com/sitemap-index.xml
