@@ -36,6 +36,43 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
 // Las tres opiniones de las landings. La de Carlos decía "me ascendieron a los
 // 4 meses": con la formación recién empezada no se sostiene, así que va lo que
 // el usuario pidió (04/10). Cortas a propósito: dos frases leen; un párrafo no.
+// «Quién te acompaña en el camino» (06/10, pedido del usuario: tarjetas con
+// foto y el nombre sobre el azul; al pasar el ratón o tocar, sube una
+// cortina con quién es). ⚠️ NOMBRES Y TEXTOS INVENTADOS para probar el
+// diseño: cambiarlos por el equipo de verdad antes de pasar el bloque a
+// /proceso-de-admision. `foto`: una dirección de imagen; vacío = sus iniciales.
+// En `bio`, lo que va entre ** sale en negrita.
+const EQUIPO = [
+  {
+    nombre: 'Elena Vidal',
+    rol: 'Directora académica',
+    foto: '',
+    bio: 'Diseñó el método de la escuela **desde el español**: qué se aprende primero, qué se practica y qué se puede dejar para después. Revisa cada módulo antes de que llegue a tu pantalla.',
+  },
+  {
+    nombre: 'Daan Bakker',
+    rol: 'Profesor nativo · Conversación',
+    foto: '',
+    bio: 'Neerlandés de Utrecht que habla español. Da la **clase de conversación en vivo** cada semana: te hace hablar desde el primer día y te corrige sin cortarte.',
+  },
+  {
+    nombre: 'Lucía Moreno',
+    rol: 'Profesora · Gramática y lectura',
+    foto: '',
+    bio: 'Vivió lo mismo que tú: llegó a los Países Bajos sin saber neerlandés. Explica la gramática **comparándola con el español**, que es lo que la hace fácil.',
+  },
+  {
+    nombre: 'Sara Jansen',
+    rol: 'Consultas y acompañamiento',
+    foto: '',
+    bio: 'Responde tus **consultas por escrito** y está pendiente de cómo vas. Si te atascas o te quedas atrás, es quien te escribe para que retomes el ritmo.',
+  },
+]
+
+/** "**negrita**" → <strong>. El texto es nuestro, no del visitante. */
+const conNegrita = (t: string) => t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+const iniciales = (n: string) => n.split(' ').map((x) => x[0]).slice(0, 2).join('')
+
 const OPINIONES = [
   {
     nombre: 'Manuel Torres',
@@ -123,8 +160,124 @@ const OPINIONES = [
         <p class="ad-seguir-nota" id="ad-seguir-nota">Se desbloquea al terminar el vídeo.</p>
       </div>
 
+      <p class="ad-sin-compromiso ad-sin-compromiso-arriba">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        Sin compromiso: ver el vídeo no te obliga a nada.
+      </p>
+
+      <!-- ── Debajo del botón: para quien duda (prueba 06/10) ───────────── -->
+
+      <!-- 1. Qué pasa ahora: la duda nº 1 es "¿me van a vender a presión?". -->
+      <section class="ad-bloque" aria-labelledby="ad-t-pasos">
+        <p class="ad-bl-eyebrow">Cómo funciona</p>
+        <h2 class="ad-bl-titulo" id="ad-t-pasos">Qué pasa ahora</h2>
+        <ol class="ad-tres">
+          <li>
+            <span class="ad-tres-n">1</span>
+            <p class="ad-tres-t">Ves el vídeo</p>
+            <p class="ad-tres-x">Cómo es la formación por dentro, qué vas a aprender y cómo se trabaja cada semana.</p>
+          </li>
+          <li>
+            <span class="ad-tres-n">2</span>
+            <p class="ad-tres-t">Respondes unas preguntas</p>
+            <p class="ad-tres-x">Tu nivel, para qué lo necesitas y cuánto tiempo tienes. Un par de minutos.</p>
+          </li>
+          <li>
+            <span class="ad-tres-n">3</span>
+            <p class="ad-tres-t">Hablamos 30 minutos</p>
+            <p class="ad-tres-x">Vemos tu caso y te decimos con sinceridad si la formación encaja contigo. Si no encaja, te lo decimos.</p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- 2. El método, con piezas que imitan la escuela de verdad. -->
+      <section class="ad-bloque" aria-labelledby="ad-t-metodo">
+        <p class="ad-bl-eyebrow">El método</p>
+        <h2 class="ad-bl-titulo" id="ad-t-metodo">De cero al A1 en 16 semanas, en 10 módulos</h2>
+        <p class="ad-bl-lead">Avanzas con tu grupo: cada módulo se abre en su fecha y dentro de cada semana te organizas tú.</p>
+        <div class="ad-metodo">
+          <article class="ad-met">
+            <div class="ad-mock" aria-hidden="true">
+              <div class="mk-flash">
+                <span class="mk-art">de</span>
+                <span class="mk-pal">kaas</span>
+                <span class="mk-sep"></span>
+                <span class="mk-trad">el queso</span>
+                <span class="mk-audio">🔊</span>
+              </div>
+            </div>
+            <h3 class="ad-met-t">Explicado desde el español</h3>
+            <p class="ad-met-x">Cada regla se apoya en lo que ya sabes. Vídeo, resumen y flashcards en cada lección.</p>
+          </article>
+          <article class="ad-met">
+            <div class="ad-mock" aria-hidden="true">
+              <div class="mk-ej">
+                <p class="mk-preg">¿Qué has oído?</p>
+                <span class="mk-op">thee</span>
+                <span class="mk-op mk-ok">koffie ✓</span>
+                <span class="mk-op">melk</span>
+              </div>
+            </div>
+            <h3 class="ad-met-t">Ejercicios con audio</h3>
+            <p class="ad-met-x">Escuchar, leer y escribir con situaciones del día a día: el súper, el médico, el trabajo.</p>
+          </article>
+          <article class="ad-met">
+            <div class="ad-mock" aria-hidden="true">
+              <div class="mk-clase">
+                <span class="mk-vivo"><i></i> En vivo</span>
+                <div class="mk-caras"><span>A</span><span>M</span><span>J</span><span>+5</span></div>
+                <p class="mk-clase-t">Clase de conversación</p>
+              </div>
+            </div>
+            <h3 class="ad-met-t">Clase en vivo cada semana</h3>
+            <p class="ad-met-x">Conversación en grupo con un profesor que habla español. Si un día no puedes ir, queda grabada.</p>
+          </article>
+          <article class="ad-met">
+            <div class="ad-mock" aria-hidden="true">
+              <div class="mk-prog">
+                <p class="mk-fila"><span>Módulo 1</span><b style="--p:100%"></b></p>
+                <p class="mk-fila"><span>Módulo 2</span><b style="--p:70%"></b></p>
+                <p class="mk-resp">Consulta respondida ✓</p>
+              </div>
+            </div>
+            <h3 class="ad-met-t">Consultas y tu progreso</h3>
+            <p class="ad-met-x">Dejas tu duda por escrito y te la responde un profesor. Ves por dónde vas en todo momento.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 3. Quién te acompaña: tarjetas con cortina. -->
+      <section class="ad-bloque" aria-labelledby="ad-t-equipo">
+        <p class="ad-bl-eyebrow">El equipo</p>
+        <h2 class="ad-bl-titulo" id="ad-t-equipo">Quién te acompaña en el camino</h2>
+        <p class="ad-bl-lead ad-eq-pista"><span class="ad-pista-raton">Pasa el ratón por cada tarjeta</span><span class="ad-pista-dedo">Toca cada tarjeta</span> para conocer a quien te acompaña.</p>
+        <div class="ad-eq-marco">
+          <button type="button" class="ad-eq-flecha ad-eq-izq" data-eq-mover="-1" aria-label="Anteriores">‹</button>
+          <ul class="ad-eq-fila" id="ad-eq-fila">
+            {EQUIPO.map((p) => (
+              <li>
+                <button type="button" class="ad-eq-card" aria-label={`${p.nombre}, ${p.rol}`}>
+                  <span class="ad-eq-foto">
+                    {p.foto ? <img src={p.foto} alt="" loading="lazy" /> : <span class="ad-eq-ini">{iniciales(p.nombre)}</span>}
+                  </span>
+                  <span class="ad-eq-nombre">
+                    <strong>{p.nombre}</strong>
+                    <span>{p.rol}</span>
+                  </span>
+                  <span class="ad-eq-bio">
+                    <span class="ad-eq-bio-nombre">{p.nombre}</span>
+                    <span set:html={conNegrita(p.bio)} />
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+          <button type="button" class="ad-eq-flecha ad-eq-der" data-eq-mover="1" aria-label="Siguientes">›</button>
+        </div>
+      </section>
+
       <!-- Confianza: para quien duda antes de dejar sus datos (prueba 04/10). -->
-      <section class="ad-confianza" aria-label="Quiénes somos">
+      <section class="ad-confianza ad-bloque" aria-label="Quiénes somos">
         <p class="ad-cred">Más de 2 años ayudando a hispanohablantes a aprender neerlandés.</p>
         <ul class="ad-opiniones">
           {OPINIONES.map((o) => (
@@ -139,11 +292,65 @@ const OPINIONES = [
             </li>
           ))}
         </ul>
-        <p class="ad-sin-compromiso">
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-          Sin compromiso: ver el vídeo no te obliga a nada.
-        </p>
       </section>
+
+      <!-- 4. Para quién es y para quién no: suena a escuela que selecciona. -->
+      <section class="ad-bloque" aria-labelledby="ad-t-quien">
+        <p class="ad-bl-eyebrow">Antes de seguir</p>
+        <h2 class="ad-bl-titulo" id="ad-t-quien">¿Es para ti?</h2>
+        <div class="ad-paraquien">
+          <div class="ad-pq ad-pq-si">
+            <p class="ad-pq-t">Es para ti si…</p>
+            <ul>
+              <li>Vives en los Países Bajos o vas a mudarte, y necesitas el neerlandés para tu día a día.</li>
+              <li>Empiezas desde cero o casi, y quieres hacerlo bien desde la base.</li>
+              <li>Puedes dedicarle unas horas cada semana.</li>
+              <li>Quieres un camino guiado, con grupo y profesores, no otra app más.</li>
+            </ul>
+          </div>
+          <div class="ad-pq ad-pq-no">
+            <p class="ad-pq-t">No es para ti si…</p>
+            <ul>
+              <li>Buscas aprender sin dedicarle tiempo.</li>
+              <li>Solo tienes curiosidad y no vas a usar el idioma.</li>
+              <li>Ya tienes un A2 o más: esta formación es de cero al A1.</li>
+              <li>Lo único que te importa es encontrar la opción más barata.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Garantía y dudas rápidas. Respuestas sacadas de la FAQ de la web. -->
+      <section class="ad-bloque" aria-labelledby="ad-t-dudas">
+        <div class="ad-garantia">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          <div>
+            <p class="ad-garantia-t">15 días de garantía</p>
+            <p class="ad-garantia-x">Si entras y ves que no es para ti, te devolvemos el 100 %.</p>
+          </div>
+        </div>
+        <h2 class="ad-bl-titulo ad-dudas-titulo" id="ad-t-dudas">Dudas rápidas</h2>
+        <div class="ad-faq">
+          <details>
+            <summary>¿Tengo que pagar en la llamada?</summary>
+            <p>No. La llamada es para conocerte, ver tu nivel y tu objetivo y decirte con sinceridad si la formación encaja contigo. Si decides entrar, te explicamos cómo hacer la matrícula.</p>
+          </details>
+          <details>
+            <summary>¿Necesito conocimientos previos?</summary>
+            <p>No. La formación empieza desde el nivel 0, con explicaciones claras y comparaciones con el español, aunque nunca hayas estudiado otro idioma.</p>
+          </details>
+          <details>
+            <summary>¿Hay horarios fijos?</summary>
+            <p>La Formación A0-A1 dura 16 semanas y avanzas con tu grupo: cada módulo se abre en su fecha y hay una clase de conversación en vivo a la semana. Dentro de cada semana te organizas tú: los módulos están disponibles a cualquier hora.</p>
+          </details>
+          <details>
+            <summary>¿Y si no puedo ir a la clase en vivo?</summary>
+            <p>Son opcionales y quedan grabadas: si un día no puedes ir, la ves después.</p>
+          </details>
+        </div>
+        <a href="#ad-video" class="ad-volver">Volver al vídeo <span aria-hidden="true">↑</span></a>
+      </section>
+
     </div>
 
     <!-- Paso 1: la ventanita de datos. -->
@@ -559,6 +766,26 @@ const OPINIONES = [
   ponerPreview()
 </script>
 
+<script>
+  // Tarjetas del equipo: con ratón, la cortina sube al pasar por encima (CSS).
+  // Al tocar (móvil), se abre y se cierra; abrir una cierra las demás.
+  const tarjetas = Array.from(document.querySelectorAll<HTMLButtonElement>('.ad-eq-card'))
+  tarjetas.forEach((t) =>
+    t.addEventListener('click', () => {
+      const abrir = !t.classList.contains('abierta')
+      tarjetas.forEach((x) => x.classList.remove('abierta'))
+      if (abrir) t.classList.add('abierta')
+    })
+  )
+  const fila = document.getElementById('ad-eq-fila')
+  document.querySelectorAll<HTMLButtonElement>('[data-eq-mover]').forEach((b) =>
+    b.addEventListener('click', () => {
+      const paso = (fila?.firstElementChild as HTMLElement | null)?.offsetWidth || 260
+      fila?.scrollBy({ left: Number(b.dataset.eqMover) * (paso + 16), behavior: 'smooth' })
+    })
+  )
+</script>
+
 <style>
   .ad-page {
     min-height: 100vh; background: #1D0084; position: relative; overflow: hidden;
@@ -676,6 +903,115 @@ const OPINIONES = [
   .ad-btn:hover { background: #5eb4ff; }
   .ad-legal { margin: 12px 0 0; font-size: 12px; color: #6b7280; text-align: center; }
   .ad-legal a { color: #025dc7; text-decoration: underline; }
+
+
+  /* ── Bloques de debajo del botón (prueba 06/10) ─────────────────────── */
+  .ad-sin-compromiso-arriba { margin-top: 14px; }
+  .ad-bloque { margin-top: 72px; width: 100%; }
+  .ad-bl-eyebrow { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #4da3ff; }
+  .ad-bl-titulo { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(24px, 3.4vw, 32px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; margin: 8px 0 0; color: #fff; text-wrap: balance; }
+  .ad-bl-lead { margin: 10px auto 0; max-width: 600px; font-size: 15.5px; line-height: 1.6; color: rgba(255,255,255,0.78); }
+
+  /* 1. Qué pasa ahora */
+  .ad-tres { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; text-align: left; counter-reset: none; }
+  .ad-tres li { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 20px 18px; }
+  .ad-tres-n { width: 30px; height: 30px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center; background: #4da3ff; color: #0a1656; font-weight: 700; font-size: 14px; }
+  .ad-tres-t { margin: 12px 0 0; font-weight: 700; font-size: 16px; color: #fff; }
+  .ad-tres-x { margin: 6px 0 0; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.78); }
+
+  /* 2. El método */
+  .ad-metodo { margin-top: 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; text-align: left; }
+  .ad-met { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 16px 16px 20px; }
+  .ad-mock { height: 132px; border-radius: 12px; background: linear-gradient(160deg, #F0F5FF 0%, #ffffff 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+  .ad-mock::before { content: ''; position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; background: radial-gradient(circle, rgba(77,163,255,0.28), transparent 70%); }
+  .ad-met-t { margin: 16px 0 0; font-family: var(--font-poppins), system-ui, sans-serif; font-weight: 600; font-size: 17px; color: #fff; }
+  .ad-met-x { margin: 6px 0 0; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.78); }
+  .mk-flash { position: relative; background: #fff; border: 1px solid #DDE6F5; border-radius: 12px; padding: 12px 40px 12px 18px; display: grid; grid-template-columns: auto auto; column-gap: 6px; align-items: baseline; box-shadow: 0 8px 22px -12px rgba(29,0,132,0.35); }
+  .mk-art { font-size: 13px; color: #025dc7; font-weight: 600; }
+  .mk-pal { font-family: var(--font-poppins), system-ui, sans-serif; font-size: 24px; font-weight: 700; color: #1D0084; }
+  .mk-sep { grid-column: 1 / -1; height: 1px; background: #DDE6F5; margin: 8px 0 6px; }
+  .mk-trad { grid-column: 1 / -1; font-size: 13.5px; color: #0a1656; opacity: 0.75; }
+  .mk-audio { position: absolute; top: 8px; right: 10px; font-size: 13px; }
+  .mk-ej { position: relative; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; max-width: 230px; }
+  .mk-preg { width: 100%; text-align: center; margin: 0 0 4px; font-size: 13px; font-weight: 600; color: #1D0084; }
+  .mk-op { background: #fff; border: 1.5px solid #DDE6F5; border-radius: 10px; padding: 7px 12px; font-size: 13.5px; font-weight: 600; color: #1D0084; }
+  .mk-op.mk-ok { border-color: #22c55e; background: #f0fdf4; color: #15803d; }
+  .mk-clase { position: relative; width: 210px; background: #0a1656; border-radius: 12px; padding: 12px 14px; box-shadow: 0 8px 22px -12px rgba(29,0,132,0.5); }
+  .mk-vivo { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #9fd0ff; }
+  .mk-vivo i { width: 7px; height: 7px; border-radius: 9999px; background: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.3); }
+  .mk-caras { display: flex; margin-top: 10px; }
+  .mk-caras span { width: 30px; height: 30px; border-radius: 9999px; background: #4da3ff; color: #0a1656; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; border: 2px solid #0a1656; margin-right: -6px; }
+  .mk-caras span:nth-child(2) { background: #c7dcff; }
+  .mk-caras span:nth-child(3) { background: #ffffff; }
+  .mk-caras span:last-child { background: #14248f; color: #fff; }
+  .mk-clase-t { margin: 10px 0 0; font-size: 13px; color: #fff; font-weight: 600; }
+  .mk-prog { position: relative; width: 220px; background: #fff; border: 1px solid #DDE6F5; border-radius: 12px; padding: 12px 14px; box-shadow: 0 8px 22px -12px rgba(29,0,132,0.35); }
+  .mk-fila { margin: 0 0 8px; display: grid; grid-template-columns: 64px 1fr; align-items: center; gap: 8px; font-size: 12px; color: #0a1656; }
+  .mk-fila b { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #4da3ff var(--p), #E6EEFB var(--p)); }
+  .mk-resp { margin: 4px 0 0; font-size: 12px; font-weight: 600; color: #15803d; background: #f0fdf4; border-radius: 8px; padding: 5px 8px; display: inline-block; }
+
+  /* 3. El equipo: tarjeta con el nombre sobre el azul y cortina con la bio. */
+  .ad-pista-dedo { display: none; }
+  @media (hover: none) { .ad-pista-raton { display: none; } .ad-pista-dedo { display: inline; } }
+  .ad-eq-marco { position: relative; margin-top: 26px; }
+  .ad-eq-fila { list-style: none; margin: 0; padding: 4px 2px 10px; display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; text-align: left; }
+  .ad-eq-fila::-webkit-scrollbar { display: none; }
+  .ad-eq-fila li { flex: 0 0 calc((100% - 48px) / 4); min-width: 200px; scroll-snap-align: start; }
+  .ad-eq-card { position: relative; display: block; width: 100%; aspect-ratio: 3 / 4; padding: 0; border: 0; border-radius: 14px; overflow: hidden; cursor: pointer; font-family: inherit; text-align: left; color: #fff;
+    background: radial-gradient(circle at 70% 20%, rgba(77,163,255,0.35), transparent 60%), linear-gradient(170deg, #2b3cb0 0%, #14248f 55%, #0a1656 100%); }
+  .ad-eq-foto { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .ad-eq-foto img { width: 100%; height: 100%; object-fit: cover; }
+  .ad-eq-ini { font-family: var(--font-poppins), system-ui, sans-serif; font-size: 58px; font-weight: 700; color: rgba(255,255,255,0.22); letter-spacing: -0.02em; margin-bottom: 40px; }
+  /* El azul de abajo, sobre el que va el nombre (como en la referencia). */
+  .ad-eq-nombre { position: absolute; left: 0; right: 0; bottom: 0; padding: 70px 16px 16px; background: linear-gradient(180deg, transparent 0%, rgba(11,109,240,0.55) 45%, rgba(37,123,255,0.95) 100%); display: flex; flex-direction: column; gap: 2px; }
+  .ad-eq-nombre strong { font-family: var(--font-poppins), system-ui, sans-serif; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+  .ad-eq-nombre span { font-size: 13px; color: rgba(255,255,255,0.88); }
+  /* La cortina: sube desde abajo y tapa la tarjeta. */
+  .ad-eq-bio { position: absolute; inset: 0; background: #E3ECFF; color: #0a1656; padding: 20px 18px; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; line-height: 1.55;
+    transform: translateY(101%); transition: transform .45s cubic-bezier(.2,.8,.2,1); }
+  .ad-eq-bio :global(strong) { color: #1D0084; font-weight: 700; }
+  .ad-eq-bio-nombre { font-family: var(--font-poppins), system-ui, sans-serif; font-weight: 700; font-size: 16px; color: #1D0084; }
+  @media (hover: hover) { .ad-eq-card:hover .ad-eq-bio { transform: translateY(0); } }
+  .ad-eq-card.abierta .ad-eq-bio, .ad-eq-card:focus-visible .ad-eq-bio { transform: translateY(0); }
+  .ad-eq-card:focus-visible { outline: 2px solid #4da3ff; outline-offset: 3px; }
+  .ad-eq-flecha { display: none; position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); background: rgba(10,22,86,0.85); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; z-index: 2; }
+  .ad-eq-izq { left: -20px; } .ad-eq-der { right: -20px; }
+
+  /* 4. Para quién es */
+  .ad-paraquien { margin-top: 26px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; text-align: left; }
+  .ad-pq { border-radius: 16px; padding: 20px 20px 18px; }
+  .ad-pq-si { background: rgba(77,163,255,0.12); border: 1px solid rgba(77,163,255,0.4); }
+  .ad-pq-no { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); }
+  .ad-pq-t { margin: 0 0 10px; font-family: var(--font-poppins), system-ui, sans-serif; font-weight: 600; font-size: 17px; color: #fff; }
+  .ad-pq ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+  .ad-pq li { position: relative; padding-left: 26px; font-size: 14.5px; line-height: 1.5; color: rgba(255,255,255,0.86); }
+  .ad-pq-si li::before { content: '✓'; position: absolute; left: 0; top: 0; color: #4da3ff; font-weight: 700; }
+  .ad-pq-no li::before { content: '×'; position: absolute; left: 2px; top: -2px; color: rgba(255,255,255,0.5); font-size: 18px; }
+
+  /* 5. Garantía y dudas */
+  .ad-garantia { display: flex; align-items: center; gap: 16px; text-align: left; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 18px 20px; max-width: 620px; margin: 0 auto; }
+  .ad-garantia svg { color: #4da3ff; flex-shrink: 0; }
+  .ad-garantia-t { margin: 0; font-family: var(--font-poppins), system-ui, sans-serif; font-weight: 600; font-size: 17px; color: #fff; }
+  .ad-garantia-x { margin: 2px 0 0; font-size: 14.5px; color: rgba(255,255,255,0.8); }
+  .ad-dudas-titulo { margin-top: 48px; }
+  .ad-faq { margin: 20px auto 0; max-width: 680px; text-align: left; display: flex; flex-direction: column; gap: 10px; }
+  .ad-faq details { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 0 18px; }
+  .ad-faq summary { cursor: pointer; list-style: none; padding: 15px 0; font-weight: 600; font-size: 15.5px; color: #fff; display: flex; justify-content: space-between; gap: 12px; }
+  .ad-faq summary::-webkit-details-marker { display: none; }
+  .ad-faq summary::after { content: '+'; color: #4da3ff; font-size: 20px; line-height: 1; }
+  .ad-faq details[open] summary::after { content: '−'; }
+  .ad-faq details p { margin: 0 0 16px; font-size: 14.5px; line-height: 1.6; color: rgba(255,255,255,0.8); }
+  .ad-volver { display: inline-flex; align-items: center; gap: 8px; margin-top: 32px; padding: 14px 24px; border-radius: 12px; background: #4da3ff; color: #0a1656; font-weight: 700; font-size: 15.5px; text-decoration: none; }
+  .ad-volver:hover { background: #5eb4ff; }
+
+  @media (min-width: 900px) { .ad-eq-flecha { display: none; } }
+  @media (max-width: 899px) and (hover: hover) { .ad-eq-flecha { display: inline-flex; align-items: center; justify-content: center; } }
+  @media (max-width: 760px) {
+    .ad-bloque { margin-top: 56px; }
+    .ad-tres, .ad-metodo, .ad-paraquien { grid-template-columns: 1fr; }
+    /* En el móvil se desliza: una tarjeta y media a la vista. */
+    .ad-eq-fila li { flex-basis: 68%; min-width: 0; }
+  }
 
   @media (max-width: 640px) {
     .ad-page { padding: 28px 16px 72px; }
