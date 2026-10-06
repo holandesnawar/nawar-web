@@ -39,9 +39,27 @@ const paso1Ads = {
   icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
 }
 
-interface Props { ads?: boolean }
-const { ads = false } = Astro.props
-const losPasos = ads ? [paso1Ads, ...pasos.slice(1)] : pasos
+/* Se puede reutilizar con otros pasos y otra cabecera (06/10: el proceso de
+   admisión lo usa como «El camino»). Sin estas propiedades sale igual que
+   siempre en las landings. */
+interface Paso { num: string; title: string; desc: string; icon: string }
+interface Props {
+  ads?: boolean
+  pasos?: Paso[]
+  badge?: string
+  titulo?: string
+  acento?: string
+  sub?: string
+}
+const {
+  ads = false,
+  pasos: pasosPropios,
+  badge = 'El método, paso a paso',
+  titulo = 'Así funciona',
+  acento = 'Holandés Nawar',
+  sub = 'Desde que entras hasta que hablas. Un sistema que te lleva de la mano de A0 a A1.',
+} = Astro.props
+const losPasos = pasosPropios ?? (ads ? [paso1Ads, ...pasos.slice(1)] : pasos)
 ---
 <div class="mf-wrapper">
   <div class="mf-outer" data-navbar="light">
@@ -53,10 +71,10 @@ const losPasos = ads ? [paso1Ads, ...pasos.slice(1)] : pasos
         <div class="mf-header sr">
           <span class="badge-light">
             <svg class="check-icon" fill="none" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            El método, paso a paso
+            {badge}
           </span>
-          <h2 class="mf-title">Así funciona <span class="mf-accent">Holandés Nawar</span></h2>
-          <p class="mf-sub">Desde que entras hasta que hablas. Un sistema que te lleva de la mano de A0 a A1.</p>
+          <h2 class="mf-title">{titulo} <span class="mf-accent">{acento}</span></h2>
+          <p class="mf-sub">{sub}</p>
         </div>
 
         <div class="mf-layout">
