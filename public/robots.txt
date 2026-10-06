@@ -17,6 +17,8 @@ Disallow: /ebook-a0-a1/
 Disallow: /formacion-
 # El proceso de admisión (embudo nuevo, 02/10): solo por enlace.
 Disallow: /proceso-de-admision
+# El formulario de llamada solo, sin vídeo (06/10): solo por enlace.
+Disallow: /proceso-agendar
 # Páginas de pruebas (04/10): solo para mirar, nunca en Google.
 Disallow: /v4/
 

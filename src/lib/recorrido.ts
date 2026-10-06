@@ -26,7 +26,9 @@ const TOPE = 12
 
 /** Las páginas que dicen algo del producto, y qué enseña cada una. */
 const PAGINAS: { prueba: RegExp; marca: string }[] = [
-  { prueba: /^\/agendar\/?$/, marca: 'agendar' },
+  // /proceso-agendar: el formulario de llamada solo, sin vídeo (06/10). /agendar ya
+  // lleva al proceso de admisión.
+  { prueba: /^\/(proceso-)?agendar\/?$/, marca: 'agendar' },
   // El proceso de admisión (02/10): el vídeo y, aparte, las preguntas.
   { prueba: /^\/proceso-de-admision\/paso-3\/?$/, marca: 'admision-preguntas' },
   { prueba: /^\/proceso-de-admision\/?$/, marca: 'admision' },
