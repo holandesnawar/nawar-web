@@ -1,7 +1,7 @@
 # Anuncio UGC · Formación Nawar (Meta / TikTok Ads, 9:16) — proyecto HyperFrames
 
-Anuncio de 50 s en vertical (1080×1920). **v2:** la chica habla siempre a cámara (solo la toma de frente, en un
-plano continuo y sin cortes en su voz) y, cuando explica algo, la imagen corta a un gráfico a pantalla completa con
+Anuncio de 50 s en vertical (1080×1920). **v2:** la chica habla a cámara con la toma de frente y, en «En Nawar te
+enseñamos neerlandés», cambia a la cámara de lado y, cuando explica algo, la imagen corta a un gráfico a pantalla completa con
 el diseño del VSL (fondo PAPER para el problema, NAWAR BLUE para la solución, producto real en ventana o en móvil)
 y vuelve a ella. Subtítulos blancos y limpios, zooms de énfasis sobre su cara y cierre con ella a cámara y un botón «haz clic» hacia el formulario.
 

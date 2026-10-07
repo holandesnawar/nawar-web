@@ -24,7 +24,7 @@ un empuje lento y un golpe de zoom en la palabra clave. El origen del zoom es su
 | 0:05–0:08 | ins-01 · PAPER | Tarjeta «TU FRASE»: *Ik wil graag een afspraak maken.* se escribe (practicas la frase) → llamada «Huisarts · Llamando…» con tono → «En llamada», burbuja *Huisartsenpraktijk, goedemorgen!* → tu respuesta *Ik… eh…* con el cursor parado y sello rojo «BLOQUEO». |
 | 0:08–0:14 | Chica | «…y le pides a alguien más que lo haga por ti. Algo que en tu país lo hacías sin pensar. Eso no se arregla con el tiempo,» Reencuadre en «Algo», golpe en «sin pensar». |
 | 0:14–0:17 | ins-02 · PAPER | Conversación: *Wat is uw geboortedatum?* (NL) → «TE TRADUCEN»: *Te pide tu fecha de nacimiento.* → *Oh, let's just speak English!* (EN) con el eco apilado del VSL. |
-| 0:17–0:19 | Chica | «En Nawar te enseñamos neerlandés» — golpe en «Nawar». |
+| 0:17–0:19 | Chica (ángulo lateral) | «En Nawar te enseñamos neerlandés» con la toma A, la cámara de lado (imagen y voz), y empuje lento. El cambio de cámara es el acento. |
 | 0:19–0:24 | ins-03 · BLUE | Paul en el vídeo de la lección (el mismo que el VSL usa para «vídeos del curso»; la clase en directo usa el otro) en una tarjeta grande con «Profesores nativos holandeses» y «Expertos en español» → la tarjeta vuela a su sitio dentro del reproductor (mismo fotograma) y la ventana muestra la lección entera, «LECCIONES GRABADAS»; en «cuando tú puedas», el móvil con el curso. |
 | 0:24–0:26 | Chica | «con ejercicios de verdad» |
 | 0:26–0:30 | ins-04 · BLUE | «Ejercicios / de verdad» y un mazo de tarjetas con margen propio: lectura (1.4 Lezen), completa la frase (vídeo real) y escucha (De familiefoto's); píldoras Leer · Escribir · Escuchar con ✓ (cada píldora entra a la vez que su captura); «A B C D · TIPO TEST» tachado. |

@@ -9,12 +9,11 @@ VSL=../vsl-formacion-nawar
 RAW=.raw && mkdir -p "$RAW" assets/video assets/img assets/sfx assets/fonts assets/vendor assets/audio
 
 dl() { curl -sS -L --fail --retry 3 -o "$RAW/$2" "https://drive.usercontent.google.com/download?id=$1&export=download&confirm=t"; echo "  got $2"; }
-echo "the take facing camera (Drive folder «Nawar UGC»)"
-# v2 uses only take B (she talks to camera the whole ad). Take A, the side angle, was v1's second camera:
-#   dl 1GIwAYxytwGszNvRXhA1f3plEfOMMbqoW angle-a.mov   # «Estado de pedido FO5151.mov»
-dl 1Lemr-3lvQuxxuoTdtv04Xz7iPkT8WLUq angle-b.mov   # «Estado de pedido FO5151 (1).mov»
-# HEVC → H.264 for the renderer; light grade; audio cleaned and normalised to −16 LUFS
-for t in b; do
+echo "the two takes (Drive folder «Nawar UGC»)"
+dl 1GIwAYxytwGszNvRXhA1f3plEfOMMbqoW angle-a.mov   # «Estado de pedido FO5151.mov» — side angle («En Nawar te enseñamos neerlandés»)
+dl 1Lemr-3lvQuxxuoTdtv04Xz7iPkT8WLUq angle-b.mov   # «Estado de pedido FO5151 (1).mov» — facing camera (the rest)
+# HEVC → H.264 for the renderer; light grade; audio cleaned and both takes normalised to −16 LUFS
+for t in a b; do
   ffmpeg -v error -y -i "$RAW/angle-$t.mov" \
     -vf "eq=contrast=1.06:saturation=1.10:gamma=0.98,colorbalance=rm=0.025:gm=0.0:bm=-0.025,format=yuv420p" \
     -af "highpass=f=80,afftdn=nr=10:nf=-42,loudnorm=I=-16:TP=-1.5:LRA=11" \

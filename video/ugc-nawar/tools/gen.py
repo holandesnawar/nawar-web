@@ -20,7 +20,6 @@ INS = {i["id"]: i for i in ED["inserts"]}
 WORDS = ED["words"]
 TOTAL = ED["total"]
 RATE = ED["rate"]
-FACE = (545, 900)                     # take B face centre (zoom origin)
 
 PAL = dict(BLUE="#0b6df0", INDIGO="#1D0084", NAVY="#120081", SKY="#4da3ff", RED="#E02D3C", GREEN="#16A34A",
            INK="#0C0C1E", INK2="#374151", MUTED="#5A6480", PAPER="#F5F7FF", LINE="#DDE6F5", APP="#F1F2F8")
@@ -743,22 +742,22 @@ def zooms():
     section after an insert starts at its own framing (the cut hides the change), with a slow push and a punch on a
     key word. For the outro she is framed higher (y −150) so the enrolment card sits under her face."""
     G = ED["girl"]; Z = []
-    def push(g, s0, s1, until=None):
-        Z.append((g["start"], round((until or g["end"]) - g["start"], 3), "none", {"scale": s1}, {"scale": s0, "y": 0}))
-    def punch(word, s, k=0, d=0.22, ease="power3.out"):
-        Z.append((round(at(word, k) - 0.05, 3), d, ease, {"scale": s}, None))
+    def push(g, s0, s1, until=None, sel="#zw"):
+        Z.append((g["start"], round((until or g["end"]) - g["start"], 3), "none", {"scale": s1}, {"scale": s0, "y": 0}, sel))
+    def punch(word, s, k=0, d=0.22, ease="power3.out", sel="#zw"):
+        Z.append((round(at(word, k) - 0.05, 3), d, ease, {"scale": s}, None, sel))
     def cut(word, s0, s1, until, k=0):
-        t = round(at(word, k) - 0.04, 3); Z.append((t, round(until - t, 3), "none", {"scale": s1}, {"scale": s0, "y": 0}))
+        t = round(at(word, k) - 0.04, 3); Z.append((t, round(until - t, 3), "none", {"scale": s1}, {"scale": s0, "y": 0}, "#zw"))
     g = G[0]; push(g, 1.0, 1.05, at("escucha") - 0.05); punch("escucha", 1.15); cut("seguro", 1.04, 1.07, g["end"])
     g = G[1]; push(g, 1.12, 1.15, at("algo") - 0.04); cut("algo", 1.02, 1.05, at("sin") - 0.05); punch("sin", 1.16); cut("eso", 1.06, 1.09, g["end"])
-    g = G[2]; push(g, 1.0, 1.03, at("nawar") - 0.05); punch("nawar", 1.13)
+    g = G[2]; push(g, 1.0, 1.07, sel="#zwa")      # take A, the side angle: the camera change is the accent, a slow push only
     g = G[3]; push(g, 1.14, 1.18)
     g = G[4]; push(g, 1.0, 1.04, at("cada") - 0.05); punch("cada", 1.13)
     g = G[5]; push(g, 1.16, 1.2)
     g = G[6]; push(g, 1.02, 1.05, at("estas") - 0.05); punch("estas", 1.15)
     o = ED["outro"]
-    Z.append((round(o - 0.45, 3), 0.6, "power2.inOut", {"scale": 1.15, "y": -150}, None))
-    Z.append((round(o + 0.15, 3), round(TOTAL - o - 0.15, 3), "none", {"scale": 1.19}, None))
+    Z.append((round(o - 0.45, 3), 0.6, "power2.inOut", {"scale": 1.15, "y": -150}, None, "#zw"))
+    Z.append((round(o + 0.15, 3), round(TOTAL - o - 0.15, 3), "none", {"scale": 1.19}, None, "#zw"))
     return Z
 
 
@@ -768,9 +767,6 @@ def media_len(path):
 
 
 def index(sfx_all, out_t0, out_d):
-    fx, fy = FACE; d = ED["clip_end"]
-    auto = json.dumps({"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1},
-                      {"t": round(d - 0.06, 3), "v": 1}, {"t": d, "v": 0}]}]})
     hosts = []
     for k, i in enumerate(ED["inserts"]):
         hosts.append(f'    <div id="{i["id"]}" data-composition-id="{i["id"]}" data-composition-src="compositions/{i["id"]}.html" data-start="{i["start"]}" data-duration="{i["duration"]}" data-track-index="{2 + k}" data-width="1080" data-height="1920"></div>')
@@ -784,12 +780,20 @@ def index(sfx_all, out_t0, out_d):
         auds.append(f'    <audio id="sfx{k}" src="{src}" data-start="{max(0.0, round(t, 3))}" data-duration="{dd}" data-track-index="{20 + k}" data-volume="{vol}"></audio>')
     ztl = []
     js = lambda dct: "{ " + ", ".join(f"{k}: {v}" for k, v in dct.items())
-    for (t, du, ease, to, frm) in sorted(zooms(), key=lambda z: z[0]):
+    for (t, du, ease, to, frm, sel) in sorted(zooms(), key=lambda z: z[0]):
         du = max(0.01, round(du, 3))
         if frm is not None:
-            ztl.append(f'      tl.fromTo("#zw", {js(frm)} }}, {js(to)}, duration: {du}, ease: "{ease}", immediateRender: false }}, {round(t, 3)});')
+            ztl.append(f'      tl.fromTo("{sel}", {js(frm)} }}, {js(to)}, duration: {du}, ease: "{ease}", immediateRender: false }}, {round(t, 3)});')
         else:
-            ztl.append(f'      tl.to("#zw", {js(to)}, duration: {du}, ease: "{ease}" }}, {round(t, 3)});')
+            ztl.append(f'      tl.to("{sel}", {js(to)}, duration: {du}, ease: "{ease}" }}, {round(t, 3)});')
+    # the shots: take B in #zw (origin = her face in B), take A in #zwa (origin = her face in A); 12 ms fades at each cut
+    vids = {"b": [], "a": []}
+    for sh in ED["shots"]:
+        dd = sh["duration"]
+        auto = json.dumps({"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1},
+                          {"t": round(dd - (0.06 if sh is ED["shots"][-1] else 0.012), 3), "v": 1}, {"t": dd, "v": 0}]}]})
+        vids[sh["take"]].append(f'      <video id="v{sh["n"]}" class="clip" src="assets/video/take-{sh["take"]}.mp4" data-start="{sh["start"]}" data-duration="{dd}" data-media-start="{sh["media_start"]}" data-playback-rate="{RATE}" data-track-index="{sh["n"] - 1}" playsinline data-has-audio="true" data-automation=\'{auto}\'></video>')
+    face = {sh["take"]: sh["face"] for sh in ED["shots"]}
     hold = ED["hold"]
     html = f"""<!doctype html>
 <html lang="es">
@@ -802,15 +806,18 @@ def index(sfx_all, out_t0, out_d):
       html, body {{ margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #120081; }}
       #root {{ position: relative; width: 100%; height: 100%; overflow: hidden; background: #120081; }}
       .shot {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }}
-      #zw {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; will-change: transform; }}
-      #zw video, #zw img {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
+      .zw {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; will-change: transform; }}
+      .zw video, .zw img {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
     </style>
   </head>
   <body>
     <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="{TOTAL}">
-    <div class="shot"><div id="zw" data-layout-allow-overflow style="transform-origin: {fx}px {fy}px;">
-      <video id="girl" class="clip" src="assets/video/take-{ED['take']}.mp4" data-start="0" data-duration="{d}" data-media-start="0" data-playback-rate="{RATE}" data-track-index="0" playsinline data-has-audio="true" data-automation='{auto}'></video>
-      <img id="hold" class="clip" src="assets/img/take-b-last.png" alt="" data-start="{hold['start']}" data-duration="{hold['duration']}" data-track-index="1" />
+    <div class="shot"><div id="zw" class="zw" data-layout-allow-overflow style="transform-origin: {face['b'][0]}px {face['b'][1]}px;">
+{chr(10).join(vids['b'])}
+      <img id="hold" class="clip" src="assets/img/take-b-last.png" alt="" data-start="{hold['start']}" data-duration="{hold['duration']}" data-track-index="{len(ED['shots'])}" />
+    </div></div>
+    <div class="shot"><div id="zwa" class="zw" data-layout-allow-overflow style="transform-origin: {face['a'][0]}px {face['a'][1]}px;">
+{chr(10).join(vids['a'])}
     </div></div>
 {chr(10).join(hosts)}
 {chr(10).join(auds)}
