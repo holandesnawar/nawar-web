@@ -1,0 +1,82 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+    .g05-card { position: absolute; background: #FFFFFF; border-radius: 34px; overflow: hidden;
+      box-shadow: 0 30px 70px rgba(8,4,48,0.40), 0 6px 18px rgba(8,4,48,0.22); }
+    .g05-chip { position: absolute; display: flex; align-items: center; gap: 12px; height: 54px; padding: 0 24px; border-radius: 999px;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; letter-spacing: 0.06em; white-space: nowrap; }
+    .g05-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .g05-blue { background: radial-gradient(ellipse 90% 70% at 50% 40%, #0a5fd6 0%, #1b2bb0 46%, #120081 100%); }
+    .g05-night { background: radial-gradient(ellipse 90% 60% at 50% 28%, #21308f 0%, #0d0b38 62%, #07051f 100%); }
+    .g05-dots { position: absolute; left: -40px; top: -40px; width: 1160px; height: 2000px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.10) 2.2px, transparent 2.6px); background-size: 38px 38px; }
+    .g05-flag { position: relative; width: 58px; height: 40px; border-radius: 8px; overflow: hidden; flex: 0 0 58px;
+      box-shadow: inset 0 0 0 2px rgba(12,12,30,0.10); background: linear-gradient(#AE1C27 0 33.4%, #FFFFFF 33.4% 66.6%, #21468C 66.6% 100%); }
+    .g05-bub { position: absolute; padding: 22px 30px; border-radius: 30px; font-weight: 600; font-size: 38px; line-height: 1.25; }
+    .g05-bl { background: #FFFFFF; color: #0C0C1E; border-bottom-left-radius: 10px; }
+    .g05-br { background: #0b6df0; color: #FFFFFF; border-bottom-right-radius: 10px; }
+    .g05-w { display: inline-block; }
+
+    #g05-brand { opacity: 0; }
+    #g05-glow { position: absolute; left: 140px; top: 360px; width: 800px; height: 800px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(77,163,255,0.45) 0%, rgba(77,163,255,0) 65%); }
+    #g05-logo { position: absolute; left: 190px; top: 560px; width: 700px; height: 250px; }
+    #g05-l1 { position: absolute; left: 0; top: 866px; width: 1080px; text-align: center; font-weight: 700; font-size: 50px; color: rgba(255,255,255,0.82); }
+    #g05-l2 { position: absolute; left: 0; top: 930px; width: 1080px; text-align: center; font-weight: 900; font-size: 96px; letter-spacing: -0.02em; color: #FFFFFF; }
+    #g05-card { left: 70px; top: 240px; width: 940px; height: 340px; }
+    #g05-tile { position: absolute; left: 30px; top: 30px; width: 280px; height: 280px; border-radius: 24px; overflow: hidden; background: #dfe3ee; }
+    #g05-v { position: absolute; left: -439px; top: -28px; width: 1401px; height: 556px; object-fit: fill; }   /* Paul's webcam (src x 742–1326) */
+    #g05-live { left: 46px; top: 236px; height: 40px; padding: 0 14px; font-size: 18px; background: rgba(12,12,30,0.72); color: #FFFFFF; }
+    #g05-k { position: absolute; left: 350px; top: 44px; display: flex; align-items: center; gap: 14px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; letter-spacing: 0.12em; color: #0b6df0; }
+    #g05-h { position: absolute; left: 350px; top: 92px; font-weight: 900; font-size: 66px; line-height: 1.05; color: #1D0084; white-space: nowrap; }
+    #g05-s { position: absolute; left: 350px; top: 192px; font-weight: 700; font-size: 44px; line-height: 1.2; color: #0C0C1E; white-space: nowrap; }
+    #g05-es { position: relative; display: inline-block; padding: 0 10px; }
+    #g05-esbg { position: absolute; left: 0; top: 4px; width: 100%; height: 56px; border-radius: 12px; background: #0b6df0; transform-origin: 0% 50%; }
+    #g05-est { position: relative; }
+
+  </style>
+  <div id="root" data-composition-id="gfx-05" data-width="1080" data-height="1920" data-duration="4.829">
+    <div id="g05-brand" class="g05-full g05-blue">
+      <div class="g05-dots"></div><div id="g05-glow"></div>
+      <img id="g05-logo" src="assets/img/logo-nawar.png" alt="Nawar" />
+      <div id="g05-l1">te enseñamos</div>
+      <div id="g05-l2">neerlandés</div>
+    </div>
+    <div id="g05-card" class="g05-card">
+      <div id="g05-tile"><video id="g05-v" class="clip" src="assets/video/paul-clase-1.mp4" muted playsinline data-start="2.061" data-duration="2.768" data-media-start="1" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video></div>
+      <div id="g05-live" class="g05-chip">PROFE PAUL</div>
+      <div id="g05-k"><div class="g05-flag"></div><div>PROFESORES NATIVOS</div></div>
+      <div id="g05-h">Holandeses</div>
+      <div id="g05-s">expertos en <span id="g05-es"><span id="g05-esbg"></span><span id="g05-est">español</span></span></div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("g05-" + id);
+
+      // brand slam (full screen) on «Nawar»
+      tl.fromTo(q("brand"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, 0.333 - 0.16);
+      tl.fromTo(q("glow"), { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: "power2.out" }, 0.333 - 0.1);
+      tl.fromTo(q("logo"), { scale: 1.35, opacity: 0, filter: "blur(14px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.34, ease: "expo.out" }, 0.333 - 0.04);
+      tl.fromTo(q("l1"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 0.619 - 0.04);
+      tl.fromTo(q("l2"), { opacity: 0, y: 40, scale: 1.08 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power3.out" }, 1.152 - 0.04);
+      tl.fromTo(q("brand"), { opacity: 1, scale: 1 }, { opacity: 0, scale: 1.06, duration: 0.18, ease: "power2.in", immediateRender: false }, 1.685 - 0.18);
+      // the teachers
+      tl.fromTo(q("card"), { y: -40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, 2.181 - 0.1);
+      tl.fromTo(q("h"), { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.28, ease: "power3.out" }, 2.952 - 0.04);
+      tl.fromTo(q("s"), { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.28, ease: "power3.out" }, 3.581 - 0.04);
+      tl.fromTo(q("esbg"), { scaleX: 0 }, { scaleX: 1, duration: 0.24, ease: "power3.out" }, 4.124 - 0.06);
+      tl.fromTo(q("est"), { color: "#0C0C1E" }, { color: "#FFFFFF", duration: 0.1, ease: "none" }, 4.124 - 0.02);
+
+      window.__timelines["gfx-05"] = tl;
+    })();
+  </script>
+</template>

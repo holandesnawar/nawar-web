@@ -1,0 +1,77 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+    .g03-card { position: absolute; background: #FFFFFF; border-radius: 34px; overflow: hidden;
+      box-shadow: 0 30px 70px rgba(8,4,48,0.40), 0 6px 18px rgba(8,4,48,0.22); }
+    .g03-chip { position: absolute; display: flex; align-items: center; gap: 12px; height: 54px; padding: 0 24px; border-radius: 999px;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; letter-spacing: 0.06em; white-space: nowrap; }
+    .g03-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .g03-blue { background: radial-gradient(ellipse 90% 70% at 50% 40%, #0a5fd6 0%, #1b2bb0 46%, #120081 100%); }
+    .g03-night { background: radial-gradient(ellipse 90% 60% at 50% 28%, #21308f 0%, #0d0b38 62%, #07051f 100%); }
+    .g03-dots { position: absolute; left: -40px; top: -40px; width: 1160px; height: 2000px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.10) 2.2px, transparent 2.6px); background-size: 38px 38px; }
+    .g03-flag { position: relative; width: 58px; height: 40px; border-radius: 8px; overflow: hidden; flex: 0 0 58px;
+      box-shadow: inset 0 0 0 2px rgba(12,12,30,0.10); background: linear-gradient(#AE1C27 0 33.4%, #FFFFFF 33.4% 66.6%, #21468C 66.6% 100%); }
+    .g03-bub { position: absolute; padding: 22px 30px; border-radius: 30px; font-weight: 600; font-size: 38px; line-height: 1.25; }
+    .g03-bl { background: #FFFFFF; color: #0C0C1E; border-bottom-left-radius: 10px; }
+    .g03-br { background: #0b6df0; color: #FFFFFF; border-bottom-right-radius: 10px; }
+    .g03-w { display: inline-block; }
+
+    #g03-card { left: 70px; top: 248px; width: 940px; height: 300px; }
+    .g03-av { position: absolute; top: 46px; width: 150px; height: 150px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 46px; color: #FFFFFF; }
+    #g03-me { left: 110px; background: #0b6df0; }
+    #g03-other { left: 680px; background: #9AA3BC; }
+    .g03-nm { position: absolute; top: 214px; width: 260px; text-align: center; font-family: "Inter", sans-serif; font-weight: 700; font-size: 28px; color: #5A6480; }
+    #g03-ph { position: absolute; left: 140px; top: 70px; width: 96px; height: 96px; }
+    #g03-arr { position: absolute; left: 290px; top: 110px; width: 360px; height: 26px; }
+    #g03-fav { left: 610px; top: 6px; background: #F4F6FF; color: #1D0084; }
+    #g03-s2 { position: absolute; left: 0; top: 0; width: 940px; height: 300px; background: #FFFFFF; opacity: 0; }
+    #g03-k { position: absolute; left: 50px; top: 44px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.12em; color: #0b6df0; }
+    #g03-big { position: absolute; left: 50px; top: 92px; font-weight: 900; font-size: 64px; line-height: 1.05; color: #1D0084; white-space: nowrap; }
+    #g03-ok { position: absolute; left: 50px; top: 186px; display: flex; align-items: center; gap: 18px; font-weight: 900; font-size: 60px; color: #16A34A; }
+    #g03-ok svg { width: 74px; height: 74px; }
+
+  </style>
+  <div id="root" data-composition-id="gfx-03" data-width="1080" data-height="1920" data-duration="4.857">
+    <div id="g03-card" class="g03-card">
+      <div id="g03-s1">
+      <div id="g03-me" class="g03-av">Tú</div><div class="g03-nm" style="left: 55px;">Tú</div>
+      <div id="g03-other" class="g03-av">?</div><div class="g03-nm" style="left: 625px;">Otra persona</div>
+      <svg id="g03-arr" viewBox="0 0 360 26"><path id="g03-arrp" d="M4 13 H340 M322 3 L344 13 L322 23" fill="none" stroke="#DDE6F5" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" pathLength="1"/></svg>
+      <div id="g03-ph"><svg viewBox="0 0 64 64"><path d="M20 6 h24 a6 6 0 0 1 6 6 v40 a6 6 0 0 1 -6 6 h-24 a6 6 0 0 1 -6 -6 v-40 a6 6 0 0 1 6 -6 z" fill="#1D0084"/><rect x="19" y="13" width="26" height="36" rx="3" fill="#FFFFFF"/><circle cx="32" cy="54" r="2.6" fill="#FFFFFF"/></svg></div>
+      <div id="g03-fav" class="g03-chip">TE HACE EL FAVOR</div>
+      </div>
+      <div id="g03-s2">
+        <div id="g03-k">EN TU PAÍS</div>
+        <div id="g03-big">Llamar al médico</div>
+        <div id="g03-ok"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>¡Sin pensarlo!</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("g03-" + id);
+
+      tl.fromTo(q("card"), { y: -40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, 0.571 - 0.08);
+      q("arrp").setAttribute("stroke-dashoffset", "1");
+      tl.fromTo(q("arrp"), { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.45, ease: "power2.out" }, 0.943 - 0.05);
+      tl.fromTo(q("ph"), { x: 0, rotation: 0 }, { x: 570, rotation: 14, duration: 0.6, ease: "power2.inOut" }, 0.943);
+      tl.fromTo(q("fav"), { opacity: 0, y: 14, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(1.8)" }, 1.657 - 0.04);
+      // «Algo que en tu país…»: the second state
+      tl.fromTo(q("s2"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 2.562 - 0.06);
+      tl.set(q("s1"), { opacity: 0 }, 2.562 + 0.26);
+      tl.fromTo(q("ok"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.2)" }, 4.01 - 0.04);
+
+      window.__timelines["gfx-03"] = tl;
+    })();
+  </script>
+</template>

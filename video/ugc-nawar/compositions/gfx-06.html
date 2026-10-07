@@ -1,0 +1,61 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+    .g06-card { position: absolute; background: #FFFFFF; border-radius: 34px; overflow: hidden;
+      box-shadow: 0 30px 70px rgba(8,4,48,0.40), 0 6px 18px rgba(8,4,48,0.22); }
+    .g06-chip { position: absolute; display: flex; align-items: center; gap: 12px; height: 54px; padding: 0 24px; border-radius: 999px;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; letter-spacing: 0.06em; white-space: nowrap; }
+    .g06-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .g06-blue { background: radial-gradient(ellipse 90% 70% at 50% 40%, #0a5fd6 0%, #1b2bb0 46%, #120081 100%); }
+    .g06-night { background: radial-gradient(ellipse 90% 60% at 50% 28%, #21308f 0%, #0d0b38 62%, #07051f 100%); }
+    .g06-dots { position: absolute; left: -40px; top: -40px; width: 1160px; height: 2000px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.10) 2.2px, transparent 2.6px); background-size: 38px 38px; }
+    .g06-flag { position: relative; width: 58px; height: 40px; border-radius: 8px; overflow: hidden; flex: 0 0 58px;
+      box-shadow: inset 0 0 0 2px rgba(12,12,30,0.10); background: linear-gradient(#AE1C27 0 33.4%, #FFFFFF 33.4% 66.6%, #21468C 66.6% 100%); }
+    .g06-bub { position: absolute; padding: 22px 30px; border-radius: 30px; font-weight: 600; font-size: 38px; line-height: 1.25; }
+    .g06-bl { background: #FFFFFF; color: #0C0C1E; border-bottom-left-radius: 10px; }
+    .g06-br { background: #0b6df0; color: #FFFFFF; border-bottom-right-radius: 10px; }
+    .g06-w { display: inline-block; }
+
+    #g06-card { left: 90px; top: 236px; width: 900px; height: 500px; background: #0d0b38; }
+    #g06-v { position: absolute; left: -151px; top: -4px; width: 1222px; height: 624px; object-fit: fill; }   /* the lesson slide incl. his webcam */
+    #g06-chip { left: 26px; top: 392px; background: #FFFFFF; color: #0b6df0; font-weight: 800; }
+    #g06-chip svg { width: 26px; height: 26px; }
+    #g06-bar { position: absolute; left: 26px; top: 470px; width: 848px; height: 10px; border-radius: 5px; background: rgba(255,255,255,0.3); }
+    #g06-fill { position: absolute; left: 0; top: 0; width: 848px; height: 10px; border-radius: 5px; background: #4da3ff; transform-origin: 0% 50%; }
+    #g06-times { position: absolute; left: 90px; top: 700px; width: 900px; display: flex; justify-content: center; gap: 18px; }
+    .g06-t { position: relative; display: flex; align-items: center; gap: 12px; height: 72px; padding: 0 26px; border-radius: 999px; background: #FFFFFF;
+      box-shadow: 0 14px 34px rgba(8,4,48,0.35); font-weight: 800; font-size: 34px; color: #1D0084; }
+    .g06-t svg { width: 36px; height: 36px; }
+
+  </style>
+  <div id="root" data-composition-id="gfx-06" data-width="1080" data-height="1920" data-duration="2.781">
+    <div id="g06-card" class="g06-card">
+      <video id="g06-v" class="clip" src="assets/video/paul-clase-2.mp4" muted playsinline data-start="0.414" data-duration="2.367" data-media-start="1.5" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video>
+      <div id="g06-chip" class="g06-chip"><svg viewBox="0 0 32 32"><path d="M10 6 L26 16 L10 26 Z" fill="#0b6df0"/></svg>LECCIÓN GRABADA</div>
+      <div id="g06-bar"><div id="g06-fill"></div></div>
+    </div>
+    <div id="g06-times"><div id="g06-t1" class="g06-t"><svg viewBox="0 0 48 48"><path d="M10 34 A14 14 0 0 1 38 34 Z" fill="#0b6df0"/><path d="M4 40 H44" stroke="#0b6df0" stroke-width="4" stroke-linecap="round"/></svg>07:30</div><div id="g06-t2" class="g06-t"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="8" fill="#0b6df0"/><g stroke="#0b6df0" stroke-width="4" stroke-linecap="round"><path d="M24 4 V10 M24 38 V44 M4 24 H10 M38 24 H44 M10 10 L14 14 M34 34 L38 38 M38 10 L34 14 M14 34 L10 38"/></g></svg>14:00</div><div id="g06-t3" class="g06-t"><svg viewBox="0 0 48 48"><path d="M30 6 A18 18 0 1 0 42 32 A14 14 0 0 1 30 6 Z" fill="#0b6df0"/></svg>23:15</div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("g06-" + id);
+
+      tl.fromTo(q("card"), { y: -50, opacity: 0, scale: 0.95 }, { y: 0, opacity: 1, scale: 1, duration: 0.36, ease: "power3.out" }, 0.514 - 0.1);
+      tl.fromTo(q("fill"), { scaleX: 0.18 }, { scaleX: 0.46, duration: 2.781 - 0.514, ease: "none" }, 0.514);
+      [["t1", 1.886], ["t2", 2.238], ["t3", 2.39]].forEach(([id, t]) => {
+        tl.fromTo(q(id), { opacity: 0, y: 26, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, t - 0.06);
+      });
+
+      window.__timelines["gfx-06"] = tl;
+    })();
+  </script>
+</template>

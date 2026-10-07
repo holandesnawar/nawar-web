@@ -1,0 +1,115 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+    .g02-card { position: absolute; background: #FFFFFF; border-radius: 34px; overflow: hidden;
+      box-shadow: 0 30px 70px rgba(8,4,48,0.40), 0 6px 18px rgba(8,4,48,0.22); }
+    .g02-chip { position: absolute; display: flex; align-items: center; gap: 12px; height: 54px; padding: 0 24px; border-radius: 999px;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; letter-spacing: 0.06em; white-space: nowrap; }
+    .g02-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .g02-blue { background: radial-gradient(ellipse 90% 70% at 50% 40%, #0a5fd6 0%, #1b2bb0 46%, #120081 100%); }
+    .g02-night { background: radial-gradient(ellipse 90% 60% at 50% 28%, #21308f 0%, #0d0b38 62%, #07051f 100%); }
+    .g02-dots { position: absolute; left: -40px; top: -40px; width: 1160px; height: 2000px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.10) 2.2px, transparent 2.6px); background-size: 38px 38px; }
+    .g02-flag { position: relative; width: 58px; height: 40px; border-radius: 8px; overflow: hidden; flex: 0 0 58px;
+      box-shadow: inset 0 0 0 2px rgba(12,12,30,0.10); background: linear-gradient(#AE1C27 0 33.4%, #FFFFFF 33.4% 66.6%, #21468C 66.6% 100%); }
+    .g02-bub { position: absolute; padding: 22px 30px; border-radius: 30px; font-weight: 600; font-size: 38px; line-height: 1.25; }
+    .g02-bl { background: #FFFFFF; color: #0C0C1E; border-bottom-left-radius: 10px; }
+    .g02-br { background: #0b6df0; color: #FFFFFF; border-bottom-right-radius: 10px; }
+    .g02-w { display: inline-block; }
+
+    #g02-note { left: 70px; top: 248px; width: 940px; height: 300px; }
+    #g02-lab { position: absolute; left: 44px; top: 38px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; letter-spacing: 0.12em; color: #0b6df0; }
+    #g02-typed { position: absolute; left: 44px; top: 92px; width: 850px; font-weight: 700; font-size: 50px; line-height: 1.22; color: #0C0C1E; }
+    #g02-call { opacity: 0; }
+    #g02-av { position: absolute; left: 440px; top: 330px; width: 200px; height: 200px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); box-shadow: 0 0 0 14px rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; }
+    #g02-av svg { width: 120px; height: 120px; }
+    #g02-ring { position: absolute; left: 440px; top: 330px; width: 200px; height: 200px; border-radius: 50%; border: 6px solid rgba(255,255,255,0.35); }
+    #g02-name { position: absolute; left: 0; top: 572px; width: 1080px; text-align: center; font-weight: 800; font-size: 68px; line-height: 1.1; color: #FFFFFF; }
+    #g02-org { position: absolute; left: 0; top: 676px; width: 1080px; text-align: center; font-family: "Inter", sans-serif; font-weight: 600; font-size: 32px; color: rgba(255,255,255,0.72); }
+    #g02-st1, #g02-st2 { position: absolute; left: 0; top: 736px; width: 1080px; text-align: center; font-family: "Inter", sans-serif; font-weight: 600; font-size: 32px; }
+    #g02-st1 { color: rgba(255,255,255,0.82); }
+    #g02-st2 { color: #5fe08e; opacity: 0; }
+    #g02-who { position: absolute; left: 70px; top: 812px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+    #g02-b1 { left: 70px; top: 854px; width: 820px; }
+    #g02-b2w { position: absolute; right: 70px; top: 1048px; width: 520px; height: 112px; }
+    #g02-b2, #g02-b2r, #g02-b2c { position: absolute; right: 0; top: 0; font-weight: 800; font-size: 44px; }
+    #g02-b2r { background: #E02D3C; opacity: 0; }
+    #g02-b2c { background: #4da3ff; opacity: 0; }
+    #g02-tag { right: 70px; top: 980px; background: #E02D3C; color: #FFFFFF; font-weight: 800; letter-spacing: 0.14em; }
+    .g02-btn { position: absolute; top: 1560px; width: 132px; height: 132px; border-radius: 50%; background: rgba(255,255,255,0.14); }
+    #g02-hang { background: #E02D3C; }
+
+  </style>
+  <div id="root" data-composition-id="gfx-02" data-width="1080" data-height="1920" data-duration="4.524">
+    <div id="g02-note" class="g02-card">
+      <div id="g02-lab">TU FRASE, ENSAYADA</div>
+      <div id="g02-typed"></div>
+    </div>
+    <div id="g02-call" class="g02-full g02-night">
+      <div class="g02-dots"></div>
+      <div id="g02-ring"></div>
+      <div id="g02-av"><svg viewBox="0 0 120 120"><g fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M34 18 V48 A23 23 0 0 0 80 48 V18"/><path d="M57 71 V84 A16 16 0 0 0 89 84 V77"/><circle cx="89" cy="64" r="12"/></g></svg></div>
+      <div id="g02-name">Huisarts</div>
+      <div id="g02-org">Huisartsenpraktijk</div>
+      <div id="g02-st1">Bellen…</div>
+      <div id="g02-st2">● 00:01</div>
+      <div id="g02-who">RECEPCIÓN</div>
+      <div id="g02-b1" class="g02-bub g02-bl">Goedemorgen, huisartsenpraktijk! Waarmee kan ik u helpen?</div>
+      <div id="g02-tag" class="g02-chip">BLOQUEO</div>
+      <div id="g02-b2w"><div id="g02-b2r" class="g02-bub">Eh… ik… ehm…</div><div id="g02-b2c" class="g02-bub">Eh… ik… ehm…</div><div id="g02-b2" class="g02-bub g02-br">Eh… ik… ehm…</div></div>
+      <div class="g02-btn" style="left: 196px;"></div><div class="g02-btn" style="left: 474px;"></div><div id="g02-hang" class="g02-btn" style="left: 752px;"></div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("g02-" + id);
+
+      // the rehearsed line (discrete-text-sequence)
+      tl.fromTo(q("note"), { y: -40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, 1.381 - 0.06);
+
+      (() => {
+        const el = q("typed"), full = "Goedemorgen, ik wil graag een afspraak maken…"; const typ_typed = { n: 0 };
+        el.textContent = "";
+        tl.fromTo(typ_typed, { n: 0 }, { n: full.length, duration: 1.101, ease: "none", immediateRender: false,
+          onUpdate: () => { el.textContent = full.slice(0, Math.round(typ_typed.n)); } }, 1.381);
+      })();
+
+      // «llamas»: the call screen
+      tl.fromTo(q("call"), { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 2.562 - 0.06);
+      tl.fromTo(q("ring"), { scale: 1, opacity: 0.9 }, { scale: 1.5, opacity: 0, duration: 0.7, ease: "power1.out", repeat: 1 }, 2.562);
+      tl.fromTo(q("st1"), { opacity: 1 }, { opacity: 0.35, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.562 + 0.1);
+      // «te contestan»: connected, the receptionist speaks fast
+      tl.set(q("st1"), { opacity: 0 }, 3.381);
+      tl.fromTo(q("st2"), { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "none" }, 3.381);
+      tl.fromTo(q("who"), { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, 3.381);
+      tl.fromTo(q("b1"), { opacity: 0, y: 24, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 3.381 + 0.02);
+      // «te bloqueas»: her bubble glitches (chromatic-glitch, deterministic hash on quantised time) + BLOQUEO
+      tl.fromTo(q("b2"), { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.18, ease: "power3.out" }, 4.01 - 0.06);
+      tl.fromTo(q("tag"), { opacity: 0, scale: 1.4, rotation: -6 }, { opacity: 1, scale: 1, rotation: -6, duration: 0.22, ease: "back.out(2)" }, 4.01 + 0.08);
+      (() => {
+        const hash = (k) => { const x = Math.sin(k * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+        const r = q("b2r"), cc = q("b2c"), main = q("call"); const amp = { a: 0 };
+        tl.set([r, cc], { opacity: 0.85 }, 4.01);
+        tl.fromTo(amp, { a: 1 }, { a: 0, duration: 0.42, ease: "power2.in",
+          onUpdate: () => {
+            const step = Math.floor(tl.time() / 0.04);
+            r.style.transform = "translate(" + (amp.a * (hash(step * 13 + 1) * 2 - 1) * 16).toFixed(1) + "px," + (amp.a * (hash(step * 7 + 2) * 2 - 1) * 6).toFixed(1) + "px)";
+            cc.style.transform = "translate(" + (amp.a * (hash(step * 13 + 5) * 2 - 1) * 16).toFixed(1) + "px," + (amp.a * (hash(step * 7 + 9) * 2 - 1) * 6).toFixed(1) + "px)";
+            main.style.transform = "translate(" + (amp.a * (hash(step * 3 + 4) * 2 - 1) * 9).toFixed(1) + "px,0px)";
+          } }, 4.01);
+        tl.set([r, cc], { opacity: 0 }, 4.01 + 0.43);
+      })();
+
+      window.__timelines["gfx-02"] = tl;
+    })();
+  </script>
+</template>

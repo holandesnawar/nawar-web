@@ -1,0 +1,83 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+    .g04-card { position: absolute; background: #FFFFFF; border-radius: 34px; overflow: hidden;
+      box-shadow: 0 30px 70px rgba(8,4,48,0.40), 0 6px 18px rgba(8,4,48,0.22); }
+    .g04-chip { position: absolute; display: flex; align-items: center; gap: 12px; height: 54px; padding: 0 24px; border-radius: 999px;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; letter-spacing: 0.06em; white-space: nowrap; }
+    .g04-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .g04-blue { background: radial-gradient(ellipse 90% 70% at 50% 40%, #0a5fd6 0%, #1b2bb0 46%, #120081 100%); }
+    .g04-night { background: radial-gradient(ellipse 90% 60% at 50% 28%, #21308f 0%, #0d0b38 62%, #07051f 100%); }
+    .g04-dots { position: absolute; left: -40px; top: -40px; width: 1160px; height: 2000px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.10) 2.2px, transparent 2.6px); background-size: 38px 38px; }
+    .g04-flag { position: relative; width: 58px; height: 40px; border-radius: 8px; overflow: hidden; flex: 0 0 58px;
+      box-shadow: inset 0 0 0 2px rgba(12,12,30,0.10); background: linear-gradient(#AE1C27 0 33.4%, #FFFFFF 33.4% 66.6%, #21468C 66.6% 100%); }
+    .g04-bub { position: absolute; padding: 22px 30px; border-radius: 30px; font-weight: 600; font-size: 38px; line-height: 1.25; }
+    .g04-bl { background: #FFFFFF; color: #0C0C1E; border-bottom-left-radius: 10px; }
+    .g04-br { background: #0b6df0; color: #FFFFFF; border-bottom-right-radius: 10px; }
+    .g04-w { display: inline-block; }
+
+    #g04-card { left: 70px; top: 248px; width: 940px; height: 300px; }
+    #g04-box { position: absolute; left: 44px; top: 44px; width: 250px; height: 212px; border-radius: 26px; background: #1D0084; overflow: hidden; }
+    #g04-boxh { position: absolute; left: 0; top: 0; width: 250px; height: 56px; background: #0b6df0; display: flex; align-items: center; justify-content: center; }
+    #g04-boxh svg { width: 34px; height: 34px; }
+    #g04-yr { position: absolute; left: 0; top: 56px; width: 250px; height: 156px; overflow: hidden; }
+    #g04-col { position: absolute; left: 0; top: 0; width: 250px; }
+    .g04-y { width: 250px; height: 156px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 74px; color: #FFFFFF; }
+    #g04-k { position: absolute; left: 330px; top: 52px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.12em; color: #5A6480; }
+    #g04-t { position: absolute; left: 330px; top: 96px; font-weight: 900; font-size: 58px; line-height: 1.05; color: #1D0084; white-space: nowrap; }
+    #g04-no { left: 330px; top: 196px; background: #E02D3C; color: #FFFFFF; font-weight: 800; }
+    #g04-s2 { position: absolute; left: 0; top: 0; width: 940px; height: 300px; background: #F4F6FF; opacity: 0; }
+    #g04-nl { left: 40px; top: 40px; max-width: 600px; font-size: 36px; background: #FFFFFF; color: #0C0C1E; box-shadow: 0 6px 18px rgba(8,4,48,0.12); }
+    #g04-tr { left: 640px; top: 56px; background: #1D0084; color: #FFFFFF; font-weight: 800; }
+    #g04-en { left: 210px; top: 164px; font-size: 40px; font-weight: 800; background: #FFFFFF; color: #1D0084; box-shadow: 0 0 0 5px #E02D3C, 0 10px 24px rgba(8,4,48,0.18); }
+    #g04-enc { left: 76px; top: 184px; height: 64px; background: #E02D3C; color: #FFFFFF; font-weight: 800; font-size: 28px; }
+
+  </style>
+  <div id="root" data-composition-id="gfx-04" data-width="1080" data-height="1920" data-duration="4.4">
+    <div id="g04-card" class="g04-card">
+      <div id="g04-s1">
+      <div id="g04-box"><div id="g04-boxh"><svg viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="32" rx="6" fill="none" stroke="#FFFFFF" stroke-width="4.5"/><path d="M6 20 H42 M16 6 V14 M32 6 V14" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/></svg></div><div id="g04-yr"><div id="g04-col"><div class="g04-y">2021</div><div class="g04-y">2022</div><div class="g04-y">2023</div><div class="g04-y">2024</div><div class="g04-y">2025</div></div></div></div>
+      <div id="g04-k">PASAN LOS AÑOS…</div>
+      <div id="g04-t">y sigues igual</div>
+      <div id="g04-no" class="g04-chip">✕ NO SE ARREGLA SOLO</div>
+      </div>
+      <div id="g04-s2">
+        <div id="g04-nl" class="g04-bub g04-bl">Hoe kan ik u helpen?</div>
+        <div id="g04-tr" class="g04-chip">TE TRADUCEN</div>
+        <div id="g04-enc" class="g04-chip">EN</div>
+        <div id="g04-en" class="g04-bub">Oh, let's just speak English!</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("g04-" + id);
+
+      tl.fromTo(q("card"), { y: -40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, 0.981 - 0.16);
+      // vertical-spring-ticker: 2021 → 2025, one stepped tween per year
+      [1, 2, 3, 4].forEach((k) => {
+        tl.fromTo(q("col"), { y: -(k - 1) * 156 }, { y: -k * 156, duration: 0.12, ease: "back.out(1.4)", immediateRender: false }, 0.981 + 0.02 + (k - 1) * 0.13);
+      });
+      tl.fromTo(q("no"), { opacity: 0, scale: 0.8, x: -10 }, { opacity: 1, scale: 1, x: 0, duration: 0.24, ease: "back.out(2)" }, 1.41 - 0.08);
+      // «alguien que te traduce o que te cambia al inglés»
+      tl.fromTo(q("s2"), { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out" }, 2.457 - 0.1);
+      tl.set(q("s1"), { opacity: 0 }, 2.457 + 0.14);
+      tl.fromTo(q("nl"), { opacity: 0, y: 20, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.6)" }, 2.457 - 0.06);
+      tl.fromTo(q("tr"), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.24, ease: "back.out(2)" }, 3.067 - 0.06);
+      tl.fromTo(q("nl"), { opacity: 1 }, { opacity: 0.35, duration: 0.2, ease: "none", immediateRender: false }, 3.667);
+      tl.fromTo(q("en"), { opacity: 0, scale: 1.25, rotation: -3 }, { opacity: 1, scale: 1, rotation: -2, duration: 0.24, ease: "back.out(1.8)" }, 3.667 - 0.02);
+      tl.fromTo(q("enc"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, 3.981 - 0.06);
+
+      window.__timelines["gfx-04"] = tl;
+    })();
+  </script>
+</template>

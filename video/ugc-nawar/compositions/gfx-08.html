@@ -1,0 +1,103 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+    .g08-card { position: absolute; background: #FFFFFF; border-radius: 34px; overflow: hidden;
+      box-shadow: 0 30px 70px rgba(8,4,48,0.40), 0 6px 18px rgba(8,4,48,0.22); }
+    .g08-chip { position: absolute; display: flex; align-items: center; gap: 12px; height: 54px; padding: 0 24px; border-radius: 999px;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; letter-spacing: 0.06em; white-space: nowrap; }
+    .g08-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .g08-blue { background: radial-gradient(ellipse 90% 70% at 50% 40%, #0a5fd6 0%, #1b2bb0 46%, #120081 100%); }
+    .g08-night { background: radial-gradient(ellipse 90% 60% at 50% 28%, #21308f 0%, #0d0b38 62%, #07051f 100%); }
+    .g08-dots { position: absolute; left: -40px; top: -40px; width: 1160px; height: 2000px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.10) 2.2px, transparent 2.6px); background-size: 38px 38px; }
+    .g08-flag { position: relative; width: 58px; height: 40px; border-radius: 8px; overflow: hidden; flex: 0 0 58px;
+      box-shadow: inset 0 0 0 2px rgba(12,12,30,0.10); background: linear-gradient(#AE1C27 0 33.4%, #FFFFFF 33.4% 66.6%, #21468C 66.6% 100%); }
+    .g08-bub { position: absolute; padding: 22px 30px; border-radius: 30px; font-weight: 600; font-size: 38px; line-height: 1.25; }
+    .g08-bl { background: #FFFFFF; color: #0C0C1E; border-bottom-left-radius: 10px; }
+    .g08-br { background: #0b6df0; color: #FFFFFF; border-bottom-right-radius: 10px; }
+    .g08-w { display: inline-block; }
+
+    #g08-ev { left: 70px; top: 248px; width: 940px; height: 300px; background: #F4F6FF; }
+    #g08-k { left: 34px; top: 30px; background: #0b6df0; color: #FFFFFF; font-weight: 800; }
+    #g08-k svg { width: 30px; height: 30px; }
+    #g08-img { position: absolute; left: 30px; top: 104px; width: 880px; height: 173px; }
+    .g08-hl { position: absolute; top: 158px; height: 112px; border-radius: 20px; border: 5px solid #0b6df0; }
+    #g08-call { opacity: 0; }
+    #g08-tile { position: absolute; left: 60px; top: 236px; width: 960px; height: 820px; border-radius: 34px; overflow: hidden; background: #1a1d3a; }
+    #g08-v { position: absolute; left: -1220px; top: -280px; width: 4113px; height: 1631px; object-fit: fill; }
+    #g08-live { left: 28px; top: 28px; background: #E02D3C; color: #FFFFFF; font-weight: 800; letter-spacing: 0.14em; }
+    #g08-dot { width: 14px; height: 14px; border-radius: 50%; background: #FFFFFF; }
+    #g08-rep { right: 28px; top: 28px; background: rgba(255,255,255,0.92); color: #1D0084; font-weight: 800; }
+    #g08-rep svg { width: 30px; height: 30px; }
+    #g08-pp { position: absolute; left: 60px; top: 1072px; width: 960px; display: flex; gap: 14px; }
+    .g08-p { width: 92px; height: 92px; border-radius: 22px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 32px; color: #FFFFFF; }
+    #g08-pr { left: 70px; top: 248px; width: 940px; height: 300px; }
+    #g08-pk { left: 34px; top: 30px; background: #1D0084; color: #FFFFFF; font-weight: 800; }
+    #g08-wave { position: absolute; left: 40px; top: 110px; width: 560px; height: 160px; display: flex; align-items: center; gap: 9px; }
+    .g08-b { width: 14px; height: 140px; border-radius: 7px; background: #0b6df0; transform-origin: 50% 50%; }
+    #g08-snd { position: absolute; left: 630px; top: 104px; width: 280px; display: flex; flex-wrap: wrap; gap: 14px; }
+    .g08-sn { width: 126px; height: 74px; border-radius: 20px; background: #1D0084; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 40px; color: #FFFFFF; }
+
+  </style>
+  <div id="root" data-composition-id="gfx-08" data-width="1080" data-height="1920" data-duration="6.486">
+    <div id="g08-ev" class="g08-card">
+      <div id="g08-k" class="g08-chip"><svg viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="32" rx="6" fill="none" stroke="#FFFFFF" stroke-width="4.5"/><path d="M6 20 H42 M16 6 V14 M32 6 V14" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/></svg>CADA SEMANA</div>
+      <img id="g08-img" src="assets/img/ui-eventos-semana.png" alt="Próximos eventos: clases en directo" />
+      <div id="g08-h1" class="g08-hl" style="left: 32px; width: 432px;"></div><div id="g08-h2" class="g08-hl" style="left: 466px; width: 432px;"></div>
+    </div>
+    <div id="g08-call" class="g08-full g08-night">
+      <div class="g08-dots"></div>
+      <div id="g08-tile">
+        <video id="g08-v" class="clip" src="assets/video/paul-clase-1.mp4" muted playsinline data-start="1.844" data-duration="3.417" data-media-start="3" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video>
+        <div id="g08-live" class="g08-chip"><div id="g08-dot"></div>EN DIRECTO</div>
+        <div id="g08-rep" class="g08-chip"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>Repaso del módulo</div>
+      </div>
+      <div id="g08-pp"><div class="g08-p" style="background: #3b5bdb;">LU</div><div class="g08-p" style="background: #7b5bd6;">MA</div><div class="g08-p" style="background: #0b8a8a;">JO</div><div class="g08-p" style="background: #c2367a;">AN</div><div class="g08-p" style="background: #0b6df0;">TÚ</div></div>
+    </div>
+    <div id="g08-pr" class="g08-card">
+      <div id="g08-pk" class="g08-chip">PRONUNCIACIÓN</div>
+      <div id="g08-wave"><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div><div class="g08-b"></div></div>
+      <div id="g08-snd"><div class="g08-sn">ui</div><div class="g08-sn">uu</div><div class="g08-sn">eu</div><div class="g08-sn">g</div></div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("g08-" + id);
+
+      // «cada semana»: the real upcoming-events card (two live classes, one week apart)
+      tl.fromTo(q("ev"), { y: -40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, 0.581 - 0.08);
+      tl.fromTo(q("h1"), { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.24, ease: "power3.out" }, 0.581 + 0.3);
+      tl.fromTo(q("h2"), { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.24, ease: "power3.out" }, 0.581 + 0.52);
+      // «clase en directo»: the live call takes the screen
+      tl.fromTo(q("call"), { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 0.24, ease: "power3.out" }, 1.844);
+      tl.fromTo(q("dot"), { opacity: 1 }, { opacity: 0.25, duration: 0.4, ease: "sine.inOut", yoyo: true, repeat: 5 }, 1.844 + 0.2);
+      tl.fromTo(q("live"), { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.24, ease: "power3.out" }, 2.676 - 0.08);
+      tl.fromTo("#g08-pp .g08-p", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.24, ease: "back.out(1.8)", stagger: 0.06 }, 1.844 + 0.18);
+      tl.fromTo(q("rep"), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.24, ease: "back.out(2)" }, 4.276 - 0.08);
+      tl.fromTo(q("call"), { opacity: 1 }, { opacity: 0, duration: 0.16, ease: "power2.in", immediateRender: false }, 5.011);
+      tl.set(q("ev"), { opacity: 0 }, 1.844);
+      // «trabajar la pronunciación»: voice bars (gsap-effects audio visualizer, deterministic)
+      tl.fromTo(q("pr"), { y: -40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.32, ease: "power3.out" }, 5.011 + 0.06);
+      (() => {
+        const bars = Array.from(document.querySelectorAll("#g08-wave .g08-b")); const p = { t: 0 };
+        tl.fromTo(p, { t: 0 }, { t: 6.486 - 5.011, duration: 6.486 - 5.011, ease: "none", onUpdate: () => {
+          bars.forEach((b, i) => {
+            const v = 0.22 + 0.78 * Math.abs(Math.sin(p.t * 7.3 + i * 0.62) * Math.sin(p.t * 3.1 + i * 0.27));
+            b.style.transform = "scaleY(" + v.toFixed(3) + ")";
+          });
+        } }, 5.011);
+      })();
+      tl.fromTo("#g08-snd .g08-sn", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2)", stagger: 0.07 }, 5.81 - 0.08);
+
+      window.__timelines["gfx-08"] = tl;
+    })();
+  </script>
+</template>
