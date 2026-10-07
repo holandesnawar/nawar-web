@@ -1,0 +1,110 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .i2-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .i2-paper { background: #F5F7FF; }
+    .i2-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .i2-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i2-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .i2-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i2-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .i2-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .i2-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    .i2-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
+    .i2-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    .i2-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .i2-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .i2-pill svg { display: block; width: 28px; height: 28px; }
+    .i2-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .i2-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .i2-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .i2-flag svg { display: block; width: 40px; height: 27px; }
+    .i2-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .i2-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+    .i2-av svg { display: block; width: 96px; height: 96px; }
+    .i2-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .i2-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .i2-bub-g { background: #E8ECF7; color: #374151; }
+    .i2-bub-b { background: #0b6df0; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .i2-bl { border-bottom-left-radius: 10px; }
+    .i2-br { border-bottom-right-radius: 10px; }
+    .i2-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .i2-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .i2-acc { color: #4da3ff; }
+    .i2-w { display: inline-block; }
+
+    #i2-av1 { left: 90px; top: 392px; background: #9fd5f5; }
+    #i2-b1 { left: 214px; top: 380px; transform-origin: 0% 100%; }
+    #i2-nl { left: 254px; top: 348px; }
+    #i2-lab { position: absolute; right: 214px; top: 610px; display: flex; align-items: center; gap: 10px; color: #5A6480;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; letter-spacing: 0.14em; white-space: nowrap; }
+    #i2-lab svg { display: block; width: 34px; height: 34px; }
+    #i2-av2 { right: 90px; top: 672px; background: #5A6480; }
+    #i2-b2 { right: 214px; top: 660px; transform-origin: 100% 100%; }
+    #i2-stack { position: absolute; left: 214px; top: 940px; width: 760px; height: 160px; }
+    .i2-ghost { position: absolute; left: 0; top: 0; }
+    #i2-av3 { left: 90px; top: 952px; background: #9fd5f5; }
+    #i2-b3 { left: 0; top: 0; transform-origin: 0% 100%; }
+    #i2-en { left: 254px; top: 908px; }
+
+  </style>
+  <div id="root" data-composition-id="ins-02" data-width="1080" data-height="1920" data-duration="3.152">
+    <div class="i2-full i2-paper"><div class="i2-paper-dots"></div><div class="i2-paper-light"></div></div>
+    <div id="i2-av1" class="i2-av"><svg viewBox="0 0 96 96"><circle cx="48" cy="38" r="17.5" fill="#FFFFFF" /><path d="M13 101 C13 75 29 62 48 62 C67 62 83 75 83 101 Z" fill="#FFFFFF" /></svg></div>
+    <div id="i2-b1" class="i2-bub i2-bub-w i2-bl">Wat is uw geboortedatum?</div>
+    <div id="i2-nl" class="i2-ipill"><span class="i2-flag"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>NL</span></div>
+    <div id="i2-lab"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10 H24 M15 6 V10 M10 10 C11 17 16 22 22 24 M20 10 C19 17 14 22 8 25"/><path d="M26 42 L33 24 L40 42 M28.5 36 H37.5"/></g></svg><span>TE TRADUCEN</span></div>
+    <div id="i2-av2" class="i2-av"><svg viewBox="0 0 96 96"><circle cx="48" cy="38" r="17.5" fill="#FFFFFF" /><path d="M13 101 C13 75 29 62 48 62 C67 62 83 75 83 101 Z" fill="#FFFFFF" /></svg></div>
+    <div id="i2-b2" class="i2-bub i2-bub-g i2-br">Te pide tu fecha de nacimiento.</div>
+    <div id="i2-stack">
+      <div id="i2-g2" data-layout-allow-overlap class="i2-ghost i2-bub i2-bub-w i2-bl">Oh, let’s just speak English!</div>
+      <div id="i2-g1" data-layout-allow-overlap class="i2-ghost i2-bub i2-bub-w i2-bl">Oh, let’s just speak English!</div>
+      <div id="i2-b3" class="i2-bub i2-bub-w i2-bl">Oh, let’s just speak English!</div>
+    </div>
+    <div id="i2-av3" class="i2-av"><svg viewBox="0 0 96 96"><circle cx="48" cy="38" r="17.5" fill="#FFFFFF" /><path d="M13 101 C13 75 29 62 48 62 C67 62 83 75 83 101 Z" fill="#FFFFFF" /></svg></div>
+    <div id="i2-en" class="i2-ipill"><span class="i2-flag"><svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#012169"/><path d="M0 0 L40 27 M40 0 L0 27" stroke="#FFFFFF" stroke-width="5"/><path d="M0 0 L40 27 M40 0 L0 27" stroke="#C8102E" stroke-width="2"/><path d="M20 0 V27 M0 13.5 H40" stroke="#FFFFFF" stroke-width="8"/><path d="M20 0 V27 M0 13.5 H40" stroke="#C8102E" stroke-width="4.5"/></svg></span><span>EN</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("i2-" + id);
+
+      tl.fromTo(q("av1"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, 0);
+      tl.fromTo(q("b1"), { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 0.04);
+      tl.fromTo(q("nl"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(2)" }, 0.14);
+      tl.fromTo(q("lab"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 1.228 - 0.1);
+      tl.fromTo(q("av2"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, 1.228 - 0.06);
+      tl.fromTo(q("b2"), { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 1.228 - 0.02);
+      tl.to([q("av1"), q("b1"), q("nl"), q("lab"), q("av2"), q("b2")], { opacity: 0.42, duration: 0.25, ease: "power2.out" }, 2.076 - 0.04);
+      tl.fromTo(q("av3"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, 2.076 - 0.06);
+      tl.fromTo(q("b3"), { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 2.076 - 0.02);
+      tl.fromTo(q("en"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(2)" }, 2.076 + 0.1);
+      tl.fromTo(q("g1"), { opacity: 0, y: 0, scale: 1 }, { opacity: 0.6, y: 18, scale: 0.97, duration: 0.3, ease: "power3.out" }, 2.628 - 0.06);
+      tl.fromTo(q("g2"), { opacity: 0, y: 0, scale: 1 }, { opacity: 0.32, y: 36, scale: 0.94, duration: 0.34, ease: "power3.out" }, 2.628 + 0.04);
+
+      window.__timelines["ins-02"] = tl;
+    })();
+  </script>
+</template>

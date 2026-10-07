@@ -1,40 +1,42 @@
 #!/usr/bin/env python3
-"""Edit decision list → edit.json (shots on the timeline + every word at its edit time).
+"""Edit decision list → edit.json (v2).
 
-Two separate takes of the same script: A = side angle (interview look), B = facing camera. The edit alternates
-them sentence by sentence (B carries the hook and the CTA), each cut sitting in the quietest point between two
-words (checked against the energy envelope), and plays everything at RATE (pitch preserved) for a tighter pace.
-Word times come from forced alignment of each take (tools/align/align_<take>.json); where the aligner drifts more
-than 0.25 s from word-level Whisper (tools/align/whisper_<take>.json, bias-corrected) the Whisper time wins.
+v2 keeps the girl talking to camera the whole time: only take B (facing camera) is used, as ONE continuous clip at
+RATE (pitch preserved), so there are no jump cuts in her speech. The explaining happens in full-screen inserts
+(cut-aways): the picture cuts to a VSL-style motion graphic while her voice carries on, then cuts back to her.
+Each insert window starts a hair before its first word and ends a hair before the first word of the next sentence.
+
+Word times come from forced alignment of take B (tools/align/align_b.json); where the aligner drifts more than
+0.25 s from word-level Whisper (tools/align/whisper_b.json, bias-corrected) the Whisper time wins.
 """
 import json, os, unicodedata, re, difflib, statistics
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RATE = 1.05
-TAIL = 1.1            # hold after the last word (the CTA end card)
-# (take, source in, source out, first words, last words) — in/out are the hand-checked quiet points
-EDL = [
-    ("b", 0.00, 4.05, "si vives en", "escucha esto"),
-    ("b", 4.05, 8.80, "seguro que te", "te bloqueas"),
-    ("a", 5.30, 10.40, "y le pides", "sin pensarlo"),
-    ("b", 13.10, 17.72, "eso no se", "cambia al ingles"),
-    ("a", 15.07, 20.14, "en nawar te", "tu idioma"),
-    ("b", 22.66, 25.58, "cuentas con lecciones", "tu puedas"),
-    ("a", 23.40, 28.95, "con ejercicios de", "simple test"),
-    ("b", 31.09, 37.90, "y ademas cada", "la pronunciacion"),
-    ("a", 35.68, 42.24, "en dieciseis semanas", "a nadie"),
-    ("b", 43.30, 50.90, "estas listo para", "te atendera"),
+TAKE = "b"
+MEDIA_END = 50.90      # source out (after «…te atenderá»)
+TAIL = 1.7             # end card hold after the clip
+LEAD = 0.06            # an insert cuts in this long before its first word
+# (insert id, ground, first words, first words of what comes after — None = runs to the end)
+INSERTS = [
+    ("ins-01", "paper", "practicas la frase", "y le pides"),
+    ("ins-02", "paper", "porque aqui siempre", "en nawar te"),
+    ("ins-03", "blue",  "con un equipo", "con ejercicios de"),
+    ("ins-04", "blue",  "para leer", "y ademas cada"),
+    ("ins-05", "blue",  "clase en directo", "en dieciseis semanas"),
+    ("ins-06", "blue",  "eres tu el", "sin tener que"),
+    ("ins-07", "blue",  "rellena el formulario", None),
 ]
 
 def norm(t):
     t = unicodedata.normalize("NFD", t.lower()); t = "".join(c for c in t if unicodedata.category(c) != "Mn")
     return re.sub(r"[^a-z0-9 ]", "", t)
 
-def find(words, phrase, start=0, last=False):
+def find(words, phrase, start=0):
     toks = phrase.split(); n = [norm(w["text"]) for w in words]
     for i in range(start, len(n) - len(toks) + 1):
         if n[i:i + len(toks)] == toks:
-            return i + len(toks) - 1 if last else i
+            return i
     raise SystemExit(f"not found: {phrase}")
 
 def checked(take):
@@ -55,25 +57,34 @@ def checked(take):
     return W
 
 def main():
-    AL = {t: checked(t) for t in "ab"}
-    shots, words, t = [], [], 0.0
-    for k, (take, a, b, p0, p1) in enumerate(EDL):
-        W = AL[take]; i0 = find(W, p0); i1 = find(W, p1, i0, last=True)
-        dur = round((b - a) / RATE, 3)
-        shots.append({"n": k + 1, "take": take, "start": round(t, 3), "duration": dur, "media_start": a, "media_end": b})
-        for i in range(i0, i1 + 1):
-            w = W[i]; nxt = W[i + 1]["start"] if i < i1 else b
-            words.append({"shot": k + 1, "text": w["text"], "punct": w.get("punct", ""),
-                          "t": round(t + (w["start"] - a) / RATE, 3), "end": round(t + (min(nxt, b) - a) / RATE, 3)})
-        t += dur
-    total = round(t + TAIL, 3)
-    json.dump({"rate": RATE, "total": total, "speech_end": round(t, 3), "shots": shots, "words": words},
+    W = checked(TAKE)
+    e = lambda s: round(s / RATE, 3)                # source time → edit time
+    clip_end = e(MEDIA_END); total = round(clip_end + TAIL, 3)
+    words = []
+    for i, w in enumerate(W):
+        nxt = W[i + 1]["start"] if i + 1 < len(W) else MEDIA_END
+        words.append({"i": i, "text": w["text"], "punct": w.get("punct", ""), "t": e(w["start"]), "end": e(min(nxt, MEDIA_END))})
+    inserts = []
+    for iid, ground, p0, p1 in INSERTS:
+        a = W[find(W, p0)]["start"] - LEAD
+        b = (W[find(W, p1, find(W, p0))]["start"] - LEAD) if p1 else None
+        start = e(a); end = e(b) if b is not None else total
+        inserts.append({"id": iid, "ground": ground, "start": start, "duration": round(end - start, 3)})
+    girl, t = [], 0.0
+    for ins in inserts:
+        if ins["start"] > t + 1e-3:
+            girl.append({"start": round(t, 3), "end": ins["start"]})
+        t = round(ins["start"] + ins["duration"], 3)
+    json.dump({"rate": RATE, "take": TAKE, "media_end": MEDIA_END, "clip_end": clip_end, "total": total,
+               "speech_end": words[-1]["end"], "inserts": inserts, "girl": girl, "words": words},
               open(os.path.join(ROOT, "edit.json"), "w"), ensure_ascii=False, indent=1)
-    for s in shots:
-        ws = [w for w in words if w["shot"] == s["n"]]
-        print(f"shot {s['n']:2d} {s['take']} {s['start']:6.2f}–{s['start'] + s['duration']:6.2f}  " +
-              " ".join(f"{w['text']}@{w['t']:.2f}" for w in ws))
-    print("total", total)
+    for g in girl:
+        print(f"  girl   {g['start']:6.2f}–{g['end']:6.2f}  " + " ".join(w["text"] for w in words if g["start"] <= w["t"] < g["end"]))
+    for ins in inserts:
+        a, b = ins["start"], ins["start"] + ins["duration"]
+        print(f"  {ins['id']} {a:6.2f}–{b:6.2f} ({ins['duration']:.2f}s, {ins['ground']})  " +
+              " ".join(f"{w['text']}@{w['t'] - a:.2f}" for w in words if a <= w["t"] < b))
+    print("clip end", clip_end, "total", total)
 
 if __name__ == "__main__":
     main()

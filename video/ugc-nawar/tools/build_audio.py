@@ -1,58 +1,58 @@
 #!/usr/bin/env python3
-"""Music bed + ringback tone for the UGC ad.
+"""Music bed + ringback tone for the UGC ad (v2).
 
-Bed: the owner's VSL track re-edited on its bar grid (100 BPM, 2.4 s/bar): the hats section twice under the
-problem/product part, the drop on «…16 semanas» (bar 24) for the result + CTA, the final hit on the end card.
-It sits ~14 dB under the voice (the takes are normalised to −16 LUFS). Ringback: a 425 Hz European call tone
-for «llamas». Outputs assets/audio/music-bed.wav, assets/audio/ringback.wav, audio.json.
+Bed: the owner's VSL track (100 BPM, 2.4 s/bar), kept calm and even so the ad feels like a person talking, not a
+commercial: the soft intro (bars 0–7) under the problem, the hats section (bars 8–15) entering exactly on «En Nawar…»,
+then bars 8–15 again to the end — no drop, no final hit, the same level under the end card and a gentle fade out.
+It sits ~15 dB under the voice (the take is normalised to −16 LUFS). Ringback: a 425 Hz European call tone for
+«llamas». Outputs assets/audio/music-bed.wav, assets/audio/ringback.wav, audio.json.
 """
 import json, os
 import numpy as np, soundfile as sf
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BAR, BAR0 = 2.4, 0.041
-SEQ = list(range(8, 16)) + list(range(8, 16)) + [24, 25, 26, 27, 28]
-FINAL = 48
+LEVEL_DB = -31.0       # RMS of the bed
+FADE = 2.2             # fade out over the end card
 
-def bars(seq, y, sr, xout=0.12):
-    n = int(round(BAR * sr)); a_out = int(xout * sr); out = np.zeros((n * len(seq) + a_out, y.shape[1]), np.float32)
-    k = 0
-    while k < len(seq):
-        j = k
-        while j + 1 < len(seq) and seq[j + 1] == seq[j] + 1: j += 1
-        a = int(round((BAR0 + BAR * seq[k]) * sr)); L = n * (j - k + 1)
-        c = y[a:a + L + a_out].copy()
-        if k: c[:int(0.01 * sr)] *= np.linspace(0, 1, int(0.01 * sr))[:, None]
-        c[L:] *= (np.cos(np.linspace(0, np.pi / 2, a_out)) ** 2)[:, None]
-        out[n * k:n * k + L + a_out] += c
-        k = j + 1
-    return out[: n * len(seq)]
+def seg(y, sr, a_s, b_s):
+    return y[int(round(a_s * sr)):int(round(b_s * sr))].copy()
 
 def main():
     ed = json.load(open(os.path.join(ROOT, "edit.json"))); total = ed["total"]
     y, sr = sf.read(os.path.join(ROOT, ".raw", "music.wav"), dtype="float32")
-    bed = bars(SEQ, y, sr)
-    drop = BAR * SEQ.index(24); hit = BAR * len(SEQ)
-    a = int(round((BAR0 + BAR * FINAL) * sr)); tail = y[a:a + int((total - hit + 0.2) * sr)].copy()
-    fo = np.ones(len(tail)); k0 = int(0.5 * sr); fo[k0:] = np.linspace(1, 0, len(tail) - k0) ** 2; tail *= fo[:, None]
-    mus = np.zeros((int(round(total * sr)) + 1, 2), np.float32)
-    mus[:len(bed)] += bed[: len(mus)]
-    h = int(round(hit * sr)); mus[h:h + len(tail)] += tail[: len(mus) - h]
-    # level: −30 dBFS RMS before the drop, −27.5 after, the final hit a touch above (no voice there)
-    t = np.arange(len(mus)) / sr
-    g = np.where(t < drop, 10 ** (-30 / 20), 10 ** (-27.5 / 20))
-    g = np.where(t >= hit, 10 ** (-24 / 20), g)
-    rms_pre = np.sqrt(np.mean(bed[: int(drop * sr)] ** 2)) + 1e-9
-    mus *= (g / rms_pre)[:, None]
-    fi = int(0.4 * sr); mus[:fi] *= np.linspace(0, 1, fi)[:, None]
+    nawar = next(g["start"] for g in ed["girl"] if any(w["text"] == "Nawar" and g["start"] <= w["t"] < g["end"] for w in ed["words"]))
+    # straight run from the intro so that bar 8 lands on «En Nawar», up to the end of bar 15
+    a0 = BAR0 + 8 * BAR - nawar
+    first = seg(y, sr, a0, BAR0 + 16 * BAR)
+    loop = seg(y, sr, BAR0 + 8 * BAR, BAR0 + 16 * BAR)
+    n = int(round(total * sr)) + 1
+    mus = np.zeros((n + len(loop), y.shape[1]), np.float32)
+    mus[:len(first)] += first
+    k = len(first); x = int(0.012 * sr)
+    while k < n:                                    # bar-8 loop, 12 ms equal-gain crossfade at each seam
+        c = loop.copy(); c[:x] *= np.linspace(0, 1, x)[:, None]
+        mus[k - x:k] *= np.linspace(1, 0, x)[:, None]
+        mus[k - x:k - x + len(c)] += c
+        k += len(c) - x
+    mus = mus[:n]
+    rms = np.sqrt(np.mean(mus[: int(nawar * sr)] ** 2)) + 1e-9   # level the intro and the rest to the same RMS
+    rms2 = np.sqrt(np.mean(mus[int(nawar * sr):] ** 2)) + 1e-9
+    g = np.where(np.arange(n) < int(nawar * sr), 10 ** (LEVEL_DB / 20) / rms, 10 ** (LEVEL_DB / 20) / rms2).astype(np.float32)
+    ramp = int(1.2 * sr); j = int(nawar * sr)                     # smooth the gain change over a bar half
+    g[j - ramp // 2:j + ramp // 2] = np.linspace(g[j - ramp // 2 - 1], g[j + ramp // 2 + 1], ramp)
+    mus *= g[:, None]
+    fi = int(0.35 * sr); mus[:fi] *= np.linspace(0, 1, fi)[:, None]
+    fo = int(FADE * sr); mus[n - fo:] *= (np.cos(np.linspace(0, np.pi / 2, fo)) ** 2)[:, None]
     sf.write(os.path.join(ROOT, "assets", "audio", "music-bed.wav"), mus, sr)
     # ringback: 425 Hz (+ a little 850 Hz), 0.8 s, soft edges
     rs = 48000; tt = np.arange(int(0.8 * rs)) / rs
     tone = 0.5 * np.sin(2 * np.pi * 425 * tt) + 0.12 * np.sin(2 * np.pi * 850 * tt)
     env = np.minimum(1, tt / 0.02) * np.minimum(1, (0.8 - tt) / 0.06); tone *= env * 0.5
     sf.write(os.path.join(ROOT, "assets", "audio", "ringback.wav"), tone.astype(np.float32), rs)
-    json.dump({"drop": round(drop, 3), "final_hit": round(hit, 3), "total": total}, open(os.path.join(ROOT, "audio.json"), "w"), indent=1)
-    print(f"bed {len(mus) / sr:.2f}s  drop {drop:.2f}  final hit {hit:.2f}")
+    json.dump({"hats_in": round(nawar, 3), "fade_from": round(total - FADE, 3), "total": total},
+              open(os.path.join(ROOT, "audio.json"), "w"), indent=1)
+    print(f"bed {n / sr:.2f}s  hats in at {nawar:.2f}  fade from {total - FADE:.2f}")
 
 if __name__ == "__main__":
     main()

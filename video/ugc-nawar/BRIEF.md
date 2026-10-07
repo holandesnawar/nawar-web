@@ -7,7 +7,7 @@ destination: meta-tiktok-ads
 aspect: 1080x1920
 language: es
 audience: hispanohablantes que viven en Países Bajos / Flandes y no se atreven a hablar neerlandés
-length: 52s
+length: 50s
 angle: ugc-ad
 ---
 
@@ -31,8 +31,12 @@ es el mejor, y demuestra la calidad de nuestro producto y escuela». Formato 9:1
 
 ## Customizations
 
-- Montaje con las dos tomas alternadas por frase, zooms de énfasis, subtítulos dinámicos y motion graphics con el
-  producto real; cierre con flecha hacia el botón y formulario.
+- v1: montaje con las dos tomas alternadas por frase, zooms de énfasis, subtítulos dinámicos y motion graphics con
+  el producto real; cierre con flecha hacia el botón y formulario.
+- v2 (feedback del cliente): ella siempre hablando a cámara (fuera el ángulo lateral); nada encima mientras habla,
+  los gráficos entran a pantalla completa cuando explica y vuelve ella; diseños del VSL, limpios y profesionales;
+  subtítulos sin azul; ejercicios con margen y el título separado; Paul con la cara bien visible; música del final
+  más baja y menos «de anuncio».
 
 ## Notes
 

@@ -1,0 +1,78 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .ct-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .ct-paper { background: #F5F7FF; }
+    .ct-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .ct-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .ct-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .ct-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .ct-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .ct-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .ct-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    .ct-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
+    .ct-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    .ct-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .ct-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .ct-pill svg { display: block; width: 28px; height: 28px; }
+    .ct-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .ct-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .ct-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .ct-flag svg { display: block; width: 40px; height: 27px; }
+    .ct-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .ct-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+    .ct-av svg { display: block; width: 96px; height: 96px; }
+    .ct-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .ct-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .ct-bub-g { background: #E8ECF7; color: #374151; }
+    .ct-bub-b { background: #0b6df0; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .ct-bl { border-bottom-left-radius: 10px; }
+    .ct-br { border-bottom-right-radius: 10px; }
+    .ct-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .ct-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .ct-acc { color: #4da3ff; }
+    .ct-w { display: inline-block; }
+
+    .ct-ch { position: absolute; left: 480px; width: 120px; height: 70px; opacity: 0; }
+    .ct-ch svg { display: block; width: 120px; height: 70px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.45)); }
+
+  </style>
+  <div id="root" data-composition-id="cta" data-width="1080" data-height="1920" data-duration="1.09">
+    <div id="ct-c0" class="ct-ch" style="top:1400px;"><svg viewBox="0 0 120 70"><path d="M14 12 L60 56 L106 12" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div id="ct-c1" class="ct-ch" style="top:1462px;"><svg viewBox="0 0 120 70"><path d="M14 12 L60 56 L106 12" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div id="ct-c2" class="ct-ch" style="top:1524px;"><svg viewBox="0 0 120 70"><path d="M14 12 L60 56 L106 12" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("ct-" + id);
+      tl.fromTo(q("c0"), { opacity: 0, y: -14 }, { keyframes: [{ opacity: 0.95, y: 0, duration: 0.2 }, { opacity: 0.25, y: 10, duration: 0.3 }, { opacity: 0.95, y: 0, duration: 0.2 }, { opacity: 0.25, y: 10, duration: 0.3 }], immediateRender: false }, 0.05);
+      tl.fromTo(q("c1"), { opacity: 0, y: -14 }, { keyframes: [{ opacity: 0.95, y: 0, duration: 0.2 }, { opacity: 0.25, y: 10, duration: 0.3 }, { opacity: 0.95, y: 0, duration: 0.2 }, { opacity: 0.25, y: 10, duration: 0.3 }], immediateRender: false }, 0.15);
+      tl.fromTo(q("c2"), { opacity: 0, y: -14 }, { keyframes: [{ opacity: 0.95, y: 0, duration: 0.2 }, { opacity: 0.25, y: 10, duration: 0.3 }, { opacity: 0.95, y: 0, duration: 0.2 }, { opacity: 0.25, y: 10, duration: 0.3 }], immediateRender: false }, 0.25);
+
+      window.__timelines["cta"] = tl;
+    })();
+  </script>
+</template>

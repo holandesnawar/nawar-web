@@ -1,25 +1,28 @@
 #!/usr/bin/env python3
-"""Generate the whole UGC ad from edit.json: index.html (the cut, zooms, audio), one overlay sub-composition per
-shot (compositions/gfx-NN.html) and the captions (compositions/captions.html).
+"""Generate the UGC ad (v2) from edit.json: index.html (the girl, her framing, audio), one full-screen insert per
+explanation (compositions/ins-NN.html), the CTA hint (compositions/cta.html) and the captions (compositions/captions.html).
+
+v2 language = the VSL's: PAPER ground (#F5F7FF + dots) for the problem, NAWAR BLUE (radial #025dc7 → #120081 + dots)
+for the solution, Poppins for display, Inter for UI text, white cards with soft indigo shadows, real platform footage
+in a browser window / phone, and no orange. While the girl talks to camera nothing covers her except the captions;
+when she explains, the picture cuts to a full-screen insert and back.
 
 Every cue is a word of the edit (edit.json, tools/edit.py), so a new cut regenerates in one run:
     python3 tools/edit.py && python3 tools/build_audio.py && python3 tools/gen.py
-Templates use «name» tokens (cue times / palette), never str.format, so CSS/JS braces stay literal.
+Templates use «NAME» tokens (cue times / palette), never str.format, so CSS/JS braces stay literal.
 """
 import json, os, re, subprocess, unicodedata
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ED = json.load(open(os.path.join(ROOT, "edit.json")))
-AUD = json.load(open(os.path.join(ROOT, "audio.json")))
-SHOTS = {s["n"]: s for s in ED["shots"]}
+INS = {i["id"]: i for i in ED["inserts"]}
 WORDS = ED["words"]
 TOTAL = ED["total"]
 RATE = ED["rate"]
-W_, H_ = 1080, 1920
+FACE = (545, 900)                     # take B face centre (zoom origin)
 
-PAL = dict(BLUE="#0b6df0", DEEP="#1D0084", NAVY="#120081", SKY="#4da3ff", RED="#E02D3C", GREEN="#16A34A",
-           INK="#0C0C1E", MUTED="#5A6480", PAPER="#F4F6FF", LINE="#DDE6F5")
-FACE = {"a": (500, 880), "b": (545, 900)}            # face centre per take (zoom origin)
+PAL = dict(BLUE="#0b6df0", INDIGO="#1D0084", NAVY="#120081", SKY="#4da3ff", RED="#E02D3C", GREEN="#16A34A",
+           INK="#0C0C1E", INK2="#374151", MUTED="#5A6480", PAPER="#F5F7FF", LINE="#DDE6F5", APP="#F1F2F8")
 
 
 def norm(t):
@@ -27,15 +30,16 @@ def norm(t):
     return re.sub(r"[^a-z0-9]", "", t)
 
 
-def cue(n, word, k=0):
-    """local time (s) of the k-th occurrence of `word` in shot n."""
-    hits = [w for w in WORDS if w["shot"] == n and norm(w["text"]) == norm(word)]
-    return round(hits[k]["t"] - SHOTS[n]["start"], 3)
+def cue(iid, word, k=0):
+    """local time (s) of the k-th occurrence of `word` inside insert iid."""
+    s = INS[iid]
+    hits = [w for w in WORDS if s["start"] <= w["t"] < s["start"] + s["duration"] and norm(w["text"]) == norm(word)]
+    return round(hits[k]["t"] - s["start"], 3)
 
 
-def dur(n):
-    s = SHOTS[n]
-    return round(TOTAL - s["start"], 3) if n == max(SHOTS) else s["duration"]
+def at(word, k=0):
+    """absolute edit time of the k-th occurrence of `word`."""
+    return [w["t"] for w in WORDS if norm(w["text"]) == norm(word)][k]
 
 
 def sub(s, d):
@@ -48,41 +52,131 @@ def sub(s, d):
 FONTS = "\n".join('    @font-face { font-family: "%s"; font-weight: %d; font-style: normal; src: url("assets/fonts/%s") format("woff2"); }'
                   % (f, w, fn) for f, w, fn in [("Poppins", 600, "poppins-latin-600-normal.woff2"), ("Poppins", 700, "poppins-latin-700-normal.woff2"),
                                                 ("Poppins", 800, "poppins-latin-800-normal.woff2"), ("Poppins", 900, "poppins-latin-900-normal.woff2"),
-                                                ("Inter", 600, "inter-latin-600-normal.woff2"), ("Inter", 700, "inter-latin-700-normal.woff2")])
+                                                ("Inter", 500, "inter-latin-500-normal.woff2"), ("Inter", 600, "inter-latin-600-normal.woff2"),
+                                                ("Inter", 700, "inter-latin-700-normal.woff2")])
 
+# shared components (frame.md of the VSL, re-set for 1080×1920)
 BASE = """
-    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
-    .«P»-card { position: absolute; background: #FFFFFF; border-radius: 34px; overflow: hidden;
-      box-shadow: 0 30px 70px rgba(8,4,48,0.40), 0 6px 18px rgba(8,4,48,0.22); }
-    .«P»-chip { position: absolute; display: flex; align-items: center; gap: 12px; height: 54px; padding: 0 24px; border-radius: 999px;
-      font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; letter-spacing: 0.06em; white-space: nowrap; }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: «INK»; }
     .«P»-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
-    .«P»-blue { background: radial-gradient(ellipse 90% 70% at 50% 40%, #0a5fd6 0%, #1b2bb0 46%, #120081 100%); }
-    .«P»-night { background: radial-gradient(ellipse 90% 60% at 50% 28%, #21308f 0%, #0d0b38 62%, #07051f 100%); }
-    .«P»-dots { position: absolute; left: -40px; top: -40px; width: 1160px; height: 2000px;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.10) 2.2px, transparent 2.6px); background-size: 38px 38px; }
-    .«P»-flag { position: relative; width: 58px; height: 40px; border-radius: 8px; overflow: hidden; flex: 0 0 58px;
-      box-shadow: inset 0 0 0 2px rgba(12,12,30,0.10); background: linear-gradient(#AE1C27 0 33.4%, #FFFFFF 33.4% 66.6%, #21468C 66.6% 100%); }
-    .«P»-bub { position: absolute; padding: 22px 30px; border-radius: 30px; font-weight: 600; font-size: 38px; line-height: 1.25; }
-    .«P»-bl { background: #FFFFFF; color: «INK»; border-bottom-left-radius: 10px; }
-    .«P»-br { background: «BLUE»; color: #FFFFFF; border-bottom-right-radius: 10px; }
+    .«P»-paper { background: «PAPER»; }
+    .«P»-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .«P»-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .«P»-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .«P»-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .«P»-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .«P»-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .«P»-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    .«P»-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
+    .«P»-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    .«P»-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .«P»-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .«P»-pill svg { display: block; width: 28px; height: 28px; }
+    .«P»-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: «INDIGO»; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .«P»-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: «INDIGO»; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .«P»-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .«P»-flag svg { display: block; width: 40px; height: 27px; }
+    .«P»-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .«P»-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+    .«P»-av svg { display: block; width: 96px; height: 96px; }
+    .«P»-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .«P»-bub-w { background: #FFFFFF; color: «INK»; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .«P»-bub-g { background: #E8ECF7; color: «INK2»; }
+    .«P»-bub-b { background: «BLUE»; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .«P»-bl { border-bottom-left-radius: 10px; }
+    .«P»-br { border-bottom-right-radius: 10px; }
+    .«P»-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .«P»-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: «INDIGO»; }
+    .«P»-acc { color: «SKY»; }
     .«P»-w { display: inline-block; }
 """
 
+# browser window chrome (the VSL's tools/mac_mockup.md, scaled with --u)
+WIN_CSS = """
+    .«P»-win { --u: calc(var(--sw) / 1120); position: absolute; width: calc(var(--u) * 1120); height: calc(var(--u) * 700);
+      border-radius: calc(var(--u) * 14); overflow: hidden; background: #FFFFFF;
+      box-shadow: 0 0 0 calc(var(--u) * 1) rgba(10,10,30,0.28), 0 calc(var(--u) * 34) calc(var(--u) * 90) rgba(4,0,40,0.50), 0 calc(var(--u) * 10) calc(var(--u) * 26) rgba(4,0,40,0.30); }
+    .«P»-win-edge { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: calc(var(--u) * 14); box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(255,255,255,0.45); }
+    .«P»-chrome { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 70); font-family: "Inter", sans-serif; }
+    .«P»-tabs { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--u) * 36); background: #DEE1E6; }
+    .«P»-tl { position: absolute; top: calc(var(--u) * 12); width: calc(var(--u) * 12); height: calc(var(--u) * 12); border-radius: 50%; }
+    .«P»-tl-r { left: calc(var(--u) * 13); background: #FF5F57; }
+    .«P»-tl-y { left: calc(var(--u) * 33); background: #FEBC2E; }
+    .«P»-tl-g { left: calc(var(--u) * 53); background: #28C840; }
+    .«P»-tab { position: absolute; left: calc(var(--u) * 82); top: calc(var(--u) * 7); width: calc(var(--u) * 232); height: calc(var(--u) * 29);
+      border-radius: calc(var(--u) * 9) calc(var(--u) * 9) 0 0; background: #FFFFFF; }
+    .«P»-fav { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 7); width: calc(var(--u) * 15); height: calc(var(--u) * 15);
+      border-radius: calc(var(--u) * 3.5); overflow: hidden; background: radial-gradient(circle at 50% 45%, #2fb6f2 0%, #0b6df0 80%); }
+    .«P»-fav img { position: absolute; left: calc(var(--u) * 1.2); top: calc(var(--u) * 5.2); width: calc(var(--u) * 12.6); height: auto; display: block; }
+    .«P»-tab-t { position: absolute; left: calc(var(--u) * 35); top: 0; height: calc(var(--u) * 29); line-height: calc(var(--u) * 29);
+      font-size: calc(var(--u) * 12); font-weight: 500; color: #202124; white-space: nowrap; }
+    .«P»-bar { position: absolute; left: 0; top: calc(var(--u) * 36); width: 100%; height: calc(var(--u) * 34); background: #FFFFFF; box-shadow: inset 0 calc(var(--u) * -1) 0 #DADCE0; }
+    .«P»-url { position: absolute; left: calc(var(--u) * 102); top: calc(var(--u) * 4); width: calc(var(--u) * 962); height: calc(var(--u) * 26);
+      border-radius: calc(var(--u) * 13); background: #F1F3F4; }
+    .«P»-url-t { position: absolute; left: calc(var(--u) * 33); top: 0; height: calc(var(--u) * 26); line-height: calc(var(--u) * 26);
+      font-size: calc(var(--u) * 13); font-weight: 500; color: #202124; white-space: nowrap; }
+    .«P»-lock { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6.5); width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
+    .«P»-content { position: absolute; left: 0; top: calc(var(--u) * 70); width: calc(var(--u) * 1120); height: calc(var(--u) * 630); overflow: hidden; background: #FFFFFF; }
+    .«P»-media { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+"""
+
+
+def win(P, wid, sw, left, top, content):
+    return f"""<div id="{P}-{wid}" class="{P}-win" style="--sw:{sw}px; left:{left}px; top:{top}px;">
+        <div class="{P}-chrome">
+          <div class="{P}-tabs"><i class="{P}-tl {P}-tl-r"></i><i class="{P}-tl {P}-tl-y"></i><i class="{P}-tl {P}-tl-g"></i>
+            <div class="{P}-tab"><div class="{P}-fav"><img src="assets/img/logo-nawar.png" alt="" /></div><div class="{P}-tab-t">Holandés Nawar</div></div></div>
+          <div class="{P}-bar"><div class="{P}-url"><svg class="{P}-lock" viewBox="0 0 13 13"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="{P}-url-t">app.holandesnawar.com</div></div></div>
+        </div>
+        <div class="{P}-content">{content}</div>
+        <div class="{P}-win-edge"></div>
+      </div>"""
+
+
+def ground(P, kind):
+    if kind == "paper":
+        return f'    <div class="{P}-full {P}-paper"><div class="{P}-paper-dots"></div><div class="{P}-paper-light"></div></div>'
+    return f'    <div class="{P}-full {P}-blue"><div class="{P}-blue-dots"></div><div class="{P}-blue-amb"></div><div class="{P}-blue-vig"></div></div>'
+
+
+FLAG_NL = '<svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg>'
+FLAG_ES = '<svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#AA151B" /><rect y="7" width="40" height="13" fill="#F1BF00" /></svg>'
+
+
+def person(fg="#FFFFFF"):
+    return f'<svg viewBox="0 0 96 96"><circle cx="48" cy="38" r="17.5" fill="{fg}" /><path d="M13 101 C13 75 29 62 48 62 C67 62 83 75 83 101 Z" fill="{fg}" /></svg>'
+
+
 ICON = {
     "steth": '<svg viewBox="0 0 120 120"><g fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M34 18 V48 A23 23 0 0 0 80 48 V18"/><path d="M57 71 V84 A16 16 0 0 0 89 84 V77"/><circle cx="89" cy="64" r="12"/></g></svg>',
-    "phone": '<svg viewBox="0 0 64 64"><path d="M20 6 h24 a6 6 0 0 1 6 6 v40 a6 6 0 0 1 -6 6 h-24 a6 6 0 0 1 -6 -6 v-40 a6 6 0 0 1 6 -6 z" fill="«DEEP»"/><rect x="19" y="13" width="26" height="36" rx="3" fill="#FFFFFF"/><circle cx="32" cy="54" r="2.6" fill="#FFFFFF"/></svg>',
+    "phone": '<svg viewBox="0 0 48 48"><path d="M15.5 6.5 l5 9 -3.2 3.4 c2.2 4.6 5.6 8 10.2 10.2 l3.4 -3.2 9 5 -2.2 7.6 c-0.4 1.3 -1.6 2.1 -3 2 C19 39.4 8.6 29 7.5 14.6 c-0.1 -1.4 0.7 -2.6 2 -3 z" fill="#FFFFFF"/></svg>',
     "check": '<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="«GREEN»"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    "cross": '<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="«RED»"/><path d="M21 21 L43 43 M43 21 L21 43" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/></svg>',
-    "play": '<svg viewBox="0 0 32 32"><path d="M10 6 L26 16 L10 26 Z" fill="«BLUE»"/></svg>',
-    "book": '<svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="«BLUE»" stroke-width="4.5" stroke-linejoin="round"/><path d="M24 12 V40" stroke="«BLUE»" stroke-width="4.5"/></svg>',
-    "pen": '<svg viewBox="0 0 48 48"><path d="M10 38 L12 30 L32 10 L38 16 L18 36 Z" fill="none" stroke="«BLUE»" stroke-width="4.5" stroke-linejoin="round"/><path d="M28 14 L34 20" stroke="«BLUE»" stroke-width="4.5"/></svg>',
-    "ear": '<svg viewBox="0 0 48 48"><path d="M10 28 V24 A14 14 0 0 1 38 24 V28" fill="none" stroke="«BLUE»" stroke-width="4.5"/><rect x="7" y="26" width="9" height="14" rx="4" fill="«BLUE»"/><rect x="32" y="26" width="9" height="14" rx="4" fill="«BLUE»"/></svg>',
-    "cal": '<svg viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="32" rx="6" fill="none" stroke="#FFFFFF" stroke-width="4.5"/><path d="M6 20 H42 M16 6 V14 M32 6 V14" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/></svg>',
-    "sun": '<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="8" fill="«BLUE»"/><g stroke="«BLUE»" stroke-width="4" stroke-linecap="round"><path d="M24 4 V10 M24 38 V44 M4 24 H10 M38 24 H44 M10 10 L14 14 M34 34 L38 38 M38 10 L34 14 M14 34 L10 38"/></g></svg>',
-    "moon": '<svg viewBox="0 0 48 48"><path d="M30 6 A18 18 0 1 0 42 32 A14 14 0 0 1 30 6 Z" fill="«BLUE»"/></svg>',
-    "dawn": '<svg viewBox="0 0 48 48"><path d="M10 34 A14 14 0 0 1 38 34 Z" fill="«BLUE»"/><path d="M4 40 H44" stroke="«BLUE»" stroke-width="4" stroke-linecap="round"/></svg>',
-    "down": '<svg viewBox="0 0 120 80"><path d="M14 14 L60 62 L106 14" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "checkw": '<svg viewBox="0 0 64 64"><path d="M16 33 L28 45 L49 21" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "play": '<svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="13" fill="#FFFFFF"/><path d="M11 8.5 L19.5 14 L11 19.5 Z" fill="«INDIGO»"/></svg>',
+    "book": '<svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="currentColor" stroke-width="4.2"/></svg>',
+    "pen": '<svg viewBox="0 0 48 48"><path d="M10 38 L12 30 L32 10 L38 16 L18 36 Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/><path d="M28 14 L34 20" stroke="currentColor" stroke-width="4.2"/></svg>',
+    "ear": '<svg viewBox="0 0 48 48"><path d="M10 29 V24 A14 14 0 0 1 38 24 V29" fill="none" stroke="currentColor" stroke-width="4.2"/><rect x="7" y="27" width="9" height="13" rx="4" fill="currentColor"/><rect x="32" y="27" width="9" height="13" rx="4" fill="currentColor"/></svg>',
+    "trans": '<svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10 H24 M15 6 V10 M10 10 C11 17 16 22 22 24 M20 10 C19 17 14 22 8 25"/><path d="M26 42 L33 24 L40 42 M28.5 36 H37.5"/></g></svg>',
+    "down": '<svg viewBox="0 0 48 48"><path d="M24 8 V38 M12 27 L24 39 L36 27" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "chev": '<svg viewBox="0 0 120 70"><path d="M14 12 L60 56 L106 12" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "mic": '<svg viewBox="0 0 48 48"><rect x="18" y="7" width="12" height="22" rx="6" fill="#FFFFFF"/><path d="M12 23 A12 12 0 0 0 36 23 M24 35 V41" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round"/></svg>',
+    "cam": '<svg viewBox="0 0 48 48"><rect x="6" y="14" width="25" height="20" rx="5" fill="#FFFFFF"/><path d="M31 21 L42 15 V33 L31 27 Z" fill="#FFFFFF"/></svg>',
+    "hang": '<svg viewBox="0 0 48 48"><path d="M6 27 C14 18 34 18 42 27 l-3.5 5.5 -7 -2.5 -0.5 -4.5 C27 24.5 21 24.5 17 25.5 l-0.5 4.5 -7 2.5 z" fill="#FFFFFF"/></svg>',
+    "cursor": '<svg viewBox="0 0 40 52"><path d="M4 3 L4 41 L14 32 L21 48 L28 45 L21 29 L35 29 Z" fill="#FFFFFF" stroke="#0C0C1E" stroke-width="3" stroke-linejoin="round"/></svg>',
 }
 
 
@@ -90,12 +184,12 @@ def icon(name):
     return sub(ICON[name], {})
 
 
-def comp(cid, d, P, css, body, js, cues=None):
+def comp(cid, d, P, css, body, js, cues=None, extra_css=""):
     cues = dict(cues or {}, P=P, D=float(d))
     return sub("""<template>
   <script src="assets/vendor/gsap.min.js"></script>
   <style>
-""" + FONTS + BASE + css + """
+""" + FONTS + BASE + extra_css + css + """
   </style>
   <div id="root" data-composition-id="«CID»" data-width="1080" data-height="1920" data-duration="«D»">
 """ + body + """
@@ -112,704 +206,592 @@ def comp(cid, d, P, css, body, js, cues=None):
 """, dict(cues, CID=cid))
 
 
-def typing_js(el_id, text, t0, t1, caret=None):
+def typing_js(el_id, text, t0, t1):
     """discrete-text-sequence: the text grows with a proxy, one state per character (seek-safe)."""
     return sub("""
       (() => {
-        const el = q("«EL»"), full = «TXT»; const typ_«EL» = { n: 0 };
+        const el = q("«EL»"), full = «TXT»; const typ = { n: 0 };
         el.textContent = "";
-        tl.fromTo(typ_«EL», { n: 0 }, { n: full.length, duration: «DUR», ease: "none", immediateRender: false,
-          onUpdate: () => { el.textContent = full.slice(0, Math.round(typ_«EL».n)); } }, «T0»);
+        tl.fromTo(typ, { n: 0 }, { n: full.length, duration: «DUR», ease: "none", immediateRender: false,
+          onUpdate: () => { el.textContent = full.slice(0, Math.round(typ.n)); } }, «T0»);
       })();
 """, dict(EL=el_id, TXT=json.dumps(text, ensure_ascii=False), DUR=float(t1 - t0), T0=float(t0)))
 
 
-# ============================================================================== gfx-01 · hook
-def gfx01():
-    n, P = 1, "g01"; d = dur(n)
-    c = dict(MED=cue(n, "medico"), ESC=cue(n, "escucha"))
-    css = """
-    #g01-card { left: 70px; top: 248px; width: 940px; height: 286px; }
-    #g01-row { position: absolute; left: 44px; top: 36px; display: flex; align-items: center; gap: 16px;
-      font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.12em; color: «BLUE»; }
-    .g01-l { position: absolute; left: 44px; font-weight: 900; font-size: 62px; line-height: 1.08; letter-spacing: -0.02em; color: «DEEP»; white-space: nowrap; }
-    #g01-mk { position: relative; display: inline-block; padding: 0 10px; }
-    #g01-mkbg { position: absolute; left: 0; top: 6px; width: 100%; height: 76px; border-radius: 14px; background: «BLUE»; transform-origin: 0% 50%; }
-    #g01-mkt { position: relative; }
+def blink_js(el_id, t0, t1, period=0.5):
+    """a caret that blinks with discrete sets (no repeat/yoyo)."""
+    out, t, on = [], t0, True
+    while t < t1:
+        out.append(f'      tl.set(q("{el_id}"), {{ opacity: {1 if on else 0} }}, {t:.3f});')
+        t += period / 2; on = not on
+    return "\n".join(out) + "\n"
+
+
+# call card shared by ins-01 (ringing → answered) and ins-06 (in call)
+CALL_CSS = """
+    .«P»-call-av { position: absolute; left: 32px; top: 33px; width: 104px; height: 104px; border-radius: 50%; background: «INDIGO»; }
+    .«P»-call-av svg { position: absolute; left: 18px; top: 18px; width: 68px; height: 68px; }
+    .«P»-ring { position: absolute; left: 32px; top: 33px; width: 104px; height: 104px; border-radius: 50%; border: 5px solid «BLUE»; box-sizing: border-box; opacity: 0; }
+    .«P»-call-name { position: absolute; left: 168px; top: 30px; font-weight: 700; font-size: 46px; line-height: 1.15; letter-spacing: -0.02em; color: «INK»; white-space: nowrap; }
+    .«P»-call-st { position: absolute; left: 170px; top: 98px; display: flex; align-items: center; gap: 12px; font-family: "Inter", sans-serif;
+      font-weight: 600; font-size: 29px; line-height: 1.1; color: «MUTED»; white-space: nowrap; }
+    .«P»-dot { display: block; width: 14px; height: 14px; border-radius: 50%; background: «GREEN»; }
+    .«P»-call-btn { position: absolute; right: 34px; top: 40px; width: 90px; height: 90px; border-radius: 50%; background: «GREEN»;
+      box-shadow: 0 12px 26px rgba(22,163,74,0.35); }
+    .«P»-call-btn svg { position: absolute; left: 21px; top: 21px; width: 48px; height: 48px; }
 """
-    body = """    <div id="g01-card" class="g01-card">
-      <div id="g01-row"><div class="g01-flag"></div><div>PAÍSES BAJOS</div></div>
-      <div class="g01-l" style="top: 96px;">¿Te cuesta pedir cita</div>
-      <div class="g01-l" style="top: 168px;">en el <span id="g01-mk"><span id="g01-mkbg"></span><span id="g01-mkt">médico</span></span>?</div>
+
+
+def call_card(P, left, top, status_html, extra=""):
+    return f"""    <div id="{P}-call" class="{P}-card {P}-on-paper" style="left:{left}px; top:{top}px; width:900px; height:170px;">
+      <div class="{P}-ring" id="{P}-ring1"></div><div class="{P}-ring" id="{P}-ring2"></div>
+      <div class="{P}-call-av">{icon('steth')}</div>
+      <div class="{P}-call-name">Huisarts</div>
+      {status_html}
+      <div class="{P}-call-btn">{icon('phone')}</div>{extra}
     </div>"""
-    js = """
-      tl.fromTo(q("card"), { scale: 0.94, y: -14 }, { scale: 1, y: 0, duration: 0.42, ease: "back.out(1.7)" }, 0);
-      tl.fromTo(q("mkbg"), { scaleX: 0 }, { scaleX: 1, duration: 0.26, ease: "power3.out" }, «MED»);
-      tl.fromTo(q("mkt"), { color: "«DEEP»" }, { color: "#FFFFFF", duration: 0.12, ease: "none" }, «MED» + 0.06);
-      tl.fromTo(q("card"), { scale: 1 }, { scale: 0.97, duration: 0.22, ease: "power2.out", immediateRender: false }, «ESC»);
-"""
-    return comp("gfx-01", d, P, css, body, js, c), [(c["MED"], "pop", 0.22)]
 
 
-# ============================================================================== gfx-02 · la llamada
-def gfx02():
-    n, P = 2, "g02"; d = dur(n)
-    c = dict(PRA=cue(n, "practicas"), FRA=cue(n, "frase"), LLA=cue(n, "llamas"), CON=cue(n, "contestan"),
-             BLO=cue(n, "bloqueas"))
-    c["TYP1"] = round(c["LLA"] - 0.08, 3)
-    css = """
-    #g02-note { left: 70px; top: 248px; width: 940px; height: 300px; }
-    #g02-lab { position: absolute; left: 44px; top: 38px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; letter-spacing: 0.12em; color: «BLUE»; }
-    #g02-typed { position: absolute; left: 44px; top: 92px; width: 850px; font-weight: 700; font-size: 50px; line-height: 1.22; color: «INK»; }
-    #g02-call { opacity: 0; }
-    #g02-av { position: absolute; left: 440px; top: 330px; width: 200px; height: 200px; border-radius: 50%;
-      background: rgba(255,255,255,0.12); box-shadow: 0 0 0 14px rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; }
-    #g02-av svg { width: 120px; height: 120px; }
-    #g02-ring { position: absolute; left: 440px; top: 330px; width: 200px; height: 200px; border-radius: 50%; border: 6px solid rgba(255,255,255,0.35); }
-    #g02-name { position: absolute; left: 0; top: 572px; width: 1080px; text-align: center; font-weight: 800; font-size: 68px; line-height: 1.1; color: #FFFFFF; }
-    #g02-org { position: absolute; left: 0; top: 676px; width: 1080px; text-align: center; font-family: "Inter", sans-serif; font-weight: 600; font-size: 32px; color: rgba(255,255,255,0.72); }
-    #g02-st1, #g02-st2 { position: absolute; left: 0; top: 736px; width: 1080px; text-align: center; font-family: "Inter", sans-serif; font-weight: 600; font-size: 32px; }
-    #g02-st1 { color: rgba(255,255,255,0.82); }
-    #g02-st2 { color: #5fe08e; opacity: 0; }
-    #g02-who { position: absolute; left: 70px; top: 812px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
-    #g02-b1 { left: 70px; top: 854px; width: 820px; }
-    #g02-b2w { position: absolute; right: 70px; top: 1048px; width: 520px; height: 112px; }
-    #g02-b2, #g02-b2r, #g02-b2c { position: absolute; right: 0; top: 0; font-weight: 800; font-size: 44px; }
-    #g02-b2r { background: «RED»; opacity: 0; }
-    #g02-b2c { background: «SKY»; opacity: 0; }
-    #g02-tag { right: 70px; top: 980px; background: «RED»; color: #FFFFFF; font-weight: 800; letter-spacing: 0.14em; }
-    .g02-btn { position: absolute; top: 1560px; width: 132px; height: 132px; border-radius: 50%; background: rgba(255,255,255,0.14); }
-    #g02-hang { background: «RED»; }
+# ============================================================================== ins-01 · practicas, llamas… te bloqueas
+def ins01():
+    iid, P = "ins-01", "i1"; d = INS[iid]["duration"]
+    c = dict(PRA=cue(iid, "practicas"), FRA=cue(iid, "frase"), LLA=cue(iid, "llamas"), CON=cue(iid, "contestan"),
+             BLO=cue(iid, "bloqueas"))
+    c["TE2"] = cue(iid, "te", 1)
+    css = CALL_CSS + """
+    #i1-note { left: 90px; top: 296px; width: 900px; height: 284px; }
+    #i1-tag { left: 130px; top: 266px; }
+    #i1-note-t { position: absolute; left: 50px; top: 70px; width: 810px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 56px;
+      line-height: 1.2; letter-spacing: -0.015em; color: «INK»; }
+    #i1-note-g { position: absolute; left: 52px; top: 218px; font-family: "Inter", sans-serif; font-weight: 500; font-size: 31px; color: «MUTED»; white-space: nowrap; }
+    #i1-b1 { left: 214px; top: 846px; transform-origin: 0% 100%; }
+    #i1-av1 { left: 90px; top: 858px; background: #9fd5f5; }
+    #i1-b2 { right: 214px; top: 1014px; min-width: 260px; transform-origin: 100% 100%; }
+    #i1-av2 { right: 90px; top: 1026px; background: «INDIGO»; }
+    #i1-caret { display: inline-block; width: 5px; height: 46px; margin-left: 4px; border-radius: 3px; background: «INDIGO»; vertical-align: -6px; }
+    #i1-stamp { position: absolute; left: 330px; top: 1098px; width: 400px; height: 104px; border-radius: 20px; box-sizing: border-box;
+      border: 7px solid «RED»; background: rgba(255,255,255,0.86); display: flex; align-items: center; justify-content: center; }
+    #i1-stamp-t { font-weight: 800; font-size: 60px; line-height: 1; letter-spacing: 0.06em; padding-left: 0.06em; padding-top: 6px;
+      color: rgba(224,45,60,0.12); -webkit-text-stroke: 3px «RED»; white-space: nowrap; }
 """
-    body = """    <div id="g02-note" class="g02-card">
-      <div id="g02-lab">TU FRASE, ENSAYADA</div>
-      <div id="g02-typed"></div>
+    body = "\n".join([ground(P, "paper"),
+        f"""    <div id="i1-note" class="i1-card i1-on-paper">
+      <div id="i1-note-t"></div>
+      <div id="i1-note-g">Quiero pedir una cita.</div>
     </div>
-    <div id="g02-call" class="g02-full g02-night">
-      <div class="g02-dots"></div>
-      <div id="g02-ring"></div>
-      <div id="g02-av">""" + icon("steth") + """</div>
-      <div id="g02-name">Huisarts</div>
-      <div id="g02-org">Huisartsenpraktijk</div>
-      <div id="g02-st1">Bellen…</div>
-      <div id="g02-st2">● 00:01</div>
-      <div id="g02-who">RECEPCIÓN</div>
-      <div id="g02-b1" class="g02-bub g02-bl">Goedemorgen, huisartsenpraktijk! Waarmee kan ik u helpen?</div>
-      <div id="g02-tag" class="g02-chip">BLOQUEO</div>
-      <div id="g02-b2w"><div id="g02-b2r" class="g02-bub">Eh… ik… ehm…</div><div id="g02-b2c" class="g02-bub">Eh… ik… ehm…</div><div id="g02-b2" class="g02-bub g02-br">Eh… ik… ehm…</div></div>
-      <div class="g02-btn" style="left: 196px;"></div><div class="g02-btn" style="left: 474px;"></div><div id="g02-hang" class="g02-btn" style="left: 752px;"></div>
-    </div>"""
+    <div id="i1-tag" class="i1-ipill"><span class="i1-flag">{FLAG_NL}</span><span>TU FRASE</span></div>""",
+        call_card(P, 90, 638, '<div class="i1-call-st" id="i1-st1">Llamando…</div><div class="i1-call-st" id="i1-st2"><span class="i1-dot"></span>En llamada · 00:01</div>'),
+        f"""    <div id="i1-av1" class="i1-av">{person()}</div>
+    <div id="i1-b1" class="i1-bub i1-bub-w i1-bl">Huisartsenpraktijk, goedemorgen!</div>
+    <div id="i1-av2" class="i1-av">{person()}</div>
+    <div id="i1-b2" class="i1-bub i1-bub-w i1-br"><span id="i1-b2-t"></span><span id="i1-caret"></span></div>
+    <div id="i1-stamp"><div id="i1-stamp-t">BLOQUEO</div></div>"""])
     js = """
-      // the rehearsed line (discrete-text-sequence)
-      tl.fromTo(q("note"), { y: -40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, «PRA» - 0.06);
-""" + typing_js("typed", "Goedemorgen, ik wil graag een afspraak maken…", c["PRA"], c["TYP1"]) + """
-      // «llamas»: the call screen
-      tl.fromTo(q("call"), { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «LLA» - 0.06);
-      tl.fromTo(q("ring"), { scale: 1, opacity: 0.9 }, { scale: 1.5, opacity: 0, duration: 0.7, ease: "power1.out", repeat: 1 }, «LLA»);
-      tl.fromTo(q("st1"), { opacity: 1 }, { opacity: 0.35, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 1 }, «LLA» + 0.1);
-      // «te contestan»: connected, the receptionist speaks fast
-      tl.set(q("st1"), { opacity: 0 }, «CON»);
-      tl.fromTo(q("st2"), { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "none" }, «CON»);
-      tl.fromTo(q("who"), { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, «CON»);
-      tl.fromTo(q("b1"), { opacity: 0, y: 24, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, «CON» + 0.02);
-      // «te bloqueas»: her bubble glitches (chromatic-glitch, deterministic hash on quantised time) + BLOQUEO
-      tl.fromTo(q("b2"), { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.18, ease: "power3.out" }, «BLO» - 0.06);
-      tl.fromTo(q("tag"), { opacity: 0, scale: 1.4, rotation: -6 }, { opacity: 1, scale: 1, rotation: -6, duration: 0.22, ease: "back.out(2)" }, «BLO» + 0.08);
-      (() => {
-        const hash = (k) => { const x = Math.sin(k * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
-        const r = q("b2r"), cc = q("b2c"), main = q("call"); const amp = { a: 0 };
-        tl.set([r, cc], { opacity: 0.85 }, «BLO»);
-        tl.fromTo(amp, { a: 1 }, { a: 0, duration: 0.42, ease: "power2.in",
-          onUpdate: () => {
-            const step = Math.floor(tl.time() / 0.04);
-            r.style.transform = "translate(" + (amp.a * (hash(step * 13 + 1) * 2 - 1) * 16).toFixed(1) + "px," + (amp.a * (hash(step * 7 + 2) * 2 - 1) * 6).toFixed(1) + "px)";
-            cc.style.transform = "translate(" + (amp.a * (hash(step * 13 + 5) * 2 - 1) * 16).toFixed(1) + "px," + (amp.a * (hash(step * 7 + 9) * 2 - 1) * 6).toFixed(1) + "px)";
-            main.style.transform = "translate(" + (amp.a * (hash(step * 3 + 4) * 2 - 1) * 9).toFixed(1) + "px,0px)";
-          } }, «BLO»);
-        tl.set([r, cc], { opacity: 0 }, «BLO» + 0.43);
-      })();
+      tl.fromTo(q("note"), { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.34, ease: "power3.out" }, 0);
+      tl.fromTo(q("tag"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, 0.08);
+""" + typing_js("note-t", "Ik wil graag een afspraak maken.", 0.1, c["FRA"] + 0.12) + """
+      tl.fromTo(q("call"), { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, «LLA» - 0.08);
+      tl.fromTo(q("st2"), { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+      tl.fromTo(q("ring1"), { opacity: 0.55, scale: 1 }, { opacity: 0, scale: 1.7, duration: 0.6, ease: "power2.out" }, «LLA»);
+      tl.fromTo(q("ring2"), { opacity: 0.55, scale: 1 }, { opacity: 0, scale: 1.7, duration: 0.6, ease: "power2.out" }, «LLA» + 0.42);
+      tl.to(q("st1"), { opacity: 0, duration: 0.1 }, «CON» - 0.06);
+      tl.to(q("st2"), { opacity: 1, duration: 0.12 }, «CON» - 0.02);
+      tl.fromTo(q("av1"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, «CON» - 0.04);
+      tl.fromTo(q("b1"), { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, «CON»);
+      tl.fromTo(q("av2"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(2)" }, «TE2» - 0.08);
+      tl.fromTo(q("b2"), { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.6)" }, «TE2» - 0.04);
+""" + typing_js("b2-t", "Ik… eh…", c["TE2"] - 0.02, c["BLO"] + 0.3) + blink_js("caret", c["BLO"] + 0.32, d, 0.44) + """
+      tl.fromTo(q("stamp"), { opacity: 0, scale: 1.55, rotation: -7 }, { opacity: 1, scale: 1, rotation: -7, duration: 0.2, ease: "power4.out" }, «BLO» + 0.04);
+      tl.fromTo(q("b2"), { x: 0 }, { keyframes: [{ x: -9, duration: 0.05 }, { x: 8, duration: 0.05 }, { x: -5, duration: 0.05 }, { x: 0, duration: 0.05 }], immediateRender: false }, «BLO» + 0.2);
 """
-    sfx = [(c["LLA"] - 0.08, "whoosh-short", 0.22), (c["LLA"] + 0.05, "ringback", 0.32), (c["CON"] - 0.04, "click-soft", 0.3),
-           (c["BLO"] - 0.04, "glitch-1-short", 0.16), (c["BLO"] + 0.06, "error", 0.22)]
-    return comp("gfx-02", d, P, css, body, js, c), sfx
+    sfx = [(0.1, "typing", 0.2, c["FRA"]), (c["LLA"], "ringback", 0.3), (c["CON"], "pop", 0.26), (c["BLO"] + 0.04, "error", 0.24)]
+    return comp(iid, d, P, css, body, js, c), sfx
 
 
-# ============================================================================== gfx-03 · el favor / tu país
-def gfx03():
-    n, P = 3, "g03"; d = dur(n)
-    c = dict(ALG=cue(n, "alguien"), MAS=cue(n, "mas"), FAV=cue(n, "favor"), ALGO=cue(n, "algo"), PAIS=cue(n, "pais"),
-             SIN=cue(n, "sin"))
+# ============================================================================== ins-02 · alguien te traduce o te cambia al inglés
+def ins02():
+    iid, P = "ins-02", "i2"; d = INS[iid]["duration"]
+    c = dict(POR=cue(iid, "porque"), QUE=cue(iid, "que", 0), O=cue(iid, "o"), CAM=cue(iid, "cambia"), ING=cue(iid, "ingles"))
     css = """
-    #g03-card { left: 70px; top: 248px; width: 940px; height: 300px; }
-    .g03-av { position: absolute; top: 46px; width: 150px; height: 150px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 46px; color: #FFFFFF; }
-    #g03-me { left: 110px; background: «BLUE»; }
-    #g03-other { left: 680px; background: #9AA3BC; }
-    .g03-nm { position: absolute; top: 214px; width: 260px; text-align: center; font-family: "Inter", sans-serif; font-weight: 700; font-size: 28px; color: «MUTED»; }
-    #g03-ph { position: absolute; left: 140px; top: 70px; width: 96px; height: 96px; }
-    #g03-arr { position: absolute; left: 290px; top: 110px; width: 360px; height: 26px; }
-    #g03-fav { left: 610px; top: 6px; background: «PAPER»; color: «DEEP»; }
-    #g03-s2 { position: absolute; left: 0; top: 0; width: 940px; height: 300px; background: #FFFFFF; opacity: 0; }
-    #g03-k { position: absolute; left: 50px; top: 44px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.12em; color: «BLUE»; }
-    #g03-big { position: absolute; left: 50px; top: 92px; font-weight: 900; font-size: 64px; line-height: 1.05; color: «DEEP»; white-space: nowrap; }
-    #g03-ok { position: absolute; left: 50px; top: 186px; display: flex; align-items: center; gap: 18px; font-weight: 900; font-size: 60px; color: «GREEN»; }
-    #g03-ok svg { width: 74px; height: 74px; }
+    #i2-av1 { left: 90px; top: 392px; background: #9fd5f5; }
+    #i2-b1 { left: 214px; top: 380px; transform-origin: 0% 100%; }
+    #i2-nl { left: 254px; top: 348px; }
+    #i2-lab { position: absolute; right: 214px; top: 610px; display: flex; align-items: center; gap: 10px; color: «MUTED»;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; letter-spacing: 0.14em; white-space: nowrap; }
+    #i2-lab svg { display: block; width: 34px; height: 34px; }
+    #i2-av2 { right: 90px; top: 672px; background: «MUTED»; }
+    #i2-b2 { right: 214px; top: 660px; transform-origin: 100% 100%; }
+    #i2-stack { position: absolute; left: 214px; top: 940px; width: 760px; height: 160px; }
+    .i2-ghost { position: absolute; left: 0; top: 0; }
+    #i2-av3 { left: 90px; top: 952px; background: #9fd5f5; }
+    #i2-b3 { left: 0; top: 0; transform-origin: 0% 100%; }
+    #i2-en { left: 254px; top: 908px; }
 """
-    body = """    <div id="g03-card" class="g03-card">
-      <div id="g03-s1">
-      <div id="g03-me" class="g03-av">Tú</div><div class="g03-nm" style="left: 55px;">Tú</div>
-      <div id="g03-other" class="g03-av">?</div><div class="g03-nm" style="left: 625px;">Otra persona</div>
-      <svg id="g03-arr" viewBox="0 0 360 26"><path id="g03-arrp" d="M4 13 H340 M322 3 L344 13 L322 23" fill="none" stroke="«LINE»" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" pathLength="1"/></svg>
-      <div id="g03-ph">""" + icon("phone") + """</div>
-      <div id="g03-fav" class="g03-chip">TE HACE EL FAVOR</div>
-      </div>
-      <div id="g03-s2">
-        <div id="g03-k">EN TU PAÍS</div>
-        <div id="g03-big">Llamar al médico</div>
-        <div id="g03-ok">""" + icon("check") + """<span>¡Sin pensarlo!</span></div>
-      </div>
-    </div>"""
-    js = """
-      tl.fromTo(q("card"), { y: -40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, «ALG» - 0.08);
-      q("arrp").setAttribute("stroke-dashoffset", "1");
-      tl.fromTo(q("arrp"), { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.45, ease: "power2.out" }, «MAS» - 0.05);
-      tl.fromTo(q("ph"), { x: 0, rotation: 0 }, { x: 570, rotation: 14, duration: 0.6, ease: "power2.inOut" }, «MAS»);
-      tl.fromTo(q("fav"), { opacity: 0, y: 14, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(1.8)" }, «FAV» - 0.04);
-      // «Algo que en tu país…»: the second state
-      tl.fromTo(q("s2"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «ALGO» - 0.06);
-      tl.set(q("s1"), { opacity: 0 }, «ALGO» + 0.26);
-      tl.fromTo(q("ok"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.2)" }, «SIN» - 0.04);
-"""
-    return comp("gfx-03", d, P, css, body, js, c), [(c["ALG"] - 0.1, "pop", 0.2), (c["SIN"] - 0.02, "pop", 0.22)]
-
-
-# ============================================================================== gfx-04 · el tiempo / el inglés
-def gfx04():
-    n, P = 4, "g04"; d = dur(n)
-    c = dict(TIE=cue(n, "tiempo"), POR=cue(n, "porque"), ALG=cue(n, "alguien"), TRA=cue(n, "traduce"), CAM=cue(n, "cambia"),
-             ING=cue(n, "ingles"))
-    css = """
-    #g04-card { left: 70px; top: 248px; width: 940px; height: 300px; }
-    #g04-box { position: absolute; left: 44px; top: 44px; width: 250px; height: 212px; border-radius: 26px; background: «DEEP»; overflow: hidden; }
-    #g04-boxh { position: absolute; left: 0; top: 0; width: 250px; height: 56px; background: «BLUE»; display: flex; align-items: center; justify-content: center; }
-    #g04-boxh svg { width: 34px; height: 34px; }
-    #g04-yr { position: absolute; left: 0; top: 56px; width: 250px; height: 156px; overflow: hidden; }
-    #g04-col { position: absolute; left: 0; top: 0; width: 250px; }
-    .g04-y { width: 250px; height: 156px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 74px; color: #FFFFFF; }
-    #g04-k { position: absolute; left: 330px; top: 52px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.12em; color: «MUTED»; }
-    #g04-t { position: absolute; left: 330px; top: 96px; font-weight: 900; font-size: 58px; line-height: 1.05; color: «DEEP»; white-space: nowrap; }
-    #g04-no { left: 330px; top: 196px; background: «RED»; color: #FFFFFF; font-weight: 800; }
-    #g04-s2 { position: absolute; left: 0; top: 0; width: 940px; height: 300px; background: «PAPER»; opacity: 0; }
-    #g04-nl { left: 40px; top: 40px; max-width: 600px; font-size: 36px; background: #FFFFFF; color: «INK»; box-shadow: 0 6px 18px rgba(8,4,48,0.12); }
-    #g04-tr { left: 640px; top: 56px; background: «DEEP»; color: #FFFFFF; font-weight: 800; }
-    #g04-en { left: 210px; top: 164px; font-size: 40px; font-weight: 800; background: #FFFFFF; color: «DEEP»; box-shadow: 0 0 0 5px «RED», 0 10px 24px rgba(8,4,48,0.18); }
-    #g04-enc { left: 76px; top: 184px; height: 64px; background: «RED»; color: #FFFFFF; font-weight: 800; font-size: 28px; }
-"""
-    years = "".join('<div class="g04-y">%d</div>' % y for y in range(2021, 2026))
-    body = """    <div id="g04-card" class="g04-card">
-      <div id="g04-s1">
-      <div id="g04-box"><div id="g04-boxh">""" + icon("cal") + """</div><div id="g04-yr"><div id="g04-col">""" + years + """</div></div></div>
-      <div id="g04-k">PASAN LOS AÑOS…</div>
-      <div id="g04-t">y sigues igual</div>
-      <div id="g04-no" class="g04-chip">✕ NO SE ARREGLA SOLO</div>
-      </div>
-      <div id="g04-s2">
-        <div id="g04-nl" class="g04-bub g04-bl">Hoe kan ik u helpen?</div>
-        <div id="g04-tr" class="g04-chip">TE TRADUCEN</div>
-        <div id="g04-enc" class="g04-chip">EN</div>
-        <div id="g04-en" class="g04-bub">Oh, let's just speak English!</div>
-      </div>
-    </div>"""
-    js = """
-      tl.fromTo(q("card"), { y: -40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, «TIE» - 0.16);
-      // vertical-spring-ticker: 2021 → 2025, one stepped tween per year
-      [1, 2, 3, 4].forEach((k) => {
-        tl.fromTo(q("col"), { y: -(k - 1) * 156 }, { y: -k * 156, duration: 0.12, ease: "back.out(1.4)", immediateRender: false }, «TIE» + 0.02 + (k - 1) * 0.13);
-      });
-      tl.fromTo(q("no"), { opacity: 0, scale: 0.8, x: -10 }, { opacity: 1, scale: 1, x: 0, duration: 0.24, ease: "back.out(2)" }, «POR» - 0.08);
-      // «alguien que te traduce o que te cambia al inglés»
-      tl.fromTo(q("s2"), { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out" }, «ALG» - 0.1);
-      tl.set(q("s1"), { opacity: 0 }, «ALG» + 0.14);
-      tl.fromTo(q("nl"), { opacity: 0, y: 20, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.6)" }, «ALG» - 0.06);
-      tl.fromTo(q("tr"), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.24, ease: "back.out(2)" }, «TRA» - 0.06);
-      tl.fromTo(q("nl"), { opacity: 1 }, { opacity: 0.35, duration: 0.2, ease: "none", immediateRender: false }, «CAM»);
-      tl.fromTo(q("en"), { opacity: 0, scale: 1.25, rotation: -3 }, { opacity: 1, scale: 1, rotation: -2, duration: 0.24, ease: "back.out(1.8)" }, «CAM» - 0.02);
-      tl.fromTo(q("enc"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, «ING» - 0.06);
-"""
-    return comp("gfx-04", d, P, css, body, js, c), [(c["TIE"] - 0.18, "pop", 0.2), (c["ALG"] - 0.1, "pop", 0.18), (c["CAM"] - 0.05, "whoosh-short", 0.22)]
-
-
-# ============================================================================== gfx-05 · Nawar + profes nativos
-def gfx05():
-    n, P = 5, "g05"; d = dur(n)
-    c = dict(NAW=cue(n, "nawar"), TE=cue(n, "te"), NEE=cue(n, "neerlandes"), CON=cue(n, "con"), EQU=cue(n, "equipo"),
-             NAT=cue(n, "nativos"), DOM=cue(n, "dominan"), IDI=cue(n, "idioma"))
-    c["OUT"] = round(c["CON"] - 0.02, 3)
-    c["VDUR"] = round(d - (c["EQU"] - 0.12), 3); c["VST"] = round(c["EQU"] - 0.12, 3)
-    css = """
-    #g05-brand { opacity: 0; }
-    #g05-glow { position: absolute; left: 140px; top: 360px; width: 800px; height: 800px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(77,163,255,0.45) 0%, rgba(77,163,255,0) 65%); }
-    #g05-logo { position: absolute; left: 190px; top: 560px; width: 700px; height: 250px; }
-    #g05-l1 { position: absolute; left: 0; top: 866px; width: 1080px; text-align: center; font-weight: 700; font-size: 50px; color: rgba(255,255,255,0.82); }
-    #g05-l2 { position: absolute; left: 0; top: 930px; width: 1080px; text-align: center; font-weight: 900; font-size: 96px; letter-spacing: -0.02em; color: #FFFFFF; }
-    #g05-card { left: 70px; top: 240px; width: 940px; height: 340px; }
-    #g05-tile { position: absolute; left: 30px; top: 30px; width: 280px; height: 280px; border-radius: 24px; overflow: hidden; background: #dfe3ee; }
-    #g05-v { position: absolute; left: -439px; top: -28px; width: 1401px; height: 556px; object-fit: fill; }   /* Paul's webcam (src x 742–1326) */
-    #g05-live { left: 46px; top: 236px; height: 40px; padding: 0 14px; font-size: 18px; background: rgba(12,12,30,0.72); color: #FFFFFF; }
-    #g05-k { position: absolute; left: 350px; top: 44px; display: flex; align-items: center; gap: 14px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; letter-spacing: 0.12em; color: «BLUE»; }
-    #g05-h { position: absolute; left: 350px; top: 92px; font-weight: 900; font-size: 66px; line-height: 1.05; color: «DEEP»; white-space: nowrap; }
-    #g05-s { position: absolute; left: 350px; top: 192px; font-weight: 700; font-size: 44px; line-height: 1.2; color: «INK»; white-space: nowrap; }
-    #g05-es { position: relative; display: inline-block; padding: 0 10px; }
-    #g05-esbg { position: absolute; left: 0; top: 4px; width: 100%; height: 56px; border-radius: 12px; background: «BLUE»; transform-origin: 0% 50%; }
-    #g05-est { position: relative; }
-"""
-    body = """    <div id="g05-brand" class="g05-full g05-blue">
-      <div class="g05-dots"></div><div id="g05-glow"></div>
-      <img id="g05-logo" src="assets/img/logo-nawar.png" alt="Nawar" />
-      <div id="g05-l1">te enseñamos</div>
-      <div id="g05-l2">neerlandés</div>
+    b3txt = "Oh, let’s just speak English!"
+    body = "\n".join([ground(P, "paper"), f"""    <div id="i2-av1" class="i2-av">{person()}</div>
+    <div id="i2-b1" class="i2-bub i2-bub-w i2-bl">Wat is uw geboortedatum?</div>
+    <div id="i2-nl" class="i2-ipill"><span class="i2-flag">{FLAG_NL}</span><span>NL</span></div>
+    <div id="i2-lab">{icon('trans')}<span>TE TRADUCEN</span></div>
+    <div id="i2-av2" class="i2-av">{person()}</div>
+    <div id="i2-b2" class="i2-bub i2-bub-g i2-br">Te pide tu fecha de nacimiento.</div>
+    <div id="i2-stack">
+      <div id="i2-g2" data-layout-allow-overlap class="i2-ghost i2-bub i2-bub-w i2-bl">{b3txt}</div>
+      <div id="i2-g1" data-layout-allow-overlap class="i2-ghost i2-bub i2-bub-w i2-bl">{b3txt}</div>
+      <div id="i2-b3" class="i2-bub i2-bub-w i2-bl">{b3txt}</div>
     </div>
-    <div id="g05-card" class="g05-card">
-      <div id="g05-tile"><video id="g05-v" class="clip" src="assets/video/paul-clase-1.mp4" muted playsinline data-start="«VST»" data-duration="«VDUR»" data-media-start="1" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video></div>
-      <div id="g05-live" class="g05-chip">PROFE PAUL</div>
-      <div id="g05-k"><div class="g05-flag"></div><div>PROFESORES NATIVOS</div></div>
-      <div id="g05-h">Holandeses</div>
-      <div id="g05-s">expertos en <span id="g05-es"><span id="g05-esbg"></span><span id="g05-est">español</span></span></div>
-    </div>"""
+    <div id="i2-av3" class="i2-av">{person()}</div>
+    <div id="i2-en" class="i2-ipill"><span class="i2-flag">{FLAG_EN}</span><span>EN</span></div>"""])
     js = """
-      // brand slam (full screen) on «Nawar»
-      tl.fromTo(q("brand"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, «NAW» - 0.16);
-      tl.fromTo(q("glow"), { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: "power2.out" }, «NAW» - 0.1);
-      tl.fromTo(q("logo"), { scale: 1.35, opacity: 0, filter: "blur(14px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.34, ease: "expo.out" }, «NAW» - 0.04);
-      tl.fromTo(q("l1"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, «TE» - 0.04);
-      tl.fromTo(q("l2"), { opacity: 0, y: 40, scale: 1.08 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power3.out" }, «NEE» - 0.04);
-      tl.fromTo(q("brand"), { opacity: 1, scale: 1 }, { opacity: 0, scale: 1.06, duration: 0.18, ease: "power2.in", immediateRender: false }, «OUT» - 0.18);
-      // the teachers
-      tl.fromTo(q("card"), { y: -40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, «EQU» - 0.1);
-      tl.fromTo(q("h"), { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.28, ease: "power3.out" }, «NAT» - 0.04);
-      tl.fromTo(q("s"), { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.28, ease: "power3.out" }, «DOM» - 0.04);
-      tl.fromTo(q("esbg"), { scaleX: 0 }, { scaleX: 1, duration: 0.24, ease: "power3.out" }, «IDI» - 0.06);
-      tl.fromTo(q("est"), { color: "«INK»" }, { color: "#FFFFFF", duration: 0.1, ease: "none" }, «IDI» - 0.02);
+      tl.fromTo(q("av1"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, 0);
+      tl.fromTo(q("b1"), { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 0.04);
+      tl.fromTo(q("nl"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(2)" }, 0.14);
+      tl.fromTo(q("lab"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, «QUE» - 0.1);
+      tl.fromTo(q("av2"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, «QUE» - 0.06);
+      tl.fromTo(q("b2"), { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, «QUE» - 0.02);
+      tl.to([q("av1"), q("b1"), q("nl"), q("lab"), q("av2"), q("b2")], { opacity: 0.42, duration: 0.25, ease: "power2.out" }, «O» - 0.04);
+      tl.fromTo(q("av3"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, «O» - 0.06);
+      tl.fromTo(q("b3"), { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, «O» - 0.02);
+      tl.fromTo(q("en"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(2)" }, «O» + 0.1);
+      tl.fromTo(q("g1"), { opacity: 0, y: 0, scale: 1 }, { opacity: 0.6, y: 18, scale: 0.97, duration: 0.3, ease: "power3.out" }, «ING» - 0.06);
+      tl.fromTo(q("g2"), { opacity: 0, y: 0, scale: 1 }, { opacity: 0.32, y: 36, scale: 0.94, duration: 0.34, ease: "power3.out" }, «ING» + 0.04);
 """
-    return comp("gfx-05", d, P, css, body, js, c), [(c["NAW"] - 0.18, "whoosh", 0.2), (c["NAW"] - 0.02, "sparkle", 0.22), (c["EQU"] - 0.12, "pop", 0.2)]
+    sfx = [(0.04, "pop", 0.24), (c["QUE"], "pop", 0.22), (c["O"], "pop", 0.26)]
+    return comp(iid, d, P, css, body, js, c), sfx
 
 
-# ============================================================================== gfx-06 · lecciones grabadas
-def gfx06():
-    n, P = 6, "g06"; d = dur(n)
-    c = dict(LEC=cue(n, "lecciones"), CUA=cue(n, "cuando"), TU=cue(n, "tu"), PUE=cue(n, "puedas"))
-    c["VST"] = round(c["LEC"] - 0.1, 3); c["VDUR"] = round(d - c["VST"], 3)
-    css = """
-    #g06-card { left: 90px; top: 236px; width: 900px; height: 500px; background: #0d0b38; }
-    #g06-v { position: absolute; left: -151px; top: -4px; width: 1222px; height: 624px; object-fit: fill; }   /* the lesson slide incl. his webcam */
-    #g06-chip { left: 26px; top: 392px; background: #FFFFFF; color: «BLUE»; font-weight: 800; }
-    #g06-chip svg { width: 26px; height: 26px; }
-    #g06-bar { position: absolute; left: 26px; top: 470px; width: 848px; height: 10px; border-radius: 5px; background: rgba(255,255,255,0.3); }
-    #g06-fill { position: absolute; left: 0; top: 0; width: 848px; height: 10px; border-radius: 5px; background: «SKY»; transform-origin: 0% 50%; }
-    #g06-times { position: absolute; left: 90px; top: 700px; width: 900px; display: flex; justify-content: center; gap: 18px; }
-    .g06-t { position: relative; display: flex; align-items: center; gap: 12px; height: 72px; padding: 0 26px; border-radius: 999px; background: #FFFFFF;
-      box-shadow: 0 14px 34px rgba(8,4,48,0.35); font-weight: 800; font-size: 34px; color: «DEEP»; }
-    .g06-t svg { width: 36px; height: 36px; }
+FLAG_EN = ('<svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#012169"/><path d="M0 0 L40 27 M40 0 L0 27" stroke="#FFFFFF" stroke-width="5"/>'
+           '<path d="M0 0 L40 27 M40 0 L0 27" stroke="#C8102E" stroke-width="2"/><path d="M20 0 V27 M0 13.5 H40" stroke="#FFFFFF" stroke-width="8"/>'
+           '<path d="M20 0 V27 M0 13.5 H40" stroke="#C8102E" stroke-width="4.5"/></svg>')
+
+
+# ============================================================================== ins-03 · profesores nativos → lecciones grabadas
+def ins03():
+    iid, P = "ins-03", "i3"; d = INS[iid]["duration"]
+    c = dict(EXP=cue(iid, "expertos"), DOM=cue(iid, "dominan"), CUE=cue(iid, "cuentas"), LEC=cue(iid, "lecciones"),
+             CUA=cue(iid, "cuando"))
+    c["SWAP"] = round(c["CUE"] - 0.1, 3)
+    c["VD"] = round(c["SWAP"] + 0.45, 3)
+    c["LD"] = round(d - c["SWAP"] + 0.05, 3)
+    # Paul: the webcam region of paul-clase-1 (x 750–1318, y 10–970 of 2502×992) scaled to the 760 px card
+    k = 760 / 568
+    c.update(PW=round(2502 * k, 1), PH=round(992 * k, 1), PL=round(-750 * k, 1), PT=round(-(350 * k - 330), 1))
+    css = WIN_CSS + """
+    #i3-paul { left: 160px; top: 214px; width: 760px; height: 840px; overflow: hidden; border-radius: 44px; background: #0C0C1E; }
+    #i3-pz { position: absolute; left: 0; top: 0; width: 760px; height: 840px; transform-origin: 380px 330px; }
+    #i3-pv { position: absolute; left: «PL»px; top: «PT»px; width: «PW»px; height: «PH»px; }
+    #i3-pgrad { position: absolute; left: 0; bottom: 0; width: 760px; height: 260px; background: linear-gradient(180deg, rgba(4,0,40,0) 0%, rgba(4,0,40,0.62) 100%); }
+    #i3-pedge { position: absolute; inset: 0; border-radius: 44px; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.22); }
+    #i3-name { position: absolute; left: 44px; bottom: 112px; font-weight: 700; font-size: 44px; line-height: 1; color: #FFFFFF; white-space: nowrap; }
+    #i3-role { position: absolute; left: 46px; bottom: 70px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 27px; line-height: 1; color: rgba(255,255,255,0.78); white-space: nowrap; }
+    #i3-p1row { top: 1022px; }
+    #i3-p2row { top: 1110px; }
+    #i3-lrow { top: 208px; }
+    #i3-phone { position: absolute; left: 712px; top: 594px; width: 300px; height: 618px; border-radius: 54px; background: #0C0C1E;
+      box-shadow: 0 40px 100px rgba(4,0,40,0.55), 0 0 0 2px rgba(255,255,255,0.10); }
+    #i3-screen { position: absolute; left: 14px; top: 14px; width: 272px; height: 590px; border-radius: 42px; overflow: hidden; background: #FFFFFF; }
+    #i3-shot { position: absolute; left: 0; top: 0; width: 272px; height: 592px; display: block; }
+    #i3-lz { position: absolute; left: 0; top: 0; width: 100%; height: 100%; transform-origin: 64% 30%; }
+    #i3-notch { position: absolute; left: 96px; top: 12px; width: 80px; height: 22px; border-radius: 11px; background: #0C0C1E; }
 """
-    body = """    <div id="g06-card" class="g06-card">
-      <video id="g06-v" class="clip" src="assets/video/paul-clase-2.mp4" muted playsinline data-start="«VST»" data-duration="«VDUR»" data-media-start="1.5" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video>
-      <div id="g06-chip" class="g06-chip">""" + icon("play") + """LECCIÓN GRABADA</div>
-      <div id="g06-bar"><div id="g06-fill"></div></div>
+    body = "\n".join([ground(P, "blue"), f"""    <div id="i3-s1" class="i3-full">
+      <div id="i3-paul" class="i3-card i3-on-blue">
+        <div id="i3-pz"><video id="i3-pv" class="clip" src="assets/video/paul-clase-1.mp4" muted playsinline data-start="0" data-duration="«VD»" data-media-start="0.4" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video></div>
+        <div id="i3-pgrad"></div><div id="i3-pedge"></div>
+        <div id="i3-name">Paul</div><div id="i3-role">Profesor de Nawar</div>
+      </div>
+      <div id="i3-p1row" class="i3-row"><div id="i3-p1" class="i3-wpill"><span class="i3-flag i3-flagd">{FLAG_NL}</span><span>Profesores nativos holandeses</span></div></div>
+      <div id="i3-p2row" class="i3-row"><div id="i3-p2" class="i3-wpill"><span class="i3-flag i3-flagd">{FLAG_ES}</span><span>Expertos en español</span></div></div>
     </div>
-    <div id="g06-times"><div id="g06-t1" class="g06-t">""" + icon("dawn") + """07:30</div><div id="g06-t2" class="g06-t">""" + icon("sun") + """14:00</div><div id="g06-t3" class="g06-t">""" + icon("moon") + """23:15</div></div>"""
+    <div id="i3-s2" class="i3-full">
+      <div id="i3-lrow" class="i3-row"><div id="i3-lp" class="i3-pill">{icon('play')}<span>Lecciones grabadas</span></div></div>
+      """ + win(P, "win", 960, 60, 296, '<div id="i3-lz"><video id="i3-lv" class="clip i3-media" src="assets/video/clases-video-dentro.mp4" muted playsinline data-start="«SWAP»" data-duration="«LD»" data-media-start="2.6" data-track-index="2" data-hf-media-start-basis="local"></video></div>') + f"""
+      <div id="i3-phone"><div id="i3-screen"><img id="i3-shot" src="assets/img/ui-curso-movil.png" alt="" /></div><div id="i3-notch"></div></div>
+    </div>"""])
     js = """
-      tl.fromTo(q("card"), { y: -50, opacity: 0, scale: 0.95 }, { y: 0, opacity: 1, scale: 1, duration: 0.36, ease: "power3.out" }, «LEC» - 0.1);
-      tl.fromTo(q("fill"), { scaleX: 0.18 }, { scaleX: 0.46, duration: «D» - «LEC», ease: "none" }, «LEC»);
-      [["t1", «CUA»], ["t2", «TU»], ["t3", «PUE»]].forEach(([id, t]) => {
-        tl.fromTo(q(id), { opacity: 0, y: 26, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, t - 0.06);
-      });
+      tl.fromTo(q("paul"), { opacity: 0, y: 70, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out" }, 0);
+      tl.fromTo(q("pz"), { scale: 1 }, { scale: 1.05, duration: «SWAP», ease: "none" }, 0);
+      tl.fromTo(q("p1"), { opacity: 0, y: 26, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, «EXP» - 0.04);
+      tl.fromTo(q("p2"), { opacity: 0, y: 26, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, «DOM» - 0.04);
+      tl.to(q("s1"), { opacity: 0, y: -90, duration: 0.26, ease: "power2.in" }, «SWAP» - 0.2);
+      tl.fromTo(q("s2"), { opacity: 0 }, { opacity: 1, duration: 0.01 }, «SWAP» - 0.02);
+      tl.fromTo(q("lp"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «SWAP»);
+      tl.fromTo(q("win"), { opacity: 0, y: 120, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.46, ease: "power3.out" }, «SWAP»);
+      tl.fromTo(q("lz"), { scale: 1 }, { scale: 1.3, duration: «CUA» - «SWAP» + 0.2, ease: "power1.inOut" }, «SWAP» + 0.1);
+      tl.fromTo(q("phone"), { opacity: 0, x: 160, rotation: 7 }, { opacity: 1, x: 0, rotation: 0, duration: 0.46, ease: "power3.out" }, «CUA» - 0.16);
+      tl.fromTo(q("shot"), { y: 0 }, { y: -40, duration: «D» - «CUA», ease: "power1.inOut" }, «CUA» + 0.1);
 """
-    return comp("gfx-06", d, P, css, body, js, c), [(c["LEC"] - 0.12, "whoosh-short", 0.2), (c["CUA"] - 0.06, "pop", 0.16), (c["PUE"] - 0.06, "pop", 0.16)]
+    sfx = [(c["EXP"] - 0.04, "click-soft", 0.24), (c["DOM"] - 0.04, "click-soft", 0.24), (c["SWAP"], "whoosh-short", 0.14), (c["CUA"] - 0.16, "pop", 0.2)]
+    return comp(iid, d, P, css, body, js, c), sfx
 
 
-# ============================================================================== gfx-07 · ejercicios de verdad (full screen)
-def gfx07():
-    n, P = 7, "g07"; d = dur(n)
-    c = dict(EJE=cue(n, "ejercicios"), VER=cue(n, "verdad"), LEE=cue(n, "leer"), ESC=cue(n, "escribir"), ENT=cue(n, "entrenar"),
-             SIM=cue(n, "simple"), TES=cue(n, "test"))
-    c["VDUR"] = round(d - 0.04, 3)
-    css = """
-    #g07-bg { background: «PAPER»; }
-    #g07-dots { position: absolute; left: -40px; top: -40px; width: 1160px; height: 2000px;
-      background-image: radial-gradient(circle, rgba(29,0,132,0.08) 2.2px, transparent 2.6px); background-size: 38px 38px; }
-    #g07-h1 { position: absolute; left: 70px; top: 246px; font-weight: 900; font-size: 100px; line-height: 1.0; letter-spacing: -0.03em; color: «DEEP»; }
-    #g07-h2 { position: absolute; left: 70px; top: 360px; padding: 0 26px; border-radius: 24px; background: «BLUE»;
-      font-weight: 900; font-size: 92px; line-height: 1.18; letter-spacing: -0.02em; color: #FFFFFF; transform-origin: 0% 50%; }
-    #g07-card { left: 60px; top: 540px; width: 960px; height: 400px; border: 3px solid «LINE»; }
-    #g07-v { position: absolute; left: -738.5px; top: -2px; width: 2114.5px; height: 849px; object-fit: fill; }
-    #g07-skills { position: absolute; left: 60px; top: 980px; width: 960px; display: flex; gap: 18px; }
-    .g07-s { display: flex; align-items: center; gap: 14px; height: 92px; padding: 0 30px; border-radius: 26px; background: #FFFFFF;
-      box-shadow: 0 14px 30px rgba(8,4,48,0.14); font-weight: 800; font-size: 40px; color: «DEEP»; border: 3px solid «LINE»; }
-    .g07-s svg { width: 46px; height: 46px; }
-    #g07-quiz { left: 604px; top: 262px; width: 420px; height: 168px; border: 3px solid «LINE»; }
-    #g07-qt { position: absolute; left: 30px; top: 22px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; letter-spacing: 0.1em; color: «MUTED»; }
-    #g07-opts { position: absolute; left: 30px; top: 74px; display: flex; gap: 12px; }
-    .g07-o { width: 80px; height: 64px; border-radius: 16px; border: 3px solid «LINE»; display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 32px; color: «MUTED»; }
-    #g07-strike { position: absolute; left: 590px; top: 344px; width: 450px; height: 14px; border-radius: 7px; background: «RED»; transform-origin: 0% 50%; }
-    #g07-x { position: absolute; left: 960px; top: 226px; width: 92px; height: 92px; }
+# ============================================================================== ins-04 · leer, escribir, oído — no un test
+def ins04():
+    iid, P = "ins-04", "i4"; d = INS[iid]["duration"]
+    c = dict(LEE=cue(iid, "leer"), ESC=cue(iid, "escribir"), ENT=cue(iid, "entrenar"), OID=cue(iid, "oido"), EN=cue(iid, "en"),
+             TES=cue(iid, "test"))
+    # crops (source px) → inner width 860
+    IW = 860
+    def crop(x0, y0, x1, y1, W, H):
+        k = IW / (x1 - x0)
+        return dict(w=round(W * k, 1), h=round(H * k, 1), l=round(-x0 * k, 1), t=round(-y0 * k, 1), ih=round((y1 - y0) * k, 1))
+    L = crop(244, 280, 1816, 940, 2048, 1447)
+    E = crop(592, 0, 1474, 336, 1718, 690)
+    O = crop(74, 22, 1860, 690, 1902, 1080)
+    c.update(LIH=L["ih"], EIH=E["ih"], OIH=O["ih"], ED=round(d - c["ESC"] + 0.2, 3), EST=round(max(0.0, c["ESC"] - 0.12), 3))
+    css = f"""
+    #i4-h1 {{ top: 200px; }}
+    #i4-h2 {{ top: 312px; }}
+    .i4-card {{ position: absolute; left: 80px; top: 488px; width: 920px; border-radius: 34px; background: «APP»; transform-origin: 50% 0%;
+      box-shadow: 0 40px 100px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.22); }}
+    .i4-in {{ position: absolute; left: 30px; top: 30px; width: {IW}px; overflow: hidden; border-radius: 20px; background: #FFFFFF;
+      box-shadow: 0 0 0 1px rgba(29,0,132,0.07); }}
+    #i4-cl {{ height: {L['ih'] + 60}px; }} #i4-cl .i4-in {{ height: {L['ih']}px; }}
+    #i4-ce {{ height: {E['ih'] + 60}px; }} #i4-ce .i4-in {{ height: {E['ih']}px; }}
+    #i4-co {{ height: {O['ih'] + 60}px; }} #i4-co .i4-in {{ height: {O['ih']}px; }}
+    #i4-il {{ position: absolute; left: {L['l']}px; top: {L['t']}px; width: {L['w']}px; height: {L['h']}px; display: block; }}
+    #i4-ve {{ position: absolute; left: {E['l']}px; top: {E['t']}px; width: {E['w']}px; height: {E['h']}px; }}
+    #i4-io {{ position: absolute; left: {O['l']}px; top: {O['t']}px; width: {O['w']}px; height: {O['h']}px; display: block; }}
+    #i4-skills {{ top: 1000px; gap: 18px; }}
+    .i4-sk {{ display: flex; align-items: center; gap: 12px; height: 70px; padding: 0 28px 0 16px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 31px; line-height: 1; }}
+    .i4-ic {{ position: relative; width: 44px; height: 44px; }}
+    .i4-ic svg {{ position: absolute; left: 0; top: 0; width: 44px; height: 44px; }}
+    .i4-ok {{ opacity: 0; }}
+    #i4-test {{ top: 1100px; }}
+    #i4-tp {{ position: relative; display: flex; align-items: center; gap: 12px; height: 62px; padding: 0 26px 0 18px; border-radius: 999px;
+      background: rgba(255,255,255,0.08); border: 1px dashed rgba(255,255,255,0.35); color: rgba(255,255,255,0.72); white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; letter-spacing: 0.12em; }}
+    .i4-opt {{ display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.45); font-size: 20px; letter-spacing: 0; }}
+    #i4-strike {{ position: absolute; left: -10px; top: 28px; width: calc(100% + 20px); height: 7px; border-radius: 4px; background: «RED»; transform-origin: 0% 50%; }}
 """
-    body = """    <div id="g07-all" class="g07-full">
-      <div id="g07-bg" class="g07-full"><div id="g07-dots"></div></div>
-      <div id="g07-h1">Ejercicios</div>
-      <div id="g07-h2">de verdad</div>
-      <div id="g07-card" class="g07-card"><video id="g07-v" class="clip" src="assets/video/completa-frase.mp4" muted playsinline data-start="0.04" data-duration="«VDUR»" data-media-start="5.2" data-playback-rate="1.45" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video></div>
-      <div id="g07-skills"><div id="g07-s1" class="g07-s">""" + icon("book") + """Leer</div><div id="g07-s2" class="g07-s">""" + icon("pen") + """Escribir</div><div id="g07-s3" class="g07-s">""" + icon("ear") + """Oído</div></div>
-      <div id="g07-quiz" class="g07-card"><div id="g07-qt">UN SIMPLE TEST</div><div id="g07-opts"><div class="g07-o">A</div><div class="g07-o">B</div><div class="g07-o">C</div><div class="g07-o">D</div></div></div>
-      <div id="g07-strike"></div>
-      <div id="g07-x">""" + icon("cross") + """</div>
-    </div>"""
+    def skill(k, ic, label):
+        return (f'<div id="i4-s{k}" class="i4-sk"><div class="i4-ic"><div id="i4-n{k}">{icon(ic)}</div>'
+                f'<div id="i4-k{k}" class="i4-ok">{icon("check")}</div></div><span>{label}</span></div>')
+    body = "\n".join([ground(P, "blue"), f"""    <div id="i4-h1" class="i4-h1">Ejercicios</div>
+    <div id="i4-h2" class="i4-h1"><span id="i4-chip" class="i4-chip">de verdad</span></div>
+    <div id="i4-cl" class="i4-card"><div class="i4-in"><img id="i4-il" src="assets/img/ui-lezen-texto.png" alt="" /></div></div>
+    <div id="i4-ce" class="i4-card"><div class="i4-in"><video id="i4-ve" class="clip" src="assets/video/completa-frase.mp4" muted playsinline data-start="«EST»" data-duration="«ED»" data-media-start="5.6" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video></div></div>
+    <div id="i4-co" class="i4-card"><div class="i4-in"><img id="i4-io" src="assets/img/ui-luisteren-audio.png" alt="" /></div></div>
+    <div id="i4-skills" class="i4-row">{skill(1, 'book', 'Leer')}{skill(2, 'pen', 'Escribir')}{skill(3, 'ear', 'Escuchar')}</div>
+    <div id="i4-test" class="i4-row"><div id="i4-tp"><span class="i4-opt">A</span><span class="i4-opt">B</span><span class="i4-opt">C</span><span class="i4-opt">D</span><span>TIPO TEST</span><div id="i4-strike"></div></div></div>"""])
     js = """
-      tl.fromTo(q("all"), { x: 1080 }, { x: 0, duration: 0.3, ease: "power4.out" }, 0);
-      tl.fromTo(q("h1"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «EJE» - 0.06);
-      tl.fromTo(q("h2"), { opacity: 0, scaleX: 0.4 }, { opacity: 1, scaleX: 1, duration: 0.28, ease: "power3.out" }, «VER» - 0.06);
-      tl.fromTo(q("card"), { opacity: 0, y: 60, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.36, ease: "power3.out" }, 0.12);
-      // waterfall-entry: the three skills on their words
-      [["s1", «LEE»], ["s2", «ESC»], ["s3", «ENT»]].forEach(([id, t]) => {
-        tl.fromTo(q(id), { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(1.8)" }, t - 0.06);
-        tl.fromTo(q(id), { backgroundColor: "#FFFFFF" }, { backgroundColor: "#E6F0FF", duration: 0.3, ease: "none", immediateRender: false }, t);
-      });
-      // «en vez de un simple test»: the A/B/C/D card is struck through
-      tl.fromTo(q("quiz"), { opacity: 0, y: 30, rotation: 0 }, { opacity: 1, y: 0, rotation: -3, duration: 0.26, ease: "back.out(1.6)" }, «SIM» - 0.12);
-      tl.fromTo(q("strike"), { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power3.out" }, «TES» - 0.04);
-      tl.fromTo(q("x"), { opacity: 0, scale: 0.4, rotation: -20 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.24, ease: "back.out(2.4)" }, «TES» + 0.04);
+      tl.fromTo(q("h1"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);
+      tl.fromTo(q("chip"), { opacity: 0, scale: 0.7, rotation: -1.5 }, { opacity: 1, scale: 1, rotation: -1.5, duration: 0.32, ease: "back.out(1.8)" }, 0.08);
+      tl.fromTo(q("cl"), { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, «LEE» - 0.1);
+      tl.fromTo(q("ce"), { opacity: 0, y: 110 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, «ESC» - 0.1);
+      tl.to(q("cl"), { y: -34, scale: 0.94, opacity: 0.55, duration: 0.36, ease: "power3.out" }, «ESC» - 0.1);
+      tl.fromTo(q("co"), { opacity: 0, y: 110 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, «ENT» - 0.08);
+      tl.to(q("ce"), { y: -34, scale: 0.94, opacity: 0.55, duration: 0.36, ease: "power3.out" }, «ENT» - 0.08);
+      tl.to(q("cl"), { y: -62, scale: 0.88, opacity: 0.25, duration: 0.36, ease: "power3.out" }, «ENT» - 0.08);
+      tl.fromTo(q("skills"), { opacity: 0 }, { opacity: 1, duration: 0.01 }, 0);
+      tl.fromTo(q("s1"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, «LEE» - 0.06);
+      tl.fromTo(q("s2"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, «ESC» - 0.06);
+      tl.fromTo(q("s3"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, «OID» - 0.06);
+      tl.to(q("n1"), { opacity: 0, duration: 0.1 }, «LEE» + 0.24); tl.fromTo(q("k1"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.26, ease: "back.out(2.2)" }, «LEE» + 0.24);
+      tl.to(q("n2"), { opacity: 0, duration: 0.1 }, «ESC» + 0.3); tl.fromTo(q("k2"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.26, ease: "back.out(2.2)" }, «ESC» + 0.3);
+      tl.to(q("n3"), { opacity: 0, duration: 0.1 }, «OID» + 0.2); tl.fromTo(q("k3"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.26, ease: "back.out(2.2)" }, «OID» + 0.2);
+      tl.fromTo(q("tp"), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.26, ease: "power3.out" }, «EN» - 0.06);
+      tl.fromTo(q("strike"), { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power2.out" }, «TES» - 0.04);
+      tl.to(q("tp"), { opacity: 0.55, duration: 0.2 }, «TES» + 0.18);
 """
-    sfx = [(-0.04, "whoosh-short", 0.24), (c["LEE"] - 0.06, "pop", 0.14), (c["ESC"] - 0.06, "pop", 0.14), (c["ENT"] - 0.06, "pop", 0.14),
-           (c["TES"] - 0.02, "error", 0.18)]
-    return comp("gfx-07", d, P, css, body, js, c), sfx
+    sfx = [(c["LEE"] - 0.1, "click-soft", 0.22), (c["ESC"] - 0.1, "click-soft", 0.22), (c["ENT"] - 0.08, "click-soft", 0.22), (c["TES"] - 0.04, "click", 0.2)]
+    return comp(iid, d, P, css, body, js, c), sfx
 
 
-# ============================================================================== gfx-08 · cada semana, clase en directo
-def gfx08():
-    n, P = 8, "g08"; d = dur(n)
-    c = dict(CAD=cue(n, "cada"), CLA=cue(n, "clase"), DIR=cue(n, "directo"), REF=cue(n, "reforzar"), APR=cue(n, "aprendido"),
-             TRA=cue(n, "trabajar"), PRO=cue(n, "pronunciacion"))
-    c["IN"] = round(c["CLA"] - 0.08, 3); c["OUT"] = round(c["TRA"] - 0.36, 3)
-    c["VDUR"] = round(c["OUT"] + 0.25 - c["IN"], 3)
+# ============================================================================== ins-05 · clase en directo → pronunciación
+def ins05():
+    iid, P = "ins-05", "i5"; d = INS[iid]["duration"]
+    c = dict(DIR=cue(iid, "directo"), REF=cue(iid, "reforzar"), TRA=cue(iid, "trabajar"), PRO=cue(iid, "pronunciacion"))
+    c["SWAP"] = round(c["TRA"] - 0.16, 3)
+    c["VD"] = round(c["SWAP"] + 0.3, 3)
+    # player region of paul-clase-1 (x 744–2480, y 10–970) covering a 960×504 area
+    k = 960 / 1736
+    c.update(VW=round(2502 * k, 1), VH=round(992 * k, 1), VL=round(-744 * k, 1), VT=round(-10 * k - (960 * k - 504) / 2, 1))
     css = """
-    #g08-ev { left: 70px; top: 248px; width: 940px; height: 300px; background: «PAPER»; }
-    #g08-k { left: 34px; top: 30px; background: «BLUE»; color: #FFFFFF; font-weight: 800; }
-    #g08-k svg { width: 30px; height: 30px; }
-    #g08-img { position: absolute; left: 30px; top: 104px; width: 880px; height: 173px; }
-    .g08-hl { position: absolute; top: 158px; height: 112px; border-radius: 20px; border: 5px solid «BLUE»; }
-    #g08-call { opacity: 0; }
-    #g08-tile { position: absolute; left: 60px; top: 236px; width: 960px; height: 820px; border-radius: 34px; overflow: hidden; background: #1a1d3a; }
-    #g08-v { position: absolute; left: -1220px; top: -280px; width: 4113px; height: 1631px; object-fit: fill; }
-    #g08-live { left: 28px; top: 28px; background: «RED»; color: #FFFFFF; font-weight: 800; letter-spacing: 0.14em; }
-    #g08-dot { width: 14px; height: 14px; border-radius: 50%; background: #FFFFFF; }
-    #g08-rep { right: 28px; top: 28px; background: rgba(255,255,255,0.92); color: «DEEP»; font-weight: 800; }
-    #g08-rep svg { width: 30px; height: 30px; }
-    #g08-pp { position: absolute; left: 60px; top: 1072px; width: 960px; display: flex; gap: 14px; }
-    .g08-p { width: 92px; height: 92px; border-radius: 22px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 32px; color: #FFFFFF; }
-    #g08-pr { left: 70px; top: 248px; width: 940px; height: 300px; }
-    #g08-pk { left: 34px; top: 30px; background: «DEEP»; color: #FFFFFF; font-weight: 800; }
-    #g08-wave { position: absolute; left: 40px; top: 110px; width: 560px; height: 160px; display: flex; align-items: center; gap: 9px; }
-    .g08-b { width: 14px; height: 140px; border-radius: 7px; background: «BLUE»; transform-origin: 50% 50%; }
-    #g08-snd { position: absolute; left: 630px; top: 104px; width: 280px; display: flex; flex-wrap: wrap; gap: 14px; }
-    .g08-sn { width: 126px; height: 74px; border-radius: 20px; background: «DEEP»; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 40px; color: #FFFFFF; }
+    #i5-h1 { top: 200px; }
+    #i5-h2 { top: 294px; }
+    #i5-call { position: absolute; left: 60px; top: 452px; width: 960px; height: 576px; border-radius: 30px; overflow: hidden; background: #0C0C1E; }
+    #i5-top { position: absolute; left: 0; top: 0; width: 960px; height: 72px; display: flex; align-items: center; gap: 18px; padding-left: 22px; box-sizing: border-box; }
+    #i5-live { display: flex; align-items: center; gap: 10px; height: 42px; padding: 0 18px 0 14px; border-radius: 999px; background: «RED»; color: #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 0.14em; white-space: nowrap; }
+    #i5-ldot { display: block; width: 12px; height: 12px; border-radius: 50%; background: #FFFFFF; }
+    #i5-ttl { font-family: "Inter", sans-serif; font-weight: 600; font-size: 24px; color: rgba(255,255,255,0.74); white-space: nowrap; }
+    #i5-vid { position: absolute; left: 0; top: 72px; width: 960px; height: 504px; overflow: hidden; }
+    #i5-v { position: absolute; left: «VL»px; top: «VT»px; width: «VW»px; height: «VH»px; }
+    #i5-ctl { position: absolute; left: 330px; top: 414px; width: 300px; height: 72px; display: flex; justify-content: center; gap: 18px; }
+    .i5-cb { position: relative; width: 66px; height: 66px; border-radius: 50%; background: rgba(12,12,30,0.62); }
+    .i5-cb svg { position: absolute; left: 15px; top: 15px; width: 36px; height: 36px; }
+    #i5-hang { background: «RED»; }
+    #i5-fix { top: 1078px; gap: 18px; }
+    .i5-fx { display: flex; align-items: center; gap: 12px; height: 70px; padding: 0 28px; border-radius: 999px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 32px; line-height: 1; }
+    #i5-bad { position: relative; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.8); }
+    #i5-bads { position: absolute; left: 22px; top: 32px; width: calc(100% - 44px); height: 6px; border-radius: 3px; background: «RED»; transform-origin: 0% 50%; }
+    #i5-arr { width: 44px; height: 44px; color: #FFFFFF; }
+    #i5-arr svg { display: block; width: 44px; height: 44px; }
+    #i5-good { background: #FFFFFF; color: «INDIGO»; padding-left: 14px; box-shadow: 0 16px 40px rgba(4,0,40,0.3); }
+    #i5-good svg { display: block; width: 40px; height: 40px; }
+    #i5-prow { top: 250px; }
+    .i5-tile { position: absolute; width: 404px; height: 330px; border-radius: 36px; background: #FFFFFF;
+      box-shadow: 0 40px 100px rgba(4,0,40,0.42), 0 8px 24px rgba(4,0,40,0.2); }
+    .i5-big { position: absolute; left: 0; top: 52px; width: 404px; text-align: center; font-weight: 900; font-size: 150px; line-height: 1;
+      letter-spacing: -0.04em; color: «INDIGO»; }
+    .i5-ex { position: absolute; left: 0; top: 236px; width: 404px; text-align: center; font-family: "Inter", sans-serif; font-weight: 600;
+      font-size: 34px; line-height: 1; color: «MUTED»; }
 """
-    bars = "".join('<div class="g08-b"></div>' for _ in range(24))
-    parts = "".join('<div class="g08-p" style="background: %s;">%s</div>' % (col, ini) for ini, col in
-                    [("LU", "#3b5bdb"), ("MA", "#7b5bd6"), ("JO", "#0b8a8a"), ("AN", "#c2367a"), ("TÚ", "#0b6df0")])
-    body = """    <div id="g08-ev" class="g08-card">
-      <div id="g08-k" class="g08-chip">""" + icon("cal") + """CADA SEMANA</div>
-      <img id="g08-img" src="assets/img/ui-eventos-semana.png" alt="Próximos eventos: clases en directo" />
-      <div id="g08-h1" class="g08-hl" style="left: 32px; width: 432px;"></div><div id="g08-h2" class="g08-hl" style="left: 466px; width: 432px;"></div>
+    tiles = [("G", "goed", 121, 366), ("UI", "huis", 555, 366), ("UU", "uur", 121, 730), ("EU", "leuk", 555, 730)]
+    tile_html = "\n".join(f'      <div id="i5-t{k}" class="i5-tile" style="left:{x}px; top:{y}px;"><div class="i5-big">{b}</div><div class="i5-ex">{e}</div></div>'
+                          for k, (b, e, x, y) in enumerate(tiles))
+    body = "\n".join([ground(P, "blue"), f"""    <div id="i5-s1" class="i5-full">
+      <div id="i5-h1" class="i5-h1">Clase en directo</div>
+      <div id="i5-h2" class="i5-h1 i5-acc">cada semana</div>
+      <div id="i5-call" class="i5-on-blue">
+        <div id="i5-top"><div id="i5-live"><span id="i5-ldot"></span><span>EN DIRECTO</span></div><div id="i5-ttl">Clase semanal · Holandés Nawar</div></div>
+        <div id="i5-vid"><video id="i5-v" class="clip" src="assets/video/paul-clase-1.mp4" muted playsinline data-start="0" data-duration="«VD»" data-media-start="5.2" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video>
+          <div id="i5-ctl"><div class="i5-cb">{icon('mic')}</div><div class="i5-cb">{icon('cam')}</div><div id="i5-hang" class="i5-cb">{icon('hang')}</div></div></div>
+      </div>
+      <div id="i5-fix" class="i5-row"><div id="i5-bad" class="i5-fx"><span>Werkt jij?</span><div id="i5-bads"></div></div><div id="i5-arr">{icon('down').replace('M24 8 V38 M12 27 L24 39 L36 27', 'M8 24 H38 M27 12 L39 24 L27 36')}</div><div id="i5-good" class="i5-fx">{icon('check')}<span>Werk jij?</span></div></div>
     </div>
-    <div id="g08-call" class="g08-full g08-night">
-      <div class="g08-dots"></div>
-      <div id="g08-tile">
-        <video id="g08-v" class="clip" src="assets/video/paul-clase-1.mp4" muted playsinline data-start="«IN»" data-duration="«VDUR»" data-media-start="3" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video>
-        <div id="g08-live" class="g08-chip"><div id="g08-dot"></div>EN DIRECTO</div>
-        <div id="g08-rep" class="g08-chip">""" + icon("check") + """Repaso del módulo</div>
-      </div>
-      <div id="g08-pp">""" + parts + """</div>
-    </div>
-    <div id="g08-pr" class="g08-card">
-      <div id="g08-pk" class="g08-chip">PRONUNCIACIÓN</div>
-      <div id="g08-wave">""" + bars + """</div>
-      <div id="g08-snd"><div class="g08-sn">ui</div><div class="g08-sn">uu</div><div class="g08-sn">eu</div><div class="g08-sn">g</div></div>
-    </div>"""
+    <div id="i5-s2" class="i5-full">
+      <div id="i5-prow" class="i5-row"><div id="i5-pp" class="i5-pill"><span>Pronunciación</span></div></div>
+{tile_html}
+    </div>"""])
     js = """
-      // «cada semana»: the real upcoming-events card (two live classes, one week apart)
-      tl.fromTo(q("ev"), { y: -40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, «CAD» - 0.08);
-      tl.fromTo(q("h1"), { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.24, ease: "power3.out" }, «CAD» + 0.3);
-      tl.fromTo(q("h2"), { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.24, ease: "power3.out" }, «CAD» + 0.52);
-      // «clase en directo»: the live call takes the screen
-      tl.fromTo(q("call"), { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 0.24, ease: "power3.out" }, «IN»);
-      tl.fromTo(q("dot"), { opacity: 1 }, { opacity: 0.25, duration: 0.4, ease: "sine.inOut", yoyo: true, repeat: 5 }, «IN» + 0.2);
-      tl.fromTo(q("live"), { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.24, ease: "power3.out" }, «DIR» - 0.08);
-      tl.fromTo("#g08-pp .g08-p", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.24, ease: "back.out(1.8)", stagger: 0.06 }, «IN» + 0.18);
-      tl.fromTo(q("rep"), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.24, ease: "back.out(2)" }, «APR» - 0.08);
-      tl.fromTo(q("call"), { opacity: 1 }, { opacity: 0, duration: 0.16, ease: "power2.in", immediateRender: false }, «OUT»);
-      tl.set(q("ev"), { opacity: 0 }, «IN»);
-      // «trabajar la pronunciación»: voice bars (gsap-effects audio visualizer, deterministic)
-      tl.fromTo(q("pr"), { y: -40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.32, ease: "power3.out" }, «OUT» + 0.06);
-      (() => {
-        const bars = Array.from(document.querySelectorAll("#g08-wave .g08-b")); const p = { t: 0 };
-        tl.fromTo(p, { t: 0 }, { t: «D» - «OUT», duration: «D» - «OUT», ease: "none", onUpdate: () => {
-          bars.forEach((b, i) => {
-            const v = 0.22 + 0.78 * Math.abs(Math.sin(p.t * 7.3 + i * 0.62) * Math.sin(p.t * 3.1 + i * 0.27));
-            b.style.transform = "scaleY(" + v.toFixed(3) + ")";
-          });
-        } }, «OUT»);
-      })();
-      tl.fromTo("#g08-snd .g08-sn", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2)", stagger: 0.07 }, «PRO» - 0.08);
+      tl.fromTo(q("h1"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);
+      tl.fromTo(q("h2"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.1);
+      tl.fromTo(q("call"), { opacity: 0, y: 100, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.44, ease: "power3.out" }, 0.04);
+      tl.fromTo(q("live"), { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2.2)" }, «DIR» - 0.06);
+      tl.fromTo(q("ldot"), { opacity: 1 }, { keyframes: [{ opacity: 0.25, duration: 0.3 }, { opacity: 1, duration: 0.3 }, { opacity: 0.25, duration: 0.3 }, { opacity: 1, duration: 0.3 }], immediateRender: false }, «DIR» + 0.3);
+      tl.fromTo(q("bad"), { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.28, ease: "power3.out" }, «REF» - 0.08);
+      tl.fromTo(q("bads"), { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power2.out" }, «REF» + 0.3);
+      tl.fromTo(q("arr"), { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.22, ease: "power3.out" }, «REF» + 0.42);
+      tl.fromTo(q("good"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, «REF» + 0.52);
+      tl.to(q("s1"), { opacity: 0, y: -90, duration: 0.24, ease: "power2.in" }, «SWAP» - 0.2);
+      tl.fromTo(q("s2"), { opacity: 0 }, { opacity: 1, duration: 0.01 }, «SWAP» - 0.02);
+      tl.fromTo(q("pp"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.26, ease: "power3.out" }, «SWAP»);
+      tl.fromTo(q("t0"), { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.8)" }, «SWAP» + 0.02);
+      tl.fromTo(q("t1"), { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.8)" }, «SWAP» + 0.12);
+      tl.fromTo(q("t2"), { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.8)" }, «SWAP» + 0.22);
+      tl.fromTo(q("t3"), { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.8)" }, «SWAP» + 0.32);
 """
-    sfx = [(c["CAD"] - 0.1, "pop", 0.18), (c["IN"] - 0.04, "whoosh-short", 0.22), (c["IN"] + 0.12, "notification", 0.18),
-           (c["APR"] - 0.08, "pop", 0.14), (c["OUT"] + 0.04, "pop", 0.16)]
-    return comp("gfx-08", d, P, css, body, js, c), sfx
+    sfx = [(c["DIR"] - 0.06, "notification", 0.2), (c["REF"] + 0.52, "ping", 0.2), (c["SWAP"], "whoosh-short", 0.12),
+           (c["SWAP"] + 0.02, "pop", 0.16), (c["SWAP"] + 0.22, "pop", 0.16)]
+    return comp(iid, d, P, css, body, js, c), sfx
 
 
-# ============================================================================== gfx-09 · 16 semanas: llamas tú
-def gfx09():
-    n, P = 9, "g09"; d = dur(n)
-    c = dict(DIE=cue(n, "dieciseis"), SEM=cue(n, "semanas"), ERE=cue(n, "eres"), LLA=cue(n, "llama"), CIT=cue(n, "cita"),
-             SIN=cue(n, "sin"), NAD=cue(n, "nadie"))
+# ============================================================================== ins-06 · eres tú el que llama
+def ins06():
+    iid, P = "ins-06", "i6"; d = INS[iid]["duration"]
+    c = dict(ERE=cue(iid, "eres"), PED=cue(iid, "pedir"), CIT=cue(iid, "cita"))
+    css = CALL_CSS + """
+    #i6-wrow { top: 236px; }
+    #i6-av1 { right: 90px; top: 622px; background: «INDIGO»; }
+    #i6-b1 { right: 214px; top: 576px; width: 620px; white-space: normal; transform-origin: 100% 100%; }
+    #i6-av2 { left: 90px; top: 856px; background: #9fd5f5; }
+    #i6-b2 { left: 214px; top: 844px; transform-origin: 0% 100%; }
+    #i6-okrow { top: 1030px; }
+    #i6-ok { display: flex; align-items: center; gap: 14px; height: 80px; padding: 0 34px 0 18px; border-radius: 999px; background: «GREEN»; color: #FFFFFF;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 36px; line-height: 1; white-space: nowrap; box-shadow: 0 18px 44px rgba(4,0,40,0.35); }
+    #i6-ok svg { display: block; width: 48px; height: 48px; }
+"""
+    body = "\n".join([ground(P, "blue"), f"""    <div id="i6-wrow" class="i6-row"><div id="i6-wk" class="i6-wpill"><span class="i6-flag i6-flagd">{FLAG_NL}</span><span>Semana 16</span></div></div>""",
+        call_card(P, 90, 350, '<div class="i6-call-st"><span class="i6-dot"></span>En llamada · 00:14</div>').replace("i6-on-paper", "i6-on-blue"),
+        f"""    <div id="i6-av1" class="i6-av">{person()}</div>
+    <div id="i6-b1" class="i6-bub i6-bub-b i6-br">Goedemorgen! Ik wil graag een afspraak maken.</div>
+    <div id="i6-av2" class="i6-av">{person()}</div>
+    <div id="i6-b2" class="i6-bub i6-bub-w i6-bl">Natuurlijk. Dinsdag om tien uur?</div>
+    <div id="i6-okrow" class="i6-row"><div id="i6-ok">{icon('checkw')}<span>Cita confirmada</span></div></div>"""])
+    js = """
+      tl.fromTo(q("wk"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 0);
+      tl.fromTo(q("call"), { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, 0.02);
+      tl.fromTo(q("av1"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(2)" }, «ERE» + 0.04);
+      tl.fromTo(q("b1"), { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, «ERE» + 0.08);
+      tl.fromTo(q("av2"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(2)" }, «PED» - 0.12);
+      tl.fromTo(q("b2"), { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, «PED» - 0.08);
+      tl.fromTo(q("ok"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.34, ease: "back.out(2)" }, «CIT» - 0.04);
+"""
+    sfx = [(c["ERE"] + 0.08, "pop", 0.24), (c["PED"] - 0.08, "pop", 0.24), (c["CIT"] - 0.04, "chime", 0.28)]
+    return comp(iid, d, P, css, body, js, c), sfx
+
+
+# ============================================================================== ins-07 · formulario → equipo → cierre
+def ins07():
+    iid, P = "ins-07", "i7"; d = INS[iid]["duration"]
+    c = dict(REL=cue(iid, "rellena"), Y=cue(iid, "y"), PER=cue(iid, "persona"), EQU=cue(iid, "equipo"), ATE=cue(iid, "atendera"))
+    c["END"] = round(ED["speech_end"] - INS[iid]["start"], 3)
+    c["CLK"] = round(c["Y"] - 0.26, 3)
     css = """
-    #g09-card { left: 70px; top: 244px; width: 940px; height: 430px; }
-    #g09-num { position: absolute; left: 40px; top: 36px; width: 330px; text-align: center; font-weight: 900; font-size: 230px; line-height: 1; letter-spacing: -0.05em; color: «DEEP»; font-variant-numeric: tabular-nums; }
-    #g09-sem { position: absolute; left: 390px; top: 96px; font-weight: 900; font-size: 92px; line-height: 1.0; letter-spacing: -0.02em; color: «BLUE»; }
-    #g09-sub { position: absolute; left: 394px; top: 214px; font-weight: 700; font-size: 40px; color: «INK»; white-space: nowrap; }
-    #g09-pills { position: absolute; left: 44px; top: 330px; width: 852px; height: 26px; display: flex; gap: 8px; }
-    .g09-p { position: relative; flex: 1 1 0; height: 26px; border-radius: 13px; background: «LINE»; overflow: hidden; }
-    .g09-pf { position: absolute; left: 0; top: 0; width: 100%; height: 26px; border-radius: 13px; background: «BLUE»; transform-origin: 0% 50%; }
-    #g09-s2 { position: absolute; left: 0; top: 0; width: 940px; height: 430px; background: «PAPER»; opacity: 0; }
-    #g09-hd { position: absolute; left: 0; top: 0; width: 940px; height: 96px; background: #FFFFFF; border-bottom: 3px solid «LINE»; }
-    #g09-hav { position: absolute; left: 28px; top: 16px; width: 64px; height: 64px; border-radius: 50%; background: «DEEP»; display: flex; align-items: center; justify-content: center; }
-    #g09-hav svg { width: 40px; height: 40px; }
-    #g09-hn { position: absolute; left: 112px; top: 12px; font-weight: 800; font-size: 34px; line-height: 1.15; color: «INK»; }
-    #g09-hs { position: absolute; left: 112px; top: 56px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 24px; line-height: 1.15; color: «GREEN»; }
-    #g09-me { right: 30px; top: 118px; max-width: 700px; font-size: 34px; }
-    #g09-rx { left: 30px; top: 232px; max-width: 640px; font-size: 34px; box-shadow: 0 6px 18px rgba(8,4,48,0.10); }
-    #g09-ok { right: 30px; top: 344px; height: 64px; background: «GREEN»; color: #FFFFFF; font-weight: 800; font-size: 28px; }
-    #g09-ok svg { width: 34px; height: 34px; }
+    #i7-form { left: 110px; top: 340px; width: 860px; height: 640px; }
+    #i7-flogo { position: absolute; left: 50px; top: 46px; width: 163px; height: 58px; background: url("assets/img/logo-nawar.png") left center / contain no-repeat; }
+    #i7-ftitle { position: absolute; left: 50px; top: 128px; font-weight: 800; font-size: 46px; line-height: 1.1; letter-spacing: -0.02em; color: «INK»; white-space: nowrap; }
+    .i7-lab { position: absolute; left: 52px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 25px; color: «MUTED»; white-space: nowrap; }
+    .i7-inp { position: absolute; left: 50px; width: 760px; height: 82px; border-radius: 18px; background: «APP»; box-shadow: inset 0 0 0 2px #E3E6F0;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 34px; line-height: 82px; color: «INK»; padding-left: 28px; box-sizing: border-box; white-space: nowrap; }
+    #i7-btn { position: absolute; left: 50px; top: 516px; width: 760px; height: 88px; border-radius: 20px; background: «BLUE»; overflow: hidden; }
+    .i7-bt { position: absolute; left: 0; top: 0; width: 760px; height: 88px; display: flex; align-items: center; justify-content: center; gap: 12px;
+      font-weight: 700; font-size: 34px; color: #FFFFFF; white-space: nowrap; }
+    .i7-bt svg { display: block; width: 40px; height: 40px; }
+    #i7-sent { background: «GREEN»; opacity: 0; }
+    #i7-cur { position: absolute; left: 0; top: 0; width: 46px; height: 60px; }
+    #i7-cur svg { display: block; width: 46px; height: 60px; }
+    #i7-rip { position: absolute; left: 0; top: 0; width: 90px; height: 90px; border-radius: 50%; border: 5px solid #FFFFFF; box-sizing: border-box; opacity: 0; }
+    #i7-logo { position: absolute; left: 270px; top: 430px; width: 540px; height: auto; display: block; }
+    #i7-sub { position: absolute; left: 0; top: 646px; width: 1080px; text-align: center; font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px;
+      letter-spacing: 0.22em; color: rgba(255,255,255,0.72); white-space: nowrap; }
+    #i7-name { position: absolute; left: 0; top: 694px; width: 1080px; text-align: center; font-weight: 800; font-size: 74px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    #i7-team { left: 150px; top: 840px; width: 780px; height: 128px; border-radius: 30px; background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.22);
+      box-sizing: border-box; }
+    #i7-tk { position: absolute; left: 40px; top: 20px; line-height: 1; font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 0.18em; color: rgba(255,255,255,0.66); white-space: nowrap; }
+    #i7-tt { position: absolute; left: 40px; top: 56px; font-weight: 800; font-size: 44px; line-height: 1; letter-spacing: -0.02em; color: #FFFFFF; white-space: nowrap; }
+    #i7-tb { position: absolute; right: 26px; top: 20px; width: 86px; height: 86px; border-radius: 50%; background: «BLUE»; box-shadow: 0 10px 26px rgba(0,0,0,0.25); }
+    #i7-tb svg { position: absolute; left: 20px; top: 20px; width: 46px; height: 46px; }
+    .i7-tring { position: absolute; right: 26px; top: 20px; width: 86px; height: 86px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.8); box-sizing: border-box; opacity: 0; }
+    #i7-ctarow { top: 1014px; }
+    #i7-cta { display: flex; align-items: center; gap: 16px; height: 92px; padding: 0 40px; border-radius: 999px; background: #FFFFFF; color: «INDIGO»;
+      font-weight: 800; font-size: 38px; line-height: 1; white-space: nowrap; box-shadow: 0 20px 50px rgba(4,0,40,0.4); }
+    #i7-cta svg { display: block; width: 44px; height: 44px; }
+    #i7-stat { position: absolute; left: 0; top: 1140px; width: 1080px; text-align: center; font-family: "Inter", sans-serif; font-weight: 600; font-size: 29px;
+      color: rgba(255,255,255,0.78); white-space: nowrap; }
+    #i7-stat b { color: #FFFFFF; font-weight: 700; }
 """
-    pills = "".join('<div class="g09-p"><div id="g09-pf%d" class="g09-pf"></div></div>' % i for i in range(16))
-    body = """    <div id="g09-card" class="g09-card">
-      <div id="g09-s1">
-      <div id="g09-num">1</div>
-      <div id="g09-sem">SEMANAS</div>
-      <div id="g09-sub">y llamas tú</div>
-      <div id="g09-pills">""" + pills + """</div>
+    body = "\n".join([ground(P, "blue"), f"""    <div id="i7-s1" class="i7-full">
+      <div id="i7-form" class="i7-card i7-on-blue">
+        <div id="i7-flogo"></div>
+        <div id="i7-ftitle">Déjanos tus datos</div>
+        <div class="i7-lab" style="top: 222px;">Nombre</div>
+        <div class="i7-inp" style="top: 260px;"><span id="i7-f1"></span></div>
+        <div class="i7-lab" style="top: 370px;">Teléfono</div>
+        <div class="i7-inp" style="top: 408px;"><span id="i7-f2"></span></div>
+        <div id="i7-btn"><div id="i7-send" data-layout-allow-overlap class="i7-bt">Enviar</div><div id="i7-sent" data-layout-allow-overlap class="i7-bt">{icon('checkw')}<span>Enviado</span></div></div>
       </div>
-      <div id="g09-s2">
-        <div id="g09-hd"><div id="g09-hav">""" + icon("steth") + """</div><div id="g09-hn">Huisarts</div><div id="g09-hs">● En llamada · 00:12</div></div>
-        <div id="g09-me" class="g09-bub g09-br">Goedemorgen! Ik wil graag een afspraak maken.</div>
-        <div id="g09-rx" class="g09-bub g09-bl">Natuurlijk. Dinsdag om tien uur?</div>
-        <div id="g09-ok" class="g09-chip">""" + icon("check") + """CITA CONFIRMADA</div>
-      </div>
-    </div>"""
-    js = """
-      tl.fromTo(q("card"), { y: -40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, «DIE» - 0.12);
-      // counting-dynamic-scale 1 → 16 with the week pills filling in step
-      (() => {
-        const el = q("num"); const p = { v: 1 };
-        tl.fromTo(p, { v: 1 }, { v: 16, duration: «SEM» - «DIE» + 0.2, ease: "power2.out",
-          onUpdate: () => { el.textContent = String(Math.round(p.v)); } }, «DIE»);
-        tl.fromTo(el, { scale: 0.86 }, { scale: 1, duration: «SEM» - «DIE» + 0.2, ease: "power2.out" }, «DIE»);
-        for (let i = 0; i < 16; i++) tl.fromTo(q("pf" + i), { scaleX: 0 }, { scaleX: 1, duration: 0.1, ease: "power2.out" }, «DIE» + i * («SEM» - «DIE» + 0.1) / 16);
-      })();
-      tl.fromTo(q("sem"), { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.26, ease: "power3.out" }, «SEM» - 0.06);
-      tl.fromTo(q("sub"), { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.26, ease: "power3.out" }, «SEM» + 0.2);
-      // «eres tú quien llama y pide la cita»
-      tl.fromTo(q("s2"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, «ERE» - 0.08);
-      tl.set(q("s1"), { opacity: 0 }, «ERE» + 0.14);
-      tl.fromTo(q("me"), { opacity: 0, y: 20, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.6)" }, «LLA» - 0.06);
-      tl.fromTo(q("rx"), { opacity: 0, y: 20, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.6)" }, «CIT» - 0.06);
-      tl.fromTo(q("ok"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.2)" }, «SIN» - 0.2);
-"""
-    sfx = [(c["DIE"] - 0.14, "pop", 0.18), (c["SEM"], "sparkle", 0.16), (c["ERE"] - 0.1, "pop", 0.16), (c["LLA"] - 0.06, "pop", 0.14),
-           (c["CIT"] - 0.06, "pop", 0.14), (c["SIN"] - 0.2, "chime", 0.28)]
-    return comp("gfx-09", d, P, css, body, js, c), sfx
-
-
-# ============================================================================== gfx-10 · CTA + end card
-def gfx10():
-    n, P = 10, "g10"; d = dur(n)
-    c = dict(EST=cue(n, "estas"), COM=cue(n, "comenzar"), HAZ=cue(n, "haz"), CLI=cue(n, "clic"), BOT=cue(n, "boton"),
-             ABA=cue(n, "abajo"), REL=cue(n, "rellena"), FOR=cue(n, "formulario"), PER=cue(n, "persona"), EQU=cue(n, "equipo"),
-             ATE=cue(n, "atendera"))
-    c["END"] = round(AUD["final_hit"] - SHOTS[n]["start"] - 0.04, 3)
-    c["SEND"] = round(c["FOR"] + 0.42, 3)
-    css = """
-    #g10-pill { left: 230px; top: 252px; height: 84px; padding: 0 30px 0 22px; background: #FFFFFF; color: «DEEP»; font-family: "Poppins", sans-serif;
-      font-weight: 800; font-size: 30px; letter-spacing: 0.04em; box-shadow: 0 18px 40px rgba(8,4,48,0.35); }
-    #g10-plogo { width: 150px; height: 54px; background: url("assets/img/logo-nawar.png") center / 100% 100% no-repeat; }
-    #g10-arrows { position: absolute; left: 420px; top: 1470px; width: 240px; height: 300px; }
-    .g10-a { position: absolute; left: 30px; width: 180px; height: 120px; }
-    .g10-a svg { width: 180px; height: 120px; filter: drop-shadow(0 8px 16px rgba(8,4,48,0.5)); }
-    #g10-aq { left: 380px; top: 1352px; background: «BLUE»; color: #FFFFFF; font-weight: 800; font-size: 30px; letter-spacing: 0.12em; height: 66px; }
-    #g10-form { left: 90px; top: 246px; width: 900px; height: 500px; }
-    #g10-ft { position: absolute; left: 44px; top: 36px; font-weight: 900; font-size: 50px; color: «DEEP»; }
-    .g10-lb { position: absolute; left: 44px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; letter-spacing: 0.1em; color: «MUTED»; }
-    .g10-in { position: absolute; left: 44px; width: 812px; height: 84px; border-radius: 20px; border: 3px solid «LINE»; background: «PAPER»;
-      font-weight: 700; font-size: 38px; line-height: 84px; padding-left: 26px; color: «INK»; box-sizing: border-box; }
-    #g10-btn { position: absolute; left: 44px; top: 392px; width: 812px; height: 84px; border-radius: 22px; background: «BLUE»;
-      display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 40px; color: #FFFFFF; }
-    #g10-btnok { position: absolute; left: 44px; top: 392px; width: 812px; height: 84px; border-radius: 22px; background: «GREEN»;
-      display: flex; align-items: center; justify-content: center; gap: 14px; font-weight: 800; font-size: 40px; color: #FFFFFF; opacity: 0; }
-    #g10-btnok svg { width: 44px; height: 44px; }
-    #g10-rip { position: absolute; left: 400px; top: 384px; width: 100px; height: 100px; border-radius: 50%; background: rgba(255,255,255,0.55); opacity: 0; }
-    #g10-chat { position: absolute; left: 0; top: 0; width: 900px; height: 500px; background: «PAPER»; opacity: 0; }
-    #g10-ch { position: absolute; left: 0; top: 0; width: 900px; height: 110px; background: #FFFFFF; border-bottom: 3px solid «LINE»; }
-    #g10-cav { position: absolute; left: 30px; top: 18px; width: 74px; height: 74px; border-radius: 50%; background: «DEEP»; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    #g10-clogo { width: 66px; height: 24px; background: url("assets/img/logo-nawar.png") center / 100% 100% no-repeat; }
-    #g10-cn { position: absolute; left: 124px; top: 16px; font-weight: 800; font-size: 36px; line-height: 1.15; color: «INK»; }
-    #g10-cs { position: absolute; left: 124px; top: 64px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 24px; line-height: 1.15; color: «GREEN»; }
-    #g10-typ { left: 30px; top: 150px; width: 150px; height: 84px; background: #FFFFFF; box-shadow: 0 6px 18px rgba(8,4,48,0.10); display: flex; align-items: center; justify-content: center; gap: 12px; }
-    .g10-td { width: 16px; height: 16px; border-radius: 50%; background: «MUTED»; }
-    #g10-msg { left: 30px; top: 150px; max-width: 760px; font-size: 40px; box-shadow: 0 6px 18px rgba(8,4,48,0.10); }
-    #g10-msg2 { left: 30px; top: 292px; max-width: 760px; font-size: 40px; box-shadow: 0 6px 18px rgba(8,4,48,0.10); }
-    #g10-end { opacity: 0; }
-    #g10-elogo { position: absolute; left: 215px; top: 560px; width: 650px; height: 232px; }
-    #g10-et { position: absolute; left: 0; top: 830px; width: 1080px; text-align: center; font-weight: 800; font-size: 60px; color: #FFFFFF; }
-    #g10-eb { position: absolute; left: 150px; top: 960px; width: 780px; height: 120px; border-radius: 60px; background: #FFFFFF;
-      display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 50px; color: «DEEP»; box-shadow: 0 24px 60px rgba(8,4,48,0.45); }
-    #g10-ea { position: absolute; left: 450px; top: 1140px; width: 180px; height: 120px; }
-    #g10-ea svg { width: 180px; height: 120px; }
-    #g10-sp { position: absolute; left: 0; top: 1300px; width: 1080px; display: flex; justify-content: center; align-items: center; gap: 16px;
-      font-family: "Inter", sans-serif; font-weight: 600; font-size: 32px; color: rgba(255,255,255,0.86); }
-    #g10-sp b { font-family: "Poppins", sans-serif; font-weight: 800; color: #FFFFFF; }
-    #g10-sp svg { width: 44px; height: 44px; }
-"""
-    body = """    <div id="g10-pill" class="g10-chip"><div id="g10-plogo"></div><span>FORMACIÓN NAWAR</span></div>
-    <div id="g10-aq" class="g10-chip">AQUÍ ABAJO</div>
-    <div id="g10-arrows"><div id="g10-a1" class="g10-a" style="top: 0px;">""" + icon("down") + """</div><div id="g10-a2" class="g10-a" style="top: 90px;">""" + icon("down") + """</div><div id="g10-a3" class="g10-a" style="top: 180px;">""" + icon("down") + """</div></div>
-    <div id="g10-form" class="g10-card">
-      <div id="g10-fs1">
-      <div id="g10-ft">Empieza tu formación</div>
-      <div class="g10-lb" style="top: 124px;">NOMBRE</div><div id="g10-i1" class="g10-in" style="top: 156px;"></div>
-      <div class="g10-lb" style="top: 258px;">TELÉFONO</div><div id="g10-i2" class="g10-in" style="top: 290px; height: 84px;"></div>
-      <div id="g10-btn">Enviar</div>
-      <div id="g10-btnok">""" + icon("check") + """Enviado</div>
-      <div id="g10-rip"></div>
-      </div>
-      <div id="g10-chat">
-        <div id="g10-ch"><div id="g10-cav"><div id="g10-clogo"></div></div><div id="g10-cn">Equipo Nawar</div><div id="g10-cs">● en línea</div></div>
-        <div id="g10-typ" class="g10-bub"><div class="g10-td"></div><div class="g10-td"></div><div class="g10-td"></div></div>
-        <div id="g10-msg" class="g10-bub g10-bl">¡Hola! Soy del equipo Nawar.</div>
-        <div id="g10-msg2" class="g10-bub g10-bl">Te ayudamos a empezar.</div>
-      </div>
+      <div id="i7-rip"></div>
+      <div id="i7-cur">{icon('cursor')}</div>
     </div>
-    <div id="g10-end" class="g10-full g10-blue">
-      <div class="g10-dots"></div>
-      <img id="g10-elogo" src="assets/img/logo-nawar.png" alt="Nawar" />
-      <div id="g10-et">Formación Nawar</div>
-      <div id="g10-eb">Rellena el formulario</div>
-      <div id="g10-ea">""" + icon("down") + """</div>
-      <div id="g10-sp"><svg viewBox="0 0 48 48"><circle cx="18" cy="16" r="8" fill="none" stroke="#FFFFFF" stroke-width="4"/><path d="M4 40 Q4 28 18 28 Q32 28 32 40" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/><circle cx="34" cy="18" r="6" fill="none" stroke="#FFFFFF" stroke-width="3.5"/><path d="M36 28 Q44 29 44 38" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"/></svg><span><b>+30.000</b> alumnos siguen nuestras clases en redes</span></div>
-    </div>"""
+    <div id="i7-s2" class="i7-full">
+      <img id="i7-logo" src="assets/img/logo-nawar.png" alt="" />
+      <div id="i7-sub">HOLANDÉS NAWAR</div>
+      <div id="i7-name">Formación A0–A1</div>
+      <div id="i7-team" class="i7-card"><div id="i7-tk">UNA PERSONA DEL EQUIPO</div><div id="i7-tt">Te contactamos</div>
+        <div class="i7-tring" id="i7-r1"></div><div class="i7-tring" id="i7-r2"></div><div id="i7-tb">{icon('phone')}</div></div>
+      <div id="i7-ctarow" class="i7-row"><div id="i7-cta"><span>Rellena el formulario</span>{icon('down')}</div></div>
+      <div id="i7-stat"><b>+30.000 alumnos</b> siguen nuestras clases en redes</div>
+    </div>"""])
+    # cursor: from lower right to the button centre (form 110,300 → button centre at 540, 860)
     js = """
-      tl.fromTo(q("pill"), { y: -30, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, «EST» - 0.06);
-      // «haz clic en el botón de acá abajo»: arrows toward the platform button
-      tl.fromTo(q("aq"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.24, ease: "back.out(2)" }, «HAZ» - 0.06);
-      [["a1", 0], ["a2", 1], ["a3", 2]].forEach(([id, i]) => {
-        tl.fromTo(q(id), { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, «HAZ» + i * 0.07);
-        tl.fromTo(q(id), { y: 0 }, { y: 22, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 7, immediateRender: false }, «HAZ» + 0.3 + i * 0.07);
-      });
-      tl.fromTo(q("pill"), { opacity: 1 }, { opacity: 0, duration: 0.16, ease: "none", immediateRender: false }, «REL» - 0.14);
-      // «rellena el formulario»: the form fills and is sent (press-release-spring + click ripple)
-      tl.fromTo(q("form"), { y: -40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.32, ease: "power3.out" }, «REL» - 0.1);
-""" + typing_js("i1", "María", c["REL"] + 0.14, c["REL"] + 0.42) + typing_js("i2", "+31 6 •••• ••••", c["REL"] + 0.44, c["SEND"] - 0.06) + """
-      tl.fromTo(q("btn"), { scale: 1 }, { scale: 0.94, duration: 0.07, ease: "power2.in" }, «SEND»);
-      tl.to(q("btn"), { scale: 1, duration: 0.2, ease: "back.out(3)" }, «SEND» + 0.07);
-      tl.fromTo(q("rip"), { opacity: 0.7, scale: 0.2 }, { opacity: 0, scale: 6, duration: 0.45, ease: "power2.out" }, «SEND» + 0.02);
-      tl.fromTo(q("btnok"), { opacity: 0 }, { opacity: 1, duration: 0.14, ease: "none" }, «SEND» + 0.12);
-      tl.set(q("btn"), { opacity: 0 }, «SEND» + 0.27);
-      // «una persona de nuestro equipo te atenderá»
-      tl.fromTo(q("chat"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, «PER» - 0.12);
-      tl.set(q("fs1"), { opacity: 0 }, «PER» + 0.06);
-      tl.fromTo("#g10-typ .g10-td", { y: 0 }, { y: -10, duration: 0.18, ease: "sine.inOut", yoyo: true, repeat: 3, stagger: 0.08 }, «PER»);
-      tl.fromTo(q("typ"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, «PER» - 0.04);
-      tl.set(q("typ"), { opacity: 0 }, «EQU» - 0.08);
-      tl.fromTo(q("msg"), { opacity: 0, y: 16, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(1.6)" }, «EQU» - 0.08);
-      tl.fromTo(q("msg2"), { opacity: 0, y: 16, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(1.6)" }, «ATE» - 0.04);
-      // end card on the music's final hit
-      tl.fromTo(q("end"), { opacity: 0, scale: 1.05 }, { opacity: 1, scale: 1, duration: 0.22, ease: "power3.out" }, «END»);
-      tl.fromTo(q("elogo"), { scale: 1.25, opacity: 0, filter: "blur(12px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "expo.out" }, «END» + 0.04);
-      tl.fromTo(q("et"), { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.26, ease: "power3.out" }, «END» + 0.16);
-      tl.fromTo(q("eb"), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, «END» + 0.26);
-      tl.fromTo(q("ea"), { y: 0 }, { y: 24, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 2 }, «END» + 0.36);
-      tl.fromTo(q("sp"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «END» + 0.34);
+      tl.fromTo(q("form"), { opacity: 0, y: 90, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power3.out" }, 0);
+""" + typing_js("f1", "María", 0.16, 0.42) + typing_js("f2", "+31 6 •••• ••••", 0.44, c["CLK"] - 0.1) + """
+      tl.fromTo(q("cur"), { x: 860, y: 1180, opacity: 0 }, { x: 640, y: 924, opacity: 1, duration: 0.42, ease: "power3.out" }, «CLK» - 0.42);
+      tl.to(q("btn"), { scale: 0.96, duration: 0.07, ease: "power2.out" }, «CLK»);
+      tl.to(q("btn"), { scale: 1, duration: 0.16, ease: "back.out(2)" }, «CLK» + 0.07);
+      tl.fromTo(q("rip"), { x: 599, y: 882, scale: 0.4, opacity: 0.85 }, { x: 599, y: 882, scale: 1.5, opacity: 0, duration: 0.4, ease: "power2.out" }, «CLK»);
+      tl.to(q("sent"), { opacity: 1, duration: 0.12 }, «CLK» + 0.06);
+      tl.to(q("send"), { opacity: 0, duration: 0.08 }, «CLK» + 0.06);
+      tl.to(q("s1"), { opacity: 0, y: -80, duration: 0.24, ease: "power2.in" }, «Y» - 0.04);
+      tl.fromTo(q("s2"), { opacity: 0 }, { opacity: 1, duration: 0.01 }, «Y» + 0.18);
+      tl.fromTo(q("logo"), { opacity: 0, scale: 0.8, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: "back.out(1.6)" }, «Y» + 0.18);
+      tl.fromTo(q("sub"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «Y» + 0.36);
+      tl.fromTo(q("name"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.34, ease: "power3.out" }, «Y» + 0.42);
+      tl.fromTo(q("team"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.38, ease: "power3.out" }, «EQU» - 0.1);
+      tl.fromTo(q("r1"), { opacity: 0.8, scale: 1 }, { opacity: 0, scale: 1.6, duration: 0.6, ease: "power2.out" }, «ATE»);
+      tl.fromTo(q("r2"), { opacity: 0.8, scale: 1 }, { opacity: 0, scale: 1.6, duration: 0.6, ease: "power2.out" }, «ATE» + 0.4);
+      tl.fromTo(q("cta"), { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.7)" }, «END» + 0.05);
+      tl.fromTo(q("stat"), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.34, ease: "power3.out" }, «END» + 0.3);
+      tl.to(q("cta"), { keyframes: [{ y: 8, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" }, { y: 8, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" }] }, «END» + 0.6);
 """
-    sfx = [(c["EST"] - 0.08, "pop", 0.16), (c["CLI"] - 0.04, "click", 0.3), (c["REL"] - 0.12, "whoosh-short", 0.2),
-           (c["REL"] + 0.14, "typing", 0.16, 0.6), (c["SEND"] - 0.03, "click", 0.32), (c["EQU"] - 0.1, "notification", 0.2),
-           (c["END"], "sparkle", 0.22)]
-    return comp("gfx-10", d, P, css, body, js, c), sfx
+    sfx = [(0.16, "key-press", 0.18), (c["CLK"], "click", 0.3), (c["Y"] + 0.18, "whoosh-short", 0.12), (c["ATE"], "notification", 0.2)]
+    return comp(iid, d, P, css, body, js, c), sfx
 
 
-# ============================================================================== captions (asr-keyword-glow, karaoke form)
-ACCENT = {"bloqueas": "RED", "ingles": "RED", "test": "RED", "nawar": "BLUE"}
+# ============================================================================== CTA hint while she says «el botón de acá abajo»
+def cta():
+    P = "ct"; t0 = round(at("boton") - 0.1, 3); t1 = INS["ins-07"]["start"]; d = round(t1 - t0, 3)
+    css = """
+    .ct-ch { position: absolute; left: 480px; width: 120px; height: 70px; opacity: 0; }
+    .ct-ch svg { display: block; width: 120px; height: 70px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.45)); }
+"""
+    body = "\n".join(f'    <div id="ct-c{k}" class="ct-ch" style="top:{1400 + 62 * k}px;">{icon("chev")}</div>' for k in range(3))
+    js = ""
+    for k in range(3):
+        js += f'      tl.fromTo(q("c{k}"), {{ opacity: 0, y: -14 }}, {{ keyframes: [{{ opacity: 0.95, y: 0, duration: 0.2 }}, {{ opacity: 0.25, y: 10, duration: 0.3 }}, {{ opacity: 0.95, y: 0, duration: 0.2 }}, {{ opacity: 0.25, y: 10, duration: 0.3 }}], immediateRender: false }}, {0.05 + 0.1 * k:.2f});\n'
+    return comp("cta", d, P, css, body, js), t0, d
+
+
+# ============================================================================== captions (clean, white, no box)
 SHOW = {"dieciseis": "16"}
+
+
+def ground_at(t):
+    for i in ED["inserts"]:
+        if i["start"] <= t < i["start"] + i["duration"]:
+            return i["ground"]
+    return "girl"
 
 
 def captions():
     P = "cap"
+    bounds = sorted({0.0} | {i["start"] for i in ED["inserts"]} | {round(i["start"] + i["duration"], 3) for i in ED["inserts"]})
     pages, cur = [], []
-    for w in WORDS:
-        txt = SHOW.get(norm(w["text"]), w["text"])
-        if w.get("punct") == "?":
-            txt += "?"
-        if w["text"].lower().startswith(("estás",)):
+    def region(t): return max(b for b in bounds if b <= t + 1e-6)
+    for k, w in enumerate(WORDS):
+        txt = SHOW.get(norm(w["text"]), w["text"]) + (w.get("punct") or "").replace(":", "").replace(";", "")
+        if norm(w["text"]) == "estas":
             txt = "¿" + txt
+        if cur and region(w["t"]) != region(cur[0]["t"]):
+            pages.append(cur); cur = []
         cur.append(dict(w, show=txt))
-        brk = any(ch in (w.get("punct") or "") for ch in ".?!,:") or len(cur) >= 3 or sum(len(x["show"]) for x in cur) >= 15
+        first = not pages
+        lim_w, lim_c = (5, 26) if first else (3, 16)
+        brk = any(ch in (w.get("punct") or "") for ch in ".?!,:") or len(cur) >= lim_w or sum(len(x["show"]) for x in cur) >= lim_c
+        if first and norm(w["text"]) != "bajos":
+            brk = False
         if brk:
             pages.append(cur); cur = []
     if cur: pages.append(cur)
     body, js = [], []
+    end_all = round(ED["speech_end"] + 0.12, 3)
     for k, pg in enumerate(pages):
-        t0 = max(0.0, pg[0]["t"] - 0.04) if k else 0.0
-        t1 = pages[k + 1][0]["t"] - 0.04 if k + 1 < len(pages) else min(ED["speech_end"] + 0.3, TOTAL)
-        spans = "".join('<span class="cap-w"><span id="cap-p%d-%d" class="cap-bg" style="background: %s;"></span><span class="cap-t">%s</span></span>'
-                        % (k, i, PAL[ACCENT.get(norm(w["text"]), "BLUE")], w["show"]) for i, w in enumerate(pg))
-        body.append('    <div id="cap-g%d" class="cap-g">%s</div>' % (k, spans))
-        if k == 0:   # the very first frame already carries a caption (thumbnail / scroll-stop)
-            js.append('      tl.fromTo(q("g0"), { opacity: 1, scale: 1 }, { opacity: 1, scale: 1, duration: 0.01 }, 0);')
-        else:
-            js.append('      tl.fromTo(q("g%d"), { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.12, ease: "power3.out" }, %.3f);' % (k, t0))
+        t0 = max(0.0, pg[0]["t"] - 0.03) if k else 0.0
+        t1 = (pages[k + 1][0]["t"] - 0.03) if k + 1 < len(pages) else end_all
+        g = ground_at(pg[0]["t"] + 0.01)
+        spans = " ".join('<span id="cap-w%d-%d" class="cap-w">%s</span>' % (k, i, w["show"]) for i, w in enumerate(pg))
+        body.append('    <div id="cap-g%d" class="cap-g cap-gr-%s">%s</div>' % (k, g, spans))
+        js.append('      tl.fromTo(q("g%d"), { opacity: %d }, { opacity: 1, duration: 0.01 }, %.3f);' % (k, 1 if k == 0 else 0, t0))
         js.append('      tl.set(q("g%d"), { opacity: 0 }, %.3f);' % (k, t1))
-        for i, w in enumerate(pg):
-            a = max(t0, w["t"] - 0.02); b = pg[i + 1]["t"] - 0.02 if i + 1 < len(pg) else t1
-            js.append('      tl.fromTo(q("p%d-%d"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.08, ease: "power2.out" }, %.3f);' % (k, i, a))
-            js.append('      tl.set(q("p%d-%d"), { opacity: 0 }, %.3f);' % (k, i, b))
+        for i, w in enumerate(pg if k else []):     # the first page is on screen from frame 0 (thumbnail / scroll-stop)
+            a = max(t0, w["t"] - 0.03)
+            js.append('      tl.fromTo(q("w%d-%d"), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.1, ease: "power2.out" }, %.3f);' % (k, i, a))
     css = """
-    .cap-g { position: absolute; left: 70px; top: 1150px; width: 940px; height: 200px; display: flex; flex-wrap: wrap; align-content: center;
-      justify-content: center; column-gap: 6px; row-gap: 0px; opacity: 0; }
-    .cap-w { position: relative; display: inline-block; padding: 0 12px; }
-    .cap-bg { position: absolute; left: 0; top: 10px; width: 100%; height: 86px; border-radius: 18px; opacity: 0; }
-    .cap-t { position: relative; display: block; font-weight: 800; font-size: 74px; line-height: 104px; letter-spacing: -0.01em; color: #FFFFFF;
-      -webkit-text-stroke: 10px #0b0a2e; paint-order: stroke fill; text-shadow: 0 6px 18px rgba(0,0,0,0.35); white-space: nowrap; }
+    .cap-g { position: absolute; left: 90px; top: 1268px; width: 900px; height: 150px; display: flex; flex-wrap: wrap; align-content: center;
+      justify-content: center; column-gap: 18px; row-gap: 0px; opacity: 0; }
+    .cap-w { display: inline-block; font-weight: 800; font-size: 66px; line-height: 76px; letter-spacing: -0.015em; white-space: nowrap; }
+    .cap-gr-girl .cap-w { color: #FFFFFF; text-shadow: 0 3px 14px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.45); }
+    .cap-gr-blue .cap-w { color: #FFFFFF; text-shadow: 0 3px 16px rgba(4,0,40,0.45); }
+    .cap-gr-paper .cap-w { color: «INK»; }
 """
-    return comp("captions", TOTAL, P, css, "\n".join(body), "\n".join(js) + "\n")
+    return comp("captions", TOTAL, P, css, "\n".join(body), "\n".join(js) + "\n"), len(pages)
 
 
 # ============================================================================== index.html
 def zooms():
-    """coordinate-target-zoom, origin on the face: (shot, at, to, duration, ease). Times are absolute."""
-    S = SHOTS; Z = []
-    def at(n, word, k=0): return round(cue(n, word, k) + S[n]["start"], 3)
-    end = lambda n: round(S[n]["start"] + S[n]["duration"], 3)
-    Z += [(1, 0.0, 1.04, 2.85, "sine.inOut", 1.0), (1, at(1, "escucha") - 0.04, 1.22, 0.2, "power3.out", None)]
-    Z += [(2, S[2]["start"], 1.07, end(2) - S[2]["start"], "none", 1.0)]
-    Z += [(3, S[3]["start"], 1.1, at(3, "sin") - 0.07 - S[3]["start"], "none", 1.03), (3, at(3, "sin") - 0.05, 1.2, 0.2, "power3.out", None)]
-    Z += [(4, S[4]["start"], 1.1, at(4, "cambia") - 0.04 - S[4]["start"], "none", 1.05), (4, at(4, "cambia") - 0.04, 1.24, 0.2, "power3.out", None)]
-    Z += [(5, S[5]["start"], 1.06, at(5, "nativos") - 0.04 - S[5]["start"], "none", 1.0), (5, at(5, "nativos") - 0.04, 1.16, 0.2, "power3.out", None)]
-    Z += [(6, S[6]["start"], 1.05, S[6]["duration"], "none", 1.0)]
-    Z += [(7, S[7]["start"], 1.0, 0.1, "none", 1.0)]
-    Z += [(8, S[8]["start"], 1.04, at(8, "cada") - 0.04 - S[8]["start"], "none", 1.0), (8, at(8, "cada") - 0.04, 1.15, 0.2, "power3.out", None),
-          (8, at(8, "trabajar") - 0.4, 1.08, 0.01, "none", None), (8, at(8, "trabajar") - 0.39, 1.13, end(8) - at(8, "trabajar") + 0.39, "none", None)]
-    Z += [(9, S[9]["start"], 1.08, at(9, "eres") - 0.06 - S[9]["start"], "none", 1.03), (9, at(9, "eres") - 0.04, 1.18, 0.2, "power3.out", None),
-          (9, at(9, "sin") - 0.05, 1.08, 0.3, "power2.inOut", None), (9, at(9, "nadie") - 0.05, 1.22, 0.2, "power3.out", None)]
-    Z += [(10, S[10]["start"], 1.04, at(10, "comenzar") - 0.04 - S[10]["start"], "none", 1.0), (10, at(10, "comenzar") - 0.04, 1.15, 0.2, "power3.out", None),
-          (10, at(10, "haz") - 0.05, 1.0, 0.3, "power2.inOut", None)]
+    """coordinate-target-zoom on the girl (origin = her face): (time, scale, duration, ease, from|None). Each section
+    after an insert starts at its own framing (the cut hides the change), with a slow push and a punch on a key word."""
+    G = ED["girl"]; Z = []
+    def push(g, s0, s1, until=None):
+        Z.append((g["start"], s1, round((until or g["end"]) - g["start"], 3), "none", s0))
+    def punch(word, s, k=0, d=0.22, ease="power3.out"):
+        Z.append((round(at(word, k) - 0.05, 3), s, d, ease, None))
+    def cut(word, s0, s1, until, k=0):
+        t = round(at(word, k) - 0.04, 3); Z.append((t, s1, round(until - t, 3), "none", s0))
+    g = G[0]; push(g, 1.0, 1.05, at("escucha") - 0.05); punch("escucha", 1.15); cut("seguro", 1.04, 1.07, g["end"])
+    g = G[1]; push(g, 1.12, 1.15, at("algo") - 0.04); cut("algo", 1.02, 1.05, at("sin") - 0.05); punch("sin", 1.16); cut("eso", 1.06, 1.09, g["end"])
+    g = G[2]; push(g, 1.0, 1.03, at("nawar") - 0.05); punch("nawar", 1.13)
+    g = G[3]; push(g, 1.14, 1.18)
+    g = G[4]; push(g, 1.0, 1.04, at("cada") - 0.05); punch("cada", 1.13)
+    g = G[5]; push(g, 1.16, 1.2)
+    g = G[6]; push(g, 1.02, 1.05, at("estas") - 0.05); punch("estas", 1.15); punch("haz", 1.04, d=0.35, ease="power2.inOut")
     return Z
 
 
@@ -818,30 +800,27 @@ def media_len(path):
     return round(float(out.strip()), 3)
 
 
-def index(sfx_all):
-    shots, hosts, auds, ztl = [], [], [], []
-    for s in ED["shots"]:
-        n, tk = s["n"], s["take"]; fx, fy = FACE[tk]
-        d = s["duration"] if n < max(SHOTS) else round(TOTAL - s["start"], 3)
-        media_d = s["duration"]
-        auto = json.dumps({"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1},
-                          {"t": round(media_d - 0.02, 3), "v": 1}, {"t": media_d, "v": 0}]}]})
-        shots.append(f"""    <div class="shot" id="sh{n}"><div class="zw" id="zw{n}" data-layout-allow-overflow style="transform-origin: {fx}px {fy}px;">
-      <video id="v{n}" class="clip" src="assets/video/take-{tk}.mp4" data-start="{s['start']}" data-duration="{d}" data-media-start="{s['media_start']}" data-playback-rate="{RATE}" data-track-index="{(n + 1) % 2}" playsinline data-has-audio="true" data-automation='{auto}'></video>
-    </div></div>""")
-        hosts.append(f'    <div id="gfx-{n:02d}" data-composition-id="gfx-{n:02d}" data-composition-src="compositions/gfx-{n:02d}.html" data-start="{s["start"]}" data-duration="{d}" data-track-index="{n}" data-width="1080" data-height="1920"></div>')
-    hosts.append(f'    <div id="captions" data-track-kind="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="{TOTAL}" data-track-index="11" data-width="1080" data-height="1920"></div>')
-    auds.append(f'    <audio id="music" src="assets/audio/music-bed.wav" data-start="0" data-duration="{TOTAL}" data-track-index="12" data-volume="1"></audio>')
+def index(sfx_all, cta_t0, cta_d):
+    fx, fy = FACE; d = ED["clip_end"]
+    auto = json.dumps({"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1},
+                      {"t": round(d - 0.06, 3), "v": 1}, {"t": d, "v": 0}]}]})
+    hosts = []
+    for k, i in enumerate(ED["inserts"]):
+        hosts.append(f'    <div id="{i["id"]}" data-composition-id="{i["id"]}" data-composition-src="compositions/{i["id"]}.html" data-start="{i["start"]}" data-duration="{i["duration"]}" data-track-index="{2 + k}" data-width="1080" data-height="1920"></div>')
+    hosts.append(f'    <div id="cta" data-composition-id="cta" data-composition-src="compositions/cta.html" data-start="{cta_t0}" data-duration="{cta_d}" data-track-index="9" data-width="1080" data-height="1920"></div>')
+    hosts.append(f'    <div id="captions" data-track-kind="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="{TOTAL}" data-track-index="10" data-width="1080" data-height="1920"></div>')
+    auds = [f'    <audio id="music" src="assets/audio/music-bed.wav" data-start="0" data-duration="{TOTAL}" data-track-index="11" data-volume="1"></audio>']
     for k, (t, name, vol, *rest) in enumerate(sfx_all):
         src = "assets/audio/ringback.wav" if name == "ringback" else f"assets/sfx/{name}.mp3"
         dd = min(rest[0] if rest else 99, media_len(os.path.join(ROOT, src)))
         dd = round(min(dd, TOTAL - t), 3)
         auds.append(f'    <audio id="sfx{k}" src="{src}" data-start="{max(0.0, round(t, 3))}" data-duration="{dd}" data-track-index="{20 + k}" data-volume="{vol}"></audio>')
-    for (n, t, to, du, ease, frm) in zooms():
+    ztl = []
+    for (t, to, du, ease, frm) in sorted(zooms()):
         if frm is not None:
-            ztl.append(f'      tl.fromTo("#zw{n}", {{ scale: {frm} }}, {{ scale: {to}, duration: {max(0.01, round(du, 3))}, ease: "{ease}" }}, {round(t, 3)});')
+            ztl.append(f'      tl.fromTo("#zw", {{ scale: {frm} }}, {{ scale: {to}, duration: {max(0.01, round(du, 3))}, ease: "{ease}", immediateRender: false }}, {round(t, 3)});')
         else:
-            ztl.append(f'      tl.to("#zw{n}", {{ scale: {to}, duration: {max(0.01, round(du, 3))}, ease: "{ease}" }}, {round(t, 3)});')
+            ztl.append(f'      tl.to("#zw", {{ scale: {to}, duration: {max(0.01, round(du, 3))}, ease: "{ease}" }}, {round(t, 3)});')
     html = f"""<!doctype html>
 <html lang="es">
   <head>
@@ -850,22 +829,24 @@ def index(sfx_all):
     <script src="assets/vendor/gsap.min.js"></script>
     <style>
       * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-      html, body {{ margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #0b0a2e; }}
-      #root {{ position: relative; width: 100%; height: 100%; overflow: hidden; background: #0b0a2e; }}
+      html, body {{ margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #120081; }}
+      #root {{ position: relative; width: 100%; height: 100%; overflow: hidden; background: #120081; }}
       .shot {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }}
-      .zw {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; will-change: transform; }}
-      .zw video {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
+      #zw {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; will-change: transform; }}
+      #zw video {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
     </style>
   </head>
   <body>
     <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="{TOTAL}">
-{chr(10).join(shots)}
+    <div class="shot"><div id="zw" data-layout-allow-overflow style="transform-origin: {fx}px {fy}px;">
+      <video id="girl" class="clip" src="assets/video/take-{ED['take']}.mp4" data-start="0" data-duration="{d}" data-media-start="0" data-playback-rate="{RATE}" data-track-index="0" playsinline data-has-audio="true" data-automation='{auto}'></video>
+    </div></div>
 {chr(10).join(hosts)}
 {chr(10).join(auds)}
     </div>
     <script>
       const tl = gsap.timeline({{ paused: true }});
-      // punch-in zooms on the face (coordinate-target-zoom, origin = the face)
+      // framing on the girl: one look per section, a slow push and a punch on the key word (origin = her face)
 {chr(10).join(ztl)}
       window.__timelines["main"] = tl;
     </script>
@@ -877,16 +858,23 @@ def index(sfx_all):
 
 def main():
     os.makedirs(os.path.join(ROOT, "compositions"), exist_ok=True)
+    for f in os.listdir(os.path.join(ROOT, "compositions")):
+        if f.endswith(".html"):
+            os.remove(os.path.join(ROOT, "compositions", f))
     sfx_all = []
-    for n, fn in enumerate([gfx01, gfx02, gfx03, gfx04, gfx05, gfx06, gfx07, gfx08, gfx09, gfx10], start=1):
+    for fn in [ins01, ins02, ins03, ins04, ins05, ins06, ins07]:
         html, sfx = fn()
-        open(os.path.join(ROOT, "compositions", f"gfx-{n:02d}.html"), "w").write(html)
-        for item in sfx:
-            t, name, vol, *rest = item
-            sfx_all.append((SHOTS[n]["start"] + t, name, vol, *rest))
-    open(os.path.join(ROOT, "compositions", "captions.html"), "w").write(captions())
-    index(sorted(sfx_all, key=lambda x: x[0]))
-    print(f"index.html + 10 overlays + captions · total {TOTAL}s · {len(sfx_all)} sfx")
+        iid = "ins-0" + fn.__name__[-1]
+        open(os.path.join(ROOT, "compositions", f"{iid}.html"), "w").write(html)
+        sfx_all.append((INS[iid]["start"], "whoosh-short", 0.1))
+        for t, name, vol, *rest in sfx:
+            sfx_all.append((INS[iid]["start"] + t, name, vol, *rest))
+    html, t0, d = cta()
+    open(os.path.join(ROOT, "compositions", "cta.html"), "w").write(html)
+    caps, npages = captions()
+    open(os.path.join(ROOT, "compositions", "captions.html"), "w").write(caps)
+    index(sorted(sfx_all, key=lambda x: x[0]), t0, d)
+    print(f"index.html + {len(ED['inserts'])} inserts + cta + captions ({npages} pages) · total {TOTAL}s · {len(sfx_all)} sfx")
 
 
 if __name__ == "__main__":
