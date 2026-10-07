@@ -140,6 +140,7 @@ export const POST: APIRoute = async ({ request }) => {
           utm_source: (body?.utmSource ?? '').toString().trim().slice(0, 120),
           utm_medium: (body?.utmMedium ?? '').toString().trim().slice(0, 120),
           utm_campaign: (body?.utmCampaign ?? '').toString().trim().slice(0, 120),
+          utm_content: (body?.utmContent ?? '').toString().trim().slice(0, 120),
         }),
         signal: AbortSignal.timeout(6000),
       }).catch((e) => console.error('[cualificacion] matricula:', (e as Error).message))
@@ -148,7 +149,7 @@ export const POST: APIRoute = async ({ request }) => {
     // systeme.io, solo en los dos hitos del proceso de admisión (la web los
     // marca con `hito`), no con cada respuesta: así no se gastan llamadas.
     const hito = (body?.hito ?? '').toString()
-    // De qué página salió (07/10): /formacion/v2 manda la suya; si no, la
+    // De qué página salió (07/10): /formacion-nawar-fb manda la suya; si no, la
     // de siempre.
     const origen = /^[a-z0-9-]{1,40}$/.test((body?.origen ?? '').toString()) ? body.origen.toString() : 'proceso-de-admision'
     const crmHito =
@@ -184,6 +185,7 @@ export const POST: APIRoute = async ({ request }) => {
       utm_source: (body?.utmSource ?? '').toString().trim().slice(0, 120),
       utm_medium: (body?.utmMedium ?? '').toString().trim().slice(0, 120),
       utm_campaign: (body?.utmCampaign ?? '').toString().trim().slice(0, 120),
+      utm_content: (body?.utmContent ?? '').toString().trim().slice(0, 120),
       ...(hechas.length || embudo ? { extra: { ...marcaEmbudo, ...(hechas.length ? { respuestas: hechas, ultima } : {}) } } : {}),
     })
     await crmHito
@@ -218,6 +220,7 @@ export const POST: APIRoute = async ({ request }) => {
     utm_source: (body?.utmSource ?? '').toString().trim().slice(0, 120),
     utm_medium: (body?.utmMedium ?? '').toString().trim().slice(0, 120),
     utm_campaign: (body?.utmCampaign ?? '').toString().trim().slice(0, 120),
+    utm_content: (body?.utmContent ?? '').toString().trim().slice(0, 120),
   }
 
   // 1) La escuela: solicitud (para llamarle) + evento con las respuestas.

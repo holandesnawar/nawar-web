@@ -41,24 +41,56 @@ export const PREVIEW_HASTA = 15
 /** Lo que dura el vídeo, para la barra de abajo del vídeo bloqueado: que se
  *  vea un reproductor de verdad y no un botón suelto (03/10, "muy IA"). */
 export const VIDEO_DURACION = '2:57'
-/** Lo mismo en segundos: es la cuenta atrás del botón en /formacion/v2/video.
+/** Lo mismo en segundos: es la cuenta atrás del botón en /formacion-nawar-fb/vsl.
  *  Si se cambia el vídeo, cambiar las dos. */
 export const VIDEO_SEGUNDOS = 177
 
 /**
- * /formacion/v2 (07/10, en pruebas, como hace UDIA): la página que explica
- * la formación pide los tres datos ahí mismo; luego el vídeo con el botón
- * bloqueado y su cuenta atrás; luego el formulario de admisión. Todo lo que
- * llega a la escuela va como el proceso de admisión (`embudo: 'admision'`),
- * así que el panel lo trata igual; lo distingue el recorrido (las páginas
- * por las que pasó) y, en systeme.io, el campo `origen`.
+ * El embudo del anuncio de Facebook/Instagram (07/10; antes /formacion/v2):
+ * la página que explica la formación pide los tres datos ahí mismo; luego el
+ * vídeo (VSL) con el botón bloqueado y su cuenta atrás; luego el formulario
+ * de admisión. Todo lo que llega a la escuela va como el proceso de admisión
+ * (`embudo: 'admision'`), así que el panel lo trata igual; lo distingue el
+ * recorrido (marca `anuncio-fb`), el campo `origen` de systeme.io y los
+ * `utm_*` del anuncio. Las direcciones viejas de /formacion/v2 redirigen
+ * aquí conservando los `?utm_…`.
+ * ⚠️ "-fb" en la dirección a propósito (usuario, 07/10): es la página de los
+ * anuncios. Cuando haya otra versión para la home y las landings, irá en su
+ * propia dirección para no mezclar de dónde viene cada lead.
  */
-export const V2 = {
-  landing: '/formacion/v2',
-  video: '/formacion/v2/video',
-  formulario: '/formacion/v2/formulario',
-  origen: 'formacion-v2',
+export const EMBUDO_FB = {
+  landing: '/formacion-nawar-fb',
+  video: '/formacion-nawar-fb/vsl',
+  formulario: '/formacion-nawar-fb/proceso-de-admision',
+  origen: 'formacion-nawar-fb',
 } as const
+
+/** El "Lead" del píxel del embudo del anuncio: se marca 'hecho' al mandarlo,
+ *  para que salga una sola vez por visita. */
+export const LEAD_FB = 'nawar.lead.fb'
+
+/** El píxel de Meta de TODA la web («Hebben&Zijn» en el Administrador de
+ *  eventos). Lo arranca Layout.astro en todas las páginas, y el embudo del
+ *  anuncio lo vuelve a arrancar con los datos de la persona (coincidencia
+ *  avanzada) justo antes del Lead. Vaciarlo apaga el píxel en todo el sitio. */
+export const PIXEL_META = '1410831147818099'
+
+/**
+ * Una dirección del embudo con TODO lo que traía la de entrada (?fbclid=,
+ * ?utm_…, lo que sea), más lo que se le añada. Sin el fbclid no hay cookie
+ * _fbc y Meta pierde la atribución; sin los utm, la escuela no sabe de qué
+ * anuncio viene. Ningún paso del embudo puede tirarlos.
+ */
+export function conLaEntrada(ruta: string, mas: Record<string, string> = {}): string {
+  try {
+    const p = new URLSearchParams(window.location.search)
+    for (const [k, v] of Object.entries(mas)) p.set(k, v)
+    const q = p.toString()
+    return q ? `${ruta}?${q}` : ruta
+  } catch {
+    return ruta
+  }
+}
 
 export type Proveedor = 'bunny' | 'youtube' | 'vimeo' | 'mp4' | ''
 
