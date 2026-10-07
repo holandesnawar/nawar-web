@@ -4,7 +4,7 @@
 Bed: the owner's VSL track (100 BPM, 2.4 s/bar), kept calm and even so the ad feels like a person talking, not a
 commercial: the soft intro (bars 0–7) under the problem, the hats section (bars 8–15) entering exactly on «En Nawar…»,
 then bars 8–15 again to the end — no drop, no final hit, the same level under the end card and a gentle fade out.
-It sits ~15 dB under the voice (the take is normalised to −16 LUFS). Ringback: a 425 Hz European call tone for
+It sits ~18 dB under the voice (the take is normalised to −16 LUFS). Ringback: a 425 Hz European call tone for
 «llamas». Outputs assets/audio/music-bed.wav, assets/audio/ringback.wav, audio.json.
 """
 import json, os
@@ -12,7 +12,7 @@ import numpy as np, soundfile as sf
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BAR, BAR0 = 2.4, 0.041
-LEVEL_DB = -31.0       # RMS of the bed
+LEVEL_DB = -34.0       # RMS of the bed (v2.2: one notch lower)
 FADE = 2.2             # fade out over the end card
 
 def seg(y, sr, a_s, b_s):

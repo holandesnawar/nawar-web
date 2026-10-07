@@ -3,7 +3,7 @@
 Anuncio de 50 s en vertical (1080×1920). **v2:** la chica habla siempre a cámara (solo la toma de frente, en un
 plano continuo y sin cortes en su voz) y, cuando explica algo, la imagen corta a un gráfico a pantalla completa con
 el diseño del VSL (fondo PAPER para el problema, NAWAR BLUE para la solución, producto real en ventana o en móvil)
-y vuelve a ella. Subtítulos blancos y limpios, zooms de énfasis sobre su cara y cierre con ella a cámara y un bloque de matrícula hacia el formulario.
+y vuelve a ella. Subtítulos blancos y limpios, zooms de énfasis sobre su cara y cierre con ella a cámara y un botón «haz clic» hacia el formulario.
 
 ## Estructura
 
@@ -14,7 +14,7 @@ y vuelve a ella. Subtítulos blancos y limpios, zooms de énfasis sobre su cara 
 | `edit.json` | El montaje: el plano de la chica, las ventanas de cada gráfico y cada palabra con su tiempo en el vídeo |
 | `index.html` | Montaje final (lo genera `tools/gen.py`): la chica, su encuadre, música y efectos |
 | `compositions/ins-NN.html` | Los gráficos a pantalla completa (uno por explicación) |
-| `compositions/outro.html` | El bloque de matrícula del cierre (ella sigue en pantalla) |
+| `compositions/outro.html` | El botón «MATRÍCULA» con cursor del cierre (ella sigue en pantalla) |
 | `compositions/captions.html` | Subtítulos palabra a palabra |
 | `tools/edit.py` | Ventanas de los gráficos (`INSERTS`, atadas a palabras) → `edit.json` (velocidad 1,05×) |
 | `tools/build_audio.py` | Música de fondo (el tema del VSL, calmado y a nivel constante) + tono de llamada |
@@ -26,7 +26,7 @@ y vuelve a ella. Subtítulos blancos y limpios, zooms de énfasis sobre su cara 
 ```bash
 bash tools/fetch_assets.sh            # tomas desde el Drive + medios de marca del VSL; genera todo
 npx hyperframes check
-npx hyperframes render . --quality high -o renders/nawar-ugc-v2.mp4
+npx hyperframes render . --quality high -o renders/nawar-ugc-v2-2.mp4
 ```
 
 Cambiar cuándo entra o sale un gráfico: edita `INSERTS` en `tools/edit.py` y vuelve a ejecutar `python3 tools/edit.py && python3 tools/build_audio.py && python3 tools/gen.py`

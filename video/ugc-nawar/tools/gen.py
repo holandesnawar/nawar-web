@@ -499,10 +499,10 @@ def ins04():
       tl.fromTo(q("skills"), { opacity: 0 }, { opacity: 1, duration: 0.01 }, 0);
       tl.fromTo(q("s1"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, «LEE» - 0.06);
       tl.fromTo(q("s2"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, «ESC» - 0.06);
-      tl.fromTo(q("s3"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, «OID» - 0.06);
+      tl.fromTo(q("s3"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, «ENT» - 0.08);   // with the listening card
       tl.to(q("n1"), { opacity: 0, duration: 0.1 }, «LEE» + 0.24); tl.fromTo(q("k1"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.26, ease: "back.out(2.2)" }, «LEE» + 0.24);
       tl.to(q("n2"), { opacity: 0, duration: 0.1 }, «ESC» + 0.3); tl.fromTo(q("k2"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.26, ease: "back.out(2.2)" }, «ESC» + 0.3);
-      tl.to(q("n3"), { opacity: 0, duration: 0.1 }, «OID» + 0.2); tl.fromTo(q("k3"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.26, ease: "back.out(2.2)" }, «OID» + 0.2);
+      tl.to(q("n3"), { opacity: 0, duration: 0.1 }, «ENT» + 0.3); tl.fromTo(q("k3"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.26, ease: "back.out(2.2)" }, «ENT» + 0.3);
       tl.fromTo(q("tp"), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.26, ease: "power3.out" }, «EN» - 0.06);
       tl.fromTo(q("strike"), { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power2.out" }, «TES» - 0.04);
       tl.to(q("tp"), { opacity: 0.55, duration: 0.2 }, «TES» + 0.18);
@@ -627,61 +627,56 @@ def ins06():
     return comp(iid, d, P, css, body, js, c), sfx
 
 
-# ============================================================================== outro · she stays on screen, enrolment block below
+# ============================================================================== outro · she stays on screen, a «haz clic» button under her
 def outro():
-    """From «haz clic en el botón de acá abajo» to the end the girl stays on screen (framed higher, then held on her
-    last smile) and a clean enrolment card slides up in the lower third: logo + «Matrícula abierta», the course, the
-    allowed stats, the button «Rellena el formulario ↓» and «Una persona del equipo te contactará»."""
+    """From «haz clic…» to the end she stays on screen (framed a little higher, then held on her last smile) and a
+    glossy blue button «MATRÍCULA» pops under her face the moment she says «haz clic»; a cursor clicks it on
+    «clic» (press-release-spring + cursor-click-ripple). No card, no mock-up: the way creators close a UGC ad."""
     P = "o"; t0 = ED["outro"]; d = round(TOTAL - t0, 3)
     def wcue(word, k=0):
         hits = [w for w in WORDS if w["t"] >= t0 and norm(w["text"]) == norm(word)]
         return round(hits[k]["t"] - t0, 3)
-    c = dict(REL=wcue("rellena"), PER=wcue("persona"), END=round(ED["speech_end"] - t0, 3))
+    c = dict(HAZ=wcue("haz"), CLIC=wcue("clic"), REL=wcue("rellena"), END=round(ED["speech_end"] - t0, 3))
+    # button 700×132 centred at (540, 1216); the cursor tip lands at (742, 1252), the ripple is centred there
     css = """
-    #o-card { left: 80px; top: 1112px; width: 920px; height: 388px; border-radius: 38px;
-      box-shadow: 0 34px 90px rgba(4,0,40,0.38), 0 8px 22px rgba(4,0,40,0.18); }
-    #o-logo { position: absolute; left: 40px; top: 32px; width: 146px; height: 52px; background: url("assets/img/logo-nawar.png") left center / contain no-repeat; }
-    #o-open { position: absolute; right: 36px; top: 36px; display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 18px 0 14px; border-radius: 999px;
-      background: #EAF7EF; color: #15803D; font-family: "Inter", sans-serif; font-weight: 700; font-size: 19px; line-height: 1; letter-spacing: 0.14em; white-space: nowrap; }
-    #o-dot { display: block; width: 12px; height: 12px; border-radius: 50%; background: «GREEN»; }
-    #o-title { position: absolute; left: 40px; top: 104px; font-weight: 800; font-size: 46px; line-height: 1.05; letter-spacing: -0.025em; color: «INK»; white-space: nowrap; }
-    #o-stats { position: absolute; left: 42px; top: 166px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 26px; line-height: 1; color: «MUTED»; white-space: nowrap; }
-    #o-btn { position: absolute; left: 40px; top: 214px; width: 840px; height: 94px; border-radius: 22px; background: «BLUE»; overflow: hidden;
-      box-shadow: 0 14px 30px rgba(11,109,240,0.35); }
-    #o-bt { position: absolute; left: 0; top: 0; width: 840px; height: 94px; display: flex; align-items: center; justify-content: center; gap: 14px;
-      font-weight: 700; font-size: 36px; line-height: 1; color: #FFFFFF; white-space: nowrap; }
-    #o-arr { position: relative; width: 40px; height: 40px; color: #FFFFFF; }
-    #o-arr svg { position: absolute; left: 0; top: 0; width: 40px; height: 40px; }
-    #o-shine { position: absolute; left: -260px; top: 0; width: 200px; height: 94px;
-      background: linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.32) 50%, rgba(255,255,255,0) 100%); }
-    #o-team { position: absolute; left: 0; top: 334px; width: 920px; display: flex; justify-content: center; align-items: center; gap: 12px;
-      font-family: "Inter", sans-serif; font-weight: 600; font-size: 25px; line-height: 1; color: «MUTED»; white-space: nowrap; }
-    #o-ph { position: relative; width: 34px; height: 34px; border-radius: 50%; background: «BLUE»; }
-    #o-ph svg { position: absolute; left: 8px; top: 8px; width: 18px; height: 18px; }
+    #o-wrap { position: absolute; left: 190px; top: 1150px; width: 700px; height: 132px; }
+    #o-glow { position: absolute; left: -40px; top: -30px; width: 780px; height: 192px; border-radius: 96px;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.55) 0%, rgba(77,163,255,0) 70%); }
+    #o-btn { position: absolute; left: 0; top: 0; width: 700px; height: 132px; border-radius: 66px; overflow: hidden;
+      background: linear-gradient(90deg, #0a52d4 0%, #1b74f2 55%, #5aa6ff 100%);
+      box-shadow: inset 0 0 0 3px rgba(255,255,255,0.55), inset 0 -10px 24px rgba(4,0,80,0.25), 0 20px 50px rgba(11,109,240,0.5); }
+    #o-gloss { position: absolute; left: 22px; top: 8px; width: 656px; height: 52px; border-radius: 30px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 100%); }
+    #o-shine { position: absolute; left: -240px; top: 0; width: 180px; height: 132px;
+      background: linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0) 100%); }
+    #o-label { position: absolute; left: 0; top: 0; width: 700px; height: 132px; display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 74px; line-height: 1; letter-spacing: -0.01em; color: #FFFFFF; white-space: nowrap; padding-top: 4px; box-sizing: border-box;
+      text-shadow: 0 0 18px rgba(255,255,255,0.55), 0 3px 0 rgba(0,30,120,0.35); }
+    #o-rip { position: absolute; left: 697px; top: 1207px; width: 90px; height: 90px; border-radius: 50%; border: 5px solid #FFFFFF; box-sizing: border-box; opacity: 0; }
+    #o-cur { position: absolute; left: 738px; top: 1248px; width: 60px; height: 78px; }
+    #o-cur svg { display: block; width: 60px; height: 78px; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35)); }
 """
-    body = f"""    <div id="o-card" class="o-card">
-      <div id="o-logo"></div>
-      <div id="o-open"><span id="o-dot"></span><span>MATRÍCULA ABIERTA</span></div>
-      <div id="o-title">Formación Nawar A0–A1</div>
-      <div id="o-stats">16 semanas · 10 módulos · +360 lecciones</div>
-      <div id="o-btn"><div id="o-shine"></div><div id="o-bt"><span>Rellena el formulario</span><div id="o-arr">{icon('down')}</div></div></div>
-      <div id="o-team"><div id="o-ph">{icon('phone')}</div><span>Una persona del equipo te contactará</span></div>
-    </div>"""
+    body = f"""    <div id="o-wrap">
+      <div id="o-glow"></div>
+      <div id="o-btn"><div id="o-gloss"></div><div id="o-shine"></div><div id="o-label">MATRÍCULA</div></div>
+    </div>
+    <div id="o-rip"></div>
+    <div id="o-cur">{icon('cursor')}</div>"""
     js = """
-      tl.fromTo(q("card"), { opacity: 0, y: 150 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.02);
-      tl.fromTo([q("logo"), q("open")], { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.16);
-      tl.fromTo(q("title"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.22);
-      tl.fromTo(q("stats"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.28);
-      tl.fromTo(q("btn"), { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.36, ease: "back.out(1.7)" }, 0.34);
-      tl.fromTo(q("team"), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «PER» - 0.08);
-      tl.to(q("btn"), { scale: 0.97, duration: 0.08, ease: "power2.out" }, «REL»);
-      tl.to(q("btn"), { scale: 1, duration: 0.3, ease: "back.out(2.4)" }, «REL» + 0.08);
-      tl.fromTo(q("shine"), { x: 0 }, { x: 1300, duration: 0.7, ease: "power2.inOut" }, «REL» + 0.04);
-      tl.fromTo(q("shine"), { x: 0 }, { x: 1300, duration: 0.7, ease: "power2.inOut", immediateRender: false }, «END» + 0.2);
-      tl.fromTo(q("arr"), { y: 0 }, { keyframes: [{ y: 7, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" },
-        { y: 7, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" }], immediateRender: false }, «END» - 0.2);
+      tl.fromTo(q("wrap"), { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.36, ease: "back.out(1.8)" }, «HAZ» - 0.06);
+      tl.fromTo(q("glow"), { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, «HAZ»);
+      tl.fromTo(q("cur"), { opacity: 0, x: 150, y: 170 }, { opacity: 1, x: 0, y: 0, duration: 0.34, ease: "power3.out" }, «HAZ» + 0.04);
+      tl.to(q("btn"), { scale: 0.95, duration: 0.07, ease: "power2.out" }, «CLIC» + 0.02);
+      tl.to(q("btn"), { scale: 1, duration: 0.3, ease: "back.out(2.6)" }, «CLIC» + 0.09);
+      tl.to(q("cur"), { scale: 0.86, duration: 0.07, ease: "power2.out" }, «CLIC» + 0.02);
+      tl.to(q("cur"), { scale: 1, duration: 0.2, ease: "power2.out" }, «CLIC» + 0.09);
+      tl.fromTo(q("rip"), { scale: 0.3, opacity: 0.9 }, { scale: 1.7, opacity: 0, duration: 0.45, ease: "power2.out" }, «CLIC» + 0.02);
+      tl.fromTo(q("shine"), { x: 0 }, { x: 1120, duration: 0.7, ease: "power2.inOut" }, «REL»);
+      tl.fromTo(q("shine"), { x: 0 }, { x: 1120, duration: 0.7, ease: "power2.inOut", immediateRender: false }, «END» + 0.25);
+      tl.fromTo(q("wrap"), { scale: 1 }, { keyframes: [{ scale: 1.04, duration: 0.25, ease: "power1.inOut" }, { scale: 1, duration: 0.25, ease: "power1.inOut" },
+        { scale: 1.04, duration: 0.25, ease: "power1.inOut" }, { scale: 1, duration: 0.25, ease: "power1.inOut" }], immediateRender: false }, «END» + 0.1);
 """
-    sfx = [(0.02, "whoosh-short", 0.12), (c["REL"], "click-soft", 0.2), (c["PER"] - 0.08, "notification", 0.16)]
+    sfx = [(c["HAZ"] - 0.06, "pop", 0.2), (c["CLIC"] + 0.02, "click", 0.3)]
     return comp("outro", d, P, css, body, js, c), t0, d, sfx
 
 
@@ -723,7 +718,7 @@ def captions():
         t1 = (pages[k + 1][0]["t"] - 0.03) if k + 1 < len(pages) else end_all
         g = ground_at(pg[0]["t"] + 0.01)
         spans = " ".join('<span id="cap-w%d-%d" class="cap-w">%s</span>' % (k, i, w["show"]) for i, w in enumerate(pg))
-        up = " cap-up" if pg[0]["t"] >= ED["outro"] - 1e-3 else ""      # above the enrolment card
+        up = " cap-up" if pg[0]["t"] >= ED["outro"] - 1e-3 else ""      # above the «haz clic» button
         body.append('    <div id="cap-g%d" class="cap-g cap-gr-%s%s">%s</div>' % (k, g, up, spans))
         js.append('      tl.fromTo(q("g%d"), { opacity: %d }, { opacity: 1, duration: 0.01 }, %.3f);' % (k, 1 if k == 0 else 0, t0))
         js.append('      tl.set(q("g%d"), { opacity: 0 }, %.3f);' % (k, t1))
@@ -733,7 +728,7 @@ def captions():
     css = """
     .cap-g { position: absolute; left: 90px; top: 1268px; width: 900px; height: 150px; display: flex; flex-wrap: wrap; align-content: center;
       justify-content: center; column-gap: 18px; row-gap: 0px; opacity: 0; }
-    .cap-up { top: 972px; }
+    .cap-up { top: 984px; }
     .cap-w { display: inline-block; font-weight: 800; font-size: 66px; line-height: 76px; letter-spacing: -0.015em; white-space: nowrap; }
     .cap-gr-girl .cap-w { color: #FFFFFF; text-shadow: 0 3px 14px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.45); }
     .cap-gr-blue .cap-w { color: #FFFFFF; text-shadow: 0 3px 16px rgba(4,0,40,0.45); }
