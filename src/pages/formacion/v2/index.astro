@@ -37,11 +37,13 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
  *  su propio fondo blanco: van sobre blanco y sin marco. */
 const IMG = {
   clases: 'https://docs.holandesnawar.com/img/Landing/bonus.clases.png',
-  comunidad: 'https://docs.holandesnawar.com/img/Landing/bonus.comun.png',
   ejercicios: 'https://docs.holandesnawar.com/img/Landing/bonus.ejercicios.png',
   soporte: 'https://docs.holandesnawar.com/img/Landing/bonus.soporte.png',
   certificado: 'https://docs.holandesnawar.com/img/Landing/Certificado.final.landing.png',
   certFondo: 'https://docs.holandesnawar.com/img/Landing/fondo.certificado.png',
+  // La portada de la formación (el libro "De cero a tu primera
+  // conversación"), la de PresentacionNawar.
+  formacion: 'https://docs.holandesnawar.com/img/Landing/cuantos%20cursos%20has%20empezado.png',
 }
 
 /** Iconos de línea (24×24, trazo), en un solo sitio. Se pintan SOLOS, sin
@@ -100,10 +102,12 @@ const CAMBIO = [
  *  de la escuela (las ilustraciones de las landings, BonusSection). 07/10:
  *  "en vez de mockup, imágenes reales como en la landing". */
 const SEMANA = [
-  { img: IMG.clases, i: 'video', t: 'Sigues las lecciones de la semana', d: 'Cada semana se abre lo que toca: vídeo corto explicado en español, vocabulario con audio, lectura y escucha. Con 20-30 minutos al día vas al día, y siempre sabes qué viene después.' },
+  { img: IMG.formacion, i: 'libro', t: 'Sigues las lecciones de la semana', d: 'Cada semana se abre lo que toca: vídeo corto explicado en español, vocabulario con audio, lectura y escucha. Con 20-30 minutos al día vas al día, y siempre sabes qué viene después.' },
   { img: IMG.ejercicios, i: 'libro', t: 'Practicas hasta que te sale', d: 'Ejercicios que se corrigen solos: escuchar, leer, escribir y hablar. Si fallas, te dice cuál era y por qué, y repasas justo lo que te cuesta.' },
   { img: IMG.soporte, i: 'consulta', t: 'Preguntas cuando te atascas', d: 'Tus dudas las responde el equipo, en español. Nadie se queda una semana bloqueado con la misma pregunta.' },
-  { img: IMG.comunidad, i: 'grupo', t: 'Hablas con tu grupo', d: 'Clase en directo cada semana con un profesor que habla español, grabada si no puedes ir. Y entre semana, la comunidad: dudas, práctica y avances.' },
+  // La imagen de la clase en directo de la landing (BonusSection). La de la
+  // comunidad, con caras, "parece un poco IA" (usuario, 07/10): no usarla.
+  { img: IMG.clases, i: 'video', t: 'Hablas en la clase en directo', d: 'Cada semana, con un profesor que habla español y con tu grupo: dices en voz alta lo que has aprendido. Si no puedes ir, queda grabada.' },
 ]
 
 /** Competencias al terminar: nivel A1, situaciones de la vida real. */
