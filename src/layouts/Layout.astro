@@ -1,4 +1,5 @@
 ---
+import { PIXEL_META } from '../lib/admision'
 import '../styles/global.css'
 import Analytics from '@vercel/analytics/astro'
 import SpeedInsights from '@vercel/speed-insights/astro'
@@ -29,12 +30,22 @@ const siteURL = 'https://www.holandesnawar.com'
    otra página distinta, y si el píxel no está también allí la
    conversión no se le atribuye al anuncio.
    Vaciando esta constante se apaga en todo el sitio de una vez. */
-const META_PIXEL = '1410831147818099'
+// El id vive en src/lib/admision.ts (PIXEL_META): el embudo del anuncio lo
+// necesita para la coincidencia avanzada. Un solo sitio.
+const META_PIXEL = PIXEL_META
 /* El código va montado aquí arriba y no dentro del marcado: un
    literal de varias líneas con llaves dentro rompe al compilador de
    Astro, que se cree que las llaves son suyas.
-   Sólo mide PageView. Los eventos de conversión —Lead al enviar la
-   matrícula, Purchase al pagar— son un paso aparte y no están. */
+   Aquí solo va el PageView; los eventos de conversión los manda cada
+   página (el Lead del embudo del anuncio, en /formacion-nawar-fb/vsl).
+
+   Coincidencia avanzada (07/10): si esta persona ya dejó sus datos en el
+   proceso de admisión o en el embudo del anuncio (localStorage
+   'nawar.admision.datos'), el píxel arranca con su correo, teléfono y
+   nombre. El propio píxel los cifra (SHA-256) antes de mandarlos. Así Meta
+   reconoce a quien convierte aunque haya cambiado de dispositivo o tenga
+   las cookies borradas, y la campaña aprende mejor a quién buscar. Sin
+   datos guardados, arranca igual que antes. */
 const META_PIXEL_SNIPPET = `!function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -43,7 +54,11 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window,document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '${META_PIXEL}');
+var am={};try{var d=JSON.parse(localStorage.getItem('nawar.admision.datos')||'null');
+if(d){if(d.email)am.em=String(d.email).trim().toLowerCase();
+if(d.phone)am.ph=String(d.phone).replace(/[^0-9]/g,'');
+if(d.first_name)am.fn=String(d.first_name).trim().toLowerCase();}}catch(x){}
+fbq('init', '${META_PIXEL}', am);
 fbq('track', 'PageView');`
 const META_PIXEL_NOSCRIPT = `<img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=${META_PIXEL}&ev=PageView&noscript=1" />`
 ---

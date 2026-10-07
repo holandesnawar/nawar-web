@@ -1,0 +1,870 @@
+---
+/**
+ * /formacion-nawar-fb/proceso-de-admision — el formulario de admisión del embudo de
+ * /formacion-nawar-fb (07/10, EN PRUEBAS). Se llega desde el botón "Agenda tu
+ * llamada de admisión" del vídeo, ya desbloqueado.
+ *
+ * Es una COPIA de /proceso-de-admision/paso-3 (que a su vez copia /agendar),
+ * para probar sin tocar lo que funciona. Lo único que cambia es la entrada:
+ * una portada centrada, "Formulario de admisión Nawar", con el porqué de las
+ * preguntas y el botón "Comenzar" (como la de UDIA, pedido del usuario).
+ * Las preguntas, la nota, las líneas rojas y Calendly son los MISMOS
+ * (src/lib/cualificacion.ts): si se cambia algo de la lógica en /agendar o
+ * en el paso 3, mirar si hay que traerlo aquí.
+ */
+import Layout from '../../layouts/Layout.astro'
+import { LETRAS, PREGUNTAS } from '../../lib/cualificacion'
+
+export const prerender = true
+
+/** Foto de fondo, a la derecha, con velo. Vacío = sin foto. */
+const FOTO_FONDO = ''
+
+/**
+ * El calendario de la llamada (Calendly), incrustado en la última pantalla
+ * como hace ICO: texto que prepara la llamada a un lado y el calendario al
+ * otro. PUBLIC_AGENDA_URL en Vercel lo cambia sin tocar código.
+ */
+const CALENDLY_URL = (import.meta.env.PUBLIC_AGENDA_URL as string | undefined) || 'https://calendly.com/holandesnawar/llamada-de-consultoria'
+const WHATSAPP_URL = 'https://wa.me/31616084212'
+
+const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boolean)
+---
+
+<Layout
+  title="Formulario de admisión — Holandés Nawar"
+  description="Formulario de admisión a la Formación Nawar A0-A1."
+  noindex={true}
+>
+  <div class="ag-page ag-en-portada" id="ag-page">
+    {FOTO_FONDO ? <div class="ag-photo" style={`background-image:url('${FOTO_FONDO}')`} aria-hidden="true"></div> : null}
+    {FOTO_FONDO ? <div class="ag-veil" aria-hidden="true"></div> : null}
+    <div class="ag-glow1" aria-hidden="true"></div>
+    <div class="ag-glow2" aria-hidden="true"></div>
+    <div class="ag-dots" aria-hidden="true"></div>
+
+    <div class="ag-shell">
+      <a href="/" class="ag-logo-link" aria-label="Volver al inicio">
+        <img src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png" alt="Holandés Nawar" class="ag-logo" width="150" height="38" />
+      </a>
+
+      <p class="ag-eyebrow">Formulario de admisión</p>
+      <div class="ag-progress" aria-hidden="true"><div class="ag-progress-fill" id="ag-fill"></div></div>
+
+      <form id="ag-form" novalidate>
+        <div class="ag-honeypot" aria-hidden="true">
+          <label>No rellenar <input type="text" id="ag-hp" name="website" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        <!-- 0 · La portada, como la de UDIA: qué es esto y por qué se pregunta. -->
+        <section class="ag-pane ag-portada" data-pane="intro">
+          <h1 class="ag-portada-titulo">Formulario de admisión Nawar</h1>
+          <p class="ag-portada-texto">
+            Para darte <strong>acceso prioritario a tu llamada con el equipo</strong>, antes nos gustaría conocerte un poco mejor.
+          </p>
+          <p class="ag-portada-texto">
+            Cuanto más honesto seas en tus respuestas, mejor vamos a poder ayudarte: así preparamos la llamada de forma
+            personal y aprovechamos al máximo el tiempo que pasemos juntos. Tómate un minuto para responder con calma.
+          </p>
+          <button type="button" class="ag-btn ag-portada-btn" data-go="datos" id="ag-empezar">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+            Comenzar
+          </button>
+        </section>
+
+        <!-- 1 · Tu contacto -->
+        <section class="ag-pane" data-pane="datos" hidden>
+          <h2 class="ag-q">Tu contacto</h2>
+          <p class="ag-lead">Antes de continuar, necesitamos conocerte un poquito mejor.</p>
+          <div class="ag-fields">
+            <div class="ag-field">
+              <label class="ag-label" for="first_name">Nombre <span class="ag-req">*</span></label>
+              <input id="first_name" name="first_name" type="text" class="ag-input" placeholder="Juan" autocomplete="given-name" required />
+            </div>
+            <div class="ag-field">
+              <label class="ag-label" for="last_name">Apellidos <span class="ag-req">*</span></label>
+              <input id="last_name" name="last_name" type="text" class="ag-input" placeholder="García" autocomplete="family-name" />
+            </div>
+            <div class="ag-field">
+              <label class="ag-label" for="email">Tu mejor email <span class="ag-req">*</span></label>
+              <p class="ag-help">Te mandamos tu plan y el acceso. Nada de spam.</p>
+              <input id="email" name="email" type="email" class="ag-input" placeholder="correo@ejemplo.com" autocomplete="email" required />
+            </div>
+            <div class="ag-field">
+              <label class="ag-label" for="phone">Teléfono con WhatsApp <span class="ag-req">*</span></label>
+              <p class="ag-help">Con el prefijo de tu país (+31, +32, +34…), para confirmarte la cita por WhatsApp.</p>
+              <input id="phone" name="phone" type="tel" class="ag-input" placeholder="+31 6 …" autocomplete="tel" required />
+            </div>
+          </div>
+          <p class="ag-err" id="ag-err-datos">Revisa el nombre, el correo y el teléfono.</p>
+          <div class="ag-actions ag-between">
+            <button type="button" class="ag-btn-ghost" data-go="intro">‹ Anterior</button>
+            <button type="button" class="ag-btn" data-go="q0">Aceptar ›</button>
+          </div>
+          {/* Solo aquí, donde se piden los datos: antes iba al pie de TODAS las
+              pantallas y molestaba. Donde se recogen datos personales tiene
+              que seguir estando el enlace a la política. */}
+          <p class="ag-legal">Al continuar aceptas la <a href="/politica-de-privacidad">política de privacidad</a>.</p>
+        </section>
+
+        <!-- Preguntas -->
+        {PREGUNTAS.map((p, i) => {
+          const partes = parrafos(p.titulo)
+          const pregunta = partes[partes.length - 1]
+          const intro = partes.slice(0, -1)
+          return (
+            <section class="ag-pane" data-pane={`q${i}`} data-clave={p.clave} data-tipo={p.tipo} hidden>
+              {intro.map((t) => <p class="ag-intro">{t}</p>)}
+              <h2 class="ag-q">{pregunta} <span class="ag-req">*</span></h2>
+              {p.ayuda ? <p class="ag-lead">{p.ayuda}</p> : null}
+
+              {p.tipo === 'opciones' ? (
+                <div class="ag-options" role="radiogroup" aria-label={pregunta}>
+                  {p.opciones.map((o, j) => (
+                    <button type="button" class="ag-option" data-valor={o.valor} data-letra={LETRAS[j]} data-detalle={o.detalle?.clave} role="radio" aria-checked="false">
+                      <span class="ag-key" aria-hidden="true">{LETRAS[j]}</span>
+                      <span>{o.texto}</span>
+                    </button>
+                  ))}
+                  {p.opciones.filter((o) => o.detalle).map((o) => (
+                    <div class="ag-detalle" data-detalle-de={o.valor} hidden>
+                      <input type="text" class="ag-input" data-detalle-clave={o.detalle!.clave} placeholder={o.detalle!.placeholder} maxlength="80" autocomplete="country-name" />
+                    </div>
+                  ))}
+                </div>
+              ) : p.tipo === 'escala' ? (
+                <div class="ag-scale-wrap">
+                  <div class="ag-scale" role="radiogroup" aria-label={pregunta}>
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <button type="button" class="ag-scale-btn" data-valor={String(n)} data-letra={String(n)} role="radio" aria-checked="false">{n}</button>
+                    ))}
+                  </div>
+                  <div class="ag-scale-labels" aria-hidden="true">
+                    <span>{p.extremos[0]}</span>
+                    <span>{p.extremos[1]}</span>
+                    <span>{p.extremos[2]}</span>
+                  </div>
+                </div>
+              ) : (
+                <div class="ag-textwrap">
+                  <textarea class="ag-textarea" data-texto={p.clave} data-minimo={String(p.minimo)} rows="3" placeholder={p.placeholder ?? 'Escribe aquí…'} maxlength="800"></textarea>
+                  <p class="ag-hint">Pulsa <strong>Mayús ⇧ + Intro ↵</strong> para añadir un párrafo.</p>
+                </div>
+              )}
+
+              <p class="ag-err" data-err={`q${i}`}>
+                {p.tipo === 'texto'
+                  ? 'Cuéntanoslo con un poco más de detalle para continuar.'
+                  : p.tipo === 'opciones' && p.opciones.some((o) => o.detalle)
+                    ? 'Elige una opción y, si estás en otro país, dinos cuál.'
+                    : 'Elige una opción para continuar.'}
+              </p>
+              <div class="ag-actions ag-between">
+                <button type="button" class="ag-btn-ghost" data-go={i === 0 ? 'datos' : `q${i - 1}`}>‹ Anterior</button>
+                <button type="button" class="ag-btn" data-continuar={`q${i}`}>{i === PREGUNTAS.length - 1 ? 'Ver si encajo ›' : 'Aceptar ›'}</button>
+              </div>
+            </section>
+          )
+        })}
+
+        <section class="ag-pane" data-pane="enviando" hidden>
+          <h2 class="ag-q">Un segundo…</h2>
+          <p class="ag-lead">Guardando tus respuestas.</p>
+        </section>
+
+        <!-- Encajas: se dice qué viene (una llamada) y se pide el compromiso de
+             asistir antes de enseñar el calendario, como ICO. Un "sí" aquí
+             es una cita que casi seguro se cumple; un "no" no gasta hueco. -->
+        <section class="ag-pane" data-pane="encajas" hidden>
+          <span class="ag-badge">Encajas</span>
+          <!-- "Encajas para una llamada", no "la formación es para ti": en este
+               punto todavía no se vende nada (pedido 23/09). El aviso de "no
+               faltes, hay pocos huecos" va solo en la página del calendario. -->
+          <h2 class="ag-q"><span data-nombre></span>por lo que nos cuentas, encajas para una llamada con el equipo.</h2>
+          <p class="ag-lead">
+            Es una <strong>llamada de media hora</strong> para ver tu caso y darte un plan concreto. Puedes hacernos
+            todas las preguntas que tengas, sin compromiso.
+          </p>
+          <div class="ag-separador" aria-hidden="true"></div>
+          <h2 class="ag-q">¿Te comprometes a asistir a la llamada que reserves? <span class="ag-req">*</span></h2>
+          <div class="ag-options" role="radiogroup" aria-label="Compromiso de asistir" id="ag-compromiso">
+            <button type="button" class="ag-option" data-valor="si" data-letra="A" role="radio" aria-checked="false">
+              <span class="ag-key" aria-hidden="true">A</span>
+              <span>Sí, entiendo y voy a asistir a la llamada</span>
+            </button>
+            <button type="button" class="ag-option" data-valor="no" data-letra="B" role="radio" aria-checked="false">
+              <span class="ag-key" aria-hidden="true">B</span>
+              <span>No, prefiero no reservar la llamada ahora</span>
+            </button>
+          </div>
+          <div class="ag-actions">
+            <button type="button" class="ag-btn-ghost" data-go={`q${PREGUNTAS.length - 1}`}>‹ Anterior</button>
+          </div>
+        </section>
+
+        <section class="ag-pane" data-pane="noreserva" hidden>
+          <h2 class="ag-title-sm">Sin problema</h2>
+          <p class="ag-lead">
+            Cuando sea tu momento, vuelve a esta página o escríbenos por <a class="ag-enlace" href={WHATSAPP_URL} target="_blank" rel="noopener">WhatsApp</a>.
+            Mientras tanto, la guía de las bases te sirve para ir avanzando, gratis.
+          </p>
+          <div class="ag-actions">
+            <a class="ag-btn" href="/guia/bases-neerlandes">Descargar la guía gratis ›</a>
+            <button type="button" class="ag-btn-ghost" id="ag-volver-reservar">‹ Mejor sí, quiero reservar</button>
+          </div>
+        </section>
+
+        <section class="ag-pane ag-pane-reserva" data-pane="apto" hidden>
+          <div class="ag-reserva">
+            <div class="ag-reserva-texto">
+              <div class="ag-reserva-contenido">
+                <img src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png" alt="Holandés Nawar" class="ag-logo ag-logo-split" width="150" height="38" />
+                <span class="ag-badge">Último paso</span>
+                <h2 class="ag-q">Elige el día y la hora que mejor te vengan para tu llamada con el equipo.</h2>
+                <p class="ag-lead">
+                  Nos tomamos muy en serio cada llamada: tenemos pocos huecos a la semana, y cada uno que se queda
+                  vacío es una llamada que otra persona no ha podido tener.
+                </p>
+                <p class="ag-sub">Así que asegúrate de esto:</p>
+                <ul class="ag-list">
+                  <li>Estás en un sitio tranquilo, sin ruido y con buena conexión.</li>
+                  <li>Tienes a mano todo lo que quieras preguntarnos.</li>
+                  <li>Eres puntual.</li>
+                </ul>
+                <p class="ag-lead ag-nota">
+                  Si te surge un imprevisto y no puedes asistir, avísanos por
+                  <a href={WHATSAPP_URL} target="_blank" rel="noopener">WhatsApp</a> con la máxima antelación posible.
+                </p>
+                <div class="ag-actions">
+                  <button type="button" class="ag-btn-ghost" id="ag-cal-volver">‹ Anterior</button>
+                </div>
+              </div>
+            </div>
+            <div class="ag-calendario" id="ag-calendario" data-url={CALENDLY_URL}>
+              <div class="ag-cal-barra">
+                <span>Elige día y hora</span>
+                <button type="button" class="ag-cal-cerrar" id="ag-cal-cerrar" aria-label="Cerrar el calendario">×</button>
+              </div>
+              <div class="ag-calendario-caja" id="ag-calendly"></div>
+              <p class="ag-cal-alt">¿No ves el calendario? <a id="ag-agenda" href={CALENDLY_URL} target="_blank" rel="noopener">Ábrelo aquí</a></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="ag-pane" data-pane="reservada" hidden>
+          <span class="ag-badge">Llamada reservada</span>
+          <h2 class="ag-title-sm">¡Hecho! Nos vemos en la llamada</h2>
+          <p class="ag-lead">Te acaba de llegar un correo con el día, la hora y el enlace. Si necesitas cambiarla, en ese mismo correo tienes el botón para hacerlo.</p>
+        </section>
+
+        <section class="ag-pane" data-pane="noapto" hidden>
+          <h2 class="ag-title-sm">Gracias por contarnos</h2>
+          <p class="ag-lead">Ahora mismo la formación no es lo que más te ayuda: es un camino de tres meses con clases en vivo, y pide un momento que ahora mismo no es el tuyo. Lo que sí te sirve ya es la guía de las bases, gratis. Cuando sea el momento, aquí estamos.</p>
+          <div class="ag-actions">
+            <a class="ag-btn" href="/guia/bases-neerlandes">Descargar la guía gratis ›</a>
+          </div>
+          <p class="ag-lead ag-nota">Para cualquier duda, puedes contactarnos en <a class="ag-enlace" href="mailto:info@holandesnawar.com">info@holandesnawar.com</a>.</p>
+        </section>
+
+        <p class="ag-err" id="ag-err-envio">No se pudo enviar. Vuelve a intentarlo en un momento.</p>
+      </form>
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { leerUTM, guardarUTM } from '../../lib/utm'
+  import { contextoDelLead } from '../../lib/recorrido'
+  import { CLAVE_DATOS, CLAVE_VIDEO, type DatosAdmision } from '../../lib/admision'
+  guardarUTM()
+
+  const form = document.getElementById('ag-form') as HTMLFormElement
+
+  // Lo que viene del paso 1 y 2 (src/lib/admision.ts). Con los datos, se
+  // rellenan y "Empezar" va directo a la primera pregunta.
+  const leerLocal = <T,>(k: string): T | null => {
+    try { const v = localStorage.getItem(k); return v ? (JSON.parse(v) as T) : null } catch { return null }
+  }
+  const delPaso1 = leerLocal<DatosAdmision>(CLAVE_DATOS)
+  const EMBUDO = { embudo: 'admision', video: leerLocal<string>(CLAVE_VIDEO) === 'visto' ? 'visto' : 'empezado' }
+  if (delPaso1) {
+    ;(document.getElementById('first_name') as HTMLInputElement).value = delPaso1.first_name || ''
+    ;(document.getElementById('email') as HTMLInputElement).value = delPaso1.email || ''
+    ;(document.getElementById('phone') as HTMLInputElement).value = delPaso1.phone || ''
+    if (delPaso1.first_name && delPaso1.email && delPaso1.phone) {
+      ;(document.getElementById('ag-empezar') as HTMLButtonElement).dataset.go = 'q0'
+    }
+  }
+  const panes = Array.from(form.querySelectorAll<HTMLElement>('.ag-pane'))
+  const preguntas = panes.filter((p) => p.dataset.clave)
+  const fill = document.getElementById('ag-fill') as HTMLElement
+  const respuestas: Record<string, string> = {}
+  const textos: Record<string, string> = {}
+  // La línea: intro 0 %, datos un tramo, y cada pregunta otro.
+  const tramos = preguntas.length + 1
+  let actual = 'intro'
+  let saltando: number | null = null
+
+  const mostrar = (id: string) => {
+    if (saltando) { clearTimeout(saltando); saltando = null }
+    actual = id
+    panes.forEach((p) => { p.hidden = p.dataset.pane !== id })
+    // La portada va centrada y sin la línea de progreso, como la de UDIA.
+    document.getElementById('ag-page')?.classList.toggle('ag-en-portada', id === 'intro')
+    let hecho = 0
+    if (id === 'datos') hecho = 0.5
+    else if (id.startsWith('q')) hecho = 1 + Number(id.slice(1))
+    else if (['enviando', 'encajas', 'noreserva', 'apto', 'noapto', 'reservada'].includes(id)) hecho = tramos
+    fill.style.width = `${Math.min(100, Math.round((hecho / tramos) * 100))}%`
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    // La pregunta abierta: el cursor ya dentro, sin tener que tocar.
+    const pane = panes.find((p) => p.dataset.pane === id)
+    const area = pane?.querySelector<HTMLTextAreaElement>('.ag-textarea')
+    if (area) setTimeout(() => area.focus(), 60)
+  }
+
+  const val = (id: string) => (document.getElementById(id) as HTMLInputElement).value.trim()
+  const datosOk = () => {
+    const ok = val('first_name').length > 0 && /\S+@\S+\.\S+/.test(val('email')) && val('phone').replace(/\D/g, '').length >= 7
+    ;(document.getElementById('ag-err-datos') as HTMLElement).classList.toggle('visible', !ok)
+    return ok
+  }
+
+  form.querySelectorAll<HTMLButtonElement>('[data-go]').forEach((b) => {
+    b.addEventListener('click', () => {
+      const destino = b.dataset.go as string
+      if (destino === 'q0') {
+        if (!datosOk()) return
+        guardarParcial()
+        contarLead()
+      }
+      mostrar(destino)
+    })
+  })
+
+  // En cuanto deja sus datos, la escuela ya lo sabe: si cierra a mitad, sale
+  // en Panel → Llamadas como "No terminó" y se le puede escribir. Y después,
+  // con cada respuesta, se manda otra vez con lo que lleva contestado: quien
+  // se va en la pregunta 5 deja cuatro respuestas con las que llamarle en
+  // frío. La escuela reescribe su misma línea, no crea otra. Sin esperar la
+  // respuesta: la persona no nota nada, y keepalive lo deja salir aunque
+  // cierre la pestaña justo después.
+  // Aviso al píxel de Meta al dejar los datos, con SU PROPIO evento
+  // (SubmitApplication) y NO "Lead": el "Lead" lo disparan las guías y es con
+  // lo que miden las campañas. Con "Lead" aquí, quien baja la guía y luego
+  // pasa por /agendar contaba dos veces y los números de la guía salían
+  // inflados (el usuario lo vio el 29/09). Una vez por visita. Con ?. porque
+  // el píxel puede no estar (bloqueadores).
+  const contarLead = () => {
+    const evento = () => (window as any).fbq?.('track', 'SubmitApplication', { content_name: 'Formación Nawar FB' })
+    try {
+      if (sessionStorage.getItem('lead-agendar')) return
+      sessionStorage.setItem('lead-agendar', '1')
+    } catch {}
+    evento()
+  }
+
+  let parcialEnviado = ''
+  const guardarParcial = (ultima = '') => {
+    const email = val('email').toLowerCase()
+    if (!email) return
+    const cuerpo = JSON.stringify({
+      parcial: true,
+      ...EMBUDO,
+      first_name: val('first_name'),
+      last_name: val('last_name'),
+      email,
+      phone: val('phone'),
+      website: (document.getElementById('ag-hp') as HTMLInputElement).value,
+      respuestas,
+      textos,
+      ultima,
+      ...contextoDelLead(),
+      ...leerUTM(),
+    })
+    // Si no ha cambiado nada (volvió atrás y adelante), no se repite.
+    if (cuerpo === parcialEnviado) return
+    parcialEnviado = cuerpo
+    try {
+      fetch('/api/cualificacion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: cuerpo,
+      }).catch(() => {})
+    } catch {}
+  }
+
+  const indice = (pane: HTMLElement) => Number((pane.dataset.pane as string).slice(1))
+  const siguiente = async (pane: HTMLElement) => {
+    const i = indice(pane)
+    if (i + 1 < preguntas.length) {
+      // La última no: esa la manda entera enviar().
+      guardarParcial(pane.dataset.clave as string)
+      mostrar(`q${i + 1}`)
+    } else await enviar()
+  }
+
+  /** Elegir una opción (o un punto de la escala): se marca y, tras un
+   *  respiro para verla marcada, pasa sola a la siguiente. Como Typeform. */
+  const elegir = (pane: HTMLElement, btn: HTMLButtonElement) => {
+    pane.querySelectorAll('[role="radio"]').forEach((b) => b.setAttribute('aria-checked', 'false'))
+    btn.setAttribute('aria-checked', 'true')
+    respuestas[pane.dataset.clave as string] = btn.dataset.valor as string
+    pane.querySelector('[data-err]')?.classList.remove('visible')
+    if (saltando) clearTimeout(saltando)
+    // Una opción que pide algo más ("En otro país" → cuál): se abre su campo
+    // y NO pasa sola; sigue con Intro o "Aceptar". Las demás cierran el campo.
+    let abierto: HTMLInputElement | null = null
+    pane.querySelectorAll<HTMLElement>('[data-detalle-de]').forEach((caja) => {
+      const input = caja.querySelector<HTMLInputElement>('input') as HTMLInputElement
+      const toca = caja.dataset.detalleDe === btn.dataset.valor
+      caja.hidden = !toca
+      if (toca) abierto = input
+      else delete textos[input.dataset.detalleClave as string]
+    })
+    if (abierto) {
+      setTimeout(() => (abierto as HTMLInputElement).focus(), 60)
+      return
+    }
+    saltando = window.setTimeout(() => { saltando = null; siguiente(pane) }, 420)
+  }
+
+  preguntas.forEach((pane) => {
+    pane.querySelectorAll<HTMLButtonElement>('[role="radio"]').forEach((btn) => {
+      btn.addEventListener('click', () => elegir(pane, btn))
+    })
+    pane.querySelectorAll<HTMLInputElement>('[data-detalle-clave]').forEach((input) => {
+      input.addEventListener('input', () => {
+        textos[input.dataset.detalleClave as string] = input.value
+        if (input.value.trim().length >= 2) pane.querySelector('[data-err]')?.classList.remove('visible')
+      })
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); continuar(pane) }
+      })
+    })
+    const area = pane.querySelector<HTMLTextAreaElement>('.ag-textarea')
+    if (area) {
+      area.addEventListener('input', () => {
+        textos[pane.dataset.clave as string] = area.value
+        if (area.value.trim().length >= Number(area.dataset.minimo || 0)) pane.querySelector('[data-err]')?.classList.remove('visible')
+      })
+      // Intro = continuar; Mayús+Intro = párrafo nuevo (como Typeform).
+      area.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); continuar(pane) }
+      })
+    }
+  })
+
+  const completa = (pane: HTMLElement) => {
+    const area = pane.querySelector<HTMLTextAreaElement>('.ag-textarea')
+    if (area) return area.value.trim().length >= Number(area.dataset.minimo || 0)
+    const elegida = respuestas[pane.dataset.clave as string]
+    if (!elegida) return false
+    // Si la elegida pide un detalle (el país), hace falta escribirlo.
+    const caja = pane.querySelector<HTMLElement>(`[data-detalle-de="${elegida}"]`)
+    if (caja) return (caja.querySelector('input') as HTMLInputElement).value.trim().length >= 2
+    return true
+  }
+
+  const continuar = async (pane: HTMLElement) => {
+    if (!completa(pane)) {
+      pane.querySelector('[data-err]')?.classList.add('visible')
+      return
+    }
+    await siguiente(pane)
+  }
+
+  form.querySelectorAll<HTMLButtonElement>('[data-continuar]').forEach((b) => {
+    b.addEventListener('click', () => {
+      const pane = panes.find((p) => p.dataset.pane === b.dataset.continuar) as HTMLElement
+      continuar(pane)
+    })
+  })
+
+  // Teclado: la letra elige la opción (o el número, en la escala); Intro
+  // continúa. Solo en las preguntas, y nunca mientras se escribe en un campo.
+  document.addEventListener('keydown', (e) => {
+    if (actual === 'encajas' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      const b = compromiso.querySelector<HTMLElement>(`[data-letra="${e.key.toUpperCase()}"]`)
+      if (b) { e.preventDefault(); responderCompromiso(b) }
+      return
+    }
+    if (!actual.startsWith('q')) return
+    const objetivo = e.target as HTMLElement | null
+    if (objetivo && (objetivo.tagName === 'INPUT' || objetivo.tagName === 'TEXTAREA')) return
+    const pane = panes.find((p) => p.dataset.pane === actual) as HTMLElement
+    if (e.key === 'Enter') { e.preventDefault(); continuar(pane); return }
+    const tecla = e.key.toUpperCase()
+    const btn = pane.querySelector<HTMLButtonElement>(`[role="radio"][data-letra="${tecla}"]`)
+    if (btn && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); elegir(pane, btn) }
+  })
+
+  // ── La reserva, con el calendario de Calendly dentro de la página ──────
+  // El script de Calendly se carga solo aquí, al llegar a esta pantalla: los
+  // que no encajan nunca lo descargan.
+  const calendario = document.getElementById('ag-calendario') as HTMLElement
+  const cajaCal = document.getElementById('ag-calendly') as HTMLElement
+  let calendlyPuesto = false
+
+  const cargarScript = () =>
+    new Promise<void>((ok, mal) => {
+      if ((window as any).Calendly) return ok()
+      const sc = document.createElement('script')
+      sc.src = 'https://assets.calendly.com/assets/external/widget.js'
+      sc.async = true
+      sc.onload = () => ok()
+      sc.onerror = () => mal(new Error('calendly'))
+      document.head.appendChild(sc)
+    })
+
+  const ponerCalendario = async () => {
+    if (calendlyPuesto) return
+    calendlyPuesto = true
+    const base = calendario.dataset.url as string
+    const nombre = `${val('first_name')} ${val('last_name')}`.trim()
+    // Colores de la marca (Calendly los aplica si el plan lo permite; si no,
+    // los ignora sin romper nada) y sin el aviso de cookies encima.
+    // Sin el bloque de detalles del evento (duración, notas…): el texto de la
+    // izquierda ya lo cuenta, y así el calendario empieza arriba del todo y
+    // cabe sin tener que bajar.
+    const url = `${base}${base.includes('?') ? '&' : '?'}hide_event_type_details=1&hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=1d0084`
+    try {
+      await cargarScript()
+      ;(window as any).Calendly.initInlineWidget({
+        url,
+        parentElement: cajaCal,
+        prefill: { name: nombre, email: val('email').toLowerCase() },
+      })
+    } catch {
+      // Si el script no carga (bloqueador, red), queda el enlace de debajo.
+      calendario.classList.add('ag-cal-fallo')
+    }
+  }
+
+  const esEscritorio = () => window.matchMedia('(min-width: 900px)').matches
+  const compromiso = document.getElementById('ag-compromiso') as HTMLElement
+
+  // Encaja → primero la pantalla "Encajas" con el compromiso de asistir.
+  const abrirReserva = () => {
+    const nombre = val('first_name')
+    document.querySelectorAll<HTMLElement>('[data-nombre]').forEach((el) => { el.textContent = nombre ? `${nombre}, ` : '' })
+    compromiso.querySelectorAll('[role="radio"]').forEach((b) => b.setAttribute('aria-checked', 'false'))
+    mostrar('encajas')
+  }
+
+  // "Sí, voy a asistir" → el calendario. En el ordenador, media página con el
+  // texto al lado. En el móvil, a pantalla completa con una X para volver.
+  const irAlCalendario = () => {
+    mostrar('apto')
+    calendario.classList.add('abierto')
+    // Ordenador: la página entera se parte en dos mitades, sin la línea de
+    // pasos ni el logo de arriba, con Calendly desde arriba del todo.
+    if (esEscritorio()) document.body.classList.add('ag-split')
+    else document.body.classList.add('ag-cal-movil')
+    ponerCalendario()
+  }
+
+  const cerrarCalendario = () => {
+    calendario.classList.remove('abierto')
+    document.body.classList.remove('ag-cal-movil', 'ag-split')
+    abrirReserva()
+  }
+
+  const responderCompromiso = (btn: HTMLElement) => {
+    compromiso.querySelectorAll('[role="radio"]').forEach((b) => b.setAttribute('aria-checked', 'false'))
+    btn.setAttribute('aria-checked', 'true')
+    setTimeout(() => (btn.dataset.valor === 'si' ? irAlCalendario() : mostrar('noreserva')), 380)
+  }
+
+  compromiso.querySelectorAll<HTMLElement>('[role="radio"]').forEach((b) => b.addEventListener('click', () => responderCompromiso(b)))
+  document.getElementById('ag-cal-cerrar')?.addEventListener('click', cerrarCalendario)
+  document.getElementById('ag-cal-volver')?.addEventListener('click', cerrarCalendario)
+  document.getElementById('ag-volver-reservar')?.addEventListener('click', abrirReserva)
+
+  // Cuando reserva, Calendly avisa a la página. Se apunta en la escuela para
+  // que en Panel → Llamadas salga "Hora reservada", y se da las gracias.
+  window.addEventListener('message', (e) => {
+    if (e.origin !== 'https://calendly.com') return
+    const d = (e as MessageEvent).data
+    if (!d || d.event !== 'calendly.event_scheduled') return
+    try { (window as any).fbq?.('track', 'Schedule', { content_name: 'Formación Nawar FB' }) } catch {}
+    fetch('/api/cualificacion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      keepalive: true,
+      body: JSON.stringify({
+        reservada: true,
+        ...EMBUDO,
+        first_name: val('first_name'),
+        last_name: val('last_name'),
+        email: val('email').toLowerCase(),
+        phone: val('phone'),
+        calendly_evento: d.payload?.event?.uri ?? '',
+      }),
+    }).catch(() => {})
+    setTimeout(() => {
+      calendario.classList.remove('abierto')
+      document.body.classList.remove('ag-split', 'ag-cal-movil')
+      mostrar('reservada')
+    }, 1800)
+  })
+
+  async function enviar() {
+    mostrar('enviando')
+    const errEnvio = document.getElementById('ag-err-envio') as HTMLElement
+    errEnvio.classList.remove('visible')
+    try {
+      const res = await fetch('/api/cualificacion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          first_name: val('first_name'),
+          last_name: val('last_name'),
+          email: val('email').toLowerCase(),
+          phone: val('phone'),
+          ...EMBUDO,
+          website: (document.getElementById('ag-hp') as HTMLInputElement).value,
+          respuestas,
+          textos,
+          ...leerUTM(),
+          ...contextoDelLead(),
+        }),
+      })
+      const data = await res.json().catch(() => null)
+      if (!res.ok || !data?.ok) throw new Error('no ok')
+      try { (window as any).fbq?.('trackCustom', 'AdmisionCompletada', { apto: !!data.apto }) } catch {}
+      if (data.apto) {
+        abrirReserva()
+      } else {
+        mostrar('noapto')
+      }
+    } catch {
+      errEnvio.classList.add('visible')
+      mostrar(`q${preguntas.length - 1}`)
+    }
+  }
+</script>
+
+<style>
+  /* ── La portada (UDIA): centrada en la pantalla, sin línea de progreso ── */
+  .ag-page.ag-en-portada { align-items: center; }
+  .ag-en-portada .ag-shell { align-items: center; }
+  .ag-en-portada .ag-eyebrow, .ag-en-portada .ag-progress { display: none; }
+  .ag-en-portada .ag-logo-link { margin-bottom: 48px; align-self: center; }
+  .ag-portada { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 620px; margin: 0 auto; padding-bottom: 6vh; }
+  .ag-portada-titulo { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; margin: 0 0 26px; color: #fff; text-wrap: balance; }
+  .ag-portada-texto { margin: 0 0 18px; font-size: clamp(16px, 1.8vw, 19px); line-height: 1.7; color: rgba(255,255,255,0.72); text-align: left; }
+  .ag-portada-texto strong { color: #fff; font-weight: 600; }
+  .ag-portada-btn { margin-top: 22px; padding: 18px 40px; font-size: 18px; gap: 12px; border-radius: 14px; }
+  .ag-page {
+    min-height: 100vh; background: #1D0084; position: relative; overflow: hidden;
+    display: flex; align-items: flex-start; justify-content: center; padding: 52px 32px 96px;
+  }
+  /* Foto de fondo (si la hay): a la derecha, con velo azul para que el texto
+     se lea encima y la foto quede detrás, como en ICO. */
+  .ag-photo { position: absolute; inset: 0; background-size: cover; background-position: 80% center; background-repeat: no-repeat; opacity: 0.9; pointer-events: none; }
+  .ag-veil { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(29,0,132,0.97) 0%, rgba(29,0,132,0.92) 45%, rgba(20,8,90,0.66) 100%); }
+  .ag-glow1 { position: absolute; top: -140px; left: 50%; transform: translateX(-50%); width: 960px; height: 560px; background: radial-gradient(ellipse at center, rgba(11,109,240,0.5) 0%, transparent 65%); pointer-events: none; }
+  .ag-glow2 { position: absolute; bottom: -60px; right: -80px; width: 600px; height: 400px; background: radial-gradient(ellipse at center, rgba(77,163,255,0.16) 0%, transparent 65%); pointer-events: none; }
+  .ag-dots { position: absolute; inset: 0; pointer-events: none; opacity: 0.4; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 28px 28px; }
+  .ag-shell { position: relative; z-index: 1; width: 100%; max-width: 680px; display: flex; flex-direction: column; align-items: flex-start; color: #fff; }
+  .ag-logo-link { display: inline-block; margin-bottom: 32px; }
+  .ag-logo { height: 38px; width: auto; object-fit: contain; }
+  .ag-eyebrow { margin: 0 0 12px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #4da3ff; }
+  :global(body.ag-split) .ag-eyebrow { display: none; }
+
+  /* Solo la línea. Sin "paso X de N": la línea ya lo dice. */
+  .ag-progress { width: 100%; height: 4px; border-radius: 9999px; background: rgba(255,255,255,0.14); overflow: hidden; margin-bottom: 36px; }
+  .ag-progress-fill { height: 100%; width: 0%; background: #4da3ff; border-radius: 9999px; transition: width .35s ease; }
+
+  /* La etiqueta pedía aire con el título (23/09: "queda algo pegado"). */
+  .ag-badge { display: inline-flex; padding: 6px 16px; border-radius: 9999px; background: #025dc7; color: #e0f2ff; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 20px; align-self: flex-start; }
+  .ag-title-sm { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(26px, 3.8vw, 36px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 8px; }
+  /* El texto que vende antes de la pregunta: mismo cuerpo, menos peso. */
+  /* Sin negrita a propósito (pedido 23/09: "se ve muy cargado"). En móvil,
+     cinco líneas de Poppins en 700 eran un bloque. El texto que vende va en
+     400 y más apagado; la pregunta en 500, que ya destaca por tamaño. */
+  .ag-intro { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(18px, 2.2vw, 22px); font-weight: 400; letter-spacing: -0.01em; line-height: 1.45; margin: 0 0 18px; color: rgba(255,255,255,0.95); }
+  .ag-q { font-family: var(--font-poppins), system-ui, sans-serif; font-size: clamp(21px, 2.8vw, 28px); font-weight: 500; letter-spacing: -0.015em; line-height: 1.3; margin: 0; }
+  /* Descripciones casi blancas (23/09): al 78 % costaba leerlas; ICO las pone blancas. */
+  .ag-lead { font-size: clamp(15px, 1.5vw, 17px); line-height: 1.65; color: rgba(255,255,255,0.93); margin: 12px 0 0; }
+  .ag-lead strong { color: #fff; font-weight: 600; }
+  .ag-sub { font-size: 16px; font-weight: 700; margin: 22px 0 8px; }
+  .ag-list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 15.5px; line-height: 1.55; color: rgba(255,255,255,0.93); }
+  .ag-list strong { color: #fff; font-weight: 600; }
+  /* El reset global de la web quita las viñetas; aquí hacen falta. */
+  .ag-list { list-style: disc; }
+  .ag-list li::marker { color: #4da3ff; }
+  .ag-req { color: #ff8a8a; font-weight: 500; }
+  .ag-hint { font-size: 12.5px; color: rgba(255,255,255,0.7); margin: 10px 0 0; }
+  .ag-hint strong { color: rgba(255,255,255,0.75); font-weight: 600; }
+
+  /* El formulario es hijo de una columna flex con align-items:flex-start:
+     sin ancho, se encogía al contenido y en escritorio las preguntas
+     salían pegadas a la izquierda. */
+  #ag-form { width: 100%; }
+  .ag-pane { width: 100%; }
+  .ag-honeypot { position: absolute !important; left: -10000px !important; width: 1px !important; height: 1px !important; overflow: hidden !important; opacity: 0 !important; pointer-events: none !important; }
+  .ag-fields { display: flex; flex-direction: column; gap: 22px; margin-top: 32px; }
+  .ag-field { display: flex; flex-direction: column; gap: 6px; }
+  .ag-label { font-size: 15px; font-weight: 600; }
+  .ag-help { margin: 0; font-size: 13px; color: rgba(255,255,255,0.78); }
+
+  /* Cristal: tinte azul oscuro (el #0a1656 de la marca) con un brillo
+     diagonal encima. Blanco al 5 % sobre este fondo salía lila; el azul más
+     oscuro que el fondo enfría y se lee como vidrio. Misma receta que las
+     tarjetas del home. */
+  .ag-input, .ag-option, .ag-scale-btn, .ag-textarea {
+    color: #fff; font-family: inherit; outline: none;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 60%, rgba(255,255,255,0.05) 100%),
+      rgba(10, 22, 86, 0.34);
+    border: 1.5px solid rgba(255,255,255,0.26);
+    -webkit-backdrop-filter: saturate(100%) blur(16px); backdrop-filter: saturate(100%) blur(16px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(3,9,33,0.25);
+    transition: border-color .15s, background .15s;
+  }
+  /* Campos de texto como Typeform (pedido 23/09: "demasiado oscuro"): sin
+     caja, sin fondo y sin sombra, solo la línea de debajo. Se escribe sobre
+     el fondo de la página, que es lo que les da ligereza. */
+  .ag-input, .ag-textarea {
+    width: 100%; background: transparent; border: 0; border-radius: 0;
+    border-bottom: 1.5px solid rgba(255,255,255,0.38);
+    -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none;
+    padding: 10px 2px; font-size: 20px;
+  }
+  .ag-detalle { margin-top: 4px; }
+  .ag-detalle[hidden] { display: none; }
+  .ag-input::placeholder, .ag-textarea::placeholder { color: rgba(255,255,255,0.32); }
+  .ag-input:focus, .ag-textarea:focus { border-bottom-color: #fff; }
+
+  .ag-options { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
+  .ag-option {
+    display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
+    padding: 14px 16px; border-radius: 12px; cursor: pointer;
+    font-size: 16px; font-weight: 500; line-height: 1.4;
+  }
+  /* Cajas de respuesta más claras (23/09): antes el tinte era un azul MÁS
+     oscuro que el fondo y la columna entera se veía apagada. Ahora es un velo
+     del azul claro de la marca, más claro que el fondo, y sin sombra: lo que
+     separa la caja del fondo es el borde, como en Typeform. */
+  .ag-option, .ag-scale-btn {
+    background: rgba(77, 163, 255, 0.13);
+    border: 1.5px solid rgba(255,255,255,0.30);
+    box-shadow: none;
+  }
+  .ag-option:hover, .ag-scale-btn:hover { background: rgba(77, 163, 255, 0.2); border-color: rgba(255,255,255,0.55); }
+  .ag-option[aria-checked="true"] {
+    background: rgba(77, 163, 255, 0.28);
+    border-color: #fff;
+  }
+  /* La letra de la opción, como Typeform: una tecla. Al elegir se llena. */
+  .ag-key {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1.5px solid rgba(255,255,255,0.55); font-size: 12px; font-weight: 700; letter-spacing: 0.02em;
+    color: rgba(255,255,255,0.9); transition: background .15s, color .15s, border-color .15s;
+  }
+  .ag-option[aria-checked="true"] .ag-key { background: #fff; color: #1D0084; border-color: #fff; }
+
+  /* Escala 1–5: cinco teclas en fila, texto bajo los extremos y el centro. */
+  .ag-scale-wrap { margin-top: 28px; }
+  .ag-scale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+  .ag-scale-btn { height: 60px; border-radius: 12px; cursor: pointer; font-size: 18px; font-weight: 600; }
+  .ag-scale-btn[aria-checked="true"] { background: #fff; color: #1D0084; border-color: #fff; }
+  .ag-scale-labels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 10px; font-size: 13.5px; color: rgba(255,255,255,0.88); }
+  .ag-scale-labels span:nth-child(2) { text-align: center; }
+  .ag-scale-labels span:nth-child(3) { text-align: right; }
+
+  /* Respuesta abierta. */
+  .ag-textwrap { margin-top: 26px; }
+  /* La respuesta abierta va en caja, como las opciones (23/09): con solo la
+     línea de debajo no parecía una respuesta. Los datos de contacto sí se
+     quedan en línea, al estilo Typeform. */
+  .ag-textarea {
+    line-height: 1.5; resize: none; min-height: 120px; display: block;
+    background: rgba(77, 163, 255, 0.13); border: 1.5px solid rgba(255,255,255,0.30);
+    border-radius: 12px; padding: 14px 16px; font-size: 17px;
+  }
+  .ag-textarea:focus { border-color: #fff; }
+
+  .ag-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 32px; }
+  .ag-between { justify-content: space-between; }
+  .ag-btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 15px 30px; border-radius: 12px; border: none; cursor: pointer; background: #fff; color: #1D0084; font-size: 16px; font-weight: 700; font-family: inherit; text-decoration: none; transition: background .15s; }
+  .ag-btn:hover { background: #e9efff; }
+  .ag-btn-ghost { background: transparent; border: none; color: rgba(255,255,255,0.85); font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; padding: 8px 0; }
+  .ag-btn-ghost:hover { color: #fff; }
+  .ag-err { display: none; margin-top: 14px; font-size: 13px; color: #ff8a8a; font-weight: 500; }
+  .ag-err.visible { display: block; }
+  .ag-legal { font-size: 12px; line-height: 1.6; color: rgba(255,255,255,0.4); margin: 18px 0 0; }
+  .ag-legal a { color: rgba(255,255,255,0.6); text-decoration: underline; }
+
+  /* ── Página del calendario (ordenador): dos mitades, como ICO ─────────────
+     Pedido 23/09: a lo ancho de la pantalla, sin la línea de pasos, y con
+     Calendly empezando arriba del todo para que todo quepa sin bajar. */
+  .ag-logo-split { display: none; }
+  :global(body.ag-split) .ag-page { padding: 0; min-height: 100vh; }
+  :global(body.ag-split) .ag-shell { max-width: none; }
+  :global(body.ag-split) .ag-logo-link,
+  :global(body.ag-split) .ag-progress,
+  :global(body.ag-split) .ag-legal { display: none; }
+  .ag-reserva { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 100vh; }
+  .ag-reserva-texto { display: flex; align-items: center; justify-content: center; padding: 48px 56px; }
+  .ag-reserva-contenido { width: 100%; max-width: 540px; display: flex; flex-direction: column; }
+  /* A la izquierda, como el texto: en una columna flex se estiraba al
+     ancho y object-fit lo dejaba centrado. */
+  .ag-logo-split { display: block; align-self: flex-start; width: auto; margin-bottom: 40px; }
+  .ag-reserva .ag-q { margin-top: 4px; }
+  .ag-nota { font-size: 14px; }
+  .ag-nota a { color: #fff; text-decoration: underline; }
+  .ag-separador { height: 1px; background: rgba(255,255,255,0.14); margin: 30px 0 26px; }
+  .ag-enlace { color: #fff; text-decoration: underline; }
+  .ag-calendario { display: none; }
+  .ag-cal-barra { display: none; }
+  .ag-calendario.abierto { display: block; }
+  /* Calendly ocupa la mitad derecha de arriba abajo, en blanco y sin marco,
+     como en ICO. Alto fijo de pantalla: el calendario hace su propio scroll
+     si alguna vez lo necesita, la página no. */
+  .ag-calendario.abierto { position: sticky; top: 0; height: 100vh; background: #fff; display: flex; flex-direction: column; }
+  .ag-calendario-caja { flex: 1; min-height: 0; background: #fff; }
+  .ag-cal-alt { display: none; margin: 0; padding: 16px; font-size: 15px; color: #1D0084; text-align: center; }
+  .ag-cal-alt a { color: #1D0084; }
+  .ag-cal-fallo .ag-calendario-caja { display: none; }
+  .ag-cal-fallo .ag-cal-alt { display: block; margin: auto; }
+
+  /* Móvil: el calendario ocupa la pantalla entera, con una barra y una X
+     para volver. El texto ya se leyó en "Encajas", no se repite. */
+  @media (max-width: 899px) {
+    .ag-reserva { grid-template-columns: minmax(0, 1fr); }
+    .ag-reserva-texto { display: none; }
+    .ag-reserva { min-height: 0; }
+    .ag-calendario.abierto {
+      position: fixed; inset: 0; z-index: 60; height: auto; background: #fff;
+    }
+    .ag-cal-barra {
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 1; height: 56px; padding: 0 12px 0 20px;
+      background: #1D0084; color: #fff; font-weight: 600; font-size: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .ag-cal-cerrar { width: 40px; height: 40px; border: 0; background: transparent; color: #fff; font-size: 28px; line-height: 1; cursor: pointer; }
+    .ag-cal-barra { flex-shrink: 0; }
+    :global(body.ag-cal-movil) { overflow: hidden; }
+  }
+
+  @media (hover: none) {
+    .ag-textwrap .ag-hint { display: none; }
+  }
+
+  @media (max-width: 640px) {
+    .ag-page { padding: 28px 20px 72px; }
+    .ag-btn { flex: 1; }
+    .ag-actions .ag-hint { display: none; }
+    .ag-scale { gap: 8px; }
+    .ag-scale-btn { height: 54px; font-size: 17px; }
+    .ag-scale-labels { font-size: 12px; }
+    .ag-veil { background: linear-gradient(180deg, rgba(29,0,132,0.97) 0%, rgba(29,0,132,0.9) 100%); }
+  }
+</style>
