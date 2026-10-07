@@ -21,5 +21,7 @@ Disallow: /proceso-de-admision
 Disallow: /proceso-agendar
 # Páginas de pruebas (04/10): solo para mirar, nunca en Google.
 Disallow: /v4/
+# /formacion/v2: la página de la formación para anuncios, en pruebas (07/10).
+Disallow: /formacion/
 
 Sitemap: https://www.holandesnawar.com/sitemap-index.xml

@@ -148,6 +148,9 @@ export const POST: APIRoute = async ({ request }) => {
     // systeme.io, solo en los dos hitos del proceso de admisión (la web los
     // marca con `hito`), no con cada respuesta: así no se gastan llamadas.
     const hito = (body?.hito ?? '').toString()
+    // De qué página salió (07/10): /formacion/v2 manda la suya; si no, la
+    // de siempre.
+    const origen = /^[a-z0-9-]{1,40}$/.test((body?.origen ?? '').toString()) ? body.origen.toString() : 'proceso-de-admision'
     const crmHito =
       embudo === 'admision' && (hito === 'datos' || hito === 'video')
         ? alCRM(
@@ -155,7 +158,7 @@ export const POST: APIRoute = async ({ request }) => {
             [ETIQUETAS_ADMISION[hito]],
             hito === 'datos'
               ? [
-                  { slug: 'origen', value: 'proceso-de-admision' },
+                  { slug: 'origen', value: origen },
                   ...(['utm_source', 'utm_medium', 'utm_campaign'] as const)
                     .map((k) => ({ slug: k, value: (body?.[k === 'utm_source' ? 'utmSource' : k === 'utm_medium' ? 'utmMedium' : 'utmCampaign'] ?? '').toString().trim().slice(0, 120) }))
                     .filter((c) => c.value),
