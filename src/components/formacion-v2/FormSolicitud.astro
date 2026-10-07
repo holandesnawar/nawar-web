@@ -2,8 +2,10 @@
 /**
  * El formulario de /formacion/v2 (nombre, correo y WhatsApp con prefijo).
  *
- * Sale DOS veces en la página (arriba y al final), así que vive aquí y el
- * script de la página lo engancha por `data-fv-form`, no por id.
+ * Va en la cabecera; el cierre de la página lleva un botón que sube hasta
+ * aquí (07/10: "no otro formulario, solo uno"). El script de la página lo
+ * engancha por `data-fv-form`, no por id, por si algún día vuelve a salir dos
+ * veces.
  *
  * 07/10, cuarta vuelta: oscuro y de cristal sobre el azul de la cabecera
  * ("el bloque de información blanco sigue chocando, se ve algo IA"). Una caja
@@ -100,7 +102,6 @@ const id = (n: string) => `fv-${n}-${suf}`
     margin-top: 20px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
     padding: 16px 22px; border: none; border-radius: 12px; background: #4da3ff; color: #0a1656;
     font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: background .15s, transform .15s;
-    box-shadow: 0 14px 30px -14px rgba(77,163,255,0.9);
   }
   .ff-btn:hover { background: #5eb4ff; }
   .ff-btn:active { transform: translateY(1px); }

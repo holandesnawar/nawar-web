@@ -96,15 +96,14 @@ const CAMBIO = [
   { i: 'maletin', t: 'En el trabajo', hoy: 'Todo en inglés, siempre un paso por detrás.', con: 'Te presentas y te entiendes en lo del día a día.' },
 ]
 
-/** Cómo es tu semana: lo que HACE el alumno, cada paso con su pieza de la
- *  escuela al lado. Las piezas usan contenido REAL de courseData.ts (Les 1,
- *  Jezelf voorstellen; el diálogo "Kennismaken in het café"; m1l1e-3 y
- *  m1l1sp-3). Si se cambia ese contenido, que siga siendo de verdad. */
+/** Cómo es tu semana: lo que HACE el alumno, cada paso con su captura REAL
+ *  de la escuela (las ilustraciones de las landings, BonusSection). 07/10:
+ *  "en vez de mockup, imágenes reales como en la landing". */
 const SEMANA = [
-  { t: 'Sigues las lecciones de la semana', d: 'Cada semana se abre lo que toca: vídeo corto explicado en español, vocabulario con audio, lectura, escucha y ejercicios. Con 20-30 minutos al día vas al día.' },
-  { t: 'Hablas en la clase en directo', d: 'Una vez por semana, con un profesor que habla español y con tu grupo. Dices en voz alta lo que has aprendido. Si no puedes ir, queda grabada.' },
-  { t: 'Preguntas cuando te atascas', d: 'Tus dudas las responde el equipo. Nadie se queda una semana bloqueado con la misma pregunta.' },
-  { t: 'Te vales por ti mismo', d: 'Practicas las situaciones de verdad hasta que te salen solas. Y al terminar, tu certificado con tu nombre.' },
+  { img: IMG.clases, i: 'video', t: 'Sigues las lecciones de la semana', d: 'Cada semana se abre lo que toca: vídeo corto explicado en español, vocabulario con audio, lectura y escucha. Con 20-30 minutos al día vas al día, y siempre sabes qué viene después.' },
+  { img: IMG.ejercicios, i: 'libro', t: 'Practicas hasta que te sale', d: 'Ejercicios que se corrigen solos: escuchar, leer, escribir y hablar. Si fallas, te dice cuál era y por qué, y repasas justo lo que te cuesta.' },
+  { img: IMG.soporte, i: 'consulta', t: 'Preguntas cuando te atascas', d: 'Tus dudas las responde el equipo, en español. Nadie se queda una semana bloqueado con la misma pregunta.' },
+  { img: IMG.comunidad, i: 'grupo', t: 'Hablas con tu grupo', d: 'Clase en directo cada semana con un profesor que habla español, grabada si no puedes ir. Y entre semana, la comunidad: dudas, práctica y avances.' },
 ]
 
 /** Competencias al terminar: nivel A1, situaciones de la vida real. */
@@ -117,14 +116,6 @@ const SABRAS = [
   'Dar [tus datos]: deletrear tu nombre, tu dirección y tu teléfono.',
   'Mantener [una conversación corta] con un vecino o un compañero.',
   'Seguir avanzando [por tu cuenta], porque ya entiendes cómo funciona el idioma.',
-]
-
-/** Lo que tienes dentro, con las ilustraciones de las landings. */
-const DENTRO = [
-  { img: IMG.clases, i: 'video', t: 'Clase en directo cada semana', d: 'Con un profesor que habla español y con tu grupo. Hablas desde la primera semana, y si un día no puedes, la tienes grabada.' },
-  { img: IMG.ejercicios, i: 'libro', t: 'Lecciones y ejercicios interactivos', d: 'Vídeos cortos, vocabulario con audio, lecturas y ejercicios que se corrigen solos. Tu progreso, siempre a la vista.' },
-  { img: IMG.soporte, i: 'consulta', t: 'Consultas con el equipo', d: '¿Algo no te cuadra? Preguntas y te respondemos, sin esperar a la clase.' },
-  { img: IMG.comunidad, i: 'grupo', t: 'Comunidad privada', d: 'Tu grupo avanza contigo: dudas, victorias y práctica entre semana.' },
 ]
 
 /**
@@ -211,9 +202,9 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
 
       <div class="fv-hero-in">
         <div class="fv-hero-texto">
-          <span class="fv-badge-dark">Formación Nawar A0-A1<span class="fv-solo-pc">&nbsp;· Para hispanohablantes</span></span>
+          <span class="fv-badge-dark">Formación Nawar A0-A1<span class="fv-solo-pc">· Para hispanohablantes</span></span>
           <h1 class="fv-h1">
-            Aprende neerlandés desde cero y <span class="fv-h1-azul">deja de depender de otros</span> en Países Bajos
+            <span class="fv-grad">Aprende neerlandés desde cero y </span><span class="fv-h1-azul">deja de depender de otros</span><span class="fv-grad"> en Países Bajos</span>
           </h1>
           <p class="fv-hero-sub">
             16 semanas explicadas en español, con clase en directo cada semana y un equipo que te acompaña
@@ -327,111 +318,12 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
         </ol>
 
         <div class="fv-escena" id="fv-escena">
-          <div class="fv-escena-capas" aria-hidden="true"><span class="e1"></span><span class="e2"></span><span class="e3"></span></div>
-
-          <!-- 1 · La lección (Les 1 — Jezelf voorstellen) y su flashcard -->
-          <div class="fv-mock activo" data-paso="0">
-            <div class="mk-card mk-leccion">
-              <p class="mk-mini">Módulo 1 · Over jou</p>
-              <p class="mk-titulo">Les 1 — Jezelf voorstellen</p>
-              <p class="mk-sub">Presentarte: saludos, nombre, edad, nacionalidad y residencia</p>
-              <div class="mk-prog"><i style="width:42%"></i></div>
-              <ul class="mk-secciones">
-                <li class="hecha"><span set:html={icono('check', 12, 3)} />Samenvatting</li>
-                <li class="hecha"><span set:html={icono('check', 12, 3)} />Flashcards</li>
-                <li class="ahora"><span></span>Oefening</li>
-                <li><span></span>Lezen</li>
-                <li><span></span>Luisteren</li>
-              </ul>
-            </div>
-            <div class="mk-card mk-flash">
-              <span class="mk-audio" set:html={icono('altavoz', 16, 2)} />
-              <p class="mk-art">de</p>
-              <p class="mk-palabra">naam</p>
-              <p class="mk-trad">el nombre</p>
-              <p class="mk-ej">Mijn naam is Maria.</p>
-            </div>
-          </div>
-
-          <!-- 2 · La clase en directo (diálogo "Kennismaken in het café") -->
-          <div class="fv-mock" data-paso="1" aria-hidden="true">
-            <div class="mk-card mk-clase">
-              <div class="mk-clase-top"><span class="mk-vivo"><i></i>En directo</span><span>Clase semanal · Módulo 1</span></div>
-              <div class="mk-pantalla">
-                <p class="mk-mini">Kennismaken in het café</p>
-                <p class="mk-linea"><b>Anna</b> Waar kom je vandaan?</p>
-                <p class="mk-linea"><b>David</b> Ik kom uit Argentinië, uit Buenos Aires.</p>
-                <p class="mk-linea"><b>Anna</b> Wat leuk! En waar woon je nu?</p>
-              </div>
-              <div class="mk-caras">
-                <span class="mk-cara prof">Profe</span>
-                <span class="mk-cara">L</span>
-                <span class="mk-cara">M</span>
-                <span class="mk-cara tu">Tú</span>
-              </div>
-            </div>
-            <div class="mk-card mk-turno">
-              <span class="mk-turno-ico" set:html={icono('micro', 16, 2)} />
-              <div><p class="mk-mini">Tu turno</p><p class="mk-turno-txt">Ik woon in Utrecht. En jij?</p></div>
-            </div>
-          </div>
-
-          <!-- 3 · Una consulta respondida (la explicación de m1l1e-3) -->
-          <div class="fv-mock" data-paso="2" aria-hidden="true">
-            <div class="mk-card mk-chat">
-              <p class="mk-mini">Consultas</p>
-              <div class="mk-burbuja yo">¿Por qué se dice <b>«Hoe heet u?»</b> y no <b>«Hoe heet jij?»</b>?</div>
-              <div class="mk-resp">
-                <span class="mk-avatar">N</span>
-                <div class="mk-burbuja equipo">
-                  <span class="mk-quien">Equipo Nawar</span>
-                  <b>U</b> es de usted: con alguien mayor, en la gemeente o en el médico. <b>Jij</b>, con amigos y compañeros. Las dos están bien; cambia el trato.
-                </div>
-              </div>
-              <p class="mk-hora">Respondida hoy</p>
-            </div>
-          </div>
-
-          <!-- 4 · Una situación de verdad (m1l1sp-3) y el certificado -->
-          <div class="fv-mock" data-paso="3" aria-hidden="true">
-            <div class="mk-card mk-ejer">
-              <p class="mk-mini">Spreken · ¿Qué dices?</p>
-              <p class="mk-pregunta">Te despides de un amigo y os veis mañana. ¿Qué dices?</p>
-              <div class="mk-op ok"><span>A</span>Tot morgen!</div>
-              <div class="mk-op apag"><span>B</span>Tot straks!</div>
-              <div class="mk-op apag"><span>C</span>Goedemiddag!</div>
-              <p class="mk-bien"><b>¡Correcto!</b> «Tot straks» es para el mismo día; «tot morgen», para mañana.</p>
-            </div>
-            <div class="mk-card mk-cert">
-              <span set:html={icono('premio', 18, 2)} />
-              <div><p class="mk-mini">Al terminar</p><p class="mk-cert-txt">Certificado Nawar A0-A1</p></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ Lo que tienes dentro: las ilustraciones de las landings ═══ -->
-    <section class="fv-sec fv-claro">
-      <div class="fv-in">
-        <div class="fv-cab">
-          <span class="fv-badge">Por qué esta formación</span>
-          <h2 class="fv-h2">Una formación, <span class="fv-acento">no un curso de vídeos</span></h2>
-          <p class="fv-lead">Lo que hace que esta vez sí llegues al final.</p>
-        </div>
-        <div class="fv-dentro">
-          {DENTRO.map((d) => (
-            <article class="fv-den">
-              <figure class="fv-den-foto">
-                <img src={d.img} alt={d.t} loading="lazy" decoding="async"
-                  onerror="this.closest('figure').classList.add('sin-foto'); this.remove();" />
-                <span class="fv-den-plan-b" set:html={icono(d.i, 40, 1.4)} />
-              </figure>
-              <div class="fv-den-txt">
-                <h3>{d.t}</h3>
-                <p>{d.d}</p>
-              </div>
-            </article>
+          {SEMANA.map((x, k) => (
+            <figure class={`fv-mock${k === 0 ? ' activo' : ''}`} data-paso={k} aria-hidden={k === 0 ? 'false' : 'true'}>
+              <img src={x.img} alt={x.t} width="1920" height="1080" loading={k === 0 ? 'eager' : 'lazy'} decoding="async"
+                onerror="this.closest('figure').classList.add('sin-foto'); this.remove();" />
+              <span class="fv-mock-plan-b" set:html={icono(x.i, 44, 1.4)} />
+            </figure>
           ))}
         </div>
       </div>
@@ -443,7 +335,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
       <div class="fv-in">
         <div class="fv-cab fv-cab-izq">
           <span class="fv-badge-dark">4 etapas · 16 semanas · certificado</span>
-          <h2 class="fv-h2 fv-h2-blanco">Plan de estudios: <span class="fv-azul">de cero a A1</span></h2>
+          <h2 class="fv-h2 fv-h2-blanco"><span class="fv-grad">Plan de estudios: </span><span class="fv-azul">de cero a A1</span></h2>
           <p class="fv-lead fv-lead-blanco">Metodología progresiva: <span class="fv-flujo">entender → hablar → resolver → consolidar</span>, con un hito concreto al final de cada etapa.</p>
         </div>
       </div>
@@ -571,7 +463,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
         <div class="fv-comp">
           <div class="fv-comp-cab">
             <span class="fv-badge-dark">Competencias al terminar</span>
-            <h2 class="fv-h2 fv-h2-blanco">En 16 semanas, <span class="fv-azul">esto lo haces tú</span></h2>
+            <h2 class="fv-h2 fv-h2-blanco"><span class="fv-grad">En 16 semanas, </span><span class="fv-azul">esto lo haces tú</span></h2>
             <p class="fv-lead fv-lead-blanco">El nivel A1: lo que necesitas para moverte solo en el día a día.</p>
           </div>
           <ol class="fv-comp-lista">
@@ -583,22 +475,25 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
       </div>
     </section>
 
-    <!-- ═══ Cierre: la admisión en tres pasos y el formulario otra vez ═══ -->
+    <!-- ═══ Cierre: la admisión en tres pasos y un botón que sube al
+         formulario (07/10: "no otro formulario, solo uno"). ═══ -->
     <section class="fv-cierre">
       <div class="fv-capas" aria-hidden="true">
         <span class="fv-luz1"></span><span class="fv-luz2"></span><span class="fv-malla"></span><span class="fv-dots"></span>
       </div>
       <div class="fv-cierre-in">
-        <div class="fv-cierre-texto">
-          <span class="fv-badge-dark">Plazas limitadas por convocatoria</span>
-          <h2 class="fv-h2 fv-h2-blanco">Tu admisión empieza <span class="fv-azul">en 30 segundos</span></h2>
-          <ol class="fv-pasos">
-            {PASOS_ADMISION.map((p, k) => (
-              <li><span class="fv-pasos-n">{k + 1}</span><div><b>{p.t}</b><p>{p.d}</p></div></li>
-            ))}
-          </ol>
-        </div>
-        <FormSolicitud suf="b" eyebrow="Sin compromiso" titulo="Solicita información" />
+        <span class="fv-badge-dark">Plazas limitadas por convocatoria</span>
+        <h2 class="fv-h2 fv-h2-blanco"><span class="fv-grad">Tu admisión empieza </span><span class="fv-azul">en 30 segundos</span></h2>
+        <ol class="fv-pasos">
+          {PASOS_ADMISION.map((p, k) => (
+            <li><span class="fv-pasos-n">{k + 1}</span><b>{p.t}</b><p>{p.d}</p></li>
+          ))}
+        </ol>
+        <a href="#solicitud-a" class="fv-cierre-btn" id="fv-cierre-btn" data-ir-form>
+          Solicitar información
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <p class="fv-cierre-nota">Sin compromiso · Te escribimos por WhatsApp</p>
       </div>
 
       <footer class="fv-pie">
@@ -720,7 +615,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     })
   })
 
-  // ── Ir al formulario: al más cercano (el de arriba o el del final) ────
+  // ── Ir al formulario (el de arriba) ───────────────────────────────────
   const cajas = Array.from(document.querySelectorAll<HTMLElement>('[data-fv-caja]'))
   document.querySelectorAll<HTMLAnchorElement>('[data-ir-form]').forEach((a) => {
     a.addEventListener('click', (e) => {
@@ -815,8 +710,10 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     window.scrollTo({ top: destino.getBoundingClientRect().top + window.scrollY - barra, behavior: 'smooth' })
   }))
 
-  // ── Móvil: el botón pegado abajo cuando no se ve ningún formulario ────
+  // ── Móvil: el botón pegado abajo cuando no se ve el formulario ───────
+  // Tampoco sale con el botón del cierre a la vista: serían dos iguales.
   const pegado = document.getElementById('fv-pegado') as HTMLElement
+  const botonCierre = document.getElementById('fv-cierre-btn')
   if ('IntersectionObserver' in window && cajas.length) {
     const visibles = new Set<Element>()
     const pintar = () => {
@@ -830,6 +727,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
       pintar()
     })
     cajas.forEach((c) => io.observe(c))
+    if (botonCierre) io.observe(botonCierre)
   }
 </script>
 
@@ -857,6 +755,11 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     padding: 0 0.08em; border-radius: 5px; -webkit-box-decoration-break: clone; box-decoration-break: clone;
   }
   .fv-azul { color: #4da3ff; }
+  /* El degradado de los titulares sobre oscuro, el mismo de las landings
+     (.text-gradient-white): blanco arriba y 72 % abajo. Con clone, cada
+     renglón lleva su propio degradado. */
+  .fv-grad { background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.72) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone; box-decoration-break: clone; }
   .fv-nw { white-space: nowrap; }
   .fv-lead { font-size: clamp(16px, 1.45vw, 18px); line-height: 1.65; color: #47557f; margin: 0; max-width: 620px; }
   .fv-lead-blanco { color: rgba(255,255,255,0.82); }
@@ -946,7 +849,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   .fv-cambio-fila.ultima .fv-cambio-con { border-radius: 0 0 20px 20px; padding-bottom: 28px; }
 
   /* ── Así es una semana ─────────────────────────────────────────────── */
-  .fv-sem { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); grid-template-areas: "cab escena" "pasos escena"; column-gap: 64px; align-items: start; }
+  .fv-sem { display: grid; grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); grid-template-areas: "cab escena" "pasos escena"; column-gap: 40px; align-items: start; }
   .fv-sem-cab { grid-area: cab; }
   .fv-sem-cab .fv-lead { margin-bottom: 32px; }
   .fv-sem-pasos { grid-area: pasos; list-style: none; margin: 0; padding: 0; border-top: 1px solid #E3EAF6; }
@@ -966,93 +869,20 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   :global(#semana.auto) .fv-sem-paso.activo .fv-sem-barra i { animation: fv-llenar 6s linear; }
   @keyframes fv-llenar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
-  /* La escena: fondo claro por capas (como las portadas), y las piezas encima. */
-  .fv-escena { grid-area: escena; position: relative; display: grid; align-items: center; min-height: 560px; border-radius: 28px; overflow: hidden;
-    background: linear-gradient(160deg, #ffffff 0%, #F0F5FF 100%); border: 1px solid #E3EAF6; }
-  .fv-escena-capas { position: absolute; inset: 0; pointer-events: none; }
-  .fv-escena-capas span { position: absolute; }
-  .fv-escena-capas .e1 { top: -140px; right: -120px; width: 460px; height: 460px; background: radial-gradient(closest-side, rgba(77,163,255,0.45), transparent); }
-  .fv-escena-capas .e2 { bottom: -180px; left: -140px; width: 480px; height: 480px; background: radial-gradient(closest-side, rgba(29,0,132,0.16), transparent); }
-  .fv-escena-capas .e3 { inset: 0; background-image: linear-gradient(rgba(29,0,132,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(29,0,132,0.06) 1px, transparent 1px); background-size: 78px 78px;
-    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 0%, transparent 75%); mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 0%, transparent 75%); }
-  .fv-mock { grid-area: 1 / 1; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 36px; opacity: 0; transform: translateY(14px); transition: opacity .45s ease, transform .45s ease; pointer-events: none; }
+  /* La escena: la captura real de cada paso, sobre blanco y sin marco (las
+     ilustraciones traen su propio fondo y sus bloques de color). Las cuatro
+     apiladas en la misma celda de la rejilla, y se cruzan al cambiar. */
+  .fv-escena { grid-area: escena; position: relative; display: grid; align-items: center; align-self: center; margin-right: -40px; }
+  .fv-mock { grid-area: 1 / 1; margin: 0; position: relative; aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: translateY(12px) scale(0.985); transition: opacity .5s ease, transform .5s ease; pointer-events: none; }
   .fv-mock.activo { opacity: 1; transform: none; pointer-events: auto; }
+  /* Las ilustraciones traen mucho blanco alrededor: se agrandan un poco para
+     que el dispositivo llene la columna (el blanco sobrante no se ve). */
+  .fv-mock img { width: 100%; height: 100%; object-fit: contain; display: block; transform: scale(1.14); }
+  .fv-mock-plan-b { display: none; color: #025dc7; }
+  .fv-mock.sin-foto { background: linear-gradient(135deg, #F5F8FF, #EAF2FF); border-radius: 24px; }
+  .fv-mock.sin-foto .fv-mock-plan-b { display: inline-flex; }
   @media (prefers-reduced-motion: reduce) { .fv-mock { transition: none; } }
-
-  /* Las piezas: copian los estilos de LessonViewer (bordes #DDE6F5,
-     opciones #F0F5FF, acierto en verde). */
-  .mk-card { position: relative; width: 100%; max-width: 400px; background: #fff; border: 1px solid #DDE6F5; border-radius: 18px; padding: 20px 22px; box-shadow: 0 30px 60px -36px rgba(29,0,132,0.35); }
-  .mk-mini { margin: 0; font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #025dc7; }
-  .mk-titulo { margin: 6px 0 4px; font-family: 'Poppins', system-ui, sans-serif; font-size: 18px; font-weight: 600; color: #1D0084; letter-spacing: -0.01em; }
-  .mk-sub { margin: 0 0 14px; font-size: 13px; line-height: 1.5; color: #6b7aa6; }
-  .mk-prog { height: 6px; border-radius: 9999px; background: #EEF3FC; overflow: hidden; margin-bottom: 14px; }
-  .mk-prog i { display: block; height: 100%; background: #4da3ff; border-radius: 9999px; }
-  .mk-secciones { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-  .mk-secciones li { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 10px; font-size: 14px; font-weight: 500; color: #6b7aa6; background: #F8FAFF; }
-  .mk-secciones li > span { flex-shrink: 0; width: 20px; height: 20px; border-radius: 9999px; border: 1.5px solid #DDE6F5; display: inline-flex; align-items: center; justify-content: center; }
-  .mk-secciones li.hecha { color: #1D0084; }
-  .mk-secciones li.hecha > span { background: #22c55e; border-color: #22c55e; color: #fff; }
-  .mk-secciones li.ahora { background: #F0F5FF; color: #1D0084; font-weight: 600; box-shadow: inset 0 0 0 1px #4da3ff; }
-  .mk-secciones li.ahora > span { border-color: #4da3ff; background: radial-gradient(circle, #4da3ff 0 4px, transparent 5px); }
-  .mk-flash { max-width: 220px; align-self: flex-end; margin: -46px -6px 0 0; text-align: center; padding: 22px 18px 18px; transform: rotate(3deg); }
-  .mk-audio { position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; border-radius: 9999px; background: #F0F5FF; color: #025dc7; display: inline-flex; align-items: center; justify-content: center; }
-  .mk-art { margin: 0; font-size: 13px; font-weight: 600; color: #4da3ff; }
-  .mk-palabra { margin: 0; font-family: 'Poppins', system-ui, sans-serif; font-size: 30px; font-weight: 600; color: #1D0084; letter-spacing: -0.02em; }
-  .mk-trad { margin: 2px 0 10px; font-size: 14px; color: #6b7aa6; }
-  .mk-ej { margin: 0; padding-top: 10px; border-top: 1px dashed #DDE6F5; font-size: 13px; font-style: italic; color: #1D0084; }
-
-  .mk-clase { padding: 14px; }
-  .mk-clase-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 0 4px 12px; font-size: 12px; color: #6b7aa6; }
-  .mk-vivo { display: inline-flex; align-items: center; gap: 7px; font-weight: 700; color: #1D0084; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
-  .mk-vivo i { width: 8px; height: 8px; border-radius: 9999px; background: #4da3ff; box-shadow: 0 0 0 4px rgba(77,163,255,0.25); }
-  .mk-pantalla { border-radius: 12px; background: #1D0084; padding: 18px 18px 14px;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px), radial-gradient(circle 240px at 100% 0%, rgba(11,109,240,0.5), transparent 70%); background-size: 22px 22px, auto; }
-  .mk-pantalla .mk-mini { color: #9fd0ff; margin-bottom: 10px; }
-  .mk-linea { margin: 0 0 7px; display: grid; grid-template-columns: 50px minmax(0, 1fr); align-items: baseline; font-size: 14px; line-height: 1.45; color: #fff; }
-  .mk-linea b { font-size: 12px; font-weight: 600; color: #9fd0ff; }
-  .mk-caras { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
-  .mk-cara { aspect-ratio: 4 / 3; border-radius: 10px; background: #EEF3FC; color: #6b7aa6; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
-  .mk-cara.prof { background: #E3EEFF; color: #025dc7; }
-  .mk-cara.tu { background: #fff; color: #1D0084; box-shadow: inset 0 0 0 2px #4da3ff; }
-  .mk-turno { max-width: 290px; align-self: flex-start; margin: -18px 0 0 -6px; display: flex; align-items: center; gap: 12px; padding: 14px 16px; transform: rotate(-2deg); }
-  .mk-turno-ico { flex-shrink: 0; width: 36px; height: 36px; border-radius: 9999px; background: #4da3ff; color: #0a1656; display: inline-flex; align-items: center; justify-content: center; }
-  .mk-turno-txt { margin: 2px 0 0; font-size: 15px; font-weight: 600; color: #1D0084; }
-
-  .mk-chat { padding: 20px 20px 16px; }
-  .mk-chat > .mk-mini { margin-bottom: 14px; }
-  .mk-burbuja { font-size: 14.5px; line-height: 1.55; padding: 12px 14px; border-radius: 16px; }
-  .mk-burbuja.yo { margin-left: 44px; background: #4da3ff; color: #0a1656; border-bottom-right-radius: 6px; }
-  .mk-resp { display: flex; gap: 10px; align-items: flex-end; margin-top: 12px; }
-  .mk-avatar { flex-shrink: 0; width: 32px; height: 32px; border-radius: 9999px; background: #1D0084; color: #fff; font-family: 'Poppins', system-ui, sans-serif; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; }
-  .mk-burbuja.equipo { background: #F0F5FF; color: #1D0084; border-bottom-left-radius: 6px; }
-  .mk-quien { display: block; font-size: 11.5px; font-weight: 700; color: #025dc7; margin-bottom: 3px; }
-  .mk-hora { margin: 10px 0 0; text-align: right; font-size: 11.5px; color: #9aa4c2; }
-
-  .mk-pregunta { margin: 8px 0 14px; font-size: 16px; font-weight: 600; line-height: 1.45; color: #111827; }
-  .mk-op { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 8px; border: 1px solid #DDE6F5; background: #F0F5FF; font-size: 15px; font-weight: 500; color: #111827; margin-bottom: 8px; }
-  .mk-op span { width: 26px; height: 26px; border-radius: 8px; background: rgba(255,255,255,0.7); font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
-  .mk-op.ok { background: #f0fdf4; border-color: #4ade80; color: #166534; }
-  .mk-op.ok span { background: #22c55e; color: #fff; }
-  .mk-op.apag { background: #F8F9FA; color: #9CA3AF; }
-  .mk-op.apag span { background: #E5E7EB; color: #9CA3AF; }
-  .mk-bien { margin: 6px 0 0; padding: 10px 12px; border-radius: 8px; background: #f0fdf4; border: 1px solid #bbf7d0; font-size: 13px; line-height: 1.5; color: #166534; }
-  .mk-cert { max-width: 290px; align-self: flex-end; margin: -14px -4px 0 0; display: flex; align-items: center; gap: 12px; padding: 14px 16px; transform: rotate(2deg); }
-  .mk-cert > span { flex-shrink: 0; width: 36px; height: 36px; border-radius: 9999px; background: #1D0084; color: #9fd0ff; display: inline-flex; align-items: center; justify-content: center; }
-  .mk-cert-txt { margin: 2px 0 0; white-space: nowrap; font-size: 15px; font-weight: 600; color: #1D0084; }
-
-  /* ── Lo que tienes dentro ───────────────────────────────────────────── */
-  .fv-dentro { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-  .fv-den { border: 1px solid #E3EAF6; border-radius: 22px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
-  /* Las ilustraciones vienen en 16:9 y una casi cuadrada (ejercicios): todas
-     en la misma caja, contenidas, para que las tarjetas midan lo mismo. */
-  .fv-den-foto { position: relative; margin: 0; background: #fff; aspect-ratio: 16 / 10; overflow: hidden; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #EEF2FA; }
-  .fv-den-foto img { position: absolute; inset: 4% 3%; width: 94%; height: 92%; object-fit: contain; display: block; }
-  .fv-den-plan-b { display: none; color: #025dc7; }
-  .fv-den-foto.sin-foto { background: linear-gradient(135deg, #F5F8FF, #EAF2FF); }
-  .fv-den-foto.sin-foto .fv-den-plan-b { display: inline-flex; }
-  .fv-den-txt { padding: 24px 26px 26px; }
-  .fv-den-txt h3 { font-family: 'Poppins', system-ui, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.012em; color: #1D0084; margin: 0 0 6px; }
-  .fv-den-txt p { margin: 0; font-size: 15px; line-height: 1.62; color: #55628a; }
 
   /* ── El plan de estudios (oscuro, como UDIA) ───────────────────────── */
   .fv-prog-sec { background: #120a5c; color: #fff; padding-bottom: 120px;
@@ -1164,17 +994,22 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   .fv-comp-lista p { margin: 3px 0 0; font-size: 15.5px; line-height: 1.6; color: rgba(255,255,255,0.94); }
   .fv-comp-lista :global(.fv-chip) { color: #9fd0ff; }
 
-  /* ── Cierre: oscuro por capas, los tres pasos y el formulario ──────── */
+  /* ── Cierre: oscuro por capas, los tres pasos y un botón que sube ── */
   .fv-cierre { position: relative; background: #1D0084; color: #fff; overflow: clip; padding: 112px 24px 0; }
-  .fv-cierre-in { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 64px; align-items: center; }
-  .fv-cierre .fv-h2 { font-size: clamp(30px, 4.2vw, 48px); margin-bottom: 34px; }
-  .fv-pasos { list-style: none; margin: 0; padding: 0; position: relative; display: flex; flex-direction: column; gap: 26px; }
+  .fv-cierre-in { position: relative; z-index: 1; max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .fv-cierre .fv-h2 { font-size: clamp(30px, 4.2vw, 48px); margin-bottom: 44px; }
+  .fv-pasos { list-style: none; margin: 0; padding: 0; position: relative; width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
   /* El hilo que une los tres pasos. */
-  .fv-pasos::before { content: ''; position: absolute; left: 17px; top: 18px; bottom: 18px; width: 1px; background: linear-gradient(#4da3ff, rgba(77,163,255,0.15)); }
-  .fv-pasos li { position: relative; display: flex; gap: 18px; align-items: flex-start; }
-  .fv-pasos-n { flex-shrink: 0; width: 36px; height: 36px; border-radius: 9999px; background: #1D0084; border: 1px solid #4da3ff; color: #fff; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; }
-  .fv-pasos b { display: block; font-family: 'Poppins', system-ui, sans-serif; font-size: 18px; font-weight: 600; color: #fff; margin: 5px 0 4px; }
-  .fv-pasos p { margin: 0; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,0.75); }
+  .fv-pasos::before { content: ''; position: absolute; top: 19px; left: 16.6%; right: 16.6%; height: 1px; background: linear-gradient(90deg, #4da3ff, rgba(77,163,255,0.25)); }
+  .fv-pasos li { position: relative; display: flex; flex-direction: column; align-items: center; }
+  .fv-pasos-n { width: 38px; height: 38px; border-radius: 9999px; background: #1D0084; border: 1px solid #4da3ff; color: #fff; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .fv-pasos b { display: block; font-family: 'Poppins', system-ui, sans-serif; font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+  .fv-pasos p { margin: 0; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,0.75); max-width: 260px; }
+  .fv-cierre-btn { margin-top: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 17px 34px; border-radius: 12px;
+    background: #4da3ff; color: #0a1656; font-size: 16.5px; font-weight: 700; text-decoration: none; transition: background .15s, transform .15s; }
+  .fv-cierre-btn:hover { background: #5eb4ff; }
+  .fv-cierre-btn:active { transform: translateY(1px); }
+  .fv-cierre-nota { margin: 14px 0 0; font-size: 13.5px; color: rgba(255,255,255,0.6); }
 
   .fv-pie { position: relative; z-index: 1; max-width: 1120px; margin: 96px auto 0; padding: 26px 0 34px; border-top: 1px solid rgba(255,255,255,0.1);
     display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; font-size: 13px; color: rgba(255,255,255,0.55); }
@@ -1200,10 +1035,8 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-sem { grid-template-columns: minmax(0, 1fr); grid-template-areas: "cab" "escena" "pasos"; }
     .fv-sem-cab { text-align: center; display: flex; flex-direction: column; align-items: center; }
     .fv-sem-cab .fv-lead { margin: 0 auto 32px; }
-    .fv-escena { min-height: 0; margin-bottom: 24px; }
+    .fv-escena { margin: 0 0 20px; }
     .fv-comp { grid-template-columns: minmax(0, 1fr); gap: 32px; padding: 44px 36px; }
-    .fv-cierre-in { grid-template-columns: minmax(0, 1fr); gap: 44px; }
-    .fv-cierre-in > :last-child { max-width: 520px; width: 100%; }
 
     /* El plan: sin columna lateral; las etapas, pegadas arriba.
        ⚠️ Nada que se repinte en cada fotograma: sin backdrop-filter, sin
@@ -1254,13 +1087,9 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-dolor, .fv-dolor:nth-child(2n), .fv-dolor:nth-child(3n) { border-right: 0; border-bottom: 1px solid #E3EAF6; padding: 22px 20px; flex-direction: row; gap: 16px; }
     .fv-dolor:last-child { border-bottom: 0; }
     .fv-dolor-ico { flex-shrink: 0; padding-top: 1px; }
-    .fv-escena { border-radius: 22px; margin-left: -4px; margin-right: -4px; }
-    .fv-mock { padding: 28px 18px; }
-    .mk-flash { margin-right: 0; }
-    .mk-turno { margin-left: 0; }
-    .mk-cert { margin-right: 0; }
+    .fv-escena { margin-left: -12px; margin-right: -12px; }
     .fv-sem-txt b { font-size: 17px; }
-    .fv-comp-lista, .fv-dentro, .fv-perfiles { grid-template-columns: minmax(0, 1fr); }
+    .fv-comp-lista, .fv-perfiles { grid-template-columns: minmax(0, 1fr); }
     .fv-perfil { padding: 30px 22px 22px; }
     .fv-noes { flex-direction: column; align-items: flex-start; }
     .fv-noes ul { flex-direction: column; align-items: flex-start; gap: 8px; }
@@ -1270,7 +1099,6 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-cert-tres div, .fv-cert-tres div + div { padding: 14px 0 0; border-left: 0; }
     .fv-cert-tres div + div { border-top: 1px solid rgba(255,255,255,0.09); margin-top: 14px; }
     .fv-fase-temas { grid-template-columns: minmax(0, 1fr); }
-    .fv-den-txt { padding: 20px; }
     .fv-fases-barra { margin: 0 -16px 18px; }
     .fv-fases-pills { padding: 0 16px 12px; }
     .fv-fase { padding: 24px 20px 20px; border-radius: 18px; }
@@ -1279,6 +1107,16 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-fase-n { font-size: 44px; }
     .fv-fase h3 { font-size: 21px; }
     .fv-cierre { padding: 80px 16px 0; }
+    .fv-cierre .fv-h2 { margin-bottom: 34px; }
+    .fv-pasos { grid-template-columns: minmax(0, 1fr); gap: 22px; text-align: left; }
+    /* En columna, el hilo va de bola a bola y no pasa del 3. */
+    .fv-pasos::before { display: none; }
+    .fv-pasos li:not(:last-child)::after { content: ''; position: absolute; left: 18px; top: 38px; bottom: -22px; width: 1px; background: rgba(77,163,255,0.55); }
+    .fv-pasos li { display: grid; grid-template-columns: 38px minmax(0, 1fr); column-gap: 16px; align-items: start; }
+    .fv-pasos-n { grid-row: 1 / 3; margin-bottom: 0; }
+    .fv-pasos b { margin: 7px 0 4px; }
+    .fv-pasos p { max-width: none; }
+    .fv-cierre-btn { width: 100%; margin-top: 36px; }
     .fv-pie { margin-top: 64px; flex-direction: column; align-items: flex-start; padding-bottom: 104px; }
 
     /* El botón pegado abajo, como el de UDIA: teléfono a la izquierda, texto
@@ -1286,8 +1124,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-pegado {
       display: flex; align-items: center; justify-content: space-between; gap: 14px;
       position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 50; padding: 8px;
-      border-radius: 9999px; background: #160a6e; border: 1px solid rgba(255,255,255,0.14);
-      box-shadow: 0 18px 40px -16px rgba(3,9,33,0.7);
+      border-radius: 9999px; background: #160a6e; border: 1px solid rgba(255,255,255,0.18);
       transform: translateY(140%); visibility: hidden; transition: transform .3s ease, visibility 0s .3s;
     }
     .fv-pegado.visible { transform: translateY(0); visibility: visible; transition: transform .3s ease; }
