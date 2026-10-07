@@ -9,21 +9,44 @@
  * de la llamada bloqueado y una cuenta atrás; y de ahí el formulario de
  * admisión (/formacion/v2/formulario). El closer llama en cuanto entra el lead.
  *
- * Lo que manda aquí, por encima de todo: los dolores REALES de quien vive en
- * Países Bajos sin el idioma (depender de otros para el médico, las cartas,
- * hablar con la gente). El texto es propio de esta página, no copiado de las
- * landings; lo que sí se comparte es la marca (Poppins, azules, subrayado).
+ * Segunda vuelta (07/10, "más profesional, moderno y clean"):
+ *  - el programa va por FASES (no los 10 módulos sueltos) y, como en UDIA,
+ *    al bajar las fases se quedan pegadas arriba, la que se lee se pinta con
+ *    su color y una raya marca el progreso;
+ *  - los mockups y el certificado son los de las landings (imágenes de
+ *    docs.holandesnawar.com, con su plan B dibujado si no cargan) y el panel
+ *    del alumno de MetodoFunciona;
+ *  - Metodología y "¿A quién va dirigido?", como UDIA.
+ *
+ * Lo que manda, por encima de todo: los dolores REALES de quien vive en
+ * Países Bajos sin el idioma. El texto es propio de esta página.
  *
  * A la escuela llega como el proceso de admisión (`embudo: 'admision'`), así
  * que el panel lo trata igual. Ver V2 en src/lib/admision.ts.
  */
 import Layout from '../../../layouts/Layout.astro'
+// Las dos hojas de las landings: las necesita el panel del alumno de
+// MetodoFunciona (y sus etiquetas flotantes, .float-badge).
+import '../../../styles/nawar-sections.css'
+import '../../../styles/landing-08-08-2026.css'
+import MetodoFunciona from '../../../components/landing-08-08-2026/MetodoFunciona.astro'
 import { PREFIJOS, V2 } from '../../../lib/admision'
 
 export const prerender = true
 
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
 const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
+
+/** Las ilustraciones y el certificado de las landings (BonusSection). Traen
+ *  su propio fondo blanco: van sobre blanco y sin marco. */
+const IMG = {
+  clases: 'https://docs.holandesnawar.com/img/Landing/bonus.clases.png',
+  comunidad: 'https://docs.holandesnawar.com/img/Landing/bonus.comun.png',
+  ejercicios: 'https://docs.holandesnawar.com/img/Landing/bonus.ejercicios.png',
+  soporte: 'https://docs.holandesnawar.com/img/Landing/bonus.soporte.png',
+  certificado: 'https://docs.holandesnawar.com/img/Landing/Certificado.final.landing.png',
+  certFondo: 'https://docs.holandesnawar.com/img/Landing/fondo.certificado.png',
+}
 
 /** Iconos de línea (24×24, trazo), en un solo sitio. */
 const ICONOS: Record<string, string> = {
@@ -37,107 +60,130 @@ const ICONOS: Record<string, string> = {
   video: '<path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/>',
   consulta: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5"/><path d="M12 15h.01"/>',
   grupo: '<path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/>',
-  calendario: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/>',
   premio: '<path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/>',
-  progreso: '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/>',
   escudo: '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+  reloj: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
 }
-const icono = (n: string, tam = 22) =>
-  `<svg viewBox="0 0 24 24" width="${tam}" height="${tam}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS[n]}</svg>`
+const icono = (n: string, tam = 22, trazo = 1.8) =>
+  `<svg viewBox="0 0 24 24" width="${tam}" height="${tam}" fill="none" stroke="currentColor" stroke-width="${trazo}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS[n]}</svg>`
+/** Las palabras entre [ ] salen resaltadas. */
+const resaltar = (t: string) => t.replace(/\[([^\]]+)\]/g, '<span class="fv-chip">$1</span>')
 
-/** Los dolores. Lo más importante de la página (usuario, 07/10): depender
- *  de otros para cosas de todos los días. Situaciones concretas, en primera
- *  línea, sin adornos. */
+/** Los dolores (usuario, 07/10: "lo más importante son los dolores reales:
+ *  depender de otros, no poder hablar, ir al médico, no poder hacer nada
+ *  sin nadie"). Situaciones concretas, sin adornos. */
 const DOLORES = [
-  { i: 'medico', t: 'En el médico, alguien tiene que traducir por ti', d: 'Explicar qué te pasa, entender lo que te dicen, pedir otra cita. Y siempre con alguien al lado, porque solo no te atreves.' },
-  { i: 'carta', t: 'Llega una carta y no sabes qué te piden', d: 'La gemeente, el seguro, el colegio. Foto al traductor del móvil y a cruzar los dedos para no equivocarte.' },
-  { i: 'familia', t: 'Tu pareja o tus hijos hablan por ti', d: 'En la tienda, en la reunión del colegio, al teléfono. Te ayudan con todo el cariño, pero tú querrías poder hacerlo solo.' },
-  { i: 'charla', t: 'Te quedas fuera de la conversación', d: 'Con los vecinos, en el trabajo, en un cumpleaños. Sonríes, asientes y esperas a que alguien te lo cuente después.' },
-  { i: 'compra', t: 'Lo básico, siempre en inglés o por señas', d: 'La compra, el tren, una pregunta en la ventanilla. Sales del paso, pero así nunca terminas de sentirte de aquí.' },
-  { i: 'candado', t: 'Hay cosas que ni te planteas', d: 'Un trabajo mejor, amigos holandeses, montar algo tuyo. Todo pasa por el idioma, y el idioma se queda para “algún día”.' },
+  { i: 'medico', t: 'Al médico, siempre acompañado', d: 'Alguien tiene que entrar contigo para explicar qué te pasa y entender lo que te dicen. Hasta para pedir cita.' },
+  { i: 'carta', t: 'Llega una carta y ya no estás tranquilo', d: 'La gemeente, el seguro, el colegio. Foto al traductor del móvil y a cruzar los dedos para no equivocarte.' },
+  { i: 'familia', t: 'Tu pareja o tus hijos hablan por ti', d: 'En la tienda, en la reunión del colegio, al teléfono. Te ayudan con todo el cariño, pero tú quieres poder hacerlo solo.' },
+  { i: 'charla', t: 'Fuera de la conversación', d: 'Con los vecinos, en el trabajo, en un cumpleaños. Sonríes, asientes y esperas a que alguien te lo cuente después.' },
+  { i: 'compra', t: 'Lo básico, en inglés o por señas', d: 'La compra, el tren, una pregunta en la ventanilla. Sales del paso, pero así nunca terminas de sentirte de aquí.' },
+  { i: 'candado', t: 'Puertas que ni te planteas abrir', d: 'Un trabajo mejor, amigos holandeses, algo tuyo. Todo pasa por el idioma, y el idioma se queda para “algún día”.' },
 ]
 
-/** Lo que sabrás hacer al terminar: nivel A1, situaciones de la vida real.
- *  Las palabras en `[ ]` salen resaltadas. */
+/** Competencias al terminar: nivel A1, situaciones de la vida real. */
 const SABRAS = [
   '[Presentarte] y hablar de ti, de tu familia y de tu trabajo.',
-  '[Pedir una cita] y explicar con frases sencillas qué necesitas.',
-  '[Hacer la compra], pedir en un café y pagar sin pasarte al inglés.',
-  'Entender [horas, días y fechas]: el tren, el colegio, una cita.',
+  'Pedir [cita con el médico] y explicar qué te pasa con frases sencillas.',
+  'Hacer [la compra], pedir en un café y pagar sin pasarte al inglés.',
+  'Entender [horarios y fechas]: el tren, el colegio, una cita.',
   'Leer [mensajes y avisos cortos] y saber qué te están pidiendo.',
   'Dar [tus datos]: deletrear tu nombre, tu dirección y tu teléfono.',
   'Mantener [una conversación corta] con un vecino o un compañero.',
   'Seguir avanzando [por tu cuenta], porque ya entiendes cómo funciona el idioma.',
 ]
-const resaltar = (t: string) => t.replace(/\[([^\]]+)\]/g, '<span class="fv-chip">$1</span>')
 
-/** Cómo se aprende: lo que HACE el alumno cada semana (06/10: "dejar de
- *  vender vídeos y decir las acciones que tienes que hacer"). */
-const CAMINO = [
-  { i: 'libro', etiqueta: 'A tu ritmo', t: 'Sigues las lecciones de la semana', d: 'Cada semana se abre lo que toca: un vídeo corto explicado en español, vocabulario con audio, lecturas y ejercicios. Con 20-30 minutos al día vas al día, y siempre sabes qué viene después.' },
-  { i: 'video', etiqueta: 'En directo · cada semana', t: 'Hablas en la clase semanal', d: 'Una vez por semana, conversación en directo con un profesor que habla español. Dices en voz alta lo que has aprendido. ¿No puedes ir? Queda grabada.' },
-  { i: 'consulta', etiqueta: 'Consultas · comunidad', t: 'Preguntas cuando te atascas', d: 'Tus dudas las responde el equipo, y en la comunidad compartes avances con tu grupo. Nada de quedarte una semana bloqueado con la misma pregunta.' },
-  { i: 'premio', etiqueta: 'Certificado Nawar', t: 'Te vales por ti mismo', d: 'Te presentas, haces la compra, pides una cita y entiendes lo básico sin depender de nadie. Y te llevas tu certificado con tu nombre.' },
+/** Cómo es tu semana: lo que HACE el alumno (06/10: "las acciones que
+ *  tienes que hacer"). Va con el panel del alumno de MetodoFunciona. */
+const SEMANA = [
+  { num: '1', title: 'Sigues las lecciones de la semana', desc: 'Cada semana se abre lo que toca: vídeo corto explicado en español, vocabulario con audio, lectura, escucha y ejercicios. Con 20-30 minutos al día vas al día, y siempre sabes qué viene después.', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
+  { num: '2', title: 'Hablas en la clase en directo', desc: 'Una vez por semana, con un profesor que habla español y con tu grupo. Dices en voz alta lo que has aprendido. Si no puedes ir, queda grabada.', icon: 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z' },
+  { num: '3', title: 'Preguntas cuando te atascas', desc: 'Tus dudas las responde el equipo, y en la comunidad compartes avances con tu grupo. Nadie se queda una semana bloqueado con la misma pregunta.', icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z' },
+  { num: '4', title: 'Te vales por ti mismo', desc: 'Te presentas, haces la compra, pides una cita y entiendes lo básico sin depender de nadie. Y te llevas tu certificado con tu nombre.', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
 ]
 
-/** El programa por fases. Las cuatro primeras son los módulos que YA están
- *  en la escuela (courseData.ts), con sus lecciones de verdad. De los demás
- *  no se inventa el temario: se cuenta cómo se abren. */
+/** Lo que tienes dentro, con las ilustraciones de las landings. */
+const DENTRO = [
+  { img: IMG.clases, i: 'video', t: 'Clase en directo cada semana', d: 'Con un profesor que habla español y con tu grupo. Hablas desde la primera semana, y si un día no puedes, la tienes grabada.' },
+  { img: IMG.ejercicios, i: 'libro', t: 'Lecciones y ejercicios interactivos', d: 'Vídeos cortos, vocabulario con audio, lecturas y ejercicios que se corrigen solos. Tu progreso, siempre a la vista.' },
+  { img: IMG.soporte, i: 'consulta', t: 'Consultas con el equipo', d: '¿Algo no te cuadra? Preguntas y te respondemos, sin esperar a la clase.' },
+  { img: IMG.comunidad, i: 'grupo', t: 'Comunidad privada', d: 'Tu grupo avanza contigo: dudas, victorias y práctica entre semana.' },
+]
+
+/**
+ * El programa por FASES (07/10: "así no lo dividimos en los 10 módulos, que
+ * son muchos"). Los nombres de los módulos son los de la escuela (el goteo:
+ * Over jou, Familie & vrienden, Eten en drinken, Het werk, Hobby's & vrije
+ * tijd, Thuis & wonen, Gezondheid, Vervoer & reizen, De stad & afspraken,
+ * Dagelijks leven). Las duraciones salen de las fechas de apertura.
+ * ⚠️ Los temas de los módulos 1 a 4 son sus lecciones reales (courseData.ts);
+ * los del 5 al 10 están deducidos del nombre del módulo: confirmarlos con el
+ * usuario y cambiarlos aquí cuando estén escritos.
+ */
 const FASES = [
   {
-    n: '01', nombre: 'Primeros pasos', modulo: 'Módulo 1 · Sobre ti',
-    promesa: 'Te presentas, das tus datos y pronuncias bien desde el primer día.',
-    temas: ['Presentarte: saludos, nombre, edad, de dónde eres y dónde vives', 'Los pronombres y los verbos en presente', 'Los números y los precios', 'El alfabeto: deletrear tu nombre y tu dirección', 'Las vocales que más cuestan: a/aa, e/ee, o/oo', 'Extra: colores, países e idiomas, preguntas básicas'],
+    n: '01', c: '#4da3ff', nombre: 'Las bases', sub: 'Tú, tu gente y la mesa', dura: '≈ 4 semanas',
+    promesa: 'Te presentas, hablas de tu familia y pides en un café sin pasarte al inglés. Y pronuncias bien desde el primer día.',
+    modulos: [
+      { n: '1', t: 'Sobre ti', l: ['Saludar, presentarte y dar tus datos', 'Los verbos en presente, los números y el alfabeto'] },
+      { n: '2', t: 'Familia y amigos', l: ['Tu familia y cómo presentar a alguien', 'Días, meses, la hora y tu rutina'] },
+      { n: '3', t: 'Comer y beber', l: ['Pedir en un café: Ik wil… / Mag ik…?', 'Preguntar, pagar y moverte por el supermercado'] },
+    ],
   },
   {
-    n: '02', nombre: 'Tu gente y tu semana', modulo: 'Módulo 2 · Familia y amigos',
-    promesa: 'Hablas de tu familia, organizas tu semana y cuentas tu rutina.',
-    temas: ['La familia y cómo presentar a alguien', 'Hacer frases: el orden de la frase en neerlandés', 'Días, meses y palabras para hacer planes', 'de, het, een y los posesivos', 'A qué hora: om, op, in y tu rutina diaria', 'Los sonidos ei, ij y ui'],
+    n: '02', c: '#2b7bff', nombre: 'Tu vida aquí', sub: 'El trabajo, tu tiempo y tu casa', dura: '≈ 6 semanas',
+    promesa: 'Hablas de tu trabajo, de lo que te gusta y de dónde vives: lo que te preguntan en cualquier conversación.',
+    modulos: [
+      { n: '4', t: 'El trabajo', l: ['Tu profesión y tus horarios', 'Poder, querer, tener que: los verbos modales'] },
+      { n: '5', t: 'Tiempo libre', l: ['Tus aficiones y tus planes', 'Quedar con alguien y decir qué te apetece'] },
+      { n: '6', t: 'Casa y vivienda', l: ['Tu casa, tu barrio y tus vecinos', 'Lo que necesitas para el día a día en casa'] },
+    ],
   },
   {
-    n: '03', nombre: 'En la calle', modulo: 'Módulo 3 · Compras y comida',
-    promesa: 'Te mueves por el supermercado y por un café: pides, preguntas y pagas.',
-    temas: ['Comida y bebida', 'Pedir: Ik wil… / Mag ik…?', 'Hacer preguntas: wie, wat, waar, hoeveel…', 'Unir frases: en, maar, of, want', 'Cantidades, pedir más y decir qué te gusta', 'Pagar y repartir la cuenta como en Países Bajos'],
+    n: '03', c: '#025dc7', nombre: 'Valerte por ti mismo', sub: 'Salud, transporte y citas', dura: '≈ 3 semanas',
+    promesa: 'Vas al médico, te mueves en tren y pides una cita sin que nadie tenga que acompañarte.',
+    modulos: [
+      { n: '7', t: 'Salud', l: ['El huisarts: pedir cita y explicar qué te pasa', 'El cuerpo, los síntomas y la farmacia'] },
+      { n: '8', t: 'Transporte y viajes', l: ['El tren, el autobús y los horarios', 'Comprar un billete y preguntar cómo llegar'] },
+      { n: '9', t: 'La ciudad y las citas', l: ['Orientarte por la ciudad', 'Pedir, cambiar y confirmar una cita'] },
+    ],
   },
   {
-    n: '04', nombre: 'El trabajo', modulo: 'Módulo 4 · El trabajo',
-    promesa: 'Hablas de tu profesión, de tus horarios y de lo que puedes o tienes que hacer.',
-    temas: ['Profesiones y vocabulario del trabajo', 'hebben y zijn en el trabajo', 'Decir para qué haces las cosas: om… te', 'La hora y los horarios', 'Poder, querer, tener que: los verbos modales', 'La g y la ch, el sonido más neerlandés', 'Extra: escribir un correo formal e informal'],
+    n: '04', c: '#1D0084', nombre: 'Tu día a día', sub: 'Todo junto, y el A1 cerrado', dura: '≈ 3 semanas',
+    promesa: 'Juntas todo lo aprendido en las situaciones de cada día y cierras el nivel A1 con soltura.',
+    modulos: [
+      { n: '10', t: 'Vida diaria', l: ['Las situaciones de cada día, de principio a fin', 'Repaso final de todo el nivel'] },
+    ],
   },
 ]
 
-const INCLUYE = [
-  { i: 'video', t: 'Clase en directo cada semana', d: 'Conversación con un profesor que habla español. Y si no puedes ir, la grabación.' },
-  { i: 'consulta', t: 'Consultas con el equipo', d: 'Preguntas lo que no entiendes y te respondemos. Sin esperar a la clase.' },
-  { i: 'libro', t: 'La escuela online', d: 'Vídeos cortos, vocabulario con audio, lecturas y ejercicios que se corrigen solos.' },
-  { i: 'progreso', t: 'Tu progreso, siempre a la vista', d: 'Sabes qué has hecho, qué te falta y qué repasar. Retomas donde lo dejaste.' },
-  { i: 'grupo', t: 'Comunidad privada', d: 'Tu grupo, avanzando contigo. Dudas, victorias y práctica entre semana.' },
-  { i: 'calendario', t: '6 meses de acceso', d: '16 semanas de programa y margen de sobra para repasar lo que quieras.' },
+const METODO = [
+  { c: '#4da3ff', t: 'Práctico: [situaciones reales] desde la primera lección, no listas para memorizar.' },
+  { c: '#2b7bff', t: 'Progresivo: [4 fases y 10 módulos], con semanas de repaso para ponerte al día.' },
+  { c: '#025dc7', t: 'Hablado: [clase en directo] cada semana, y grabada si no puedes ir.' },
+  { c: '#1D0084', t: 'Acompañado: [consultas con el equipo] y una comunidad que avanza contigo.' },
+  { c: '#9fd0ff', t: 'Pensado para ti: todo [explicado en español], para hispanohablantes.' },
 ]
-
-const PARA_TI = [
-  'Vives en [Países Bajos o Bélgica], o te mudas pronto',
-  'Empiezas [de cero] o con muy poca base',
-  'Quieres que te lo expliquen [en español]',
-  'Buscas [un camino guiado], no apps sueltas',
-  'Puedes dedicarle [unas horas a la semana]',
+const DIRIGIDO = [
+  'Hispanohablantes que viven en [Países Bajos o Bélgica]',
+  'Quien se muda pronto y quiere [llegar con base]',
+  'Personas que empiezan [desde cero] o casi',
+  'Quien ya probó apps y [necesita un método]',
+  'Quien quiere hacer [sus gestiones solo]',
 ]
-const NO_PARA_TI = [
-  'Buscas algo milagroso que no pida práctica',
-  'Ya tienes un nivel A2 o más',
-  'No tienes ni dos horas a la semana para esto',
-]
+const NO_ES = ['ya tienes un A2 o más', 'buscas algo sin práctica ni esfuerzo', 'no tienes ni dos horas a la semana']
 
 const DUDAS = [
   { q: '¿Qué pasa cuando dejo mis datos?', a: 'Ves un vídeo corto con cómo funciona la formación por dentro y alguien del equipo te escribe por WhatsApp. Si quieres, ahí mismo reservas una llamada: vemos de dónde partes y si encaja contigo. Dejar tus datos no te compromete a nada.' },
-  { q: '¿Necesito saber algo de neerlandés?', a: 'No. La formación empieza desde cero, pensada para quien nunca lo ha estudiado o tiene nociones sueltas. Todo se explica en español.' },
+  { q: '¿Necesito saber algo de neerlandés?', a: 'No. La formación empieza desde cero y está pensada para quien nunca lo ha estudiado o tiene nociones sueltas. Todo se explica en español.' },
   { q: '¿Cuánto tiempo necesito a la semana?', a: 'Con 20-30 minutos al día vas al día, más la clase semanal. Y cada dos módulos hay una semana sin contenido nuevo para ponerte al día si vas justo.' },
   { q: '¿Hay horarios fijos?', a: 'Solo la clase en directo, una vez por semana. Si no puedes ir, queda grabada. Las lecciones las haces cuando te venga bien.' },
   { q: '¿Cuánto tiempo tengo acceso?', a: 'Seis meses desde que entras. El programa son 16 semanas, así que al terminar te queda margen para repasar lo que quieras.' },
   { q: '¿Y si no es lo que esperaba?', a: 'Tienes 15 días de garantía de devolución. Si en ese tiempo ves que no es para ti, te devolvemos el dinero completo.' },
 ]
 
-const MARQUESINA = ['Escuchar', 'Entender', 'Hablar', 'Valerte por ti mismo', 'Certificado Nawar']
+const MARQUESINA = ['Las bases', 'Tu vida aquí', 'Valerte por ti mismo', 'Tu día a día', 'Certificado Nawar']
 ---
 
 <Layout
@@ -154,25 +200,26 @@ const MARQUESINA = ['Escuchar', 'Entender', 'Hablar', 'Valerte por ti mismo', 'C
 
       <nav class="fv-nav">
         <a href="/" aria-label="Holandés Nawar"><img src={LOGO} alt="Holandés Nawar" class="fv-logo" width="150" height="38" /></a>
-        <a href="#solicitud" class="fv-nav-cta" data-ir-form>Solicitar mi plaza</a>
+        <a href="#solicitud" class="fv-nav-cta" data-ir-form>Solicitar plaza</a>
       </nav>
 
       <div class="fv-hero-in">
         <div class="fv-hero-texto">
-          <span class="fv-badge-dark">Formación A0-A1 · Plazas limitadas</span>
+          <span class="fv-badge-dark"><span class="fv-punto" aria-hidden="true"></span>Formación Nawar A0-A1 · Plazas limitadas</span>
           <h1 class="fv-h1">
             <span class="fv-h1-blanco">Neerlandés de cero <span class="fv-nw">a A1,</span></span>
             <span class="fv-h1-azul">para valerte <span class="fv-nw">por ti mismo</span></span>
           </h1>
           <p class="fv-hero-sub">
-            Un camino de 16 semanas, explicado en español, para ir al médico, hacer tus gestiones y hablar con la gente
-            <strong>sin que nadie tenga que hacerlo por ti.</strong>
+            16 semanas para pasar de no entender nada a resolver tu día a día en neerlandés: el médico, el colegio, la compra, tus vecinos.
+            <strong>Explicado en español y con un equipo que te acompaña hasta el final.</strong>
           </p>
-          <ul class="fv-hero-lista">
-            <li><span class="fv-tick" aria-hidden="true"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>Clase en directo cada semana con un profesor que habla español</li>
-            <li><span class="fv-tick" aria-hidden="true"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>El equipo responde tus dudas cuando te atascas</li>
-            <li><span class="fv-tick" aria-hidden="true"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>Certificado Nawar al terminar</li>
-          </ul>
+          <dl class="fv-datos">
+            <div><dt>16</dt><dd>semanas</dd></div>
+            <div><dt>10</dt><dd>módulos</dd></div>
+            <div><dt>1</dt><dd>clase en directo<br />cada semana</dd></div>
+            <div><dt set:html={icono('premio', 26, 1.7)} /><dd>certificado<br />al terminar</dd></div>
+          </dl>
         </div>
 
         <!-- El formulario: tres datos, como UDIA. -->
@@ -215,7 +262,7 @@ const MARQUESINA = ['Escuchar', 'Entender', 'Hablar', 'Valerte por ti mismo', 'C
       </div>
     </header>
 
-    <!-- La cinta, como UDIA: el camino en cinco palabras. -->
+    <!-- La cinta, como UDIA: las cuatro fases y el certificado. -->
     <div class="fv-cinta" aria-hidden="true">
       <div class="fv-cinta-pista">
         {[0, 1, 2, 3].map(() => (
@@ -229,145 +276,180 @@ const MARQUESINA = ['Escuchar', 'Entender', 'Hablar', 'Valerte por ti mismo', 'C
       <div class="fv-in">
         <div class="fv-cab">
           <span class="fv-badge">¿Te suena?</span>
-          <h2 class="fv-h2">Vivir en Países Bajos <span class="fv-acento">dependiendo de otros</span> cansa</h2>
-          <p class="fv-lead">No es que no lo intentes. Es que cada día hay un momento en el que necesitas a alguien.</p>
+          <h2 class="fv-h2">Vivir aquí <span class="fv-acento">dependiendo de otros</span> cansa</h2>
+          <p class="fv-lead">Llevas tiempo en Países Bajos y para lo importante todavía necesitas a alguien al lado.</p>
         </div>
         <div class="fv-dolores">
           {DOLORES.map((d) => (
             <article class="fv-dolor">
-              <span class="fv-dolor-ico" set:html={icono(d.i)} />
-              <h3>{d.t}</h3>
-              <p>{d.d}</p>
+              <span class="fv-dolor-ico" set:html={icono(d.i, 20)} />
+              <div>
+                <h3>{d.t}</h3>
+                <p>{d.d}</p>
+              </div>
             </article>
           ))}
         </div>
-        <div class="fv-giro">
-          <p>
-            No es falta de ganas ni de capacidad. Es que nadie te ha dado <strong>un camino claro, en tu idioma y con alguien al lado</strong>.
-            Eso es la Formación Nawar.
-          </p>
-        </div>
+        <p class="fv-giro">
+          No es falta de capacidad. Es que nunca has tenido <strong>un método pensado para ti</strong>: en español, paso a paso y con alguien que te corrija.
+          <span>Para eso existe la Formación Nawar <span class="fv-nw">A0-A1</span>.</span>
+        </p>
       </div>
     </section>
 
-    <!-- ═══ Lo que sabrás hacer ═══ -->
+    <!-- ═══ Competencias al terminar ═══ -->
     <section class="fv-sec fv-claro">
       <div class="fv-in">
-        <div class="fv-sabras">
-          <div class="fv-cab fv-cab-izq">
-            <span class="fv-badge">Al terminar</span>
-            <h2 class="fv-h2">Lo que <span class="fv-acento">sabrás hacer</span> en 16 semanas</h2>
+        <div class="fv-comp">
+          <div class="fv-comp-cab">
+            <span class="fv-badge">Competencias al terminar</span>
+            <h2 class="fv-h2">En 16 semanas, <span class="fv-acento">esto lo haces tú</span></h2>
             <p class="fv-lead">El nivel A1: lo que necesitas para moverte solo en el día a día. Sin memorizar listas, practicando situaciones de verdad.</p>
-            <a href="#solicitud" class="fv-btn-sec" data-ir-form>Quiero empezar mi admisión
+            <a href="#solicitud" class="fv-btn-sec" data-ir-form>Empezar mi admisión
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
           </div>
-          <ol class="fv-sabras-lista">
+          <ol class="fv-comp-lista">
             {SABRAS.map((s, i) => (
-              <li><span class="fv-num">{String(i + 1).padStart(2, '0')}</span><p set:html={resaltar(s)} /></li>
+              <li><span class="fv-num">{i + 1}</span><p set:html={resaltar(s)} /></li>
             ))}
           </ol>
         </div>
       </div>
     </section>
 
-    <!-- ═══ El camino ═══ -->
+    <!-- ═══ Cómo es tu semana: el panel del alumno de las landings ═══ -->
+    <div class="l8 fv-semana">
+      <MetodoFunciona
+        pasos={SEMANA}
+        badge="Cómo se aprende"
+        titulo="Así es una semana en"
+        acento="Nawar"
+        sub="No es ver vídeos y ya. Cada semana tiene cuatro cosas claras que hacer, y ninguna la haces solo."
+      />
+    </div>
+
+    <!-- ═══ Lo que tienes dentro: las ilustraciones de las landings ═══ -->
     <section class="fv-sec fv-blanco">
       <div class="fv-in">
         <div class="fv-cab">
-          <span class="fv-badge">El camino</span>
-          <h2 class="fv-h2">Así se aprende <span class="fv-acento">en Nawar</span></h2>
-          <p class="fv-lead">No es ver vídeos y ya. Cada semana tiene cuatro cosas claras que hacer, y ninguna la haces solo.</p>
+          <span class="fv-badge">Por qué esta formación</span>
+          <h2 class="fv-h2">Una formación, <span class="fv-acento">no un curso de vídeos</span></h2>
+          <p class="fv-lead">Lo que hace que esta vez sí llegues al final.</p>
         </div>
-        <ol class="fv-camino">
-          {CAMINO.map((c, i) => (
-            <li class="fv-paso">
-              <div class="fv-paso-cab">
-                <span class="fv-paso-n">{i + 1}</span>
-                <span class="fv-paso-linea" aria-hidden="true"></span>
+        <div class="fv-dentro">
+          {DENTRO.map((d) => (
+            <article class="fv-den">
+              <figure class="fv-den-foto">
+                <img src={d.img} alt={d.t} loading="lazy" decoding="async"
+                  onerror="this.closest('figure').classList.add('sin-foto'); this.remove();" />
+                <span class="fv-den-plan-b" set:html={icono(d.i, 34, 1.5)} />
+              </figure>
+              <div class="fv-den-txt">
+                <h3>{d.t}</h3>
+                <p>{d.d}</p>
               </div>
-              <div class="fv-paso-caja">
-                <span class="fv-paso-ico" set:html={icono(c.i, 20)} />
-                <span class="fv-paso-etiqueta">{c.etiqueta}</span>
-                <h3>{c.t}</h3>
-                <p>{c.d}</p>
-              </div>
-            </li>
+            </article>
           ))}
-        </ol>
+        </div>
       </div>
     </section>
 
-    <!-- ═══ El programa ═══ -->
-    <section class="fv-sec fv-claro" id="programa">
+    <!-- ═══ El programa, por fases (como UDIA) ═══ -->
+    <section class="fv-sec fv-claro fv-prog-sec" id="programa">
       <div class="fv-in">
         <div class="fv-cab fv-cab-izq">
-          <span class="fv-badge">10 módulos · 16 semanas · certificado</span>
-          <h2 class="fv-h2">El <span class="fv-acento">programa</span>, por dentro</h2>
-          <p class="fv-lead">Progresivo y práctico: cada módulo se apoya en el anterior y termina con algo que ya sabes hacer.</p>
+          <span class="fv-badge">4 fases · 10 módulos · certificado</span>
+          <h2 class="fv-h2">El programa, <span class="fv-acento">fase a fase</span></h2>
+          <p class="fv-lead">Progresivo y práctico: cada fase se apoya en la anterior y termina con algo que ya haces en la vida real.</p>
+        </div>
+      </div>
+
+      <div class="fv-in">
+        <!-- Móvil: las fases pegadas arriba al bajar, con la raya de progreso. -->
+        <div class="fv-fases-barra" id="fv-fases-barra">
+          <div class="fv-fases-pills" id="fv-fases-pills">
+            {FASES.map((f) => (
+              <a href={`#fase-${f.n}`} class="fv-pill" data-fase={f.n} style={`--c:${f.c}`}><b>{f.n}</b>{f.nombre}</a>
+            ))}
+            <a href="#fase-cert" class="fv-pill" data-fase="cert" style="--c:#4da3ff"><b>✓</b>Certificado</a>
+          </div>
+          <div class="fv-fases-raya" aria-hidden="true"><span class="fv-raya-fill"></span></div>
         </div>
 
         <div class="fv-prog">
           <aside class="fv-prog-nav" aria-label="Fases del programa">
             <div class="fv-prog-nav-caja">
-              <p class="fv-prog-nav-titulo">Recorrido</p>
+              <div class="fv-prog-nav-top">
+                <p class="fv-prog-nav-titulo">Recorrido</p>
+                <p class="fv-prog-nav-paso" id="fv-prog-paso">Fase 1 / 4</p>
+              </div>
+              <div class="fv-fases-raya fv-raya-lateral" aria-hidden="true"><span class="fv-raya-fill"></span></div>
               <ol>
                 {FASES.map((f) => (
-                  <li><a href={`#fase-${f.n}`} data-fase={f.n}><span class="fv-prog-bola">{f.n}</span>{f.nombre}</a></li>
+                  <li><a href={`#fase-${f.n}`} data-fase={f.n} style={`--c:${f.c}`}><span class="fv-prog-bola">{f.n}</span><span><b>{f.nombre}</b><small>{f.sub}</small></span></a></li>
                 ))}
-                <li><a href="#fase-mas" data-fase="mas"><span class="fv-prog-bola">+</span>Hasta el módulo 10</a></li>
-                <li><a href="#fase-cert" data-fase="cert"><span class="fv-prog-bola">✓</span>Certificado</a></li>
+                <li><a href="#fase-cert" data-fase="cert" style="--c:#4da3ff"><span class="fv-prog-bola">✓</span><span><b>Certificado</b><small>Con tu nombre</small></span></a></li>
               </ol>
-              <div class="fv-prog-barra" aria-hidden="true"><span id="fv-prog-fill"></span></div>
             </div>
           </aside>
 
-          <div class="fv-prog-fases">
+          <div class="fv-prog-fases" id="fv-prog-fases">
             {FASES.map((f) => (
-              <article class="fv-fase" id={`fase-${f.n}`} data-fase={f.n}>
+              <article class="fv-fase" id={`fase-${f.n}`} data-fase={f.n} style={`--c:${f.c}`}>
+                <div class="fv-fase-chips">
+                  <span class="fv-fase-chip fv-fase-chip-c">Fase {f.n}</span>
+                  <span class="fv-fase-chip"><Fragment set:html={icono('reloj', 13, 2)} />{f.dura}</span>
+                </div>
                 <div class="fv-fase-cab">
                   <span class="fv-fase-n">{f.n}</span>
                   <div>
-                    <p class="fv-fase-modulo">{f.modulo}</p>
                     <h3>{f.nombre}</h3>
+                    <p>{f.sub}</p>
                   </div>
                 </div>
                 <div class="fv-fase-promesa">
-                  <span>Al terminarlo</span>
+                  <span>Al terminar esta fase</span>
                   <p>{f.promesa}</p>
                 </div>
-                <ul class="fv-fase-temas">
-                  {f.temas.map((t) => <li>{t}</li>)}
-                </ul>
+                <div class="fv-fase-modulos">
+                  {f.modulos.map((m) => (
+                    <div class="fv-mod">
+                      <p class="fv-mod-t"><span class="fv-mod-n">{m.n}</span>Módulo {m.n} · {m.t}</p>
+                      <ul>{m.l.map((x) => <li>{x}</li>)}</ul>
+                    </div>
+                  ))}
+                </div>
               </article>
             ))}
-            <article class="fv-fase fv-fase-mas" id="fase-mas" data-fase="mas">
-              <div class="fv-fase-cab">
-                <span class="fv-fase-n">+</span>
-                <div>
-                  <p class="fv-fase-modulo">Módulos 5 a 10</p>
-                  <h3>Y así hasta el A1</h3>
-                </div>
+
+            <!-- El certificado de verdad (el de las landings), con su plan B. -->
+            <article class="fv-fase fv-fase-cert" id="fase-cert" data-fase="cert" style="--c:#4da3ff">
+              <div class="fv-fase-chips">
+                <span class="fv-fase-chip fv-fase-chip-c">Certificación</span>
+                <span class="fv-fase-chip"><Fragment set:html={icono('premio', 13, 2)} />Al completar los módulos</span>
               </div>
-              <p class="fv-fase-texto">
-                Los módulos se abren por calendario, con <strong>semanas de repaso</strong> entre medias para que nadie se quede atrás.
-                En total: <strong>10 módulos, más de 360 lecciones y más de 15 horas de vídeo</strong>, todo explicado desde el español.
-              </p>
-            </article>
-            <article class="fv-fase fv-fase-cert" id="fase-cert" data-fase="cert">
-              <div class="fv-cert">
-                <div class="fv-cert-papel" aria-hidden="true">
+              <h3 class="fv-cert-titulo">Tu certificado Nawar</h3>
+              <div class="fv-cert-visual">
+                <figure class="fv-cert-foto" id="fv-cert-foto">
+                  <img class="fv-cert-fondo" src={IMG.certFondo} alt="" loading="lazy" decoding="async"
+                    onerror="this.closest('#fv-cert-foto').classList.add('sin-fondo'); this.remove();" />
+                  <span class="fv-cert-papel">
+                    <img src={IMG.certificado} alt="Certificado de finalización de la Formación Nawar A0-A1" loading="lazy" decoding="async"
+                      onerror="this.closest('#fv-cert-foto').remove(); document.getElementById('fv-cert-dibujo').hidden = false;" />
+                  </span>
+                </figure>
+                <div class="fv-cert-dibujo" id="fv-cert-dibujo" hidden aria-hidden="true">
                   <p class="fv-cert-marca">Holandés Nawar</p>
                   <p class="fv-cert-tipo">Certificado de finalización</p>
                   <p class="fv-cert-nombre">Tu nombre aquí</p>
                   <p class="fv-cert-texto">ha completado la <strong>Formación Nawar A0-A1</strong> de neerlandés</p>
-                  <div class="fv-cert-pie"><span></span><span class="fv-cert-sello" set:html={icono('premio', 18)} /><span></span></div>
                 </div>
-                <div class="fv-cert-txt">
-                  <p class="fv-fase-modulo">Al completar todos los módulos</p>
-                  <h3>Tu certificado Nawar</h3>
-                  <p>Con tu nombre, para acreditar tu nivel y el trabajo que has hecho. El cierre de un camino que has recorrido tú.</p>
-                </div>
+              </div>
+              <div class="fv-cert-tres">
+                <div><span>Cómo se consigue</span><p>Completando los módulos de la formación.</p></div>
+                <div><span>Qué acredita</span><p>Tu nivel A1 y el trabajo que has hecho, con tu nombre.</p></div>
+                <div><span>Y después</span><p>Te contamos el siguiente paso para seguir hacia el A2.</p></div>
               </div>
             </article>
           </div>
@@ -375,44 +457,21 @@ const MARQUESINA = ['Escuchar', 'Entender', 'Hablar', 'Valerte por ti mismo', 'C
       </div>
     </section>
 
-    <!-- ═══ Lo que incluye (oscuro) ═══ -->
-    <section class="fv-sec fv-oscuro">
-      <div class="fv-dots" aria-hidden="true"></div>
-      <div class="fv-in">
-        <div class="fv-cab">
-          <span class="fv-badge-dark">Qué incluye</span>
-          <h2 class="fv-h2 fv-h2-blanco">Todo lo que tienes <span class="fv-azul">dentro</span></h2>
-          <p class="fv-lead fv-lead-blanco">Pensado para que avances aunque tengas trabajo, hijos y poco tiempo.</p>
-        </div>
-        <div class="fv-incluye">
-          {INCLUYE.map((c) => (
-            <article class="fv-inc">
-              <span class="fv-inc-ico" set:html={icono(c.i)} />
-              <h3>{c.t}</h3>
-              <p>{c.d}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ Para quién es ═══ -->
+    <!-- ═══ Metodología + a quién va dirigido (como UDIA) ═══ -->
     <section class="fv-sec fv-blanco">
-      <div class="fv-in">
-        <div class="fv-cab">
-          <span class="fv-badge">Para quién es</span>
-          <h2 class="fv-h2">¿Es <span class="fv-acento">para ti</span>?</h2>
-          <p class="fv-lead">Preferimos decírtelo claro desde el principio. Por eso hay una llamada antes de entrar.</p>
+      <div class="fv-in fv-mq">
+        <div class="fv-metodo">
+          <h2 class="fv-h3">Metodología</h2>
+          <ul>
+            {METODO.map((m) => <li style={`--c:${m.c}`} set:html={resaltar(m.t)} />)}
+          </ul>
         </div>
         <div class="fv-quien">
-          <div class="fv-quien-col fv-si">
-            <h3><span class="fv-quien-ico fv-quien-ok">✓</span>Es para ti si…</h3>
-            <ul>{PARA_TI.map((t) => <li set:html={resaltar(t)} />)}</ul>
-          </div>
-          <div class="fv-quien-col fv-no">
-            <h3><span class="fv-quien-ico fv-quien-x">×</span>No es para ti si…</h3>
-            <ul>{NO_PARA_TI.map((t) => <li>{t}</li>)}</ul>
-          </div>
+          <h2 class="fv-h3">¿A quién va dirigido?</h2>
+          <ul class="fv-quien-si">
+            {DIRIGIDO.map((t) => <li><span class="fv-quien-ok" set:html={icono('check', 14, 2.6)} /><span set:html={resaltar(t)} /></li>)}
+          </ul>
+          <p class="fv-quien-no"><b>No es para ti si</b> {NO_ES.join(' · ')}.</p>
         </div>
       </div>
     </section>
@@ -447,13 +506,14 @@ const MARQUESINA = ['Escuchar', 'Entender', 'Hablar', 'Valerte por ti mismo', 'C
       <div class="fv-glow1" aria-hidden="true"></div>
       <div class="fv-dots" aria-hidden="true"></div>
       <div class="fv-in fv-final-in">
-        <h2 class="fv-h2 fv-h2-blanco">El día que vayas al médico <span class="fv-azul">tú solo</span> empieza aquí</h2>
+        <span class="fv-badge-dark"><span class="fv-punto" aria-hidden="true"></span>Plazas limitadas por convocatoria</span>
+        <h2 class="fv-h2 fv-h2-blanco">La próxima vez que vayas al médico, <span class="fv-azul">ve tú solo</span></h2>
         <p class="fv-lead fv-lead-blanco">Deja tus datos, mira cómo funciona por dentro y hablamos.</p>
         <a href="#solicitud" class="fv-btn fv-btn-final" data-ir-form>
           Solicitar mi plaza
           <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
-        <p class="fv-final-nota">Sin compromiso · Plazas limitadas por convocatoria</p>
+        <p class="fv-final-nota">Sin compromiso · Te escribimos por WhatsApp</p>
       </div>
     </section>
 
@@ -469,7 +529,10 @@ const MARQUESINA = ['Escuchar', 'Entender', 'Hablar', 'Valerte por ti mismo', 'C
 
     <!-- Móvil: el botón siempre a mano cuando el formulario ya no se ve. -->
     <div class="fv-pegado" id="fv-pegado" aria-hidden="true">
-      <a href="#solicitud" class="fv-btn" data-ir-form tabindex="-1">Solicitar mi plaza</a>
+      <span class="fv-pegado-txt"><b>Sin compromiso</b>Solicitar información</span>
+      <a href="#solicitud" class="fv-pegado-btn" data-ir-form tabindex="-1" aria-label="Solicitar mi plaza">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
     </div>
   </div>
 </Layout>
@@ -574,25 +637,53 @@ const MARQUESINA = ['Escuchar', 'Entender', 'Hablar', 'Valerte por ti mismo', 'C
     setTimeout(() => { window.location.href = `${V2.video}?d=1` }, 250)
   })
 
-  // ── El programa: la fase que se ve, marcada a la izquierda ────────────
-  const enlaces = Array.from(document.querySelectorAll<HTMLAnchorElement>('.fv-prog-nav a'))
-  const fases = Array.from(document.querySelectorAll<HTMLElement>('.fv-fase'))
-  const fill = $('fv-prog-fill')
+  // ── El programa: fase activa, su color y la raya de progreso ──────────
+  // Como UDIA: al bajar, la fase que se está leyendo se marca (en el móvil,
+  // en la barra pegada arriba; en el ordenador, en la columna de la
+  // izquierda) y la raya avanza con lo que se lleva leído del programa.
+  const contenedor = $('fv-prog-fases')
+  const fases = Array.from(contenedor.querySelectorAll<HTMLElement>('.fv-fase'))
+  const enlaces = Array.from(document.querySelectorAll<HTMLAnchorElement>('.fv-pill, .fv-prog-nav a'))
+  const pills = $('fv-fases-pills')
+  const rayas = Array.from(document.querySelectorAll<HTMLElement>('.fv-raya-fill'))
+  const pasoTxt = $('fv-prog-paso')
+  let activa = ''
   const marcar = (id: string) => {
-    const i = enlaces.findIndex((a) => a.dataset.fase === id)
-    enlaces.forEach((a, j) => { a.classList.toggle('activo', j === i); a.classList.toggle('hecho', j < i) })
-    if (fill) fill.style.width = `${Math.round(((i + 1) / enlaces.length) * 100)}%`
+    if (id === activa) return
+    activa = id
+    const orden = fases.findIndex((f) => f.dataset.fase === id)
+    enlaces.forEach((a) => {
+      const j = fases.findIndex((f) => f.dataset.fase === a.dataset.fase)
+      a.classList.toggle('activo', j === orden)
+      a.classList.toggle('hecho', j < orden)
+    })
+    fases.forEach((f, j) => f.classList.toggle('activa', j === orden))
+    pasoTxt.textContent = id === 'cert' ? 'Certificado' : `Fase ${orden + 1} / ${fases.length - 1}`
+    // La píldora activa, a la vista dentro de la barra del móvil.
+    const pill = pills.querySelector<HTMLElement>(`[data-fase="${id}"]`)
+    if (pill) pills.scrollTo({ left: pill.offsetLeft - 16, behavior: 'smooth' })
   }
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entradas) => {
-      entradas.forEach((en) => { if (en.isIntersecting) marcar((en.target as HTMLElement).dataset.fase || '') })
-    }, { rootMargin: '-45% 0px -50% 0px' })
-    fases.forEach((f) => io.observe(f))
+  let pendiente = false
+  const medir = () => {
+    pendiente = false
+    const linea = window.innerHeight * 0.38
+    let id = fases[0].dataset.fase || ''
+    for (const f of fases) if (f.getBoundingClientRect().top <= linea) id = f.dataset.fase || id
+    marcar(id)
+    const r = contenedor.getBoundingClientRect()
+    const hecho = Math.min(1, Math.max(0, (linea - r.top) / Math.max(1, r.height - window.innerHeight * 0.4)))
+    rayas.forEach((s) => (s.style.transform = `scaleX(${hecho})`))
   }
-  marcar('01')
+  const alMover = () => { if (!pendiente) { pendiente = true; requestAnimationFrame(medir) } }
+  window.addEventListener('scroll', alMover, { passive: true })
+  window.addEventListener('resize', alMover)
+  medir()
   enlaces.forEach((a) => a.addEventListener('click', (e) => {
     e.preventDefault()
-    document.getElementById(a.getAttribute('href')!.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const destino = document.getElementById(a.getAttribute('href')!.slice(1))
+    if (!destino) return
+    const barra = window.matchMedia('(max-width: 1023px)').matches ? 72 : 24
+    window.scrollTo({ top: destino.getBoundingClientRect().top + window.scrollY - barra, behavior: 'smooth' })
   }))
 
   // ── Móvil: el botón pegado abajo cuando el formulario no se ve ────────
@@ -613,35 +704,38 @@ const MARQUESINA = ['Escuchar', 'Entender', 'Hablar', 'Valerte por ti mismo', 'C
 </script>
 
 <style>
-  .fv { background: #fff; color: #0a1656; overflow-x: hidden; }
+  /* overflow: clip y no hidden: con hidden, las piezas pegajosas (las fases
+     del programa) dejan de pegarse. */
+  .fv { background: #fff; color: #0a1656; overflow-x: clip; }
   .fv :global(*) { box-sizing: border-box; }
 
   /* ── Piezas de la marca ─────────────────────────────────────────────── */
   .fv-badge, .fv-badge-dark {
-    display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; border-radius: 9999px;
+    display: inline-flex; align-items: center; gap: 8px; padding: 7px 15px; border-radius: 9999px;
     font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 18px;
   }
   .fv-badge { background: linear-gradient(135deg, #d6effc 0%, #9fd5f5 100%); color: #1D0084; }
-  .fv-badge-dark { background: #025dc7; border: 1px solid rgba(77,163,255,0.2); color: #e0f2ff; }
+  .fv-badge-dark { background: rgba(77,163,255,0.12); border: 1px solid rgba(77,163,255,0.32); color: #cfe6ff; }
+  .fv-punto { width: 7px; height: 7px; border-radius: 9999px; background: #4da3ff; box-shadow: 0 0 0 4px rgba(77,163,255,0.22); }
   .fv-h2 {
-    font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(28px, 4vw, 44px); font-weight: 600;
-    line-height: 1.14; letter-spacing: -0.022em; color: #1D0084; margin: 0 0 16px; text-wrap: balance;
+    font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(28px, 3.9vw, 44px); font-weight: 600;
+    line-height: 1.14; letter-spacing: -0.024em; color: #1D0084; margin: 0 0 16px; text-wrap: balance;
   }
   .fv-h2-blanco { color: #fff; }
-  /* El subrayado de rotulador de la marca (el mismo gesto que el alumno usa
-     en las lecciones). */
+  .fv-h3 { font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(22px, 2.4vw, 27px); font-weight: 600; letter-spacing: -0.02em; color: #1D0084; margin: 0 0 22px; }
+  /* El subrayado de rotulador de la marca. */
   .fv-acento {
     background-image: linear-gradient(to top, rgba(122,185,255,0.45) 0em, rgba(122,185,255,0.45) 0.24em, transparent 0.24em);
     padding: 0 0.08em; border-radius: 5px; -webkit-box-decoration-break: clone; box-decoration-break: clone;
   }
   .fv-azul { color: #4da3ff; }
-  .fv-lead { font-size: clamp(16px, 1.5vw, 18px); line-height: 1.65; color: #3b4a7a; margin: 0; max-width: 640px; }
-  .fv-lead-blanco { color: rgba(255,255,255,0.85); }
-  .fv-chip { display: inline; background: #E3EEFF; color: #1D0084; font-weight: 600; padding: 1px 7px; border-radius: 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  .fv-lead { font-size: clamp(16px, 1.45vw, 18px); line-height: 1.65; color: #47557f; margin: 0; max-width: 620px; }
+  .fv-lead-blanco { color: rgba(255,255,255,0.82); }
+  .fv-chip { display: inline; color: #1D0084; font-weight: 600; background: #E6F0FF; padding: 1px 7px; border-radius: 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 
-  .fv-sec { position: relative; padding: 104px 24px; overflow: hidden; }
+  .fv-sec { position: relative; padding: 112px 24px; overflow-x: clip; }
   .fv-blanco { background: #fff; }
-  .fv-claro { background: #F0F5FF; }
+  .fv-claro { background: #F5F8FF; }
   .fv-oscuro { background: #1D0084; color: #fff; }
   .fv-in { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; }
   .fv-cab { text-align: center; display: flex; flex-direction: column; align-items: center; margin-bottom: 56px; }
@@ -661,36 +755,38 @@ const MARQUESINA = ['Escuchar', 'Entender', 'Hablar', 'Valerte por ti mismo', 'C
   .fv-btn:active { transform: translateY(1px); }
   .fv-btn.enviando { opacity: 0.7; pointer-events: none; }
   .fv-btn-sec {
-    margin-top: 28px; display: inline-flex; align-items: center; gap: 9px; padding: 13px 22px; border-radius: 12px;
+    margin-top: 30px; display: inline-flex; align-items: center; gap: 9px; padding: 13px 22px; border-radius: 12px;
     background: #1D0084; color: #fff; font-weight: 700; font-size: 15px; text-decoration: none; transition: background .15s;
   }
   .fv-btn-sec:hover { background: #2a12a0; }
 
   /* ── Cabecera ───────────────────────────────────────────────────────── */
-  .fv-hero { position: relative; background: #1D0084; color: #fff; overflow: hidden; padding: 0 24px 96px; }
+  .fv-hero { position: relative; background: #1D0084; color: #fff; overflow: clip; padding: 0 24px 104px; }
   .fv-hero .fv-dots { opacity: 0.45; }
   .fv-nav { position: relative; z-index: 2; max-width: 1152px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 26px 0; }
   .fv-logo { height: 36px; width: auto; display: block; }
-  .fv-nav-cta { font-size: 14px; font-weight: 600; color: #fff; text-decoration: none; padding: 10px 18px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.28); transition: background .15s; }
-  .fv-nav-cta:hover { background: rgba(255,255,255,0.1); }
-  .fv-hero-in { position: relative; z-index: 1; max-width: 1152px; margin: 0 auto; padding-top: 40px; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 64px; align-items: center; }
-  .fv-h1 { font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(34px, 4.3vw, 56px); font-weight: 700; line-height: 1.07; letter-spacing: -0.03em; margin: 0 0 22px; }
+  .fv-nav-cta { font-size: 14px; font-weight: 600; color: #fff; text-decoration: none; padding: 10px 18px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.24); transition: background .15s; }
+  .fv-nav-cta:hover { background: rgba(255,255,255,0.08); }
+  .fv-hero-in { position: relative; z-index: 1; max-width: 1152px; margin: 0 auto; padding-top: 44px; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 72px; align-items: center; }
+  .fv-h1 { font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(34px, 4.3vw, 56px); font-weight: 700; line-height: 1.07; letter-spacing: -0.032em; margin: 0 0 22px; }
   .fv-h1 > span { display: block; }
   .fv-nw { white-space: nowrap; }
-  .fv-h1-blanco .fv-nw { -webkit-text-fill-color: transparent; }
-  .fv-h1-blanco { background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.62) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .fv-h1-blanco { background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.66) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .fv-h1-azul { color: #4da3ff; }
-  .fv-hero-sub { font-size: clamp(16px, 1.5vw, 18.5px); line-height: 1.65; color: rgba(255,255,255,0.9); margin: 0 0 26px; max-width: 560px; }
+  .fv-hero-sub { font-size: clamp(16px, 1.45vw, 18px); line-height: 1.68; color: rgba(255,255,255,0.8); margin: 0 0 34px; max-width: 560px; }
   .fv-hero-sub strong { color: #fff; font-weight: 600; }
-  .fv-hero-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-  .fv-hero-lista li { display: flex; align-items: flex-start; gap: 12px; font-size: 15.5px; line-height: 1.5; color: rgba(255,255,255,0.92); }
-  .fv-tick { flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px; border-radius: 9999px; background: rgba(77,163,255,0.2); color: #4da3ff; display: inline-flex; align-items: center; justify-content: center; }
+  /* Las cifras: cuatro datos que dicen "esto es serio" sin adjetivos. */
+  .fv-datos { margin: 0; display: grid; grid-template-columns: repeat(4, auto); justify-content: start; gap: 0; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 24px; max-width: 560px; }
+  .fv-datos div { padding: 0 22px; border-left: 1px solid rgba(255,255,255,0.12); }
+  .fv-datos div:first-child { padding-left: 0; border-left: 0; }
+  .fv-datos dt { font-family: 'Poppins', system-ui, sans-serif; font-size: 30px; font-weight: 600; line-height: 1; color: #fff; letter-spacing: -0.02em; height: 30px; display: flex; align-items: center; }
+  .fv-datos dt :global(svg) { color: #4da3ff; }
+  .fv-datos dd { margin: 8px 0 0; font-size: 12.5px; line-height: 1.35; color: rgba(255,255,255,0.62); }
 
-  /* La caja del formulario: blanca, como la caja de pago de la escuela. */
   .fv-form-caja { background: #fff; color: #1D0084; border-radius: 20px; padding: 30px 28px 24px; box-shadow: 0 40px 90px -30px rgba(3,9,33,0.65), 0 0 0 1px rgba(255,255,255,0.08); scroll-margin-top: 24px; }
   .fv-form-eyebrow { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #025dc7; }
   .fv-form-titulo { font-family: 'Poppins', system-ui, sans-serif; font-size: 27px; font-weight: 700; letter-spacing: -0.02em; margin: 6px 0 6px; color: #1D0084; }
-  .fv-form-lead { margin: 0 0 8px; font-size: 14.5px; line-height: 1.55; color: #0a1656; opacity: 0.78; }
+  .fv-form-lead { margin: 0 0 8px; font-size: 14.5px; line-height: 1.55; color: #0a1656; opacity: 0.75; }
   .fv-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .fv-label { display: block; font-size: 13px; font-weight: 600; color: #0a1656; margin: 14px 0 6px; }
   .fv-input { width: 100%; background: #F0F5FF; border: 1px solid transparent; border-radius: 12px; padding: 13px 14px; font-size: 16px; color: #1D0084; font-family: inherit; outline: none; transition: border-color .15s, background .15s; }
@@ -708,147 +804,160 @@ const MARQUESINA = ['Escuchar', 'Entender', 'Hablar', 'Valerte por ti mismo', 'C
 
   /* La cinta */
   .fv-cinta { background: #14067a; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); overflow: hidden; padding: 17px 0; }
-  .fv-cinta-pista { display: flex; width: max-content; animation: fv-cinta 38s linear infinite; }
+  .fv-cinta-pista { display: flex; width: max-content; animation: fv-cinta 40s linear infinite; }
   .fv-cinta-grupo { display: flex; }
-  .fv-cinta-grupo span { font-size: 12.5px; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,255,255,0.55); white-space: nowrap; padding-right: 22px; }
-  .fv-cinta-grupo i { font-style: normal; color: #4da3ff; padding-left: 22px; }
+  .fv-cinta-grupo span { font-size: 12px; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,255,255,0.5); white-space: nowrap; padding-right: 24px; }
+  .fv-cinta-grupo i { font-style: normal; color: #4da3ff; padding-left: 24px; }
   @keyframes fv-cinta { from { transform: translateX(0); } to { transform: translateX(-25%); } }
   @media (prefers-reduced-motion: reduce) { .fv-cinta-pista { animation: none; } }
 
   /* ── Dolores ────────────────────────────────────────────────────────── */
-  .fv-dolores { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
-  .fv-dolor { background: #fff; border: 1px solid #DDE6F5; border-radius: 18px; padding: 26px 24px 24px; transition: border-color .2s, transform .2s; }
-  .fv-dolor:hover { border-color: #b9d3f7; transform: translateY(-2px); }
-  .fv-dolor-ico { width: 44px; height: 44px; border-radius: 12px; background: #F0F5FF; color: #025dc7; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 18px; }
-  .fv-dolor h3 { font-family: 'Poppins', system-ui, sans-serif; font-size: 18px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; color: #1D0084; margin: 0 0 8px; }
-  .fv-dolor p { margin: 0; font-size: 15px; line-height: 1.6; color: #3b4a7a; }
-  .fv-giro { margin: 40px auto 0; max-width: 820px; text-align: center; padding: 26px 30px; border-radius: 18px; background: #1D0084; color: rgba(255,255,255,0.88); }
-  .fv-giro p { margin: 0; font-size: clamp(16px, 1.6vw, 19px); line-height: 1.6; }
-  .fv-giro strong { color: #fff; font-weight: 600; }
+  .fv-dolores { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid #E3EAF6; border-radius: 22px; overflow: hidden; background: #fff; }
+  .fv-dolor { display: flex; flex-direction: column; gap: 16px; padding: 30px 28px; border-right: 1px solid #E3EAF6; border-bottom: 1px solid #E3EAF6; transition: background .2s; }
+  .fv-dolor:nth-child(3n) { border-right: 0; }
+  .fv-dolor:nth-last-child(-n+3) { border-bottom: 0; }
+  .fv-dolor:hover { background: #FAFCFF; }
+  .fv-dolor-ico { width: 40px; height: 40px; border-radius: 11px; background: #F0F5FF; color: #025dc7; display: inline-flex; align-items: center; justify-content: center; }
+  .fv-dolor h3 { font-family: 'Poppins', system-ui, sans-serif; font-size: 17.5px; font-weight: 600; line-height: 1.3; letter-spacing: -0.012em; color: #1D0084; margin: 0 0 7px; }
+  .fv-dolor p { margin: 0; font-size: 15px; line-height: 1.62; color: #55628a; }
+  .fv-giro { margin: 44px auto 0; max-width: 760px; text-align: center; font-size: clamp(17px, 1.7vw, 20px); line-height: 1.6; color: #47557f; }
+  .fv-giro strong { color: #1D0084; font-weight: 600; }
+  .fv-giro span { display: block; margin-top: 10px; font-family: 'Poppins', system-ui, sans-serif; font-weight: 600; color: #1D0084; }
 
-  /* ── Lo que sabrás hacer ────────────────────────────────────────────── */
-  .fv-sabras { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 64px; align-items: start; }
-  .fv-sabras .fv-cab { margin-bottom: 0; position: sticky; top: 40px; }
-  .fv-sabras-lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-  .fv-sabras-lista li { display: flex; gap: 14px; align-items: flex-start; background: #fff; border: 1px solid #DDE6F5; border-radius: 16px; padding: 20px 20px; }
-  .fv-num { flex-shrink: 0; font-family: 'Poppins', system-ui, sans-serif; font-size: 13px; font-weight: 700; color: #025dc7; width: 34px; height: 34px; border-radius: 10px; background: #F0F5FF; display: inline-flex; align-items: center; justify-content: center; }
-  .fv-sabras-lista p { margin: 0; font-size: 15.5px; line-height: 1.6; color: #0a1656; }
+  /* ── Competencias ───────────────────────────────────────────────────── */
+  .fv-comp { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 72px; align-items: start; }
+  .fv-comp-cab { position: sticky; top: 48px; }
+  .fv-comp-lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .fv-comp-lista li { display: flex; gap: 14px; align-items: flex-start; background: #fff; border: 1px solid #E3EAF6; border-radius: 16px; padding: 20px; }
+  .fv-num { flex-shrink: 0; width: 30px; height: 30px; border-radius: 9999px; border: 1px solid #C9DAF5; font-size: 13px; font-weight: 700; color: #025dc7; display: inline-flex; align-items: center; justify-content: center; }
+  .fv-comp-lista p { margin: 3px 0 0; font-size: 15.5px; line-height: 1.6; color: #0a1656; }
 
-  /* ── El camino ──────────────────────────────────────────────────────── */
-  .fv-camino { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
-  .fv-paso-cab { display: flex; align-items: center; margin-bottom: 18px; }
-  .fv-paso-n { flex-shrink: 0; width: 40px; height: 40px; border-radius: 9999px; background: #1D0084; color: #fff; font-family: 'Poppins', system-ui, sans-serif; font-weight: 600; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #E3EEFF; }
-  .fv-paso-linea { flex: 1; height: 2px; margin-left: 14px; background: repeating-linear-gradient(90deg, #b9d3f7 0 8px, transparent 8px 14px); }
-  .fv-paso:last-child .fv-paso-linea { background: linear-gradient(90deg, #b9d3f7, transparent); }
-  .fv-paso-caja { height: calc(100% - 58px); background: #F0F5FF; border-radius: 18px; padding: 24px 22px; display: flex; flex-direction: column; }
-  .fv-paso:last-child .fv-paso-caja { background: #1D0084; }
-  .fv-paso:last-child .fv-paso-caja h3, .fv-paso:last-child .fv-paso-caja p { color: #fff; }
-  .fv-paso:last-child .fv-paso-caja p { color: rgba(255,255,255,0.82); }
-  .fv-paso:last-child .fv-paso-ico { background: rgba(77,163,255,0.18); color: #4da3ff; }
-  .fv-paso:last-child .fv-paso-etiqueta { color: #9fd0ff; }
-  .fv-paso-ico { width: 40px; height: 40px; border-radius: 11px; background: #fff; color: #025dc7; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; }
-  .fv-paso-etiqueta { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #025dc7; margin-bottom: 8px; }
-  .fv-paso-caja h3 { font-family: 'Poppins', system-ui, sans-serif; font-size: 18.5px; font-weight: 600; line-height: 1.3; color: #1D0084; margin: 0 0 10px; letter-spacing: -0.01em; }
-  .fv-paso-caja p { margin: 0; font-size: 14.5px; line-height: 1.65; color: #3b4a7a; }
+  /* ── Cómo es tu semana (MetodoFunciona) ─────────────────────────────── */
+  .fv-semana { background: #fff; }
+
+  /* ── Lo que tienes dentro ───────────────────────────────────────────── */
+  .fv-dentro { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .fv-den { border: 1px solid #E3EAF6; border-radius: 22px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
+  /* Las ilustraciones vienen en 16:9 y una casi cuadrada (ejercicios): todas
+     en la misma caja, contenidas, para que las tarjetas midan lo mismo. */
+  .fv-den-foto { position: relative; margin: 0; background: #fff; aspect-ratio: 16 / 10; overflow: hidden; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #EEF2FA; }
+  .fv-den-foto img { position: absolute; inset: 4% 3%; width: 94%; height: 92%; object-fit: contain; display: block; }
+  .fv-den-plan-b { display: none; width: 72px; height: 72px; border-radius: 20px; background: #F0F5FF; color: #025dc7; align-items: center; justify-content: center; }
+  .fv-den-foto.sin-foto { background: linear-gradient(135deg, #F5F8FF, #EAF2FF); }
+  .fv-den-foto.sin-foto .fv-den-plan-b { display: inline-flex; }
+  .fv-den-txt { padding: 24px 26px 26px; }
+  .fv-den-txt h3 { font-family: 'Poppins', system-ui, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.012em; color: #1D0084; margin: 0 0 6px; }
+  .fv-den-txt p { margin: 0; font-size: 15px; line-height: 1.62; color: #55628a; }
 
   /* ── El programa ────────────────────────────────────────────────────── */
-  .fv-prog { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 40px; align-items: start; }
+  .fv-prog-sec { padding-bottom: 120px; }
+  .fv-prog-sec .fv-cab { margin-bottom: 44px; }
+  .fv-prog { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 40px; align-items: start; }
   .fv-prog-nav { position: sticky; top: 32px; }
-  .fv-prog-nav-caja { background: #fff; border: 1px solid #DDE6F5; border-radius: 18px; padding: 20px 16px 18px; }
-  .fv-prog-nav-titulo { margin: 0 0 12px 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #6b7aa6; }
+  .fv-prog-nav-caja { background: #fff; border: 1px solid #E3EAF6; border-radius: 20px; padding: 20px 14px 14px; }
+  .fv-prog-nav-top { display: flex; justify-content: space-between; align-items: baseline; padding: 0 8px; }
+  .fv-prog-nav-titulo { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #7a86a8; }
+  .fv-prog-nav-paso { margin: 0; font-size: 12px; font-weight: 600; color: #1D0084; font-variant-numeric: tabular-nums; }
+  .fv-raya-lateral { margin: 12px 8px 12px; }
   .fv-prog-nav ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
-  .fv-prog-nav a { display: flex; align-items: center; gap: 11px; padding: 9px 8px; border-radius: 10px; font-size: 14.5px; font-weight: 500; color: #3b4a7a; text-decoration: none; transition: background .15s, color .15s; }
-  .fv-prog-nav a:hover { background: #F0F5FF; }
-  .fv-prog-bola { flex-shrink: 0; width: 28px; height: 28px; border-radius: 9999px; border: 1.5px solid #c9d8f2; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; color: #6b7aa6; background: #fff; transition: all .2s; }
-  .fv-prog-nav a.hecho .fv-prog-bola { background: #E3EEFF; border-color: #E3EEFF; color: #025dc7; }
-  .fv-prog-nav a.activo { background: #F0F5FF; color: #1D0084; font-weight: 600; }
-  .fv-prog-nav a.activo .fv-prog-bola { background: #1D0084; border-color: #1D0084; color: #fff; }
-  .fv-prog-barra { margin: 16px 6px 0; height: 4px; border-radius: 9999px; background: #E6EDF9; overflow: hidden; }
-  .fv-prog-barra span { display: block; height: 100%; width: 0; background: #4da3ff; border-radius: 9999px; transition: width .35s ease; }
+  .fv-prog-nav a { display: flex; align-items: center; gap: 12px; padding: 10px 8px; border-radius: 12px; text-decoration: none; transition: background .2s; }
+  .fv-prog-nav a:hover { background: #F5F8FF; }
+  .fv-prog-nav a b { display: block; font-size: 14.5px; font-weight: 600; color: #47557f; transition: color .2s; }
+  .fv-prog-nav a small { display: block; font-size: 12.5px; color: #8a95b5; margin-top: 1px; }
+  .fv-prog-bola { flex-shrink: 0; width: 32px; height: 32px; border-radius: 9999px; border: 1.5px solid #D5E0F2; font-size: 11.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; color: #8a95b5; background: #fff; transition: all .25s; }
+  .fv-prog-nav a.hecho .fv-prog-bola { border-color: var(--c); color: var(--c); }
+  .fv-prog-nav a.activo { background: #F5F8FF; }
+  .fv-prog-nav a.activo b { color: #1D0084; }
+  .fv-prog-nav a.activo .fv-prog-bola { background: var(--c); border-color: var(--c); color: #fff; box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 18%, transparent); }
 
-  .fv-prog-fases { display: flex; flex-direction: column; gap: 18px; }
-  .fv-fase { background: #fff; border: 1px solid #DDE6F5; border-radius: 20px; padding: 30px 30px 28px; scroll-margin-top: 28px; }
+  /* La raya de progreso (la misma en la barra del móvil y en la columna). */
+  .fv-fases-raya { height: 4px; border-radius: 9999px; background: #E6EDF9; overflow: hidden; }
+  .fv-raya-fill { display: block; height: 100%; width: 100%; transform-origin: left; transform: scaleX(0); background: linear-gradient(90deg, #4da3ff, #2b7bff 45%, #025dc7 75%, #1D0084); border-radius: 9999px; transition: transform .15s linear; }
+
+  /* La barra de fases del móvil: escondida en el ordenador. */
+  .fv-fases-barra { display: none; }
+
+  .fv-prog-fases { display: flex; flex-direction: column; gap: 20px; }
+  .fv-fase { position: relative; background: #fff; border: 1px solid #E3EAF6; border-radius: 22px; padding: 30px 30px 26px; scroll-margin-top: 28px; transition: border-color .3s, box-shadow .3s; }
+  .fv-fase.activa { border-color: color-mix(in srgb, var(--c) 45%, #E3EAF6); box-shadow: 0 24px 60px -36px color-mix(in srgb, var(--c) 70%, transparent); }
+  .fv-fase::before { content: ''; position: absolute; left: 30px; right: 30px; top: -1px; height: 3px; border-radius: 0 0 4px 4px; background: var(--c); opacity: 0; transition: opacity .3s; }
+  .fv-fase.activa::before { opacity: 1; }
+  .fv-fase-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .fv-fase-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 9999px; font-size: 11.5px; font-weight: 600; color: #6b7aa6; border: 1px solid #E3EAF6; }
+  .fv-fase-chip-c { color: var(--c); border-color: color-mix(in srgb, var(--c) 35%, #fff); background: color-mix(in srgb, var(--c) 8%, #fff); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; font-size: 11px; }
   .fv-fase-cab { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; }
-  .fv-fase-n { font-family: 'Poppins', system-ui, sans-serif; font-size: 46px; font-weight: 700; line-height: 1; letter-spacing: -0.04em; color: transparent; -webkit-text-stroke: 1.5px #9fc4f2; min-width: 62px; }
-  .fv-fase-modulo { margin: 0 0 3px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #025dc7; }
-  .fv-fase h3 { font-family: 'Poppins', system-ui, sans-serif; font-size: 23px; font-weight: 600; letter-spacing: -0.015em; color: #1D0084; margin: 0; }
-  .fv-fase-promesa { background: #F0F5FF; border-radius: 14px; padding: 15px 18px; margin-bottom: 20px; }
-  .fv-fase-promesa span { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #6b7aa6; margin-bottom: 4px; }
+  .fv-fase-n { font-family: 'Poppins', system-ui, sans-serif; font-size: 54px; font-weight: 700; line-height: 0.9; letter-spacing: -0.05em; color: var(--c); opacity: 0.9; }
+  .fv-fase h3 { font-family: 'Poppins', system-ui, sans-serif; font-size: 24px; font-weight: 600; letter-spacing: -0.018em; color: #1D0084; margin: 0; }
+  .fv-fase-cab p { margin: 3px 0 0; font-size: 14.5px; color: #7a86a8; }
+  .fv-fase-promesa { border-left: 3px solid var(--c); background: #F7F9FE; border-radius: 0 14px 14px 0; padding: 14px 18px; margin-bottom: 20px; }
+  .fv-fase-promesa span { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #8a95b5; margin-bottom: 4px; }
   .fv-fase-promesa p { margin: 0; font-size: 16px; line-height: 1.55; color: #1D0084; font-weight: 500; }
-  .fv-fase-temas { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 26px; }
-  .fv-fase-temas li { position: relative; padding-left: 18px; font-size: 14.5px; line-height: 1.55; color: #3b4a7a; }
-  .fv-fase-temas li::before { content: ''; position: absolute; left: 0; top: 0.62em; width: 7px; height: 7px; border-radius: 9999px; background: #4da3ff; }
-  .fv-fase-texto { margin: 0; font-size: 15.5px; line-height: 1.7; color: #3b4a7a; }
-  .fv-fase-texto strong { color: #1D0084; font-weight: 600; }
-  .fv-fase-mas { background: linear-gradient(135deg, #fff 0%, #F5F9FF 100%); }
+  .fv-fase-modulos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .fv-fase-modulos:has(> :only-child) { grid-template-columns: minmax(0, 1fr); }
+  .fv-mod { border: 1px solid #EEF2FA; border-radius: 14px; padding: 16px; }
+  .fv-mod-t { display: flex; align-items: center; gap: 9px; margin: 0 0 10px; font-size: 14px; font-weight: 600; color: #1D0084; }
+  .fv-mod-n { flex-shrink: 0; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 7px; background: color-mix(in srgb, var(--c) 12%, #fff); color: var(--c); font-size: 11.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+  .fv-mod ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .fv-mod li { position: relative; padding-left: 14px; font-size: 13.5px; line-height: 1.5; color: #55628a; }
+  .fv-mod li::before { content: ''; position: absolute; left: 0; top: 0.6em; width: 5px; height: 5px; border-radius: 9999px; background: var(--c); }
 
-  /* El certificado, dibujado: papel claro con el logo y un sello. */
-  .fv-fase-cert { background: #1D0084; border-color: #1D0084; color: #fff; position: relative; overflow: hidden; }
-  .fv-fase-cert::before { content: ''; position: absolute; top: -120px; right: -100px; width: 420px; height: 320px; background: radial-gradient(ellipse at center, rgba(77,163,255,0.35) 0%, transparent 65%); pointer-events: none; }
-  .fv-cert { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 30px; align-items: center; }
-  .fv-cert-papel { background: linear-gradient(160deg, #ffffff 0%, #eef4ff 100%); color: #1D0084; border-radius: 12px; padding: 24px 22px 20px; text-align: center; transform: rotate(-2deg); box-shadow: 0 24px 50px -20px rgba(0,0,0,0.55); border: 6px solid #fff; outline: 1px solid #c9d8f2; outline-offset: -12px; }
-  /* El logo de la web es blanco: sobre el papel, el nombre en letra. */
-  .fv-cert-marca { margin: 0 0 12px; font-family: 'Poppins', system-ui, sans-serif; font-size: 15px; font-weight: 700; letter-spacing: -0.01em; color: #1D0084; }
+  /* El certificado: el de las landings (fondo + papel girado). */
+  .fv-cert-titulo { margin-bottom: 18px !important; }
+  .fv-cert-visual { border-radius: 16px; overflow: hidden; background: #fff; border: 1px solid #EEF2FA; margin-bottom: 18px; }
+  .fv-cert-foto { position: relative; margin: 0; perspective: 1100px; }
+  .fv-cert-fondo { width: 100%; height: auto; display: block; }
+  .fv-cert-papel { position: absolute; left: 50%; top: 50%; width: 62%; transform: translate(-50%, -50%) rotate(-7deg); }
+  .fv-cert-papel img { width: 100%; height: auto; display: block; border-radius: 8px; }
+  .fv-cert-foto.sin-fondo { padding: 28px; }
+  .fv-cert-foto.sin-fondo .fv-cert-papel { position: static; width: 100%; max-width: 520px; margin: 0 auto; display: block; transform: rotate(-2deg); }
+  .fv-cert-dibujo { max-width: 420px; margin: 28px auto; background: linear-gradient(160deg, #fff, #eef4ff); border-radius: 12px; padding: 26px 22px 22px; text-align: center; transform: rotate(-2deg); border: 6px solid #fff; outline: 1px solid #c9d8f2; outline-offset: -12px; box-shadow: 0 24px 50px -24px rgba(29,0,132,0.4); }
+  .fv-cert-dibujo[hidden] { display: none; }
+  .fv-cert-marca { margin: 0 0 10px; font-family: 'Poppins', system-ui, sans-serif; font-size: 15px; font-weight: 700; color: #1D0084; }
   .fv-cert-tipo { margin: 0; font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #6b7aa6; }
   .fv-cert-nombre { margin: 10px 0 6px; font-family: 'Poppins', system-ui, sans-serif; font-size: 22px; font-weight: 600; font-style: italic; color: #1D0084; }
-  .fv-cert-texto { margin: 0; font-size: 12.5px; line-height: 1.5; color: #3b4a7a; }
-  .fv-cert-texto strong { color: #1D0084; }
-  .fv-cert-pie { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; margin-top: 16px; }
-  .fv-cert-pie span:first-child, .fv-cert-pie span:last-child { height: 1px; background: #c9d8f2; }
-  .fv-cert-sello { width: 34px; height: 34px; border-radius: 9999px; background: #4da3ff; color: #0a1656; display: inline-flex; align-items: center; justify-content: center; }
-  .fv-cert-txt .fv-fase-modulo { color: #9fd0ff; }
-  .fv-cert-txt h3 { color: #fff; margin-bottom: 10px; }
-  .fv-cert-txt p:last-child { margin: 0; font-size: 15px; line-height: 1.65; color: rgba(255,255,255,0.85); }
+  .fv-cert-texto { margin: 0; font-size: 12.5px; line-height: 1.5; color: #47557f; }
+  .fv-cert-tres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .fv-cert-tres div { border: 1px solid #EEF2FA; border-radius: 14px; padding: 14px 16px; }
+  .fv-cert-tres span { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #8a95b5; margin-bottom: 5px; }
+  .fv-cert-tres p { margin: 0; font-size: 14px; line-height: 1.55; color: #1D0084; }
 
-  /* ── Lo que incluye ─────────────────────────────────────────────────── */
-  .fv-incluye { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-  .fv-inc {
-    border-radius: 18px; padding: 26px 24px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 60%, rgba(255,255,255,0.05) 100%), rgba(10,22,86,0.34);
-    border: 1px solid rgba(255,255,255,0.14);
-  }
-  .fv-inc-ico { width: 44px; height: 44px; border-radius: 12px; background: rgba(77,163,255,0.16); color: #4da3ff; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 18px; }
-  .fv-inc h3 { font-family: 'Poppins', system-ui, sans-serif; font-size: 18px; font-weight: 600; color: #fff; margin: 0 0 8px; letter-spacing: -0.01em; }
-  .fv-inc p { margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(255,255,255,0.78); }
-
-  /* ── Para quién ─────────────────────────────────────────────────────── */
-  .fv-quien { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); gap: 18px; max-width: 980px; margin: 0 auto; }
-  .fv-quien-col { border-radius: 20px; padding: 30px 28px; }
-  .fv-si { background: #F0F5FF; }
-  .fv-no { background: #fff; border: 1px solid #DDE6F5; }
-  .fv-quien-col h3 { display: flex; align-items: center; gap: 10px; font-family: 'Poppins', system-ui, sans-serif; font-size: 20px; font-weight: 600; color: #1D0084; margin: 0 0 18px; }
-  .fv-quien-ico { width: 28px; height: 28px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; }
-  .fv-quien-ok { background: #1D0084; color: #fff; }
-  .fv-quien-x { background: #EEF0F5; color: #6b7280; font-size: 19px; }
-  .fv-quien-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-  .fv-si li { background: #fff; border: 1px solid #DDE6F5; border-radius: 12px; padding: 12px 16px; font-size: 15.5px; line-height: 1.5; color: #0a1656; }
-  .fv-no li { position: relative; padding-left: 20px; font-size: 15px; line-height: 1.55; color: #5b6685; }
-  .fv-no li::before { content: '–'; position: absolute; left: 0; color: #9aa3bd; }
+  /* ── Metodología + a quién ──────────────────────────────────────────── */
+  .fv-mq { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: stretch; }
+  .fv-metodo, .fv-quien { border: 1px solid #E3EAF6; border-radius: 22px; padding: 36px 34px; background: #fff; }
+  .fv-metodo { background: #F5F8FF; border-color: #E6EDF9; }
+  .fv-metodo ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+  .fv-metodo li { position: relative; padding-left: 22px; font-size: 15.5px; line-height: 1.65; color: #47557f; }
+  .fv-metodo li::before { content: ''; position: absolute; left: 0; top: 0.58em; width: 8px; height: 8px; border-radius: 9999px; background: var(--c); }
+  .fv-quien-si { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .fv-quien-si li { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1px solid #E3EAF6; border-radius: 9999px; font-size: 15px; line-height: 1.45; color: #47557f; }
+  .fv-quien-ok { flex-shrink: 0; width: 24px; height: 24px; border-radius: 9999px; background: #1D0084; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+  .fv-quien-no { margin: 20px 4px 0; font-size: 14px; line-height: 1.6; color: #7a86a8; }
+  .fv-quien-no b { color: #47557f; font-weight: 600; }
 
   /* ── Dudas ──────────────────────────────────────────────────────────── */
-  .fv-dudas-in { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 64px; align-items: start; }
-  .fv-dudas-in .fv-cab { margin-bottom: 0; position: sticky; top: 40px; }
-  .fv-garantia { margin-top: 26px; display: flex; gap: 14px; align-items: flex-start; background: #fff; border: 1px solid #DDE6F5; border-radius: 16px; padding: 18px 18px; }
+  .fv-dudas-in { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 72px; align-items: start; }
+  .fv-dudas-in .fv-cab { margin-bottom: 0; position: sticky; top: 48px; }
+  .fv-garantia { margin-top: 26px; display: flex; gap: 14px; align-items: flex-start; background: #fff; border: 1px solid #E3EAF6; border-radius: 16px; padding: 18px; }
   .fv-garantia-ico { flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #1D0084; color: #4da3ff; display: inline-flex; align-items: center; justify-content: center; }
   .fv-garantia strong { display: block; font-family: 'Poppins', system-ui, sans-serif; font-size: 16.5px; font-weight: 600; color: #1D0084; margin-bottom: 3px; }
-  .fv-garantia p { margin: 0; font-size: 14px; line-height: 1.55; color: #3b4a7a; }
+  .fv-garantia p { margin: 0; font-size: 14px; line-height: 1.55; color: #55628a; }
   .fv-dudas { display: flex; flex-direction: column; gap: 10px; }
-  .fv-duda { background: #fff; border: 1px solid #DDE6F5; border-radius: 16px; padding: 0 22px; transition: border-color .15s; }
+  .fv-duda { background: #fff; border: 1px solid #E3EAF6; border-radius: 16px; padding: 0 22px; transition: border-color .15s; }
   .fv-duda[open] { border-color: #b9d3f7; }
-  .fv-duda summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 0; font-family: 'Poppins', system-ui, sans-serif; font-size: 16.5px; font-weight: 600; color: #1D0084; }
+  .fv-duda summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 0; font-family: 'Poppins', system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #1D0084; }
   .fv-duda summary::-webkit-details-marker { display: none; }
   .fv-duda-mas { position: relative; flex-shrink: 0; width: 28px; height: 28px; border-radius: 9999px; background: #F0F5FF; }
   .fv-duda-mas::before, .fv-duda-mas::after { content: ''; position: absolute; left: 50%; top: 50%; width: 11px; height: 2px; background: #025dc7; border-radius: 2px; transform: translate(-50%, -50%); transition: transform .2s; }
   .fv-duda-mas::after { transform: translate(-50%, -50%) rotate(90deg); }
   .fv-duda[open] .fv-duda-mas::after { transform: translate(-50%, -50%) rotate(0deg); }
-  .fv-duda p { margin: 0 0 20px; font-size: 15px; line-height: 1.7; color: #3b4a7a; }
+  .fv-duda p { margin: 0 0 20px; font-size: 15px; line-height: 1.7; color: #55628a; }
 
   /* ── Cierre ─────────────────────────────────────────────────────────── */
-  .fv-final { text-align: center; padding: 112px 24px; }
+  .fv-final { text-align: center; padding: 120px 24px; overflow: clip; }
   .fv-final-in { display: flex; flex-direction: column; align-items: center; max-width: 760px; }
   .fv-final .fv-lead { margin: 0 auto; }
   .fv-btn-final { width: auto; margin-top: 30px; padding: 17px 34px; font-size: 16.5px; }
-  .fv-final-nota { margin: 14px 0 0; font-size: 13.5px; color: rgba(255,255,255,0.6); }
+  .fv-final-nota { margin: 14px 0 0; font-size: 13.5px; color: rgba(255,255,255,0.58); }
 
   .fv-pie { background: #14067a; color: rgba(255,255,255,0.6); padding: 32px 24px 40px; display: flex; flex-direction: column; align-items: center; gap: 14px; font-size: 13px; }
   .fv-logo-pie { height: 28px; width: auto; opacity: 0.9; }
@@ -861,57 +970,87 @@ const MARQUESINA = ['Escuchar', 'Entender', 'Hablar', 'Valerte por ti mismo', 'C
 
   /* ── Tableta ────────────────────────────────────────────────────────── */
   @media (max-width: 1023px) {
-    .fv-hero-in { grid-template-columns: minmax(0, 1fr); gap: 40px; padding-top: 16px; }
+    .fv-hero-in { grid-template-columns: minmax(0, 1fr); gap: 44px; padding-top: 16px; }
     .fv-hero-texto { max-width: 640px; }
     .fv-form-caja { max-width: 520px; width: 100%; }
     .fv-dolores { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .fv-sabras, .fv-dudas-in { grid-template-columns: minmax(0, 1fr); gap: 36px; }
-    .fv-sabras .fv-cab, .fv-dudas-in .fv-cab { position: static; }
-    .fv-camino { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 28px; }
-    .fv-paso:nth-child(2) .fv-paso-linea { background: linear-gradient(90deg, #b9d3f7, transparent); }
+    .fv-dolor:nth-child(3n) { border-right: 1px solid #E3EAF6; }
+    .fv-dolor:nth-child(2n) { border-right: 0; }
+    .fv-dolor:nth-last-child(-n+3) { border-bottom: 1px solid #E3EAF6; }
+    .fv-dolor:nth-last-child(-n+2) { border-bottom: 0; }
+    .fv-comp, .fv-dudas-in { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+    .fv-comp-cab, .fv-dudas-in .fv-cab { position: static; }
+    .fv-mq { grid-template-columns: minmax(0, 1fr); }
+
+    /* El programa: sin columna lateral; las fases, pegadas arriba. */
     .fv-prog { grid-template-columns: minmax(0, 1fr); }
     .fv-prog-nav { display: none; }
-    .fv-incluye { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .fv-fases-barra {
+      display: block; position: sticky; top: 0; z-index: 20; margin: 0 -24px 22px; padding: 12px 0 0;
+      background: rgba(245,248,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid #E3EAF6;
+    }
+    .fv-fases-pills { display: flex; gap: 8px; overflow-x: auto; padding: 0 24px 12px; scrollbar-width: none; }
+    .fv-fases-pills::-webkit-scrollbar { display: none; }
+    .fv-pill { flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; padding: 9px 15px; border-radius: 9999px; border: 1px solid #DCE5F4; background: #fff; color: #6b7aa6; font-size: 13.5px; font-weight: 600; text-decoration: none; white-space: nowrap; transition: all .25s; }
+    .fv-pill b { font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; color: #a3aeca; transition: color .25s; }
+    .fv-pill.hecho { color: #1D0084; }
+    .fv-pill.hecho b { color: var(--c); }
+    .fv-pill.activo { background: var(--c); border-color: var(--c); color: #fff; box-shadow: 0 8px 20px -10px var(--c); }
+    .fv-pill.activo b { color: rgba(255,255,255,0.75); }
+    .fv-fases-barra .fv-fases-raya { border-radius: 0; height: 3px; }
+    .fv-fases-barra .fv-raya-fill { border-radius: 0; }
+    .fv-fase { scroll-margin-top: 80px; }
+    .fv-fase-modulos { grid-template-columns: minmax(0, 1fr); }
   }
 
   /* ── Móvil ──────────────────────────────────────────────────────────── */
   @media (max-width: 640px) {
-    .fv-sec { padding: 72px 16px; }
+    .fv-sec { padding: 76px 16px; }
     .fv-hero { padding: 0 16px 64px; }
     .fv-nav { padding: 18px 0; }
     .fv-logo { height: 32px; }
-    .fv-nav-cta { display: none; }
+    .fv-nav-cta { padding: 8px 14px; font-size: 13px; }
+    .fv-badge-dark { font-size: 10px; letter-spacing: 0.12em; }
+    .fv-datos { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 20px; }
+    .fv-datos div { padding: 0 0 0 16px; }
+    .fv-datos div:nth-child(odd) { padding-left: 0; border-left: 0; }
     .fv-form-caja { padding: 24px 20px 20px; border-radius: 18px; }
     .fv-tel { grid-template-columns: 104px 1fr; }
     .fv-cab { margin-bottom: 36px; }
-    .fv-dolores, .fv-sabras-lista, .fv-incluye, .fv-quien, .fv-fase-temas { grid-template-columns: minmax(0, 1fr); }
-    .fv-dolor { padding: 22px 20px; }
-    .fv-giro { padding: 22px 20px; margin-top: 28px; }
-    .fv-sabras-lista li { padding: 16px; }
-    /* El camino en vertical: los números en columna con la línea bajando. */
-    .fv-camino { grid-template-columns: minmax(0, 1fr); gap: 0; }
-    .fv-paso { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 14px; }
-    .fv-paso-cab { flex-direction: column; margin-bottom: 0; }
-    .fv-paso-linea, .fv-paso:nth-child(2) .fv-paso-linea { width: 2px; height: auto; flex: 1; margin: 8px 0 0; background: repeating-linear-gradient(180deg, #b9d3f7 0 8px, transparent 8px 14px); }
-    .fv-paso:last-child .fv-paso-linea { display: none; }
-    .fv-paso-caja { height: auto; margin-bottom: 18px; padding: 20px 18px; }
-    .fv-fase { padding: 24px 20px 22px; }
-    .fv-fase-n { font-size: 38px; min-width: 50px; }
-    .fv-fase h3 { font-size: 20px; }
-    .fv-cert { grid-template-columns: minmax(0, 1fr); gap: 24px; }
-    .fv-cert-papel { margin: 6px 8px 0; }
-    .fv-quien-col { padding: 24px 20px; }
+    .fv-dolores { grid-template-columns: minmax(0, 1fr); }
+    .fv-dolor, .fv-dolor:nth-child(2n), .fv-dolor:nth-child(3n) { border-right: 0; border-bottom: 1px solid #E3EAF6; padding: 22px 20px; flex-direction: row; gap: 14px; }
+    .fv-dolor:last-child { border-bottom: 0; }
+    .fv-dolor-ico { flex-shrink: 0; }
+    .fv-comp-lista, .fv-dentro, .fv-cert-tres { grid-template-columns: minmax(0, 1fr); }
+    .fv-comp-lista li { padding: 16px; }
+    .fv-den-txt { padding: 20px; }
+    .fv-fases-barra { margin: 0 -16px 18px; }
+    .fv-fases-pills { padding: 0 16px 12px; }
+    .fv-fase { padding: 24px 20px 20px; border-radius: 18px; }
+    .fv-fase::before { left: 20px; right: 20px; }
+    .fv-fase-n { font-size: 44px; }
+    .fv-fase h3 { font-size: 21px; }
+    .fv-metodo, .fv-quien { padding: 28px 22px; border-radius: 18px; }
+    .fv-quien-si li { border-radius: 14px; }
     .fv-duda { padding: 0 18px; }
     .fv-duda summary { font-size: 15.5px; padding: 18px 0; }
-    .fv-final { padding: 80px 16px; }
-    .fv-pie { padding-bottom: 96px; }
+    .fv-final { padding: 84px 16px; }
     .fv-btn-final { width: 100%; }
+    .fv-pie { padding-bottom: 104px; }
 
+    /* El botón pegado abajo, como el de UDIA: texto a la izquierda y la
+       flecha en un círculo. */
     .fv-pegado {
-      display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
-      background: rgba(29,0,132,0.94); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      border-top: 1px solid rgba(255,255,255,0.1); transform: translateY(110%); visibility: hidden; transition: transform .25s ease, visibility 0s .25s;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 50; padding: 10px 10px 10px 20px;
+      border-radius: 9999px; background: rgba(20,6,122,0.94); border: 1px solid rgba(255,255,255,0.14);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 18px 40px -16px rgba(3,9,33,0.7);
+      transform: translateY(140%); visibility: hidden; transition: transform .3s ease, visibility 0s .3s;
     }
-    .fv-pegado.visible { transform: translateY(0); visibility: visible; transition: transform .25s ease; }
+    .fv-pegado.visible { transform: translateY(0); visibility: visible; transition: transform .3s ease; }
+    .fv-pegado-txt { display: flex; flex-direction: column; color: #fff; font-size: 15px; font-weight: 600; line-height: 1.25; }
+    .fv-pegado-txt b { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #9fd0ff; }
+    .fv-pegado-btn { flex-shrink: 0; width: 48px; height: 48px; border-radius: 9999px; background: #4da3ff; color: #0a1656; display: inline-flex; align-items: center; justify-content: center; }
   }
 </style>
