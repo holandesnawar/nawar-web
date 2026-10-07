@@ -1,0 +1,243 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: nawar-blue + white dot grid + soft vignette (v1 end card recipe) ---------- */
+    #f39-ground {
+      position: absolute; inset: 0;
+      background-color: #120081;
+      background-image:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.42) 100%),
+        radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px),
+        radial-gradient(circle at 50% 38%, #025dc7 0%, #120081 72%);
+      background-size: 100% 100%, 28px 28px, 100% 100%;
+      background-position: 0 0, 14px 14px, 0 0;
+    }
+
+    /* ---------- camera ---------- */
+    #f39-stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 500px; }
+
+    /* ---------- logo halo (centre 960, 254) ---------- */
+    #f39-glow {
+      position: absolute; left: 290px; top: -96px; width: 1340px; height: 700px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.26) 0%, rgba(77,163,255,0.1) 34%, rgba(77,163,255,0.03) 56%, rgba(77,163,255,0) 70%);
+    }
+    /* ---------- logo: 520 x 185.5, centred at (960, 253.5) ---------- */
+    #f39-logo-wrap {
+      position: absolute; left: 700px; top: 160.8px; width: 520px; height: 185.5px;
+      filter: drop-shadow(0 22px 40px rgba(4,0,40,0.45));
+    }
+    #f39-logo { position: absolute; left: 0; top: 0; width: 520px; height: 185.5px; display: block; }
+    #f39-shine-mask {
+      position: absolute; left: 0; top: 0; width: 520px; height: 185.5px; overflow: hidden; mix-blend-mode: screen;
+      -webkit-mask-image: url("assets/img/logo-nawar.png"); -webkit-mask-size: 100% 100%; -webkit-mask-repeat: no-repeat;
+      mask-image: url("assets/img/logo-nawar.png"); mask-size: 100% 100%; mask-repeat: no-repeat;
+    }
+    .f39-shine {
+      position: absolute; left: 0; top: -70px; width: 260px; height: 420px;
+      background: linear-gradient(112deg, rgba(255,255,255,0) 22%, rgba(255,255,255,0.08) 38%, rgba(255,255,255,0.4) 48.5%, rgba(255,255,255,0.4) 51.5%, rgba(255,255,255,0.08) 62%, rgba(255,255,255,0) 78%);
+    }
+
+    /* ---------- label under the logo ---------- */
+    #f39-label {
+      position: absolute; left: 0; top: 384px; width: 1920px; height: 30px; display: flex; justify-content: center; align-items: center;
+      gap: 14px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.16em;
+      text-transform: uppercase; color: rgba(255,255,255,0.72);
+    }
+    #f39-label span { display: block; }
+    #f39-arrow { width: 30px; height: 18px; display: block; }
+    .f39-dot { color: rgba(255,255,255,0.45); }
+
+    /* ---------- claim: display-h2, two centred lines ---------- */
+    #f39-claim {
+      position: absolute; left: 0; top: 478px; width: 1920px;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 88px; line-height: 1.06;
+      letter-spacing: -0.03em; color: #FFFFFF; text-align: center;
+    }
+    .f39-line { display: flex; justify-content: center; align-items: baseline; gap: 0.24em; white-space: nowrap; }
+    .f39-w { display: inline-block; text-shadow: 0 12px 40px rgba(4,0,40,0.38); }
+    .f39-acc { color: #4da3ff; transform-origin: 50% 70%; }
+
+    /* ---------- URL pill (white fill, indigo text) ---------- */
+    #f39-pill-row { position: absolute; left: 0; top: 724px; width: 1920px; height: 110px; display: flex; justify-content: center; }
+    #f39-pill-wrap { position: relative; flex: none; }
+    #f39-pill {
+      position: relative; height: 110px; border-radius: 999px; background: #FFFFFF; overflow: hidden;
+      display: flex; align-items: center; gap: 20px; padding: 0 50px 0 30px; box-sizing: border-box;
+      box-shadow: 0 34px 90px rgba(4,0,40,0.4), 0 6px 16px rgba(4,0,40,0.16);
+    }
+    #f39-globe-disc {
+      flex: none; width: 66px; height: 66px; border-radius: 50%; background: #0b6df0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #f39-globe { width: 38px; height: 38px; display: block; }
+    #f39-url {
+      flex: none; white-space: nowrap; display: block;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 52px; line-height: 1;
+      letter-spacing: -0.015em; color: #1D0084; padding-top: 5px;
+    }
+
+    /* ---------- social proof line (ui-small, white-72) ---------- */
+    #f39-social {
+      position: absolute; left: 0; top: 872px; width: 1920px; height: 40px; display: flex; justify-content: center; align-items: center;
+      gap: 12px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 500; font-size: 30px; line-height: 1; color: rgba(255,255,255,0.72);
+    }
+    #f39-people { width: 42px; height: 32px; display: block; }
+    #f39-num-box { display: block; position: relative; width: 124px; height: 32px; }
+    #f39-num {
+      position: absolute; right: 0; top: 0; height: 32px; line-height: 32px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; color: #FFFFFF; font-variant-numeric: tabular-nums;
+    }
+    #f39-social-txt { display: block; line-height: 32px; }
+
+
+    /* ---------- the only exit of the film: fade to night ---------- */
+    #f39-night { position: absolute; inset: 0; background: #07041F; opacity: 0; pointer-events: none; }
+  </style>
+
+  <div id="root" data-composition-id="39-end-card" data-width="1920" data-height="1080" data-duration="4.282">
+    <div id="f39-ground" class="clip" data-start="0" data-duration="4.282" data-track-index="0"></div>
+
+    <div id="f39-stage">
+      <div id="f39-glow"></div>
+
+      <div id="f39-logo-wrap">
+        <img id="f39-logo" src="assets/img/logo-nawar.png" alt="Nawar" />
+        <div id="f39-shine-mask">
+          <div id="f39-shine2" class="f39-shine"></div>
+        </div>
+      </div>
+
+      <div id="f39-label">
+        <span>Formación Nawar</span>
+      </div>
+
+      <div id="f39-claim">
+        <div class="f39-line">
+          <span id="f39-w1" class="f39-w">Tu</span>
+          <span id="f39-w2" class="f39-w">neerlandés</span>
+          <span id="f39-w3" class="f39-w">empieza</span>
+        </div>
+        <div class="f39-line">
+          <span id="f39-w4" class="f39-w f39-acc">cuando</span>
+          <span id="f39-w5" class="f39-w f39-acc">lo</span>
+          <span id="f39-w6" class="f39-w f39-acc">hablas.</span>
+        </div>
+      </div>
+
+      <div id="f39-pill-row">
+        <div id="f39-pill-wrap">
+          <div id="f39-pill">
+            <div id="f39-globe-disc">
+              <svg id="f39-globe" viewBox="0 0 40 40" aria-hidden="true">
+                <g fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="20" cy="20" r="15" />
+                  <ellipse cx="20" cy="20" rx="6.5" ry="15" />
+                  <path d="M5.5 15h29M5.5 25h29" />
+                </g>
+              </svg>
+            </div>
+            <span id="f39-url">holandesnawar.com</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="f39-social">
+        <svg id="f39-people" viewBox="0 0 40 30" aria-hidden="true">
+          <g fill="none" stroke="#9fd5f5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="14" cy="9" r="5.5" />
+            <path d="M3.5 27.5c0-6 4.7-10.5 10.5-10.5s10.5 4.5 10.5 10.5" />
+            <circle cx="28.5" cy="10.5" r="4.3" opacity="0.75" />
+            <path d="M28.5 18.5c4.8.3 8.4 4 8.4 9" opacity="0.75" />
+          </g>
+        </svg>
+        <span id="f39-num-box"><span id="f39-num">+30.000</span></span>
+        <span id="f39-social-txt">alumnos siguen nuestras clases en redes</span>
+      </div>
+    </div>
+
+    <div id="f39-night"></div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 7.2;
+      const HIT = 3.6; // the song's FINAL HIT
+
+      // ---------------- Scene 1 (0.0–1.4) — clean logo reveal on "Formación" (0.12) ----------------
+      // v3 polish: no rays, flash, rings, streaks or overshoot — one calm settle + soft light behind
+      const B = 0.06;
+      const wrap = q("f39-logo-wrap");
+      tl.fromTo(wrap, { scale: 0.9 }, { scale: 1, duration: 0.6, ease: "power3.out" }, B);
+      tl.fromTo(wrap, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, B);
+      tl.fromTo(q("f39-logo"), { filter: "blur(10px)" }, { filter: "blur(0px)", duration: 0.34, ease: "power2.out" }, B);
+      tl.fromTo(q("f39-glow"), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" }, B);
+
+      // "Nawar." (0.74): FORMACIÓN NAWAR under the logo
+      tl.fromTo(q("f39-label"), { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, 0.71);
+
+      // ---------------- Scene 2 (1.4–3.6) — the claim builds word by word on the voice ----------------
+      const rise = (el, at) =>
+        tl.fromTo(el, { opacity: 0, y: 44, filter: "blur(8px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, at);
+      const slam = (el, at) =>
+        tl.fromTo(el, { opacity: 0, y: 44, filter: "blur(8px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, at);
+      rise(q("f39-w1"), 1.51);   // Tu 1.54
+      rise(q("f39-w2"), 1.62);   // neerlandés 1.65
+      rise(q("f39-w3"), 2.13);   // empieza 2.16
+      slam(q("f39-w4"), 2.61);   // cuando 2.64
+      slam(q("f39-w5"), 2.96);   // lo 2.99
+      slam(q("f39-w6"), 3.07);   // hablas. 3.10
+
+      // ---------------- Scene 3 (3.6–7.2) — FINAL HIT: light sweep + pulse ring; URL pill; social line ----------------
+      // the single light sweep of the card crosses the wordmark on the final hit
+      tl.fromTo(q("f39-shine2"), { x: -380 }, { x: 900, duration: 0.7, ease: "power2.inOut" }, HIT);
+
+      // URL pill rises at 3.7
+      tl.fromTo(q("f39-pill-wrap"), { opacity: 0, y: 70, scale: 0.92 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power3.out" }, 3.7);
+      tl.fromTo(q("f39-globe-disc"), { scale: 0.8 },
+        { scale: 1, duration: 0.5, ease: "power3.out" }, 3.78);
+
+      // +30.000 line at 4.0 (the real figure, shown as is — no count-up through invented numbers)
+      tl.fromTo(q("f39-social"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.42, ease: "power3.out" }, 4.0);
+
+      // macro camera: one quiet monotonic push under the whole card (no breathing)
+      tl.fromTo(q("f39-stage"), { scale: 1 }, { scale: 1.022, duration: D - 0.6, ease: "power1.inOut" }, 0.6);
+
+      // the only exit of the film: everything fades to night (6.3 -> 7.2)
+      tl.fromTo(q("f39-night"), { opacity: 0 }, { opacity: 1, duration: 0.86, ease: "power1.inOut" }, 6.3);
+
+      tl.set({}, {}, D);
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.74, 0.674], [1.54, 1.36], [1.65, 1.444], [2.16, 1.97], [2.64, 2.43], [2.99, 2.768], [3.1, 2.872], [7.2, 4.282]]);
+      window.__timelines["39-end-card"] = tl;
+    })();
+  </script>
+</template>

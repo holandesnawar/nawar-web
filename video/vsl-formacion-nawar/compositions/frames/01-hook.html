@@ -1,0 +1,332 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #FFFFFF; }
+
+    /* ---------- ground: NAWAR BLUE (gradient + vignette) + white dot grid ---------- */
+    #f01-ground {
+      position: absolute; inset: 0; overflow: hidden;
+      background:
+        radial-gradient(ellipse 80% 78% at 50% 50%, rgba(6,0,60,0) 58%, rgba(6,0,60,0.42) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
+    #f01-dots {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 6px 8px;
+    }
+    #f01-glow {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 58% 52% at 50% 46%, rgba(77,163,255,0.22) 0%, rgba(77,163,255,0.08) 45%, rgba(77,163,255,0) 72%);
+    }
+
+    #f01-stage { position: absolute; inset: 0; }
+
+    /* resting state for everything not yet revealed (frame 0 = poster frame; GSAP overrides inline) */
+    #f01-l1 .f01-w, #f01-l2 .f01-w, #f01-cap .f01-w, #f01-hero, #f01-flag, #f01-card, #f01-arrow,
+    #f01-fillRed, #f01-badge { opacity: 0; }
+
+    /* ---------- scene 1 ---------- */
+    #f01-s1 { position: absolute; inset: 0; transform-origin: 960px 400px; }
+    #f01-l1 {
+      position: absolute; left: 0; right: 0; top: 344px; text-align: center;
+      font-weight: 800; font-size: 112px; line-height: 1.1; letter-spacing: -0.03em; white-space: nowrap;
+      text-shadow: 0 10px 30px rgba(4,0,40,0.20);
+    }
+    .f01-w { display: inline-block; }
+    #f01-arrowWrap { position: absolute; inset: 0; transform-origin: 1568px 494px; }
+    #f01-arrow { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
+    #f01-arrow path {
+      fill: none; stroke: #E02D3C; stroke-width: 13; stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 1 1.3; stroke-dashoffset: 1.05;
+    }
+    #f01-arrow { filter: drop-shadow(0 4px 10px rgba(4,0,40,0.22)); }
+
+    /* ---------- scene 2 ---------- */
+    #f01-l2 {
+      position: absolute; left: 0; right: 0; top: 196px; text-align: center; transform-origin: 50% 0%;
+      font-weight: 700; font-size: 80px; line-height: 1.1; letter-spacing: -0.02em; white-space: nowrap;
+    }
+    #f01-l2 { text-shadow: 0 10px 30px rgba(4,0,40,0.20); }
+    #f01-l2 .f01-lead { color: rgba(255,255,255,0.72); font-weight: 600; }
+    #f01-v4 { position: relative; }
+    #f01-ul {
+      position: absolute; left: 2px; right: 2px; top: 113px; height: 6px; border-radius: 3px;
+      background: #FFFFFF; transform-origin: 0% 50%;
+    }
+
+    #f01-heroRow { position: absolute; left: 0; right: 0; top: 462px; display: flex; justify-content: center; }
+    #f01-heroBox { display: flex; flex-direction: column; align-items: stretch; transform-origin: 50% 50%; }
+    #f01-hero {
+      font-weight: 800; font-size: 196px; line-height: 1.0; letter-spacing: -0.04em;
+      color: #FFFFFF; white-space: nowrap; padding-right: 0.03em;
+      text-shadow: 0 20px 50px rgba(4,0,40,0.26);
+      transform-origin: 50% 55%;
+    }
+    #f01-flag {
+      margin-top: 22px; height: 51px; border-radius: 12px; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .f01-strip { flex: 1 1 0; transform-origin: 0% 50%; }
+    #f01-sR { background: #AE1C27; }
+    #f01-sW { background: #FFFFFF; box-shadow: inset 0 1px 0 #DDE6F5, inset 0 -1px 0 #DDE6F5; }
+    #f01-sB { background: #21468C; }
+
+    /* ---------- scene 3: progress card ---------- */
+    #f01-card {
+      position: absolute; left: 340px; top: 600px; width: 1240px; height: 338px;
+      background: #FFFFFF; border: 1px solid #DDE6F5; border-radius: 28px;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45);
+      padding: 42px 56px 0 56px;
+    }
+    #f01-head { display: flex; justify-content: space-between; align-items: flex-end; height: 66px; }
+    #f01-label {
+      display: flex; align-items: center; gap: 16px; padding-bottom: 8px;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 28px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #5A6480;
+    }
+    #f01-bubble { width: 30px; height: 30px; overflow: visible; flex: 0 0 auto; }
+    #f01-bubble path { fill: none; stroke: #5A6480; stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; }
+    #f01-pct {
+      font-weight: 800; font-size: 68px; line-height: 1; letter-spacing: -0.03em; color: #0C0C1E;
+      min-width: 190px; text-align: right;
+    }
+    #f01-bar { position: relative; margin-top: 26px; height: 50px; }
+    #f01-track {
+      position: absolute; inset: 0; border-radius: 999px; overflow: hidden; background: #E8ECF7;
+      box-shadow: inset 0 2px 5px rgba(18,0,129,0.10);
+    }
+    #f01-fill {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, #025dc7 0%, #0b6df0 100%);
+    }
+    #f01-fillRed {
+      position: absolute; inset: 0; border-radius: 999px;
+      background: #E02D3C;
+    }
+    #f01-badge { position: absolute; left: calc(68% - 48px); top: -23px; width: 96px; height: 96px; border-radius: 50%; }
+    #f01-badge {
+      background: #E02D3C; border: 6px solid #FFFFFF;
+      box-shadow: 0 6px 16px rgba(4,0,40,0.18);
+      display: flex; align-items: center; justify-content: center;
+    }
+    #f01-badge svg { width: 40px; height: 40px; overflow: visible; }
+    #f01-badge path { stroke: #FFFFFF; stroke-width: 6; stroke-linecap: round; fill: none; }
+    #f01-cap {
+      margin-top: 42px; font-weight: 600; font-size: 50px; line-height: 1.1; letter-spacing: -0.015em;
+      color: #374151; white-space: nowrap;
+    }
+    #f01-cap .f01-key { font-weight: 800; color: #0C0C1E; }
+  </style>
+
+  <div id="root" data-composition-id="01-hook" data-width="1920" data-height="1080" data-duration="6.11">
+    <div id="f01-ground" class="clip" data-start="0" data-duration="6.11" data-track-index="0">
+      <div id="f01-dots"></div>
+      <div id="f01-glow"></div>
+    </div>
+
+    <div id="f01-stage">
+
+      <!-- Scene 1 — "Si has llegado hasta aquí," + arrow at the viewer -->
+      <div id="f01-s1">
+        <div id="f01-l1"><span class="f01-w" id="f01-w1">Si</span> <span class="f01-w" id="f01-w2">has</span> <span class="f01-w" id="f01-w3">llegado</span> <span class="f01-w" id="f01-w4">hasta</span> <span class="f01-w" id="f01-w5">aquí,</span></div>
+        <div id="f01-arrowWrap">
+          <svg id="f01-arrow" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+            <path id="f01-shaft" pathLength="1"
+              d="M 1568 494 C 1592 578, 1588 648, 1532 698 C 1480 744, 1406 742, 1402 700 C 1398 660, 1454 650, 1472 700 C 1496 768, 1422 840, 1302 880 C 1238 902, 1182 914, 1132 940" />
+            <path id="f01-head" pathLength="1" d="M 1178 942 Q 1154 941 1132 940 Q 1142 920 1156 901" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Scene 2 — lead line + NEERLANDÉS slam + Dutch tricolor -->
+      <div id="f01-l2"><span class="f01-w f01-lead" id="f01-v1">es</span> <span class="f01-w f01-lead" id="f01-v2">porque</span> <span class="f01-w" id="f01-v3">llevas</span> <span class="f01-w" id="f01-v4">tiempo<span id="f01-ul"></span></span> <span class="f01-w" id="f01-v5">queriendo</span> <span class="f01-w" id="f01-v6">hablar</span></div>
+
+      <div id="f01-heroRow">
+        <div id="f01-heroBox">
+          <div id="f01-hero">Neerlandés</div>
+          <div id="f01-flag">
+            <div class="f01-strip" id="f01-sR"></div>
+            <div class="f01-strip" id="f01-sW"></div>
+            <div class="f01-strip" id="f01-sB"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 3 — progress card that stalls -->
+      <div id="f01-card">
+        <div id="f01-head">
+          <div id="f01-label">
+            <svg id="f01-bubble" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 5 4 H 19 Q 22 4 22 7 V 14 Q 22 17 19 17 H 11 L 6 21 V 17 H 5 Q 2 17 2 14 V 7 Q 2 4 5 4 Z" />
+              <path d="M 7.5 10.5 H 16.5" />
+            </svg>
+            <span>Tu neerlandés</span>
+          </div>
+          <div id="f01-pct">0%</div>
+        </div>
+        <div id="f01-bar">
+          <div id="f01-track">
+            <div id="f01-fill">
+              <div id="f01-fillRed"></div>
+            </div>
+          </div>
+          <div id="f01-badge">
+            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+              <path id="f01-x1" pathLength="1" d="M 6 6 L 34 34" />
+              <path id="f01-x2" pathLength="1" d="M 34 6 L 6 34" />
+            </svg>
+          </div>
+        </div>
+        <div id="f01-cap"><span class="f01-w" id="f01-c1">algo</span> <span class="f01-w" id="f01-c2">no</span> <span class="f01-w" id="f01-c3">termina</span> <span class="f01-w" id="f01-c4">de</span> <span class="f01-w f01-key" id="f01-c5">funcionar</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var $ = function (id) { return document.getElementById("f01-" + id); };
+      var tl = gsap.timeline({ paused: true });
+      var FPS = 1 / 30;
+
+      // ---------- initial states (t=0 baselines; CSS carries the same resting state for frame 0) ----------
+      tl.set([$("v1"), $("v2"), $("v3"), $("v4"), $("v5"), $("v6")], { opacity: 0 }, 0);
+      tl.set([$("c1"), $("c2"), $("c3"), $("c4"), $("c5")], { opacity: 0 }, 0);
+      tl.set($("hero"), { opacity: 0 }, 0);
+      tl.set([$("sR"), $("sW"), $("sB")], { scaleX: 0 }, 0);
+      tl.set($("ul"), { scaleX: 0 }, 0);
+      tl.set($("flag"), { opacity: 0 }, 0);
+      tl.set($("card"), { opacity: 0 }, 0);
+      tl.set($("fill"), { xPercent: -100 }, 0);
+      tl.set($("fillRed"), { opacity: 0 }, 0);
+      tl.set($("badge"), { opacity: 0, scale: 0.6 }, 0);
+      tl.set([$("x1"), $("x2")], { strokeDasharray: "1 1.3", strokeDashoffset: 1.05 }, 0);
+      tl.set($("arrow"), { opacity: 0 }, 0);
+
+      // ---------- opening: the ground focuses in (v4: no caret — it read as a glitch) ----------
+      tl.fromTo($("dots"), { scale: 1.08, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.9, ease: "power2.out" }, 0);
+      tl.fromTo($("glow"), { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power3.out" }, 0);
+
+      // ---------- Scene 1: line builds word by word ----------
+      var s1 = [["w1", 0.428], ["w2", 0.548], ["w3", 0.724], ["w4", 0.993], ["w5", 1.122]];
+      s1.forEach(function (w) {
+        tl.fromTo($(w[0]), { opacity: 0, y: 46, filter: "blur(6px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, w[1] - 0.04);
+      });
+      // centered build: the line re-centres on what has been said so far (offsets measured from the laid-out line)
+      var L1X = [654.2, 541.9, 323.9, 152.9, 0];
+      tl.set($("l1"), { x: L1X[0] }, 0);
+      for (var a = 1; a < s1.length; a++) {
+        tl.to($("l1"), { x: L1X[a], duration: 0.34, ease: "power3.out" }, s1[a][1] - 0.04);
+      }
+      // "aquí," lands a touch heavier
+      tl.fromTo($("w5"), { scale: 1.06 }, { scale: 1, duration: 0.4, ease: "power3.out" }, 1.082);
+      // macro push under scene 1
+      tl.fromTo($("s1"), { scale: 0.985 }, { scale: 1.035, duration: 1.1, ease: "power1.inOut" }, 0.3);
+
+      // hand-drawn arrow starts right under "aquí" and swoops down at the viewer — fully drawn by 1.34, holds to 1.42
+      tl.set($("arrow"), { opacity: 1 }, 1.1);
+      tl.fromTo($("arrowWrap"), { y: -18, rotation: -4 }, { y: 0, rotation: 0, duration: 0.3, ease: "power3.out" }, 1.1);
+      tl.fromTo($("shaft"), { strokeDashoffset: 1.05 }, { strokeDashoffset: 0, duration: 0.18, ease: "power2.out" }, 1.1);
+      tl.fromTo($("head"), { strokeDashoffset: 1.05 }, { strokeDashoffset: 0, duration: 0.08, ease: "power2.out" }, 1.26);
+
+      // ---------- seam 1 → 2: cut-the-curve upward, velocity-matched ----------
+      // outgoing accelerates up and fully clears the top edge (end speed ≈ 2·1000/0.24 ≈ 8.3k px/s) ...
+      tl.fromTo($("s1"), { y: 0, filter: "blur(0px)" }, { y: -1000, filter: "blur(6px)", duration: 0.24, ease: "power2.in" }, 1.42);
+      tl.set($("s1"), { opacity: 0 }, 1.66);
+      // ... incoming rises from below and decelerates (start speed ≈ 3·916/0.34 ≈ 8.1k px/s)
+      tl.fromTo($("l2"), { y: 1180, filter: "blur(6px)" }, { y: 264, filter: "blur(0px)", duration: 0.34, ease: "power3.out" }, 1.54);
+      // gentle push for the length of the build (ends before the lift)
+      tl.fromTo($("l2"), { scale: 0.985 }, { scale: 1.03, duration: 1.5, ease: "power1.inOut" }, 1.62);
+      // the slam shoves the lead line up into the upper third
+      tl.to($("l2"), { y: 0, scale: 0.8, duration: 0.42, ease: "power4.out" }, 3.14);
+
+      // ---------- Scene 2: lead line builds (centered build, like line 1) ----------
+      var s2 = [["v1", 1.604], ["v2", 1.733], ["v3", 1.983], ["v4", 2.326], ["v5", 2.696], ["v6", 3.03]];
+      var L2X = [779.6, 628.7, 502.8, 351.9, 139.9, 0];
+      // each re-centre opens the slot a little before its word arrives (only words already on screen move)
+      var L2T = [0, 1.66, 1.91, 2.25, 2.60, 2.84];
+      var L2D = [0, 0.34, 0.34, 0.34, 0.34, 0.26];
+      tl.set($("l2"), { x: L2X[0] }, 0);
+      for (var b = 1; b < s2.length; b++) {
+        tl.to($("l2"), { x: L2X[b], duration: L2D[b], ease: b === 5 ? "power2.out" : "power3.out" }, L2T[b]);
+      }
+      s2.forEach(function (w, i) {
+        if (i === 0) {
+          // "es" rides in on the rising container
+          tl.fromTo($(w[0]), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power1.out" }, 1.56);
+        } else {
+          tl.fromTo($(w[0]), { opacity: 0, y: 38 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, w[1] - 0.04);
+        }
+      });
+      // the moment's one accent: an ink underline draws under "tiempo"
+      tl.fromTo($("ul"), { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 2.33);
+
+      // NEERLANDÉS slams in (3.28)
+      tl.fromTo($("hero"), { opacity: 0, scale: 1.12, filter: "blur(8px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.46, ease: "expo.out" }, 3.25);
+      // Dutch tricolor wipes in left → right under it
+      tl.set($("flag"), { opacity: 1 }, 3.36);
+      tl.fromTo($("sR"), { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "power3.out" }, 3.36);
+      tl.fromTo($("sW"), { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "power3.out" }, 3.41);
+      tl.fromTo($("sB"), { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "power3.out" }, 3.46);
+
+      // ---------- Scene 3: NEERLANDÉS lifts, the progress card arrives ----------
+      tl.fromTo($("heroBox"), { y: 0, scale: 1 }, { y: -150, scale: 0.7, duration: 0.5, ease: "power3.out" }, 3.79);
+      tl.fromTo($("card"), { opacity: 0, y: 90, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.46, ease: "power3.out" }, 3.84);
+
+      // fill 0 → 68 % fast, then it stalls
+      var F0 = 3.9, FD = 0.7, PCT = 68;
+      tl.fromTo($("fill"), { xPercent: -100 }, { xPercent: -100 + PCT, duration: FD, ease: "power2.out" }, F0);
+      for (var i = 0; i <= Math.round(FD * 30); i++) {
+        var p = Math.min(1, (i * FPS) / FD);
+        var v = Math.round(PCT * (1 - (1 - p) * (1 - p)));
+        tl.set($("pct"), { textContent: v + "%" }, F0 + i * FPS);
+      }
+      // the bar strains — and gives back
+      tl.to($("fill"), { xPercent: -100 + PCT + 1.6, duration: 0.1, ease: "power1.out" }, 4.62);
+      tl.to($("fill"), { xPercent: -100 + PCT, duration: 0.1, ease: "power2.in" }, 4.72);
+
+      // caption, word-paced
+      var s3 = [["c1", 3.891], ["c2", 4.233], ["c3", 4.372], ["c4", 4.743], ["c5", 4.844]];
+      s3.forEach(function (w) {
+        tl.fromTo($(w[0]), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, w[1] - 0.04);
+      });
+
+      // "funcionar" (4.844): the bar turns alert red, a quiet ✕ badge appears at the bar's end
+      var J = 4.844;
+      // hard switch to alert red (a crossfade would pass through purple)
+      tl.set($("fillRed"), { opacity: 1 }, J);
+      tl.set($("pct"), { color: "#E02D3C" }, J);
+      tl.set($("c5"), { color: "#E02D3C" }, J - 0.04);
+      tl.fromTo($("badge"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.36, ease: "power3.out" }, J + 0.02);
+      tl.fromTo($("x1"), { strokeDashoffset: 1.05 }, { strokeDashoffset: 0, duration: 0.14, ease: "power2.out" }, J + 0.1);
+      tl.fromTo($("x2"), { strokeDashoffset: 1.05 }, { strokeDashoffset: 0, duration: 0.14, ease: "power2.out" }, J + 0.18);
+
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.428, 0.42], [0.548, 0.59], [0.724, 0.73], [0.993, 1.03], [1.122, 1.17], [1.604, 1.62], [1.733, 1.8], [1.983, 2.04], [2.326, 2.32], [2.696, 2.64], [3.03, 3.01], [3.28, 3.23], [3.826, 3.9], [3.891, 4.08], [4.233, 4.36], [4.372, 4.61], [4.743, 5.02], [4.844, 5.11], [5.956, 6.11]]);
+      window.__timelines["01-hook"] = tl;
+    })();
+  </script>
+</template>

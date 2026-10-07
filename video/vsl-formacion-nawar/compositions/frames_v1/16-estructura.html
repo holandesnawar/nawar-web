@@ -1,0 +1,359 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE ---------- */
+    #f16-ground {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
+    .f16-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #f16-bg { transform-origin: 960px 520px; }
+    #f16-dots {
+      position: absolute; left: -224px; top: -84px; width: 2368px; height: 1248px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px;
+    }
+    #f16-amb {
+      position: absolute; left: 260px; top: 170px; width: 1400px; height: 720px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.24) 0%, rgba(77,163,255,0.08) 45%, rgba(77,163,255,0) 70%);
+    }
+    #f16-cam { transform-origin: 960px 540px; }
+
+    /* ---------- pill: FASE 03 ---------- */
+    #f16-pillrow { position: absolute; left: 0; top: 320px; width: 1920px; display: flex; justify-content: center; }
+    #f16-pill {
+      display: flex; align-items: center; gap: 16px;
+      height: 60px; padding: 0 28px 0 22px; border-radius: 999px; box-sizing: border-box;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+    }
+    #f16-pill svg { display: block; width: 30px; height: 30px; color: #9fd5f5; }
+    #f16-plab { font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; letter-spacing: 0.14em; color: rgba(255,255,255,0.72); }
+    #f16-pnum { font-family: "Poppins", sans-serif; font-weight: 800; font-size: 28px; line-height: 1; letter-spacing: -0.01em; color: #FFFFFF; padding-top: 3px; }
+    #f16-psegs { display: flex; gap: 6px; margin-left: 4px; }
+    #f16-psegs i { position: relative; display: block; width: 26px; height: 7px; border-radius: 4px; background: rgba(255,255,255,0.55); }
+    #f16-psegs i.f16-off { background: rgba(255,255,255,0.22); }
+    #f16-seg3 { position: absolute; inset: 0; border-radius: 4px; background: #FFFFFF; transform-origin: 0% 50%; box-shadow: 0 0 12px rgba(159,213,245,0.8); }
+
+    /* ---------- Scene 1: Estructura y soltura. ---------- */
+    #f16-s1 { transform-origin: 960px 520px; }
+    #f16-t1row { position: absolute; left: 0; top: 396px; width: 1920px; display: flex; justify-content: center; }
+    #f16-t1 {
+      display: inline-block; transform-origin: 50% 55%;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 150px; line-height: 1.12; letter-spacing: -0.035em;
+      color: #FFFFFF; white-space: nowrap; text-shadow: 0 18px 50px rgba(4,0,40,0.35);
+    }
+    #f16-t2row { position: absolute; left: 0; top: 564px; width: 1920px; display: flex; justify-content: center; gap: 0.26em;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 150px; line-height: 1.12; letter-spacing: -0.035em; white-space: nowrap; }
+    #f16-wy { display: inline-block; color: rgba(255,255,255,0.72); }
+    #f16-wsol { position: relative; display: inline-block; color: #FFFFFF; text-shadow: 0 18px 50px rgba(4,0,40,0.35); }
+    #f16-swash { position: absolute; left: -6px; top: 150px; width: 520px; height: 60px; overflow: visible; }
+    #f16-swash path { fill: none; stroke: #4da3ff; stroke-width: 13; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100;
+      filter: drop-shadow(0 0 14px rgba(77,163,255,0.6)); }
+
+    /* ---------- Scene 2: Ahora sí, GRAMÁTICA ---------- */
+    #f16-s2 { transform-origin: 960px 520px; }
+    #f16-glow {
+      position: absolute; left: 260px; top: 330px; width: 1400px; height: 520px; border-radius: 50%; opacity: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.45) 0%, rgba(77,163,255,0.15) 42%, rgba(77,163,255,0) 70%);
+    }
+    #f16-lead { position: absolute; left: 0; top: 352px; width: 1920px; display: flex; justify-content: center; gap: 0.28em;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 64px; line-height: 1.2; letter-spacing: -0.01em; color: rgba(255,255,255,0.72); white-space: nowrap; }
+    .f16-lw { display: inline-block; }
+    #f16-gram { position: absolute; left: 0; top: 504px; width: 1920px; display: flex; justify-content: center; filter: drop-shadow(0 22px 36px rgba(4,0,40,0.38)); }
+    #f16-gword {
+      position: relative; display: flex; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 204px; line-height: 1.0; letter-spacing: -0.04em; color: #FFFFFF;
+    }
+    .f16-gl { display: inline-block; transform-origin: 50% 70%; }
+    #f16-gbar {
+      position: absolute; left: 10px; right: 18px; top: 218px; height: 20px; border-radius: 10px;
+      background: #4da3ff; transform-origin: 0% 50%; box-shadow: 0 0 40px rgba(77,163,255,0.6);
+    }
+
+    /* ---------- Scene 3: word tiles ---------- */
+    .f16-tile { position: absolute; height: 124px; }
+    .f16-face {
+      position: absolute; inset: 0; border-radius: 22px; background: #FFFFFF;
+      box-shadow: 0 26px 60px rgba(4,0,40,0.40), inset 0 -7px 0 rgba(29,0,132,0.10);
+    }
+    .f16-tint {
+      position: absolute; inset: 0; border-radius: 22px; opacity: 0;
+      background: linear-gradient(180deg, #4da3ff 0%, #0b6df0 100%);
+      box-shadow: 0 0 70px rgba(77,163,255,0.55), inset 0 -7px 0 rgba(4,0,60,0.22), inset 0 2px 0 rgba(255,255,255,0.35);
+    }
+    .f16-ring { position: absolute; left: -10px; top: -10px; right: -10px; bottom: -10px; border-radius: 30px; opacity: 0;
+      box-shadow: inset 0 0 0 3px #9fd5f5, 0 0 24px rgba(159,213,245,0.45); }
+    .f16-lbl {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding-top: 6px; box-sizing: border-box;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 64px; line-height: 1; letter-spacing: -0.02em; color: #1D0084; white-space: nowrap;
+    }
+    #f16-l1 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #f16-k-mo { z-index: 3; }
+    #f16-k-ik { z-index: 2; }
+
+    #f16-tagcol { position: absolute; left: 500px; top: 402px; width: 190px; display: flex; justify-content: center; }
+    #f16-tag { position: relative; display: flex; flex-direction: column; align-items: center; }
+    #f16-tagpill {
+      height: 44px; padding: 0 20px; border-radius: 999px; box-sizing: border-box; display: flex; align-items: center;
+      background: rgba(77,163,255,0.18); border: 1px solid rgba(159,213,245,0.55);
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; letter-spacing: 0.14em; color: #9fd5f5; white-space: nowrap;
+    }
+    #f16-tagcaret { display: block; width: 18px; height: 10px; margin-top: 2px; }
+
+    .f16-gloss { position: absolute; display: flex; justify-content: center; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 38px; line-height: 1.2; color: rgba(255,255,255,0.78); }
+    #f16-g1 { left: 142px; top: 612px; width: 1362px; }
+    #f16-g2 { left: 732px; top: 832px; width: 653px; }
+    .f16-gin { display: inline-flex; align-items: center; gap: 16px; }
+    .f16-es { font-family: "Inter", sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.14em; color: rgba(255,255,255,0.62);
+      padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.34); }
+
+    #f16-bracket { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+    #f16-bracket path { fill: none; stroke: #4da3ff; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round;
+      filter: drop-shadow(0 0 10px rgba(77,163,255,0.55)); }
+    #f16-brk { stroke-dasharray: 100; stroke-dashoffset: 100; }
+    #f16-brk-tick { stroke-dasharray: 100; stroke-dashoffset: 100; }
+  </style>
+
+  <div id="root" data-composition-id="16-estructura" data-width="1920" data-height="1080" data-duration="6.99">
+    <div id="f16-ground" class="clip" data-start="0" data-duration="6.99" data-track-index="0"></div>
+
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+      <symbol id="f16-i-blocks" viewBox="0 0 92 92">
+        <g fill="none" stroke="currentColor" stroke-width="9" stroke-linejoin="round">
+          <rect x="6" y="52" width="36" height="34" rx="7" />
+          <rect x="50" y="52" width="36" height="34" rx="7" />
+          <rect x="28" y="8" width="36" height="34" rx="7" />
+        </g>
+      </symbol>
+    </svg>
+
+    <div id="f16-bg" class="f16-full">
+      <div id="f16-dots"></div>
+      <div id="f16-amb"></div>
+    </div>
+
+    <div id="f16-cam" class="f16-full">
+
+      <!-- ===== Scene 1 ===== -->
+      <div id="f16-s1" class="f16-full">
+        <div id="f16-t1row"><span id="f16-t1">Estructura</span></div>
+        <div id="f16-t2row">
+          <span id="f16-wy">y</span>
+          <span id="f16-wsol">soltura.
+            <svg id="f16-swash" viewBox="0 0 520 60"><path id="f16-swp" pathLength="100" d="M12 34 C 70 8, 120 8, 170 30 S 270 54, 320 30 S 420 6, 506 22" /></svg>
+          </span>
+        </div>
+      </div>
+
+      <!-- ===== Scene 2 ===== -->
+      <div id="f16-s2" class="f16-full">
+        <div id="f16-s2k" class="f16-full">
+          <div id="f16-glow"></div>
+          <div id="f16-lead"><span class="f16-lw" id="f16-w-ahora">Ahora</span><span class="f16-lw" id="f16-w-si">sí,</span></div>
+          <div id="f16-gram">
+            <div id="f16-gword">
+              <span class="f16-gl">G</span><span class="f16-gl">R</span><span class="f16-gl">A</span><span class="f16-gl">M</span><span class="f16-gl">Á</span><span class="f16-gl">T</span><span class="f16-gl">I</span><span class="f16-gl">C</span><span class="f16-gl">A</span>
+              <div id="f16-gbar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Scene 3 ===== -->
+      <div id="f16-s3" class="f16-full">
+        <!-- line 1: Ik ga morgen naar Amsterdam -> Morgen ga ik naar Amsterdam (ga pinned in slot 2) -->
+        <div id="f16-l1">
+          <div id="f16-tagcol">
+            <div id="f16-tag">
+              <div id="f16-tagpill">VERBO</div>
+              <svg id="f16-tagcaret" viewBox="0 0 18 10"><path d="M0 0 H18 L9 10 Z" fill="#9fd5f5" /></svg>
+            </div>
+          </div>
+          <div class="f16-tile" id="f16-k-ik" style="left:340px; top:460px; width:136px;">
+            <div class="f16-face" id="f16-kf-ik"><div class="f16-ring" id="f16-kr-ik"></div><div class="f16-lbl" id="f16-kl-ik">Ik</div></div>
+          </div>
+          <div class="f16-tile" id="f16-k-ga" style="left:500px; top:460px; width:190px;">
+            <div class="f16-face" id="f16-kf-ga"><div class="f16-tint" id="f16-kt-ga"></div><div class="f16-lbl" id="f16-kl-ga">ga</div></div>
+          </div>
+          <div class="f16-tile" id="f16-k-mo" style="left:714px; top:460px; width:334px;">
+            <div class="f16-face" id="f16-kf-mo"><div class="f16-ring" id="f16-kr-mo"></div><div class="f16-lbl" id="f16-kl-mo">morgen</div></div>
+          </div>
+          <div class="f16-tile" id="f16-k-na" style="left:1072px; top:460px; width:630px;">
+            <div class="f16-face" id="f16-kf-na"><div class="f16-lbl">naar Amsterdam</div></div>
+          </div>
+          <div class="f16-gloss" id="f16-g1"><span class="f16-gin"><span class="f16-es">ES</span><span>Mañana voy a Ámsterdam.</span></span></div>
+        </div>
+
+        <!-- line 2: Ik heb gisteren gewerkt (heb under ga) -->
+        <div id="f16-l2" class="f16-full">
+          <svg id="f16-bracket" viewBox="0 0 1920 1080">
+            <path id="f16-brk" pathLength="100" d="M732 776 V798 Q732 812 746 812 H1371 Q1385 812 1385 798 V776" />
+            <path id="f16-brk-tick" pathLength="100" d="M1058.5 812 V826" />
+          </svg>
+          <div class="f16-tile" id="f16-m-ik" style="left:477px; top:640px; width:136px;">
+            <div class="f16-face" id="f16-mf-ik"><div class="f16-lbl">Ik</div></div>
+          </div>
+          <div class="f16-tile" id="f16-m-heb" style="left:637px; top:640px; width:190px;">
+            <div class="f16-face" id="f16-mf-heb"><div class="f16-tint" id="f16-mt-heb"></div><div class="f16-lbl" id="f16-ml-heb">heb</div></div>
+          </div>
+          <div class="f16-tile" id="f16-m-gis" style="left:851px; top:640px; width:340px;">
+            <div class="f16-face" id="f16-mf-gis"><div class="f16-lbl">gisteren</div></div>
+          </div>
+          <div class="f16-tile" id="f16-m-gew" style="left:1215px; top:640px; width:340px;">
+            <div class="f16-face" id="f16-mf-gew"><div class="f16-tint" id="f16-mt-gew"></div><div class="f16-lbl" id="f16-ml-gew">gewerkt</div></div>
+          </div>
+          <div class="f16-gloss" id="f16-g2"><span class="f16-gin"><span class="f16-es">ES</span><span>Ayer trabajé.</span></span></div>
+        </div>
+      </div>
+
+      <!-- ===== pill (persists, docks to the top) ===== -->
+      <div id="f16-pillrow">
+        <div id="f16-pill">
+          <svg viewBox="0 0 92 92"><use href="#f16-i-blocks" /></svg>
+          <span id="f16-plab">FASE</span><span id="f16-pnum">03</span>
+          <span id="f16-psegs"><i></i><i></i><i class="f16-off"><b id="f16-seg3"></b></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 6.99;
+
+      // ================= ENTRANCE + SCENE 1 (0.00–1.70): title zooms in from blur =================
+      tl.fromTo(q("f16-bg"), { scale: 1.16 }, { scale: 1, duration: 0.7, ease: "expo.out" }, 0);
+      tl.fromTo(q("f16-amb"), { opacity: 0.5 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0);
+      tl.fromTo(q("f16-cam"), { scale: 1 }, { scale: 1.025, duration: D, ease: "sine.inOut" }, 0);
+
+      // "Estructura" — zoom-in from blur on the cut
+      const t1 = q("f16-t1");
+      tl.fromTo(t1, { scale: 1.9, filter: "blur(14px)" }, { scale: 1, filter: "blur(0px)", duration: 0.46, ease: "expo.out" }, 0);
+      tl.fromTo(t1, { opacity: 0.1 }, { opacity: 1, duration: 0.12, ease: "power1.out" }, 0);
+
+      // pill pops + 3rd segment fills
+      tl.fromTo(q("f16-pill"), { opacity: 0, scale: 0.6, y: 26 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "expo.out" }, 0.04);
+      tl.fromTo(q("f16-seg3"), { scaleX: 0 }, { scaleX: 1, duration: 0.32, ease: "power3.out" }, 0.3);
+
+      // "y" 0.703 · "soltura." 0.777
+      tl.fromTo(q("f16-wy"), { opacity: 0, y: 56, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, 0.66);
+      tl.fromTo(q("f16-wsol"), { opacity: 0, y: 56, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, 0.73);
+      // fluency swash draws under "soltura."
+      tl.fromTo(q("f16-swp"), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power2.inOut" }, 0.86);
+
+      // ================= SEAM 1 -> 2 (cut the curve, upward) =================
+      const s1 = q("f16-s1");
+      tl.fromTo(s1, { y: 0, filter: "blur(0px)" }, { y: -230, filter: "blur(10px)", duration: 0.3, ease: "power4.in" }, 1.46);
+      tl.fromTo(s1, { opacity: 1 }, { opacity: 0, duration: 0.22, ease: "none" }, 1.54);
+      // pill docks at the top as the chapter header
+      tl.fromTo(q("f16-pillrow"), { y: 0 }, { y: -246, duration: 0.5, ease: "power3.inOut" }, 1.4);
+
+      // ================= SCENE 2 (1.75–3.35): Ahora sí, GRAMÁTICA =================
+      tl.fromTo(q("f16-w-ahora"), { opacity: 0, y: 230, filter: "blur(10px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.34, ease: "power4.out" }, 1.74);
+      tl.fromTo(q("f16-w-si"), { opacity: 0, y: 64, filter: "blur(8px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, 2.03);
+
+      // GRAMÁTICA slams letter by letter on "gramática:" (2.518)
+      const GL = Array.from(document.querySelectorAll("#f16-gword .f16-gl"));
+      GL.forEach((el, i) => {
+        tl.fromTo(el, { opacity: 0, scale: 1.7, y: -24, filter: "blur(10px)" },
+          { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 2.47 + i * 0.022);
+      });
+      tl.fromTo(q("f16-glow"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" }, 2.5);
+      // deterministic 3-frame landing shake
+      const s2k = q("f16-s2k");
+      tl.set(s2k, { x: 0, y: 0 }, 0);
+      tl.set(s2k, { x: 8, y: -4 }, 2.6);
+      tl.set(s2k, { x: -6, y: 3 }, 2.633);
+      tl.set(s2k, { x: 2, y: -1 }, 2.666);
+      tl.set(s2k, { x: 0, y: 0 }, 2.7);
+      // blue-light underline bar
+      tl.fromTo(q("f16-gbar"), { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "power3.out" }, 2.72);
+
+      // ================= SEAM 2 -> 3 (cut the curve, upward) =================
+      const s2 = q("f16-s2");
+      tl.fromTo(s2, { y: 0, filter: "blur(0px)" }, { y: -230, filter: "blur(10px)", duration: 0.28, ease: "power4.in" }, 3.14);
+      tl.fromTo(s2, { opacity: 1 }, { opacity: 0, duration: 0.2, ease: "none" }, 3.22);
+
+      // ================= SCENE 3 (3.40–6.99): word tiles =================
+      // line 1 assembles on "dónde va el" (3.425 / 3.675 / 3.768) as a waterfall
+      const L1 = [["f16-kf-ik", 3.38], ["f16-kf-ga", 3.5], ["f16-kf-mo", 3.62], ["f16-kf-na", 3.74]];
+      L1.forEach(([id, t]) => {
+        tl.fromTo(q(id), { opacity: 0, y: 200, filter: "blur(10px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.38, ease: "power4.out" }, t);
+      });
+
+      // "verbo" (3.870): ga turns blue-light, punches, VERBO tag drops in
+      tl.fromTo(q("f16-kt-ga"), { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out" }, 3.85);
+      tl.fromTo(q("f16-kl-ga"), { color: "#1D0084" }, { color: "#FFFFFF", duration: 0.22, ease: "power2.out" }, 3.85);
+      tl.fromTo(q("f16-k-ga"), { scale: 1.16 }, { scale: 1, duration: 0.42, ease: "expo.out", immediateRender: false }, 3.86);
+      tl.fromTo(q("f16-tag"), { opacity: 0, y: -22 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 3.87);
+
+      // "frases" (4.527): the two words that will swap get marked
+      ["ik", "mo"].forEach((k, i) => {
+        tl.fromTo(q("f16-kr-" + k), { opacity: 0, scale: 1.14 }, { opacity: 1, scale: 1, duration: 0.26, ease: "power3.out" }, 4.5 + i * 0.04);
+        tl.fromTo(q("f16-kf-" + k), { y: 0 }, { y: -10, duration: 0.26, ease: "power3.out", immediateRender: false }, 4.5 + i * 0.04);
+      });
+
+      // "invertidas" (4.833): FLIP re-order — Morgen arcs over, ik arcs under, ga stays pinned
+      const F0 = 4.8, FD = 0.62, H = FD / 2;
+      const mo = q("f16-k-mo"), ik = q("f16-k-ik"), na = q("f16-k-na");
+      tl.fromTo(mo, { x: 0 }, { x: -572, duration: FD, ease: "power3.inOut" }, F0);
+      tl.fromTo(mo, { y: 0, rotation: 0, scale: 1 }, { y: -196, rotation: -7, scale: 1.08, duration: H, ease: "power2.out" }, F0);
+      tl.fromTo(mo, { y: -196, rotation: -7, scale: 1.08 }, { y: 0, rotation: 0, scale: 1, duration: H, ease: "power2.in", immediateRender: false }, F0 + H);
+      tl.fromTo(ik, { x: 0 }, { x: 374, duration: FD, ease: "power3.inOut" }, F0 + 0.03);
+      tl.fromTo(ik, { y: 0, rotation: 0, scale: 1 }, { y: 168, rotation: 6, scale: 0.94, duration: H, ease: "power2.out" }, F0 + 0.03);
+      tl.fromTo(ik, { y: 168, rotation: 6, scale: 0.94 }, { y: 0, rotation: 0, scale: 1, duration: H, ease: "power2.in", immediateRender: false }, F0 + 0.03 + H);
+      tl.fromTo(na, { x: 0 }, { x: -198, duration: 0.52, ease: "power3.inOut" }, F0 + 0.12);
+      // marks fade while travelling, faces drop their lift
+      ["ik", "mo"].forEach((k) => {
+        tl.fromTo(q("f16-kr-" + k), { opacity: 1 }, { opacity: 0, duration: 0.2, ease: "power1.out", immediateRender: false }, F0 + 0.06);
+        tl.fromTo(q("f16-kf-" + k), { y: -10 }, { y: 0, duration: FD, ease: "power2.inOut", immediateRender: false }, F0);
+      });
+      // case changes mid-air: morgen -> Morgen, Ik -> ik
+      tl.set(q("f16-kl-mo"), { textContent: "Morgen" }, F0 + H);
+      tl.set(q("f16-kl-ik"), { textContent: "ik" }, F0 + 0.03 + H);
+      // landing squash
+      const LAND = F0 + FD;
+      tl.fromTo(q("f16-kf-mo"), { scaleX: 1.07, scaleY: 0.9 }, { scaleX: 1, scaleY: 1, duration: 0.32, ease: "power3.out", immediateRender: false }, LAND);
+      tl.fromTo(q("f16-kf-ik"), { scaleX: 1.07, scaleY: 0.9 }, { scaleX: 1, scaleY: 1, duration: 0.32, ease: "power3.out", immediateRender: false }, LAND + 0.03);
+      // gloss
+      tl.fromTo(q("f16-g1"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 5.34);
+
+      // "cómo" (5.638): line 1 rises (and re-centres the inverted sentence) to make room for the past
+      tl.fromTo(q("f16-l1"), { x: 0, y: 0 }, { x: 137, y: -170, duration: 0.5, ease: "power3.inOut" }, 5.6);
+
+      // "pasado" (6.175): line 2 rises in, heb + gewerkt light up, bracket links them
+      const L2 = [["f16-mf-ik", 6.13], ["f16-mf-heb", 6.19], ["f16-mf-gis", 6.25], ["f16-mf-gew", 6.31]];
+      L2.forEach(([id, t]) => {
+        tl.fromTo(q(id), { opacity: 0, y: 200, filter: "blur(10px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.36, ease: "power4.out" }, t);
+      });
+      [["heb", 6.42], ["gew", 6.48]].forEach(([k, t]) => {
+        tl.fromTo(q("f16-mt-" + k), { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, t);
+        tl.fromTo(q("f16-ml-" + k), { color: "#1D0084" }, { color: "#FFFFFF", duration: 0.2, ease: "power2.out" }, t);
+      });
+      tl.fromTo(q("f16-brk"), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.32, ease: "power2.inOut" }, 6.44);
+      tl.fromTo(q("f16-brk-tick"), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.12, ease: "power2.out" }, 6.66);
+      tl.fromTo(q("f16-g2"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 6.6);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["16-estructura"] = tl;
+    })();
+  </script>
+</template>
