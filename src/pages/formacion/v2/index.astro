@@ -408,9 +408,10 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
       </div>
 
       <div class="fv-in">
-        <!-- Móvil: las etapas pegadas arriba al bajar, con la raya de progreso. -->
+        <!-- Móvil: las etapas al principio del plan. Al bajar, la copia FIJA
+             de abajo (#fv-fases-fija) ocupa su sitio arriba de la pantalla. -->
         <div class="fv-fases-barra" id="fv-fases-barra">
-          <div class="fv-fases-pills" id="fv-fases-pills">
+          <div class="fv-fases-pills">
             {FASES.map((f) => (
               <a href={`#fase-${f.n}`} class="fv-pill" data-fase={f.n} style={`--c:${f.c}`}><b>{f.n}</b>{f.nombre}</a>
             ))}
@@ -419,7 +420,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
           <div class="fv-fases-raya" aria-hidden="true"><span class="fv-raya-fill"></span></div>
         </div>
 
-        <div class="fv-prog">
+        <div class="fv-prog" id="fv-prog-plan">
           <aside class="fv-prog-nav" aria-label="Etapas del plan de estudios">
             <div class="fv-prog-nav-caja">
               <div class="fv-prog-nav-top">
@@ -573,6 +574,23 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
         <p>© Holandés Nawar</p>
       </footer>
     </section>
+
+    <!-- Móvil: la barra de etapas FIJA arriba mientras se lee el plan.
+         ⚠️ 07/10, "vibra al scrollear rápido" (tercera vez): era
+         position: sticky, y la web entera lleva body { overflow-x: hidden }
+         (global.css). Con eso, Safari del iPhone recoloca lo pegajoso en
+         cada fotograma y tiembla. Lo fijo no: se compone aparte y no se
+         mueve con la página. Va fuera de la sección para que ningún padre
+         con transform la descoloque. -->
+    <div class="fv-fases-fija" id="fv-fases-fija" aria-hidden="true">
+      <div class="fv-fases-pills">
+            {FASES.map((f) => (
+              <a href={`#fase-${f.n}`} class="fv-pill" tabindex="-1" data-fase={f.n} style={`--c:${f.c}`}><b>{f.n}</b>{f.nombre}</a>
+            ))}
+            <a href="#fase-cert" class="fv-pill" tabindex="-1" data-fase="cert" style="--c:#9fd0ff"><b>✓</b>Certificado</a>
+      </div>
+      <div class="fv-fases-raya"><span class="fv-raya-fill"></span></div>
+    </div>
 
     <!-- Móvil: el botón siempre a mano cuando no se ve ningún formulario. -->
     <div class="fv-pegado" id="fv-pegado" aria-hidden="true">
@@ -736,7 +754,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   const contenedor = document.getElementById('fv-prog-fases') as HTMLElement
   const fases = Array.from(contenedor.querySelectorAll<HTMLElement>('.fv-fase'))
   const enlaces = Array.from(document.querySelectorAll<HTMLAnchorElement>('.fv-pill, .fv-prog-nav a'))
-  const pills = document.getElementById('fv-fases-pills') as HTMLElement
+  const filasPills = Array.from(document.querySelectorAll<HTMLElement>('.fv-fases-pills'))
   const rayas = Array.from(document.querySelectorAll<HTMLElement>('.fv-raya-fill'))
   const pasoTxt = document.getElementById('fv-prog-paso') as HTMLElement
   let activa = ''
@@ -752,14 +770,31 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     fases.forEach((f, j) => f.classList.toggle('activa', j === orden))
     pasoTxt.textContent = id === 'cert' ? 'Certificado' : `Etapa ${orden + 1} / ${fases.length - 1}`
     rayas.forEach((x) => (x.style.transform = `scaleX(${(orden + 1) / fases.length})`))
-    const pill = pills.querySelector<HTMLElement>(`[data-fase="${id}"]`)
-    if (pill && pills.scrollWidth > pills.clientWidth) {
-      const izq = pill.offsetLeft - 16
-      const der = pill.offsetLeft + pill.offsetWidth - pills.clientWidth + 16
-      if (pills.scrollLeft > izq) pills.scrollLeft = izq
-      else if (pills.scrollLeft < der) pills.scrollLeft = der
-    }
+    filasPills.forEach((pills) => {
+      const pill = pills.querySelector<HTMLElement>(`[data-fase="${id}"]`)
+      if (pill && pills.scrollWidth > pills.clientWidth) {
+        const izq = pill.offsetLeft - 16
+        const der = pill.offsetLeft + pill.offsetWidth - pills.clientWidth + 16
+        if (pills.scrollLeft > izq) pills.scrollLeft = izq
+        else if (pills.scrollLeft < der) pills.scrollLeft = der
+      }
+    })
   }
+
+  // La barra fija del móvil: sale mientras el plan pasa por debajo de ella
+  // (una franja fina arriba de la pantalla) y se va al salir por arriba o
+  // por abajo. Un solo aviso y sin código en el scroll. Se mira el plan
+  // entero y no dos marcas sueltas: al saltar de golpe por encima de una
+  // marca, el navegador no avisa (nunca llegó a cruzar la pantalla).
+  const fija = document.getElementById('fv-fases-fija') as HTMLElement
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => {
+      const ver = e.isIntersecting
+      fija.classList.toggle('visible', ver)
+      fija.setAttribute('aria-hidden', ver ? 'false' : 'true')
+    }, { rootMargin: '-70px 0px -88% 0px' }).observe(document.getElementById('fv-prog-plan') as HTMLElement)
+  }
+
   marcar(fases[0].dataset.fase || '')
   if ('IntersectionObserver' in window) {
     // Una franja fina al 40 % de la pantalla: la etapa que la cruza es la
@@ -1029,7 +1064,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   .fv-raya-fill { display: block; height: 100%; width: 100%; transform-origin: left; transform: scaleX(0); transition: transform .45s ease; background: linear-gradient(90deg, #4da3ff, #5ad1c5 35%, #8e9cff 65%, #c9b6ff); border-radius: 9999px; }
 
   /* La barra de etapas del móvil: escondida en el ordenador. */
-  .fv-fases-barra { display: none; }
+  .fv-fases-barra, .fv-fases-fija { display: none; }
 
   /* Las etapas: tarjetas oscuras, sin tarjetas dentro (07/10: "que no
      parezcan popups"). Lo de dentro se separa con filetes, no con cajas. */
@@ -1158,8 +1193,13 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
        will-change ni translateZ, sin sombras (07/10: "vibra"). */
     .fv-prog { grid-template-columns: minmax(0, 1fr); }
     .fv-prog-nav { display: none; }
-    .fv-fases-barra { display: block; position: sticky; top: 0; z-index: 20; margin: 0 -24px 22px; padding: 12px 0 0; background: #120a5c; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .fv-fases-pills { display: flex; gap: 8px; overflow-x: auto; padding: 0 24px 12px; scrollbar-width: none; overscroll-behavior-x: contain; }
+    .fv-fases-barra { display: block; margin: 0 -24px 22px; padding: 12px 0 0; background: #120a5c; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    /* La copia fija: escondida por encima de la pantalla y baja al entrar en
+       el plan. Fondo sólido y nada de desenfoque. */
+    .fv-fases-fija { display: block; position: fixed; top: 0; left: 0; right: 0; z-index: 45; padding: 12px 0 0; background: #120a5c; border-bottom: 1px solid rgba(255,255,255,0.1);
+      transform: translateY(-110%); visibility: hidden; transition: transform .22s ease, visibility 0s .22s; }
+    .fv-fases-fija.visible { transform: none; visibility: visible; transition: transform .22s ease; }
+    .fv-fases-pills { position: relative; display: flex; gap: 8px; overflow-x: auto; padding: 0 24px 12px; scrollbar-width: none; overscroll-behavior-x: contain; }
     .fv-fases-pills::-webkit-scrollbar { display: none; }
     .fv-pill { flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; padding: 9px 15px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.6); font-size: 13.5px; font-weight: 600; text-decoration: none; white-space: nowrap; }
     .fv-pill b { font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; color: rgba(255,255,255,0.4); }
@@ -1167,8 +1207,8 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-pill.hecho b { color: var(--c); }
     .fv-pill.activo { background: var(--c); border-color: var(--c); color: #0a1656; }
     .fv-pill.activo b { color: rgba(10,22,86,0.6); }
-    .fv-fases-barra .fv-fases-raya { border-radius: 0; height: 3px; }
-    .fv-fases-barra .fv-raya-fill { border-radius: 0; }
+    .fv-fases-barra .fv-fases-raya, .fv-fases-fija .fv-fases-raya { border-radius: 0; height: 3px; }
+    .fv-fases-barra .fv-raya-fill, .fv-fases-fija .fv-raya-fill { border-radius: 0; }
     .fv-fase { scroll-margin-top: 80px; }
   }
 
@@ -1216,6 +1256,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-fase-temas { grid-template-columns: minmax(0, 1fr); }
     .fv-fases-barra { margin: 0 -16px 18px; }
     .fv-fases-pills { padding: 0 16px 12px; }
+    .fv-fases-fija { padding-top: 10px; }
     .fv-fase { padding: 24px 20px 20px; border-radius: 18px; }
     .fv-fase::before { left: 20px; right: 20px; }
     .fv-fase-promesa p { font-size: 15.5px; }
