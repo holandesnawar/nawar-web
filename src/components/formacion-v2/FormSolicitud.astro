@@ -1,0 +1,118 @@
+---
+/**
+ * El formulario de /formacion/v2 (nombre, correo y WhatsApp con prefijo).
+ *
+ * Sale DOS veces en la página (arriba y al final), así que vive aquí y el
+ * script de la página lo engancha por `data-fv-form`, no por id.
+ *
+ * 07/10, cuarta vuelta: oscuro y de cristal sobre el azul de la cabecera
+ * ("el bloque de información blanco sigue chocando, se ve algo IA"). Una caja
+ * blanca encima del azul partía la cabecera en dos; así forma parte de ella.
+ */
+import { PREFIJOS } from '../../lib/admision'
+
+interface Props {
+  /** Sufijo de los ids: 'a' arriba, 'b' al final. */
+  suf: string
+  eyebrow: string
+  titulo: string
+  lead?: string
+  boton?: string
+}
+const { suf, eyebrow, titulo, lead, boton = 'Solicitar información' } = Astro.props
+const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
+const id = (n: string) => `fv-${n}-${suf}`
+---
+
+<div class="ff" id={`solicitud-${suf}`} data-fv-caja>
+  <p class="ff-eyebrow"><span class="ff-punto" aria-hidden="true"></span>{eyebrow}</p>
+  <h2 class="ff-titulo">{titulo}</h2>
+  {lead && <p class="ff-lead">{lead}</p>}
+  <form data-fv-form novalidate>
+    <div class="ff-honeypot" aria-hidden="true">
+      <label>No rellenar <input type="text" name="website" data-campo="hp" tabindex="-1" autocomplete="off" /></label>
+    </div>
+
+    <label class="ff-label" for={id('nombre')}>Nombre</label>
+    <input id={id('nombre')} data-campo="nombre" type="text" class="ff-input" placeholder="Tu nombre" autocomplete="given-name" required />
+
+    <label class="ff-label" for={id('email')}>Correo electrónico</label>
+    <input id={id('email')} data-campo="email" type="email" class="ff-input" placeholder="correo@ejemplo.com" autocomplete="email" required />
+
+    <label class="ff-label" for={id('tel')}>WhatsApp</label>
+    <div class="ff-tel">
+      <!-- Cerrado enseña bandera y prefijo; el select va encima, transparente,
+           para que el desplegable sea el del móvil. -->
+      <div class="ff-input ff-prefijo">
+        <span data-campo="prefijo-ver" aria-hidden="true">{opciones[0].bandera} {opciones[0].prefijo}</span>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        <select data-campo="prefijo" aria-label="Prefijo del país">
+          {opciones.map((p) => <option value={p.valor} data-prefijo={p.prefijo} data-pais={p.pais} data-bandera={p.bandera}>{p.bandera} {p.pais} ({p.prefijo})</option>)}
+        </select>
+      </div>
+      <input id={id('tel')} data-campo="tel" type="tel" class="ff-input" placeholder="6 12345678" autocomplete="tel-national" inputmode="tel" required />
+    </div>
+
+    <p class="ff-err" data-campo="err">Revisa el nombre, el correo y el número.</p>
+    <button type="submit" class="ff-btn" data-campo="enviar">
+      {boton}
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+    <p class="ff-legal">
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span>Sin compromiso. Al continuar aceptas la <a href="/politica-de-privacidad" target="_blank" rel="noopener">política de privacidad</a>.</span>
+    </p>
+  </form>
+</div>
+
+<style>
+  .ff {
+    position: relative; border-radius: 22px; padding: 30px 28px 24px; scroll-margin-top: 24px; color: #fff;
+    background: linear-gradient(160deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 100%);
+    border: 1px solid rgba(255,255,255,0.16);
+    box-shadow: 0 40px 80px -40px rgba(3,9,33,0.8), inset 0 1px 0 rgba(255,255,255,0.10);
+  }
+  /* Un filo de luz arriba, como la marca de rotulador. */
+  .ff::before { content: ''; position: absolute; left: 28px; right: 28px; top: -1px; height: 1px; background: linear-gradient(90deg, transparent, rgba(77,163,255,0.9), transparent); }
+  .ff-eyebrow { margin: 0; display: inline-flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9fd0ff; }
+  .ff-punto { width: 7px; height: 7px; border-radius: 9999px; background: #4da3ff; box-shadow: 0 0 0 4px rgba(77,163,255,0.22); }
+  .ff-titulo { font-family: 'Poppins', system-ui, sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; margin: 10px 0 6px; color: #fff; }
+  .ff-lead { margin: 0 0 6px; font-size: 14.5px; line-height: 1.55; color: rgba(255,255,255,0.72); }
+  .ff-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .ff-label { display: block; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.86); margin: 14px 0 6px; }
+  .ff-input {
+    width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.16); border-radius: 12px;
+    padding: 13px 14px; font-size: 16px; color: #fff; font-family: inherit; outline: none; transition: border-color .15s, background .15s, box-shadow .15s;
+  }
+  .ff-input::placeholder { color: rgba(255,255,255,0.4); }
+  .ff-input:focus { background: rgba(255,255,255,0.11); border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.25); }
+  /* El autocompletado del navegador pinta el campo de amarillo/blanco:
+     se vuelve a teñir con el azul de la caja. */
+  .ff-input:-webkit-autofill { -webkit-text-fill-color: #fff; -webkit-box-shadow: 0 0 0 40px #2a1a96 inset; caret-color: #fff; }
+  .ff-tel { display: grid; grid-template-columns: 112px 1fr; gap: 8px; }
+  .ff-prefijo { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 15.5px; cursor: pointer; white-space: nowrap; color: #fff; }
+  .ff-prefijo svg { color: rgba(255,255,255,0.6); }
+  .ff-prefijo:focus-within { border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.25); }
+  .ff-prefijo select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; color: #0a1656; }
+  .ff-err { display: none; margin: 12px 0 0; font-size: 13px; color: #ffb4b4; font-weight: 500; }
+  .ff-err:global(.visible) { display: block; }
+  .ff-btn {
+    margin-top: 20px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+    padding: 16px 22px; border: none; border-radius: 12px; background: #4da3ff; color: #0a1656;
+    font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: background .15s, transform .15s;
+    box-shadow: 0 14px 30px -14px rgba(77,163,255,0.9);
+  }
+  .ff-btn:hover { background: #5eb4ff; }
+  .ff-btn:active { transform: translateY(1px); }
+  .ff-btn:global(.enviando) { opacity: 0.7; pointer-events: none; }
+  .ff-legal { margin: 14px 0 0; display: flex; align-items: flex-start; justify-content: center; gap: 7px; font-size: 12px; line-height: 1.5; color: rgba(255,255,255,0.55); text-align: center; }
+  .ff-legal svg { flex-shrink: 0; margin-top: 2px; }
+  .ff-legal a { color: rgba(255,255,255,0.8); text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .ff { padding: 24px 20px 20px; border-radius: 20px; }
+    .ff::before { left: 20px; right: 20px; }
+    .ff-titulo { font-size: 23px; }
+    .ff-tel { grid-template-columns: 104px 1fr; }
+  }
+</style>
