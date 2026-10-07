@@ -41,6 +41,24 @@ export const PREVIEW_HASTA = 15
 /** Lo que dura el vídeo, para la barra de abajo del vídeo bloqueado: que se
  *  vea un reproductor de verdad y no un botón suelto (03/10, "muy IA"). */
 export const VIDEO_DURACION = '2:57'
+/** Lo mismo en segundos: es la cuenta atrás del botón en /formacion/v2/video.
+ *  Si se cambia el vídeo, cambiar las dos. */
+export const VIDEO_SEGUNDOS = 177
+
+/**
+ * /formacion/v2 (07/10, en pruebas, como hace UDIA): la página que explica
+ * la formación pide los tres datos ahí mismo; luego el vídeo con el botón
+ * bloqueado y su cuenta atrás; luego el formulario de admisión. Todo lo que
+ * llega a la escuela va como el proceso de admisión (`embudo: 'admision'`),
+ * así que el panel lo trata igual; lo distingue el recorrido (las páginas
+ * por las que pasó) y, en systeme.io, el campo `origen`.
+ */
+export const V2 = {
+  landing: '/formacion/v2',
+  video: '/formacion/v2/video',
+  formulario: '/formacion/v2/formulario',
+  origen: 'formacion-v2',
+} as const
 
 export type Proveedor = 'bunny' | 'youtube' | 'vimeo' | 'mp4' | ''
 

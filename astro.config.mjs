@@ -35,6 +35,12 @@ export default defineConfig({
         // (gracias-pre-formacion no empieza por "/formacion-", así que
         //  no le afecta.)
         !page.includes('/formacion-') &&
+        // Las páginas en pruebas y el embudo de admisión van con noindex:
+        // en el sitemap le diríamos lo contrario a Google (07/10).
+        !page.includes('/formacion/') &&
+        !page.includes('/proceso-de-admision') &&
+        !page.includes('/proceso-agendar') &&
+        !page.includes('/v4/') &&
         // Las guías SÍ se indexan, pero su variante de anuncios no: lleva
         // noindex y la canónica apuntando a la original. Estando además en
         // el sitemap le decíamos a Google dos cosas contrarias —"indexa
