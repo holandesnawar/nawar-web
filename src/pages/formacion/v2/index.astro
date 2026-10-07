@@ -41,9 +41,11 @@ const IMG = {
   soporte: 'https://docs.holandesnawar.com/img/Landing/bonus.soporte.png',
   certificado: 'https://docs.holandesnawar.com/img/Landing/Certificado.final.landing.png',
   certFondo: 'https://docs.holandesnawar.com/img/Landing/fondo.certificado.png',
-  // La portada de la formación (el libro "De cero a tu primera
-  // conversación"), la de PresentacionNawar.
-  formacion: 'https://docs.holandesnawar.com/img/Landing/cuantos%20cursos%20has%20empezado.png',
+  // La cámara del profe en el mockup de la clase en directo: la cara del
+  // vídeo de la lección que sale en bonus.clases, recortada (140×95). Es la
+  // única foto de un profe de verdad que hay; para poner a otro, cambiar
+  // este archivo o esta dirección (mejor una foto de 4:3, al menos 400 px).
+  profe: '/img/formacion-v2/profe-camara.png',
 }
 
 /** Iconos de línea (24×24, trazo), en un solo sitio. Se pintan SOLOS, sin
@@ -102,12 +104,24 @@ const CAMBIO = [
  *  de la escuela (las ilustraciones de las landings, BonusSection). 07/10:
  *  "en vez de mockup, imágenes reales como en la landing". */
 const SEMANA = [
-  { img: IMG.formacion, i: 'libro', t: 'Sigues las lecciones de la semana', d: 'Cada semana se abre lo que toca: vídeo corto explicado en español, vocabulario con audio, lectura y escucha. Con 20-30 minutos al día vas al día, y siempre sabes qué viene después.' },
+  // La captura de la lección (vídeo y lista de clases), la de la landing.
+  { img: IMG.clases, i: 'video', t: 'Sigues las lecciones de la semana', d: 'Cada semana se abre lo que toca: vídeo corto explicado en español, vocabulario con audio, lectura y escucha. Con 20-30 minutos al día vas al día, y siempre sabes qué viene después.' },
   { img: IMG.ejercicios, i: 'libro', t: 'Practicas hasta que te sale', d: 'Ejercicios que se corrigen solos: escuchar, leer, escribir y hablar. Si fallas, te dice cuál era y por qué, y repasas justo lo que te cuesta.' },
   { img: IMG.soporte, i: 'consulta', t: 'Preguntas cuando te atascas', d: 'Tus dudas las responde el equipo, en español. Nadie se queda una semana bloqueado con la misma pregunta.' },
-  // La imagen de la clase en directo de la landing (BonusSection). La de la
-  // comunidad, con caras, "parece un poco IA" (usuario, 07/10): no usarla.
-  { img: IMG.clases, i: 'video', t: 'Hablas en la clase en directo', d: 'Cada semana, con un profesor que habla español y con tu grupo: dices en voz alta lo que has aprendido. Si no puedes ir, queda grabada.' },
+  // Sin imagen: la videollamada dibujada (07/10: "que parezca una clase en
+  // directo, sin las imágenes de alumnos, con la letra de la foto de
+  // perfil"). La de la comunidad, con caras, "parece un poco IA": no usarla.
+  { img: '', i: 'video', t: 'Hablas en la clase en directo', d: 'Cada semana, con un profesor que habla español y con tu grupo: dices en voz alta lo que has aprendido. Si no puedes ir, queda grabada.' },
+]
+
+/** Los alumnos de la videollamada: solo la letra, como cuando no hay foto de
+ *  perfil. Sin nombres ni un "+18" (eso sería inventarse quién va a clase). */
+const EN_CLASE = [
+  { l: 'A', c: '#025dc7' },
+  { l: 'M', c: '#5a6bd8' },
+  { l: 'J', c: '#0f8f86' },
+  { l: 'L', c: '#8a5ad8' },
+  { l: 'S', c: '#2b7bff' },
 ]
 
 /** Competencias al terminar: nivel A1, situaciones de la vida real. */
@@ -324,9 +338,58 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
         <div class="fv-escena" id="fv-escena">
           {SEMANA.map((x, k) => (
             <figure class={`fv-mock${k === 0 ? ' activo' : ''}`} data-paso={k} aria-hidden={k === 0 ? 'false' : 'true'}>
-              <img src={x.img} alt={x.t} width="1920" height="1080" loading={k === 0 ? 'eager' : 'lazy'} decoding="async"
-                onerror="this.closest('figure').classList.add('sin-foto'); this.remove();" />
-              <span class="fv-mock-plan-b" set:html={icono(x.i, 44, 1.4)} />
+              {x.img ? (
+                <Fragment>
+                  <img src={x.img} alt={x.t} width="1920" height="1080" loading={k === 0 ? 'eager' : 'lazy'} decoding="async"
+                    onerror="this.closest('figure').classList.add('sin-foto'); this.remove();" />
+                  <span class="fv-mock-plan-b" set:html={icono(x.i, 44, 1.4)} />
+                </Fragment>
+              ) : (
+                <div class="vc" role="img" aria-label="Una clase en directo de la formación: el profesor comparte la lección y los alumnos hablan">
+                  <span class="vc-bloque vc-b1" aria-hidden="true"></span>
+                  <span class="vc-bloque vc-b2" aria-hidden="true"></span>
+                  <div class="vc-portatil">
+                    <div class="vc-pantalla">
+                      <div class="vc-top">
+                        <span class="vc-vivo"><i></i>En directo</span>
+                        <span class="vc-tit">Clase semanal · Módulo 1</span>
+                        <span class="vc-hora">32:14</span>
+                      </div>
+                      <div class="vc-cuerpo">
+                        <div class="vc-slide">
+                          <img class="vc-slide-logo" src={LOGO} alt="" onerror="this.remove()" />
+                          <p class="vc-slide-et">Kennismaken in het café</p>
+                          <p class="vc-slide-t">¡Ahora a hablar!</p>
+                          <p class="vc-l"><b>Anna</b>Waar kom je vandaan?</p>
+                          <p class="vc-l"><b>David</b>Ik kom uit Argentinië.</p>
+                          <p class="vc-l"><b>Anna</b>En waar woon je nu?</p>
+                          <p class="vc-turno"><span set:html={icono('micro', 12, 2.2)} />Tu turno: ¿de dónde eres?</p>
+                        </div>
+                        <div class="vc-lado">
+                          <div class="vc-profe">
+                            <img src={IMG.profe} alt="" onerror="this.remove()" />
+                            <span class="vc-nombre"><i set:html={icono('micro', 9, 2.4)} />Profesor</span>
+                          </div>
+                          <div class="vc-grupo">
+                            {EN_CLASE.map((a) => (
+                              <span class="vc-alumno"><span class="vc-ini" style={`--c:${a.c}`}>{a.l}</span></span>
+                            ))}
+                            <span class="vc-alumno vc-tu"><span class="vc-ini">Tú</span><i class="vc-mano">✋</i></span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="vc-barra">
+                        <span set:html={icono('micro', 11, 2.2)} />
+                        <span set:html={icono('video', 11, 2.2)} />
+                        <span class="vc-mano-btn">✋</span>
+                        <span set:html={icono('charla', 11, 2.2)} />
+                        <span class="vc-salir">Salir</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="vc-base" aria-hidden="true"></div>
+                </div>
+              )}
             </figure>
           ))}
         </div>
@@ -882,11 +945,59 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   .fv-mock.activo { opacity: 1; transform: none; pointer-events: auto; }
   /* Las ilustraciones traen mucho blanco alrededor: se agrandan un poco para
      que el dispositivo llene la columna (el blanco sobrante no se ve). */
-  .fv-mock img { width: 100%; height: 100%; object-fit: contain; display: block; transform: scale(1.14); }
+  .fv-mock > img { width: 100%; height: 100%; object-fit: contain; display: block; transform: scale(1.14); }
   .fv-mock-plan-b { display: none; color: #025dc7; }
   .fv-mock.sin-foto { background: linear-gradient(135deg, #F5F8FF, #EAF2FF); border-radius: 24px; }
   .fv-mock.sin-foto .fv-mock-plan-b { display: inline-flex; }
   @media (prefers-reduced-motion: reduce) { .fv-mock { transition: none; } }
+
+  /* ── La videollamada dibujada (paso 4) ──────────────────────────────
+     Mismo lenguaje que las ilustraciones de las landings: un portátil sobre
+     dos bloques de color (azul oscuro arriba a la izquierda, azul claro abajo
+     a la derecha). Todo se mide en cqw (el ancho de la figura) para que en el
+     móvil sea la misma imagen, más pequeña, y no otra. */
+  .fv-mock { container-type: inline-size; }
+  .vc { position: absolute; inset: 0; }
+  .vc-bloque { position: absolute; border-radius: 2.2cqw; }
+  .vc-b1 { left: 6%; top: 7%; width: 34%; height: 42%; background: radial-gradient(circle at 30% 30%, #1d3fd8, #1D0084 75%); }
+  .vc-b2 { right: 6%; bottom: 6%; width: 36%; height: 46%; background: #9fd5ff; }
+  .vc-portatil { position: absolute; left: 13%; right: 13%; top: 9%; bottom: 14%; background: #111827; border-radius: 1.8cqw 1.8cqw 0.6cqw 0.6cqw; padding: 1.1cqw; box-shadow: 0 3cqw 5cqw -2.5cqw rgba(10,22,86,0.45); }
+  .vc-base { position: absolute; left: 9%; right: 9%; bottom: 11%; height: 3.2%; background: linear-gradient(#e5e7eb, #b9bec8); border-radius: 0 0 2cqw 2cqw; }
+  .vc-pantalla { width: 100%; height: 100%; border-radius: 0.8cqw; overflow: hidden; background: #0f1530; display: flex; flex-direction: column; font-family: 'Inter', system-ui, sans-serif; }
+  .vc-top { display: flex; align-items: center; justify-content: space-between; gap: 1cqw; padding: 0.9cqw 1.4cqw; font-size: 1.15cqw; color: rgba(255,255,255,0.7); }
+  .vc-vivo { display: inline-flex; align-items: center; gap: 0.6cqw; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; font-size: 1cqw; }
+  .vc-vivo i { width: 0.8cqw; height: 0.8cqw; border-radius: 9999px; background: #ef4444; box-shadow: 0 0 0 0.4cqw rgba(239,68,68,0.25); }
+  .vc-tit { font-weight: 600; color: #fff; }
+  .vc-hora { font-variant-numeric: tabular-nums; }
+  .vc-cuerpo { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 27%; gap: 0.9cqw; padding: 0 1cqw; }
+  /* La diapositiva compartida: la de la lección, en blanco y azul. */
+  .vc-slide { position: relative; background: linear-gradient(160deg, #ffffff, #EEF4FF); border-radius: 0.8cqw; padding: 2.2cqw 2.4cqw; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+  .vc-slide-logo { position: absolute; top: 1.4cqw; right: 1.6cqw; height: 1.8cqw; width: auto; }
+  .vc-slide-et { margin: 0; font-size: 0.95cqw; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #025dc7; }
+  .vc-slide-t { margin: 0.5cqw 0 1.4cqw; font-family: 'Poppins', system-ui, sans-serif; font-size: 2.7cqw; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; color: #1D0084; }
+  .vc-l { margin: 0 0 0.7cqw; display: grid; grid-template-columns: 5.4cqw minmax(0, 1fr); font-size: 1.4cqw; line-height: 1.35; color: #0a1656; }
+  .vc-l b { font-size: 1.15cqw; font-weight: 600; color: #025dc7; padding-top: 0.15cqw; }
+  .vc-turno { margin: 0.9cqw 0 0; align-self: flex-start; display: inline-flex; align-items: center; gap: 0.7cqw; padding: 0.7cqw 1.2cqw; border-radius: 9999px; background: #4da3ff; color: #0a1656; font-size: 1.2cqw; font-weight: 700; }
+  .vc-turno :global(svg) { width: 1.3cqw; height: 1.3cqw; }
+  .vc-lado { display: flex; flex-direction: column; gap: 0.8cqw; min-height: 0; }
+  /* La cámara del profe, hablando (el filo azul). */
+  .vc-profe { position: relative; aspect-ratio: 4 / 3; border-radius: 0.8cqw; overflow: hidden; background: #2a3458; box-shadow: 0 0 0 0.25cqw #4da3ff; }
+  .vc-profe img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .vc-nombre, .vc-alumno .vc-nombre { position: absolute; left: 0.5cqw; bottom: 0.5cqw; display: inline-flex; align-items: center; gap: 0.35cqw; padding: 0.25cqw 0.6cqw; border-radius: 0.4cqw; background: rgba(10,15,40,0.7); color: #fff; font-size: 0.9cqw; font-weight: 600; }
+  .vc-nombre i { display: inline-flex; color: #4da3ff; }
+  .vc-nombre :global(svg) { width: 0.9cqw; height: 0.9cqw; }
+  .vc-grupo { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 0.6cqw; }
+  .vc-alumno { position: relative; border-radius: 0.7cqw; background: #1c2447; display: flex; align-items: center; justify-content: center; }
+  /* La letra, como cuando alguien no ha puesto foto de perfil. */
+  .vc-ini { width: 3.4cqw; height: 3.4cqw; border-radius: 9999px; background: var(--c, #4da3ff); color: #fff; font-size: 1.5cqw; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; }
+  .vc-tu { box-shadow: inset 0 0 0 0.2cqw rgba(77,163,255,0.8); }
+  .vc-tu .vc-ini { background: #4da3ff; color: #0a1656; font-size: 1.2cqw; font-weight: 700; }
+  .vc-mano { position: absolute; top: 0.4cqw; right: 0.5cqw; font-style: normal; font-size: 1.2cqw; }
+  .vc-barra { display: flex; align-items: center; justify-content: center; gap: 0.9cqw; padding: 0.9cqw; }
+  .vc-barra > span { width: 2.6cqw; height: 2.6cqw; border-radius: 9999px; background: #263055; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1cqw; }
+  .vc-barra :global(svg) { width: 1.2cqw; height: 1.2cqw; }
+  .vc-barra > .vc-mano-btn { background: #4da3ff; }
+  .vc-barra > .vc-salir { width: auto; padding: 0 1.2cqw; border-radius: 9999px; background: #dc2626; font-weight: 600; font-size: 1.05cqw; }
 
   /* ── El plan de estudios (oscuro, como UDIA) ───────────────────────── */
   .fv-prog-sec { background: #120a5c; color: #fff; padding-bottom: 120px;
