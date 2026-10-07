@@ -23,10 +23,14 @@ export type UTM = {
   utmCampaign: string
   /** Qué anuncio concreto (07/10): en Meta, el nombre del anuncio. */
   utmContent: string
+  /** En Meta, el conjunto de anuncios ({{adset.name}}). */
+  utmTerm: string
+  /** En Meta, dónde se vio ({{placement}}: feed, stories, reels…). */
+  utmPlacement: string
 }
 
 const CLAVE = 'nawar_utm'
-const VACIO: UTM = { utmSource: '', utmMedium: '', utmCampaign: '', utmContent: '' }
+const VACIO: UTM = { utmSource: '', utmMedium: '', utmCampaign: '', utmContent: '', utmTerm: '', utmPlacement: '' }
 
 /**
  * Llamar al cargar la página. Si la dirección trae `utm_*`, los guarda.
@@ -43,8 +47,10 @@ export function guardarUTM(): void {
       utmMedium: (p.get('utm_medium') || '').slice(0, 120),
       utmCampaign: (p.get('utm_campaign') || '').slice(0, 120),
       utmContent: (p.get('utm_content') || '').slice(0, 120),
+      utmTerm: (p.get('utm_term') || '').slice(0, 120),
+      utmPlacement: (p.get('utm_placement') || '').slice(0, 120),
     }
-    if (!datos.utmSource && !datos.utmMedium && !datos.utmCampaign && !datos.utmContent) return
+    if (!Object.values(datos).some(Boolean)) return
     sessionStorage.setItem(CLAVE, JSON.stringify(datos))
   } catch {
     /* sin almacenamiento se sigue igual, solo que sin procedencia */
@@ -62,6 +68,8 @@ export function leerUTM(): UTM {
       utmMedium: typeof d?.utmMedium === 'string' ? d.utmMedium : '',
       utmCampaign: typeof d?.utmCampaign === 'string' ? d.utmCampaign : '',
       utmContent: typeof d?.utmContent === 'string' ? d.utmContent : '',
+      utmTerm: typeof d?.utmTerm === 'string' ? d.utmTerm : '',
+      utmPlacement: typeof d?.utmPlacement === 'string' ? d.utmPlacement : '',
     }
   } catch {
     return { ...VACIO }

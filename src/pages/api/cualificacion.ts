@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro'
 import { normalizarTelefono } from '../../lib/telefono'
 import { MAX_TEXTO, PREGUNTAS, puntuar } from '../../lib/cualificacion'
 import { ESCUELA_URL, avisarEscuela } from '../../lib/escuela'
+import { enviarLeadServidor } from '../../lib/metaCapi'
 import {
   asignarEtiqueta,
   camposDePersona,
@@ -71,7 +72,15 @@ async function alCRM(
   }
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async (ctx) => {
+  const { request, cookies } = ctx
+  // La IP de quien manda, para el Lead del servidor (CAPI). En Vercel va en
+  // x-forwarded-for; `clientAddress` puede lanzar si el adaptador no la da.
+  const ipCliente = () => {
+    const delante = (request.headers.get('x-forwarded-for') || '').split(',')[0].trim()
+    if (delante) return delante
+    try { return ctx.clientAddress } catch { return '' }
+  }
   const body = await request.json().catch(() => null)
   if ((body?.website ?? '').toString().trim()) return json({ ok: true, apto: false })
 
@@ -141,6 +150,8 @@ export const POST: APIRoute = async ({ request }) => {
           utm_medium: (body?.utmMedium ?? '').toString().trim().slice(0, 120),
           utm_campaign: (body?.utmCampaign ?? '').toString().trim().slice(0, 120),
           utm_content: (body?.utmContent ?? '').toString().trim().slice(0, 120),
+          utm_term: (body?.utmTerm ?? '').toString().trim().slice(0, 120),
+          utm_placement: (body?.utmPlacement ?? '').toString().trim().slice(0, 120),
         }),
         signal: AbortSignal.timeout(6000),
       }).catch((e) => console.error('[cualificacion] matricula:', (e as Error).message))
@@ -186,9 +197,30 @@ export const POST: APIRoute = async ({ request }) => {
       utm_medium: (body?.utmMedium ?? '').toString().trim().slice(0, 120),
       utm_campaign: (body?.utmCampaign ?? '').toString().trim().slice(0, 120),
       utm_content: (body?.utmContent ?? '').toString().trim().slice(0, 120),
+      utm_term: (body?.utmTerm ?? '').toString().trim().slice(0, 120),
+      utm_placement: (body?.utmPlacement ?? '').toString().trim().slice(0, 120),
       ...(hechas.length || embudo ? { extra: { ...marcaEmbudo, ...(hechas.length ? { respuestas: hechas, ultima } : {}) } } : {}),
     })
-    await crmHito
+    // El Lead del embudo del anuncio, también desde el servidor (CAPI), con el
+    // MISMO event_id que el navegador para que Meta no lo cuente dos veces.
+    // Solo lo manda la página del anuncio (es la única que trae
+    // `lead_event_id`) y solo al dejar los datos. Sin token, no hace nada.
+    const leadId = (body?.lead_event_id ?? '').toString()
+    const capi =
+      hito === 'datos' && /^lead-[a-z0-9-]{6,60}$/.test(leadId)
+        ? enviarLeadServidor({
+            eventId: leadId,
+            email,
+            telefono: phone,
+            nombre: firstName,
+            url: (body?.pagina ?? '').toString().slice(0, 1000),
+            ip: ipCliente(),
+            agente: request.headers.get('user-agent') || '',
+            fbc: cookies.get('_fbc')?.value,
+            fbp: cookies.get('_fbp')?.value,
+          })
+        : Promise.resolve()
+    await Promise.all([crmHito, capi])
     return json({ ok: true })
   }
 
@@ -221,6 +253,8 @@ export const POST: APIRoute = async ({ request }) => {
     utm_medium: (body?.utmMedium ?? '').toString().trim().slice(0, 120),
     utm_campaign: (body?.utmCampaign ?? '').toString().trim().slice(0, 120),
     utm_content: (body?.utmContent ?? '').toString().trim().slice(0, 120),
+    utm_term: (body?.utmTerm ?? '').toString().trim().slice(0, 120),
+    utm_placement: (body?.utmPlacement ?? '').toString().trim().slice(0, 120),
   }
 
   // 1) La escuela: solicitud (para llamarle) + evento con las respuestas.

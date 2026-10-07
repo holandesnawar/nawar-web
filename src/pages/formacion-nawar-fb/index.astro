@@ -663,6 +663,12 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
       // manda si el servidor la ha guardado (ver abajo).
       const corte = new AbortController()
       const reloj = setTimeout(() => corte.abort(), 10000)
+      // El id del Lead, el MISMO para el píxel del navegador y para el que
+      // manda el servidor (CAPI): con él, Meta lo cuenta una sola vez.
+      const leadId = `lead-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
+      // Si en esta visita ya se contó el Lead (reenvío), el servidor tampoco
+      // lo vuelve a mandar.
+      const leadYaContado = (() => { try { return !!sessionStorage.getItem(LEAD_FB) } catch { return false } })()
       fetch('/api/cualificacion', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -684,6 +690,8 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
           textos: {},
           ...contextoDelLead(),
           ...leerUTM(),
+          lead_event_id: leadYaContado ? '' : leadId,
+          pagina: location.href,
         }),
       })
         .then(async (r) => r.ok && (await r.json().catch(() => ({})))?.ok !== false)
@@ -704,15 +712,14 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
           // no, se cuentan leads que no han llegado a la escuela). Antes, el
           // píxel se vuelve a arrancar con el correo, el teléfono y el nombre
           // (coincidencia avanzada; el píxel los cifra): así Meta reconoce a
-          // la persona y atribuye mejor. Una vez por visita, con un eventID
-          // por si algún día se manda también desde el servidor (CAPI) y hay
-          // que deduplicar.
+          // la persona y atribuye mejor. Una vez por visita, con el eventID que
+          // también lleva el Lead del servidor (CAPI): Meta deduplica.
           if (guardado) {
             try {
               if (!sessionStorage.getItem(LEAD_FB)) {
                 sessionStorage.setItem(LEAD_FB, 'hecho')
                 fbq?.('init', PIXEL_META, { em: email, ph: phone.replace(/\D/g, ''), fn: nombre.toLowerCase() })
-                fbq?.('track', 'Lead', { content_name: 'Formación Nawar FB' }, { eventID: `lead-${Date.now()}-${Math.random().toString(36).slice(2, 8)}` })
+                fbq?.('track', 'Lead', { content_name: 'Formación Nawar FB' }, { eventID: leadId })
               }
             } catch {
               fbq?.('track', 'Lead', { content_name: 'Formación Nawar FB' })
