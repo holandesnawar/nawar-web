@@ -25,15 +25,15 @@ un empuje lento y un golpe de zoom en la palabra clave. El origen del zoom es su
 | 0:08–0:14 | Chica | «…y le pides a alguien más que lo haga por ti. Algo que en tu país lo hacías sin pensar. Eso no se arregla con el tiempo,» Reencuadre en «Algo», golpe en «sin pensar». |
 | 0:14–0:17 | ins-02 · PAPER | Conversación: *Wat is uw geboortedatum?* (NL) → «TE TRADUCEN»: *Te pide tu fecha de nacimiento.* → *Oh, let's just speak English!* (EN) con el eco apilado del VSL. |
 | 0:17–0:19 | Chica | «En Nawar te enseñamos neerlandés» — golpe en «Nawar». |
-| 0:19–0:24 | ins-03 · BLUE | Paul grande en una tarjeta (vídeo real), píldoras «Profesores nativos holandeses» y «Expertos en español» → «LECCIONES GRABADAS»: la plataforma real con la lección en ventana (empuje hacia el vídeo) y, en «cuando tú puedas», el móvil con el curso. |
+| 0:19–0:24 | ins-03 · BLUE | Paul en el vídeo de la lección (el mismo que el VSL usa para «vídeos del curso»; la clase en directo usa el otro) en una tarjeta grande con «Profesores nativos holandeses» y «Expertos en español» → la tarjeta vuela a su sitio dentro del reproductor (mismo fotograma) y la ventana muestra la lección entera, «LECCIONES GRABADAS»; en «cuando tú puedas», el móvil con el curso. |
 | 0:24–0:26 | Chica | «con ejercicios de verdad» |
 | 0:26–0:30 | ins-04 · BLUE | «Ejercicios / de verdad» y un mazo de tarjetas con margen propio: lectura (1.4 Lezen), completa la frase (vídeo real) y escucha (De familiefoto's); píldoras Leer · Escribir · Escuchar con ✓; «A B C D · TIPO TEST» tachado. |
 | 0:30–0:31 | Chica | «Y además, cada semana te conectas a una» — golpe en «cada semana». |
 | 0:31–0:36 | ins-05 · BLUE | «Clase en directo / cada semana»: ventana de llamada con Paul (EN DIRECTO), corrección *Werkt jij? → Werk jij?* → «PRONUNCIACIÓN»: G · UI · UU · EU (goed, huis, uur, leuk). |
 | 0:36–0:37 | Chica | «En 16 semanas» (encuadre cerrado). |
 | 0:37–0:39 | ins-06 · BLUE | La misma llamada, ahora bien: «Semana 16», *Goedemorgen! Ik wil graag een afspraak maken.* → *Natuurlijk. Dinsdag om tien uur?* → «✓ Cita confirmada». |
-| 0:39–0:45 | Chica | «…sin tener que pasar el teléfono a nadie. ¿Estás listo para comenzar? Si es así, haz clic en el botón de acá abajo,» Golpe en «¿Estás listo?»; flechas blancas discretas hacia abajo en «botón de acá abajo». |
-| 0:45–0:50 | ins-07 · BLUE | Formulario «Déjanos tus datos» (María, +31 6 ••••) → Enviar → ✓ Enviado → cierre: logo, «Formación A0–A1», «Una persona del equipo · Te contactamos», «Rellena el formulario ↓», «+30.000 alumnos siguen nuestras clases en redes». |
+| 0:39–0:43 | Chica | «…sin tener que pasar el teléfono a nadie. ¿Estás listo para comenzar? Si es así,» — golpe en «¿Estás listo?». |
+| 0:43–0:50 | Chica + bloque | Cierre: ella sigue a cámara, encuadrada más arriba, y sube un bloque de matrícula en el tercio inferior: logo + «Matrícula abierta», «Formación Nawar A0–A1», «16 semanas · 10 módulos · +360 lecciones», botón «Rellena el formulario ↓» (se pulsa en «rellena») y «Una persona del equipo te contactará». Los subtítulos suben por encima del bloque; al acabar la toma se mantiene su última sonrisa con un empuje lento. |
 
 **Sonido.**
 - La voz de la toma, normalizada a −16 LUFS.

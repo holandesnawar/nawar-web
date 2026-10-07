@@ -21,12 +21,15 @@ for t in b; do
     -c:v libx264 -preset slow -crf 18 -g 15 -r 30 -c:a aac -b:a 192k -ar 48000 -movflags +faststart "assets/video/take-$t.mp4"
 done
 
+# her last frame (a quiet smile), held under the enrolment card at the end
+ffmpeg -v error -y -sseof -0.06 -i assets/video/take-b.mp4 -frames:v 1 -update 1 assets/img/take-b-last.png
+
 echo "brand + product media from the VSL project"
 cp "$VSL"/assets/img/{logo-nawar,ui-curso-movil,ui-lezen-texto,ui-luisteren-audio}.png assets/img/
 cp "$VSL"/assets/fonts/poppins-latin-{600,700,800,900}-normal.woff2 "$VSL"/assets/fonts/inter-latin-{500,600,700}-normal.woff2 assets/fonts/
 cp "$VSL/assets/vendor/gsap.min.js" assets/vendor/
 cp "$VSL"/assets/sfx/{whoosh-short,pop,click,click-soft,chime,error,notification,ping,typing,key-press}.mp3 assets/sfx/
-cp "$VSL"/assets/video/{paul-clase-1,completa-frase,clases-video-dentro}.mp4 assets/video/
+cp "$VSL"/assets/video/{paul-clase-1,paul-clase-2,completa-frase}.mp4 assets/video/   # 2 = lesson video, 1 = live class (as in the VSL)
 cp "$VSL/.raw/music_v2.wav" "$RAW/music.wav"
 
 echo "edit, soundtrack, compositions"

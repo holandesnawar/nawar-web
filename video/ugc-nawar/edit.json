@@ -3,8 +3,13 @@
  "take": "b",
  "media_end": 50.9,
  "clip_end": 48.476,
- "total": 50.176,
- "speech_end": 48.476,
+ "total": 49.876,
+ "speech_end": 48.171,
+ "outro": 43.495,
+ "hold": {
+  "start": 48.476,
+  "duration": 1.4
+ },
  "inserts": [
   {
    "id": "ins-01",
@@ -41,12 +46,6 @@
    "ground": "blue",
    "start": 37.076,
    "duration": 2.143
-  },
-  {
-   "id": "ins-07",
-   "ground": "blue",
-   "start": 45.238,
-   "duration": 4.938
   }
  ],
  "girl": [
@@ -76,7 +75,7 @@
   },
   {
    "start": 39.219,
-   "end": 45.238
+   "end": 49.876
   }
  ],
  "words": [
@@ -1324,7 +1323,7 @@
    "text": "atenderá",
    "punct": ".",
    "t": 47.695,
-   "end": 48.476
+   "end": 48.171
   }
  ]
 }

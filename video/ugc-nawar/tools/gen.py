@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate the UGC ad (v2) from edit.json: index.html (the girl, her framing, audio), one full-screen insert per
-explanation (compositions/ins-NN.html), the CTA hint (compositions/cta.html) and the captions (compositions/captions.html).
+explanation (compositions/ins-NN.html), the enrolment card of the ending (compositions/outro.html) and the captions
+(compositions/captions.html).
 
 v2 language = the VSL's: PAPER ground (#F5F7FF + dots) for the problem, NAWAR BLUE (radial #025dc7 → #120081 + dots)
 for the solution, Poppins for display, Inter for UI text, white cards with soft indigo shadows, real platform footage
@@ -366,57 +367,67 @@ FLAG_EN = ('<svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#012169"
 
 # ============================================================================== ins-03 · profesores nativos → lecciones grabadas
 def ins03():
+    """The recorded-lesson video (paul-clase-2, the VSL's «vídeos del curso»; the live class at ins-05 uses the other
+    one): first Paul's webcam big in a card, then the card flies into its place inside the lesson player (same video,
+    same instant, so the hand-off is seamless) and the browser window reveals the whole lesson."""
     iid, P = "ins-03", "i3"; d = INS[iid]["duration"]
-    c = dict(EXP=cue(iid, "expertos"), DOM=cue(iid, "dominan"), CUE=cue(iid, "cuentas"), LEC=cue(iid, "lecciones"),
-             CUA=cue(iid, "cuando"))
-    c["SWAP"] = round(c["CUE"] - 0.1, 3)
-    c["VD"] = round(c["SWAP"] + 0.45, 3)
-    c["LD"] = round(d - c["SWAP"] + 0.05, 3)
-    # Paul: the webcam region of paul-clase-1 (x 750–1318, y 10–970 of 2502×992) scaled to the 760 px card
-    k = 760 / 568
-    c.update(PW=round(2502 * k, 1), PH=round(992 * k, 1), PL=round(-750 * k, 1), PT=round(-(350 * k - 330), 1))
+    c = dict(EXP=cue(iid, "expertos"), DOM=cue(iid, "dominan"), CUE=cue(iid, "cuentas"), CUA=cue(iid, "cuando"))
+    c["SWAP"] = round(c["CUE"] - 0.12, 3)
+    M0 = 0.5                                                   # media time at local 0 (both copies stay in sync)
+    # webcam inside paul-clase-2 (2424×1238), inset past its rounded corners
+    WX0, WY0, WX1, WY1 = 354, 94, 736, 304
+    CW = 800; k = CW / (WX1 - WX0); CH = round((WY1 - WY0) * k, 1)
+    CL, CT = 140, 360                                          # card on screen
+    # the same webcam inside the window: --sw 960 → chrome 60 px, content 960×540, video object-fit: cover
+    WL, WT = 60, 296
+    kc = 540 / 1238; ox = -(2424 * kc - 960) / 2
+    tx = WL + WX0 * kc + ox; ty = WT + 60 + WY0 * kc; s_end = (WX1 - WX0) * kc / CW
+    c.update(CH=CH, VW=round(2424 * k, 1), VH=round(1238 * k, 1), VL=round(-WX0 * k, 1), VT=round(-WY0 * k, 1),
+             CL=CL, CT=CT, FX=round(tx - CL, 2), FY=round(ty - CT, 2), FS=round(s_end, 4), M0=M0,
+             LAND=round(c["SWAP"] + 0.6, 3), CVD=round(c["SWAP"] + 0.8, 3), WST=round(c["SWAP"] - 0.06, 3),
+             WMS=round(M0 + c["SWAP"] - 0.06, 3), WD=round(d - c["SWAP"] + 0.1, 3))
     css = WIN_CSS + """
-    #i3-paul { left: 160px; top: 214px; width: 760px; height: 840px; overflow: hidden; border-radius: 44px; background: #0C0C1E; }
-    #i3-pz { position: absolute; left: 0; top: 0; width: 760px; height: 840px; transform-origin: 380px 330px; }
-    #i3-pv { position: absolute; left: «PL»px; top: «PT»px; width: «PW»px; height: «PH»px; }
-    #i3-pgrad { position: absolute; left: 0; bottom: 0; width: 760px; height: 260px; background: linear-gradient(180deg, rgba(4,0,40,0) 0%, rgba(4,0,40,0.62) 100%); }
-    #i3-pedge { position: absolute; inset: 0; border-radius: 44px; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.22); }
-    #i3-name { position: absolute; left: 44px; bottom: 112px; font-weight: 700; font-size: 44px; line-height: 1; color: #FFFFFF; white-space: nowrap; }
-    #i3-role { position: absolute; left: 46px; bottom: 70px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 27px; line-height: 1; color: rgba(255,255,255,0.78); white-space: nowrap; }
-    #i3-p1row { top: 1022px; }
-    #i3-p2row { top: 1110px; }
+    #i3-card { left: «CL»px; top: «CT»px; width: 800px; height: «CH»px; overflow: hidden; border-radius: 36px; background: #0C0C1E; transform-origin: 0% 0%; }
+    #i3-cv { position: absolute; left: «VL»px; top: «VT»px; width: «VW»px; height: «VH»px; }
+    #i3-cgrad { position: absolute; left: 0; bottom: 0; width: 800px; height: 200px; background: linear-gradient(180deg, rgba(4,0,40,0) 0%, rgba(4,0,40,0.6) 100%); }
+    #i3-cedge { position: absolute; inset: 0; border-radius: 36px; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.22); }
+    #i3-name { position: absolute; left: 40px; bottom: 84px; font-weight: 700; font-size: 42px; line-height: 1; color: #FFFFFF; white-space: nowrap; }
+    #i3-role { position: absolute; left: 42px; bottom: 44px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 26px; line-height: 1; color: rgba(255,255,255,0.8); white-space: nowrap; }
+    #i3-p1row { top: 852px; }
+    #i3-p2row { top: 940px; }
     #i3-lrow { top: 208px; }
+    #i3-lz { position: absolute; left: 0; top: 0; width: 100%; height: 100%; transform-origin: 58% 42%; }
     #i3-phone { position: absolute; left: 712px; top: 594px; width: 300px; height: 618px; border-radius: 54px; background: #0C0C1E;
       box-shadow: 0 40px 100px rgba(4,0,40,0.55), 0 0 0 2px rgba(255,255,255,0.10); }
     #i3-screen { position: absolute; left: 14px; top: 14px; width: 272px; height: 590px; border-radius: 42px; overflow: hidden; background: #FFFFFF; }
     #i3-shot { position: absolute; left: 0; top: 0; width: 272px; height: 592px; display: block; }
-    #i3-lz { position: absolute; left: 0; top: 0; width: 100%; height: 100%; transform-origin: 64% 30%; }
     #i3-notch { position: absolute; left: 96px; top: 12px; width: 80px; height: 22px; border-radius: 11px; background: #0C0C1E; }
 """
-    body = "\n".join([ground(P, "blue"), f"""    <div id="i3-s1" class="i3-full">
-      <div id="i3-paul" class="i3-card i3-on-blue">
-        <div id="i3-pz"><video id="i3-pv" class="clip" src="assets/video/paul-clase-1.mp4" muted playsinline data-start="0" data-duration="«VD»" data-media-start="0.4" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video></div>
-        <div id="i3-pgrad"></div><div id="i3-pedge"></div>
+    body = "\n".join([ground(P, "blue"), f"""    <div id="i3-s2" class="i3-full">
+      <div id="i3-lrow" class="i3-row"><div id="i3-lp" class="i3-pill">{icon('play')}<span>Lecciones grabadas</span></div></div>
+      """ + win(P, "win", 960, WL, WT, '<div id="i3-lz"><video id="i3-lv" class="clip i3-media" src="assets/video/paul-clase-2.mp4" muted playsinline data-start="«WST»" data-duration="«WD»" data-media-start="«WMS»" data-track-index="2" data-hf-media-start-basis="local"></video></div>') + f"""
+      <div id="i3-phone"><div id="i3-screen"><img id="i3-shot" src="assets/img/ui-curso-movil.png" alt="" /></div><div id="i3-notch"></div></div>
+    </div>
+    <div id="i3-s1" class="i3-full">
+      <div id="i3-card" class="i3-card i3-on-blue">
+        <video id="i3-cv" class="clip" src="assets/video/paul-clase-2.mp4" muted playsinline data-start="0" data-duration="«CVD»" data-media-start="«M0»" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video>
+        <div id="i3-cgrad"></div><div id="i3-cedge"></div>
         <div id="i3-name">Paul</div><div id="i3-role">Profesor de Nawar</div>
       </div>
       <div id="i3-p1row" class="i3-row"><div id="i3-p1" class="i3-wpill"><span class="i3-flag i3-flagd">{FLAG_NL}</span><span>Profesores nativos holandeses</span></div></div>
       <div id="i3-p2row" class="i3-row"><div id="i3-p2" class="i3-wpill"><span class="i3-flag i3-flagd">{FLAG_ES}</span><span>Expertos en español</span></div></div>
-    </div>
-    <div id="i3-s2" class="i3-full">
-      <div id="i3-lrow" class="i3-row"><div id="i3-lp" class="i3-pill">{icon('play')}<span>Lecciones grabadas</span></div></div>
-      """ + win(P, "win", 960, 60, 296, '<div id="i3-lz"><video id="i3-lv" class="clip i3-media" src="assets/video/clases-video-dentro.mp4" muted playsinline data-start="«SWAP»" data-duration="«LD»" data-media-start="2.6" data-track-index="2" data-hf-media-start-basis="local"></video></div>') + f"""
-      <div id="i3-phone"><div id="i3-screen"><img id="i3-shot" src="assets/img/ui-curso-movil.png" alt="" /></div><div id="i3-notch"></div></div>
     </div>"""])
     js = """
-      tl.fromTo(q("paul"), { opacity: 0, y: 70, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out" }, 0);
-      tl.fromTo(q("pz"), { scale: 1 }, { scale: 1.05, duration: «SWAP», ease: "none" }, 0);
+      tl.fromTo(q("card"), { opacity: 0, y: 60, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out" }, 0);
       tl.fromTo(q("p1"), { opacity: 0, y: 26, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, «EXP» - 0.04);
       tl.fromTo(q("p2"), { opacity: 0, y: 26, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, «DOM» - 0.04);
-      tl.to(q("s1"), { opacity: 0, y: -90, duration: 0.26, ease: "power2.in" }, «SWAP» - 0.2);
-      tl.fromTo(q("s2"), { opacity: 0 }, { opacity: 1, duration: 0.01 }, «SWAP» - 0.02);
-      tl.fromTo(q("lp"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «SWAP»);
-      tl.fromTo(q("win"), { opacity: 0, y: 120, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.46, ease: "power3.out" }, «SWAP»);
-      tl.fromTo(q("lz"), { scale: 1 }, { scale: 1.3, duration: «CUA» - «SWAP» + 0.2, ease: "power1.inOut" }, «SWAP» + 0.1);
+      // the card flies into the webcam of the lesson player (match cut on the same frame)
+      tl.to([q("p1"), q("p2"), q("name"), q("role"), q("cgrad")], { opacity: 0, duration: 0.16, ease: "power2.out" }, «SWAP» - 0.12);
+      tl.fromTo(q("s2"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, «SWAP»);
+      tl.to(q("card"), { x: «FX», y: «FY», scale: «FS», duration: 0.6, ease: "power3.inOut" }, «SWAP»);
+      tl.to(q("card"), { opacity: 0, duration: 0.12, ease: "none" }, «LAND»);
+      tl.fromTo(q("lp"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «SWAP» + 0.3);
+      tl.fromTo(q("lz"), { scale: 1 }, { scale: 1.14, duration: «D» - «LAND», ease: "power1.inOut" }, «LAND»);
       tl.fromTo(q("phone"), { opacity: 0, x: 160, rotation: 7 }, { opacity: 1, x: 0, rotation: 0, duration: 0.46, ease: "power3.out" }, «CUA» - 0.16);
       tl.fromTo(q("shot"), { y: 0 }, { y: -40, duration: «D» - «CUA», ease: "power1.inOut" }, «CUA» + 0.1);
 """
@@ -616,107 +627,62 @@ def ins06():
     return comp(iid, d, P, css, body, js, c), sfx
 
 
-# ============================================================================== ins-07 · formulario → equipo → cierre
-def ins07():
-    iid, P = "ins-07", "i7"; d = INS[iid]["duration"]
-    c = dict(REL=cue(iid, "rellena"), Y=cue(iid, "y"), PER=cue(iid, "persona"), EQU=cue(iid, "equipo"), ATE=cue(iid, "atendera"))
-    c["END"] = round(ED["speech_end"] - INS[iid]["start"], 3)
-    c["CLK"] = round(c["Y"] - 0.26, 3)
+# ============================================================================== outro · she stays on screen, enrolment block below
+def outro():
+    """From «haz clic en el botón de acá abajo» to the end the girl stays on screen (framed higher, then held on her
+    last smile) and a clean enrolment card slides up in the lower third: logo + «Matrícula abierta», the course, the
+    allowed stats, the button «Rellena el formulario ↓» and «Una persona del equipo te contactará»."""
+    P = "o"; t0 = ED["outro"]; d = round(TOTAL - t0, 3)
+    def wcue(word, k=0):
+        hits = [w for w in WORDS if w["t"] >= t0 and norm(w["text"]) == norm(word)]
+        return round(hits[k]["t"] - t0, 3)
+    c = dict(REL=wcue("rellena"), PER=wcue("persona"), END=round(ED["speech_end"] - t0, 3))
     css = """
-    #i7-form { left: 110px; top: 340px; width: 860px; height: 640px; }
-    #i7-flogo { position: absolute; left: 50px; top: 46px; width: 163px; height: 58px; background: url("assets/img/logo-nawar.png") left center / contain no-repeat; }
-    #i7-ftitle { position: absolute; left: 50px; top: 128px; font-weight: 800; font-size: 46px; line-height: 1.1; letter-spacing: -0.02em; color: «INK»; white-space: nowrap; }
-    .i7-lab { position: absolute; left: 52px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 25px; color: «MUTED»; white-space: nowrap; }
-    .i7-inp { position: absolute; left: 50px; width: 760px; height: 82px; border-radius: 18px; background: «APP»; box-shadow: inset 0 0 0 2px #E3E6F0;
-      font-family: "Inter", sans-serif; font-weight: 600; font-size: 34px; line-height: 82px; color: «INK»; padding-left: 28px; box-sizing: border-box; white-space: nowrap; }
-    #i7-btn { position: absolute; left: 50px; top: 516px; width: 760px; height: 88px; border-radius: 20px; background: «BLUE»; overflow: hidden; }
-    .i7-bt { position: absolute; left: 0; top: 0; width: 760px; height: 88px; display: flex; align-items: center; justify-content: center; gap: 12px;
-      font-weight: 700; font-size: 34px; color: #FFFFFF; white-space: nowrap; }
-    .i7-bt svg { display: block; width: 40px; height: 40px; }
-    #i7-sent { background: «GREEN»; opacity: 0; }
-    #i7-cur { position: absolute; left: 0; top: 0; width: 46px; height: 60px; }
-    #i7-cur svg { display: block; width: 46px; height: 60px; }
-    #i7-rip { position: absolute; left: 0; top: 0; width: 90px; height: 90px; border-radius: 50%; border: 5px solid #FFFFFF; box-sizing: border-box; opacity: 0; }
-    #i7-logo { position: absolute; left: 270px; top: 430px; width: 540px; height: auto; display: block; }
-    #i7-sub { position: absolute; left: 0; top: 646px; width: 1080px; text-align: center; font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px;
-      letter-spacing: 0.22em; color: rgba(255,255,255,0.72); white-space: nowrap; }
-    #i7-name { position: absolute; left: 0; top: 694px; width: 1080px; text-align: center; font-weight: 800; font-size: 74px; line-height: 1.05;
-      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
-    #i7-team { left: 150px; top: 840px; width: 780px; height: 128px; border-radius: 30px; background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.22);
-      box-sizing: border-box; }
-    #i7-tk { position: absolute; left: 40px; top: 20px; line-height: 1; font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 0.18em; color: rgba(255,255,255,0.66); white-space: nowrap; }
-    #i7-tt { position: absolute; left: 40px; top: 56px; font-weight: 800; font-size: 44px; line-height: 1; letter-spacing: -0.02em; color: #FFFFFF; white-space: nowrap; }
-    #i7-tb { position: absolute; right: 26px; top: 20px; width: 86px; height: 86px; border-radius: 50%; background: «BLUE»; box-shadow: 0 10px 26px rgba(0,0,0,0.25); }
-    #i7-tb svg { position: absolute; left: 20px; top: 20px; width: 46px; height: 46px; }
-    .i7-tring { position: absolute; right: 26px; top: 20px; width: 86px; height: 86px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.8); box-sizing: border-box; opacity: 0; }
-    #i7-ctarow { top: 1014px; }
-    #i7-cta { display: flex; align-items: center; gap: 16px; height: 92px; padding: 0 40px; border-radius: 999px; background: #FFFFFF; color: «INDIGO»;
-      font-weight: 800; font-size: 38px; line-height: 1; white-space: nowrap; box-shadow: 0 20px 50px rgba(4,0,40,0.4); }
-    #i7-cta svg { display: block; width: 44px; height: 44px; }
-    #i7-stat { position: absolute; left: 0; top: 1140px; width: 1080px; text-align: center; font-family: "Inter", sans-serif; font-weight: 600; font-size: 29px;
-      color: rgba(255,255,255,0.78); white-space: nowrap; }
-    #i7-stat b { color: #FFFFFF; font-weight: 700; }
+    #o-card { left: 80px; top: 1112px; width: 920px; height: 388px; border-radius: 38px;
+      box-shadow: 0 34px 90px rgba(4,0,40,0.38), 0 8px 22px rgba(4,0,40,0.18); }
+    #o-logo { position: absolute; left: 40px; top: 32px; width: 146px; height: 52px; background: url("assets/img/logo-nawar.png") left center / contain no-repeat; }
+    #o-open { position: absolute; right: 36px; top: 36px; display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 18px 0 14px; border-radius: 999px;
+      background: #EAF7EF; color: #15803D; font-family: "Inter", sans-serif; font-weight: 700; font-size: 19px; line-height: 1; letter-spacing: 0.14em; white-space: nowrap; }
+    #o-dot { display: block; width: 12px; height: 12px; border-radius: 50%; background: «GREEN»; }
+    #o-title { position: absolute; left: 40px; top: 104px; font-weight: 800; font-size: 46px; line-height: 1.05; letter-spacing: -0.025em; color: «INK»; white-space: nowrap; }
+    #o-stats { position: absolute; left: 42px; top: 166px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 26px; line-height: 1; color: «MUTED»; white-space: nowrap; }
+    #o-btn { position: absolute; left: 40px; top: 214px; width: 840px; height: 94px; border-radius: 22px; background: «BLUE»; overflow: hidden;
+      box-shadow: 0 14px 30px rgba(11,109,240,0.35); }
+    #o-bt { position: absolute; left: 0; top: 0; width: 840px; height: 94px; display: flex; align-items: center; justify-content: center; gap: 14px;
+      font-weight: 700; font-size: 36px; line-height: 1; color: #FFFFFF; white-space: nowrap; }
+    #o-arr { position: relative; width: 40px; height: 40px; color: #FFFFFF; }
+    #o-arr svg { position: absolute; left: 0; top: 0; width: 40px; height: 40px; }
+    #o-shine { position: absolute; left: -260px; top: 0; width: 200px; height: 94px;
+      background: linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.32) 50%, rgba(255,255,255,0) 100%); }
+    #o-team { position: absolute; left: 0; top: 334px; width: 920px; display: flex; justify-content: center; align-items: center; gap: 12px;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 25px; line-height: 1; color: «MUTED»; white-space: nowrap; }
+    #o-ph { position: relative; width: 34px; height: 34px; border-radius: 50%; background: «BLUE»; }
+    #o-ph svg { position: absolute; left: 8px; top: 8px; width: 18px; height: 18px; }
 """
-    body = "\n".join([ground(P, "blue"), f"""    <div id="i7-s1" class="i7-full">
-      <div id="i7-form" class="i7-card i7-on-blue">
-        <div id="i7-flogo"></div>
-        <div id="i7-ftitle">Déjanos tus datos</div>
-        <div class="i7-lab" style="top: 222px;">Nombre</div>
-        <div class="i7-inp" style="top: 260px;"><span id="i7-f1"></span></div>
-        <div class="i7-lab" style="top: 370px;">Teléfono</div>
-        <div class="i7-inp" style="top: 408px;"><span id="i7-f2"></span></div>
-        <div id="i7-btn"><div id="i7-send" data-layout-allow-overlap class="i7-bt">Enviar</div><div id="i7-sent" data-layout-allow-overlap class="i7-bt">{icon('checkw')}<span>Enviado</span></div></div>
-      </div>
-      <div id="i7-rip"></div>
-      <div id="i7-cur">{icon('cursor')}</div>
-    </div>
-    <div id="i7-s2" class="i7-full">
-      <img id="i7-logo" src="assets/img/logo-nawar.png" alt="" />
-      <div id="i7-sub">HOLANDÉS NAWAR</div>
-      <div id="i7-name">Formación A0–A1</div>
-      <div id="i7-team" class="i7-card"><div id="i7-tk">UNA PERSONA DEL EQUIPO</div><div id="i7-tt">Te contactamos</div>
-        <div class="i7-tring" id="i7-r1"></div><div class="i7-tring" id="i7-r2"></div><div id="i7-tb">{icon('phone')}</div></div>
-      <div id="i7-ctarow" class="i7-row"><div id="i7-cta"><span>Rellena el formulario</span>{icon('down')}</div></div>
-      <div id="i7-stat"><b>+30.000 alumnos</b> siguen nuestras clases en redes</div>
-    </div>"""])
-    # cursor: from lower right to the button centre (form 110,300 → button centre at 540, 860)
+    body = f"""    <div id="o-card" class="o-card">
+      <div id="o-logo"></div>
+      <div id="o-open"><span id="o-dot"></span><span>MATRÍCULA ABIERTA</span></div>
+      <div id="o-title">Formación Nawar A0–A1</div>
+      <div id="o-stats">16 semanas · 10 módulos · +360 lecciones</div>
+      <div id="o-btn"><div id="o-shine"></div><div id="o-bt"><span>Rellena el formulario</span><div id="o-arr">{icon('down')}</div></div></div>
+      <div id="o-team"><div id="o-ph">{icon('phone')}</div><span>Una persona del equipo te contactará</span></div>
+    </div>"""
     js = """
-      tl.fromTo(q("form"), { opacity: 0, y: 90, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power3.out" }, 0);
-""" + typing_js("f1", "María", 0.16, 0.42) + typing_js("f2", "+31 6 •••• ••••", 0.44, c["CLK"] - 0.1) + """
-      tl.fromTo(q("cur"), { x: 860, y: 1180, opacity: 0 }, { x: 640, y: 924, opacity: 1, duration: 0.42, ease: "power3.out" }, «CLK» - 0.42);
-      tl.to(q("btn"), { scale: 0.96, duration: 0.07, ease: "power2.out" }, «CLK»);
-      tl.to(q("btn"), { scale: 1, duration: 0.16, ease: "back.out(2)" }, «CLK» + 0.07);
-      tl.fromTo(q("rip"), { x: 599, y: 882, scale: 0.4, opacity: 0.85 }, { x: 599, y: 882, scale: 1.5, opacity: 0, duration: 0.4, ease: "power2.out" }, «CLK»);
-      tl.to(q("sent"), { opacity: 1, duration: 0.12 }, «CLK» + 0.06);
-      tl.to(q("send"), { opacity: 0, duration: 0.08 }, «CLK» + 0.06);
-      tl.to(q("s1"), { opacity: 0, y: -80, duration: 0.24, ease: "power2.in" }, «Y» - 0.04);
-      tl.fromTo(q("s2"), { opacity: 0 }, { opacity: 1, duration: 0.01 }, «Y» + 0.18);
-      tl.fromTo(q("logo"), { opacity: 0, scale: 0.8, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: "back.out(1.6)" }, «Y» + 0.18);
-      tl.fromTo(q("sub"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «Y» + 0.36);
-      tl.fromTo(q("name"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.34, ease: "power3.out" }, «Y» + 0.42);
-      tl.fromTo(q("team"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.38, ease: "power3.out" }, «EQU» - 0.1);
-      tl.fromTo(q("r1"), { opacity: 0.8, scale: 1 }, { opacity: 0, scale: 1.6, duration: 0.6, ease: "power2.out" }, «ATE»);
-      tl.fromTo(q("r2"), { opacity: 0.8, scale: 1 }, { opacity: 0, scale: 1.6, duration: 0.6, ease: "power2.out" }, «ATE» + 0.4);
-      tl.fromTo(q("cta"), { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.7)" }, «END» + 0.05);
-      tl.fromTo(q("stat"), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.34, ease: "power3.out" }, «END» + 0.3);
-      tl.to(q("cta"), { keyframes: [{ y: 8, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" }, { y: 8, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" }] }, «END» + 0.6);
+      tl.fromTo(q("card"), { opacity: 0, y: 150 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.02);
+      tl.fromTo([q("logo"), q("open")], { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.16);
+      tl.fromTo(q("title"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.22);
+      tl.fromTo(q("stats"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.28);
+      tl.fromTo(q("btn"), { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.36, ease: "back.out(1.7)" }, 0.34);
+      tl.fromTo(q("team"), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «PER» - 0.08);
+      tl.to(q("btn"), { scale: 0.97, duration: 0.08, ease: "power2.out" }, «REL»);
+      tl.to(q("btn"), { scale: 1, duration: 0.3, ease: "back.out(2.4)" }, «REL» + 0.08);
+      tl.fromTo(q("shine"), { x: 0 }, { x: 1300, duration: 0.7, ease: "power2.inOut" }, «REL» + 0.04);
+      tl.fromTo(q("shine"), { x: 0 }, { x: 1300, duration: 0.7, ease: "power2.inOut", immediateRender: false }, «END» + 0.2);
+      tl.fromTo(q("arr"), { y: 0 }, { keyframes: [{ y: 7, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" },
+        { y: 7, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" }], immediateRender: false }, «END» - 0.2);
 """
-    sfx = [(0.16, "key-press", 0.18), (c["CLK"], "click", 0.3), (c["Y"] + 0.18, "whoosh-short", 0.12), (c["ATE"], "notification", 0.2)]
-    return comp(iid, d, P, css, body, js, c), sfx
-
-
-# ============================================================================== CTA hint while she says «el botón de acá abajo»
-def cta():
-    P = "ct"; t0 = round(at("boton") - 0.1, 3); t1 = INS["ins-07"]["start"]; d = round(t1 - t0, 3)
-    css = """
-    .ct-ch { position: absolute; left: 480px; width: 120px; height: 70px; opacity: 0; }
-    .ct-ch svg { display: block; width: 120px; height: 70px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.45)); }
-"""
-    body = "\n".join(f'    <div id="ct-c{k}" class="ct-ch" style="top:{1400 + 62 * k}px;">{icon("chev")}</div>' for k in range(3))
-    js = ""
-    for k in range(3):
-        js += f'      tl.fromTo(q("c{k}"), {{ opacity: 0, y: -14 }}, {{ keyframes: [{{ opacity: 0.95, y: 0, duration: 0.2 }}, {{ opacity: 0.25, y: 10, duration: 0.3 }}, {{ opacity: 0.95, y: 0, duration: 0.2 }}, {{ opacity: 0.25, y: 10, duration: 0.3 }}], immediateRender: false }}, {0.05 + 0.1 * k:.2f});\n'
-    return comp("cta", d, P, css, body, js), t0, d
+    sfx = [(0.02, "whoosh-short", 0.12), (c["REL"], "click-soft", 0.2), (c["PER"] - 0.08, "notification", 0.16)]
+    return comp("outro", d, P, css, body, js, c), t0, d, sfx
 
 
 # ============================================================================== captions (clean, white, no box)
@@ -732,7 +698,7 @@ def ground_at(t):
 
 def captions():
     P = "cap"
-    bounds = sorted({0.0} | {i["start"] for i in ED["inserts"]} | {round(i["start"] + i["duration"], 3) for i in ED["inserts"]})
+    bounds = sorted({0.0, ED["outro"]} | {i["start"] for i in ED["inserts"]} | {round(i["start"] + i["duration"], 3) for i in ED["inserts"]})
     pages, cur = [], []
     def region(t): return max(b for b in bounds if b <= t + 1e-6)
     for k, w in enumerate(WORDS):
@@ -757,7 +723,8 @@ def captions():
         t1 = (pages[k + 1][0]["t"] - 0.03) if k + 1 < len(pages) else end_all
         g = ground_at(pg[0]["t"] + 0.01)
         spans = " ".join('<span id="cap-w%d-%d" class="cap-w">%s</span>' % (k, i, w["show"]) for i, w in enumerate(pg))
-        body.append('    <div id="cap-g%d" class="cap-g cap-gr-%s">%s</div>' % (k, g, spans))
+        up = " cap-up" if pg[0]["t"] >= ED["outro"] - 1e-3 else ""      # above the enrolment card
+        body.append('    <div id="cap-g%d" class="cap-g cap-gr-%s%s">%s</div>' % (k, g, up, spans))
         js.append('      tl.fromTo(q("g%d"), { opacity: %d }, { opacity: 1, duration: 0.01 }, %.3f);' % (k, 1 if k == 0 else 0, t0))
         js.append('      tl.set(q("g%d"), { opacity: 0 }, %.3f);' % (k, t1))
         for i, w in enumerate(pg if k else []):     # the first page is on screen from frame 0 (thumbnail / scroll-stop)
@@ -766,6 +733,7 @@ def captions():
     css = """
     .cap-g { position: absolute; left: 90px; top: 1268px; width: 900px; height: 150px; display: flex; flex-wrap: wrap; align-content: center;
       justify-content: center; column-gap: 18px; row-gap: 0px; opacity: 0; }
+    .cap-up { top: 972px; }
     .cap-w { display: inline-block; font-weight: 800; font-size: 66px; line-height: 76px; letter-spacing: -0.015em; white-space: nowrap; }
     .cap-gr-girl .cap-w { color: #FFFFFF; text-shadow: 0 3px 14px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.45); }
     .cap-gr-blue .cap-w { color: #FFFFFF; text-shadow: 0 3px 16px rgba(4,0,40,0.45); }
@@ -776,22 +744,26 @@ def captions():
 
 # ============================================================================== index.html
 def zooms():
-    """coordinate-target-zoom on the girl (origin = her face): (time, scale, duration, ease, from|None). Each section
-    after an insert starts at its own framing (the cut hides the change), with a slow push and a punch on a key word."""
+    """coordinate-target-zoom on the girl (origin = her face): tweens (time, duration, ease, to, from|None). Each
+    section after an insert starts at its own framing (the cut hides the change), with a slow push and a punch on a
+    key word. For the outro she is framed higher (y −150) so the enrolment card sits under her face."""
     G = ED["girl"]; Z = []
     def push(g, s0, s1, until=None):
-        Z.append((g["start"], s1, round((until or g["end"]) - g["start"], 3), "none", s0))
+        Z.append((g["start"], round((until or g["end"]) - g["start"], 3), "none", {"scale": s1}, {"scale": s0, "y": 0}))
     def punch(word, s, k=0, d=0.22, ease="power3.out"):
-        Z.append((round(at(word, k) - 0.05, 3), s, d, ease, None))
+        Z.append((round(at(word, k) - 0.05, 3), d, ease, {"scale": s}, None))
     def cut(word, s0, s1, until, k=0):
-        t = round(at(word, k) - 0.04, 3); Z.append((t, s1, round(until - t, 3), "none", s0))
+        t = round(at(word, k) - 0.04, 3); Z.append((t, round(until - t, 3), "none", {"scale": s1}, {"scale": s0, "y": 0}))
     g = G[0]; push(g, 1.0, 1.05, at("escucha") - 0.05); punch("escucha", 1.15); cut("seguro", 1.04, 1.07, g["end"])
     g = G[1]; push(g, 1.12, 1.15, at("algo") - 0.04); cut("algo", 1.02, 1.05, at("sin") - 0.05); punch("sin", 1.16); cut("eso", 1.06, 1.09, g["end"])
     g = G[2]; push(g, 1.0, 1.03, at("nawar") - 0.05); punch("nawar", 1.13)
     g = G[3]; push(g, 1.14, 1.18)
     g = G[4]; push(g, 1.0, 1.04, at("cada") - 0.05); punch("cada", 1.13)
     g = G[5]; push(g, 1.16, 1.2)
-    g = G[6]; push(g, 1.02, 1.05, at("estas") - 0.05); punch("estas", 1.15); punch("haz", 1.04, d=0.35, ease="power2.inOut")
+    g = G[6]; push(g, 1.02, 1.05, at("estas") - 0.05); punch("estas", 1.15)
+    o = ED["outro"]
+    Z.append((round(o - 0.45, 3), 0.6, "power2.inOut", {"scale": 1.15, "y": -150}, None))
+    Z.append((round(o + 0.15, 3), round(TOTAL - o - 0.15, 3), "none", {"scale": 1.19}, None))
     return Z
 
 
@@ -800,14 +772,14 @@ def media_len(path):
     return round(float(out.strip()), 3)
 
 
-def index(sfx_all, cta_t0, cta_d):
+def index(sfx_all, out_t0, out_d):
     fx, fy = FACE; d = ED["clip_end"]
     auto = json.dumps({"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1},
                       {"t": round(d - 0.06, 3), "v": 1}, {"t": d, "v": 0}]}]})
     hosts = []
     for k, i in enumerate(ED["inserts"]):
         hosts.append(f'    <div id="{i["id"]}" data-composition-id="{i["id"]}" data-composition-src="compositions/{i["id"]}.html" data-start="{i["start"]}" data-duration="{i["duration"]}" data-track-index="{2 + k}" data-width="1080" data-height="1920"></div>')
-    hosts.append(f'    <div id="cta" data-composition-id="cta" data-composition-src="compositions/cta.html" data-start="{cta_t0}" data-duration="{cta_d}" data-track-index="9" data-width="1080" data-height="1920"></div>')
+    hosts.append(f'    <div id="outro" data-composition-id="outro" data-composition-src="compositions/outro.html" data-start="{out_t0}" data-duration="{out_d}" data-track-index="9" data-width="1080" data-height="1920"></div>')
     hosts.append(f'    <div id="captions" data-track-kind="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="{TOTAL}" data-track-index="10" data-width="1080" data-height="1920"></div>')
     auds = [f'    <audio id="music" src="assets/audio/music-bed.wav" data-start="0" data-duration="{TOTAL}" data-track-index="11" data-volume="1"></audio>']
     for k, (t, name, vol, *rest) in enumerate(sfx_all):
@@ -816,11 +788,14 @@ def index(sfx_all, cta_t0, cta_d):
         dd = round(min(dd, TOTAL - t), 3)
         auds.append(f'    <audio id="sfx{k}" src="{src}" data-start="{max(0.0, round(t, 3))}" data-duration="{dd}" data-track-index="{20 + k}" data-volume="{vol}"></audio>')
     ztl = []
-    for (t, to, du, ease, frm) in sorted(zooms()):
+    js = lambda dct: "{ " + ", ".join(f"{k}: {v}" for k, v in dct.items())
+    for (t, du, ease, to, frm) in sorted(zooms(), key=lambda z: z[0]):
+        du = max(0.01, round(du, 3))
         if frm is not None:
-            ztl.append(f'      tl.fromTo("#zw", {{ scale: {frm} }}, {{ scale: {to}, duration: {max(0.01, round(du, 3))}, ease: "{ease}", immediateRender: false }}, {round(t, 3)});')
+            ztl.append(f'      tl.fromTo("#zw", {js(frm)} }}, {js(to)}, duration: {du}, ease: "{ease}", immediateRender: false }}, {round(t, 3)});')
         else:
-            ztl.append(f'      tl.to("#zw", {{ scale: {to}, duration: {max(0.01, round(du, 3))}, ease: "{ease}" }}, {round(t, 3)});')
+            ztl.append(f'      tl.to("#zw", {js(to)}, duration: {du}, ease: "{ease}" }}, {round(t, 3)});')
+    hold = ED["hold"]
     html = f"""<!doctype html>
 <html lang="es">
   <head>
@@ -833,20 +808,22 @@ def index(sfx_all, cta_t0, cta_d):
       #root {{ position: relative; width: 100%; height: 100%; overflow: hidden; background: #120081; }}
       .shot {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }}
       #zw {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; will-change: transform; }}
-      #zw video {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
+      #zw video, #zw img {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
     </style>
   </head>
   <body>
     <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="{TOTAL}">
     <div class="shot"><div id="zw" data-layout-allow-overflow style="transform-origin: {fx}px {fy}px;">
       <video id="girl" class="clip" src="assets/video/take-{ED['take']}.mp4" data-start="0" data-duration="{d}" data-media-start="0" data-playback-rate="{RATE}" data-track-index="0" playsinline data-has-audio="true" data-automation='{auto}'></video>
+      <img id="hold" class="clip" src="assets/img/take-b-last.png" alt="" data-start="{hold['start']}" data-duration="{hold['duration']}" data-track-index="1" />
     </div></div>
 {chr(10).join(hosts)}
 {chr(10).join(auds)}
     </div>
     <script>
       const tl = gsap.timeline({{ paused: true }});
-      // framing on the girl: one look per section, a slow push and a punch on the key word (origin = her face)
+      // framing on the girl: one look per section, a slow push and a punch on the key word (origin = her face);
+      // the take ends on her smile, held (#hold, its last frame) under the enrolment card
 {chr(10).join(ztl)}
       window.__timelines["main"] = tl;
     </script>
@@ -862,19 +839,20 @@ def main():
         if f.endswith(".html"):
             os.remove(os.path.join(ROOT, "compositions", f))
     sfx_all = []
-    for fn in [ins01, ins02, ins03, ins04, ins05, ins06, ins07]:
+    for fn in [ins01, ins02, ins03, ins04, ins05, ins06]:
         html, sfx = fn()
         iid = "ins-0" + fn.__name__[-1]
         open(os.path.join(ROOT, "compositions", f"{iid}.html"), "w").write(html)
         sfx_all.append((INS[iid]["start"], "whoosh-short", 0.1))
         for t, name, vol, *rest in sfx:
             sfx_all.append((INS[iid]["start"] + t, name, vol, *rest))
-    html, t0, d = cta()
-    open(os.path.join(ROOT, "compositions", "cta.html"), "w").write(html)
+    html, t0, d, osfx = outro()
+    open(os.path.join(ROOT, "compositions", "outro.html"), "w").write(html)
+    sfx_all += [(t0 + t, name, vol) for t, name, vol in osfx]
     caps, npages = captions()
     open(os.path.join(ROOT, "compositions", "captions.html"), "w").write(caps)
     index(sorted(sfx_all, key=lambda x: x[0]), t0, d)
-    print(f"index.html + {len(ED['inserts'])} inserts + cta + captions ({npages} pages) · total {TOTAL}s · {len(sfx_all)} sfx")
+    print(f"index.html + {len(ED['inserts'])} inserts + outro + captions ({npages} pages) · total {TOTAL}s · {len(sfx_all)} sfx")
 
 
 if __name__ == "__main__":

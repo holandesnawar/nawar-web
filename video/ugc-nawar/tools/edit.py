@@ -14,8 +14,9 @@ import json, os, unicodedata, re, difflib, statistics
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RATE = 1.05
 TAKE = "b"
-MEDIA_END = 50.90      # source out (after «…te atenderá»)
-TAIL = 1.7             # end card hold after the clip
+MEDIA_END = 50.90      # source out: the end of the take (she smiles after «…te atenderá»)
+SPEECH_END = 50.58     # «…atenderá» fades out here (energy envelope)
+TAIL = 1.4             # hold on her last frame (she smiles) under the enrolment block
 LEAD = 0.06            # an insert cuts in this long before its first word
 # (insert id, ground, first words, first words of what comes after — None = runs to the end)
 INSERTS = [
@@ -25,8 +26,8 @@ INSERTS = [
     ("ins-04", "blue",  "para leer", "y ademas cada"),
     ("ins-05", "blue",  "clase en directo", "en dieciseis semanas"),
     ("ins-06", "blue",  "eres tu el", "sin tener que"),
-    ("ins-07", "blue",  "rellena el formulario", None),
 ]
+OUTRO = "haz clic en"     # the enrolment block slides up over her from here to the end (she stays on screen)
 
 def norm(t):
     t = unicodedata.normalize("NFD", t.lower()); t = "".join(c for c in t if unicodedata.category(c) != "Mn")
@@ -62,8 +63,8 @@ def main():
     clip_end = e(MEDIA_END); total = round(clip_end + TAIL, 3)
     words = []
     for i, w in enumerate(W):
-        nxt = W[i + 1]["start"] if i + 1 < len(W) else MEDIA_END
-        words.append({"i": i, "text": w["text"], "punct": w.get("punct", ""), "t": e(w["start"]), "end": e(min(nxt, MEDIA_END))})
+        nxt = W[i + 1]["start"] if i + 1 < len(W) else SPEECH_END
+        words.append({"i": i, "text": w["text"], "punct": w.get("punct", ""), "t": e(w["start"]), "end": e(min(nxt, SPEECH_END))})
     inserts = []
     for iid, ground, p0, p1 in INSERTS:
         a = W[find(W, p0)]["start"] - LEAD
@@ -75,8 +76,11 @@ def main():
         if ins["start"] > t + 1e-3:
             girl.append({"start": round(t, 3), "end": ins["start"]})
         t = round(ins["start"] + ins["duration"], 3)
+    girl.append({"start": t, "end": total})
+    outro = e(W[find(W, OUTRO)]["start"] - LEAD)
     json.dump({"rate": RATE, "take": TAKE, "media_end": MEDIA_END, "clip_end": clip_end, "total": total,
-               "speech_end": words[-1]["end"], "inserts": inserts, "girl": girl, "words": words},
+               "speech_end": round(e(SPEECH_END), 3), "outro": outro, "hold": {"start": clip_end, "duration": TAIL},
+               "inserts": inserts, "girl": girl, "words": words},
               open(os.path.join(ROOT, "edit.json"), "w"), ensure_ascii=False, indent=1)
     for g in girl:
         print(f"  girl   {g['start']:6.2f}–{g['end']:6.2f}  " + " ".join(w["text"] for w in words if g["start"] <= w["t"] < g["end"]))
@@ -84,7 +88,7 @@ def main():
         a, b = ins["start"], ins["start"] + ins["duration"]
         print(f"  {ins['id']} {a:6.2f}–{b:6.2f} ({ins['duration']:.2f}s, {ins['ground']})  " +
               " ".join(f"{w['text']}@{w['t'] - a:.2f}" for w in words if a <= w["t"] < b))
-    print("clip end", clip_end, "total", total)
+    print("outro block from", outro, "· clip end", clip_end, "· total", total)
 
 if __name__ == "__main__":
     main()
