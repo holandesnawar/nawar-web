@@ -2,8 +2,17 @@
 /**
  * /formacion/v2/video — el paso de después de dejar los datos (07/10, EN
  * PRUEBAS), como el de UDIA: "¡Te falta un paso!", el vídeo arrancando solo
- * (en silencio, con "toca para activar el sonido") y debajo el botón de la
- * llamada BLOQUEADO con una cuenta atrás de lo que dura el vídeo.
+ * y debajo el botón de la llamada BLOQUEADO con una cuenta atrás de lo que
+ * dura el vídeo.
+ *
+ * ⚠️ El sonido (07/10, "arranca y se escucha, pero sale el botón de activar
+ * sonido, y al darle empieza de nuevo"): antes se forzaba `muted=true` y se
+ * pintaba siempre el aviso. Pero quien llega de rellenar el formulario ya ha
+ * tocado la web, y Chrome le deja arrancar CON sonido: el aviso mentía y, al
+ * tocarlo, se volvía a montar el reproductor desde el principio. Ahora arranca
+ * sin forzar nada (el navegador decide), el aviso solo sale si el reproductor
+ * CONFIRMA que suena en silencio, y tocarlo quita el silencio sin volver a
+ * montar nada.
  *
  * La cuenta atrás:
  *  - si el reproductor de Bunny manda los tiempos (player.js), baja con lo
@@ -54,8 +63,9 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
 
         <div class="vp-video" id="vp-video" data-proveedor={video.proveedor} data-src={video.src}>
           <div class="vp-reproductor" id="vp-reproductor"></div>
-          <!-- Encima del vídeo, mientras suena en silencio. -->
-          <button type="button" class="vp-sonido" id="vp-sonido">
+          <!-- Encima del vídeo, solo si el reproductor confirma que va en
+               silencio. -->
+          <button type="button" class="vp-sonido" id="vp-sonido" hidden>
             <span class="vp-sonido-pill">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A1.4 1.4 0 0 1 5.4 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.4a1.4 1.4 0 0 1 1 .4l3.4 3.4a.7.7 0 0 0 1.2-.5z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.4 18.4a9 9 0 0 0 0-12.8"/></svg>
               Toca para activar el sonido
@@ -179,12 +189,17 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
   })
 
   // ── El reproductor ────────────────────────────────────────────────────
-  // Arranca solo y en silencio (los navegadores no dejan arrancar con
-  // sonido sin un toque). Desde donde lo dejó, un pelín antes.
+  // Arranca solo, sin forzar el silencio: si el navegador deja sonar, suena;
+  // si no, el propio reproductor decide (en silencio o esperando al play).
+  // Desde donde lo dejó, un pelín antes.
   const inicio = () => (visto || tope < 3 ? 0 : Math.max(0, Math.floor(tope) - 2))
   let player: any = null
   let listo = false
   let conTiempos = false
+  // Si el reproductor avisa de play/pausa, el reloj de respaldo solo corre
+  // mientras suena (en el iPhone no deja arrancar con sonido y espera al play).
+  let avisaPlay = false
+  let sonando = false
 
   const cargarScript = (url: string) => new Promise<void>((ok, mal) => {
     const s = document.createElement('script')
@@ -211,6 +226,12 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
       player = new PJ.Player(f)
       player.on('ready', () => {
         listo = true
+        // ¿Va en silencio? Solo entonces el aviso de activar el sonido.
+        const mirarSilencio = () => { try { player.getMuted?.((m: boolean) => { sonido.hidden = !m }) } catch {} }
+        mirarSilencio()
+        player.on('play', () => { avisaPlay = true; sonando = true; mirarSilencio() })
+        player.on('pause', () => { avisaPlay = true; sonando = false })
+        player.on('ended', () => { sonando = false })
         player.on('timeupdate', (e: { seconds: number }) => {
           conTiempos = true
           const t = e?.seconds
@@ -235,31 +256,25 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
       // player.js ANTES que el iframe: si el reproductor carga primero, su
       // aviso de "listo" se pierde.
       try { await cargarScript('https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js') } catch {}
-      conectar(ponerIframe(true, inicio()))
+      conectar(ponerIframe(false, inicio()))
     } else {
-      ponerIframe(true, 0)
+      ponerIframe(false, 0)
     }
   }
 
-  // "Toca para activar el sonido": con sonido y desde el principio, como
-  // UDIA (lo poco que haya sonado en silencio no cuenta). Salvo quien vuelve
-  // con un buen trozo ya visto: ese sigue donde iba, para no repetirlo todo.
+  // "Toca para activar el sonido": solo sale si el reproductor ha dicho que
+  // va en silencio, así que aquí siempre hay player.js. Si lleva poco (lo
+  // ha visto sin oírlo), vuelve al principio, como UDIA; si no, sigue donde
+  // va. Nunca se vuelve a montar el reproductor.
   sonido.addEventListener('click', () => {
     sonido.hidden = true
-    if (!visto && tope < 20) { tope = 0; pintar() }
-    const desde = visto ? 0 : inicio()
-    if (player && listo) {
-      try {
-        player.unmute?.()
-        player.setVolume?.(100)
-        player.setCurrentTime(desde)
-        player.play?.()
-        return
-      } catch {}
-    }
-    // Sin player.js: se vuelve a poner el reproductor, esta vez con sonido.
-    const f = ponerIframe(false, desde)
-    if (proveedor === 'bunny') conectar(f)
+    if (!player || !listo) return
+    try {
+      player.unmute?.()
+      player.setVolume?.(100)
+      if (!visto && tope < 15) { tope = 0; pintar(); player.setCurrentTime?.(0) }
+      player.play?.()
+    } catch {}
   })
 
   // ── El reloj de respaldo ──────────────────────────────────────────────
@@ -273,7 +288,7 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
     const paso = (ahora - antes) / 1000
     antes = ahora
     if (visto || document.hidden) return
-    if (!conTiempos && ahora - arrancadoEn > 4000) avanzar(tope + paso)
+    if (!conTiempos && ahora - arrancadoEn > 4000 && (!avisaPlay || sonando)) avanzar(tope + paso)
   }, 500)
 
   // ── Al entrar ─────────────────────────────────────────────────────────
