@@ -271,7 +271,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     <!-- ═══ Los dolores ═══ -->
     <section class="fv-sec fv-blanco">
       <div class="fv-in">
-        <div class="fv-cab">
+        <div class="fv-cab fv-cab-dolores">
           <span class="fv-badge">¿Te suena?</span>
           <h2 class="fv-h2">Vives aquí, pero <span class="fv-acento">otros hablan por ti</span></h2>
           <p class="fv-lead">Llevas tiempo en Países Bajos y para lo importante todavía necesitas a alguien al lado.</p>
@@ -574,7 +574,6 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
           Solicitar información
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
-        <p class="fv-cierre-nota">Sin compromiso · Te escribimos por WhatsApp</p>
       </div>
 
       <footer class="fv-pie">
@@ -1120,6 +1119,8 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     background-image: radial-gradient(circle 900px at 85% 0%, rgba(11,109,240,0.28) 0%, transparent 60%), radial-gradient(circle 700px at 0% 100%, rgba(77,163,255,0.10) 0%, transparent 60%); }
   .fv-prog-sec > .fv-dots { opacity: 0.5; }
   .fv-prog-sec .fv-cab { margin-bottom: 44px; }
+  /* 08/10: la entradilla quedaba muy separada de los dolores. */
+  .fv-cab.fv-cab-dolores { margin-bottom: 36px; }
   .fv-flujo { color: #fff; font-weight: 600; white-space: nowrap; }
   .fv-prog { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 36px; align-items: start; }
   .fv-prog-nav { position: sticky; top: 32px; }
@@ -1220,7 +1221,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   .fv-comp-cab .fv-lead { max-width: 420px; }
   .fv-comp-lista { position: relative; z-index: 1; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 28px; }
   .fv-comp-lista li { display: flex; gap: 14px; align-items: flex-start; }
-  .fv-num { flex-shrink: 0; width: 30px; height: 30px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.3); font-size: 13px; font-weight: 700; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+  .fv-num { flex-shrink: 0; width: 30px; height: 30px; border-radius: 9999px; border: 1.5px solid #fff; font-size: 13px; font-weight: 700; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
   /* 07/10: "letra más blanca en las descripciones, que destaque". */
   .fv-comp-lista p { margin: 3px 0 0; font-size: 15.5px; line-height: 1.6; color: rgba(255,255,255,0.94); }
   .fv-comp-lista :global(.fv-chip) { color: #9fd0ff; }
@@ -1240,7 +1241,6 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     background: #4da3ff; color: #0a1656; font-size: 16.5px; font-weight: 700; text-decoration: none; transition: background .15s, transform .15s; }
   .fv-cierre-btn:hover { background: #5eb4ff; }
   .fv-cierre-btn:active { transform: translateY(1px); }
-  .fv-cierre-nota { margin: 14px 0 0; font-size: 13.5px; color: rgba(255,255,255,0.6); }
 
   .fv-pie { position: relative; z-index: 1; max-width: 1120px; margin: 96px auto 0; padding: 26px 0 34px; border-top: 1px solid rgba(255,255,255,0.1);
     display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; font-size: 13px; color: rgba(255,255,255,0.55); }
@@ -1331,6 +1331,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-pruebas b { font-size: 13.5px; }
     .fv-prueba-d { font-size: 11.5px; }
     .fv-cab { margin-bottom: 36px; }
+    .fv-cab.fv-cab-dolores { margin-bottom: 22px; }
     .fv-dolores { grid-template-columns: minmax(0, 1fr); }
     .fv-dolor, .fv-dolor:nth-child(2n), .fv-dolor:nth-child(3n) { border-right: 0; border-bottom: 1px solid #E3EAF6; padding: 22px 20px; flex-direction: row; gap: 16px; }
     .fv-dolor:last-child { border-bottom: 0; }
