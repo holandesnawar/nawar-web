@@ -2,7 +2,8 @@ import type { APIRoute } from 'astro'
 import { normalizarTelefono } from '../../lib/telefono'
 import { MAX_TEXTO, PREGUNTAS, puntuar } from '../../lib/cualificacion'
 import { ESCUELA_URL, avisarEscuela } from '../../lib/escuela'
-import { enviarLeadServidor } from '../../lib/metaCapi'
+import { enviarEventoServidor, ipDe, urlDelEvento } from '../../lib/metaCapi'
+import { hashUsuario } from '../../lib/metaUsuario'
 import {
   asignarEtiqueta,
   camposDePersona,
@@ -74,13 +75,6 @@ async function alCRM(
 
 export const POST: APIRoute = async (ctx) => {
   const { request, cookies } = ctx
-  // La IP de quien manda, para el Lead del servidor (CAPI). En Vercel va en
-  // x-forwarded-for; `clientAddress` puede lanzar si el adaptador no la da.
-  const ipCliente = () => {
-    const delante = (request.headers.get('x-forwarded-for') || '').split(',')[0].trim()
-    if (delante) return delante
-    try { return ctx.clientAddress } catch { return '' }
-  }
   const body = await request.json().catch(() => null)
   if ((body?.website ?? '').toString().trim()) return json({ ok: true, apto: false })
 
@@ -205,20 +199,23 @@ export const POST: APIRoute = async (ctx) => {
     // MISMO event_id que el navegador para que Meta no lo cuente dos veces.
     // Solo lo manda la página del anuncio (es la única que trae
     // `lead_event_id`) y solo al dejar los datos. Sin token, no hace nada.
+    // Los datos van cifrados (SHA-256): a Meta nunca le llegan en claro.
     const leadId = (body?.lead_event_id ?? '').toString()
     const capi =
       hito === 'datos' && /^lead-[a-z0-9-]{6,60}$/.test(leadId)
-        ? enviarLeadServidor({
-            eventId: leadId,
-            email,
-            telefono: phone,
-            nombre: firstName,
-            url: (body?.pagina ?? '').toString().slice(0, 1000),
-            ip: ipCliente(),
-            agente: request.headers.get('user-agent') || '',
-            fbc: cookies.get('_fbc')?.value,
-            fbp: cookies.get('_fbp')?.value,
-          })
+        ? hashUsuario(email, phone, firstName).then((usuario) =>
+            enviarEventoServidor({
+              nombre: 'Lead',
+              eventId: leadId,
+              url: urlDelEvento((body?.pagina ?? '').toString(), request),
+              usuario,
+              ip: ipDe(ctx),
+              agente: request.headers.get('user-agent') || '',
+              fbc: cookies.get('_fbc')?.value,
+              fbp: cookies.get('_fbp')?.value,
+              contenido: 'Formación Nawar FB',
+            })
+          )
         : Promise.resolve()
     await Promise.all([crmHito, capi])
     return json({ ok: true })
@@ -230,7 +227,29 @@ export const POST: APIRoute = async (ctx) => {
   // tiene Calendly (y su correo); aquí solo va el enlace del evento.
   if (body?.reservada === true) {
     const uri = (body?.calendly_evento ?? '').toString().trim()
-    await avisarEscuela({
+    // «Schedule» también desde el servidor (API de conversiones, 08/10), con
+    // el MISMO id que el del píxel del navegador: Meta lo cuenta una vez. Los
+    // datos van cifrados (SHA-256). Sin token, no hace nada.
+    const scheduleId = (body?.schedule_event_id ?? '').toString()
+    const contenido = ['Formación Nawar FB', 'Proceso de admisión'].includes((body?.schedule_contenido ?? '').toString())
+      ? body.schedule_contenido.toString()
+      : 'Proceso de admisión'
+    const capi = /^schedule-[a-z0-9-]{6,60}$/.test(scheduleId)
+      ? hashUsuario(email, phone, firstName).then((usuario) =>
+          enviarEventoServidor({
+            nombre: 'Schedule',
+            eventId: scheduleId,
+            url: urlDelEvento((body?.pagina ?? '').toString(), request),
+            usuario,
+            ip: ipDe(ctx),
+            agente: request.headers.get('user-agent') || '',
+            fbc: cookies.get('_fbc')?.value,
+            fbp: cookies.get('_fbp')?.value,
+            contenido,
+          })
+        )
+      : Promise.resolve()
+    const escuela = avisarEscuela({
       kind: 'reunion',
       email,
       first_name: firstName,
@@ -239,6 +258,7 @@ export const POST: APIRoute = async (ctx) => {
       source: 'llamada',
       extra: { ...marcaEmbudo, ...(/^https:\/\/api\.calendly\.com\/scheduled_events\/[\w-]{1,80}$/.test(uri) ? { calendly_evento: uri } : {}) },
     })
+    await Promise.all([escuela, capi])
     return json({ ok: true })
   }
 

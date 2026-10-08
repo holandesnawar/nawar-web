@@ -92,17 +92,19 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
   import { CLAVE_DATOS, CLAVE_POSICION, CLAVE_VIDEO, EMBUDO_FB, VIDEO_SEGUNDOS, conLaEntrada, type DatosAdmision } from '../../lib/admision'
   import { contextoDelLead } from '../../lib/recorrido'
   import { leerUTM } from '../../lib/utm'
+  import { eventoDelVideo } from '../../lib/metaNavegador'
 
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T
   // Píxel (07/10): la página del VSL cargada = «VSLVisto», una vez por
   // visita. El Lead NO va aquí: lo manda la página anterior cuando el
-  // servidor ha guardado los datos.
-  const unaVez = (clave: string, evento: string) => {
+  // servidor ha guardado los datos. Desde el 08/10 cada uno va también desde
+  // el servidor (API de conversiones) con el mismo id: Meta lo cuenta una vez.
+  const unaVez = (clave: string, evento: 'VSLVisto' | 'VSL50') => {
     try {
       if (sessionStorage.getItem(clave)) return
       sessionStorage.setItem(clave, '1')
     } catch {}
-    try { (window as any).fbq?.('trackCustom', evento) } catch {}
+    eventoDelVideo(evento)
   }
   unaVez('nawar.px.vsl', 'VSLVisto')
 
