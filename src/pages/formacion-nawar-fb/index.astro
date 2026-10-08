@@ -1270,7 +1270,9 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-logo { height: 32px; }
     .fv-badge-dark { font-size: 10px; letter-spacing: 0.12em; }
     .fv-solo-pc { display: none; }
-    .fv-h1 { font-size: clamp(32px, 8.8vw, 40px); margin-bottom: 18px; }
+    /* El titular parte en cinco renglones en el móvil y con 1,06 las tildes
+       tocaban la línea de arriba (usuario, 08/10): más aire. */
+    .fv-h1 { font-size: clamp(32px, 8.8vw, 40px); line-height: 1.18; margin-bottom: 18px; }
     .fv-hero-sub { font-size: 16px; }
     .fv-pruebas { flex-direction: column; gap: 10px; }
     .fv-cab { margin-bottom: 36px; }
