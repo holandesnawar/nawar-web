@@ -277,6 +277,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   import { leerUTM, guardarUTM } from '../../lib/utm'
   import { contextoDelLead } from '../../lib/recorrido'
   import { CLAVE_DATOS, CLAVE_VIDEO, type DatosAdmision } from '../../lib/admision'
+  import { nuevoEventId } from '../../lib/metaNavegador'
   guardarUTM()
 
   const form = document.getElementById('ag-form') as HTMLFormElement
@@ -589,7 +590,10 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
     if (e.origin !== 'https://calendly.com') return
     const d = (e as MessageEvent).data
     if (!d || d.event !== 'calendly.event_scheduled') return
-    try { (window as any).fbq?.('track', 'Schedule', { content_name: 'Formación Nawar FB' }) } catch {}
+    // «Schedule» al píxel y, con el MISMO id, desde el servidor (API de
+    // conversiones, en /api/cualificacion): Meta lo cuenta una sola vez.
+    const scheduleId = nuevoEventId('schedule')
+    try { (window as any).fbq?.('track', 'Schedule', { content_name: 'Formación Nawar FB' }, { eventID: scheduleId }) } catch {}
     fetch('/api/cualificacion', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -602,6 +606,9 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
         email: val('email').toLowerCase(),
         phone: val('phone'),
         calendly_evento: d.payload?.event?.uri ?? '',
+        schedule_event_id: scheduleId,
+        schedule_contenido: 'Formación Nawar FB',
+        pagina: location.href,
       }),
     }).catch(() => {})
     setTimeout(() => {
