@@ -1267,6 +1267,9 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-sem-cab { text-align: center; display: flex; flex-direction: column; align-items: center; }
     .fv-sem-cab .fv-lead { margin: 0 auto 32px; }
     .fv-escena { margin: 0 0 20px; }
+    /* Sin la columna de al lado, la imagen a 1,14 tocaba los bordes de la
+       pantalla (08/10, "más pequeñas, con espacio en los lados"). */
+    .fv-mock > img { transform: scale(0.92); }
     .fv-comp { grid-template-columns: minmax(0, 1fr); gap: 32px; padding: 44px 36px; }
 
     /* El plan: sin columna lateral; las etapas, pegadas arriba.
@@ -1332,7 +1335,6 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-dolor, .fv-dolor:nth-child(2n), .fv-dolor:nth-child(3n) { border-right: 0; border-bottom: 1px solid #E3EAF6; padding: 22px 20px; flex-direction: row; gap: 16px; }
     .fv-dolor:last-child { border-bottom: 0; }
     .fv-dolor-ico { flex-shrink: 0; padding-top: 1px; }
-    .fv-escena { margin-left: -12px; margin-right: -12px; }
     .fv-sem-txt b { font-size: 17px; }
     .fv-comp-lista, .fv-perfiles { grid-template-columns: minmax(0, 1fr); }
     .fv-perfil { padding: 30px 22px 22px; }
