@@ -68,29 +68,35 @@ const id = (n: string) => `fv-${n}-${suf}`
 </div>
 
 <style>
+  /* 08/10, "se ve algo morado, más cristal": el blanco translúcido sobre el
+     #1D0084 de la cabecera salía lila. Ahora el velo es AZUL (con verde, que
+     es lo que le falta al violeta: encima del #1D0084 sale azul real, no
+     lila), con desenfoque de lo de detrás, un filo de luz y los campos en
+     azul marino translúcido. */
   .ff {
     position: relative; border-radius: 22px; padding: 30px 28px 24px; scroll-margin-top: 24px; color: #fff;
-    background: linear-gradient(160deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 100%);
-    border: 1px solid rgba(255,255,255,0.16);
-    box-shadow: 0 40px 80px -40px rgba(3,9,33,0.8), inset 0 1px 0 rgba(255,255,255,0.10);
+    background: linear-gradient(160deg, rgba(110,200,255,0.24) 0%, rgba(0,140,255,0.21) 45%, rgba(0,125,250,0.19) 100%);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    border: 1px solid rgba(170,210,255,0.24);
+    box-shadow: 0 40px 80px -40px rgba(3,9,33,0.75), inset 0 1px 0 rgba(255,255,255,0.18);
   }
   /* Un filo de luz arriba, como la marca de rotulador. */
   .ff::before { content: ''; position: absolute; left: 28px; right: 28px; top: -1px; height: 1px; background: linear-gradient(90deg, transparent, rgba(77,163,255,0.9), transparent); }
   .ff-eyebrow { margin: 0; display: inline-flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9fd0ff; }
   .ff-punto { width: 7px; height: 7px; border-radius: 9999px; background: #4da3ff; box-shadow: 0 0 0 4px rgba(77,163,255,0.22); }
   .ff-titulo { font-family: 'Poppins', system-ui, sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; margin: 10px 0 6px; color: #fff; }
-  .ff-lead { margin: 0 0 6px; font-size: 14.5px; line-height: 1.55; color: rgba(255,255,255,0.72); }
+  .ff-lead { margin: 0 0 6px; font-size: 14.5px; line-height: 1.55; color: rgba(225,238,255,0.78); }
   .ff-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .ff-label { display: block; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.86); margin: 14px 0 6px; }
   .ff-input {
-    width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.16); border-radius: 12px;
+    width: 100%; background: rgba(4,14,60,0.28); border: 1px solid rgba(170,210,255,0.2); border-radius: 12px;
     padding: 13px 14px; font-size: 16px; color: #fff; font-family: inherit; outline: none; transition: border-color .15s, background .15s, box-shadow .15s;
   }
-  .ff-input::placeholder { color: rgba(255,255,255,0.4); }
-  .ff-input:focus { background: rgba(255,255,255,0.11); border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.25); }
+  .ff-input::placeholder { color: rgba(220,235,255,0.45); }
+  .ff-input:focus { background: rgba(4,14,60,0.48); border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.25); }
   /* El autocompletado del navegador pinta el campo de amarillo/blanco:
      se vuelve a teñir con el azul de la caja. */
-  .ff-input:-webkit-autofill { -webkit-text-fill-color: #fff; -webkit-box-shadow: 0 0 0 40px #2a1a96 inset; caret-color: #fff; }
+  .ff-input:-webkit-autofill { -webkit-text-fill-color: #fff; -webkit-box-shadow: 0 0 0 40px #0f1f78 inset; caret-color: #fff; }
   .ff-tel { display: grid; grid-template-columns: 112px 1fr; gap: 8px; }
   .ff-prefijo { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 15.5px; cursor: pointer; white-space: nowrap; color: #fff; }
   .ff-prefijo svg { color: rgba(255,255,255,0.6); }
@@ -106,7 +112,7 @@ const id = (n: string) => `fv-${n}-${suf}`
   .ff-btn:hover { background: #5eb4ff; }
   .ff-btn:active { transform: translateY(1px); }
   .ff-btn:global(.enviando) { opacity: 0.7; pointer-events: none; }
-  .ff-legal { margin: 14px 0 0; display: flex; align-items: flex-start; justify-content: center; gap: 7px; font-size: 12px; line-height: 1.5; color: rgba(255,255,255,0.55); text-align: center; }
+  .ff-legal { margin: 14px 0 0; display: flex; align-items: flex-start; justify-content: flex-start; gap: 7px; font-size: 12px; line-height: 1.5; color: rgba(225,238,255,0.6); text-align: left; }
   .ff-legal svg { flex-shrink: 0; margin-top: 2px; }
   .ff-legal a { color: rgba(255,255,255,0.8); text-decoration: underline; }
 

@@ -340,7 +340,7 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
   .vp-flechas svg:nth-child(3) { animation-delay: .36s; }
   @keyframes vp-baja { 0%, 100% { transform: translateY(0); opacity: 0.55; } 50% { transform: translateY(6px); opacity: 1; } }
 
-  .vp-video { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #0a1656; box-shadow: 0 40px 90px -30px rgba(3,9,33,0.7), 0 0 0 1px rgba(255,255,255,0.1); }
+  .vp-video { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #0a1656; box-shadow: 0 0 0 1px rgba(255,255,255,0.1); }
   /* 2 px de más por lado: así no asoma el filo negro del iframe. */
   .vp-reproductor { position: absolute; inset: -2px; }
   .vp-reproductor :global(iframe) { width: 100%; height: 100%; border: 0; display: block; background: #000; }
