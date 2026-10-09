@@ -1221,7 +1221,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   .fv-comp-cab .fv-lead { max-width: 420px; }
   .fv-comp-lista { position: relative; z-index: 1; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 28px; }
   .fv-comp-lista li { display: flex; gap: 14px; align-items: flex-start; }
-  .fv-num { flex-shrink: 0; width: 30px; height: 30px; border-radius: 9999px; border: 1.5px solid #fff; font-size: 13px; font-weight: 700; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+  .fv-num { flex-shrink: 0; width: 30px; height: 30px; border-radius: 9999px; border: 1.5px solid #fff; font-size: 13px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; padding-top: 2px; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
   /* 07/10: "letra más blanca en las descripciones, que destaque". */
   .fv-comp-lista p { margin: 3px 0 0; font-size: 15.5px; line-height: 1.6; color: rgba(255,255,255,0.94); }
   .fv-comp-lista :global(.fv-chip) { color: #9fd0ff; }
@@ -1234,7 +1234,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   /* El hilo que une los tres pasos. */
   .fv-pasos::before { content: ''; position: absolute; top: 19px; left: 16.6%; right: 16.6%; height: 1px; background: linear-gradient(90deg, #4da3ff, rgba(77,163,255,0.25)); }
   .fv-pasos li { position: relative; display: flex; flex-direction: column; align-items: center; }
-  .fv-pasos-n { width: 38px; height: 38px; border-radius: 9999px; background: #1D0084; border: 1px solid #4da3ff; color: #fff; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .fv-pasos-n { width: 38px; height: 38px; border-radius: 9999px; background: #1D0084; border: 1px solid #4da3ff; color: #fff; font-weight: 700; font-size: 14px; line-height: 1; font-variant-numeric: tabular-nums; padding-top: 2px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; }
   .fv-pasos b { display: block; font-family: 'Poppins', system-ui, sans-serif; font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px; }
   .fv-pasos p { margin: 0; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,0.75); max-width: 260px; }
   .fv-cierre-btn { margin-top: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 17px 34px; border-radius: 12px;

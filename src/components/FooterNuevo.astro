@@ -1,12 +1,15 @@
 ---
 import { CTA_PRINCIPAL } from '../lib/cta'
 
-// A dónde va «Matricularme». En /formacion, al formulario de la propia página.
-const { ctaHref = CTA_PRINCIPAL } = Astro.props as { ctaHref?: string }
+// ctaHref: a dónde va «Matricularme» (de serie, CTA_PRINCIPAL).
+// sinTarjeta: sin la tarjeta «Aprende como el 1%» (en /formacion, que ya
+// tiene su propio cierre; 09/10).
+const { ctaHref = CTA_PRINCIPAL, sinTarjeta = false } = Astro.props as { ctaHref?: string; sinTarjeta?: boolean }
 ---
 <footer class="footer-nuevo" id="contacto" data-navbar="dark">
 
   <!-- Card "Aprende como el 1%" -->
+  {!sinTarjeta && (
   <div class="footer-signup-wrap">
     <div class="footer-signup-card">
       <div class="footer-signup-glow" aria-hidden="true"></div>
@@ -44,6 +47,7 @@ const { ctaHref = CTA_PRINCIPAL } = Astro.props as { ctaHref?: string }
       </div>
     </div>
   </div>
+  )}
 
   <!-- Footer links -->
   <div class="footer-main">

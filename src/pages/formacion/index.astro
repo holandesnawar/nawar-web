@@ -599,7 +599,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
       </a>
     </div>
   </div>
-  <FooterNuevo ctaHref="#solicitud-a" />
+  <FooterNuevo sinTarjeta />
 </Layout>
 
 <script>
@@ -869,7 +869,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     e.preventDefault()
     const destino = document.getElementById(a.getAttribute('href')!.slice(1))
     if (!destino) return
-    const barra = (window.matchMedia('(max-width: 1023px)').matches ? 72 : 24) + 72
+    const barra = (window.matchMedia('(max-width: 1023px)').matches ? 72 : 28) + 72
     window.scrollTo({ top: destino.getBoundingClientRect().top + window.scrollY - barra, behavior: 'smooth' })
   }))
 
@@ -1117,7 +1117,9 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   .fv-cab.fv-cab-dolores { margin-bottom: 36px; }
   .fv-flujo { color: #fff; font-weight: 600; white-space: nowrap; }
   .fv-prog { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 36px; align-items: start; }
-  .fv-prog-nav { position: sticky; top: 32px; }
+  /* Pegada justo debajo de la barra de la web (72 px): con 32 px, como en la
+     del anuncio, se escondía detrás y se enganchaba tarde (09/10). */
+  .fv-prog-nav { position: sticky; top: 100px; }
   .fv-prog-nav-caja { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px 14px 14px; }
   .fv-prog-nav-top { display: flex; justify-content: space-between; align-items: baseline; padding: 0 8px; }
   .fv-prog-nav-titulo { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
@@ -1215,20 +1217,26 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   .fv-comp-cab .fv-lead { max-width: 420px; }
   .fv-comp-lista { position: relative; z-index: 1; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 28px; }
   .fv-comp-lista li { display: flex; gap: 14px; align-items: flex-start; }
-  .fv-num { flex-shrink: 0; width: 30px; height: 30px; border-radius: 9999px; border: 1.5px solid #fff; font-size: 13px; font-weight: 700; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+  .fv-num { flex-shrink: 0; width: 30px; height: 30px; border-radius: 9999px; border: 1.5px solid #fff; font-size: 13px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; padding-top: 2px; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
   /* 07/10: "letra más blanca en las descripciones, que destaque". */
   .fv-comp-lista p { margin: 3px 0 0; font-size: 15.5px; line-height: 1.6; color: rgba(255,255,255,0.94); }
   .fv-comp-lista :global(.fv-chip) { color: #9fd0ff; }
 
   /* ── Cierre: oscuro por capas, los tres pasos y un botón que sube ── */
-  .fv-cierre { position: relative; background: #1D0084; color: #fff; overflow: clip; padding: 112px 24px 112px; }
+  .fv-cierre { position: relative; background: #1D0084; color: #fff; overflow: clip; padding: 112px 24px 64px; }
+  /* El final del cierre, del mismo azul que el pie de la web: sin la luz de
+     abajo y con la trama apagándose, para que al juntarse no se note el
+     corte (09/10). El pie, sin su raya de arriba. */
+  .fv-cierre .fv-luz2 { display: none; }
+  .fv-cierre::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 240px; background: linear-gradient(to bottom, rgba(29,0,132,0), #1D0084 85%); pointer-events: none; }
+  :global(footer.footer-nuevo) { border-top: 0; }
   .fv-cierre-in { position: relative; z-index: 1; max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; }
   .fv-cierre .fv-h2 { font-size: clamp(30px, 4.2vw, 48px); margin-bottom: 44px; }
   .fv-pasos { list-style: none; margin: 0; padding: 0; position: relative; width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
   /* El hilo que une los tres pasos. */
   .fv-pasos::before { content: ''; position: absolute; top: 19px; left: 16.6%; right: 16.6%; height: 1px; background: linear-gradient(90deg, #4da3ff, rgba(77,163,255,0.25)); }
   .fv-pasos li { position: relative; display: flex; flex-direction: column; align-items: center; }
-  .fv-pasos-n { width: 38px; height: 38px; border-radius: 9999px; background: #1D0084; border: 1px solid #4da3ff; color: #fff; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .fv-pasos-n { width: 38px; height: 38px; border-radius: 9999px; background: #1D0084; border: 1px solid #4da3ff; color: #fff; font-weight: 700; font-size: 14px; line-height: 1; font-variant-numeric: tabular-nums; padding-top: 2px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; }
   .fv-pasos b { display: block; font-family: 'Poppins', system-ui, sans-serif; font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px; }
   .fv-pasos p { margin: 0; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,0.75); max-width: 260px; }
   .fv-cierre-btn { margin-top: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 17px 34px; border-radius: 12px;
@@ -1341,7 +1349,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-fase-promesa p { font-size: 15.5px; }
     .fv-fase-n { font-size: 44px; }
     .fv-fase h3 { font-size: 21px; }
-    .fv-cierre { padding: 80px 16px 80px; }
+    .fv-cierre { padding: 80px 16px 40px; }
     .fv-cierre .fv-h2 { margin-bottom: 34px; }
     .fv-pasos { grid-template-columns: minmax(0, 1fr); gap: 22px; text-align: left; }
     /* En columna, el hilo va de bola a bola y no pasa del 3. */
