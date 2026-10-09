@@ -22,6 +22,8 @@ export const prerender = false
  * el píxel no llega.
  */
 const PERMITIDOS = new Set<NombreEvento>(['VSLVisto', 'VSL50'])
+/** El `content_name` de cada embudo: el del anuncio y el de la web (09/10). */
+const CONTENIDOS = new Set(['Formación Nawar FB', 'Formación Nawar web'])
 
 export const POST: APIRoute = async (ctx) => {
   const { request, cookies } = ctx
@@ -43,7 +45,7 @@ export const POST: APIRoute = async (ctx) => {
     agente: request.headers.get('user-agent') || '',
     fbc: cookies.get('_fbc')?.value,
     fbp: cookies.get('_fbp')?.value,
-    contenido: 'Formación Nawar FB',
+    contenido: CONTENIDOS.has((body?.contenido ?? '').toString()) ? body.contenido.toString() : 'Formación Nawar FB',
   })
   return new Response(null, { status: 204 })
 }

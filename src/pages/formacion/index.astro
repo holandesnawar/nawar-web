@@ -1,0 +1,1370 @@
+---
+/**
+ * /formacion — la página de la formación para la gente que llega desde la
+ * WEB (09/10/2026, en pruebas): es una COPIA de /formacion-nawar-fb (la del
+ * anuncio) con la barra de arriba y el pie de siempre de la web
+ * (NavbarLanding y FooterNuevo), en vez del logo suelto y el pie mínimo.
+ *
+ * ⚠️ Es una copia: si se cambia el texto o el diseño de /formacion-nawar-fb,
+ * mirar si hay que traerlo aquí (y al revés).
+ *
+ * Su propio camino y su propio origen (EMBUDO_WEB en src/lib/admision.ts):
+ * /formacion → /formacion/vsl → /formacion/proceso-de-admision, `origen =
+ * formacion-web` y recorrido `formacion-web`. Así los leads de la web no se
+ * mezclan con los del anuncio (la conversión de Meta cuenta solo los Lead de
+ * una dirección con `/formacion-nawar-fb`). Fuera de Google (noindex) mientras
+ * se prueba.
+ *
+ * Con la barra de la web, que es fija y mide 72 px: la cabecera baja para no
+ * quedar debajo, la barra de etapas del móvil se pega DEBAJO de ella y los
+ * saltos a las etapas y al formulario cuentan con ella.
+ */
+import Layout from '../../layouts/Layout.astro'
+import FormSolicitud from '../../components/formacion-v2/FormSolicitud.astro'
+import NavbarLanding from '../../components/NavbarLanding'
+import FooterNuevo from '../../components/FooterNuevo.astro'
+// El estilo del pie de la web vive aquí (como en el blog).
+import '../../styles/nawar-sections.css'
+
+export const prerender = true
+
+
+/** Las ilustraciones y el certificado de las landings (BonusSection). Traen
+ *  su propio fondo blanco: van sobre blanco y sin marco. */
+const IMG = {
+  clases: 'https://docs.holandesnawar.com/img/Landing/bonus.clases.png',
+  ejercicios: 'https://docs.holandesnawar.com/img/Landing/bonus.ejercicios.png',
+  soporte: 'https://docs.holandesnawar.com/img/Landing/bonus.soporte.png',
+  certificado: 'https://docs.holandesnawar.com/img/Landing/Certificado.final.landing.png',
+  // La cámara del profe en el mockup de la clase en directo (08/10): el profe
+  // del vídeo de la lección de tiempo libre («Wat doe jij in je vrije tijd?»),
+  // recortado de una captura que mandó el usuario, en 4:3 (440×330). Para
+  // poner a otro, cambiar este archivo o esta dirección (4:3, al menos 400 px).
+  profe: '/img/formacion-v2/profe-clase.jpg',
+}
+
+/** Iconos de línea (24×24, trazo), en un solo sitio. Se pintan SOLOS, sin
+ *  baldosa de color detrás (usuario, 07/10: "como en la landing"). */
+const ICONOS: Record<string, string> = {
+  medico: '<path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/>',
+  carta: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+  familia: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  charla: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/>',
+  compra: '<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>',
+  candado: '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  libro: '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
+  video: '<path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/>',
+  consulta: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5"/><path d="M12 15h.01"/>',
+  grupo: '<path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/>',
+  premio: '<path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/>',
+  reloj: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  maletin: '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>',
+  telefono: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+  diana: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  altavoz: '<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/>',
+  micro: '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>',
+}
+const icono = (n: string, tam = 22, trazo = 1.8) =>
+  `<svg viewBox="0 0 24 24" width="${tam}" height="${tam}" fill="none" stroke="currentColor" stroke-width="${trazo}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS[n]}</svg>`
+/** Las palabras entre [ ] salen resaltadas. */
+const resaltar = (t: string) => t.replace(/\[([^\]]+)\]/g, '<span class="fv-chip">$1</span>')
+
+/** Los dolores (usuario, 07/10: "lo más importante son los dolores reales:
+ *  depender de otros, no poder hablar, ir al médico, no poder hacer nada
+ *  sin nadie"). Situaciones concretas, sin adornos. */
+const DOLORES = [
+  { i: 'medico', t: 'Al médico, siempre acompañado', d: 'Alguien tiene que entrar contigo para explicar qué te pasa y entender lo que te dicen. Hasta para pedir cita.' },
+  { i: 'carta', t: 'Llega una carta y ya no estás tranquilo', d: 'La gemeente, el seguro, el colegio. Foto al traductor del móvil y a cruzar los dedos para no equivocarte.' },
+  { i: 'familia', t: 'Tu pareja o tus hijos hablan por ti', d: 'En la tienda, en la reunión del colegio, al teléfono. Te ayudan con todo el cariño, pero tú quieres poder hacerlo solo.' },
+  { i: 'charla', t: 'Fuera de la conversación', d: 'Con los vecinos, en el trabajo, en un cumpleaños. Sonríes, asientes y esperas a que alguien te lo cuente después.' },
+  { i: 'compra', t: 'Lo básico, en inglés o por señas', d: 'La compra, el tren, una pregunta en la ventanilla. Sales del paso, pero así nunca terminas de sentirte de aquí.' },
+  { i: 'candado', t: 'Puertas que ni te planteas abrir', d: 'Un trabajo mejor, amigos holandeses, algo tuyo. Todo pasa por el idioma, y el idioma se queda para “algún día”.' },
+]
+
+/** Antes / después (sustituye a las cinco tarjetas de "Tu día a día", que
+ *  eran "sosas"). El "hoy" es corto a propósito: ya se ha contado arriba, y
+ *  aquí solo hace de espejo para que pese el "con Nawar". Nivel A1: nada de
+ *  prometer trabajos ni exámenes. */
+const CAMBIO = [
+  { i: 'medico', t: 'En el médico', hoy: 'Alguien entra contigo para explicar qué te pasa.', con: 'Pides la cita y explicas qué te pasa con tus palabras.' },
+  { i: 'carta', t: 'Con las cartas', hoy: 'Foto al traductor y a cruzar los dedos.', con: 'Entiendes los avisos sencillos y sabes qué te piden.' },
+  { i: 'familia', t: 'En casa', hoy: 'Tu pareja o tus hijos hacen de intérpretes.', con: 'Hablas tú. Ellos dejan de traducirte.' },
+  { i: 'charla', t: 'Con la gente', hoy: 'Sonríes y asientes mientras hablan los demás.', con: 'Entras en la conversación con vecinos y compañeros.' },
+  { i: 'maletin', t: 'En el trabajo', hoy: 'Todo en inglés, siempre un paso por detrás.', con: 'Te presentas y te entiendes en lo del día a día.' },
+]
+
+/** Cómo es tu semana: lo que HACE el alumno, cada paso con su captura REAL
+ *  de la escuela (las ilustraciones de las landings, BonusSection). 07/10:
+ *  "en vez de mockup, imágenes reales como en la landing". */
+/** Lo que se ve bajo el formulario de la cabecera. */
+const PRUEBAS = [
+  { i: 'charla', t: 'En español', d: 'Todo explicado en tu idioma' },
+  { i: 'video', t: 'Clase en directo', d: 'Cada semana, con profesor' },
+  { i: 'premio', t: 'Certificado', d: 'Al terminar el A1' },
+]
+
+const SEMANA = [
+  // La captura de la lección (vídeo y lista de clases), la de la landing.
+  { img: IMG.clases, i: 'video', t: 'Sigues las lecciones de la semana', d: 'Cada semana se abre lo que toca: vídeo corto explicado en español, vocabulario con audio, lectura y escucha. Con 20-30 minutos al día vas al día, y siempre sabes qué viene después.' },
+  { img: IMG.ejercicios, i: 'libro', t: 'Practicas hasta que te sale', d: 'Ejercicios que se corrigen solos: escuchar, leer, escribir y hablar. Si fallas, te dice cuál era y por qué, y repasas justo lo que te cuesta.' },
+  { img: IMG.soporte, i: 'consulta', t: 'Preguntas cuando te atascas', d: 'Tus dudas las responde el equipo, en español. Nadie se queda una semana bloqueado con la misma pregunta.' },
+  // Sin imagen: la videollamada dibujada (07/10: "que parezca una clase en
+  // directo, sin las imágenes de alumnos, con la letra de la foto de
+  // perfil"). La de la comunidad, con caras, "parece un poco IA": no usarla.
+  { img: '', i: 'video', t: 'Hablas en la clase en directo', d: 'Cada semana, con un profesor que habla español y con tu grupo: dices en voz alta lo que has aprendido. Si no puedes ir, queda grabada.' },
+]
+
+/** Los alumnos de la videollamada: solo la letra, como cuando no hay foto de
+ *  perfil. Sin nombres ni un "+18" (eso sería inventarse quién va a clase). */
+const EN_CLASE = [
+  { l: 'A', c: '#025dc7' },
+  { l: 'M', c: '#5a6bd8' },
+  { l: 'J', c: '#0f8f86' },
+  { l: 'L', c: '#8a5ad8' },
+  { l: 'S', c: '#2b7bff' },
+]
+
+/** Competencias al terminar: nivel A1, situaciones de la vida real. */
+const SABRAS = [
+  '[Presentarte] y hablar de ti, de tu familia y de tu trabajo.',
+  'Pedir [cita con el médico] y explicar qué te pasa con frases sencillas.',
+  'Hacer [la compra], pedir en un café y pagar sin pasarte al inglés.',
+  'Entender [horarios y fechas]: el tren, el colegio, una cita.',
+  'Leer [mensajes y avisos cortos] y saber qué te están pidiendo.',
+  'Dar [tus datos]: deletrear tu nombre, tu dirección y tu teléfono.',
+  'Mantener [una conversación corta] con un vecino o un compañero.',
+  'Seguir avanzando [por tu cuenta], porque ya entiendes cómo funciona el idioma.',
+]
+
+/**
+ * El plan de estudios por ETAPAS (07/10: "sin hacer lo típico de por
+ * módulos"; antes la fase 4 era un módulo solo con "≈ 3 semanas" y no
+ * cuadraba). Cada etapa dice qué se trabaja (los temas, mezclados) y el HITO
+ * con el que termina; los módulos van debajo, pequeños, como referencia.
+ * Los nombres de los módulos son los de la escuela (el goteo: Over jou,
+ * Familie & vrienden, Eten en drinken, Het werk, Hobby's & vrije tijd, Thuis
+ * & wonen, Gezondheid, Vervoer & reizen, De stad & afspraken, Dagelijks
+ * leven) y las semanas salen de sus fechas de apertura.
+ * ⚠️ Los temas de los módulos 1 a 4 son sus lecciones reales (courseData.ts);
+ * los del 5 al 10 están deducidos del nombre del módulo: confirmarlos con el
+ * usuario y cambiarlos aquí cuando estén escritos.
+ */
+const FASES = [
+  {
+    n: '01', c: '#4da3ff', nombre: 'Los cimientos', sub: 'Te presentas y te haces entender', semanas: 'Semanas 1-4',
+    objetivo: 'Pasas de cero a mantener tu primera conversación: quién eres, tu familia, tu día y lo que quieres tomar.',
+    temas: ['Saludar, presentarte y dar tus datos', 'Los verbos en presente y el orden de la frase', 'Números, precios, días, meses y la hora', 'Tu familia, tu rutina y tus planes', 'Pedir en un café y moverte por el supermercado', 'La pronunciación que más cuesta: vocales largas, ei, ij, ui'],
+    hito: 'Te presentas y mantienes tu primera conversación en la clase en directo.',
+    modulos: ['Sobre ti', 'Familia y amigos', 'Comer y beber'],
+  },
+  {
+    n: '02', c: '#5ad1c5', nombre: 'Tu vida aquí', sub: 'Trabajo, tiempo libre y casa', semanas: 'Semanas 5-10',
+    objetivo: 'Hablas de lo que te preguntan en cualquier conversación: a qué te dedicas, qué te gusta y dónde vives.',
+    temas: ['Tu profesión, tus horarios y tu experiencia', 'Poder, querer, tener que: los verbos modales', 'Decir para qué haces las cosas', 'Tus aficiones y quedar con alguien', 'Tu casa, tu barrio y tus vecinos', 'Escribir un correo sencillo'],
+    hito: 'Hablas de tu trabajo y de tu vida sin pasarte al inglés.',
+    modulos: ['El trabajo', 'Tiempo libre', 'Casa y vivienda'],
+  },
+  {
+    n: '03', c: '#8e9cff', nombre: 'Valerte por ti mismo', sub: 'Salud, transporte y citas', semanas: 'Semanas 11-13',
+    objetivo: 'Resuelves solo las situaciones que hoy te obligan a pedir ayuda.',
+    temas: ['El huisarts: pedir cita y explicar qué te pasa', 'El cuerpo, los síntomas y la farmacia', 'El tren, el autobús y los horarios', 'Preguntar cómo llegar y orientarte', 'Pedir, cambiar y confirmar una cita'],
+    hito: 'Vas al médico o haces una gestión sin que nadie te acompañe.',
+    modulos: ['Salud', 'Transporte y viajes', 'La ciudad y las citas'],
+  },
+  {
+    n: '04', c: '#f2cd6b', nombre: 'Consolidación', sub: 'Todo junto, y el A1 cerrado', semanas: 'Semanas 14-16',
+    objetivo: 'Juntas todo lo aprendido y lo usas con soltura en tu día a día. Aquí el nivel se asienta.',
+    temas: ['Situaciones de la vida diaria, de principio a fin', 'Repaso guiado de todo el nivel', 'Refuerzo de lo que más te cuesta', 'Práctica oral en la clase en directo', 'Revisión final de tu progreso'],
+    hito: 'Cierras el nivel A1 y recibes tu certificado.',
+    modulos: ['Vida diaria', 'Repaso final'],
+  },
+]
+
+/** "¿Te reconoces?" (sustituye a "¿A quién va dirigido?", que era una lista
+ *  plana). Son lo que PIENSA quien llega, no opiniones de alumnos: no llevan
+ *  nombre ni foto y no se presentan como testimonios. ⚠️ Nunca convertirlas
+ *  en testimonios inventados. */
+const PERFILES = [
+  { q: 'Llevo años aquí y sigo tirando de inglés.', r: 'Empiezas por lo que usas cada día, no por listas de palabras.' },
+  { q: 'Me mudo en unos meses y quiero llegar con base.', r: 'Llegas sabiendo presentarte, comprar y pedir una cita.' },
+  { q: 'Empiezo de cero. No sé ni cómo se saluda.', r: 'Todo explicado en español, desde la primera palabra.' },
+  { q: 'Probé apps y no paso de ahí.', r: 'Aquí hay un camino, clase en directo y alguien que te corrige.' },
+]
+const NO_ES = ['Ya tienes un A2 o más', 'Buscas algo sin práctica ni esfuerzo', 'No tienes ni dos horas a la semana']
+
+/** Los tres pasos de la admisión, para el cierre. */
+const PASOS_ADMISION = [
+  { t: 'Dejas tus datos', d: 'Nombre, correo y WhatsApp. Treinta segundos.' },
+  { t: 'Ves la formación por dentro', d: 'Un vídeo de 3 minutos: cómo se aprende y qué te vas a encontrar.' },
+  { t: 'Hablamos contigo', d: 'Una llamada corta para ver si encaja contigo. Sin compromiso.' },
+]
+
+const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'Consolidación', 'Certificado Nawar']
+---
+
+<Layout
+  title="Formación Nawar A0-A1 · Neerlandés de cero a A1 — Holandés Nawar"
+  description="Neerlandés de cero a A1 para hispanohablantes, en 16 semanas y explicado en español. Clase en directo cada semana, consultas con el equipo y certificado."
+  noindex={true}
+>
+  <!-- La barra de siempre de la web; su botón «Matricularme» baja al formulario. -->
+  <NavbarLanding client:load ctaHref="#solicitud-a" />
+  <div class="fv">
+    <!-- ═══ Cabecera + formulario ═══ -->
+    <header class="fv-hero">
+      <div class="fv-capas" aria-hidden="true">
+        <span class="fv-luz1"></span><span class="fv-luz2"></span><span class="fv-malla"></span><span class="fv-dots"></span>
+      </div>
+
+
+      <div class="fv-hero-in">
+        <div class="fv-hero-texto">
+          <span class="fv-badge-dark">Formación Nawar A0-A1<span class="fv-solo-pc">· Para hispanohablantes</span></span>
+          <h1 class="fv-h1">
+            <span class="fv-grad">Aprende neerlandés desde cero y </span><span class="fv-h1-azul">deja de depender de otros</span><span class="fv-grad"> en Países Bajos</span>
+          </h1>
+          <p class="fv-hero-sub">
+            16 semanas explicadas en español, con clase en directo cada semana y un equipo que te acompaña
+            hasta que vas al médico, haces tus gestiones y hablas con la gente <strong>tú solo</strong>.
+          </p>
+        </div>
+
+        <div class="fv-hero-form">
+          <FormSolicitud
+            suf="a"
+            eyebrow="Admisión abierta"
+            titulo="Solicita información"
+            lead="Déjanos tus datos: te enseñamos la formación por dentro y te escribimos para ver si encaja contigo."
+          />
+        </div>
+
+        <!-- 08/10: las tres pruebas como una tira de cristal, con icono,
+             título y una línea ("tres checks quedan sosos"). -->
+        <ul class="fv-pruebas">
+          {PRUEBAS.map((x) => (
+            <li>
+              <span class="fv-prueba-ico" set:html={icono(x.i, 22, 1.7)} />
+              <b>{x.t}</b>
+              <span class="fv-prueba-d">{x.d}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </header>
+
+    <!-- La cinta, como UDIA: las cuatro etapas y el certificado. -->
+    <div class="fv-cinta" aria-hidden="true">
+      <div class="fv-cinta-pista">
+        {[0, 1, 2, 3].map(() => (
+          <span class="fv-cinta-grupo">{MARQUESINA.map((m) => <span>{m}<i>·</i></span>)}</span>
+        ))}
+      </div>
+    </div>
+
+    <!-- ═══ Los dolores ═══ -->
+    <section class="fv-sec fv-blanco">
+      <div class="fv-in">
+        <div class="fv-cab fv-cab-dolores">
+          <span class="fv-badge">¿Te suena?</span>
+          <h2 class="fv-h2">Vives aquí, pero <span class="fv-acento">otros hablan por ti</span></h2>
+          <p class="fv-lead">Llevas tiempo en Países Bajos y para lo importante todavía necesitas a alguien al lado.</p>
+        </div>
+        <div class="fv-dolores">
+          {DOLORES.map((d) => (
+            <article class="fv-dolor">
+              <span class="fv-dolor-ico" set:html={icono(d.i, 26, 1.6)} />
+              <div>
+                <h3>{d.t}</h3>
+                <p>{d.d}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+        <p class="fv-giro">
+          No es falta de capacidad. Es que nunca has tenido <strong>un método pensado para ti</strong>: en español, paso a paso y con alguien que te corrija.
+          <span>Para eso existe la Formación Nawar <span class="fv-nw">A0-A1</span>.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══ Antes / después ═══ -->
+    <section class="fv-sec fv-claro fv-cambio-sec">
+      <div class="fv-in">
+        <div class="fv-cab">
+          <span class="fv-badge">Lo que cambia</span>
+          <h2 class="fv-h2">Lo que hoy hacen por ti, <span class="fv-acento">en 16 semanas lo haces tú</span></h2>
+        </div>
+
+        <div class="fv-cambio" role="table" aria-label="Antes y después de la formación">
+          <div class="fv-cambio-fila fv-cambio-cab" role="row">
+            <span role="columnheader"></span>
+            <span role="columnheader" class="fv-cambio-hoy">Hoy</span>
+            <span role="columnheader" class="fv-cambio-con">Con la Formación Nawar</span>
+          </div>
+          {CAMBIO.map((c, k) => (
+            <div class={`fv-cambio-fila${k === CAMBIO.length - 1 ? ' ultima' : ''}`} role="row">
+              <span class="fv-cambio-t" role="cell"><span set:html={icono(c.i, 22, 1.7)} />{c.t}</span>
+              <span class="fv-cambio-hoy" role="cell">
+                <span class="fv-cambio-x" set:html={icono('x', 15, 2.2)} />{c.hoy}
+              </span>
+              <span class="fv-cambio-con" role="cell">
+                <span class="fv-cambio-ok" set:html={icono('check', 16, 2.6)} />{c.con}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Así es una semana: piezas de la escuela, con ejercicios reales ═══ -->
+    <section class="fv-sec fv-blanco" id="semana">
+      <div class="fv-in fv-sem">
+        <div class="fv-sem-cab">
+          <span class="fv-badge">Cómo se aprende</span>
+          <h2 class="fv-h2">Así es una semana en <span class="fv-acento">Nawar</span></h2>
+          <p class="fv-lead">No es ver vídeos y ya. Cada semana tiene cuatro cosas claras que hacer, y ninguna la haces solo.</p>
+        </div>
+
+        <ol class="fv-sem-pasos" id="fv-sem-pasos">
+          {SEMANA.map((s, k) => (
+            <li>
+              <button type="button" class={`fv-sem-paso${k === 0 ? ' activo' : ''}`} data-paso={k} aria-expanded={k === 0 ? 'true' : 'false'}>
+                <span class="fv-sem-n">{`0${k + 1}`}</span>
+                <span class="fv-sem-txt">
+                  <b>{s.t}</b>
+                  <span class="fv-sem-d">{s.d}</span>
+                </span>
+                <span class="fv-sem-barra" aria-hidden="true"><i></i></span>
+              </button>
+            </li>
+          ))}
+        </ol>
+
+        <div class="fv-escena" id="fv-escena">
+          {SEMANA.map((x, k) => (
+            <figure class={`fv-mock${k === 0 ? ' activo' : ''}`} data-paso={k} aria-hidden={k === 0 ? 'false' : 'true'}>
+              {x.img ? (
+                <Fragment>
+                  <img src={x.img} alt={x.t} width="1920" height="1080" loading={k === 0 ? 'eager' : 'lazy'} decoding="async"
+                    onerror="this.closest('figure').classList.add('sin-foto'); this.remove();" />
+                  <span class="fv-mock-plan-b" set:html={icono(x.i, 44, 1.4)} />
+                </Fragment>
+              ) : (
+                <div class="vc" role="img" aria-label="Una clase en directo de la formación: el profesor comparte la lección y los alumnos hablan">
+                  <span class="vc-bloque vc-b1" aria-hidden="true"></span>
+                  <span class="vc-bloque vc-b2" aria-hidden="true"></span>
+                  <div class="vc-portatil">
+                    <div class="vc-pantalla">
+                      <div class="vc-top">
+                        <span class="vc-vivo"><i></i>En directo</span>
+                        <span class="vc-tit">Clase semanal · Módulo 1</span>
+                        <span class="vc-hora">32:14</span>
+                      </div>
+                      <!-- La diapositiva de la lección a todo lo ancho y la
+                           cámara del profe encima, en una esquina: con menos
+                           piezas sueltas se respira (07/10, "muy apretado"). -->
+                      <div class="vc-cuerpo">
+                        <div class="vc-slide">
+                          <p class="vc-slide-et">Kennismaken in het café</p>
+                          <p class="vc-slide-t">¡Ahora a hablar!</p>
+                          <p class="vc-l"><b>Anna</b>Waar kom je vandaan?</p>
+                          <p class="vc-l"><b>David</b>Ik kom uit Argentinië.</p>
+                          <p class="vc-turno"><span set:html={icono('micro', 12, 2.2)} />Tu turno: ¿de dónde eres?</p>
+                        </div>
+                        <div class="vc-profe">
+                          <img src={IMG.profe} alt="" onerror="this.remove()" />
+                          <span class="vc-nombre"><i set:html={icono('micro', 9, 2.4)} />Profesor</span>
+                        </div>
+                      </div>
+                      <div class="vc-barra">
+                        <div class="vc-grupo" aria-hidden="true">
+                          {EN_CLASE.slice(0, 4).map((a) => <span class="vc-ini" style={`--c:${a.c}`}>{a.l}</span>)}
+                          <span class="vc-ini vc-tu">Tú</span>
+                          <i class="vc-mano">✋</i>
+                        </div>
+                        <div class="vc-botones">
+                          <span set:html={icono('micro', 11, 2.2)} />
+                          <span set:html={icono('video', 11, 2.2)} />
+                          <span class="vc-salir">Salir</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="vc-base" aria-hidden="true"></div>
+                </div>
+              )}
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ El plan de estudios, por etapas (oscuro, como UDIA) ═══ -->
+    <section class="fv-sec fv-prog-sec" id="programa">
+      <span class="fv-dots" aria-hidden="true"></span>
+      <div class="fv-in">
+        <div class="fv-cab fv-cab-izq">
+          <span class="fv-badge-dark">4 etapas · 16 semanas · certificado</span>
+          <h2 class="fv-h2 fv-h2-blanco"><span class="fv-grad">Plan de estudios: </span><span class="fv-azul fv-salto-movil">de cero a independiente</span></h2>
+          <p class="fv-lead fv-lead-blanco">Metodología progresiva: <span class="fv-flujo">entender → hablar → resolver → consolidar</span>, con un hito concreto al final de cada etapa.</p>
+        </div>
+      </div>
+
+      <div class="fv-in">
+        <!-- Móvil: las etapas al principio del plan. Al bajar, la copia FIJA
+             de abajo (#fv-fases-fija) ocupa su sitio arriba de la pantalla. -->
+        <div class="fv-fases-barra" id="fv-fases-barra">
+          <div class="fv-fases-pills">
+            {FASES.map((f) => (
+              <a href={`#fase-${f.n}`} class="fv-pill" data-fase={f.n} style={`--c:${f.c}`}><b>{f.n}</b>{f.nombre}</a>
+            ))}
+            <a href="#fase-cert" class="fv-pill" data-fase="cert" style="--c:#9fd0ff"><b>✓</b>Certificado</a>
+          </div>
+          <div class="fv-fases-raya" aria-hidden="true"><span class="fv-raya-fill"></span></div>
+        </div>
+
+        <div class="fv-prog" id="fv-prog-plan">
+          <aside class="fv-prog-nav" aria-label="Etapas del plan de estudios">
+            <div class="fv-prog-nav-caja">
+              <div class="fv-prog-nav-top">
+                <p class="fv-prog-nav-titulo">Recorrido</p>
+                <p class="fv-prog-nav-paso" id="fv-prog-paso">Etapa 1 / 4</p>
+              </div>
+              <div class="fv-fases-raya fv-raya-lateral" aria-hidden="true"><span class="fv-raya-fill"></span></div>
+              <ol>
+                {FASES.map((f) => (
+                  <li><a href={`#fase-${f.n}`} data-fase={f.n} style={`--c:${f.c}`}><span class="fv-prog-bola">{f.n}</span><span><b>{f.nombre}</b><small>{f.semanas}</small></span></a></li>
+                ))}
+                <li><a href="#fase-cert" data-fase="cert" style="--c:#9fd0ff"><span class="fv-prog-bola">✓</span><span><b>Certificado</b><small>Al terminar</small></span></a></li>
+              </ol>
+            </div>
+          </aside>
+
+          <div class="fv-prog-fases" id="fv-prog-fases">
+            {FASES.map((f) => (
+              <article class="fv-fase" id={`fase-${f.n}`} data-fase={f.n} style={`--c:${f.c}`}>
+                <div class="fv-fase-chips">
+                  <span class="fv-fase-chip fv-fase-chip-c">Etapa {f.n}</span>
+                  <span class="fv-fase-chip"><Fragment set:html={icono('reloj', 13, 2)} />{f.semanas}</span>
+                </div>
+                <div class="fv-fase-cab">
+                  <span class="fv-fase-n">{f.n}</span>
+                  <div>
+                    <h3>{f.nombre}</h3>
+                    <p>{f.sub}</p>
+                  </div>
+                </div>
+                <div class="fv-fase-promesa">
+                  <span>Objetivo</span>
+                  <p>{f.objetivo}</p>
+                </div>
+                <p class="fv-fase-sub">Lo que trabajas</p>
+                <ul class="fv-fase-temas">{f.temas.map((t) => <li>{t}</li>)}</ul>
+                <div class="fv-fase-hito">
+                  <span class="fv-fase-hito-ico" set:html={icono('diana', 18, 2)} />
+                  <p><b>Hito al terminar:</b> {f.hito}</p>
+                </div>
+                <p class="fv-fase-mods"><span>Incluye</span>{f.modulos.map((m) => <i>{m}</i>)}</p>
+              </article>
+            ))}
+
+            <!-- El certificado de verdad (el de las landings), con su plan B. -->
+            <article class="fv-fase fv-fase-cert" id="fase-cert" data-fase="cert" style="--c:#9fd0ff">
+              <div class="fv-fase-chips">
+                <span class="fv-fase-chip fv-fase-chip-c">Certificación</span>
+                <span class="fv-fase-chip"><Fragment set:html={icono('premio', 13, 2)} />Al completar la formación</span>
+              </div>
+              <h3 class="fv-cert-titulo">Certificado de finalización Nawar</h3>
+              <div class="fv-cert-visual">
+                <!-- 08/10: sin la caja blanca. Los dos bloques de la foto de
+                     las landings (fondo.certificado.png lleva el blanco
+                     pegado) se pintan aquí, y encima el certificado. -->
+                <figure class="fv-cert-foto" id="fv-cert-foto">
+                  <span class="fv-cert-b1" aria-hidden="true"></span>
+                  <span class="fv-cert-b2" aria-hidden="true"></span>
+                  <span class="fv-cert-papel">
+                    <img src={IMG.certificado} alt="Certificado de finalización de la Formación Nawar A0-A1" loading="lazy" decoding="async"
+                      onerror="this.closest('#fv-cert-foto').remove(); document.getElementById('fv-cert-dibujo').hidden = false;" />
+                  </span>
+                </figure>
+                <div class="fv-cert-dibujo" id="fv-cert-dibujo" hidden aria-hidden="true">
+                  <p class="fv-cert-marca">Holandés Nawar</p>
+                  <p class="fv-cert-tipo">Certificado de finalización</p>
+                  <p class="fv-cert-nombre">Tu nombre aquí</p>
+                  <p class="fv-cert-texto">ha completado la <strong>Formación Nawar A0-A1</strong> de neerlandés</p>
+                </div>
+              </div>
+              <div class="fv-cert-tres">
+                <div><span>Cómo se consigue</span><p>Completando la formación.</p></div>
+                <div><span>Qué acredita</span><p>Tu nivel A1 y el trabajo que has hecho, con tu nombre.</p></div>
+                <div><span>Y después</span><p>Te contamos el siguiente paso para seguir hacia el A2.</p></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ¿Te reconoces? ═══ -->
+    <section class="fv-sec fv-blanco">
+      <div class="fv-in">
+        <div class="fv-cab">
+          <span class="fv-badge">Para quién es</span>
+          <h2 class="fv-h2">¿Te reconoces <span class="fv-acento">en alguna?</span></h2>
+          <p class="fv-lead">Para estas personas está hecha la formación.</p>
+        </div>
+        <div class="fv-perfiles">
+          {PERFILES.map((p) => (
+            <article class="fv-perfil">
+              <span class="fv-comillas" aria-hidden="true">“</span>
+              <p class="fv-perfil-q">{p.q}</p>
+              <p class="fv-perfil-r"><span set:html={icono('check', 16, 2.6)} />{p.r}</p>
+            </article>
+          ))}
+        </div>
+        <div class="fv-noes">
+          <p class="fv-noes-t">No es para ti si…</p>
+          <ul>
+            {NO_ES.map((t) => <li><span set:html={icono('x', 14, 2.4)} />{t}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Competencias al terminar (panel oscuro, como UDIA) ═══ -->
+    <section class="fv-sec fv-blanco fv-comp-sec">
+      <div class="fv-in">
+        <div class="fv-comp">
+          <div class="fv-comp-cab">
+            <span class="fv-badge-dark">Competencias al terminar</span>
+            <h2 class="fv-h2 fv-h2-blanco"><span class="fv-grad">En 16 semanas, </span><span class="fv-azul">esto lo haces tú</span></h2>
+            <p class="fv-lead fv-lead-blanco">El nivel A1: lo que necesitas para moverte solo en el día a día.</p>
+          </div>
+          <ol class="fv-comp-lista">
+            {SABRAS.map((x, k) => (
+              <li><span class="fv-num">{k + 1}</span><p set:html={resaltar(x)} /></li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Cierre: la admisión en tres pasos y un botón que sube al
+         formulario (07/10: "no otro formulario, solo uno"). ═══ -->
+    <section class="fv-cierre">
+      <div class="fv-capas" aria-hidden="true">
+        <span class="fv-luz1"></span><span class="fv-luz2"></span><span class="fv-malla"></span><span class="fv-dots"></span>
+      </div>
+      <div class="fv-cierre-in">
+        <span class="fv-badge-dark">Plazas limitadas por convocatoria</span>
+        <h2 class="fv-h2 fv-h2-blanco"><span class="fv-grad">Tu admisión empieza </span><span class="fv-azul">en 30 segundos</span></h2>
+        <ol class="fv-pasos">
+          {PASOS_ADMISION.map((p, k) => (
+            <li><span class="fv-pasos-n">{k + 1}</span><b>{p.t}</b><p>{p.d}</p></li>
+          ))}
+        </ol>
+        <a href="#solicitud-a" class="fv-cierre-btn" id="fv-cierre-btn" data-ir-form>
+          Solicitar información
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+    </section>
+
+    <!-- Móvil: la barra de etapas FIJA arriba mientras se lee el plan.
+         ⚠️ 07/10, "vibra al scrollear rápido" (tercera vez): era
+         position: sticky, y la web entera lleva body { overflow-x: hidden }
+         (global.css). Con eso, Safari del iPhone recoloca lo pegajoso en
+         cada fotograma y tiembla. Lo fijo no: se compone aparte y no se
+         mueve con la página. Va fuera de la sección para que ningún padre
+         con transform la descoloque. -->
+    <div class="fv-fases-fija" id="fv-fases-fija" aria-hidden="true">
+      <div class="fv-fases-pills">
+            {FASES.map((f) => (
+              <a href={`#fase-${f.n}`} class="fv-pill" tabindex="-1" data-fase={f.n} style={`--c:${f.c}`}><b>{f.n}</b>{f.nombre}</a>
+            ))}
+            <a href="#fase-cert" class="fv-pill" tabindex="-1" data-fase="cert" style="--c:#9fd0ff"><b>✓</b>Certificado</a>
+      </div>
+      <div class="fv-fases-raya"><span class="fv-raya-fill"></span></div>
+    </div>
+
+    <!-- Móvil: el botón siempre a mano cuando no se ve ningún formulario. -->
+    <div class="fv-pegado" id="fv-pegado" aria-hidden="true">
+      <span class="fv-pegado-ico" set:html={icono('telefono', 19, 2)} />
+      <span class="fv-pegado-txt"><b>Sin compromiso</b>Solicitar información</span>
+      <a href="#solicitud-a" class="fv-pegado-btn" data-ir-form tabindex="-1" aria-label="Solicitar información">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+  <FooterNuevo ctaHref="#solicitud-a" />
+</Layout>
+
+<script>
+  import { leerUTM, guardarUTM } from '../../lib/utm'
+  import { contextoDelLead } from '../../lib/recorrido'
+  import { CLAVE_DATOS, EMBUDO_WEB, LEAD_WEB, PIXEL_META, conLaEntrada, telefonoCompleto, type DatosAdmision } from '../../lib/admision'
+  guardarUTM()
+
+  const leer = <T,>(k: string): T | null => {
+    try { const v = localStorage.getItem(k); return v ? (JSON.parse(v) as T) : null } catch { return null }
+  }
+  const guardar = (k: string, v: unknown) => { try { localStorage.setItem(k, JSON.stringify(v)) } catch {} }
+  const previos = leer<DatosAdmision>(CLAVE_DATOS)
+  let enviado = false
+
+  // ── Los formularios (hay dos: arriba y al final) ──────────────────────
+  document.querySelectorAll<HTMLFormElement>('[data-fv-form]').forEach((form) => {
+    const campo = <T extends HTMLElement>(n: string) => form.querySelector(`[data-campo="${n}"]`) as T
+    const nombreEl = campo<HTMLInputElement>('nombre')
+    const emailEl = campo<HTMLInputElement>('email')
+    const telEl = campo<HTMLInputElement>('tel')
+    const sel = campo<HTMLSelectElement>('prefijo')
+    const pintarPrefijo = () => {
+      const o = sel.options[sel.selectedIndex]
+      campo('prefijo-ver').textContent = `${o.dataset.bandera} ${o.dataset.prefijo}`
+    }
+    sel.addEventListener('change', pintarPrefijo)
+
+    // Quien vuelve: sus datos ya puestos.
+    if (previos) {
+      nombreEl.value = previos.first_name || ''
+      emailEl.value = previos.email || ''
+      const op = Array.from(sel.options).find((o) => previos.phone?.startsWith(o.dataset.prefijo || '~') && o.dataset.pais === previos.pais)
+      if (op) {
+        sel.value = op.value
+        pintarPrefijo()
+        telEl.value = previos.phone.slice((op.dataset.prefijo || '').length)
+      }
+    }
+
+    // El prefijo de Bélgica, solo (08/10). La campaña va a Países Bajos y
+    // Bélgica, y el desplegable sale siempre en +31: un belga que no lo
+    // cambiara dejaría un número que no existe. Dos pistas, y ninguna manda
+    // si la persona ya ha elegido el prefijo a mano:
+    //  - la zona horaria del móvil: Europe/Brussels → +32;
+    //  - lo que escribe: 045-049… es un móvil belga (los de NL son 06), y
+    //    06… con +32 puesto es uno de NL.
+    let prefijoAMano = false
+    sel.addEventListener('change', () => { prefijoAMano = true })
+    const elegirPrefijo = (prefijo: string) => {
+      const o = Array.from(sel.options).find((x) => x.dataset.prefijo === prefijo)
+      if (o && sel.value !== o.value) { sel.value = o.value; pintarPrefijo() }
+    }
+    if (!previos) {
+      try { if (Intl.DateTimeFormat().resolvedOptions().timeZone === 'Europe/Brussels') elegirPrefijo('+32') } catch {}
+    }
+    telEl.addEventListener('input', () => {
+      if (prefijoAMano) return
+      const d = telEl.value.replace(/\D/g, '')
+      const actual = sel.options[sel.selectedIndex]?.dataset.prefijo
+      if (actual === '+31' && /^04[5-9]/.test(d)) elegirPrefijo('+32')
+      else if (actual === '+32' && /^06/.test(d)) elegirPrefijo('+31')
+    })
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault()
+      if (enviado) return
+      const nombre = nombreEl.value.trim()
+      const email = emailEl.value.trim().toLowerCase()
+      const opcion = sel.options[sel.selectedIndex]
+      const phone = telefonoCompleto(opcion.dataset.prefijo || '', telEl.value)
+      const ok = nombre.length > 0 && /\S+@\S+\.\S+/.test(email) && phone.replace(/\D/g, '').length >= 8
+      campo('err').classList.toggle('visible', !ok)
+      if (!ok) return
+      enviado = true
+      const boton = campo<HTMLButtonElement>('enviar')
+      boton.disabled = true
+      boton.classList.add('enviando')
+
+      const datos: DatosAdmision = { first_name: nombre, email, phone, pais: opcion.dataset.pais || '' }
+      guardar(CLAVE_DATOS, datos)
+
+      // A la escuela, como la ventanita del proceso de admisión: ya es una
+      // matrícula ("pidió plaza") y entra en systeme.io con «Admisión - datos».
+      // Se ESPERA la respuesta (como mucho 10 s): el Lead del píxel solo se
+      // manda si el servidor la ha guardado (ver abajo).
+      const corte = new AbortController()
+      const reloj = setTimeout(() => corte.abort(), 10000)
+      // El id del Lead, el MISMO para el píxel del navegador y para el que
+      // manda el servidor (CAPI): con él, Meta lo cuenta una sola vez.
+      const leadId = `lead-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
+      // Si en esta visita ya se contó el Lead (reenvío), el servidor tampoco
+      // lo vuelve a mandar.
+      const leadYaContado = (() => { try { return !!sessionStorage.getItem(LEAD_WEB) } catch { return false } })()
+      fetch('/api/cualificacion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        signal: corte.signal,
+        body: JSON.stringify({
+          parcial: true,
+          matricula: true,
+          hito: 'datos',
+          embudo: 'admision',
+          origen: EMBUDO_WEB.origen,
+          video: 'empezado',
+          first_name: nombre,
+          last_name: '',
+          email,
+          phone,
+          website: campo<HTMLInputElement>('hp').value,
+          respuestas: {},
+          textos: {},
+          ...contextoDelLead(),
+          ...leerUTM(),
+          lead_event_id: leadYaContado ? '' : leadId,
+          lead_contenido: 'Formación Nawar web',
+          pagina: location.href,
+        }),
+      })
+        .then(async (r) => r.ok && (await r.json().catch(() => ({})))?.ok !== false)
+        .catch(() => false)
+        .then((guardado) => {
+          clearTimeout(reloj)
+          const fbq = (window as any).fbq
+          // Píxel: la misma marca que el proceso de admisión, para no contar doble.
+          try {
+            if (!sessionStorage.getItem('lead-agendar')) {
+              sessionStorage.setItem('lead-agendar', '1')
+              fbq?.('track', 'SubmitApplication', { content_name: 'Formación Nawar web' })
+            }
+          } catch {}
+          // ⚠️ El "Lead" (en Meta, «Cliente potencial») es la conversión con
+          // la que se optimiza la campaña de esta página (07/10). SOLO cuando
+          // el servidor ha contestado OK: nunca al pulsar ni al cargar (si
+          // no, se cuentan leads que no han llegado a la escuela). Antes, el
+          // píxel se vuelve a arrancar con el correo, el teléfono y el nombre
+          // (coincidencia avanzada; el píxel los cifra): así Meta reconoce a
+          // la persona y atribuye mejor. Una vez por visita, con el eventID que
+          // también lleva el Lead del servidor (CAPI): Meta deduplica.
+          if (guardado) {
+            try {
+              if (!sessionStorage.getItem(LEAD_WEB)) {
+                sessionStorage.setItem(LEAD_WEB, 'hecho')
+                fbq?.('init', PIXEL_META, { em: email, ph: phone.replace(/\D/g, ''), fn: nombre.toLowerCase() })
+                fbq?.('track', 'Lead', { content_name: 'Formación Nawar web' }, { eventID: leadId })
+              }
+            } catch {
+              fbq?.('track', 'Lead', { content_name: 'Formación Nawar web' })
+            }
+          }
+          // Al vídeo, con TODA la dirección de entrada (?fbclid=, ?utm_…):
+          // sin el fbclid no hay cookie _fbc y Meta pierde la atribución.
+          // `d=1`: por si el navegador no deja guardar nada (ventana
+          // privada), que la página del vídeo no le devuelva aquí. Medio
+          // segundo de margen para que salga el aviso del píxel.
+          setTimeout(() => { window.location.href = conLaEntrada(EMBUDO_WEB.video, { d: '1' }) }, guardado ? 500 : 150)
+        })
+    })
+  })
+
+  // ── Ir al formulario (el de arriba) ───────────────────────────────────
+  const cajas = Array.from(document.querySelectorAll<HTMLElement>('[data-fv-caja]'))
+  document.querySelectorAll<HTMLAnchorElement>('[data-ir-form]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault()
+      const y = window.scrollY + window.innerHeight / 2
+      const destino = cajas.reduce((m, c) => {
+        const cy = c.getBoundingClientRect().top + window.scrollY
+        const my = m.getBoundingClientRect().top + window.scrollY
+        return Math.abs(cy - y) < Math.abs(my - y) ? c : m
+      }, cajas[0])
+      destino.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      setTimeout(() => (destino.querySelector('[data-campo="nombre"]') as HTMLInputElement)?.focus({ preventScroll: true }), 500)
+    })
+  })
+
+  // ── Así es una semana: un paso y su pieza ─────────────────────────────
+  // Pasa sola cada 6 s mientras se ve, hasta que la persona toca un paso.
+  const pasos = Array.from(document.querySelectorAll<HTMLButtonElement>('.fv-sem-paso'))
+  const mocks = Array.from(document.querySelectorAll<HTMLElement>('.fv-mock'))
+  const semana = document.getElementById('semana') as HTMLElement
+  let pasoActivo = 0
+  const verPaso = (k: number) => {
+    pasoActivo = k
+    pasos.forEach((p, j) => { p.classList.toggle('activo', j === k); p.setAttribute('aria-expanded', j === k ? 'true' : 'false') })
+    mocks.forEach((m, j) => { m.classList.toggle('activo', j === k); m.setAttribute('aria-hidden', j === k ? 'false' : 'true') })
+  }
+  let reloj: number | undefined
+  const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const parar = () => { window.clearInterval(reloj); reloj = undefined; semana.classList.remove('auto') }
+  const arrancar = () => {
+    if (quieto || reloj !== undefined || semana.dataset.tocado) return
+    semana.classList.add('auto')
+    reloj = window.setInterval(() => verPaso((pasoActivo + 1) % pasos.length), 6000)
+  }
+  pasos.forEach((p, k) => p.addEventListener('click', () => {
+    semana.dataset.tocado = '1'
+    parar()
+    verPaso(k)
+  }))
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([en]) => (en.isIntersecting ? arrancar() : parar()), { threshold: 0.35 }).observe(semana)
+  }
+
+  // ── El plan de estudios: etapa activa, su color y la raya de progreso ─
+  // ⚠️ 07/10, "vibra al scrollear despacio" (dos veces). Antes se medía en
+  // cada fotograma del scroll y la raya seguía al dedo: en el iPhone, tocar
+  // un elemento pegajoso a la vez que el desplazamiento por inercia tiembla.
+  // Ahora NO hay código en el scroll: un IntersectionObserver avisa al cambiar
+  // de etapa, y solo entonces se toca la barra (la raya avanza por etapas,
+  // con una transición de CSS).
+  const contenedor = document.getElementById('fv-prog-fases') as HTMLElement
+  const fases = Array.from(contenedor.querySelectorAll<HTMLElement>('.fv-fase'))
+  const enlaces = Array.from(document.querySelectorAll<HTMLAnchorElement>('.fv-pill, .fv-prog-nav a'))
+  const filasPills = Array.from(document.querySelectorAll<HTMLElement>('.fv-fases-pills'))
+  const rayas = Array.from(document.querySelectorAll<HTMLElement>('.fv-raya-fill'))
+  const pasoTxt = document.getElementById('fv-prog-paso') as HTMLElement
+  let activa = ''
+  const marcar = (id: string) => {
+    if (id === activa) return
+    activa = id
+    const orden = fases.findIndex((f) => f.dataset.fase === id)
+    enlaces.forEach((a) => {
+      const j = fases.findIndex((f) => f.dataset.fase === a.dataset.fase)
+      a.classList.toggle('activo', j === orden)
+      a.classList.toggle('hecho', j < orden)
+    })
+    fases.forEach((f, j) => f.classList.toggle('activa', j === orden))
+    pasoTxt.textContent = id === 'cert' ? 'Certificado' : `Etapa ${orden + 1} / ${fases.length - 1}`
+    rayas.forEach((x) => (x.style.transform = `scaleX(${(orden + 1) / fases.length})`))
+    filasPills.forEach((pills) => {
+      const pill = pills.querySelector<HTMLElement>(`[data-fase="${id}"]`)
+      if (pill && pills.scrollWidth > pills.clientWidth) {
+        const izq = pill.offsetLeft - 16
+        const der = pill.offsetLeft + pill.offsetWidth - pills.clientWidth + 16
+        if (pills.scrollLeft > izq) pills.scrollLeft = izq
+        else if (pills.scrollLeft < der) pills.scrollLeft = der
+      }
+    })
+  }
+
+  // La barra fija del móvil: sale mientras el plan pasa por debajo de ella
+  // (una franja fina arriba de la pantalla) y se va al salir por arriba o
+  // por abajo. Un solo aviso y sin código en el scroll. Se mira el plan
+  // entero y no dos marcas sueltas: al saltar de golpe por encima de una
+  // marca, el navegador no avisa (nunca llegó a cruzar la pantalla).
+  const fija = document.getElementById('fv-fases-fija') as HTMLElement
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => {
+      const ver = e.isIntersecting
+      fija.classList.toggle('visible', ver)
+      fija.setAttribute('aria-hidden', ver ? 'false' : 'true')
+    }, { rootMargin: '-142px 0px -80% 0px' }).observe(document.getElementById('fv-prog-plan') as HTMLElement)
+  }
+
+  marcar(fases[0].dataset.fase || '')
+  if ('IntersectionObserver' in window) {
+    // Una franja fina al 40 % de la pantalla: la etapa que la cruza es la
+    // que se está leyendo.
+    const io = new IntersectionObserver((entradas) => {
+      for (const e of entradas) if (e.isIntersecting) marcar((e.target as HTMLElement).dataset.fase || '')
+    }, { rootMargin: '-40% 0px -59% 0px' })
+    fases.forEach((f) => io.observe(f))
+  }
+  enlaces.forEach((a) => a.addEventListener('click', (e) => {
+    e.preventDefault()
+    const destino = document.getElementById(a.getAttribute('href')!.slice(1))
+    if (!destino) return
+    const barra = (window.matchMedia('(max-width: 1023px)').matches ? 72 : 24) + 72
+    window.scrollTo({ top: destino.getBoundingClientRect().top + window.scrollY - barra, behavior: 'smooth' })
+  }))
+
+  // ── Móvil: el botón pegado abajo cuando no se ve el formulario ───────
+  // Tampoco sale con el botón del cierre o el pie de la web a la vista:
+  // serían dos iguales (y tapaba la última línea del pie).
+  const pegado = document.getElementById('fv-pegado') as HTMLElement
+  const botonCierre = document.getElementById('fv-cierre-btn')
+  const pie = document.querySelector('footer.footer-nuevo')
+  if ('IntersectionObserver' in window && cajas.length) {
+    const visibles = new Set<Element>()
+    const pintar = () => {
+      const pasadoElPrimero = cajas[0].getBoundingClientRect().bottom < 0
+      const ver = visibles.size === 0 && pasadoElPrimero
+      pegado.classList.toggle('visible', ver)
+      pegado.setAttribute('aria-hidden', ver ? 'false' : 'true')
+    }
+    const io = new IntersectionObserver((entradas) => {
+      entradas.forEach((e) => (e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target)))
+      pintar()
+    })
+    cajas.forEach((c) => io.observe(c))
+    if (botonCierre) io.observe(botonCierre)
+    if (pie) io.observe(pie)
+  }
+</script>
+
+<style>
+  /* overflow: clip y no hidden: con hidden, las piezas pegajosas (las etapas
+     del plan) dejan de pegarse. */
+  .fv { background: #fff; color: #0a1656; overflow-x: clip; }
+  .fv :global(*) { box-sizing: border-box; }
+
+  /* ── Piezas de la marca ─────────────────────────────────────────────── */
+  .fv-badge, .fv-badge-dark {
+    display: inline-flex; align-items: center; gap: 8px; padding: 7px 15px; border-radius: 9999px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 18px;
+  }
+  .fv-badge { background: linear-gradient(135deg, #d6effc 0%, #9fd5f5 100%); color: #1D0084; }
+  .fv-badge-dark { background: rgba(77,163,255,0.12); border: 1px solid rgba(77,163,255,0.32); color: #cfe6ff; }
+  .fv-h2 {
+    font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(28px, 3.9vw, 44px); font-weight: 600;
+    line-height: 1.14; letter-spacing: -0.024em; color: #1D0084; margin: 0 0 16px; text-wrap: balance;
+  }
+  .fv-h2-blanco { color: #fff; }
+  /* El subrayado de rotulador de la marca. */
+  .fv-acento {
+    background-image: linear-gradient(to top, rgba(122,185,255,0.45) 0em, rgba(122,185,255,0.45) 0.24em, transparent 0.24em);
+    padding: 0 0.08em; border-radius: 5px; -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  }
+  .fv-azul { color: #4da3ff; }
+  /* El degradado de los titulares sobre oscuro, el mismo de las landings
+     (.text-gradient-white): blanco arriba y 72 % abajo. Con clone, cada
+     renglón lleva su propio degradado. */
+  .fv-grad { background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.72) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  .fv-nw { white-space: nowrap; }
+  .fv-lead { font-size: clamp(16px, 1.45vw, 18px); line-height: 1.65; color: #171a2e; margin: 0; max-width: 620px; }
+  .fv-lead-blanco { color: rgba(255,255,255,0.82); }
+  .fv-chip { display: inline; color: #1D0084; font-weight: 600; }
+
+  .fv-sec { position: relative; padding: 112px 24px; overflow-x: clip; }
+  .fv-blanco { background: #fff; }
+  .fv-claro { background: #F5F8FF; }
+  .fv-in { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; }
+  .fv-cab { text-align: center; display: flex; flex-direction: column; align-items: center; margin-bottom: 56px; }
+  .fv-cab .fv-lead { margin: 0 auto; }
+  .fv-cab-izq { text-align: left; align-items: flex-start; }
+  .fv-cab-izq .fv-lead { margin: 0; }
+  .fv-dots { position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 28px 28px; }
+
+  /* El fondo por capas de la marca (cabecera y cierre): dos luces, la malla
+     de 78 px con máscara y la trama de puntos. Un degradado liso "se lee
+     plantilla". */
+  .fv-capas { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .fv-capas span { position: absolute; }
+  .fv-luz1 { top: -260px; right: -200px; width: 900px; height: 760px; background: radial-gradient(closest-side, rgba(11,109,240,0.55), transparent); }
+  .fv-luz2 { bottom: -320px; left: -260px; width: 820px; height: 680px; background: radial-gradient(closest-side, rgba(77,163,255,0.20), transparent); }
+  .fv-malla { inset: 0; background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 78px 78px;
+    -webkit-mask-image: radial-gradient(ellipse 60% 70% at 72% 30%, #000 0%, transparent 72%); mask-image: radial-gradient(ellipse 60% 70% at 72% 30%, #000 0%, transparent 72%); }
+  .fv-capas .fv-dots { inset: 0; opacity: 0.6; }
+
+  /* ── Cabecera ───────────────────────────────────────────────────────── */
+  .fv-hero { position: relative; background: #1D0084; color: #fff; overflow: clip; padding: 0 24px 96px; }
+  /* La barra de la web (NavbarLanding) es fija y mide 72 px: la cabecera
+     empieza debajo, a la misma altura que en la página del anuncio. */
+  .fv-hero { padding-top: 92px; }
+  /* Al saltar al formulario, que no se quede debajo de la barra. */
+  :global(#solicitud-a) { scroll-margin-top: 96px; }
+  .fv-hero-in {
+    position: relative; z-index: 1; max-width: 1152px; margin: 0 auto; padding-top: 36px;
+    display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); column-gap: 64px; row-gap: 0;
+    grid-template-areas: "texto form" "pruebas form"; align-items: center;
+  }
+  .fv-hero-texto { grid-area: texto; align-self: end; }
+  .fv-hero-form { grid-area: form; }
+  .fv-pruebas { grid-area: pruebas; align-self: start; }
+  .fv-h1 {
+    font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(36px, 4.5vw, 60px); font-weight: 700;
+    line-height: 1.06; letter-spacing: -0.034em; margin: 4px 0 26px; color: #fff; text-wrap: balance;
+  }
+  .fv-h1-azul { color: #4da3ff; }
+  .fv-hero-sub { font-size: clamp(16.5px, 1.5vw, 19px); line-height: 1.65; color: rgba(255,255,255,0.8); margin: 0; max-width: 580px; }
+  .fv-hero-sub strong { color: #fff; font-weight: 600; }
+  .fv-pruebas {
+    list-style: none; margin: 34px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    border: 1px solid rgba(170,210,255,0.18); border-radius: 18px; background: linear-gradient(160deg, rgba(110,200,255,0.10), rgba(0,140,255,0.06));
+  }
+  .fv-pruebas li { display: flex; flex-direction: column; gap: 3px; padding: 18px 18px 17px; min-width: 0; }
+  .fv-pruebas li + li { border-left: 1px solid rgba(170,210,255,0.16); }
+  .fv-prueba-ico { color: #4da3ff; display: inline-flex; line-height: 0; margin-bottom: 8px; }
+  .fv-pruebas b { font-family: 'Poppins', system-ui, sans-serif; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: #fff; line-height: 1.25; }
+  .fv-prueba-d { font-size: 13px; line-height: 1.45; color: rgba(225,238,255,0.68); }
+
+  /* La cinta */
+  .fv-cinta { background: #14067a; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); overflow: hidden; padding: 17px 0; }
+  .fv-cinta-pista { display: flex; width: max-content; animation: fv-cinta 40s linear infinite; }
+  .fv-cinta-grupo { display: flex; }
+  .fv-cinta-grupo span { font-size: 12px; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,255,255,0.5); white-space: nowrap; padding-right: 24px; }
+  .fv-cinta-grupo i { font-style: normal; color: #4da3ff; padding-left: 24px; }
+  @keyframes fv-cinta { from { transform: translateX(0); } to { transform: translateX(-25%); } }
+  @media (prefers-reduced-motion: reduce) { .fv-cinta-pista { animation: none; } }
+
+  /* ── Dolores: el icono solo, sin baldosa ────────────────────────────── */
+  .fv-dolores { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid #E3EAF6; border-radius: 22px; overflow: hidden; background: #fff; }
+  .fv-dolor { display: flex; flex-direction: column; gap: 18px; padding: 32px 30px; border-right: 1px solid #E3EAF6; border-bottom: 1px solid #E3EAF6; }
+  .fv-dolor:nth-child(3n) { border-right: 0; }
+  .fv-dolor:nth-last-child(-n+3) { border-bottom: 0; }
+  .fv-dolor-ico { color: #025dc7; display: inline-flex; line-height: 0; }
+  .fv-dolor h3 { font-family: 'Poppins', system-ui, sans-serif; font-size: 17.5px; font-weight: 600; line-height: 1.3; letter-spacing: -0.012em; color: #1D0084; margin: 0 0 7px; }
+  .fv-dolor p { margin: 0; font-size: 15px; line-height: 1.62; color: #171a2e; }
+  .fv-giro { margin: 44px auto 0; max-width: 760px; text-align: center; font-size: clamp(17px, 1.7vw, 20px); line-height: 1.6; color: #171a2e; }
+  .fv-giro strong { color: #1D0084; font-weight: 600; }
+  .fv-giro > span { display: block; margin-top: 10px; font-family: 'Poppins', system-ui, sans-serif; font-weight: 600; color: #1D0084; }
+
+  /* ── Antes / después: la columna "con la formación" es una banda azul ─── */
+  .fv-cambio { max-width: 980px; margin: 0 auto; }
+  .fv-cambio-fila { display: grid; grid-template-columns: 200px minmax(0, 1fr) minmax(0, 1.1fr); align-items: stretch; }
+  .fv-cambio-fila > span { padding: 22px 26px; font-size: 15.5px; line-height: 1.5; display: flex; align-items: center; gap: 12px; }
+  .fv-cambio-t { font-family: 'Poppins', system-ui, sans-serif; font-weight: 600; color: #1D0084; border-bottom: 1px solid #E3EAF6; padding-left: 4px !important; }
+  .fv-cambio-t :global(svg) { color: #025dc7; flex-shrink: 0; }
+  .fv-cambio-hoy { color: #171a2e; border-bottom: 1px solid #E3EAF6; }
+  .fv-cambio-x { color: #b4bdd6; display: inline-flex; flex-shrink: 0; }
+  .fv-cambio-con { background: #1D0084; color: #fff; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .fv-cambio-ok { flex-shrink: 0; width: 24px; height: 24px; border-radius: 9999px; background: #4da3ff; color: #0a1656; display: inline-flex; align-items: center; justify-content: center; }
+  .fv-cambio-cab > span { padding-top: 26px; padding-bottom: 18px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+  .fv-cambio-cab .fv-cambio-hoy { color: #171a2e; }
+  .fv-cambio-cab .fv-cambio-con { border-radius: 20px 20px 0 0; color: #9fd0ff; }
+  .fv-cambio-cab .fv-cambio-t { border-bottom-color: transparent; }
+  .fv-cambio-cab .fv-cambio-hoy { border-bottom-color: #E3EAF6; }
+  .fv-cambio-fila.ultima > span { border-bottom: 0; }
+  .fv-cambio-fila.ultima .fv-cambio-con { border-radius: 0 0 20px 20px; padding-bottom: 28px; }
+
+  /* ── Así es una semana ─────────────────────────────────────────────── */
+  .fv-sem { display: grid; grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); grid-template-areas: "cab escena" "pasos escena"; column-gap: 40px; align-items: start; }
+  .fv-sem-cab { grid-area: cab; }
+  .fv-sem-cab .fv-lead { margin-bottom: 32px; }
+  .fv-sem-pasos { grid-area: pasos; list-style: none; margin: 0; padding: 0; border-top: 1px solid #E3EAF6; }
+  .fv-sem-pasos li { border-bottom: 1px solid #E3EAF6; }
+  .fv-sem-paso { position: relative; width: 100%; display: flex; gap: 18px; align-items: flex-start; padding: 22px 4px; background: none; border: 0; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+  .fv-sem-n { font-family: 'Poppins', system-ui, sans-serif; font-size: 14px; font-weight: 600; color: #171a2e; padding-top: 2px; font-variant-numeric: tabular-nums; transition: color .2s; }
+  .fv-sem-txt b { display: block; font-family: 'Poppins', system-ui, sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.012em; color: #171a2e; transition: color .2s; }
+  .fv-sem-d { display: block; max-height: 0; opacity: 0; overflow: hidden; font-size: 15px; line-height: 1.62; color: #171a2e; transition: max-height .4s ease, opacity .3s ease, margin .4s ease; }
+  .fv-sem-paso.activo .fv-sem-d { max-height: 200px; opacity: 1; margin-top: 8px; }
+  .fv-sem-paso.activo .fv-sem-n { color: #025dc7; }
+  .fv-sem-paso.activo b { color: #1D0084; }
+  .fv-sem-paso:hover b { color: #1D0084; }
+  /* La raya que se llena mientras pasa sola. */
+  .fv-sem-barra { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; overflow: hidden; }
+  .fv-sem-barra i { display: block; height: 100%; width: 100%; background: #4da3ff; transform: scaleX(0); transform-origin: left; }
+  .fv-sem-paso.activo .fv-sem-barra i { transform: scaleX(1); }
+  :global(#semana.auto) .fv-sem-paso.activo .fv-sem-barra i { animation: fv-llenar 6s linear; }
+  @keyframes fv-llenar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  /* La escena: la captura real de cada paso, sobre blanco y sin marco (las
+     ilustraciones traen su propio fondo y sus bloques de color). Las cuatro
+     apiladas en la misma celda de la rejilla, y se cruzan al cambiar. */
+  .fv-escena { grid-area: escena; position: relative; display: grid; align-items: center; align-self: center; margin-right: -40px; }
+  .fv-mock { grid-area: 1 / 1; margin: 0; position: relative; aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: translateY(12px) scale(0.985); transition: opacity .5s ease, transform .5s ease; pointer-events: none; }
+  .fv-mock.activo { opacity: 1; transform: none; pointer-events: auto; }
+  /* Las ilustraciones traen mucho blanco alrededor: se agrandan un poco para
+     que el dispositivo llene la columna (el blanco sobrante no se ve). */
+  .fv-mock > img { width: 100%; height: 100%; object-fit: contain; display: block; transform: scale(1.14); }
+  .fv-mock-plan-b { display: none; color: #025dc7; }
+  .fv-mock.sin-foto { background: linear-gradient(135deg, #F5F8FF, #EAF2FF); border-radius: 24px; }
+  .fv-mock.sin-foto .fv-mock-plan-b { display: inline-flex; }
+  @media (prefers-reduced-motion: reduce) { .fv-mock { transition: none; } }
+
+  /* ── La videollamada dibujada (paso 4) ──────────────────────────────
+     Mismo lenguaje que las ilustraciones de las landings: un portátil sobre
+     dos bloques de color (azul oscuro arriba a la izquierda, azul claro abajo
+     a la derecha), con aire a los lados como la tableta de las consultas.
+     Pocas piezas y grandes: la diapositiva a todo lo ancho, la cámara del
+     profe en una esquina y los alumnos en una fila de letras abajo (07/10:
+     con la rejilla de seis cuadros "quedó muy apretado"). Todo en cqw (el
+     ancho de la figura): en el móvil es la misma imagen, más pequeña. */
+  .fv-mock { container-type: inline-size; }
+  .vc { position: absolute; inset: 0; }
+  .vc-bloque { position: absolute; border-radius: 2.2cqw; }
+  .vc-b1 { left: 8%; top: 9%; width: 32%; height: 40%; background: radial-gradient(circle at 30% 30%, #1d3fd8, #1D0084 75%); }
+  .vc-b2 { right: 8%; bottom: 9%; width: 34%; height: 44%; background: #9fd5ff; }
+  .vc-portatil { position: absolute; left: 18%; right: 18%; top: 13%; bottom: 19%; background: #111827; border-radius: 1.8cqw 1.8cqw 0.6cqw 0.6cqw; padding: 1cqw; box-shadow: 0 3cqw 5cqw -2.5cqw rgba(10,22,86,0.45); }
+  .vc-base { position: absolute; left: 14%; right: 14%; bottom: 16%; height: 3.2%; background: linear-gradient(#e5e7eb, #b9bec8); border-radius: 0 0 2cqw 2cqw; }
+  .vc-pantalla { width: 100%; height: 100%; border-radius: 0.8cqw; overflow: hidden; background: #0f1530; display: flex; flex-direction: column; font-family: 'Inter', system-ui, sans-serif; }
+  .vc-top { display: flex; align-items: center; justify-content: space-between; gap: 1cqw; padding: 0.8cqw 1.3cqw; font-size: 1.05cqw; color: rgba(255,255,255,0.7); }
+  .vc-vivo { display: inline-flex; align-items: center; gap: 0.6cqw; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; font-size: 0.95cqw; }
+  .vc-vivo i { width: 0.8cqw; height: 0.8cqw; border-radius: 9999px; background: #ef4444; box-shadow: 0 0 0 0.4cqw rgba(239,68,68,0.25); }
+  .vc-tit { font-weight: 600; color: #fff; }
+  .vc-hora { font-variant-numeric: tabular-nums; }
+  .vc-cuerpo { position: relative; flex: 1; min-height: 0; padding: 0 1cqw; display: flex; }
+  /* La diapositiva compartida: la de la lección, en blanco y azul. El texto
+     va a la izquierda; la cámara del profe ocupa la esquina de arriba. */
+  .vc-slide { flex: 1; background: linear-gradient(160deg, #ffffff, #EEF4FF); border-radius: 0.8cqw; padding: 2.2cqw 2.6cqw; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+  .vc-slide-et { margin: 0; font-size: 1.05cqw; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #025dc7; }
+  .vc-slide-t { margin: 0.5cqw 0 1.4cqw; font-family: 'Poppins', system-ui, sans-serif; font-size: 3.1cqw; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; color: #1D0084; }
+  .vc-l { margin: 0 0 0.8cqw; max-width: 64%; display: grid; grid-template-columns: 6cqw minmax(0, 1fr); font-size: 1.55cqw; line-height: 1.35; color: #0a1656; }
+  .vc-l b { font-size: 1.25cqw; font-weight: 600; color: #025dc7; padding-top: 0.15cqw; }
+  .vc-turno { margin: 1cqw 0 0; align-self: flex-start; display: inline-flex; align-items: center; gap: 0.7cqw; padding: 0.8cqw 1.4cqw; border-radius: 9999px; background: #4da3ff; color: #0a1656; font-size: 1.3cqw; font-weight: 700; }
+  .vc-turno :global(svg) { width: 1.4cqw; height: 1.4cqw; }
+  /* La cámara del profe, hablando (el filo azul), encima de la diapositiva. */
+  .vc-profe { position: absolute; top: 1.2cqw; right: 2.2cqw; width: 30%; aspect-ratio: 4 / 3; border-radius: 0.8cqw; overflow: hidden; background: #2a3458; box-shadow: 0 0 0 0.25cqw #4da3ff, 0 1.5cqw 3cqw -1.5cqw rgba(10,22,86,0.5); }
+  .vc-profe img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .vc-nombre { position: absolute; left: 0.5cqw; bottom: 0.5cqw; display: inline-flex; align-items: center; gap: 0.35cqw; padding: 0.25cqw 0.6cqw; border-radius: 0.4cqw; background: rgba(10,15,40,0.7); color: #fff; font-size: 0.95cqw; font-weight: 600; }
+  .vc-nombre i { display: inline-flex; color: #4da3ff; }
+  .vc-nombre :global(svg) { width: 0.95cqw; height: 0.95cqw; }
+  /* Abajo: los alumnos (solo la letra, como sin foto de perfil) y los botones. */
+  .vc-barra { display: flex; align-items: center; justify-content: space-between; gap: 1cqw; padding: 0.9cqw 1.3cqw; }
+  .vc-grupo { position: relative; display: flex; align-items: center; }
+  .vc-ini { width: 2.6cqw; height: 2.6cqw; margin-left: -0.6cqw; border-radius: 9999px; background: var(--c, #4da3ff); box-shadow: 0 0 0 0.25cqw #0f1530; color: #fff; font-size: 1.15cqw; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; }
+  .vc-ini:first-child { margin-left: 0; }
+  .vc-tu { background: #4da3ff; color: #0a1656; font-size: 1cqw; font-weight: 700; }
+  .vc-mano { margin-left: 0.5cqw; font-style: normal; font-size: 1.3cqw; }
+  .vc-botones { display: flex; align-items: center; gap: 0.8cqw; }
+  .vc-botones > span { width: 2.6cqw; height: 2.6cqw; border-radius: 9999px; background: #263055; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+  .vc-botones :global(svg) { width: 1.2cqw; height: 1.2cqw; }
+  .vc-botones > .vc-salir { width: auto; padding: 0 1.3cqw; border-radius: 9999px; background: #dc2626; font-weight: 600; font-size: 1.05cqw; }
+
+  /* ── El plan de estudios (oscuro, como UDIA) ───────────────────────── */
+  .fv-prog-sec { background: #120a5c; color: #fff; padding-bottom: 120px;
+    background-image: radial-gradient(circle 900px at 85% 0%, rgba(11,109,240,0.28) 0%, transparent 60%), radial-gradient(circle 700px at 0% 100%, rgba(77,163,255,0.10) 0%, transparent 60%); }
+  .fv-prog-sec > .fv-dots { opacity: 0.5; }
+  .fv-prog-sec .fv-cab { margin-bottom: 44px; }
+  /* 08/10: la entradilla quedaba muy separada de los dolores. */
+  .fv-cab.fv-cab-dolores { margin-bottom: 36px; }
+  .fv-flujo { color: #fff; font-weight: 600; white-space: nowrap; }
+  .fv-prog { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 36px; align-items: start; }
+  .fv-prog-nav { position: sticky; top: 32px; }
+  .fv-prog-nav-caja { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px 14px 14px; }
+  .fv-prog-nav-top { display: flex; justify-content: space-between; align-items: baseline; padding: 0 8px; }
+  .fv-prog-nav-titulo { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .fv-prog-nav-paso { margin: 0; font-size: 12px; font-weight: 600; color: #fff; font-variant-numeric: tabular-nums; }
+  .fv-raya-lateral { margin: 12px 8px 12px; }
+  .fv-prog-nav ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  .fv-prog-nav a { display: flex; align-items: center; gap: 12px; padding: 10px 8px; border-radius: 12px; text-decoration: none; transition: background .2s; }
+  .fv-prog-nav a:hover { background: rgba(255,255,255,0.05); }
+  .fv-prog-nav a b { display: block; font-size: 14.5px; font-weight: 600; color: rgba(255,255,255,0.62); transition: color .2s; }
+  .fv-prog-nav a small { display: block; font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 1px; }
+  .fv-prog-bola { flex-shrink: 0; width: 32px; height: 32px; border-radius: 9999px; border: 1.5px solid rgba(255,255,255,0.18); font-size: 11.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); transition: background .25s, border-color .25s, color .25s; }
+  .fv-prog-nav a.hecho .fv-prog-bola { border-color: var(--c); color: var(--c); }
+  .fv-prog-nav a.activo { background: rgba(255,255,255,0.06); }
+  .fv-prog-nav a.activo b { color: #fff; }
+  .fv-prog-nav a.activo .fv-prog-bola { background: var(--c); border-color: var(--c); color: #0a1656; }
+
+  /* La raya de progreso (la misma en la barra del móvil y en la columna):
+     avanza por etapas, con su transición; no sigue al dedo. */
+  .fv-fases-raya { height: 4px; border-radius: 9999px; background: rgba(255,255,255,0.1); overflow: hidden; }
+  .fv-raya-fill { display: block; height: 100%; width: 100%; transform-origin: left; transform: scaleX(0); transition: transform .45s ease; background: linear-gradient(90deg, #4da3ff, #5ad1c5 35%, #8e9cff 65%, #c9b6ff); border-radius: 9999px; }
+
+  /* La barra de etapas del móvil: escondida en el ordenador. */
+  .fv-fases-barra, .fv-fases-fija { display: none; }
+
+  /* Las etapas: tarjetas oscuras, sin tarjetas dentro (07/10: "que no
+     parezcan popups"). Lo de dentro se separa con filetes, no con cajas. */
+  .fv-prog-fases { display: flex; flex-direction: column; gap: 18px; }
+  .fv-fase { position: relative; background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.09); border-radius: 22px; padding: 30px 32px 26px; scroll-margin-top: 28px; transition: border-color .3s, background .3s; }
+  .fv-fase.activa { border-color: color-mix(in srgb, var(--c) 45%, transparent); background: rgba(255,255,255,0.05); }
+  .fv-fase::before { content: ''; position: absolute; left: 32px; right: 32px; top: -1px; height: 2px; border-radius: 0 0 4px 4px; background: var(--c); opacity: 0; transition: opacity .3s; }
+  .fv-fase.activa::before { opacity: 1; }
+  .fv-fase-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .fv-fase-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 9999px; font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.12); }
+  .fv-fase-chip-c { color: var(--c); border-color: color-mix(in srgb, var(--c) 40%, transparent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; font-size: 11px; }
+  .fv-fase-cab { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; }
+  .fv-fase-n { font-family: 'Poppins', system-ui, sans-serif; font-size: 54px; font-weight: 700; line-height: 0.9; letter-spacing: -0.05em; color: color-mix(in srgb, var(--c) 55%, transparent); }
+  .fv-fase h3 { font-family: 'Poppins', system-ui, sans-serif; font-size: 24px; font-weight: 600; letter-spacing: -0.018em; color: #fff; margin: 0; }
+  .fv-fase-cab p { margin: 3px 0 0; font-size: 14.5px; color: rgba(255,255,255,0.6); }
+  .fv-fase-promesa { border-left: 2px solid var(--c); padding: 2px 0 2px 18px; margin-bottom: 24px; }
+  .fv-fase-promesa span { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 5px; }
+  .fv-fase-promesa p { margin: 0; font-size: 16.5px; line-height: 1.55; color: #fff; font-weight: 500; }
+  .fv-fase-sub { margin: 0 0 12px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .fv-fase-temas { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 28px; }
+  .fv-fase-temas li { position: relative; padding-left: 18px; font-size: 14.5px; line-height: 1.55; color: rgba(255,255,255,0.85); }
+  .fv-fase-temas li::before { content: ''; position: absolute; left: 0; top: 0.6em; width: 6px; height: 6px; border-radius: 9999px; background: var(--c); }
+  .fv-fase-hito { display: flex; align-items: flex-start; gap: 12px; margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.09); }
+  .fv-fase-hito-ico { flex-shrink: 0; color: var(--c); display: inline-flex; padding-top: 2px; }
+  .fv-fase-hito p { margin: 0; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,0.9); }
+  .fv-fase-hito b { color: #fff; font-weight: 600; }
+  .fv-fase-mods { margin: 16px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12.5px; color: rgba(255,255,255,0.5); }
+  .fv-fase-mods span { margin-right: 4px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+  .fv-fase-mods i { font-style: normal; padding: 3px 10px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.75); }
+
+  /* El certificado: el de las landings (fondo + papel girado). */
+  .fv-cert-titulo { margin-bottom: 18px !important; }
+  .fv-cert-visual { margin-bottom: 18px; }
+  .fv-cert-foto { position: relative; margin: 0; aspect-ratio: 16 / 9; }
+  /* Las medidas y colores de fondo.certificado.png (1920×1080). */
+  .fv-cert-b1 { position: absolute; left: 5.6%; top: 11.5%; width: 51.7%; height: 72.8%; border-radius: 3.2% / 5.6%; background: radial-gradient(ellipse at 50% 50%, #0a5fd0 0%, #0b3fb0 45%, #170a8c 100%); }
+  .fv-cert-b2 { position: absolute; left: 69.3%; top: 64.4%; width: 25.1%; height: 26.2%; border-radius: 6.5% / 11%; background: #9fd8ff; }
+  .fv-cert-papel { position: absolute; left: 50%; top: 50%; width: 62%; transform: translate(-50%, -50%) rotate(-7deg); filter: drop-shadow(0 18px 28px rgba(3,9,33,0.45)); }
+  .fv-cert-papel img { width: 100%; height: auto; display: block; border-radius: 8px; }
+  .fv-cert-dibujo { max-width: 420px; margin: 28px auto; background: linear-gradient(160deg, #fff, #eef4ff); border-radius: 12px; padding: 26px 22px 22px; text-align: center; transform: rotate(-2deg); border: 6px solid #fff; outline: 1px solid #c9d8f2; outline-offset: -12px; box-shadow: 0 24px 50px -24px rgba(29,0,132,0.4); }
+  .fv-cert-dibujo[hidden] { display: none; }
+  .fv-cert-marca { margin: 0 0 10px; font-family: 'Poppins', system-ui, sans-serif; font-size: 15px; font-weight: 700; color: #1D0084; }
+  .fv-cert-tipo { margin: 0; font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #6b7aa6; }
+  .fv-cert-nombre { margin: 10px 0 6px; font-family: 'Poppins', system-ui, sans-serif; font-size: 22px; font-weight: 600; font-style: italic; color: #1D0084; }
+  .fv-cert-texto { margin: 0; font-size: 12.5px; line-height: 1.5; color: #47557f; }
+  .fv-cert-tres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid rgba(255,255,255,0.09); }
+  .fv-cert-tres div { padding: 16px 18px 2px 0; }
+  .fv-cert-tres div + div { padding-left: 18px; border-left: 1px solid rgba(255,255,255,0.09); }
+  .fv-cert-tres span { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 5px; }
+  .fv-cert-tres p { margin: 0; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.88); }
+
+  /* ── ¿Te reconoces? ────────────────────────────────────────────────── */
+  .fv-perfiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; max-width: 980px; margin: 0 auto; }
+  .fv-perfil { position: relative; background: #F5F8FF; border-radius: 22px; padding: 34px 32px 26px; display: flex; flex-direction: column; }
+  .fv-comillas { position: absolute; top: 6px; left: 24px; font-family: 'Poppins', system-ui, sans-serif; font-size: 72px; line-height: 1; color: #4da3ff; opacity: 0.55; }
+  .fv-perfil-q { position: relative; margin: 14px 0 22px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(19px, 2vw, 22px); font-weight: 600; line-height: 1.35; letter-spacing: -0.015em; color: #1D0084; flex: 1; }
+  .fv-perfil-r { margin: 0; padding-top: 16px; border-top: 1px solid #DDE6F5; display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.55; color: #171a2e; }
+  .fv-perfil-r :global(svg) { flex-shrink: 0; color: #025dc7; margin-top: 2px; }
+  .fv-noes { max-width: 980px; margin: 28px auto 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 26px; }
+  .fv-noes-t { margin: 0; font-size: 14px; font-weight: 600; color: #171a2e; }
+  .fv-noes ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 22px; }
+  .fv-noes li { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; color: #171a2e; }
+  .fv-noes li :global(svg) { color: #b4bdd6; }
+
+  /* ── Competencias: panel oscuro dentro de una sección blanca ─────────── */
+  .fv-comp-sec { padding-top: 0; }
+  .fv-comp { position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 56px; align-items: center;
+    background: #1D0084; border-radius: 28px; padding: 56px 52px; color: #fff;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px), radial-gradient(circle 520px at 100% 0%, rgba(11,109,240,0.45) 0%, transparent 65%);
+    background-size: 28px 28px, auto; }
+  .fv-comp-cab { position: relative; z-index: 1; }
+  .fv-comp-cab .fv-lead { max-width: 420px; }
+  .fv-comp-lista { position: relative; z-index: 1; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 28px; }
+  .fv-comp-lista li { display: flex; gap: 14px; align-items: flex-start; }
+  .fv-num { flex-shrink: 0; width: 30px; height: 30px; border-radius: 9999px; border: 1.5px solid #fff; font-size: 13px; font-weight: 700; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+  /* 07/10: "letra más blanca en las descripciones, que destaque". */
+  .fv-comp-lista p { margin: 3px 0 0; font-size: 15.5px; line-height: 1.6; color: rgba(255,255,255,0.94); }
+  .fv-comp-lista :global(.fv-chip) { color: #9fd0ff; }
+
+  /* ── Cierre: oscuro por capas, los tres pasos y un botón que sube ── */
+  .fv-cierre { position: relative; background: #1D0084; color: #fff; overflow: clip; padding: 112px 24px 112px; }
+  .fv-cierre-in { position: relative; z-index: 1; max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .fv-cierre .fv-h2 { font-size: clamp(30px, 4.2vw, 48px); margin-bottom: 44px; }
+  .fv-pasos { list-style: none; margin: 0; padding: 0; position: relative; width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+  /* El hilo que une los tres pasos. */
+  .fv-pasos::before { content: ''; position: absolute; top: 19px; left: 16.6%; right: 16.6%; height: 1px; background: linear-gradient(90deg, #4da3ff, rgba(77,163,255,0.25)); }
+  .fv-pasos li { position: relative; display: flex; flex-direction: column; align-items: center; }
+  .fv-pasos-n { width: 38px; height: 38px; border-radius: 9999px; background: #1D0084; border: 1px solid #4da3ff; color: #fff; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .fv-pasos b { display: block; font-family: 'Poppins', system-ui, sans-serif; font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+  .fv-pasos p { margin: 0; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,0.75); max-width: 260px; }
+  .fv-cierre-btn { margin-top: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 17px 34px; border-radius: 12px;
+    background: #4da3ff; color: #0a1656; font-size: 16.5px; font-weight: 700; text-decoration: none; transition: background .15s, transform .15s; }
+  .fv-cierre-btn:hover { background: #5eb4ff; }
+  .fv-cierre-btn:active { transform: translateY(1px); }
+
+
+  .fv-pegado { display: none; }
+
+  /* ── Tableta ────────────────────────────────────────────────────────── */
+  @media (max-width: 1023px) {
+    .fv-hero-in { grid-template-columns: minmax(0, 1fr); grid-template-areas: "texto" "form" "pruebas"; row-gap: 32px; padding-top: 12px; }
+    .fv-hero-texto { max-width: 680px; }
+    .fv-hero-form { max-width: 520px; width: 100%; }
+    .fv-pruebas { margin-top: 0; }
+    .fv-dolores { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .fv-dolor:nth-child(3n) { border-right: 1px solid #E3EAF6; }
+    .fv-dolor:nth-child(2n) { border-right: 0; }
+    .fv-dolor:nth-last-child(-n+3) { border-bottom: 1px solid #E3EAF6; }
+    .fv-dolor:nth-last-child(-n+2) { border-bottom: 0; }
+    .fv-sem { grid-template-columns: minmax(0, 1fr); grid-template-areas: "cab" "escena" "pasos"; }
+    .fv-sem-cab { text-align: center; display: flex; flex-direction: column; align-items: center; }
+    .fv-sem-cab .fv-lead { margin: 0 auto 32px; }
+    .fv-escena { margin: 0 0 20px; }
+    /* Sin la columna de al lado, la imagen a 1,14 tocaba los bordes de la
+       pantalla (08/10, "más pequeñas, con espacio en los lados"). */
+    .fv-mock > img { transform: scale(0.92); }
+    .fv-comp { grid-template-columns: minmax(0, 1fr); gap: 32px; padding: 44px 36px; }
+
+    /* El plan: sin columna lateral; las etapas, pegadas arriba.
+       ⚠️ Nada que se repinte en cada fotograma: sin backdrop-filter, sin
+       will-change ni translateZ, sin sombras (07/10: "vibra"). */
+    .fv-prog { grid-template-columns: minmax(0, 1fr); }
+    .fv-prog-nav { display: none; }
+    .fv-fases-barra { display: block; margin: 0 -24px 22px; padding: 12px 0 0; background: #120a5c; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    /* La copia fija: escondida por encima de la pantalla y baja al entrar en
+       el plan. Fondo sólido y nada de desenfoque. */
+    .fv-fases-fija { display: block; position: fixed; top: 72px; left: 0; right: 0; z-index: 45; padding: 12px 0 0; background: #120a5c; border-bottom: 1px solid rgba(255,255,255,0.1);
+      transform: translateY(-110%); visibility: hidden; transition: transform .22s ease, visibility 0s .22s; }
+    .fv-fases-fija.visible { transform: none; visibility: visible; transition: transform .22s ease; }
+    .fv-fases-pills { position: relative; display: flex; gap: 8px; overflow-x: auto; padding: 0 24px 12px; scrollbar-width: none; overscroll-behavior-x: contain; }
+    .fv-fases-pills::-webkit-scrollbar { display: none; }
+    .fv-pill { flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; padding: 9px 15px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.6); font-size: 13.5px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+    .fv-pill b { font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; color: rgba(255,255,255,0.4); }
+    .fv-pill.hecho { color: #fff; }
+    .fv-pill.hecho b { color: var(--c); }
+    .fv-pill.activo { background: var(--c); border-color: var(--c); color: #0a1656; }
+    .fv-pill.activo b { color: rgba(10,22,86,0.6); }
+    .fv-fases-barra .fv-fases-raya, .fv-fases-fija .fv-fases-raya { border-radius: 0; height: 3px; }
+    .fv-fases-barra .fv-raya-fill, .fv-fases-fija .fv-raya-fill { border-radius: 0; }
+    .fv-fase { scroll-margin-top: 80px; }
+  }
+
+  /* ── Antes / después en pantallas estrechas: una tarjeta por fila,
+     compacta (situación, cómo es hoy, y la banda azul con el cambio). ─── */
+  @media (max-width: 760px) {
+    .fv-cambio-cab { display: none; }
+    .fv-cambio { display: flex; flex-direction: column; gap: 12px; }
+    .fv-cambio-fila { grid-template-columns: minmax(0, 1fr); background: #fff; border: 1px solid #E3EAF6; border-radius: 18px; overflow: hidden; }
+    .fv-cambio-fila > span { border-bottom: 0 !important; align-items: flex-start; font-size: 15px; }
+    .fv-cambio-t { padding: 16px 18px 4px !important; font-size: 16.5px; align-items: center !important; }
+    .fv-cambio-hoy { padding: 6px 18px 14px !important; gap: 10px !important; }
+    .fv-cambio-con, .fv-cambio-fila.ultima .fv-cambio-con { border-radius: 0; padding: 14px 18px 16px !important; gap: 10px !important; }
+    .fv-cambio-x { margin: 3px 4px 0 4px; }
+    .fv-cambio-ok { width: 22px; height: 22px; }
+  }
+
+  /* ── Móvil ──────────────────────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .fv-sec { padding: 76px 16px; }
+    .fv-hero { padding: 0 16px 56px; }
+    .fv-hero { padding-top: 72px; }
+    .fv-badge-dark { font-size: 10px; letter-spacing: 0.12em; }
+    .fv-solo-pc { display: none; }
+    /* El titular parte en cinco renglones en el móvil y con 1,06 las tildes
+       tocaban la línea de arriba (usuario, 08/10): más aire. */
+    .fv-h1 { font-size: clamp(32px, 8.8vw, 40px); line-height: 1.18; margin-bottom: 18px; }
+    .fv-hero-sub { font-size: 16px; }
+    /* «de cero a independiente» en su propio renglón: si no, se parte en
+       "de / cero". Y la flecha de la metodología puede partir. */
+    .fv-salto-movil { display: block; }
+    .fv-flujo { white-space: normal; }
+    .fv-pruebas li { padding: 16px 8px 15px; align-items: center; text-align: center; }
+    .fv-prueba-ico { margin-bottom: 6px; }
+    .fv-pruebas b { font-size: 13.5px; }
+    .fv-prueba-d { font-size: 11.5px; }
+    .fv-cab { margin-bottom: 36px; }
+    .fv-cab.fv-cab-dolores { margin-bottom: 22px; }
+    .fv-dolores { grid-template-columns: minmax(0, 1fr); }
+    .fv-dolor, .fv-dolor:nth-child(2n), .fv-dolor:nth-child(3n) { border-right: 0; border-bottom: 1px solid #E3EAF6; padding: 22px 20px; flex-direction: row; gap: 16px; }
+    .fv-dolor:last-child { border-bottom: 0; }
+    .fv-dolor-ico { flex-shrink: 0; padding-top: 1px; }
+    .fv-sem-txt b { font-size: 17px; }
+    .fv-comp-lista, .fv-perfiles { grid-template-columns: minmax(0, 1fr); }
+    .fv-perfil { padding: 30px 22px 22px; }
+    .fv-noes { flex-direction: column; align-items: flex-start; }
+    .fv-noes ul { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .fv-comp { padding: 36px 22px; border-radius: 22px; }
+    .fv-comp-sec { padding-left: 12px; padding-right: 12px; padding-top: 0; }
+    .fv-cert-tres { grid-template-columns: minmax(0, 1fr); }
+    .fv-cert-tres div, .fv-cert-tres div + div { padding: 14px 0 0; border-left: 0; }
+    .fv-cert-tres div + div { border-top: 1px solid rgba(255,255,255,0.09); margin-top: 14px; }
+    .fv-fase-temas { grid-template-columns: minmax(0, 1fr); }
+    .fv-fases-barra { margin: 0 -16px 18px; }
+    .fv-fases-pills { padding: 0 16px 12px; }
+    .fv-fases-fija { padding-top: 10px; }
+    .fv-fase { padding: 24px 20px 20px; border-radius: 18px; }
+    .fv-fase::before { left: 20px; right: 20px; }
+    .fv-fase-promesa p { font-size: 15.5px; }
+    .fv-fase-n { font-size: 44px; }
+    .fv-fase h3 { font-size: 21px; }
+    .fv-cierre { padding: 80px 16px 80px; }
+    .fv-cierre .fv-h2 { margin-bottom: 34px; }
+    .fv-pasos { grid-template-columns: minmax(0, 1fr); gap: 22px; text-align: left; }
+    /* En columna, el hilo va de bola a bola y no pasa del 3. */
+    .fv-pasos::before { display: none; }
+    .fv-pasos li:not(:last-child)::after { content: ''; position: absolute; left: 18px; top: 38px; bottom: -22px; width: 1px; background: rgba(77,163,255,0.55); }
+    .fv-pasos li { display: grid; grid-template-columns: 38px minmax(0, 1fr); column-gap: 16px; align-items: start; }
+    .fv-pasos-n { grid-row: 1 / 3; margin-bottom: 0; }
+    .fv-pasos b { margin: 7px 0 4px; }
+    .fv-pasos p { max-width: none; }
+    .fv-cierre-btn { width: 100%; margin-top: 36px; }
+
+    /* El botón pegado abajo, como el de UDIA: teléfono a la izquierda, texto
+       y la flecha en un círculo. Fondo sólido, sin desenfoque. */
+    .fv-pegado {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 50; padding: 8px;
+      border-radius: 9999px; background: #160a6e; border: 1px solid rgba(255,255,255,0.18);
+      transform: translateY(140%); visibility: hidden; transition: transform .3s ease, visibility 0s .3s;
+    }
+    .fv-pegado.visible { transform: translateY(0); visibility: visible; transition: transform .3s ease; }
+    .fv-pegado-ico { flex-shrink: 0; width: 46px; height: 46px; border-radius: 9999px; background: rgba(77,163,255,0.2); color: #9fd0ff; display: inline-flex; align-items: center; justify-content: center; }
+    .fv-pegado-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; color: #fff; font-size: 15.5px; font-weight: 600; line-height: 1.2; }
+    .fv-pegado-txt b { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #9fd0ff; }
+    .fv-pegado-btn { flex-shrink: 0; width: 48px; height: 48px; border-radius: 9999px; background: #4da3ff; color: #0a1656; display: inline-flex; align-items: center; justify-content: center; }
+  }
+</style>

@@ -69,6 +69,23 @@ export const EMBUDO_FB = {
  *  para que salga una sola vez por visita. */
 export const LEAD_FB = 'nawar.lead.fb'
 
+/**
+ * La MISMA página que el embudo del anuncio, pero para la gente que llega
+ * desde la web (09/10): con la barra de arriba y el pie de siempre, en
+ * /formacion. Su propio camino (/formacion/vsl, /formacion/proceso-de-admision)
+ * y su propio `origen`, para no mezclar estos leads con los del anuncio: la
+ * conversión de Meta cuenta solo los Lead de una dirección con
+ * `/formacion-nawar-fb`, y en el panel el recorrido dice `formacion-web`.
+ */
+export const EMBUDO_WEB = {
+  landing: '/formacion',
+  video: '/formacion/vsl',
+  formulario: '/formacion/proceso-de-admision',
+  origen: 'formacion-web',
+} as const
+
+export const LEAD_WEB = 'nawar.lead.web'
+
 /** El píxel de Meta de TODA la web («Hebben&Zijn» en el Administrador de
  *  eventos). Lo arranca Layout.astro en todas las páginas, y el embudo del
  *  anuncio lo vuelve a arrancar con los datos de la persona (coincidencia

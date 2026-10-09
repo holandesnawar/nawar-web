@@ -1,0 +1,368 @@
+---
+/**
+ * /formacion/vsl — el vídeo del camino de la WEB (09/10/2026). COPIA de
+ * /formacion-nawar-fb/vsl con el embudo de la web (EMBUDO_WEB): vuelve a
+ * /formacion, sigue a /formacion/proceso-de-admision y avisa a la escuela con
+ * `origen = formacion-web`. Sin la barra de la web a propósito: aquí solo se
+ * mira el vídeo. Si se cambia el vídeo del anuncio, mirar si hay que traerlo.
+ */
+import Layout from '../../layouts/Layout.astro'
+import { EMBUDO_WEB, VIDEO_SEGUNDOS, VIDEO_URL, leerVideo } from '../../lib/admision'
+
+export const prerender = true
+
+const video = leerVideo(VIDEO_URL)
+const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
+const minutos = Math.max(1, Math.round(VIDEO_SEGUNDOS / 60))
+const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
+---
+
+<Layout
+  title="¡Te falta un paso! — Holandés Nawar"
+  description="Mira el vídeo para entender los siguientes pasos de tu admisión."
+  noindex={true}
+>
+  <div class="vp">
+    <div class="vp-aviso">¡No cierres ni recargues esta página!</div>
+
+    <main class="vp-page">
+      <div class="vp-glow1" aria-hidden="true"></div>
+      <div class="vp-glow2" aria-hidden="true"></div>
+      <div class="vp-dots" aria-hidden="true"></div>
+
+      <div class="vp-shell">
+        <img src={LOGO} alt="Holandés Nawar" class="vp-logo" width="150" height="38" />
+        <h1 class="vp-h1">¡Te falta un paso!</h1>
+        <p class="vp-sub">Mira este vídeo corto de <span class="vp-azul">{minutos} minutos</span> para entender bien los siguientes pasos</p>
+        <p class="vp-nota" id="vp-nota">Alguien del equipo de Nawar te va a escribir por WhatsApp muy pronto: estate atento al teléfono.</p>
+
+        <div class="vp-flechas" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+
+        <div class="vp-video" id="vp-video" data-proveedor={video.proveedor} data-src={video.src}>
+          <div class="vp-reproductor" id="vp-reproductor"></div>
+          <!-- Encima del vídeo, solo si el reproductor confirma que va en
+               silencio. -->
+          <button type="button" class="vp-sonido" id="vp-sonido" hidden>
+            <span class="vp-sonido-pill">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A1.4 1.4 0 0 1 5.4 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.4a1.4 1.4 0 0 1 1 .4l3.4 3.4a.7.7 0 0 0 1.2-.5z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.4 18.4a9 9 0 0 0 0-12.8"/></svg>
+              Toca para activar el sonido
+            </span>
+          </button>
+          <span class="vp-reloj" id="vp-reloj" aria-hidden="true">{mmss(VIDEO_SEGUNDOS)}</span>
+        </div>
+
+        <div class="vp-seguir">
+          <a href={EMBUDO_WEB.formulario} class="vp-btn" id="vp-btn" aria-disabled="true" tabindex="-1">
+            <svg class="vp-candado" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            <span>Agenda tu llamada de admisión</span>
+            <svg class="vp-flecha" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <p class="vp-cuenta" id="vp-cuenta" aria-live="polite">Se desbloquea en <span id="vp-quedan">{mmss(VIDEO_SEGUNDOS)}</span></p>
+          <div class="vp-barra" aria-hidden="true"><span id="vp-barra"></span></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</Layout>
+
+<script>
+  import { CLAVE_DATOS, CLAVE_POSICION, CLAVE_VIDEO, EMBUDO_WEB, VIDEO_SEGUNDOS, conLaEntrada, type DatosAdmision } from '../../lib/admision'
+  import { contextoDelLead } from '../../lib/recorrido'
+  import { leerUTM } from '../../lib/utm'
+  import { eventoDelVideo } from '../../lib/metaNavegador'
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T
+  // Píxel (07/10): la página del VSL cargada = «VSLVisto», una vez por
+  // visita. El Lead NO va aquí: lo manda la página anterior cuando el
+  // servidor ha guardado los datos. Desde el 08/10 cada uno va también desde
+  // el servidor (API de conversiones) con el mismo id: Meta lo cuenta una vez.
+  const unaVez = (clave: string, evento: 'VSLVisto' | 'VSL50') => {
+    try {
+      if (sessionStorage.getItem(clave)) return
+      sessionStorage.setItem(clave, '1')
+    } catch {}
+    eventoDelVideo(evento, 'Formación Nawar web')
+  }
+  unaVez('nawar.px.vsl', 'VSLVisto')
+
+  const leer = <T,>(k: string): T | null => {
+    try { const v = localStorage.getItem(k); return v ? (JSON.parse(v) as T) : null } catch { return null }
+  }
+  const guardar = (k: string, v: unknown) => { try { localStorage.setItem(k, JSON.stringify(v)) } catch {} }
+
+  const datos = leer<DatosAdmision>(CLAVE_DATOS)
+  // Sin datos y sin venir del formulario (alguien con el enlace suelto): a
+  // dejar los datos primero.
+  if (!datos && !new URLSearchParams(location.search).has('d')) location.replace(conLaEntrada(EMBUDO_WEB.landing))
+  if (datos?.first_name) $('vp-nota').textContent = `${datos.first_name}, alguien del equipo de Nawar te va a escribir por WhatsApp muy pronto: estate atento al teléfono.`
+
+  const caja = $('vp-video')
+  const proveedor = caja.dataset.proveedor || ''
+  const src = caja.dataset.src || ''
+  const reproductor = $('vp-reproductor')
+  const sonido = $<HTMLButtonElement>('vp-sonido')
+  const btn = $<HTMLAnchorElement>('vp-btn')
+  // Al formulario con todo lo que traía la entrada (?fbclid=, ?utm_…).
+  btn.href = conLaEntrada(EMBUDO_WEB.formulario)
+  const DURACION = VIDEO_SEGUNDOS
+
+  let visto = leer<string>(CLAVE_VIDEO) === 'visto'
+  // Segundos vistos (el tope: lo más lejos que ha llegado viéndolo).
+  let tope = visto ? DURACION : Math.min(DURACION, Math.max(0, Number(leer<number>(CLAVE_POSICION)) || 0))
+
+  const mmss = (s: number) => {
+    const t = Math.max(0, Math.ceil(s))
+    return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`
+  }
+
+  // ── Avisar a la escuela de que lo vio entero ──────────────────────────
+  const avisarVisto = () => {
+    if (!datos) return
+    try {
+      fetch('/api/cualificacion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify({
+          parcial: true, hito: 'video', embudo: 'admision', origen: EMBUDO_WEB.origen, video: 'visto',
+          first_name: datos.first_name, last_name: '', email: datos.email, phone: datos.phone,
+          respuestas: {}, textos: {}, ...contextoDelLead(), ...leerUTM(),
+        }),
+      }).catch(() => {})
+    } catch {}
+    try {
+      if (!sessionStorage.getItem('admision-video')) {
+        sessionStorage.setItem('admision-video', '1')
+        ;(window as any).fbq?.('trackCustom', 'AdmisionVideoVisto')
+      }
+    } catch {}
+  }
+
+  // ── Lo que se ve: botón, cuenta atrás, barra y reloj del vídeo ────────
+  let guardadoEn = 0
+  const pintar = () => {
+    const quedan = DURACION - tope
+    $('vp-quedan').textContent = mmss(quedan)
+    $('vp-reloj').textContent = mmss(quedan)
+    $('vp-barra').style.width = `${Math.min(100, (tope / DURACION) * 100)}%`
+    if (!visto && tope - guardadoEn >= 2) { guardadoEn = tope; guardar(CLAVE_POSICION, Math.floor(tope)) }
+  }
+  const desbloquear = () => {
+    btn.setAttribute('aria-disabled', 'false')
+    btn.removeAttribute('tabindex')
+    btn.classList.add('abierto')
+    $('vp-cuenta').textContent = '¡Listo! Ya puedes reservar tu llamada.'
+    $('vp-cuenta').classList.add('abierto')
+    $('vp-reloj').hidden = true
+    $('vp-barra').style.width = '100%'
+  }
+  const terminar = () => {
+    tope = DURACION
+    unaVez('nawar.px.vsl50', 'VSL50')
+    if (!visto) {
+      visto = true
+      guardar(CLAVE_VIDEO, 'visto')
+      try { localStorage.removeItem(CLAVE_POSICION) } catch {}
+      avisarVisto()
+    }
+    pintar()
+    desbloquear()
+  }
+  const avanzar = (t: number) => {
+    if (visto || !isFinite(t)) return
+    if (t > tope) tope = Math.min(DURACION, t)
+    // Píxel: más de la mitad del vídeo vista = «VSL50», una vez por visita.
+    if (tope > DURACION / 2) unaVez('nawar.px.vsl50', 'VSL50')
+    pintar()
+    if (tope >= DURACION - 0.5) terminar()
+  }
+  btn.addEventListener('click', (e) => {
+    if (btn.getAttribute('aria-disabled') === 'true') {
+      e.preventDefault()
+      const c = $('vp-cuenta')
+      c.classList.remove('sacudir'); void c.offsetWidth; c.classList.add('sacudir')
+    }
+  })
+
+  // ── El reproductor ────────────────────────────────────────────────────
+  // Arranca solo, sin forzar el silencio: si el navegador deja sonar, suena;
+  // si no, el propio reproductor decide (en silencio o esperando al play).
+  // Desde donde lo dejó, un pelín antes.
+  const inicio = () => (visto || tope < 3 ? 0 : Math.max(0, Math.floor(tope) - 2))
+  let player: any = null
+  let listo = false
+  let conTiempos = false
+  // Si el reproductor avisa de play/pausa, el reloj de respaldo solo corre
+  // mientras suena (en el iPhone no deja arrancar con sonido y espera al play).
+  let avisaPlay = false
+  let sonando = false
+
+  const cargarScript = (url: string) => new Promise<void>((ok, mal) => {
+    const s = document.createElement('script')
+    s.src = url; s.async = true
+    s.onload = () => ok(); s.onerror = () => mal(new Error(url))
+    document.head.appendChild(s)
+  })
+
+  const ponerIframe = (silencio: boolean, desde: number) => {
+    reproductor.innerHTML = ''
+    const f = document.createElement('iframe')
+    f.src = `${src}${silencio ? '&muted=true' : ''}${desde > 0 ? `&t=${desde}` : ''}`
+    f.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media'
+    f.allowFullscreen = true
+    f.title = 'Vídeo: los siguientes pasos'
+    reproductor.appendChild(f)
+    return f
+  }
+
+  const conectar = (f: HTMLIFrameElement) => {
+    const PJ = (window as any).playerjs
+    if (!PJ) return
+    try {
+      player = new PJ.Player(f)
+      player.on('ready', () => {
+        listo = true
+        // ¿Va en silencio? Solo entonces el aviso de activar el sonido.
+        const mirarSilencio = () => { try { player.getMuted?.((m: boolean) => { sonido.hidden = !m }) } catch {} }
+        mirarSilencio()
+        player.on('play', () => { avisaPlay = true; sonando = true; mirarSilencio() })
+        player.on('pause', () => { avisaPlay = true; sonando = false })
+        player.on('ended', () => { sonando = false })
+        player.on('timeupdate', (e: { seconds: number }) => {
+          conTiempos = true
+          const t = e?.seconds
+          // Sin saltos hasta verlo entero: si arrastra la barra hacia
+          // delante, vuelve a donde iba.
+          if (!visto && isFinite(t) && t > tope + 2) { player.setCurrentTime(tope); return }
+          avanzar(t)
+        })
+        player.on('ended', () => { if (conTiempos ? tope >= DURACION - 5 : true) terminar() })
+      })
+    } catch {}
+  }
+
+  const arrancar = async () => {
+    if (!src) {
+      reproductor.innerHTML = '<p class="vp-sin-video">El vídeo se está preparando. Mientras tanto, ya puedes reservar tu llamada.</p>'
+      sonido.hidden = true
+      terminar()
+      return
+    }
+    if (proveedor === 'bunny') {
+      // player.js ANTES que el iframe: si el reproductor carga primero, su
+      // aviso de "listo" se pierde.
+      try { await cargarScript('https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js') } catch {}
+      conectar(ponerIframe(false, inicio()))
+    } else {
+      ponerIframe(false, 0)
+    }
+  }
+
+  // "Toca para activar el sonido": solo sale si el reproductor ha dicho que
+  // va en silencio, así que aquí siempre hay player.js. Si lleva poco (lo
+  // ha visto sin oírlo), vuelve al principio, como UDIA; si no, sigue donde
+  // va. Nunca se vuelve a montar el reproductor.
+  sonido.addEventListener('click', () => {
+    sonido.hidden = true
+    if (!player || !listo) return
+    try {
+      player.unmute?.()
+      player.setVolume?.(100)
+      if (!visto && tope < 15) { tope = 0; pintar(); player.setCurrentTime?.(0) }
+      player.play?.()
+    } catch {}
+  })
+
+  // ── El reloj de respaldo ──────────────────────────────────────────────
+  // Si Bunny no manda los tiempos, la cuenta atrás baja con el reloj
+  // mientras la página está a la vista. Con tiempos, manda el vídeo (y si
+  // lo pausa, la cuenta se para).
+  let antes = Date.now()
+  const arrancadoEn = Date.now()
+  setInterval(() => {
+    const ahora = Date.now()
+    const paso = (ahora - antes) / 1000
+    antes = ahora
+    if (visto || document.hidden) return
+    if (!conTiempos && ahora - arrancadoEn > 4000 && (!avisaPlay || sonando)) avanzar(tope + paso)
+  }, 500)
+
+  // ── Al entrar ─────────────────────────────────────────────────────────
+  pintar()
+  if (visto) desbloquear()
+  arrancar()
+</script>
+
+<style>
+  .vp { min-height: 100vh; background: #1D0084; }
+  .vp-aviso {
+    position: relative; z-index: 2; background: #4da3ff; color: #0a1656; text-align: center;
+    font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 11px 16px;
+  }
+  .vp-page { position: relative; overflow: hidden; display: flex; justify-content: center; padding: 40px 24px 88px; min-height: calc(100vh - 40px); }
+  .vp-glow1 { position: absolute; top: -140px; left: 50%; transform: translateX(-50%); width: 980px; height: 560px; background: radial-gradient(ellipse at center, rgba(11,109,240,0.5) 0%, transparent 65%); pointer-events: none; }
+  .vp-glow2 { position: absolute; bottom: -80px; right: -100px; width: 620px; height: 420px; background: radial-gradient(ellipse at center, rgba(77,163,255,0.16) 0%, transparent 65%); pointer-events: none; }
+  .vp-dots { position: absolute; inset: 0; pointer-events: none; opacity: 0.45; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 28px 28px; }
+  .vp-shell { position: relative; z-index: 1; width: 100%; max-width: 820px; display: flex; flex-direction: column; align-items: center; text-align: center; color: #fff; }
+  .vp-logo { height: 36px; width: auto; margin-bottom: 28px; }
+  .vp-h1 { font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(38px, 6vw, 64px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; margin: 0 0 18px;
+    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.7) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .vp-sub { margin: 0; font-size: clamp(18px, 2.3vw, 23px); font-weight: 600; line-height: 1.45; max-width: 640px; color: #fff; text-wrap: balance; }
+  .vp-azul { color: #4da3ff; }
+  .vp-nota { margin: 14px 0 0; font-size: clamp(15px, 1.6vw, 17px); line-height: 1.6; color: rgba(255,255,255,0.78); max-width: 600px; }
+
+  .vp-flechas { display: flex; gap: 22px; margin: 30px 0 24px; color: #4da3ff; }
+  .vp-flechas svg { animation: vp-baja 1.6s ease-in-out infinite; }
+  .vp-flechas svg:nth-child(2) { animation-delay: .18s; }
+  .vp-flechas svg:nth-child(3) { animation-delay: .36s; }
+  @keyframes vp-baja { 0%, 100% { transform: translateY(0); opacity: 0.55; } 50% { transform: translateY(6px); opacity: 1; } }
+
+  .vp-video { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #0a1656; box-shadow: 0 0 0 1px rgba(255,255,255,0.1); }
+  /* 2 px de más por lado: así no asoma el filo negro del iframe. */
+  .vp-reproductor { position: absolute; inset: -2px; }
+  .vp-reproductor :global(iframe) { width: 100%; height: 100%; border: 0; display: block; background: #000; }
+  .vp-reproductor :global(.vp-sin-video) { margin: 0; height: 100%; display: flex; align-items: center; justify-content: center; padding: 24px; font-size: 15px; color: rgba(255,255,255,0.85); }
+  .vp-sonido { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; padding: 0; cursor: pointer; background: rgba(10,22,86,0.12); display: flex; align-items: center; justify-content: center; font-family: inherit; }
+  .vp-sonido[hidden] { display: none; }
+  .vp-sonido-pill { display: inline-flex; align-items: center; gap: 12px; padding: 16px 26px; border-radius: 9999px; color: #fff; font-size: clamp(15px, 1.8vw, 19px); font-weight: 600;
+    background: rgba(10,22,86,0.55); border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); animation: vp-latido 2s ease-out infinite; }
+  .vp-sonido:hover .vp-sonido-pill { background: rgba(10,22,86,0.7); }
+  @keyframes vp-latido { 0% { box-shadow: 0 0 0 0 rgba(77,163,255,0.5); } 70%, 100% { box-shadow: 0 0 0 16px rgba(77,163,255,0); } }
+  .vp-reloj { position: absolute; left: 14px; bottom: 14px; z-index: 2; padding: 6px 12px; border-radius: 9999px; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; color: #fff;
+    background: rgba(10,22,86,0.6); border: 1px solid rgba(255,255,255,0.22); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); pointer-events: none; }
+  .vp-reloj[hidden] { display: none; }
+
+  .vp-seguir { width: 100%; margin-top: 30px; display: flex; flex-direction: column; align-items: center; }
+  .vp-btn {
+    width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 14px; padding: 22px 24px; border-radius: 16px;
+    font-size: clamp(17px, 2.1vw, 21px); font-weight: 700; text-decoration: none; transition: all .3s;
+    background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.18); cursor: not-allowed;
+  }
+  .vp-btn .vp-flecha { display: none; }
+  .vp-btn.abierto { background: #4da3ff; color: #0a1656; border-color: #4da3ff; cursor: pointer; animation: vp-pulso 1.8s ease-out 3; }
+  .vp-btn.abierto:hover { background: #5eb4ff; }
+  .vp-btn.abierto .vp-candado { display: none; }
+  .vp-btn.abierto .vp-flecha { display: inline; }
+  @keyframes vp-pulso { 0% { box-shadow: 0 0 0 0 rgba(77,163,255,0.6); } 100% { box-shadow: 0 0 0 20px rgba(77,163,255,0); } }
+  .vp-cuenta { margin: 18px 0 14px; font-size: 16px; color: rgba(255,255,255,0.7); font-variant-numeric: tabular-nums; }
+  .vp-cuenta span { color: #fff; font-weight: 600; }
+  .vp-cuenta.abierto { color: #9fd0ff; font-weight: 600; }
+  .vp-cuenta.sacudir { animation: vp-sacudir .4s; color: #fff; }
+  @keyframes vp-sacudir { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  .vp-barra { width: 100%; max-width: 760px; height: 6px; border-radius: 9999px; background: rgba(255,255,255,0.12); overflow: hidden; }
+  .vp-barra span { display: block; height: 100%; width: 0; background: #4da3ff; border-radius: 9999px; transition: width .5s linear; }
+
+  @media (max-width: 640px) {
+    .vp-aviso { font-size: 11.5px; padding: 10px 12px; }
+    .vp-page { padding: 28px 16px 64px; }
+    .vp-logo { height: 32px; margin-bottom: 22px; }
+    .vp-flechas { margin: 22px 0 18px; gap: 18px; }
+    .vp-video { border-radius: 14px; }
+    .vp-sonido-pill { padding: 12px 18px; gap: 9px; }
+    .vp-btn { padding: 19px 18px; border-radius: 14px; gap: 10px; }
+  }
+</style>
