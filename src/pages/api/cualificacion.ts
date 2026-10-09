@@ -28,6 +28,9 @@ export const prerender = false
  * el lead ya está en la escuela para entonces.
  */
 const ETIQUETA = 'Llamada'
+/** El `content_name` de los eventos de Meta de cada embudo: el del anuncio y
+ *  el de la web (/formacion, 09/10). Lista cerrada: viene del navegador. */
+const CONTENIDOS_META = ['Formación Nawar FB', 'Formación Nawar web']
 const PRESUPUESTO_MS = 8000
 
 /**
@@ -213,7 +216,7 @@ export const POST: APIRoute = async (ctx) => {
               agente: request.headers.get('user-agent') || '',
               fbc: cookies.get('_fbc')?.value,
               fbp: cookies.get('_fbp')?.value,
-              contenido: 'Formación Nawar FB',
+              contenido: CONTENIDOS_META.includes((body?.lead_contenido ?? '').toString()) ? body.lead_contenido.toString() : 'Formación Nawar FB',
             })
           )
         : Promise.resolve()
@@ -231,7 +234,7 @@ export const POST: APIRoute = async (ctx) => {
     // el MISMO id que el del píxel del navegador: Meta lo cuenta una vez. Los
     // datos van cifrados (SHA-256). Sin token, no hace nada.
     const scheduleId = (body?.schedule_event_id ?? '').toString()
-    const contenido = ['Formación Nawar FB', 'Proceso de admisión'].includes((body?.schedule_contenido ?? '').toString())
+    const contenido = [...CONTENIDOS_META, 'Proceso de admisión'].includes((body?.schedule_contenido ?? '').toString())
       ? body.schedule_contenido.toString()
       : 'Proceso de admisión'
     const capi = /^schedule-[a-z0-9-]{6,60}$/.test(scheduleId)

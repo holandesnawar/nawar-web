@@ -1,5 +1,8 @@
 ---
 import { CTA_PRINCIPAL } from '../lib/cta'
+
+// A dónde va «Matricularme». En /formacion, al formulario de la propia página.
+const { ctaHref = CTA_PRINCIPAL } = Astro.props as { ctaHref?: string }
 ---
 <footer class="footer-nuevo" id="contacto" data-navbar="dark">
 
@@ -33,7 +36,7 @@ import { CTA_PRINCIPAL } from '../lib/cta'
             ya estaba convencido acababa en "te avisamos cuando abramos". Ahora
             lleva al mismo sitio que el resto de botones de la web (CTA_PRINCIPAL). */}
         <div class="footer-signup-form">
-          <a href={CTA_PRINCIPAL} class="footer-signup-btn">
+          <a href={ctaHref} class="footer-signup-btn" data-ir-form={ctaHref.startsWith('#') ? '' : undefined}>
             Matricularme
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </a>

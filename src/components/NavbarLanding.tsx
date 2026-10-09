@@ -20,7 +20,10 @@ const NAV_LINKS = [
 
 type NavTheme = 'dark' | 'light'
 
-export default function NavbarLanding() {
+/** `ctaHref`: a dónde lleva «Matricularme» en esta página. Por defecto, el de
+ *  toda la web (CTA_PRINCIPAL); /formacion lo usa para bajar a su propio
+ *  formulario (09/10). */
+export default function NavbarLanding({ ctaHref = CTA_PRINCIPAL }: { ctaHref?: string } = {}) {
   const [menuOpen,    setMenuOpen]    = useState(false)
   const [menuClosing, setMenuClosing] = useState(false)
   const headerRef = useRef<HTMLElement>(null)
@@ -132,7 +135,7 @@ export default function NavbarLanding() {
                 Acceso a alumnos
               </a>
               <a
-                href={CTA_PRINCIPAL}
+                href={ctaHref}
                 className="inline-flex items-center gap-2 px-7 py-3 text-[15px] font-semibold rounded-lg bg-[#4da3ff] text-[#1D0084] transition-colors duration-200"
               >
                 Matricularme
@@ -145,7 +148,7 @@ export default function NavbarLanding() {
             {/* Mobile */}
             <div className="lg:hidden flex items-center gap-2">
               <a
-                href={CTA_PRINCIPAL}
+                href={ctaHref}
                 className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-[#4da3ff] text-[#1D0084] text-[14px] font-semibold hover:bg-[#5eb4ff] transition-all duration-200"
               >
                 Matricularme
@@ -215,7 +218,7 @@ export default function NavbarLanding() {
                 Acceso a alumnos
               </a>
               <a
-                href={CTA_PRINCIPAL}
+                href={ctaHref}
                 onClick={handleLink}
                 className="flex w-full items-center justify-center gap-2.5 px-6 py-4 text-[16px] font-semibold rounded-lg bg-[#4da3ff] text-[#1D0084] hover:bg-[#5eb4ff] transition-all duration-200 shadow-[0_4px_20px_rgba(77,163,255,0.30)]"
               >

@@ -40,6 +40,11 @@ const PAGINAS: { prueba: RegExp; marca: string }[] = [
   { prueba: /^\/formacion-nawar-fb\/proceso-de-admision\/?$/, marca: 'admision-preguntas' },
   { prueba: /^\/formacion-nawar-fb\/vsl\/?$/, marca: 'admision' },
   { prueba: /^\/formacion-nawar-fb\/?$/, marca: 'anuncio-fb' },
+  // La misma página para la gente de la web, con la barra y el pie de
+  // siempre (09/10). Marca propia para no confundirla con el anuncio.
+  { prueba: /^\/formacion\/proceso-de-admision\/?$/, marca: 'admision-preguntas' },
+  { prueba: /^\/formacion\/vsl\/?$/, marca: 'admision' },
+  { prueba: /^\/formacion\/?$/, marca: 'formacion-web' },
   // ⚠️ La única con precio. Es la que parte a los leads en dos grupos.
   { prueba: /^\/formacion-a0-a1\/?$/, marca: 'landing-precio' },
   // ⚠️ La otra ruta CON precio y su formulario de pago (02/10): no se

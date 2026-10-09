@@ -33,7 +33,7 @@ export function eventoDelVideo(evento: 'VSLVisto' | 'VSL50', contenido = 'Formac
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         keepalive: true,
-        body: JSON.stringify({ evento, event_id: eventId, pagina: location.href, usuario }),
+        body: JSON.stringify({ evento, event_id: eventId, pagina: location.href, usuario, contenido }),
       })
     } catch {}
   })()
