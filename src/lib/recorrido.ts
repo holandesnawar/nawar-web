@@ -61,6 +61,10 @@ const PAGINAS: { prueba: RegExp; marca: string }[] = [
   { prueba: /^\/guia\/bases-neerlandes(-a)?\/?$/, marca: 'guia-bases' },
   { prueba: /^\/guia\/hebben-zijn(-a)?\/gracias\/?$/, marca: 'gracias-hebben' },
   { prueba: /^\/guia\/hebben-zijn(-a)?\/?$/, marca: 'guia-hebben' },
+  // Las otras dos puertas de la web a /formacion (09/10): sin ellas, quien
+  // entraba por Nuestra visión o por un artículo llegaba "sin recorrido".
+  { prueba: /^\/nuestra-vision\/?$/, marca: 'vision' },
+  { prueba: /^\/blog(\/.*)?$/, marca: 'blog' },
   { prueba: /^\/$/, marca: 'home' },
 ]
 

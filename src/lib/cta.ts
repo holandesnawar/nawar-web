@@ -25,4 +25,9 @@
 // 03/10, lanzamiento del proceso de admisión (pedido del usuario): los
 // botones generales van a /proceso-de-admision (datos → vídeo → preguntas).
 // El formulario corto /matricula-a0-a1 sigue vivo por si hay que volver.
-export const CTA_PRINCIPAL = '/proceso-de-admision'
+// 09/10 (usuario, tras verla): los botones generales van a /formacion, la
+// página que explica la formación con la barra y el pie de la web (copia de
+// la del anuncio, /formacion-nawar-fb, con su propio camino y su marca
+// `formacion-web` en el recorrido). /proceso-de-admision sigue vivo: ahí
+// llega /agendar y lo que ya se envió con ese enlace.
+export const CTA_PRINCIPAL = '/formacion'
