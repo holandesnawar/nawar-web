@@ -27,6 +27,8 @@ import NavbarLanding from '../../components/NavbarLanding'
 import FooterNuevo from '../../components/FooterNuevo.astro'
 // El estilo del pie de la web vive aquí (como en el blog).
 import '../../styles/nawar-sections.css'
+// Inter y Poppins desde la propia web (10/10): ver el comentario del archivo.
+import '../../styles/fuentes-locales.css'
 
 export const prerender = true
 
@@ -34,10 +36,13 @@ export const prerender = true
 /** Las ilustraciones y el certificado de las landings (BonusSection). Traen
  *  su propio fondo blanco: van sobre blanco y sin marco. */
 const IMG = {
-  clases: 'https://docs.holandesnawar.com/img/Landing/bonus.clases.png',
-  ejercicios: 'https://docs.holandesnawar.com/img/Landing/bonus.ejercicios.png',
-  soporte: 'https://docs.holandesnawar.com/img/Landing/bonus.soporte.png',
-  certificado: 'https://docs.holandesnawar.com/img/Landing/Certificado.final.landing.png',
+  // En WebP y servidas desde aquí (10/10): las mismas de docs.holandesnawar.com
+  // (bonus.*.png y Certificado.final.landing.png), a 1200 px de ancho. Pasan
+  // de 1,8 MB a 110 KB y se ven igual. Si se cambia una en docs, rehacerla.
+  clases: '/img/formacion-v2/leccion.webp',
+  ejercicios: '/img/formacion-v2/ejercicios.webp',
+  soporte: '/img/formacion-v2/consultas.webp',
+  certificado: '/img/formacion-v2/certificado.webp',
   // La cámara del profe en el mockup de la clase en directo (08/10): el profe
   // del vídeo de la lección de tiempo libre («Wat doe jij in je vrije tijd?»),
   // recortado de una captura que mandó el usuario, en 4:3 (440×330). Para
@@ -207,6 +212,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
 ---
 
 <Layout
+  fuentesLocales
   title="Formación Nawar A0-A1 · Neerlandés de cero a A1 — Holandés Nawar"
   description="Neerlandés de cero a A1 para hispanohablantes, en 16 semanas y explicado en español. Clase en directo cada semana, consultas con el equipo y certificado."
   noindex={true}
@@ -349,7 +355,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
             <figure class={`fv-mock${k === 0 ? ' activo' : ''}`} data-paso={k} aria-hidden={k === 0 ? 'false' : 'true'}>
               {x.img ? (
                 <Fragment>
-                  <img src={x.img} alt={x.t} width="1920" height="1080" loading={k === 0 ? 'eager' : 'lazy'} decoding="async"
+                  <img src={x.img} alt={x.t} width="1920" height="1080" loading="lazy" decoding="async"
                     onerror="this.closest('figure').classList.add('sin-foto'); this.remove();" />
                   <span class="fv-mock-plan-b" set:html={icono(x.i, 44, 1.4)} />
                 </Fragment>

@@ -11,6 +11,9 @@ interface Props {
   ogImage?: string
   canonicalURL?: string
   noindex?: boolean
+  /** Inter y Poppins desde la propia web y precargadas, en vez de Google
+   *  Fonts (ver src/styles/fuentes-locales.css, que la página importa). */
+  fuentesLocales?: boolean
 }
 
 const {
@@ -20,6 +23,7 @@ const {
   ogImage = 'https://www.holandesnawar.com/og-image.png',
   canonicalURL = Astro.url.href,
   noindex = false,
+  fuentesLocales = false,
 } = Astro.props
 
 const siteURL = 'https://www.holandesnawar.com'
@@ -148,12 +152,25 @@ const META_PIXEL_NOSCRIPT = `<img height="1" width="1" style="display:none" alt=
     {META_PIXEL && <noscript set:html={META_PIXEL_NOSCRIPT} />}
 
     <!-- Fonts: Inter + Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    {fuentesLocales ? (
+      <>
+        {/* Las que pinta la cabecera, pedidas desde el principio: así el
+            título no espera y el formulario no salta al llegar la letra
+            (10/10/2026). Las @font-face, en src/styles/fuentes-locales.css. */}
+        <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/fonts/poppins-700-latin.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/fonts/poppins-600-latin.woff2" as="font" type="font/woff2" crossorigin />
+      </>
+    ) : (
+      <>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap"
+          rel="stylesheet"
+        />
+      </>
+    )}
 
     <style>
       :root {
