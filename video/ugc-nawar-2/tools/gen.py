@@ -179,7 +179,11 @@ def zooms():
     push(G[6]["start"], G[6]["end"], 1.12, 1.15)                                 # «y cada semana te conectas a una»
     push(G[7]["start"], at("bajan") - 0.05, 1.0, 1.04); punch("bajan", 1.12)     # «Además, mientras las ofertas de trabajo bajan»
     Z.append((G[8]["start"], 0.26, "power3.out", {"scale": 1.15}, {"scale": 1.02}, "#zw1"))   # CTA: «¿Estás listo…?» lands on a punch
-    o = ED["outro"]; push(o + 0.2, TOTAL, 1.15, 1.19)
+    cta = [s for s in ED["shots"] if s["start"] >= G[8]["start"] - 1e-3]          # the CTA: take 1, then the side camera (take 2)
+    o = ED["outro"]; push(o + 0.2, cta[0]["start"] + cta[0]["duration"], 1.15, 1.17)   # «haz clic en el botón de aquí abajo,»
+    for k, s in enumerate(cta[1:]):                                              # side camera: she looks into it; the jump cut
+        end = TOTAL if s is ED["shots"][-1] else s["start"] + s["duration"]     # over her pause hides behind a reframe
+        push(s["start"], end, 1.0 + 0.06 * k, 1.03 + 0.06 * k, f"#zw{s['take']}")
     return Z
 
 
@@ -227,24 +231,27 @@ def index(sfx_all, out_t0, out_d):
         else:
             ztl.append(f'      tl.to("{sel}", {js(to)}, duration: {du}, ease: "{ease}" }}, {round(t, 3)});')
     # the shots: one zoom wrapper per take and camera (origin = her face there): #zw1 = take 1 (camera A),
-    # #zw1b = take-1-b.mp4 (camera B, the close-up); 12 ms fades at each cut, a longer one at the very end
+    # #zw1b = take-1-b.mp4 (camera B, the close-up), #zw2 = take 2 (the side camera of the CTA); 12 ms fades at each
+    # cut, 30 ms where the take changes mid-phrase, a longer one at the very end
     key = lambda sh: sh["take"] + ("b" if sh["cam"] == "B" else "")
     vids, face = {}, {}
-    for sh in ED["shots"]:
-        dd = sh["duration"]; last = sh is ED["shots"][-1]
+    shots = ED["shots"]
+    for n, sh in enumerate(shots):
+        dd = sh["duration"]; last = n == len(shots) - 1
+        out = 0.12 if last else (0.03 if shots[n + 1]["take"] != sh["take"] else 0.012)
         auto = json.dumps({"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1},
-                          {"t": round(dd - (0.12 if last else 0.012), 3), "v": 1}, {"t": dd, "v": 0}]}]})
+                          {"t": round(dd - out, 3), "v": 1}, {"t": dd, "v": 0}]}]})
         src = f"assets/video/take-{sh['take']}{'-b' if sh['cam'] == 'B' else ''}.mp4"
         vids.setdefault(key(sh), []).append(f'      <video id="v{sh["n"]}" class="clip" src="{src}" data-start="{sh["start"]}" data-duration="{dd}" data-media-start="{sh["media_start"]}" data-playback-rate="{RATE}" data-track-index="{sh["n"] - 1}" playsinline data-has-audio="true" data-automation=\'{auto}\'></video>')
         face.setdefault(key(sh), sh["face"])
+    hold, lk = ED["hold"], key(shots[-1])                                        # her last frame, held in the last shot's wrapper
+    vids[lk].append(f'      <img id="hold" class="clip" src="assets/img/take-{shots[-1]["take"]}-last.png" alt="" data-start="{hold["start"]}" data-duration="{hold["duration"]}" data-track-index="{len(shots)}" />')
     others = "".join(f'    <div class="shot"><div id="zw{k}" class="zw" data-layout-allow-overflow style="transform-origin: {face[k][0]}px {face[k][1]}px;">\n'
-                     + "\n".join(v) + "\n    </div></div>\n" for k, v in vids.items() if k != "1")   # camera B (and any other take), on top of take 1
-    hold = ED["hold"]
+                     + "\n".join(v) + "\n    </div></div>\n" for k, v in vids.items() if k != "1")   # camera B and the side camera, on top of take 1
     html = HEAD + f"""  <body>
     <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="{TOTAL}">
     <div class="shot"><div id="zw1" class="zw" data-layout-allow-overflow style="transform-origin: {face['1'][0]}px {face['1'][1]}px;">
 {chr(10).join(vids['1'])}
-      <img id="hold" class="clip" src="assets/img/take-1-last.png" alt="" data-start="{hold['start']}" data-duration="{hold['duration']}" data-track-index="{len(ED['shots'])}" />
     </div></div>
 {others}{chr(10).join(hosts)}
 {chr(10).join(auds)}

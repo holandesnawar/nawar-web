@@ -2,11 +2,14 @@
 """Edit decision list → edit.json (UGC #2, «Si tienes un ordenador…»).
 
 Two takes of the same script: take 1 = UGC.POV1, facing camera (with two hook takes and a laptop), take 2 =
-UGC.POV2, side angle (interview look: she talks to someone off camera the whole take). The client wants her
-looking into the lens, so the ad is cut from take 1 only. The change of point of view lives in the framing:
-camera A is the take as shot; camera B is a recomposed close-up of it (tools/cam_b.py → take-1-b.mp4, same frames
-and sound), used for «El principal error es pensar que necesitas» and «En Nawar practicas…»; the cut B → A on
-«…años o saber inglés primero» (in her pause, before a glance off to the side) is the change of point of view.
+UGC.POV2, side angle (interview look: she talks to someone off camera — until the call to action, where she turns
+to that camera, points and talks into it). The client wants her looking into the lens in every shot, so:
+- the ad is cut from take 1, with a recomposed close-up of it as a second camera (camera B, tools/cam_b.py →
+  take-1-b.mp4, same frames and sound) for «El principal error es pensar que necesitas» and «En Nawar practicas…»;
+  the cut B → A on «…años o saber inglés primero» (in her pause, before a glance off to the side);
+- the real change of angle is the CTA: take 1 up to «haz clic en el botón de aquí abajo,», then take 2, the side
+  camera she now looks into, for «rellena el formulario» and (jump cut over her pause) «y una persona de nuestro
+  equipo te atenderá», ending on her smile.
 The first hook take is used (the second one stops for three seconds in the middle). Every cut sits in a quiet point
 checked on the energy envelope (RMS < −40 dB), all at RATE (pitch preserved). The long pause before «¿Estás
 listo…?» is removed at the cut back from the last insert, where the jump is hidden.
@@ -28,10 +31,13 @@ SEGMENTS = [
     ("1", 30.78, 37.90, "A"),   # «años o saber inglés primero. La realidad es que… más rápido de lo que crees.»
     ("1", 37.90, 43.92, "B"),   # close-up: «En Nawar practicas con situaciones… nada de la teoría que luego no usas.»
     ("1", 43.92, 66.56, "A"),   # «Aprendes con lecciones grabadas…» → «…como requisito el neerlandés.»
-    ("1", 66.94, 74.03, "A"),   # «¿Estás listo para comenzar? … te atenderá.» (most of the pause before it removed)
+    ("1", 66.94, 70.56, "A"),   # «¿Estás listo para comenzar? Si es así, haz clic en el botón de aquí abajo,» (most of the pause before it removed;
+                                #  no silence before «rellena» in this take: cut in the dip, a longer fade in gen.py)
+    ("2", 70.84, 72.25, "A"),   # side camera, looking into it: «rellena el formulario»
+    ("2", 74.50, 76.74, "A"),   # «y una persona de nuestro equipo te atenderá» + her smile (her 2 s pause cut)
 ]
-FACE = {"1": (540, 720)}   # face centre in the take (zoom origin); camera B: face_on_screen(FACE[take])
-SPEECH_END = 73.92     # «…atenderá» ends here in take 1; the take ends on her smile at 74.03
+FACE = {"1": (540, 720), "2": (510, 545)}   # face centre in each take (zoom origin); camera B: face_on_screen(FACE["1"])
+SPEECH_END = 76.50     # «…atenderá» ends here in take 2; the shot runs on to her smile (76.74)
 TAIL = 1.4             # hold on her last frame under the «haz clic» button
 LEAD = 0.06            # an insert cuts in this long before its first word (source seconds)
 # (insert id, ground, first words, first words of what comes after)

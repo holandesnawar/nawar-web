@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Camera B: the close-up «second camera» cut from take 1 (UGC #2, v2).
 
-She has to look into the lens in every shot, and the side take (UGC.POV2) has her looking off camera, so the
-change of point of view is a close-up of the facing take: ZOOM× on her face, recomposed (not a centred zoom) so the
-eyes sit near the upper third and the lav mic stays above the caption band. It is rendered here with ffmpeg
+She has to look into the lens in every shot, and the side take (UGC.POV2) has her looking off camera until the
+call to action, so the change of point of view before it is a close-up of the facing take: ZOOM× on her face,
+recomposed (not a centred zoom) so the eyes sit near the upper third and the lav mic stays above the caption band. It is rendered here with ffmpeg
 (lanczos + a light luma unsharp) instead of being scaled in the browser, so it keeps up with camera A in sharpness.
 Same frames, same timestamps and the same audio as take-1.mp4, so a shot can switch file without moving in time.
 

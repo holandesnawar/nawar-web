@@ -1,11 +1,11 @@
 {
  "rate": 1.06,
- "clip_end": 60.0,
- "total": 61.4,
- "speech_end": 59.896,
+ "clip_end": 60.169,
+ "total": 61.569,
+ "speech_end": 59.943,
  "outro": 55.094,
  "hold": {
-  "start": 60.0,
+  "start": 60.169,
   "duration": 1.4
  },
  "shots": [
@@ -92,12 +92,38 @@
    "take": "1",
    "cam": "A",
    "start": 53.311,
-   "duration": 6.689,
+   "duration": 3.415,
    "media_start": 66.94,
-   "media_end": 74.03,
+   "media_end": 70.56,
    "face": [
     540,
     720
+   ]
+  },
+  {
+   "n": 8,
+   "take": "2",
+   "cam": "A",
+   "start": 56.726,
+   "duration": 1.33,
+   "media_start": 70.84,
+   "media_end": 72.25,
+   "face": [
+    510,
+    545
+   ]
+  },
+  {
+   "n": 9,
+   "take": "2",
+   "cam": "A",
+   "start": 58.056,
+   "duration": 2.113,
+   "media_start": 74.5,
+   "media_end": 76.74,
+   "face": [
+    510,
+    545
    ]
   }
  ],
@@ -186,7 +212,7 @@
   },
   {
    "start": 53.311,
-   "end": 61.4
+   "end": 61.569
   }
  ],
  "words": [
@@ -1525,84 +1551,84 @@
    "text": "abajo",
    "punct": ",",
    "t": 56.509,
-   "end": 56.886
+   "end": 56.726
   },
   {
-   "shot": 7,
+   "shot": 8,
    "text": "rellena",
    "punct": "",
-   "t": 56.886,
-   "end": 57.283
+   "t": 56.811,
+   "end": 57.151
   },
   {
-   "shot": 7,
+   "shot": 8,
    "text": "el",
    "punct": "",
-   "t": 57.283,
-   "end": 57.415
+   "t": 57.151,
+   "end": 57.32
   },
   {
-   "shot": 7,
+   "shot": 8,
    "text": "formulario",
    "punct": "",
-   "t": 57.415,
-   "end": 58.0
+   "t": 57.32,
+   "end": 58.056
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "y",
    "punct": "",
-   "t": 58.0,
-   "end": 58.132
+   "t": 58.056,
+   "end": 58.16
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "una",
    "punct": "",
-   "t": 58.132,
-   "end": 58.415
+   "t": 58.16,
+   "end": 58.499
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "persona",
    "punct": "",
-   "t": 58.415,
-   "end": 58.566
+   "t": 58.499,
+   "end": 58.688
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "de",
    "punct": "",
-   "t": 58.566,
-   "end": 58.736
+   "t": 58.688,
+   "end": 58.801
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "nuestro",
    "punct": "",
-   "t": 58.736,
-   "end": 59.019
+   "t": 58.801,
+   "end": 59.16
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "equipo",
    "punct": "",
-   "t": 59.019,
-   "end": 59.245
+   "t": 59.16,
+   "end": 59.386
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "te",
    "punct": "",
-   "t": 59.245,
-   "end": 59.339
+   "t": 59.386,
+   "end": 59.481
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "atenderá",
    "punct": ".",
-   "t": 59.339,
-   "end": 59.896
+   "t": 59.481,
+   "end": 59.943
   }
  ]
 }

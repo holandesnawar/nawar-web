@@ -73,7 +73,7 @@
     #o-cur svg { display: block; width: 60px; height: 78px; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35)); }
 
   </style>
-  <div id="root" data-composition-id="outro" data-width="1080" data-height="1920" data-duration="6.306">
+  <div id="root" data-composition-id="outro" data-width="1080" data-height="1920" data-duration="6.475">
     <div id="o-wrap">
       <div id="o-glow"></div>
       <div id="o-btn"><div id="o-gloss"></div><div id="o-shine"></div><div id="o-label">MATRÍCULA</div></div>
@@ -94,10 +94,10 @@
       tl.to(q("cur"), { scale: 0.86, duration: 0.07, ease: "power2.out" }, 0.226 + 0.02);
       tl.to(q("cur"), { scale: 1, duration: 0.2, ease: "power2.out" }, 0.226 + 0.09);
       tl.fromTo(q("rip"), { scale: 0.3, opacity: 0.9 }, { scale: 1.7, opacity: 0, duration: 0.45, ease: "power2.out" }, 0.226 + 0.02);
-      tl.fromTo(q("shine"), { x: 0 }, { x: 1120, duration: 0.7, ease: "power2.inOut" }, 1.792);
-      tl.fromTo(q("shine"), { x: 0 }, { x: 1120, duration: 0.7, ease: "power2.inOut", immediateRender: false }, 4.802 + 0.25);
+      tl.fromTo(q("shine"), { x: 0 }, { x: 1120, duration: 0.7, ease: "power2.inOut" }, 1.717);
+      tl.fromTo(q("shine"), { x: 0 }, { x: 1120, duration: 0.7, ease: "power2.inOut", immediateRender: false }, 4.849 + 0.25);
       tl.fromTo(q("wrap"), { scale: 1 }, { keyframes: [{ scale: 1.04, duration: 0.25, ease: "power1.inOut" }, { scale: 1, duration: 0.25, ease: "power1.inOut" },
-        { scale: 1.04, duration: 0.25, ease: "power1.inOut" }, { scale: 1, duration: 0.25, ease: "power1.inOut" }], immediateRender: false }, 4.802 + 0.1);
+        { scale: 1.04, duration: 0.25, ease: "power1.inOut" }, { scale: 1, duration: 0.25, ease: "power1.inOut" }], immediateRender: false }, 4.849 + 0.1);
 
       window.__timelines["outro"] = tl;
     })();

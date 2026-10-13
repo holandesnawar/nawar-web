@@ -1,8 +1,8 @@
-# Storyboard — Anuncio UGC #2 «Si tienes un ordenador…» (9:16, 61 s)
+# Storyboard — Anuncio UGC #2 «Si tienes un ordenador…» (9:16, 62 s)
 
 **Idea de montaje.** La misma que el anuncio 1 (v2.3).
-- Ella habla siempre mirando a cámara: todo sale de la toma de frente (POV1). En POV2 (de lado) mira fuera de
-  cámara, así que no se usa (v2).
+- Ella habla siempre mirando a cámara. Casi todo sale de la toma de frente (POV1). En POV2 (de lado) mira fuera de
+  cámara salvo en la llamada a la acción, donde se gira hacia esa cámara: ahí está el cambio real de ángulo.
 - El cambio de punto de vista es una segunda cámara cerrada (cámara B: primer plano de 1,44× recompuesto, con los
   ojos más arriba, `tools/cam_b.py`) en «El principal error es pensar que necesitas» y en «En Nawar practicas»; el
   corte B → A en la pausa antes de «años o saber inglés primero» es el cambio de plano.
@@ -17,7 +17,7 @@ del portátil van desenfocados.
 |---|---|---|
 | 0:00–0:05 | Chica (frente) | «Si tienes un ordenador y ganas de aprender neerlandés, ya tienes todo lo que necesitas para empezar.» Zoom de entrada. |
 | 0:05–0:06 | Chica | «En cuatro semanas» (corte de toma escondido con reencuadre). |
-| 0:06–0:10 | ins-01 · BLUE | «Semana 4» y lista con ✓: presentarte (*Hallo, ik ben Ana.*), hacer compras (*Mag ik een tasje?*), pedir lo que necesitas (*Een koffie, alstublieft.*) → «Sin ayuda». |
+| 0:06–0:10 | ins-01 · BLUE | «Semana 4» y lista con ✓: presentarte (*Goedemiddag, ik heet Ana.*), hacer compras (*Mag ik een tasje, alsjeblieft?*), pedir lo que necesitas (*Sorry, mag ik iets vragen?*) → «Sin ayuda». |
 | 0:10–0:12 | Chica | «Vivimos en un país en donde» |
 | 0:12–0:17 | ins-02 · PAPER | Inglés: «Te saca del paso» → «Si has venido para quedarte» → Neerlandés: «Te abre puertas» (el candado se abre), con «Trabajo · Amigos · Trámites». |
 | 0:17–0:20 | Chica (cámara B, primer plano) | «El principal error es pensar que necesitas» |
@@ -26,17 +26,18 @@ del portátil van desenfocados.
 | 0:26–0:27 | Chica (cámara B) | «En Nawar practicas» |
 | 0:27–0:32 | ins-04 · BLUE | Situaciones reales en 2×2: *de huisarts*, *de supermarkt*, *het werk*, *de gemeente* → «Teoría que no usas», tachada. |
 | 0:32–0:34 | Chica | «Aprendes con lecciones grabadas» |
-| 0:34–0:37 | ins-05 · BLUE | La lección grabada real en una ventana; la cámara se mete en la webcam de Paul («Profesores nativos holandeses», «Expertos en español»). |
+| 0:34–0:37 | ins-05 · BLUE | Una lección grabada real («Errores comunes»: *Jij wil koffie? → Wil jij koffie?*…) grande en una ventana; en «expertos» la cámara empuja suave hacia la webcam del profe y un aro lo marca; «Profesores nativos holandeses», «Expertos en español». |
 | 0:37–0:39 | Chica | «para estudiar cuando tú puedas. Cuentas con» |
 | 0:39–0:41 | ins-06 · BLUE | «Ejercicios / para el día a día»: mazo de ejercicios reales (escribir, escuchar, leer). |
 | 0:41–0:43 | Chica | «y cada semana te conectas a una» |
 | 0:43–0:47 | ins-07 · BLUE | Clase en directo con Paul (EN DIRECTO, *Werkt jij? → Werk jij?*) → G · UI · UU · EU. |
 | 0:47–0:49 | Chica | «Además, mientras las ofertas de trabajo bajan,» |
 | 0:49–0:53 | ins-08 · PAPER | «9 de cada 10» ofertas de trabajo: tarjetas con la etiqueta *Nederlands vereist*. |
-| 0:53–1:01 | Chica + botón | «¿Estás listo para comenzar? Si es así, haz clic…»: botón «MATRÍCULA» con cursor en «clic». Al acabar la toma se mantiene su sonrisa. |
+| 0:53–0:57 | Chica (POV1) + botón | «¿Estás listo para comenzar? Si es así, haz clic en el botón de aquí abajo,»: botón «MATRÍCULA» con cursor en «clic». |
+| 0:57–1:02 | Chica (POV2, de lado, mirando a esa cámara) + botón | «rellena el formulario» · «y una persona de nuestro equipo te atenderá» (salto sobre su pausa). Al acabar la toma se mantiene su sonrisa. |
 
 **Sonido.**
-- La voz de la toma (POV1), normalizada a −16 LUFS.
+- La voz de cada toma, normalizada a −16 LUFS.
 - La música del VSL, calmada: casi nada bajo el gancho (−43 dB RMS), sube a −37 dB cuando entra el primer gráfico,
   y desde «La realidad es que…» suenan los hats a −36 dB, sin golpe final.
 - Efectos suaves.

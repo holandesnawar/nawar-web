@@ -8,9 +8,9 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from common import *  # noqa: F401,F403
 
 
-ROWS = [("Presentarte", "Hallo, ik ben Ana."),
-        ("Hacer compras", "Mag ik een tasje?"),
-        ("Pedir lo que necesitas", "Een koffie, alstublieft.")]
+ROWS = [("Presentarte", "Goedemiddag, ik heet Ana."),
+        ("Hacer compras", "Mag ik een tasje, alsjeblieft?"),
+        ("Pedir lo que necesitas", "Sorry, mag ik iets vragen?")]
 
 
 def build():
