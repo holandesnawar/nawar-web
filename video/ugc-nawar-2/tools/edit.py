@@ -1,20 +1,14 @@
 #!/usr/bin/env python3
 """Edit decision list → edit.json (UGC #2, «Si tienes un ordenador…»).
 
-Two takes of the same script, edited as a two-camera piece: take 1 = UGC.POV1, facing camera (with two hook takes
-and a laptop); take 2 = UGC.POV2, the side camera (interview look: she talks towards the front camera — until the
-call to action, where she turns to the side camera, points and talks into it). The cameras alternate by line, each
-line from the take where it is clean (take 2 trips on «si necesitas de ayuda», pauses after «vivimos» and inside
-«lecciones grabadas», «los ofertes», «al neerlandés»):
-- front: hook, «En cuatro semanas…», «Vivimos en un país… abrir puertas», «La realidad es que…», «Aprendes con
-  lecciones grabadas… tu idioma», «Además, mientras las ofertas… neerlandés», «¿Estás listo…? … aquí abajo,»;
-- side: «El principal error… primero,», «En Nawar practicas desde el primer día… no usas», «para estudiar cuando
-  tú puedas… pronunciación», and the end, looking into it: «rellena el formulario» · «y una persona de nuestro
-  equipo te atenderá» (jump cut over her pause).
-Take switches sit in pauses, most of them under a graphic (the picture changes when the graphic ends). The first
-hook take is used (the second one stops for three seconds in the middle). Every cut sits in a quiet point checked
-on the energy envelope, all at RATE (pitch preserved). The long pause before «¿Estás listo…?» is removed at the
-cut back from the last insert, where the jump is hidden.
+Two takes of the same script: take 1 = UGC.POV1, facing camera (with two hook takes and a laptop); take 2 =
+UGC.POV2, the side camera (interview look: she talks towards the front camera — until the call to action, where she
+turns to the side camera, points and talks into it). The ad is the front camera from start to finish (the client
+prefers her talking to us); the side camera comes in only for the ending, where she looks into it: «rellena el
+formulario» · «y una persona de nuestro equipo te atenderá» (jump cut over her pause).
+The first hook take is used (the second one stops for three seconds in the middle). Every cut sits in a quiet point
+checked on the energy envelope, all at RATE (pitch preserved). The long pause before «¿Estás listo…?» is removed at
+the cut back from the last insert, where the jump is hidden.
 
 Word times: Whisper word timestamps of each take (tools/align/whisper_<take>.json), shifted by WHISPER_BIAS (its
 onsets land ~0.15 s late on these takes, checked against the energy envelope at every cut).
@@ -27,16 +21,9 @@ WHISPER_BIAS = -0.15
 # (take, source in, source out) — hand-checked quiet points
 SEGMENTS = [
     ("1", 0.55, 5.80),     # front · hook: «Si tienes un ordenador y ganas de aprender neerlandés, ya tienes todo lo que necesitas para empezar.»
-    ("1", 15.30, 28.08),   # front · «En cuatro semanas…» + «Vivimos en un país… abrir puertas.»
-    ("2", 16.92, 21.44),   # side  · «El principal error es pensar que necesitas años o saber inglés primero,» (cut in the dip before «pero»)
-    ("1", 32.58, 37.90),   # front · «La realidad es que… más rápido de lo que crees.»
-    ("2", 29.85, 36.45),   # side  · «En Nawar practicas desde el primer día con situaciones… nada de teoría que luego no usas.»
-    ("1", 43.92, 49.40),   # front · «Aprendes con lecciones grabadas por un equipo de expertos nativos que dominan tu idioma»
-    ("2", 45.31, 57.55),   # side  · «para estudiar cuando tú puedas. Cuentas con ejercicios… y cada semana te conectas a una clase
-                                #          en directo para reforzar lo aprendido y trabajar la pronunciación.»
-    ("1", 59.45, 66.56),   # front · «Además, mientras las ofertas de trabajo bajan, nueve de cada diez… neerlandés.»
+    ("1", 15.30, 66.56),   # front · «En cuatro semanas…» → «…como requisito el neerlandés.»
     ("1", 66.94, 70.56),   # front · «¿Estás listo para comenzar? Si es así, haz clic en el botón de aquí abajo,» (no silence before
-                                #          «rellena» in this take: cut in the dip, a longer fade in gen.py)
+                           #          «rellena» in this take: cut in the dip, a longer fade in gen.py)
     ("2", 70.84, 72.25),   # side, looking into it: «rellena el formulario»
     ("2", 74.50, 76.74),   # side, looking into it: «y una persona de nuestro equipo te atenderá» + her smile (her 2 s pause cut)
 ]
@@ -51,7 +38,7 @@ INSERTS = [
     ("ins-03", "blue",  "cuando te lo explican", "en nawar practicas"),
     ("ins-04", "blue",  "con situaciones que", "aprendes con lecciones"),
     ("ins-05", "blue",  "por un equipo", "para estudiar cuando"),
-    ("ins-06", "blue",  "ejercicios", "y cada semana"),   # take 2: «ejercicios prácticos pensados»
+    ("ins-06", "blue",  "ejercicios", "y cada semana"),
     ("ins-07", "blue",  "clase en directo", "ademas mientras las"),
     ("ins-08", "paper", "nueve de cada", "estas listo para"),
 ]

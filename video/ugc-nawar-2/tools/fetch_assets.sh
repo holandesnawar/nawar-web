@@ -35,4 +35,4 @@ cp "$VSL/.raw/music_v2.wav" "$RAW/music.wav"
 
 echo "edit, soundtrack, compositions"
 python3 tools/edit.py && python3 tools/build_audio.py && python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc2-v4.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc2-v5.mp4"

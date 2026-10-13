@@ -7,7 +7,7 @@ destination: meta-tiktok-ads
 aspect: 1080x1920
 language: es
 audience: hispanohablantes que viven en Países Bajos / Flandes y quieren quedarse
-length: 64s
+length: 62s
 angle: ugc-ad
 ---
 
@@ -29,8 +29,8 @@ inicio ese zoom» (zoom al arrancar) y «en estos vídeos hay algunas tomas extr
 ## Customizations
 
 - Mejor toma por frase: POV1 de principio a fin (limpia), primer gancho (el segundo se para 3 s).
-- v2–v4 (feedback): montaje a dos cámaras alternando por frase (POV1 de frente, POV2 de lado), cada frase de la
-  toma donde está limpia; el cierre con POV2, donde ella habla a esa cámara. Música casi nada bajo el gancho. El vídeo
+- v2–v5 (feedback): todo de frente (POV1); la cámara de lado (POV2) solo en el cierre, donde ella habla a esa
+  cámara. Música casi nada bajo el gancho. El vídeo
   nuevo del profe en el 0:34 (lecciones grabadas). Frases de la semana 4: «Goedemiddag, ik heet Ana.», «Mag ik een
   tasje, alsjeblieft?», «Sorry, mag ik iets vragen?».
 - Zoom de entrada: arranca cerrado sobre su cara y abre rápido para descubrir el portátil.

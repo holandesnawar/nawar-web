@@ -86,7 +86,7 @@
       transform-origin: 0% 50%; }
 
   </style>
-  <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="4.113">
+  <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="4.736">
     <div class="i4-full i4-blue"><div class="i4-blue-dots"></div><div class="i4-blue-amb"></div><div class="i4-blue-vig"></div></div>
     <div id="i4-prow" class="i4-row"><div id="i4-pill" class="i4-pill"><svg viewBox="0 0 48 48"><path d="M24 43 C24 43 10 29.5 10 19 A14 14 0 0 1 38 19 C38 29.5 24 43 24 43 Z" fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linejoin="round"/><circle cx="24" cy="19" r="5" fill="#FFFFFF"/></svg><span>Situaciones reales</span></div></div>
     <div id="i4-grid">
@@ -142,13 +142,13 @@
 
       tl.fromTo(q("pill"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);   // the label is there from the cut, no empty ground
       [0, 1, 2, 3].forEach((k) => {
-        tl.fromTo(q("t" + k), { opacity: 0, scale: 0.7, y: 34 }, { opacity: 1, scale: 1, y: 0, duration: 0.36, ease: "back.out(1.7)" }, 0.245 - 0.06 + k * 0.12);
+        tl.fromTo(q("t" + k), { opacity: 0, scale: 0.7, y: 34 }, { opacity: 1, scale: 1, y: 0, duration: 0.36, ease: "back.out(1.7)" }, 0.227 - 0.06 + k * 0.12);
       });
-      // «nada de teoría»: the block lifts, the grey theory card slides in under it
-      tl.to([q("prow"), q("grid")], { y: -130, duration: 0.46, ease: "power3.inOut" }, 2.113 - 0.14);
-      tl.fromTo(q("theo"), { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.46, ease: "power3.out" }, 2.113 + 0.1);   // clears the lifting grid; bottom stays above the caption band
+      // «nada de la teoría»: the block lifts, the grey theory card slides in under it
+      tl.to([q("prow"), q("grid")], { y: -130, duration: 0.46, ease: "power3.inOut" }, 2.604 - 0.14);
+      tl.fromTo(q("theo"), { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.46, ease: "power3.out" }, 2.604 + 0.1);   // clears the lifting grid; bottom stays above the caption band
       // «no usas»: its label struck through; the card stays solid
-      tl.fromTo(q("sl"), { scaleX: 0 }, { scaleX: 1, duration: 0.24, ease: "power2.out" }, 3.396 - 0.06);
+      tl.fromTo(q("sl"), { scaleX: 0 }, { scaleX: 1, duration: 0.24, ease: "power2.out" }, 4.019 - 0.06);
 
       window.__timelines["ins-04"] = tl;
     })();

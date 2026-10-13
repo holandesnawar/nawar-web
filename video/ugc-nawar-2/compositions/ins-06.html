@@ -75,11 +75,11 @@
     .i6-ic svg { position: absolute; left: 0; top: 0; width: 44px; height: 44px; }
 
   </style>
-  <div id="root" data-composition-id="ins-06" data-width="1080" data-height="1920" data-duration="2.642">
+  <div id="root" data-composition-id="ins-06" data-width="1080" data-height="1920" data-duration="1.735">
     <div class="i6-full i6-blue"><div class="i6-blue-dots"></div><div class="i6-blue-amb"></div><div class="i6-blue-vig"></div></div>
     <div id="i6-h1" class="i6-h1">Ejercicios</div>
     <div id="i6-h2" class="i6-h1"><span id="i6-chip" class="i6-chip">para el día a día</span></div>
-    <div id="i6-ce" class="i6-card"><div class="i6-in"><video id="i6-ve" class="clip" src="assets/video/completa-frase.mp4" muted playsinline data-start="0" data-duration="2.842" data-media-start="6.0" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video></div></div>
+    <div id="i6-ce" class="i6-card"><div class="i6-in"><video id="i6-ve" class="clip" src="assets/video/completa-frase.mp4" muted playsinline data-start="0" data-duration="1.935" data-media-start="6.0" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video></div></div>
     <div id="i6-co" class="i6-card"><div class="i6-in"><img id="i6-io" src="assets/img/ui-luisteren-audio.png" alt="" /></div></div>
     <div id="i6-cl" class="i6-card"><div class="i6-in"><img id="i6-il" src="assets/img/ui-lezen-texto.png" alt="" /></div></div>
     <div id="i6-skills" class="i6-row"><div id="i6-s1" class="i6-sk"><div class="i6-ic"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Escribir</span></div><div id="i6-s2" class="i6-sk"><div class="i6-ic"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Escuchar</span></div><div id="i6-s3" class="i6-sk"><div class="i6-ic"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Leer</span></div></div>
@@ -90,16 +90,16 @@
       const q = (id) => document.getElementById("i6-" + id);
 
       tl.fromTo(q("h1"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.26, ease: "power3.out" }, 0);
-      tl.fromTo(q("chip"), { opacity: 0, scale: 0.7, rotation: -1.5 }, { opacity: 1, scale: 1, rotation: -1.5, duration: 0.3, ease: "back.out(1.8)" }, 1.321 - 0.06);
+      tl.fromTo(q("chip"), { opacity: 0, scale: 0.7, rotation: -1.5 }, { opacity: 1, scale: 1, rotation: -1.5, duration: 0.3, ease: "back.out(1.8)" }, 0.566 - 0.06);
       tl.fromTo(q("ce"), { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.04);
       tl.fromTo(q("s1"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 0.04);
-      tl.fromTo(q("co"), { opacity: 0, y: 110 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.951);
-      tl.to(q("ce"), { y: -34, scale: 0.94, opacity: 0.55, duration: 0.3, ease: "power3.out" }, 0.951);
-      tl.fromTo(q("s2"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 0.951);
-      tl.fromTo(q("cl"), { opacity: 0, y: 110 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 1.744);
-      tl.to(q("co"), { y: -34, scale: 0.94, opacity: 0.55, duration: 0.3, ease: "power3.out" }, 1.744);
-      tl.to(q("ce"), { y: -62, scale: 0.88, opacity: 0.25, duration: 0.3, ease: "power3.out" }, 1.744);
-      tl.fromTo(q("s3"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 1.744);
+      tl.fromTo(q("co"), { opacity: 0, y: 110 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.625);
+      tl.to(q("ce"), { y: -34, scale: 0.94, opacity: 0.55, duration: 0.3, ease: "power3.out" }, 0.625);
+      tl.fromTo(q("s2"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 0.625);
+      tl.fromTo(q("cl"), { opacity: 0, y: 110 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 1.145);
+      tl.to(q("co"), { y: -34, scale: 0.94, opacity: 0.55, duration: 0.3, ease: "power3.out" }, 1.145);
+      tl.to(q("ce"), { y: -62, scale: 0.88, opacity: 0.25, duration: 0.3, ease: "power3.out" }, 1.145);
+      tl.fromTo(q("s3"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 1.145);
 
       window.__timelines["ins-06"] = tl;
     })();

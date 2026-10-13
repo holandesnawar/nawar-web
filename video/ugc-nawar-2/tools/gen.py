@@ -151,8 +151,8 @@ def zooms():
     """coordinate-target-zoom on the girl (origin = her face in each camera): tweens (time, duration, ease, to,
     from|None, wrapper). The ad opens tight on her face and zooms out fast to reveal the laptop («Si tienes un
     ordenador…»). After that every stretch of a camera inside a girl section starts at its own framing (the cuts hide
-    the change) with a slow push; the front camera punches on «bajan». The two cameras alternate by
-    line (edit.py); #zw1 = front (take 1), #zw2 = side (take 2)."""
+    the change) with a slow push and a punch on a key word. #zw1 = front camera (take 1, the whole ad), #zw2 = side
+    camera (take 2, the ending only)."""
     G = ED["girl"]; Z = []
     def push(t0, t1, s0, s1, sel):
         Z.append((round(t0, 3), round(t1 - t0 - 0.004, 3), "none", {"scale": round(s1, 3)}, {"scale": round(s0, 3)}, sel))   # ends just before the next tween
@@ -163,7 +163,7 @@ def zooms():
     # intro: tight on her face → zoom out to reveal the laptop, then push and punch on «neerlandés»
     Z.append((0.0, 0.75, "power3.out", {"scale": 1.02}, {"scale": 1.36}, "#zw1"))
     push(0.75, at("neerlandes") - 0.05, 1.02, 1.06, "#zw1"); punch("neerlandes", 1.14, "#zw1")
-    PUNCH = {"bajan": 1.12}                                     # front camera, on the key word (none right after a camera change)
+    PUNCH = {"realidad": 1.14, "bajan": 1.12}                   # front camera, on the key word
     LOOK = {"1": [1.08, 1.0, 1.06, 1.1, 1.0, 1.12], "2": [1.0, 1.06, 1.03, 1.08]}   # start framings, cycling per camera
     used = {"1": 0, "2": 0}
     for g in G[:-1]:                                            # (the CTA has its own moves below)

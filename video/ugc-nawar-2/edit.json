@@ -1,11 +1,11 @@
 {
  "rate": 1.06,
- "clip_end": 62.802,
- "total": 64.202,
- "speech_end": 62.576,
- "outro": 57.727,
+ "clip_end": 60.169,
+ "total": 61.569,
+ "speech_end": 59.943,
+ "outro": 55.094,
  "hold": {
-  "start": 62.802,
+  "start": 60.169,
   "duration": 1.4
  },
  "shots": [
@@ -25,80 +25,8 @@
    "n": 2,
    "take": "1",
    "start": 4.953,
-   "duration": 12.057,
+   "duration": 48.358,
    "media_start": 15.3,
-   "media_end": 28.08,
-   "face": [
-    540,
-    720
-   ]
-  },
-  {
-   "n": 3,
-   "take": "2",
-   "start": 17.01,
-   "duration": 4.264,
-   "media_start": 16.92,
-   "media_end": 21.44,
-   "face": [
-    450,
-    690
-   ]
-  },
-  {
-   "n": 4,
-   "take": "1",
-   "start": 21.274,
-   "duration": 5.019,
-   "media_start": 32.58,
-   "media_end": 37.9,
-   "face": [
-    540,
-    720
-   ]
-  },
-  {
-   "n": 5,
-   "take": "2",
-   "start": 26.293,
-   "duration": 6.226,
-   "media_start": 29.85,
-   "media_end": 36.45,
-   "face": [
-    450,
-    690
-   ]
-  },
-  {
-   "n": 6,
-   "take": "1",
-   "start": 32.519,
-   "duration": 5.17,
-   "media_start": 43.92,
-   "media_end": 49.4,
-   "face": [
-    540,
-    720
-   ]
-  },
-  {
-   "n": 7,
-   "take": "2",
-   "start": 37.689,
-   "duration": 11.547,
-   "media_start": 45.31,
-   "media_end": 57.55,
-   "face": [
-    450,
-    690
-   ]
-  },
-  {
-   "n": 8,
-   "take": "1",
-   "start": 49.236,
-   "duration": 6.708,
-   "media_start": 59.45,
    "media_end": 66.56,
    "face": [
     540,
@@ -106,9 +34,9 @@
    ]
   },
   {
-   "n": 9,
+   "n": 3,
    "take": "1",
-   "start": 55.944,
+   "start": 53.311,
    "duration": 3.415,
    "media_start": 66.94,
    "media_end": 70.56,
@@ -118,9 +46,9 @@
    ]
   },
   {
-   "n": 10,
+   "n": 4,
    "take": "2",
-   "start": 59.359,
+   "start": 56.726,
    "duration": 1.33,
    "media_start": 70.84,
    "media_end": 72.25,
@@ -130,9 +58,9 @@
    ]
   },
   {
-   "n": 11,
+   "n": 5,
    "take": "2",
-   "start": 60.689,
+   "start": 58.056,
    "duration": 2.113,
    "media_start": 74.5,
    "media_end": 76.74,
@@ -153,43 +81,43 @@
    "id": "ins-02",
    "ground": "paper",
    "start": 11.585,
-   "duration": 5.425
+   "duration": 5.547
   },
   {
    "id": "ins-03",
    "ground": "blue",
-   "start": 22.302,
-   "duration": 3.991
+   "start": 22.283,
+   "duration": 3.981
   },
   {
    "id": "ins-04",
    "ground": "blue",
-   "start": 28.406,
-   "duration": 4.113
+   "start": 27.245,
+   "duration": 4.736
   },
   {
    "id": "ins-05",
    "ground": "blue",
-   "start": 34.358,
-   "duration": 3.331
+   "start": 33.792,
+   "duration": 3.302
   },
   {
    "id": "ins-06",
    "ground": "blue",
-   "start": 40.443,
-   "duration": 2.642
+   "start": 39.321,
+   "duration": 1.735
   },
   {
    "id": "ins-07",
    "ground": "blue",
-   "start": 44.651,
-   "duration": 4.585
+   "start": 42.604,
+   "duration": 4.075
   },
   {
    "id": "ins-08",
    "ground": "paper",
-   "start": 51.537,
-   "duration": 4.407
+   "start": 48.905,
+   "duration": 4.406
   }
  ],
  "girl": [
@@ -202,32 +130,32 @@
    "end": 11.585
   },
   {
-   "start": 17.01,
-   "end": 22.302
+   "start": 17.132,
+   "end": 22.283
   },
   {
-   "start": 26.293,
-   "end": 28.406
+   "start": 26.264,
+   "end": 27.245
   },
   {
-   "start": 32.519,
-   "end": 34.358
+   "start": 31.981,
+   "end": 33.792
   },
   {
-   "start": 37.689,
-   "end": 40.443
+   "start": 37.094,
+   "end": 39.321
   },
   {
-   "start": 43.085,
-   "end": 44.651
+   "start": 41.056,
+   "end": 42.604
   },
   {
-   "start": 49.236,
-   "end": 51.537
+   "start": 46.679,
+   "end": 48.905
   },
   {
-   "start": 55.944,
-   "end": 64.202
+   "start": 53.311,
+   "end": 61.569
   }
  ],
  "words": [
@@ -649,1001 +577,1001 @@
    "text": "puertas",
    "punct": ".",
    "t": 16.604,
-   "end": 17.01
+   "end": 17.189
   },
   {
-   "shot": 3,
+   "shot": 2,
    "text": "El",
    "punct": "",
-   "t": 17.095,
-   "end": 17.567
+   "t": 17.189,
+   "end": 17.434
   },
   {
-   "shot": 3,
+   "shot": 2,
    "text": "principal",
    "punct": "",
-   "t": 17.567,
-   "end": 17.963
+   "t": 17.434,
+   "end": 17.83
   },
   {
-   "shot": 3,
+   "shot": 2,
    "text": "error",
    "punct": "",
-   "t": 17.963,
-   "end": 18.265
+   "t": 17.83,
+   "end": 18.17
   },
   {
-   "shot": 3,
+   "shot": 2,
    "text": "es",
    "punct": "",
-   "t": 18.265,
-   "end": 18.491
+   "t": 18.17,
+   "end": 18.528
   },
   {
-   "shot": 3,
+   "shot": 2,
    "text": "pensar",
    "punct": "",
-   "t": 18.491,
-   "end": 18.68
+   "t": 18.528,
+   "end": 18.698
   },
   {
-   "shot": 3,
+   "shot": 2,
    "text": "que",
    "punct": "",
-   "t": 18.68,
-   "end": 18.887
+   "t": 18.698,
+   "end": 18.906
   },
   {
-   "shot": 3,
+   "shot": 2,
    "text": "necesitas",
    "punct": "",
-   "t": 18.887,
-   "end": 19.68
+   "t": 18.906,
+   "end": 19.661
   },
   {
-   "shot": 3,
+   "shot": 2,
    "text": "años",
    "punct": "",
-   "t": 19.68,
-   "end": 20.001
+   "t": 19.661,
+   "end": 19.962
   },
   {
-   "shot": 3,
+   "shot": 2,
    "text": "o",
    "punct": "",
-   "t": 20.001,
-   "end": 20.246
+   "t": 19.962,
+   "end": 20.245
   },
   {
-   "shot": 3,
+   "shot": 2,
    "text": "saber",
    "punct": "",
-   "t": 20.246,
-   "end": 20.529
+   "t": 20.245,
+   "end": 20.528
   },
   {
-   "shot": 3,
+   "shot": 2,
    "text": "inglés",
    "punct": "",
-   "t": 20.529,
-   "end": 20.944
+   "t": 20.528,
+   "end": 20.981
+  },
+  {
+   "shot": 2,
+   "text": "primero",
+   "punct": ".",
+   "t": 20.981,
+   "end": 21.302
+  },
+  {
+   "shot": 2,
+   "text": "La",
+   "punct": "",
+   "t": 21.302,
+   "end": 21.585
+  },
+  {
+   "shot": 2,
+   "text": "realidad",
+   "punct": "",
+   "t": 21.585,
+   "end": 22.019
+  },
+  {
+   "shot": 2,
+   "text": "es",
+   "punct": "",
+   "t": 22.019,
+   "end": 22.151
+  },
+  {
+   "shot": 2,
+   "text": "que",
+   "punct": "",
+   "t": 22.151,
+   "end": 22.34
+  },
+  {
+   "shot": 2,
+   "text": "cuando",
+   "punct": "",
+   "t": 22.34,
+   "end": 22.547
+  },
+  {
+   "shot": 2,
+   "text": "te",
+   "punct": "",
+   "t": 22.547,
+   "end": 22.642
+  },
+  {
+   "shot": 2,
+   "text": "lo",
+   "punct": "",
+   "t": 22.642,
+   "end": 22.83
+  },
+  {
+   "shot": 2,
+   "text": "explican",
+   "punct": "",
+   "t": 22.83,
+   "end": 23.227
+  },
+  {
+   "shot": 2,
+   "text": "desde",
+   "punct": "",
+   "t": 23.227,
+   "end": 23.378
+  },
+  {
+   "shot": 2,
+   "text": "el",
+   "punct": "",
+   "t": 23.378,
+   "end": 23.736
+  },
+  {
+   "shot": 2,
+   "text": "español",
+   "punct": "",
+   "t": 23.736,
+   "end": 24.264
+  },
+  {
+   "shot": 2,
+   "text": "avanzas",
+   "punct": "",
+   "t": 24.264,
+   "end": 24.736
+  },
+  {
+   "shot": 2,
+   "text": "mucho",
+   "punct": "",
+   "t": 24.736,
+   "end": 24.981
+  },
+  {
+   "shot": 2,
+   "text": "más",
+   "punct": "",
+   "t": 24.981,
+   "end": 25.264
+  },
+  {
+   "shot": 2,
+   "text": "rápido",
+   "punct": "",
+   "t": 25.264,
+   "end": 25.434
+  },
+  {
+   "shot": 2,
+   "text": "de",
+   "punct": "",
+   "t": 25.434,
+   "end": 25.528
+  },
+  {
+   "shot": 2,
+   "text": "lo",
+   "punct": "",
+   "t": 25.528,
+   "end": 25.661
+  },
+  {
+   "shot": 2,
+   "text": "que",
+   "punct": "",
+   "t": 25.661,
+   "end": 25.849
+  },
+  {
+   "shot": 2,
+   "text": "crees",
+   "punct": ".",
+   "t": 25.849,
+   "end": 26.321
+  },
+  {
+   "shot": 2,
+   "text": "En",
+   "punct": "",
+   "t": 26.321,
+   "end": 26.453
+  },
+  {
+   "shot": 2,
+   "text": "Nawar",
+   "punct": "",
+   "t": 26.453,
+   "end": 26.774
+  },
+  {
+   "shot": 2,
+   "text": "practicas",
+   "punct": "",
+   "t": 26.774,
+   "end": 27.302
+  },
+  {
+   "shot": 2,
+   "text": "con",
+   "punct": "",
+   "t": 27.302,
+   "end": 27.472
+  },
+  {
+   "shot": 2,
+   "text": "situaciones",
+   "punct": "",
+   "t": 27.472,
+   "end": 27.925
+  },
+  {
+   "shot": 2,
+   "text": "que",
+   "punct": "",
+   "t": 27.925,
+   "end": 28.095
+  },
+  {
+   "shot": 2,
+   "text": "vas",
+   "punct": "",
+   "t": 28.095,
+   "end": 28.227
+  },
+  {
+   "shot": 2,
+   "text": "a",
+   "punct": "",
+   "t": 28.227,
+   "end": 28.434
+  },
+  {
+   "shot": 2,
+   "text": "vivir",
+   "punct": "",
+   "t": 28.434,
+   "end": 28.793
+  },
+  {
+   "shot": 2,
+   "text": "en",
+   "punct": "",
+   "t": 28.793,
+   "end": 28.925
+  },
+  {
+   "shot": 2,
+   "text": "el",
+   "punct": "",
+   "t": 28.925,
+   "end": 29.095
+  },
+  {
+   "shot": 2,
+   "text": "día",
+   "punct": "",
+   "t": 29.095,
+   "end": 29.245
+  },
+  {
+   "shot": 2,
+   "text": "a",
+   "punct": "",
+   "t": 29.245,
+   "end": 29.396
+  },
+  {
+   "shot": 2,
+   "text": "día",
+   "punct": ".",
+   "t": 29.396,
+   "end": 29.849
+  },
+  {
+   "shot": 2,
+   "text": "Nada",
+   "punct": "",
+   "t": 29.849,
+   "end": 30.038
+  },
+  {
+   "shot": 2,
+   "text": "de",
+   "punct": "",
+   "t": 30.038,
+   "end": 30.113
+  },
+  {
+   "shot": 2,
+   "text": "la",
+   "punct": "",
+   "t": 30.113,
+   "end": 30.302
+  },
+  {
+   "shot": 2,
+   "text": "teoría",
+   "punct": "",
+   "t": 30.302,
+   "end": 30.83
+  },
+  {
+   "shot": 2,
+   "text": "que",
+   "punct": "",
+   "t": 30.83,
+   "end": 31.019
+  },
+  {
+   "shot": 2,
+   "text": "luego",
+   "punct": "",
+   "t": 31.019,
+   "end": 31.264
+  },
+  {
+   "shot": 2,
+   "text": "no",
+   "punct": "",
+   "t": 31.264,
+   "end": 31.51
+  },
+  {
+   "shot": 2,
+   "text": "usas",
+   "punct": ".",
+   "t": 31.51,
+   "end": 32.038
+  },
+  {
+   "shot": 2,
+   "text": "Aprendes",
+   "punct": "",
+   "t": 32.038,
+   "end": 32.604
+  },
+  {
+   "shot": 2,
+   "text": "con",
+   "punct": "",
+   "t": 32.604,
+   "end": 32.717
+  },
+  {
+   "shot": 2,
+   "text": "lecciones",
+   "punct": "",
+   "t": 32.717,
+   "end": 33.227
+  },
+  {
+   "shot": 2,
+   "text": "grabadas",
+   "punct": "",
+   "t": 33.227,
+   "end": 33.849
+  },
+  {
+   "shot": 2,
+   "text": "por",
+   "punct": "",
+   "t": 33.849,
+   "end": 34.0
+  },
+  {
+   "shot": 2,
+   "text": "un",
+   "punct": "",
+   "t": 34.0,
+   "end": 34.302
+  },
+  {
+   "shot": 2,
+   "text": "equipo",
+   "punct": "",
+   "t": 34.302,
+   "end": 34.491
+  },
+  {
+   "shot": 2,
+   "text": "de",
+   "punct": "",
+   "t": 34.491,
+   "end": 34.774
+  },
+  {
+   "shot": 2,
+   "text": "expertos",
+   "punct": "",
+   "t": 34.774,
+   "end": 35.227
+  },
+  {
+   "shot": 2,
+   "text": "nativos",
+   "punct": "",
+   "t": 35.227,
+   "end": 35.698
+  },
+  {
+   "shot": 2,
+   "text": "que",
+   "punct": "",
+   "t": 35.698,
+   "end": 35.944
+  },
+  {
+   "shot": 2,
+   "text": "dominan",
+   "punct": "",
+   "t": 35.944,
+   "end": 36.396
+  },
+  {
+   "shot": 2,
+   "text": "tu",
+   "punct": "",
+   "t": 36.396,
+   "end": 36.661
+  },
+  {
+   "shot": 2,
+   "text": "idioma",
+   "punct": "",
+   "t": 36.661,
+   "end": 37.151
+  },
+  {
+   "shot": 2,
+   "text": "para",
+   "punct": "",
+   "t": 37.151,
+   "end": 37.396
+  },
+  {
+   "shot": 2,
+   "text": "estudiar",
+   "punct": "",
+   "t": 37.396,
+   "end": 37.755
+  },
+  {
+   "shot": 2,
+   "text": "cuando",
+   "punct": "",
+   "t": 37.755,
+   "end": 38.0
+  },
+  {
+   "shot": 2,
+   "text": "tú",
+   "punct": "",
+   "t": 38.0,
+   "end": 38.302
+  },
+  {
+   "shot": 2,
+   "text": "puedas",
+   "punct": ".",
+   "t": 38.302,
+   "end": 38.774
+  },
+  {
+   "shot": 2,
+   "text": "Cuentas",
+   "punct": "",
+   "t": 38.774,
+   "end": 39.151
+  },
+  {
+   "shot": 2,
+   "text": "con",
+   "punct": "",
+   "t": 39.151,
+   "end": 39.378
+  },
+  {
+   "shot": 2,
+   "text": "ejercicios",
+   "punct": "",
+   "t": 39.378,
+   "end": 39.887
+  },
+  {
+   "shot": 2,
+   "text": "pensados",
+   "punct": "",
+   "t": 39.887,
+   "end": 40.283
+  },
+  {
+   "shot": 2,
+   "text": "para",
+   "punct": "",
+   "t": 40.283,
+   "end": 40.434
+  },
+  {
+   "shot": 2,
+   "text": "el",
+   "punct": "",
+   "t": 40.434,
+   "end": 40.547
+  },
+  {
+   "shot": 2,
+   "text": "día",
+   "punct": "",
+   "t": 40.547,
+   "end": 40.679
+  },
+  {
+   "shot": 2,
+   "text": "a",
+   "punct": "",
+   "t": 40.679,
+   "end": 40.849
+  },
+  {
+   "shot": 2,
+   "text": "día",
+   "punct": "",
+   "t": 40.849,
+   "end": 41.113
+  },
+  {
+   "shot": 2,
+   "text": "y",
+   "punct": "",
+   "t": 41.113,
+   "end": 41.321
+  },
+  {
+   "shot": 2,
+   "text": "cada",
+   "punct": "",
+   "t": 41.321,
+   "end": 41.528
+  },
+  {
+   "shot": 2,
+   "text": "semana",
+   "punct": "",
+   "t": 41.528,
+   "end": 41.755
+  },
+  {
+   "shot": 2,
+   "text": "te",
+   "punct": "",
+   "t": 41.755,
+   "end": 42.0
+  },
+  {
+   "shot": 2,
+   "text": "conectas",
+   "punct": "",
+   "t": 42.0,
+   "end": 42.283
+  },
+  {
+   "shot": 2,
+   "text": "a",
+   "punct": "",
+   "t": 42.283,
+   "end": 42.434
+  },
+  {
+   "shot": 2,
+   "text": "una",
+   "punct": "",
+   "t": 42.434,
+   "end": 42.661
+  },
+  {
+   "shot": 2,
+   "text": "clase",
+   "punct": "",
+   "t": 42.661,
+   "end": 43.076
+  },
+  {
+   "shot": 2,
+   "text": "en",
+   "punct": "",
+   "t": 43.076,
+   "end": 43.378
+  },
+  {
+   "shot": 2,
+   "text": "directo",
+   "punct": "",
+   "t": 43.378,
+   "end": 43.811
+  },
+  {
+   "shot": 2,
+   "text": "para",
+   "punct": "",
+   "t": 43.811,
+   "end": 44.038
+  },
+  {
+   "shot": 2,
+   "text": "reforzar",
+   "punct": "",
+   "t": 44.038,
+   "end": 44.491
+  },
+  {
+   "shot": 2,
+   "text": "lo",
+   "punct": "",
+   "t": 44.491,
+   "end": 44.717
+  },
+  {
+   "shot": 2,
+   "text": "aprendido",
+   "punct": "",
+   "t": 44.717,
+   "end": 45.113
+  },
+  {
+   "shot": 2,
+   "text": "y",
+   "punct": "",
+   "t": 45.113,
+   "end": 45.378
+  },
+  {
+   "shot": 2,
+   "text": "trabajar",
+   "punct": "",
+   "t": 45.378,
+   "end": 45.623
+  },
+  {
+   "shot": 2,
+   "text": "la",
+   "punct": "",
+   "t": 45.623,
+   "end": 45.849
+  },
+  {
+   "shot": 2,
+   "text": "pronunciación",
+   "punct": ".",
+   "t": 45.849,
+   "end": 46.736
+  },
+  {
+   "shot": 2,
+   "text": "Además",
+   "punct": ",",
+   "t": 46.736,
+   "end": 47.057
+  },
+  {
+   "shot": 2,
+   "text": "mientras",
+   "punct": "",
+   "t": 47.057,
+   "end": 47.302
+  },
+  {
+   "shot": 2,
+   "text": "las",
+   "punct": "",
+   "t": 47.302,
+   "end": 47.51
+  },
+  {
+   "shot": 2,
+   "text": "ofertas",
+   "punct": "",
+   "t": 47.51,
+   "end": 47.906
+  },
+  {
+   "shot": 2,
+   "text": "de",
+   "punct": "",
+   "t": 47.906,
+   "end": 48.151
+  },
+  {
+   "shot": 2,
+   "text": "trabajo",
+   "punct": "",
+   "t": 48.151,
+   "end": 48.472
+  },
+  {
+   "shot": 2,
+   "text": "bajan",
+   "punct": ",",
+   "t": 48.472,
+   "end": 48.962
+  },
+  {
+   "shot": 2,
+   "text": "nueve",
+   "punct": "",
+   "t": 48.962,
+   "end": 49.302
+  },
+  {
+   "shot": 2,
+   "text": "de",
+   "punct": "",
+   "t": 49.302,
+   "end": 49.491
+  },
+  {
+   "shot": 2,
+   "text": "cada",
+   "punct": "",
+   "t": 49.491,
+   "end": 49.925
+  },
+  {
+   "shot": 2,
+   "text": "diez",
+   "punct": "",
+   "t": 49.925,
+   "end": 50.434
+  },
+  {
+   "shot": 2,
+   "text": "siguen",
+   "punct": "",
+   "t": 50.434,
+   "end": 50.698
+  },
+  {
+   "shot": 2,
+   "text": "pidiendo",
+   "punct": "",
+   "t": 50.698,
+   "end": 51.227
+  },
+  {
+   "shot": 2,
+   "text": "como",
+   "punct": "",
+   "t": 51.227,
+   "end": 51.604
+  },
+  {
+   "shot": 2,
+   "text": "requisito",
+   "punct": "",
+   "t": 51.604,
+   "end": 52.245
+  },
+  {
+   "shot": 2,
+   "text": "el",
+   "punct": "",
+   "t": 52.245,
+   "end": 52.378
+  },
+  {
+   "shot": 2,
+   "text": "neerlandés",
+   "punct": ".",
+   "t": 52.378,
+   "end": 53.311
   },
   {
    "shot": 3,
-   "text": "primero",
-   "punct": ",",
-   "t": 20.944,
-   "end": 21.246
-  },
-  {
-   "shot": 4,
-   "text": "La",
-   "punct": "",
-   "t": 21.321,
-   "end": 21.604
-  },
-  {
-   "shot": 4,
-   "text": "realidad",
-   "punct": "",
-   "t": 21.604,
-   "end": 22.038
-  },
-  {
-   "shot": 4,
-   "text": "es",
-   "punct": "",
-   "t": 22.038,
-   "end": 22.17
-  },
-  {
-   "shot": 4,
-   "text": "que",
-   "punct": "",
-   "t": 22.17,
-   "end": 22.359
-  },
-  {
-   "shot": 4,
-   "text": "cuando",
-   "punct": "",
-   "t": 22.359,
-   "end": 22.566
-  },
-  {
-   "shot": 4,
-   "text": "te",
-   "punct": "",
-   "t": 22.566,
-   "end": 22.661
-  },
-  {
-   "shot": 4,
-   "text": "lo",
-   "punct": "",
-   "t": 22.661,
-   "end": 22.849
-  },
-  {
-   "shot": 4,
-   "text": "explican",
-   "punct": "",
-   "t": 22.849,
-   "end": 23.246
-  },
-  {
-   "shot": 4,
-   "text": "desde",
-   "punct": "",
-   "t": 23.246,
-   "end": 23.397
-  },
-  {
-   "shot": 4,
-   "text": "el",
-   "punct": "",
-   "t": 23.397,
-   "end": 23.755
-  },
-  {
-   "shot": 4,
-   "text": "español",
-   "punct": "",
-   "t": 23.755,
-   "end": 24.283
-  },
-  {
-   "shot": 4,
-   "text": "avanzas",
-   "punct": "",
-   "t": 24.283,
-   "end": 24.755
-  },
-  {
-   "shot": 4,
-   "text": "mucho",
-   "punct": "",
-   "t": 24.755,
-   "end": 25.0
-  },
-  {
-   "shot": 4,
-   "text": "más",
-   "punct": "",
-   "t": 25.0,
-   "end": 25.283
-  },
-  {
-   "shot": 4,
-   "text": "rápido",
-   "punct": "",
-   "t": 25.283,
-   "end": 25.453
-  },
-  {
-   "shot": 4,
-   "text": "de",
-   "punct": "",
-   "t": 25.453,
-   "end": 25.548
-  },
-  {
-   "shot": 4,
-   "text": "lo",
-   "punct": "",
-   "t": 25.548,
-   "end": 25.68
-  },
-  {
-   "shot": 4,
-   "text": "que",
-   "punct": "",
-   "t": 25.68,
-   "end": 25.868
-  },
-  {
-   "shot": 4,
-   "text": "crees",
-   "punct": ".",
-   "t": 25.868,
-   "end": 26.293
-  },
-  {
-   "shot": 5,
-   "text": "En",
-   "punct": "",
-   "t": 26.331,
-   "end": 26.501
-  },
-  {
-   "shot": 5,
-   "text": "Nawar",
-   "punct": "",
-   "t": 26.501,
-   "end": 26.953
-  },
-  {
-   "shot": 5,
-   "text": "practicas",
-   "punct": "",
-   "t": 26.953,
-   "end": 27.425
-  },
-  {
-   "shot": 5,
-   "text": "desde",
-   "punct": "",
-   "t": 27.425,
-   "end": 27.595
-  },
-  {
-   "shot": 5,
-   "text": "el",
-   "punct": "",
-   "t": 27.595,
-   "end": 27.897
-  },
-  {
-   "shot": 5,
-   "text": "primer",
-   "punct": "",
-   "t": 27.897,
-   "end": 28.161
-  },
-  {
-   "shot": 5,
-   "text": "día",
-   "punct": "",
-   "t": 28.161,
-   "end": 28.463
-  },
-  {
-   "shot": 5,
-   "text": "con",
-   "punct": "",
-   "t": 28.463,
-   "end": 28.651
-  },
-  {
-   "shot": 5,
-   "text": "situaciones",
-   "punct": "",
-   "t": 28.651,
-   "end": 29.218
-  },
-  {
-   "shot": 5,
-   "text": "que",
-   "punct": "",
-   "t": 29.218,
-   "end": 29.368
-  },
-  {
-   "shot": 5,
-   "text": "vas",
-   "punct": "",
-   "t": 29.368,
-   "end": 29.482
-  },
-  {
-   "shot": 5,
-   "text": "a",
-   "punct": "",
-   "t": 29.482,
-   "end": 29.651
-  },
-  {
-   "shot": 5,
-   "text": "vivir",
-   "punct": "",
-   "t": 29.651,
-   "end": 30.142
-  },
-  {
-   "shot": 5,
-   "text": "aquí",
-   "punct": ",",
-   "t": 30.142,
-   "end": 30.519
-  },
-  {
-   "shot": 5,
-   "text": "nada",
-   "punct": "",
-   "t": 30.519,
-   "end": 30.708
-  },
-  {
-   "shot": 5,
-   "text": "de",
-   "punct": "",
-   "t": 30.708,
-   "end": 30.878
-  },
-  {
-   "shot": 5,
-   "text": "teoría",
-   "punct": "",
-   "t": 30.878,
-   "end": 31.18
-  },
-  {
-   "shot": 5,
-   "text": "que",
-   "punct": "",
-   "t": 31.18,
-   "end": 31.406
-  },
-  {
-   "shot": 5,
-   "text": "luego",
-   "punct": "",
-   "t": 31.406,
-   "end": 31.802
-  },
-  {
-   "shot": 5,
-   "text": "no",
-   "punct": "",
-   "t": 31.802,
-   "end": 32.01
-  },
-  {
-   "shot": 5,
-   "text": "usas",
-   "punct": ".",
-   "t": 32.01,
-   "end": 32.519
-  },
-  {
-   "shot": 6,
-   "text": "Aprendes",
-   "punct": "",
-   "t": 32.604,
-   "end": 33.17
-  },
-  {
-   "shot": 6,
-   "text": "con",
-   "punct": "",
-   "t": 33.17,
-   "end": 33.283
-  },
-  {
-   "shot": 6,
-   "text": "lecciones",
-   "punct": "",
-   "t": 33.283,
-   "end": 33.793
-  },
-  {
-   "shot": 6,
-   "text": "grabadas",
-   "punct": "",
-   "t": 33.793,
-   "end": 34.415
-  },
-  {
-   "shot": 6,
-   "text": "por",
-   "punct": "",
-   "t": 34.415,
-   "end": 34.566
-  },
-  {
-   "shot": 6,
-   "text": "un",
-   "punct": "",
-   "t": 34.566,
-   "end": 34.868
-  },
-  {
-   "shot": 6,
-   "text": "equipo",
-   "punct": "",
-   "t": 34.868,
-   "end": 35.057
-  },
-  {
-   "shot": 6,
-   "text": "de",
-   "punct": "",
-   "t": 35.057,
-   "end": 35.34
-  },
-  {
-   "shot": 6,
-   "text": "expertos",
-   "punct": "",
-   "t": 35.34,
-   "end": 35.793
-  },
-  {
-   "shot": 6,
-   "text": "nativos",
-   "punct": "",
-   "t": 35.793,
-   "end": 36.264
-  },
-  {
-   "shot": 6,
-   "text": "que",
-   "punct": "",
-   "t": 36.264,
-   "end": 36.51
-  },
-  {
-   "shot": 6,
-   "text": "dominan",
-   "punct": "",
-   "t": 36.51,
-   "end": 36.962
-  },
-  {
-   "shot": 6,
-   "text": "tu",
-   "punct": "",
-   "t": 36.962,
-   "end": 37.227
-  },
-  {
-   "shot": 6,
-   "text": "idioma",
-   "punct": "",
-   "t": 37.227,
-   "end": 37.689
-  },
-  {
-   "shot": 7,
-   "text": "para",
-   "punct": "",
-   "t": 37.689,
-   "end": 37.878
-  },
-  {
-   "shot": 7,
-   "text": "estudiar",
-   "punct": "",
-   "t": 37.878,
-   "end": 38.274
-  },
-  {
-   "shot": 7,
-   "text": "cuando",
-   "punct": "",
-   "t": 38.274,
-   "end": 38.538
-  },
-  {
-   "shot": 7,
-   "text": "tú",
-   "punct": "",
-   "t": 38.538,
-   "end": 38.802
-  },
-  {
-   "shot": 7,
-   "text": "puedas",
-   "punct": ".",
-   "t": 38.802,
-   "end": 39.934
-  },
-  {
-   "shot": 7,
-   "text": "Cuentas",
-   "punct": "",
-   "t": 39.934,
-   "end": 40.312
-  },
-  {
-   "shot": 7,
-   "text": "con",
-   "punct": "",
-   "t": 40.312,
-   "end": 40.5
-  },
-  {
-   "shot": 7,
-   "text": "ejercicios",
-   "punct": "",
-   "t": 40.5,
-   "end": 41.029
-  },
-  {
-   "shot": 7,
-   "text": "prácticos",
-   "punct": "",
-   "t": 41.029,
-   "end": 41.764
-  },
-  {
-   "shot": 7,
-   "text": "pensados",
-   "punct": "",
-   "t": 41.764,
-   "end": 42.331
-  },
-  {
-   "shot": 7,
-   "text": "para",
-   "punct": "",
-   "t": 42.331,
-   "end": 42.481
-  },
-  {
-   "shot": 7,
-   "text": "el",
-   "punct": "",
-   "t": 42.481,
-   "end": 42.595
-  },
-  {
-   "shot": 7,
-   "text": "día",
-   "punct": "",
-   "t": 42.595,
-   "end": 42.746
-  },
-  {
-   "shot": 7,
-   "text": "a",
-   "punct": "",
-   "t": 42.746,
-   "end": 42.897
-  },
-  {
-   "shot": 7,
-   "text": "día",
-   "punct": "",
-   "t": 42.897,
-   "end": 43.142
-  },
-  {
-   "shot": 7,
-   "text": "y",
-   "punct": "",
-   "t": 43.142,
-   "end": 43.349
-  },
-  {
-   "shot": 7,
-   "text": "cada",
-   "punct": "",
-   "t": 43.349,
-   "end": 43.595
-  },
-  {
-   "shot": 7,
-   "text": "semana",
-   "punct": "",
-   "t": 43.595,
-   "end": 43.783
-  },
-  {
-   "shot": 7,
-   "text": "te",
-   "punct": "",
-   "t": 43.783,
-   "end": 44.029
-  },
-  {
-   "shot": 7,
-   "text": "conectas",
-   "punct": "",
-   "t": 44.029,
-   "end": 44.387
-  },
-  {
-   "shot": 7,
-   "text": "a",
-   "punct": "",
-   "t": 44.387,
-   "end": 44.481
-  },
-  {
-   "shot": 7,
-   "text": "una",
-   "punct": "",
-   "t": 44.481,
-   "end": 44.708
-  },
-  {
-   "shot": 7,
-   "text": "clase",
-   "punct": "",
-   "t": 44.708,
-   "end": 44.897
-  },
-  {
-   "shot": 7,
-   "text": "en",
-   "punct": "",
-   "t": 44.897,
-   "end": 45.123
-  },
-  {
-   "shot": 7,
-   "text": "directo",
-   "punct": "",
-   "t": 45.123,
-   "end": 45.444
-  },
-  {
-   "shot": 7,
-   "text": "para",
-   "punct": "",
-   "t": 45.444,
-   "end": 45.689
-  },
-  {
-   "shot": 7,
-   "text": "reforzar",
-   "punct": "",
-   "t": 45.689,
-   "end": 46.425
-  },
-  {
-   "shot": 7,
-   "text": "lo",
-   "punct": "",
-   "t": 46.425,
-   "end": 46.67
-  },
-  {
-   "shot": 7,
-   "text": "aprendido",
-   "punct": "",
-   "t": 46.67,
-   "end": 47.198
-  },
-  {
-   "shot": 7,
-   "text": "y",
-   "punct": "",
-   "t": 47.198,
-   "end": 47.463
-  },
-  {
-   "shot": 7,
-   "text": "trabajar",
-   "punct": "",
-   "t": 47.463,
-   "end": 47.746
-  },
-  {
-   "shot": 7,
-   "text": "la",
-   "punct": "",
-   "t": 47.746,
-   "end": 47.991
-  },
-  {
-   "shot": 7,
-   "text": "pronunciación",
-   "punct": ".",
-   "t": 47.991,
-   "end": 49.236
-  },
-  {
-   "shot": 8,
-   "text": "Además",
-   "punct": ",",
-   "t": 49.368,
-   "end": 49.689
-  },
-  {
-   "shot": 8,
-   "text": "mientras",
-   "punct": "",
-   "t": 49.689,
-   "end": 49.934
-  },
-  {
-   "shot": 8,
-   "text": "las",
-   "punct": "",
-   "t": 49.934,
-   "end": 50.142
-  },
-  {
-   "shot": 8,
-   "text": "ofertas",
-   "punct": "",
-   "t": 50.142,
-   "end": 50.538
-  },
-  {
-   "shot": 8,
-   "text": "de",
-   "punct": "",
-   "t": 50.538,
-   "end": 50.783
-  },
-  {
-   "shot": 8,
-   "text": "trabajo",
-   "punct": "",
-   "t": 50.783,
-   "end": 51.104
-  },
-  {
-   "shot": 8,
-   "text": "bajan",
-   "punct": ",",
-   "t": 51.104,
-   "end": 51.594
-  },
-  {
-   "shot": 8,
-   "text": "nueve",
-   "punct": "",
-   "t": 51.594,
-   "end": 51.934
-  },
-  {
-   "shot": 8,
-   "text": "de",
-   "punct": "",
-   "t": 51.934,
-   "end": 52.123
-  },
-  {
-   "shot": 8,
-   "text": "cada",
-   "punct": "",
-   "t": 52.123,
-   "end": 52.557
-  },
-  {
-   "shot": 8,
-   "text": "diez",
-   "punct": "",
-   "t": 52.557,
-   "end": 53.066
-  },
-  {
-   "shot": 8,
-   "text": "siguen",
-   "punct": "",
-   "t": 53.066,
-   "end": 53.33
-  },
-  {
-   "shot": 8,
-   "text": "pidiendo",
-   "punct": "",
-   "t": 53.33,
-   "end": 53.859
-  },
-  {
-   "shot": 8,
-   "text": "como",
-   "punct": "",
-   "t": 53.859,
-   "end": 54.236
-  },
-  {
-   "shot": 8,
-   "text": "requisito",
-   "punct": "",
-   "t": 54.236,
-   "end": 54.878
-  },
-  {
-   "shot": 8,
-   "text": "el",
-   "punct": "",
-   "t": 54.878,
-   "end": 55.01
-  },
-  {
-   "shot": 8,
-   "text": "neerlandés",
-   "punct": ".",
-   "t": 55.01,
-   "end": 55.944
-  },
-  {
-   "shot": 9,
    "text": "¿Estás",
    "punct": "",
-   "t": 55.972,
-   "end": 56.293
+   "t": 53.339,
+   "end": 53.66
   },
   {
-   "shot": 9,
+   "shot": 3,
    "text": "listo",
    "punct": "",
-   "t": 56.293,
-   "end": 56.557
+   "t": 53.66,
+   "end": 53.924
   },
   {
-   "shot": 9,
+   "shot": 3,
    "text": "para",
    "punct": "",
-   "t": 56.557,
-   "end": 56.821
+   "t": 53.924,
+   "end": 54.188
   },
   {
-   "shot": 9,
+   "shot": 3,
    "text": "comenzar",
    "punct": "?",
-   "t": 56.821,
-   "end": 57.274
+   "t": 54.188,
+   "end": 54.641
   },
   {
-   "shot": 9,
+   "shot": 3,
    "text": "Si",
    "punct": "",
-   "t": 57.274,
-   "end": 57.35
+   "t": 54.641,
+   "end": 54.717
   },
   {
-   "shot": 9,
+   "shot": 3,
    "text": "es",
    "punct": "",
-   "t": 57.35,
-   "end": 57.501
+   "t": 54.717,
+   "end": 54.868
   },
   {
-   "shot": 9,
+   "shot": 3,
    "text": "así",
    "punct": ",",
-   "t": 57.501,
-   "end": 57.784
+   "t": 54.868,
+   "end": 55.151
   },
   {
-   "shot": 9,
+   "shot": 3,
    "text": "haz",
    "punct": "",
-   "t": 57.784,
-   "end": 57.953
+   "t": 55.151,
+   "end": 55.32
   },
   {
-   "shot": 9,
+   "shot": 3,
    "text": "clic",
    "punct": "",
-   "t": 57.953,
-   "end": 58.104
+   "t": 55.32,
+   "end": 55.471
   },
   {
-   "shot": 9,
+   "shot": 3,
    "text": "en",
    "punct": "",
-   "t": 58.104,
-   "end": 58.218
+   "t": 55.471,
+   "end": 55.585
   },
   {
-   "shot": 9,
+   "shot": 3,
    "text": "el",
    "punct": "",
-   "t": 58.218,
-   "end": 58.369
+   "t": 55.585,
+   "end": 55.736
   },
   {
-   "shot": 9,
+   "shot": 3,
    "text": "botón",
    "punct": "",
-   "t": 58.369,
-   "end": 58.614
+   "t": 55.736,
+   "end": 55.981
   },
   {
-   "shot": 9,
+   "shot": 3,
    "text": "de",
    "punct": "",
-   "t": 58.614,
-   "end": 58.802
+   "t": 55.981,
+   "end": 56.169
   },
   {
-   "shot": 9,
+   "shot": 3,
    "text": "aquí",
    "punct": "",
-   "t": 58.802,
-   "end": 59.142
+   "t": 56.169,
+   "end": 56.509
   },
   {
-   "shot": 9,
+   "shot": 3,
    "text": "abajo",
    "punct": ",",
-   "t": 59.142,
-   "end": 59.359
+   "t": 56.509,
+   "end": 56.726
   },
   {
-   "shot": 10,
+   "shot": 4,
    "text": "rellena",
    "punct": "",
-   "t": 59.444,
-   "end": 59.784
+   "t": 56.811,
+   "end": 57.151
   },
   {
-   "shot": 10,
+   "shot": 4,
    "text": "el",
    "punct": "",
-   "t": 59.784,
-   "end": 59.953
+   "t": 57.151,
+   "end": 57.32
   },
   {
-   "shot": 10,
+   "shot": 4,
    "text": "formulario",
    "punct": "",
-   "t": 59.953,
-   "end": 60.689
+   "t": 57.32,
+   "end": 58.056
   },
   {
-   "shot": 11,
+   "shot": 5,
    "text": "y",
    "punct": "",
-   "t": 60.689,
-   "end": 60.793
+   "t": 58.056,
+   "end": 58.16
   },
   {
-   "shot": 11,
+   "shot": 5,
    "text": "una",
    "punct": "",
-   "t": 60.793,
-   "end": 61.132
+   "t": 58.16,
+   "end": 58.499
   },
   {
-   "shot": 11,
+   "shot": 5,
    "text": "persona",
    "punct": "",
-   "t": 61.132,
-   "end": 61.321
+   "t": 58.499,
+   "end": 58.688
   },
   {
-   "shot": 11,
+   "shot": 5,
    "text": "de",
    "punct": "",
-   "t": 61.321,
-   "end": 61.434
+   "t": 58.688,
+   "end": 58.801
   },
   {
-   "shot": 11,
+   "shot": 5,
    "text": "nuestro",
    "punct": "",
-   "t": 61.434,
-   "end": 61.793
+   "t": 58.801,
+   "end": 59.16
   },
   {
-   "shot": 11,
+   "shot": 5,
    "text": "equipo",
    "punct": "",
-   "t": 61.793,
-   "end": 62.019
+   "t": 59.16,
+   "end": 59.386
   },
   {
-   "shot": 11,
+   "shot": 5,
    "text": "te",
    "punct": "",
-   "t": 62.019,
-   "end": 62.114
+   "t": 59.386,
+   "end": 59.481
   },
   {
-   "shot": 11,
+   "shot": 5,
    "text": "atenderá",
    "punct": ".",
-   "t": 62.114,
-   "end": 62.576
+   "t": 59.481,
+   "end": 59.943
   }
  ]
 }
