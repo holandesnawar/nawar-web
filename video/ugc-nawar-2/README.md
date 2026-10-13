@@ -32,7 +32,7 @@ Segundo anuncio en vertical (1080×1920, ~61 s) con el mismo estilo que el prime
 ```bash
 bash tools/fetch_assets.sh            # la toma (UGC.POV1) desde el Drive + medios de marca del VSL; genera todo
 npx hyperframes check
-npx hyperframes render . --quality high -o renders/nawar-ugc2.mp4
+npx hyperframes render . --quality high -o renders/nawar-ugc2-v2.mp4
 ```
 
 Para cambiar cuándo entra o sale un gráfico, edita `INSERTS` en `tools/edit.py` y vuelve a ejecutar:
