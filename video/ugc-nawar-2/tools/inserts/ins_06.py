@@ -1,6 +1,6 @@
 """ins-06 · «…(Cuentas con) ejercicios pensados para el día a día» — a quick flash of the real exercises (UGC #1 ins-04
 design): title «Ejercicios / para el día a día», the deck of real exercise cards with their own margin, and the
-Leer · Escribir · Escuchar pills, each entering with its card."""
+Escribir · Escuchar · Leer pills, each entering with its card."""
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from common import *  # noqa: F401,F403

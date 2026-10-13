@@ -9,15 +9,13 @@ VSL=../vsl-formacion-nawar
 RAW=.raw && mkdir -p "$RAW" assets/video assets/img assets/sfx assets/fonts assets/vendor assets/audio
 
 dl() { curl -sS -L --fail --retry 3 -o "$RAW/$2" "https://drive.usercontent.google.com/download?id=$1&export=download&confirm=t"; echo "  got $2"; }
-echo "the two takes (Drive folder «Nawar UGC»)"
+echo "the take (Drive folder «ADS»)"
 dl 1gZtlpOoGKgn5jJxu-ie-G76nsutIXDgq pov1.mov   # «UGC.POV1» — facing camera, laptop hook (two hook takes)
-dl 1NmzfJmTlzqmVDUoGotW0ZesKxb61eOV- pov2.mov   # «UGC.POV2» — side angle, from «En cuatro semanas»
-# take 1: the laptop's HP logo and Intel sticker are blurred (tracked; tools/align/pov1_logo_track.json); light grade;
-# audio cleaned and normalised to −16 LUFS — take 2: same grade and audio chain
+# («UGC.POV2», 1NmzfJmTlzqmVDUoGotW0ZesKxb61eOV-, is the side angle looking off camera: not used since v2)
+# the laptop's HP logo and Intel sticker are blurred (tracked; tools/align/pov1_logo_track.json); light grade;
+# audio cleaned and normalised to −16 LUFS
 python3 tools/blur_marks.py "$RAW/pov1.mov" assets/video/take-1.mp4
-ffmpeg -v error -y -i "$RAW/pov2.mov" -vf "eq=contrast=1.05:saturation=1.05:gamma=0.98,format=yuv420p" \
-  -af "highpass=f=80,afftdn=nr=10:nf=-42,loudnorm=I=-16:TP=-1.5:LRA=11" \
-  -c:v libx264 -preset slow -crf 18 -g 15 -r 30 -c:a aac -b:a 192k -ar 48000 -movflags +faststart assets/video/take-2.mp4
+python3 tools/cam_b.py                # camera B: the recomposed close-up (take-1-b.mp4)
 # her last frame (a quiet smile), held under the «haz clic» button at the end
 ffmpeg -v error -y -ss 73.95 -i assets/video/take-1.mp4 -frames:v 1 assets/img/take-1-last.png
 

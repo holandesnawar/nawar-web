@@ -2,33 +2,35 @@
 """Edit decision list → edit.json (UGC #2, «Si tienes un ordenador…»).
 
 Two takes of the same script: take 1 = UGC.POV1, facing camera (with two hook takes and a laptop), take 2 =
-UGC.POV2, side angle (interview look, starts at «En cuatro semanas…»). Take 1 is clean end to end, so it carries
-the ad; take 2 comes in for the two lines where it is the better read and the camera change helps the story:
-«El principal error es pensar que necesitas años o saber inglés primero» (the myth, told to the side) and «En
-Nawar practicas desde el primer día…» (with «desde el primer día», which take 1 doesn't say). The first hook take
-is used (the second one stops for three seconds in the middle). Every cut sits in a quiet point checked on the
-energy envelope (tools/align/…; RMS < −40 dB), all at RATE (pitch preserved). The long pause before «¿Estás listo…?»
-is removed at the cut back from the last insert, where the jump is hidden.
+UGC.POV2, side angle (interview look: she talks to someone off camera the whole take). The client wants her
+looking into the lens, so the ad is cut from take 1 only. The change of point of view lives in the framing:
+camera A is the take as shot; camera B is a recomposed close-up of it (tools/cam_b.py → take-1-b.mp4, same frames
+and sound), used for «El principal error es pensar que necesitas» and «En Nawar practicas…»; the cut B → A on
+«…años o saber inglés primero» (in her pause, before a glance off to the side) is the change of point of view.
+The first hook take is used (the second one stops for three seconds in the middle). Every cut sits in a quiet point
+checked on the energy envelope (RMS < −40 dB), all at RATE (pitch preserved). The long pause before «¿Estás
+listo…?» is removed at the cut back from the last insert, where the jump is hidden.
 
 Word times: Whisper word timestamps of each take (tools/align/whisper_<take>.json), shifted by WHISPER_BIAS (its
 onsets land ~0.15 s late on these takes, checked against the energy envelope at every cut).
 """
 import json, os, unicodedata, re
+from cam_b import face_on_screen
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RATE = 1.06
 WHISPER_BIAS = -0.15
-# (take, source in, source out) — hand-checked quiet points
+# (take, source in, source out, camera A|B) — hand-checked quiet points
 SEGMENTS = [
-    ("1", 0.55, 5.80),     # hook: «Si tienes un ordenador y ganas de aprender neerlandés, ya tienes todo lo que necesitas para empezar.»
-    ("1", 15.30, 28.05),   # «En cuatro semanas…» + «Vivimos en un país… abrir puertas.»
-    ("2", 16.92, 21.43),   # side: «El principal error es pensar que necesitas años o saber inglés primero»
-    ("1", 32.58, 37.90),   # «La realidad es que… más rápido de lo que crees.»
-    ("2", 29.85, 36.45),   # side: «En Nawar practicas desde el primer día… nada de teoría que luego no usas.»
-    ("1", 43.92, 66.40),   # «Aprendes con lecciones grabadas…» → «…como requisito el neerlandés.»
-    ("1", 66.98, 74.03),   # «¿Estás listo para comenzar? … te atenderá.» (pause before it removed)
+    ("1", 0.55, 5.80, "A"),     # hook: «Si tienes un ordenador y ganas de aprender neerlandés, ya tienes todo lo que necesitas para empezar.»
+    ("1", 15.30, 28.08, "A"),   # «En cuatro semanas…» + «Vivimos en un país… abrir puertas.»
+    ("1", 28.08, 30.78, "B"),   # close-up: «El principal error es pensar que necesitas»
+    ("1", 30.78, 37.90, "A"),   # «años o saber inglés primero. La realidad es que… más rápido de lo que crees.»
+    ("1", 37.90, 43.92, "B"),   # close-up: «En Nawar practicas con situaciones… nada de la teoría que luego no usas.»
+    ("1", 43.92, 66.56, "A"),   # «Aprendes con lecciones grabadas…» → «…como requisito el neerlandés.»
+    ("1", 66.94, 74.03, "A"),   # «¿Estás listo para comenzar? … te atenderá.» (most of the pause before it removed)
 ]
-FACE = {"1": (540, 720), "2": (480, 540)}   # face centre per take (zoom origin)
+FACE = {"1": (540, 720)}   # face centre in the take (zoom origin); camera B: face_on_screen(FACE[take])
 SPEECH_END = 73.92     # «…atenderá» ends here in take 1; the take ends on her smile at 74.03
 TAIL = 1.4             # hold on her last frame under the «haz clic» button
 LEAD = 0.06            # an insert cuts in this long before its first word (source seconds)
@@ -71,10 +73,10 @@ def words_of(take):
 def main():
     AL = {t: words_of(t) for t in {sg[0] for sg in SEGMENTS}}
     shots, words, t = [], [], 0.0
-    for k, (tk, a, b) in enumerate(SEGMENTS):
+    for k, (tk, a, b, cam) in enumerate(SEGMENTS):
         W = AL[tk]; dur = round((b - a) / RATE, 3)
-        shots.append({"n": k + 1, "take": tk, "start": round(t, 3), "duration": dur, "media_start": a, "media_end": b,
-                      "face": FACE[tk]})
+        shots.append({"n": k + 1, "take": tk, "cam": cam, "start": round(t, 3), "duration": dur, "media_start": a, "media_end": b,
+                      "face": FACE[tk] if cam == "A" else face_on_screen(FACE[tk])})
         inside = [i for i, w in enumerate(W) if a - 0.12 <= w["start"] < b - 0.06]
         for i in inside:
             w = W[i]; nxt = W[i + 1]["start"] if i + 1 < len(W) else b
@@ -111,7 +113,7 @@ def main():
                "hold": {"start": clip_end, "duration": TAIL}, "shots": shots, "inserts": inserts, "girl": girl, "words": words},
               open(os.path.join(ROOT, "edit.json"), "w"), ensure_ascii=False, indent=1)
     for sh in shots:
-        print(f"  shot {sh['n']} take {sh['take']}  {sh['start']:6.2f}–{sh['start'] + sh['duration']:6.2f}  (source {sh['media_start']}–{sh['media_end']})")
+        print(f"  shot {sh['n']} take {sh['take']} cam {sh['cam']}  {sh['start']:6.2f}–{sh['start'] + sh['duration']:6.2f}  (source {sh['media_start']}–{sh['media_end']})")
     for gg in girl:
         print(f"  girl   {gg['start']:6.2f}–{gg['end']:6.2f}  " + " ".join(w["text"] for w in words if gg["start"] <= w["t"] < gg["end"]))
     for ins in inserts:

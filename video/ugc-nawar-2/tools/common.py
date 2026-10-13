@@ -220,32 +220,6 @@ def blink_js(el_id, t0, t1, period=0.5):
     return "\n".join(out) + "\n"
 
 
-# call card shared by ins-01 (ringing → answered) and ins-06 (in call)
-CALL_CSS = """
-    .«P»-call-av { position: absolute; left: 32px; top: 33px; width: 104px; height: 104px; border-radius: 50%; background: «INDIGO»; }
-    .«P»-call-av svg { position: absolute; left: 18px; top: 18px; width: 68px; height: 68px; }
-    .«P»-ring { position: absolute; left: 32px; top: 33px; width: 104px; height: 104px; border-radius: 50%; border: 5px solid «BLUE»; box-sizing: border-box; opacity: 0; }
-    .«P»-call-name { position: absolute; left: 168px; top: 30px; font-weight: 700; font-size: 46px; line-height: 1.15; letter-spacing: -0.02em; color: «INK»; white-space: nowrap; }
-    .«P»-call-st { position: absolute; left: 170px; top: 98px; display: flex; align-items: center; gap: 12px; font-family: "Inter", sans-serif;
-      font-weight: 600; font-size: 29px; line-height: 1.1; color: «MUTED»; white-space: nowrap; }
-    .«P»-dot { display: block; width: 14px; height: 14px; border-radius: 50%; background: «GREEN»; }
-    .«P»-call-btn { position: absolute; right: 34px; top: 40px; width: 90px; height: 90px; border-radius: 50%; background: «GREEN»;
-      box-shadow: 0 12px 26px rgba(22,163,74,0.35); }
-    .«P»-call-btn svg { position: absolute; left: 21px; top: 21px; width: 48px; height: 48px; }
-"""
-
-
-def call_card(P, left, top, status_html, extra=""):
-    return f"""    <div id="{P}-call" class="{P}-card {P}-on-paper" style="left:{left}px; top:{top}px; width:900px; height:170px;">
-      <div class="{P}-ring" id="{P}-ring1"></div><div class="{P}-ring" id="{P}-ring2"></div>
-      <div class="{P}-call-av">{icon('steth')}</div>
-      <div class="{P}-call-name">Huisarts</div>
-      {status_html}
-      <div class="{P}-call-btn">{icon('phone')}</div>{extra}
-    </div>"""
-
-
-
 FLAG_EN = ('<svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#012169"/><path d="M0 0 L40 27 M40 0 L0 27" stroke="#FFFFFF" stroke-width="5"/>'
            '<path d="M0 0 L40 27 M40 0 L0 27" stroke="#C8102E" stroke-width="2"/><path d="M20 0 V27 M0 13.5 H40" stroke="#FFFFFF" stroke-width="8"/>'
            '<path d="M20 0 V27 M0 13.5 H40" stroke="#C8102E" stroke-width="4.5"/></svg>')

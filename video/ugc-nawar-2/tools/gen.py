@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Generate the UGC ad #2 from edit.json: index.html (the girl — two takes, her framing, audio), one full-screen
+"""Generate the UGC ad #2 from edit.json: index.html (the girl — take 1 as camera A and its close-up camera B, her
+framing, audio), one full-screen
 insert per explanation (compositions/ins-NN.html, built by tools/inserts/ins_NN.py), the «haz clic» button of the
 ending (compositions/outro.html) and the captions (compositions/captions.html).
 
@@ -91,10 +92,11 @@ def ground_at(t):
 
 
 def captions(window=None):
-    """Word-by-word captions in pages of ≤3 words; pages never straddle a cut between the girl and an insert.
+    """Word-by-word captions in pages of ≤3 words; pages never straddle a cut (girl ↔ insert, camera B ↔ A, jump cut).
     window=(a, b): only the pages inside it, re-timed to start at a (solo previews of one insert)."""
     P = "cap"
-    bounds = sorted({0.0, ED["outro"]} | {i["start"] for i in ED["inserts"]} | {round(i["start"] + i["duration"], 3) for i in ED["inserts"]})
+    bounds = sorted({0.0, ED["outro"]} | {s["start"] for s in ED["shots"]} | {i["start"] for i in ED["inserts"]}
+                    | {round(i["start"] + i["duration"], 3) for i in ED["inserts"]})
     pages, cur = [], []
     def region(t): return max(b for b in bounds if b <= t + 1e-6)
     for w in WORDS:
@@ -118,8 +120,11 @@ def captions(window=None):
     body, js = [], []
     end_all = round(ED["speech_end"] + 0.12, 3)
     for k, pg in enumerate(pages):
-        t0 = 0.0 if (k == 0 and not window) else max(0.0, pg[0]["t"] - 0.03 - off)
+        t0 = 0.0 if (k == 0 and not window) else max(0.0, pg[0]["t"] - 0.03 - off, region(pg[0]["t"]) - off)
         t1 = (pages[k + 1][0]["t"] - 0.03 - off) if k + 1 < len(pages) else min(end_all - off, total)
+        cut = min([x for x in bounds if x > pg[0]["t"] + 1e-6], default=None)   # a page leaves with its section
+        if cut is not None and cut - off < t1:
+            t1 = round(cut - off, 3)
         g = ground_at(pg[0]["t"] + 0.01)
         spans = " ".join('<span id="cap-w%d-%d" class="cap-w">%s</span>' % (k, i, w["show"]) for i, w in enumerate(pg))
         up = " cap-up" if pg[0]["t"] >= ED["outro"] - 1e-3 else ""      # above the «haz clic» button
@@ -143,25 +148,32 @@ def captions(window=None):
 
 # ============================================================================== the girl's framing
 def zooms():
-    """coordinate-target-zoom on the girl (origin = her face in each take): tweens (time, duration, ease, to,
-    from|None, wrapper). #zw1 = take 1 (facing camera), #zw2 = take 2 (side angle). The ad opens tight on her face
-    and zooms out fast to reveal the laptop («Si tienes un ordenador…»). Each section after an insert starts at its
-    own framing (the cut hides the change), with a slow push and a punch on a key word."""
+    """coordinate-target-zoom on the girl (origin = her face): tweens (time, duration, ease, to, from|None, wrapper).
+    The ad opens tight on her face and zooms out fast to reveal the laptop («Si tienes un ordenador…»). Each section
+    after an insert starts at its own framing (the cut hides the change), with a slow push and a punch on a key word.
+    Camera B (shots with cam "B" in edit.json; take-1-b.mp4, already the close-up) is the second camera: she keeps
+    looking into the lens, and the hard cut B → A on «…años o saber inglés primero» is the change of point of view.
+    Camera B only gets a slow push on its own wrapper (#zw1b)."""
     G = ED["girl"]; Z = []
     def push(t0, t1, s0, s1, sel="#zw1"):
-        Z.append((round(t0, 3), round(t1 - t0, 3), "none", {"scale": s1}, {"scale": s0}, sel))
+        Z.append((round(t0, 3), round(t1 - t0 - 0.004, 3), "none", {"scale": s1}, {"scale": s0}, sel))   # ends just before the next tween
     def punch(word, s, k=0, d=0.22, ease="power3.out", sel="#zw1"):
         Z.append((round(at(word, k) - 0.05, 3), d, ease, {"scale": s}, None, sel))
     shot = {s["n"]: s for s in ED["shots"]}
+    for s in ED["shots"]:                                                        # camera B: a slow push while on screen
+        if s["cam"] == "B":
+            for g in G:
+                a, b = max(s["start"], g["start"]), min(s["start"] + s["duration"], g["end"])
+                if b - a > 0.05:
+                    push(a, b, 1.0, 1.03, f"#zw{s['take']}b")
     # intro: tight on her face → zoom out to reveal the laptop, then push and punch on «neerlandés»
     Z.append((0.0, 0.75, "power3.out", {"scale": 1.02}, {"scale": 1.36}, "#zw1"))
     push(0.75, at("neerlandes") - 0.05, 1.02, 1.06); punch("neerlandes", 1.14)
     s2 = shot[2]["start"]; push(s2, G[0]["end"], 1.08, 1.11)                     # «En cuatro semanas» (jump cut hidden by the reframe)
     push(G[1]["start"], G[1]["end"], 1.0, 1.04)                                  # «Vivimos en un país…»
-    s3, s4 = shot[3]["start"], shot[4]["start"]
-    push(s3, s4, 1.0, 1.05, "#zw2")                                              # side: «El principal error…»
-    push(s4, at("realidad") - 0.06, 1.06, 1.08); punch("realidad", 1.16)        # front: «La realidad es que»
-    push(G[3]["start"], G[3]["end"], 1.0, 1.05, "#zw2")                          # side: «En Nawar practicas desde el primer día»
+    s4 = shot[4]["start"]                                                        # (shot 3 = camera B: «El principal error…»)
+    push(s4, at("realidad") - 0.06, 1.04, 1.07); punch("realidad", 1.14)        # camera A: «años o saber inglés… La realidad es que»
+                                                                                 # (G[3] «En Nawar practicas» is camera B)
     push(G[4]["start"], G[4]["end"], 1.1, 1.14)                                  # «Aprendes con lecciones grabadas»
     push(G[5]["start"], G[5]["end"], 1.0, 1.04)                                  # «para estudiar cuando tú puedas. Cuentas con»
     push(G[6]["start"], G[6]["end"], 1.12, 1.15)                                 # «y cada semana te conectas a una»
@@ -202,7 +214,7 @@ def index(sfx_all, out_t0, out_d):
     hosts.append(f'    <div id="captions" data-track-kind="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="{TOTAL}" data-track-index="21" data-width="1080" data-height="1920"></div>')
     auds = [f'    <audio id="music" src="assets/audio/music-bed.wav" data-start="0" data-duration="{TOTAL}" data-track-index="22" data-volume="1"></audio>']
     for k, (t, name, vol, *rest) in enumerate(sfx_all):
-        src = "assets/audio/ringback.wav" if name == "ringback" else f"assets/sfx/{name}.mp3"
+        src = f"assets/sfx/{name}.mp3"
         dd = min(rest[0] if rest else 99, media_len(os.path.join(ROOT, src)))
         dd = round(min(dd, TOTAL - t), 3)
         auds.append(f'    <audio id="sfx{k}" src="{src}" data-start="{max(0.0, round(t, 3))}" data-duration="{dd}" data-track-index="{30 + k}" data-volume="{vol}"></audio>')
@@ -214,14 +226,19 @@ def index(sfx_all, out_t0, out_d):
             ztl.append(f'      tl.fromTo("{sel}", {js(frm)} }}, {js(to)}, duration: {du}, ease: "{ease}", immediateRender: false }}, {round(t, 3)});')
         else:
             ztl.append(f'      tl.to("{sel}", {js(to)}, duration: {du}, ease: "{ease}" }}, {round(t, 3)});')
-    # the shots: each take in its own zoom wrapper (origin = her face in that take); 12 ms fades at each cut
-    vids = {"1": [], "2": []}
+    # the shots: one zoom wrapper per take and camera (origin = her face there): #zw1 = take 1 (camera A),
+    # #zw1b = take-1-b.mp4 (camera B, the close-up); 12 ms fades at each cut, a longer one at the very end
+    key = lambda sh: sh["take"] + ("b" if sh["cam"] == "B" else "")
+    vids, face = {}, {}
     for sh in ED["shots"]:
         dd = sh["duration"]; last = sh is ED["shots"][-1]
         auto = json.dumps({"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1},
-                          {"t": round(dd - (0.06 if last else 0.012), 3), "v": 1}, {"t": dd, "v": 0}]}]})
-        vids[sh["take"]].append(f'      <video id="v{sh["n"]}" class="clip" src="assets/video/take-{sh["take"]}.mp4" data-start="{sh["start"]}" data-duration="{dd}" data-media-start="{sh["media_start"]}" data-playback-rate="{RATE}" data-track-index="{sh["n"] - 1}" playsinline data-has-audio="true" data-automation=\'{auto}\'></video>')
-    face = {sh["take"]: sh["face"] for sh in ED["shots"]}
+                          {"t": round(dd - (0.12 if last else 0.012), 3), "v": 1}, {"t": dd, "v": 0}]}]})
+        src = f"assets/video/take-{sh['take']}{'-b' if sh['cam'] == 'B' else ''}.mp4"
+        vids.setdefault(key(sh), []).append(f'      <video id="v{sh["n"]}" class="clip" src="{src}" data-start="{sh["start"]}" data-duration="{dd}" data-media-start="{sh["media_start"]}" data-playback-rate="{RATE}" data-track-index="{sh["n"] - 1}" playsinline data-has-audio="true" data-automation=\'{auto}\'></video>')
+        face.setdefault(key(sh), sh["face"])
+    others = "".join(f'    <div class="shot"><div id="zw{k}" class="zw" data-layout-allow-overflow style="transform-origin: {face[k][0]}px {face[k][1]}px;">\n'
+                     + "\n".join(v) + "\n    </div></div>\n" for k, v in vids.items() if k != "1")   # camera B (and any other take), on top of take 1
     hold = ED["hold"]
     html = HEAD + f"""  <body>
     <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="{TOTAL}">
@@ -229,10 +246,7 @@ def index(sfx_all, out_t0, out_d):
 {chr(10).join(vids['1'])}
       <img id="hold" class="clip" src="assets/img/take-1-last.png" alt="" data-start="{hold['start']}" data-duration="{hold['duration']}" data-track-index="{len(ED['shots'])}" />
     </div></div>
-    <div class="shot"><div id="zw2" class="zw" data-layout-allow-overflow style="transform-origin: {face['2'][0]}px {face['2'][1]}px;">
-{chr(10).join(vids['2'])}
-    </div></div>
-{chr(10).join(hosts)}
+{others}{chr(10).join(hosts)}
 {chr(10).join(auds)}
     </div>
     <script>

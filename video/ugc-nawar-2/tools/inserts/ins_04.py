@@ -1,6 +1,6 @@
-"""ins-04 · «(En Nawar practicas desde el primer día) con situaciones que vas a vivir aquí, nada de teoría que luego
-no usas.» — the VSL's icon tile, four times: a 2×2 grid of real-life situations (de huisarts · de supermarkt ·
-het werk · de gemeente, each with its Spanish gloss) pops on «situaciones». On «nada de teoría» the grid eases up
+"""ins-04 · «(En Nawar practicas) con situaciones que vas a vivir en el día a día. Nada de la teoría que luego no
+usas.» — the VSL's icon tile, four times: a 2×2 grid of real-life situations (de huisarts · de supermarkt ·
+het werk · de gemeente, each with its Spanish gloss) pops on «situaciones». On «nada de la teoría» the grid eases up
 and a dull grey «Teoría que no usas» card (a grammar-table skeleton) slides in under it; on «no usas» a red strike
 runs through its label (house strike-through, as «tipo test» / «Werkt jij?») the card stays solid and legible."""
 import os, sys
@@ -46,7 +46,7 @@ PIN = ('<svg viewBox="0 0 48 48"><path d="M24 43 C24 43 10 29.5 10 19 A14 14 0 0
 
 def build():
     iid, P = "ins-04", "i4"; d = INS[iid]["duration"]
-    c = dict(SIT=cue(iid, "situaciones"), VIV=cue(iid, "vivir"), AQU=cue(iid, "aqui"), NAD=cue(iid, "nada"),
+    c = dict(SIT=cue(iid, "situaciones"), VIV=cue(iid, "vivir"), NAD=cue(iid, "nada"),
              TEO=cue(iid, "teoria"), LUE=cue(iid, "luego"), NO=cue(iid, "no"), USA=cue(iid, "usas"))
     # geometry: 2×2 tiles 420×300 (gap 32) under a pill; the whole block lifts LIFT px for the theory card
     TW, TH, G = 420, 300, 32
@@ -108,7 +108,7 @@ def build():
       [0, 1, 2, 3].forEach((k) => {
         tl.fromTo(q("t" + k), { opacity: 0, scale: 0.7, y: 34 }, { opacity: 1, scale: 1, y: 0, duration: 0.36, ease: "back.out(1.7)" }, «SIT» - 0.06 + k * 0.12);
       });
-      // «nada de teoría»: the block lifts, the grey theory card slides in under it
+      // «nada de la teoría»: the block lifts, the grey theory card slides in under it
       tl.to([q("prow"), q("grid")], { y: -«LIFT», duration: 0.46, ease: "power3.inOut" }, «NAD» - 0.14);
       tl.fromTo(q("theo"), { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.46, ease: "power3.out" }, «NAD» + 0.1);   // clears the lifting grid; bottom stays above the caption band
       // «no usas»: its label struck through; the card stays solid

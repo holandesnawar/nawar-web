@@ -7,7 +7,7 @@ destination: meta-tiktok-ads
 aspect: 1080x1920
 language: es
 audience: hispanohablantes que viven en Países Bajos / Flandes y quieren quedarse
-length: 62s
+length: 61s
 angle: ugc-ad
 ---
 
@@ -21,13 +21,15 @@ inicio ese zoom» (zoom al arrancar) y «en estos vídeos hay algunas tomas extr
 ## Assets
 
 - .raw/pov1.mov «UGC.POV1» — de frente, con un portátil en el gancho (el gancho está grabado dos veces).
-- .raw/pov2.mov «UGC.POV2» — de lado (tipo entrevista), desde «En cuatro semanas…»; algunos tropiezos.
+- UGC.POV2 — de lado (tipo entrevista), desde «En cuatro semanas…»: mira fuera de cámara, así que no se usa (v2).
 - Medios reales de la plataforma y del profe Paul (del VSL), logo, tipografías, música (la del VSL).
 
 ## Customizations
 
-- Mejor toma por frase: POV1 de principio a fin (limpia), primer gancho (el segundo se para 3 s), y POV2 para
-  «El principal error…» y «En Nawar practicas desde el primer día…».
+- Mejor toma por frase: POV1 de principio a fin (limpia), primer gancho (el segundo se para 3 s).
+- v2 (feedback): ella siempre mirando a cámara. El cambio de ángulo es un primer plano recompuesto de POV1 (cámara B)
+  en «El principal error es pensar que necesitas» y «En Nawar practicas»; la música, casi nada bajo el gancho; otro
+  vídeo del profe para el 0:34 (lecciones grabadas).
 - Zoom de entrada: arranca cerrado sobre su cara y abre rápido para descubrir el portátil.
 - Logo de HP e insignia de Intel del portátil desenfocados (seguimiento fotograma a fotograma).
 

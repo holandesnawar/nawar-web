@@ -129,21 +129,21 @@
       tl.to(q("es"), { scale: 1.06, duration: 0.14, ease: "power2.out" }, 1.453 - 0.04);
       tl.to(q("es"), { scale: 1, duration: 0.3, ease: "power2.out" }, 1.453 + 0.1);
       // «avanzas»: the direct line draws, the detour steps back
-      tl.fromTo(q("dir"), { opacity: 0 }, { opacity: 1, duration: 0.01 }, 1.981 - 0.05);
-      tl.fromTo([q("dl"), q("dg")], { strokeDashoffset: 483 }, { strokeDashoffset: 0, duration: 0.4, ease: "power2.inOut" }, 1.981 - 0.05);
-      tl.to(q("route"), { opacity: 0.16, duration: 0.4, ease: "power2.out" }, 1.981 - 0.05);
-      tl.to([q("en"), q("enl")], { opacity: 0.36, duration: 0.4, ease: "power2.out" }, 1.981 - 0.05);
+      tl.fromTo(q("dir"), { opacity: 0 }, { opacity: 1, duration: 0.01 }, 1.982 - 0.05);
+      tl.fromTo([q("dl"), q("dg")], { strokeDashoffset: 483 }, { strokeDashoffset: 0, duration: 0.4, ease: "power2.inOut" }, 1.982 - 0.05);
+      tl.to(q("route"), { opacity: 0.16, duration: 0.4, ease: "power2.out" }, 1.982 - 0.05);
+      tl.to([q("en"), q("enl")], { opacity: 0.36, duration: 0.4, ease: "power2.out" }, 1.982 - 0.05);
       // the dot zips along it and lands on «más»
-      tl.fromTo(q("dotw"), { opacity: 0, x: 0, y: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, 2.368 - 0.06);
-      tl.fromTo(q("tail"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, 2.368);
-      tl.to(q("dotw"), { x: 467.4, y: -121.8, duration: 2.628 - 2.368, ease: "power2.in" }, 2.368);
-      tl.to(q("dotw"), { opacity: 0, duration: 0.08, ease: "none" }, 2.628);
+      tl.fromTo(q("dotw"), { opacity: 0, x: 0, y: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, 2.369 - 0.06);
+      tl.fromTo(q("tail"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, 2.369);
+      tl.to(q("dotw"), { x: 467.4, y: -121.8, duration: 2.629 - 2.369, ease: "power2.in" }, 2.369);
+      tl.to(q("dotw"), { opacity: 0, duration: 0.08, ease: "none" }, 2.629);
       // NL: bump, the green tick, the glow; then the pill
-      tl.to(q("nl"), { scale: 1.12, duration: 0.12, ease: "power2.out" }, 2.628);
-      tl.to(q("nl"), { scale: 1, duration: 0.34, ease: "back.out(2)" }, 2.628 + 0.12);
-      tl.fromTo(q("glow"), { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 2.628);
-      tl.fromTo(q("tick"), { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.34, ease: "back.out(2)" }, 2.628 + 0.02);
-      tl.fromTo(q("pill"), { opacity: 0, y: 22, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 2.698 - 0.04);
+      tl.to(q("nl"), { scale: 1.12, duration: 0.12, ease: "power2.out" }, 2.629);
+      tl.to(q("nl"), { scale: 1, duration: 0.34, ease: "back.out(2)" }, 2.629 + 0.12);
+      tl.fromTo(q("glow"), { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 2.629);
+      tl.fromTo(q("tick"), { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.34, ease: "back.out(2)" }, 2.629 + 0.02);
+      tl.fromTo(q("pill"), { opacity: 0, y: 22, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 2.699 - 0.04);
 
       window.__timelines["ins-03"] = tl;
     })();
