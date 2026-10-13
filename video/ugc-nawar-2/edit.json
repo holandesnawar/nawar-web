@@ -1,18 +1,17 @@
 {
  "rate": 1.06,
- "clip_end": 60.169,
- "total": 61.569,
- "speech_end": 59.943,
- "outro": 55.094,
+ "clip_end": 62.802,
+ "total": 64.202,
+ "speech_end": 62.576,
+ "outro": 57.727,
  "hold": {
-  "start": 60.169,
+  "start": 62.802,
   "duration": 1.4
  },
  "shots": [
   {
    "n": 1,
    "take": "1",
-   "cam": "A",
    "start": 0.0,
    "duration": 4.953,
    "media_start": 0.55,
@@ -25,7 +24,6 @@
   {
    "n": 2,
    "take": "1",
-   "cam": "A",
    "start": 4.953,
    "duration": 12.057,
    "media_start": 15.3,
@@ -37,24 +35,22 @@
   },
   {
    "n": 3,
-   "take": "1",
-   "cam": "B",
+   "take": "2",
    "start": 17.01,
-   "duration": 2.547,
-   "media_start": 28.08,
-   "media_end": 30.78,
+   "duration": 4.264,
+   "media_start": 16.92,
+   "media_end": 21.44,
    "face": [
-    539,
-    590
+    450,
+    690
    ]
   },
   {
    "n": 4,
    "take": "1",
-   "cam": "A",
-   "start": 19.557,
-   "duration": 6.717,
-   "media_start": 30.78,
+   "start": 21.274,
+   "duration": 5.019,
+   "media_start": 32.58,
    "media_end": 37.9,
    "face": [
     540,
@@ -63,25 +59,23 @@
   },
   {
    "n": 5,
-   "take": "1",
-   "cam": "B",
-   "start": 26.274,
-   "duration": 5.679,
-   "media_start": 37.9,
-   "media_end": 43.92,
+   "take": "2",
+   "start": 26.293,
+   "duration": 6.226,
+   "media_start": 29.85,
+   "media_end": 36.45,
    "face": [
-    539,
-    590
+    450,
+    690
    ]
   },
   {
    "n": 6,
    "take": "1",
-   "cam": "A",
-   "start": 31.953,
-   "duration": 21.358,
+   "start": 32.519,
+   "duration": 5.17,
    "media_start": 43.92,
-   "media_end": 66.56,
+   "media_end": 49.4,
    "face": [
     540,
     720
@@ -89,9 +83,32 @@
   },
   {
    "n": 7,
+   "take": "2",
+   "start": 37.689,
+   "duration": 11.547,
+   "media_start": 45.31,
+   "media_end": 57.55,
+   "face": [
+    450,
+    690
+   ]
+  },
+  {
+   "n": 8,
    "take": "1",
-   "cam": "A",
-   "start": 53.311,
+   "start": 49.236,
+   "duration": 6.708,
+   "media_start": 59.45,
+   "media_end": 66.56,
+   "face": [
+    540,
+    720
+   ]
+  },
+  {
+   "n": 9,
+   "take": "1",
+   "start": 55.944,
    "duration": 3.415,
    "media_start": 66.94,
    "media_end": 70.56,
@@ -101,29 +118,27 @@
    ]
   },
   {
-   "n": 8,
+   "n": 10,
    "take": "2",
-   "cam": "A",
-   "start": 56.726,
+   "start": 59.359,
    "duration": 1.33,
    "media_start": 70.84,
    "media_end": 72.25,
    "face": [
-    510,
-    545
+    450,
+    690
    ]
   },
   {
-   "n": 9,
+   "n": 11,
    "take": "2",
-   "cam": "A",
-   "start": 58.056,
+   "start": 60.689,
    "duration": 2.113,
    "media_start": 74.5,
    "media_end": 76.74,
    "face": [
-    510,
-    545
+    450,
+    690
    ]
   }
  ],
@@ -143,38 +158,38 @@
   {
    "id": "ins-03",
    "ground": "blue",
-   "start": 22.283,
+   "start": 22.302,
    "duration": 3.991
   },
   {
    "id": "ins-04",
    "ground": "blue",
-   "start": 27.245,
-   "duration": 4.708
+   "start": 28.406,
+   "duration": 4.113
   },
   {
    "id": "ins-05",
    "ground": "blue",
-   "start": 33.792,
-   "duration": 3.302
+   "start": 34.358,
+   "duration": 3.331
   },
   {
    "id": "ins-06",
    "ground": "blue",
-   "start": 39.321,
-   "duration": 1.735
+   "start": 40.443,
+   "duration": 2.642
   },
   {
    "id": "ins-07",
    "ground": "blue",
-   "start": 42.604,
-   "duration": 4.075
+   "start": 44.651,
+   "duration": 4.585
   },
   {
    "id": "ins-08",
    "ground": "paper",
-   "start": 48.905,
-   "duration": 4.406
+   "start": 51.537,
+   "duration": 4.407
   }
  ],
  "girl": [
@@ -188,31 +203,31 @@
   },
   {
    "start": 17.01,
-   "end": 22.283
+   "end": 22.302
   },
   {
-   "start": 26.274,
-   "end": 27.245
+   "start": 26.293,
+   "end": 28.406
   },
   {
-   "start": 31.953,
-   "end": 33.792
+   "start": 32.519,
+   "end": 34.358
   },
   {
-   "start": 37.094,
-   "end": 39.321
+   "start": 37.689,
+   "end": 40.443
   },
   {
-   "start": 41.056,
-   "end": 42.604
+   "start": 43.085,
+   "end": 44.651
   },
   {
-   "start": 46.679,
-   "end": 48.905
+   "start": 49.236,
+   "end": 51.537
   },
   {
-   "start": 53.311,
-   "end": 61.569
+   "start": 55.944,
+   "end": 64.202
   }
  ],
  "words": [
@@ -640,995 +655,995 @@
    "shot": 3,
    "text": "El",
    "punct": "",
-   "t": 17.189,
-   "end": 17.435
+   "t": 17.095,
+   "end": 17.567
   },
   {
    "shot": 3,
    "text": "principal",
    "punct": "",
-   "t": 17.435,
-   "end": 17.831
+   "t": 17.567,
+   "end": 17.963
   },
   {
    "shot": 3,
    "text": "error",
    "punct": "",
-   "t": 17.831,
-   "end": 18.17
+   "t": 17.963,
+   "end": 18.265
   },
   {
    "shot": 3,
    "text": "es",
    "punct": "",
-   "t": 18.17,
-   "end": 18.529
+   "t": 18.265,
+   "end": 18.491
   },
   {
    "shot": 3,
    "text": "pensar",
    "punct": "",
-   "t": 18.529,
-   "end": 18.699
+   "t": 18.491,
+   "end": 18.68
   },
   {
    "shot": 3,
    "text": "que",
    "punct": "",
-   "t": 18.699,
-   "end": 18.906
+   "t": 18.68,
+   "end": 18.887
   },
   {
    "shot": 3,
    "text": "necesitas",
    "punct": "",
-   "t": 18.906,
-   "end": 19.557
+   "t": 18.887,
+   "end": 19.68
   },
   {
-   "shot": 4,
+   "shot": 3,
    "text": "años",
    "punct": "",
-   "t": 19.661,
-   "end": 19.963
+   "t": 19.68,
+   "end": 20.001
   },
   {
-   "shot": 4,
+   "shot": 3,
    "text": "o",
    "punct": "",
-   "t": 19.963,
+   "t": 20.001,
    "end": 20.246
   },
   {
-   "shot": 4,
+   "shot": 3,
    "text": "saber",
    "punct": "",
    "t": 20.246,
    "end": 20.529
   },
   {
-   "shot": 4,
+   "shot": 3,
    "text": "inglés",
    "punct": "",
    "t": 20.529,
-   "end": 20.982
+   "end": 20.944
   },
   {
-   "shot": 4,
+   "shot": 3,
    "text": "primero",
-   "punct": ".",
-   "t": 20.982,
-   "end": 21.302
+   "punct": ",",
+   "t": 20.944,
+   "end": 21.246
   },
   {
    "shot": 4,
    "text": "La",
    "punct": "",
-   "t": 21.302,
-   "end": 21.585
+   "t": 21.321,
+   "end": 21.604
   },
   {
    "shot": 4,
    "text": "realidad",
    "punct": "",
-   "t": 21.585,
-   "end": 22.019
+   "t": 21.604,
+   "end": 22.038
   },
   {
    "shot": 4,
    "text": "es",
    "punct": "",
-   "t": 22.019,
-   "end": 22.151
+   "t": 22.038,
+   "end": 22.17
   },
   {
    "shot": 4,
    "text": "que",
    "punct": "",
-   "t": 22.151,
-   "end": 22.34
+   "t": 22.17,
+   "end": 22.359
   },
   {
    "shot": 4,
    "text": "cuando",
    "punct": "",
-   "t": 22.34,
-   "end": 22.548
+   "t": 22.359,
+   "end": 22.566
   },
   {
    "shot": 4,
    "text": "te",
    "punct": "",
-   "t": 22.548,
-   "end": 22.642
+   "t": 22.566,
+   "end": 22.661
   },
   {
    "shot": 4,
    "text": "lo",
    "punct": "",
-   "t": 22.642,
-   "end": 22.831
+   "t": 22.661,
+   "end": 22.849
   },
   {
    "shot": 4,
    "text": "explican",
    "punct": "",
-   "t": 22.831,
-   "end": 23.227
+   "t": 22.849,
+   "end": 23.246
   },
   {
    "shot": 4,
    "text": "desde",
    "punct": "",
-   "t": 23.227,
-   "end": 23.378
+   "t": 23.246,
+   "end": 23.397
   },
   {
    "shot": 4,
    "text": "el",
    "punct": "",
-   "t": 23.378,
-   "end": 23.736
+   "t": 23.397,
+   "end": 23.755
   },
   {
    "shot": 4,
    "text": "español",
    "punct": "",
-   "t": 23.736,
-   "end": 24.265
+   "t": 23.755,
+   "end": 24.283
   },
   {
    "shot": 4,
    "text": "avanzas",
    "punct": "",
-   "t": 24.265,
-   "end": 24.736
+   "t": 24.283,
+   "end": 24.755
   },
   {
    "shot": 4,
    "text": "mucho",
    "punct": "",
-   "t": 24.736,
-   "end": 24.982
+   "t": 24.755,
+   "end": 25.0
   },
   {
    "shot": 4,
    "text": "más",
    "punct": "",
-   "t": 24.982,
-   "end": 25.265
+   "t": 25.0,
+   "end": 25.283
   },
   {
    "shot": 4,
    "text": "rápido",
    "punct": "",
-   "t": 25.265,
-   "end": 25.434
+   "t": 25.283,
+   "end": 25.453
   },
   {
    "shot": 4,
    "text": "de",
    "punct": "",
-   "t": 25.434,
-   "end": 25.529
+   "t": 25.453,
+   "end": 25.548
   },
   {
    "shot": 4,
    "text": "lo",
    "punct": "",
-   "t": 25.529,
-   "end": 25.661
+   "t": 25.548,
+   "end": 25.68
   },
   {
    "shot": 4,
    "text": "que",
    "punct": "",
-   "t": 25.661,
-   "end": 25.849
+   "t": 25.68,
+   "end": 25.868
   },
   {
    "shot": 4,
    "text": "crees",
    "punct": ".",
-   "t": 25.849,
-   "end": 26.274
+   "t": 25.868,
+   "end": 26.293
   },
   {
    "shot": 5,
    "text": "En",
    "punct": "",
-   "t": 26.321,
-   "end": 26.453
+   "t": 26.331,
+   "end": 26.501
   },
   {
    "shot": 5,
    "text": "Nawar",
    "punct": "",
-   "t": 26.453,
-   "end": 26.774
+   "t": 26.501,
+   "end": 26.953
   },
   {
    "shot": 5,
    "text": "practicas",
    "punct": "",
-   "t": 26.774,
-   "end": 27.302
+   "t": 26.953,
+   "end": 27.425
+  },
+  {
+   "shot": 5,
+   "text": "desde",
+   "punct": "",
+   "t": 27.425,
+   "end": 27.595
+  },
+  {
+   "shot": 5,
+   "text": "el",
+   "punct": "",
+   "t": 27.595,
+   "end": 27.897
+  },
+  {
+   "shot": 5,
+   "text": "primer",
+   "punct": "",
+   "t": 27.897,
+   "end": 28.161
+  },
+  {
+   "shot": 5,
+   "text": "día",
+   "punct": "",
+   "t": 28.161,
+   "end": 28.463
   },
   {
    "shot": 5,
    "text": "con",
    "punct": "",
-   "t": 27.302,
-   "end": 27.472
+   "t": 28.463,
+   "end": 28.651
   },
   {
    "shot": 5,
    "text": "situaciones",
    "punct": "",
-   "t": 27.472,
-   "end": 27.925
+   "t": 28.651,
+   "end": 29.218
   },
   {
    "shot": 5,
    "text": "que",
    "punct": "",
-   "t": 27.925,
-   "end": 28.095
+   "t": 29.218,
+   "end": 29.368
   },
   {
    "shot": 5,
    "text": "vas",
    "punct": "",
-   "t": 28.095,
-   "end": 28.227
+   "t": 29.368,
+   "end": 29.482
   },
   {
    "shot": 5,
    "text": "a",
    "punct": "",
-   "t": 28.227,
-   "end": 28.434
+   "t": 29.482,
+   "end": 29.651
   },
   {
    "shot": 5,
    "text": "vivir",
    "punct": "",
-   "t": 28.434,
-   "end": 28.793
+   "t": 29.651,
+   "end": 30.142
   },
   {
    "shot": 5,
-   "text": "en",
+   "text": "aquí",
+   "punct": ",",
+   "t": 30.142,
+   "end": 30.519
+  },
+  {
+   "shot": 5,
+   "text": "nada",
    "punct": "",
-   "t": 28.793,
-   "end": 28.925
-  },
-  {
-   "shot": 5,
-   "text": "el",
-   "punct": "",
-   "t": 28.925,
-   "end": 29.095
-  },
-  {
-   "shot": 5,
-   "text": "día",
-   "punct": "",
-   "t": 29.095,
-   "end": 29.246
-  },
-  {
-   "shot": 5,
-   "text": "a",
-   "punct": "",
-   "t": 29.246,
-   "end": 29.397
-  },
-  {
-   "shot": 5,
-   "text": "día",
-   "punct": ".",
-   "t": 29.397,
-   "end": 29.849
-  },
-  {
-   "shot": 5,
-   "text": "Nada",
-   "punct": "",
-   "t": 29.849,
-   "end": 30.038
+   "t": 30.519,
+   "end": 30.708
   },
   {
    "shot": 5,
    "text": "de",
    "punct": "",
-   "t": 30.038,
-   "end": 30.114
-  },
-  {
-   "shot": 5,
-   "text": "la",
-   "punct": "",
-   "t": 30.114,
-   "end": 30.302
+   "t": 30.708,
+   "end": 30.878
   },
   {
    "shot": 5,
    "text": "teoría",
    "punct": "",
-   "t": 30.302,
-   "end": 30.831
+   "t": 30.878,
+   "end": 31.18
   },
   {
    "shot": 5,
    "text": "que",
    "punct": "",
-   "t": 30.831,
-   "end": 31.019
+   "t": 31.18,
+   "end": 31.406
   },
   {
    "shot": 5,
    "text": "luego",
    "punct": "",
-   "t": 31.019,
-   "end": 31.265
+   "t": 31.406,
+   "end": 31.802
   },
   {
    "shot": 5,
    "text": "no",
    "punct": "",
-   "t": 31.265,
-   "end": 31.51
+   "t": 31.802,
+   "end": 32.01
   },
   {
    "shot": 5,
    "text": "usas",
    "punct": ".",
-   "t": 31.51,
-   "end": 31.953
+   "t": 32.01,
+   "end": 32.519
   },
   {
    "shot": 6,
    "text": "Aprendes",
    "punct": "",
-   "t": 32.038,
-   "end": 32.604
+   "t": 32.604,
+   "end": 33.17
   },
   {
    "shot": 6,
    "text": "con",
    "punct": "",
-   "t": 32.604,
-   "end": 32.717
+   "t": 33.17,
+   "end": 33.283
   },
   {
    "shot": 6,
    "text": "lecciones",
    "punct": "",
-   "t": 32.717,
-   "end": 33.227
+   "t": 33.283,
+   "end": 33.793
   },
   {
    "shot": 6,
    "text": "grabadas",
    "punct": "",
-   "t": 33.227,
-   "end": 33.849
+   "t": 33.793,
+   "end": 34.415
   },
   {
    "shot": 6,
    "text": "por",
    "punct": "",
-   "t": 33.849,
-   "end": 34.0
+   "t": 34.415,
+   "end": 34.566
   },
   {
    "shot": 6,
    "text": "un",
    "punct": "",
-   "t": 34.0,
-   "end": 34.302
+   "t": 34.566,
+   "end": 34.868
   },
   {
    "shot": 6,
    "text": "equipo",
    "punct": "",
-   "t": 34.302,
-   "end": 34.491
+   "t": 34.868,
+   "end": 35.057
   },
   {
    "shot": 6,
    "text": "de",
    "punct": "",
-   "t": 34.491,
-   "end": 34.774
+   "t": 35.057,
+   "end": 35.34
   },
   {
    "shot": 6,
    "text": "expertos",
    "punct": "",
-   "t": 34.774,
-   "end": 35.227
+   "t": 35.34,
+   "end": 35.793
   },
   {
    "shot": 6,
    "text": "nativos",
    "punct": "",
-   "t": 35.227,
-   "end": 35.698
+   "t": 35.793,
+   "end": 36.264
   },
   {
    "shot": 6,
    "text": "que",
    "punct": "",
-   "t": 35.698,
-   "end": 35.944
+   "t": 36.264,
+   "end": 36.51
   },
   {
    "shot": 6,
    "text": "dominan",
    "punct": "",
-   "t": 35.944,
-   "end": 36.396
+   "t": 36.51,
+   "end": 36.962
   },
   {
    "shot": 6,
    "text": "tu",
    "punct": "",
-   "t": 36.396,
-   "end": 36.661
+   "t": 36.962,
+   "end": 37.227
   },
   {
    "shot": 6,
    "text": "idioma",
    "punct": "",
-   "t": 36.661,
-   "end": 37.151
+   "t": 37.227,
+   "end": 37.689
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "para",
    "punct": "",
-   "t": 37.151,
-   "end": 37.396
+   "t": 37.689,
+   "end": 37.878
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "estudiar",
    "punct": "",
-   "t": 37.396,
-   "end": 37.755
+   "t": 37.878,
+   "end": 38.274
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "cuando",
    "punct": "",
-   "t": 37.755,
-   "end": 38.0
+   "t": 38.274,
+   "end": 38.538
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "tú",
    "punct": "",
-   "t": 38.0,
-   "end": 38.302
+   "t": 38.538,
+   "end": 38.802
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "puedas",
    "punct": ".",
-   "t": 38.302,
-   "end": 38.774
+   "t": 38.802,
+   "end": 39.934
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "Cuentas",
    "punct": "",
-   "t": 38.774,
-   "end": 39.151
+   "t": 39.934,
+   "end": 40.312
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "con",
    "punct": "",
-   "t": 39.151,
-   "end": 39.378
+   "t": 40.312,
+   "end": 40.5
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "ejercicios",
    "punct": "",
-   "t": 39.378,
-   "end": 39.887
+   "t": 40.5,
+   "end": 41.029
   },
   {
-   "shot": 6,
+   "shot": 7,
+   "text": "prácticos",
+   "punct": "",
+   "t": 41.029,
+   "end": 41.764
+  },
+  {
+   "shot": 7,
    "text": "pensados",
    "punct": "",
-   "t": 39.887,
-   "end": 40.283
+   "t": 41.764,
+   "end": 42.331
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "para",
    "punct": "",
-   "t": 40.283,
-   "end": 40.434
+   "t": 42.331,
+   "end": 42.481
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "el",
    "punct": "",
-   "t": 40.434,
-   "end": 40.547
+   "t": 42.481,
+   "end": 42.595
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "día",
    "punct": "",
-   "t": 40.547,
-   "end": 40.679
+   "t": 42.595,
+   "end": 42.746
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "a",
    "punct": "",
-   "t": 40.679,
-   "end": 40.849
+   "t": 42.746,
+   "end": 42.897
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "día",
    "punct": "",
-   "t": 40.849,
-   "end": 41.113
+   "t": 42.897,
+   "end": 43.142
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "y",
    "punct": "",
-   "t": 41.113,
-   "end": 41.321
+   "t": 43.142,
+   "end": 43.349
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "cada",
    "punct": "",
-   "t": 41.321,
-   "end": 41.528
+   "t": 43.349,
+   "end": 43.595
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "semana",
    "punct": "",
-   "t": 41.528,
-   "end": 41.755
+   "t": 43.595,
+   "end": 43.783
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "te",
    "punct": "",
-   "t": 41.755,
-   "end": 42.0
+   "t": 43.783,
+   "end": 44.029
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "conectas",
    "punct": "",
-   "t": 42.0,
-   "end": 42.283
+   "t": 44.029,
+   "end": 44.387
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "a",
    "punct": "",
-   "t": 42.283,
-   "end": 42.434
+   "t": 44.387,
+   "end": 44.481
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "una",
    "punct": "",
-   "t": 42.434,
-   "end": 42.661
+   "t": 44.481,
+   "end": 44.708
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "clase",
    "punct": "",
-   "t": 42.661,
-   "end": 43.076
+   "t": 44.708,
+   "end": 44.897
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "en",
    "punct": "",
-   "t": 43.076,
-   "end": 43.378
+   "t": 44.897,
+   "end": 45.123
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "directo",
    "punct": "",
-   "t": 43.378,
-   "end": 43.811
+   "t": 45.123,
+   "end": 45.444
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "para",
    "punct": "",
-   "t": 43.811,
-   "end": 44.038
+   "t": 45.444,
+   "end": 45.689
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "reforzar",
    "punct": "",
-   "t": 44.038,
-   "end": 44.491
+   "t": 45.689,
+   "end": 46.425
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "lo",
    "punct": "",
-   "t": 44.491,
-   "end": 44.717
+   "t": 46.425,
+   "end": 46.67
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "aprendido",
    "punct": "",
-   "t": 44.717,
-   "end": 45.113
+   "t": 46.67,
+   "end": 47.198
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "y",
    "punct": "",
-   "t": 45.113,
-   "end": 45.378
+   "t": 47.198,
+   "end": 47.463
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "trabajar",
    "punct": "",
-   "t": 45.378,
-   "end": 45.623
+   "t": 47.463,
+   "end": 47.746
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "la",
    "punct": "",
-   "t": 45.623,
-   "end": 45.849
+   "t": 47.746,
+   "end": 47.991
   },
   {
-   "shot": 6,
+   "shot": 7,
    "text": "pronunciación",
    "punct": ".",
-   "t": 45.849,
-   "end": 46.736
+   "t": 47.991,
+   "end": 49.236
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "Además",
    "punct": ",",
-   "t": 46.736,
-   "end": 47.057
+   "t": 49.368,
+   "end": 49.689
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "mientras",
    "punct": "",
-   "t": 47.057,
-   "end": 47.302
+   "t": 49.689,
+   "end": 49.934
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "las",
    "punct": "",
-   "t": 47.302,
-   "end": 47.51
+   "t": 49.934,
+   "end": 50.142
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "ofertas",
    "punct": "",
-   "t": 47.51,
-   "end": 47.906
+   "t": 50.142,
+   "end": 50.538
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "de",
    "punct": "",
-   "t": 47.906,
-   "end": 48.151
+   "t": 50.538,
+   "end": 50.783
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "trabajo",
    "punct": "",
-   "t": 48.151,
-   "end": 48.472
+   "t": 50.783,
+   "end": 51.104
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "bajan",
    "punct": ",",
-   "t": 48.472,
-   "end": 48.962
+   "t": 51.104,
+   "end": 51.594
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "nueve",
    "punct": "",
-   "t": 48.962,
-   "end": 49.302
+   "t": 51.594,
+   "end": 51.934
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "de",
    "punct": "",
-   "t": 49.302,
-   "end": 49.491
+   "t": 51.934,
+   "end": 52.123
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "cada",
    "punct": "",
-   "t": 49.491,
-   "end": 49.925
+   "t": 52.123,
+   "end": 52.557
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "diez",
    "punct": "",
-   "t": 49.925,
-   "end": 50.434
+   "t": 52.557,
+   "end": 53.066
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "siguen",
    "punct": "",
-   "t": 50.434,
-   "end": 50.698
+   "t": 53.066,
+   "end": 53.33
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "pidiendo",
    "punct": "",
-   "t": 50.698,
-   "end": 51.227
+   "t": 53.33,
+   "end": 53.859
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "como",
    "punct": "",
-   "t": 51.227,
-   "end": 51.604
+   "t": 53.859,
+   "end": 54.236
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "requisito",
    "punct": "",
-   "t": 51.604,
-   "end": 52.245
+   "t": 54.236,
+   "end": 54.878
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "el",
    "punct": "",
-   "t": 52.245,
-   "end": 52.378
+   "t": 54.878,
+   "end": 55.01
   },
   {
-   "shot": 6,
+   "shot": 8,
    "text": "neerlandés",
    "punct": ".",
-   "t": 52.378,
-   "end": 53.311
+   "t": 55.01,
+   "end": 55.944
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "¿Estás",
    "punct": "",
-   "t": 53.339,
-   "end": 53.66
+   "t": 55.972,
+   "end": 56.293
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "listo",
    "punct": "",
-   "t": 53.66,
-   "end": 53.924
+   "t": 56.293,
+   "end": 56.557
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "para",
    "punct": "",
-   "t": 53.924,
-   "end": 54.188
+   "t": 56.557,
+   "end": 56.821
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "comenzar",
    "punct": "?",
-   "t": 54.188,
-   "end": 54.641
+   "t": 56.821,
+   "end": 57.274
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "Si",
    "punct": "",
-   "t": 54.641,
-   "end": 54.717
+   "t": 57.274,
+   "end": 57.35
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "es",
    "punct": "",
-   "t": 54.717,
-   "end": 54.868
+   "t": 57.35,
+   "end": 57.501
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "así",
    "punct": ",",
-   "t": 54.868,
-   "end": 55.151
+   "t": 57.501,
+   "end": 57.784
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "haz",
    "punct": "",
-   "t": 55.151,
-   "end": 55.32
+   "t": 57.784,
+   "end": 57.953
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "clic",
    "punct": "",
-   "t": 55.32,
-   "end": 55.471
+   "t": 57.953,
+   "end": 58.104
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "en",
    "punct": "",
-   "t": 55.471,
-   "end": 55.585
+   "t": 58.104,
+   "end": 58.218
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "el",
    "punct": "",
-   "t": 55.585,
-   "end": 55.736
+   "t": 58.218,
+   "end": 58.369
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "botón",
    "punct": "",
-   "t": 55.736,
-   "end": 55.981
+   "t": 58.369,
+   "end": 58.614
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "de",
    "punct": "",
-   "t": 55.981,
-   "end": 56.169
+   "t": 58.614,
+   "end": 58.802
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "aquí",
    "punct": "",
-   "t": 56.169,
-   "end": 56.509
+   "t": 58.802,
+   "end": 59.142
   },
   {
-   "shot": 7,
+   "shot": 9,
    "text": "abajo",
    "punct": ",",
-   "t": 56.509,
-   "end": 56.726
+   "t": 59.142,
+   "end": 59.359
   },
   {
-   "shot": 8,
+   "shot": 10,
    "text": "rellena",
    "punct": "",
-   "t": 56.811,
-   "end": 57.151
+   "t": 59.444,
+   "end": 59.784
   },
   {
-   "shot": 8,
+   "shot": 10,
    "text": "el",
    "punct": "",
-   "t": 57.151,
-   "end": 57.32
+   "t": 59.784,
+   "end": 59.953
   },
   {
-   "shot": 8,
+   "shot": 10,
    "text": "formulario",
    "punct": "",
-   "t": 57.32,
-   "end": 58.056
+   "t": 59.953,
+   "end": 60.689
   },
   {
-   "shot": 9,
+   "shot": 11,
    "text": "y",
    "punct": "",
-   "t": 58.056,
-   "end": 58.16
+   "t": 60.689,
+   "end": 60.793
   },
   {
-   "shot": 9,
+   "shot": 11,
    "text": "una",
    "punct": "",
-   "t": 58.16,
-   "end": 58.499
+   "t": 60.793,
+   "end": 61.132
   },
   {
-   "shot": 9,
+   "shot": 11,
    "text": "persona",
    "punct": "",
-   "t": 58.499,
-   "end": 58.688
+   "t": 61.132,
+   "end": 61.321
   },
   {
-   "shot": 9,
+   "shot": 11,
    "text": "de",
    "punct": "",
-   "t": 58.688,
-   "end": 58.801
+   "t": 61.321,
+   "end": 61.434
   },
   {
-   "shot": 9,
+   "shot": 11,
    "text": "nuestro",
    "punct": "",
-   "t": 58.801,
-   "end": 59.16
+   "t": 61.434,
+   "end": 61.793
   },
   {
-   "shot": 9,
+   "shot": 11,
    "text": "equipo",
    "punct": "",
-   "t": 59.16,
-   "end": 59.386
+   "t": 61.793,
+   "end": 62.019
   },
   {
-   "shot": 9,
+   "shot": 11,
    "text": "te",
    "punct": "",
-   "t": 59.386,
-   "end": 59.481
+   "t": 62.019,
+   "end": 62.114
   },
   {
-   "shot": 9,
+   "shot": 11,
    "text": "atenderá",
    "punct": ".",
-   "t": 59.481,
-   "end": 59.943
+   "t": 62.114,
+   "end": 62.576
   }
  ]
 }

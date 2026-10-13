@@ -1,6 +1,6 @@
-"""ins-04 · «(En Nawar practicas) con situaciones que vas a vivir en el día a día. Nada de la teoría que luego no
-usas.» — the VSL's icon tile, four times: a 2×2 grid of real-life situations (de huisarts · de supermarkt ·
-het werk · de gemeente, each with its Spanish gloss) pops on «situaciones». On «nada de la teoría» the grid eases up
+"""ins-04 · «(En Nawar practicas desde el primer día) con situaciones que vas a vivir aquí, nada de teoría que luego
+no usas.» (side camera, take 2) — the VSL's icon tile, four times: a 2×2 grid of real-life situations (de huisarts · de supermarkt ·
+het werk · de gemeente, each with its Spanish gloss) pops on «situaciones». On «nada de teoría» the grid eases up
 and a dull grey «Teoría que no usas» card (a grammar-table skeleton) slides in under it; on «no usas» a red strike
 runs through its label (house strike-through, as «tipo test» / «Werkt jij?») the card stays solid and legible."""
 import os, sys
@@ -108,7 +108,7 @@ def build():
       [0, 1, 2, 3].forEach((k) => {
         tl.fromTo(q("t" + k), { opacity: 0, scale: 0.7, y: 34 }, { opacity: 1, scale: 1, y: 0, duration: 0.36, ease: "back.out(1.7)" }, «SIT» - 0.06 + k * 0.12);
       });
-      // «nada de la teoría»: the block lifts, the grey theory card slides in under it
+      // «nada de teoría»: the block lifts, the grey theory card slides in under it
       tl.to([q("prow"), q("grid")], { y: -«LIFT», duration: 0.46, ease: "power3.inOut" }, «NAD» - 0.14);
       tl.fromTo(q("theo"), { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.46, ease: "power3.out" }, «NAD» + 0.1);   // clears the lifting grid; bottom stays above the caption band
       // «no usas»: its label struck through; the card stays solid

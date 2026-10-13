@@ -1,42 +1,46 @@
 #!/usr/bin/env python3
 """Edit decision list → edit.json (UGC #2, «Si tienes un ordenador…»).
 
-Two takes of the same script: take 1 = UGC.POV1, facing camera (with two hook takes and a laptop), take 2 =
-UGC.POV2, side angle (interview look: she talks to someone off camera — until the call to action, where she turns
-to that camera, points and talks into it). The client wants her looking into the lens in every shot, so:
-- the ad is cut from take 1, with a recomposed close-up of it as a second camera (camera B, tools/cam_b.py →
-  take-1-b.mp4, same frames and sound) for «El principal error es pensar que necesitas» and «En Nawar practicas…»;
-  the cut B → A on «…años o saber inglés primero» (in her pause, before a glance off to the side);
-- the real change of angle is the CTA: take 1 up to «haz clic en el botón de aquí abajo,», then take 2, the side
-  camera she now looks into, for «rellena el formulario» and (jump cut over her pause) «y una persona de nuestro
-  equipo te atenderá», ending on her smile.
-The first hook take is used (the second one stops for three seconds in the middle). Every cut sits in a quiet point
-checked on the energy envelope (RMS < −40 dB), all at RATE (pitch preserved). The long pause before «¿Estás
-listo…?» is removed at the cut back from the last insert, where the jump is hidden.
+Two takes of the same script, edited as a two-camera piece: take 1 = UGC.POV1, facing camera (with two hook takes
+and a laptop); take 2 = UGC.POV2, the side camera (interview look: she talks towards the front camera — until the
+call to action, where she turns to the side camera, points and talks into it). The cameras alternate by line, each
+line from the take where it is clean (take 2 trips on «si necesitas de ayuda», pauses after «vivimos» and inside
+«lecciones grabadas», «los ofertes», «al neerlandés»):
+- front: hook, «En cuatro semanas…», «Vivimos en un país… abrir puertas», «La realidad es que…», «Aprendes con
+  lecciones grabadas… tu idioma», «Además, mientras las ofertas… neerlandés», «¿Estás listo…? … aquí abajo,»;
+- side: «El principal error… primero,», «En Nawar practicas desde el primer día… no usas», «para estudiar cuando
+  tú puedas… pronunciación», and the end, looking into it: «rellena el formulario» · «y una persona de nuestro
+  equipo te atenderá» (jump cut over her pause).
+Take switches sit in pauses, most of them under a graphic (the picture changes when the graphic ends). The first
+hook take is used (the second one stops for three seconds in the middle). Every cut sits in a quiet point checked
+on the energy envelope, all at RATE (pitch preserved). The long pause before «¿Estás listo…?» is removed at the
+cut back from the last insert, where the jump is hidden.
 
 Word times: Whisper word timestamps of each take (tools/align/whisper_<take>.json), shifted by WHISPER_BIAS (its
 onsets land ~0.15 s late on these takes, checked against the energy envelope at every cut).
 """
 import json, os, unicodedata, re
-from cam_b import face_on_screen
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RATE = 1.06
 WHISPER_BIAS = -0.15
-# (take, source in, source out, camera A|B) — hand-checked quiet points
+# (take, source in, source out) — hand-checked quiet points
 SEGMENTS = [
-    ("1", 0.55, 5.80, "A"),     # hook: «Si tienes un ordenador y ganas de aprender neerlandés, ya tienes todo lo que necesitas para empezar.»
-    ("1", 15.30, 28.08, "A"),   # «En cuatro semanas…» + «Vivimos en un país… abrir puertas.»
-    ("1", 28.08, 30.78, "B"),   # close-up: «El principal error es pensar que necesitas»
-    ("1", 30.78, 37.90, "A"),   # «años o saber inglés primero. La realidad es que… más rápido de lo que crees.»
-    ("1", 37.90, 43.92, "B"),   # close-up: «En Nawar practicas con situaciones… nada de la teoría que luego no usas.»
-    ("1", 43.92, 66.56, "A"),   # «Aprendes con lecciones grabadas…» → «…como requisito el neerlandés.»
-    ("1", 66.94, 70.56, "A"),   # «¿Estás listo para comenzar? Si es así, haz clic en el botón de aquí abajo,» (most of the pause before it removed;
-                                #  no silence before «rellena» in this take: cut in the dip, a longer fade in gen.py)
-    ("2", 70.84, 72.25, "A"),   # side camera, looking into it: «rellena el formulario»
-    ("2", 74.50, 76.74, "A"),   # «y una persona de nuestro equipo te atenderá» + her smile (her 2 s pause cut)
+    ("1", 0.55, 5.80),     # front · hook: «Si tienes un ordenador y ganas de aprender neerlandés, ya tienes todo lo que necesitas para empezar.»
+    ("1", 15.30, 28.08),   # front · «En cuatro semanas…» + «Vivimos en un país… abrir puertas.»
+    ("2", 16.92, 21.44),   # side  · «El principal error es pensar que necesitas años o saber inglés primero,» (cut in the dip before «pero»)
+    ("1", 32.58, 37.90),   # front · «La realidad es que… más rápido de lo que crees.»
+    ("2", 29.85, 36.45),   # side  · «En Nawar practicas desde el primer día con situaciones… nada de teoría que luego no usas.»
+    ("1", 43.92, 49.40),   # front · «Aprendes con lecciones grabadas por un equipo de expertos nativos que dominan tu idioma»
+    ("2", 45.31, 57.55),   # side  · «para estudiar cuando tú puedas. Cuentas con ejercicios… y cada semana te conectas a una clase
+                                #          en directo para reforzar lo aprendido y trabajar la pronunciación.»
+    ("1", 59.45, 66.56),   # front · «Además, mientras las ofertas de trabajo bajan, nueve de cada diez… neerlandés.»
+    ("1", 66.94, 70.56),   # front · «¿Estás listo para comenzar? Si es así, haz clic en el botón de aquí abajo,» (no silence before
+                                #          «rellena» in this take: cut in the dip, a longer fade in gen.py)
+    ("2", 70.84, 72.25),   # side, looking into it: «rellena el formulario»
+    ("2", 74.50, 76.74),   # side, looking into it: «y una persona de nuestro equipo te atenderá» + her smile (her 2 s pause cut)
 ]
-FACE = {"1": (540, 720), "2": (510, 545)}   # face centre in each take (zoom origin); camera B: face_on_screen(FACE["1"])
+FACE = {"1": (540, 720), "2": (450, 690)}   # face centre in each take (zoom origin)
 SPEECH_END = 76.50     # «…atenderá» ends here in take 2; the shot runs on to her smile (76.74)
 TAIL = 1.4             # hold on her last frame under the «haz clic» button
 LEAD = 0.06            # an insert cuts in this long before its first word (source seconds)
@@ -47,7 +51,7 @@ INSERTS = [
     ("ins-03", "blue",  "cuando te lo explican", "en nawar practicas"),
     ("ins-04", "blue",  "con situaciones que", "aprendes con lecciones"),
     ("ins-05", "blue",  "por un equipo", "para estudiar cuando"),
-    ("ins-06", "blue",  "ejercicios pensados", "y cada semana"),
+    ("ins-06", "blue",  "ejercicios", "y cada semana"),   # take 2: «ejercicios prácticos pensados»
     ("ins-07", "blue",  "clase en directo", "ademas mientras las"),
     ("ins-08", "paper", "nueve de cada", "estas listo para"),
 ]
@@ -79,10 +83,10 @@ def words_of(take):
 def main():
     AL = {t: words_of(t) for t in {sg[0] for sg in SEGMENTS}}
     shots, words, t = [], [], 0.0
-    for k, (tk, a, b, cam) in enumerate(SEGMENTS):
+    for k, (tk, a, b) in enumerate(SEGMENTS):
         W = AL[tk]; dur = round((b - a) / RATE, 3)
-        shots.append({"n": k + 1, "take": tk, "cam": cam, "start": round(t, 3), "duration": dur, "media_start": a, "media_end": b,
-                      "face": FACE[tk] if cam == "A" else face_on_screen(FACE[tk])})
+        shots.append({"n": k + 1, "take": tk, "start": round(t, 3), "duration": dur, "media_start": a, "media_end": b,
+                      "face": FACE[tk]})
         inside = [i for i, w in enumerate(W) if a - 0.12 <= w["start"] < b - 0.06]
         for i in inside:
             w = W[i]; nxt = W[i + 1]["start"] if i + 1 < len(W) else b
@@ -119,7 +123,7 @@ def main():
                "hold": {"start": clip_end, "duration": TAIL}, "shots": shots, "inserts": inserts, "girl": girl, "words": words},
               open(os.path.join(ROOT, "edit.json"), "w"), ensure_ascii=False, indent=1)
     for sh in shots:
-        print(f"  shot {sh['n']} take {sh['take']} cam {sh['cam']}  {sh['start']:6.2f}–{sh['start'] + sh['duration']:6.2f}  (source {sh['media_start']}–{sh['media_end']})")
+        print(f"  shot {sh['n']} take {sh['take']}  {sh['start']:6.2f}–{sh['start'] + sh['duration']:6.2f}  (source {sh['media_start']}–{sh['media_end']})")
     for gg in girl:
         print(f"  girl   {gg['start']:6.2f}–{gg['end']:6.2f}  " + " ".join(w["text"] for w in words if gg["start"] <= w["t"] < gg["end"]))
     for ins in inserts:

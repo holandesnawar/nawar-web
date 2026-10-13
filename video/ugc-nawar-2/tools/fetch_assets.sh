@@ -16,7 +16,6 @@ dl 17avFnLbj9em_NHteVhuiQ23wrRcVRHHv profe.mov  # «Nuevo material video profe»
 # take 1: the laptop's HP logo and Intel sticker are blurred (tracked; tools/align/pov1_logo_track.json); light grade;
 # audio cleaned and normalised to −16 LUFS — take 2: same grade and audio chain
 python3 tools/blur_marks.py "$RAW/pov1.mov" assets/video/take-1.mp4
-python3 tools/cam_b.py                # camera B: the recomposed close-up (take-1-b.mp4)
 ffmpeg -v error -y -i "$RAW/pov2.mov" -vf "eq=contrast=1.05:saturation=1.05:gamma=0.98,format=yuv420p" \
   -af "highpass=f=80,afftdn=nr=10:nf=-42,loudnorm=I=-16:TP=-1.5:LRA=11" \
   -c:v libx264 -preset slow -crf 18 -g 15 -r 30 -c:a aac -b:a 192k -ar 48000 -movflags +faststart assets/video/take-2.mp4
@@ -36,4 +35,4 @@ cp "$VSL/.raw/music_v2.wav" "$RAW/music.wav"
 
 echo "edit, soundtrack, compositions"
 python3 tools/edit.py && python3 tools/build_audio.py && python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc2-v2.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc2-v4.mp4"

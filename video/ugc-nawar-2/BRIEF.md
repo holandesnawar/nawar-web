@@ -7,7 +7,7 @@ destination: meta-tiktok-ads
 aspect: 1080x1920
 language: es
 audience: hispanohablantes que viven en Países Bajos / Flandes y quieren quedarse
-length: 62s
+length: 64s
 angle: ugc-ad
 ---
 
@@ -29,10 +29,10 @@ inicio ese zoom» (zoom al arrancar) y «en estos vídeos hay algunas tomas extr
 ## Customizations
 
 - Mejor toma por frase: POV1 de principio a fin (limpia), primer gancho (el segundo se para 3 s).
-- v2 (feedback): ella siempre mirando a cámara. Primer plano recompuesto de POV1 (cámara B) en «El principal error
-  es pensar que necesitas» y «En Nawar practicas»; el cambio real de ángulo, en la llamada a la acción con POV2, donde
-  ella habla a esa cámara. Música casi nada bajo el gancho. El vídeo nuevo del profe en el 0:34 (lecciones grabadas).
-  Frases de la semana 4: «Goedemiddag, ik heet Ana.», «Mag ik een tasje, alsjeblieft?», «Sorry, mag ik iets vragen?».
+- v2–v4 (feedback): montaje a dos cámaras alternando por frase (POV1 de frente, POV2 de lado), cada frase de la
+  toma donde está limpia; el cierre con POV2, donde ella habla a esa cámara. Música casi nada bajo el gancho. El vídeo
+  nuevo del profe en el 0:34 (lecciones grabadas). Frases de la semana 4: «Goedemiddag, ik heet Ana.», «Mag ik een
+  tasje, alsjeblieft?», «Sorry, mag ik iets vragen?».
 - Zoom de entrada: arranca cerrado sobre su cara y abre rápido para descubrir el portátil.
 - Logo de HP e insignia de Intel del portátil desenfocados (seguimiento fotograma a fotograma).
 

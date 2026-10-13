@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the UGC ad #2 from edit.json: index.html (the girl — take 1 as camera A and its close-up camera B, her
+"""Generate the UGC ad #2 from edit.json: index.html (the girl — two cameras, take 1 front and take 2 side, her
 framing, audio), one full-screen
 insert per explanation (compositions/ins-NN.html, built by tools/inserts/ins_NN.py), the «haz clic» button of the
 ending (compositions/outro.html) and the captions (compositions/captions.html).
@@ -92,7 +92,7 @@ def ground_at(t):
 
 
 def captions(window=None):
-    """Word-by-word captions in pages of ≤3 words; pages never straddle a cut (girl ↔ insert, camera B ↔ A, jump cut).
+    """Word-by-word captions in pages of ≤3 words; pages never straddle a cut (girl ↔ insert, front ↔ side camera, jump cut).
     window=(a, b): only the pages inside it, re-timed to start at a (solo previews of one insert)."""
     P = "cap"
     bounds = sorted({0.0, ED["outro"]} | {s["start"] for s in ED["shots"]} | {i["start"] for i in ED["inserts"]}
@@ -148,42 +148,43 @@ def captions(window=None):
 
 # ============================================================================== the girl's framing
 def zooms():
-    """coordinate-target-zoom on the girl (origin = her face): tweens (time, duration, ease, to, from|None, wrapper).
-    The ad opens tight on her face and zooms out fast to reveal the laptop («Si tienes un ordenador…»). Each section
-    after an insert starts at its own framing (the cut hides the change), with a slow push and a punch on a key word.
-    Camera B (shots with cam "B" in edit.json; take-1-b.mp4, already the close-up) is the second camera: she keeps
-    looking into the lens, and the hard cut B → A on «…años o saber inglés primero» is the change of point of view.
-    Camera B only gets a slow push on its own wrapper (#zw1b)."""
+    """coordinate-target-zoom on the girl (origin = her face in each camera): tweens (time, duration, ease, to,
+    from|None, wrapper). The ad opens tight on her face and zooms out fast to reveal the laptop («Si tienes un
+    ordenador…»). After that every stretch of a camera inside a girl section starts at its own framing (the cuts hide
+    the change) with a slow push; the front camera punches on «bajan». The two cameras alternate by
+    line (edit.py); #zw1 = front (take 1), #zw2 = side (take 2)."""
     G = ED["girl"]; Z = []
-    def push(t0, t1, s0, s1, sel="#zw1"):
-        Z.append((round(t0, 3), round(t1 - t0 - 0.004, 3), "none", {"scale": s1}, {"scale": s0}, sel))   # ends just before the next tween
-    def punch(word, s, k=0, d=0.22, ease="power3.out", sel="#zw1"):
+    def push(t0, t1, s0, s1, sel):
+        Z.append((round(t0, 3), round(t1 - t0 - 0.004, 3), "none", {"scale": round(s1, 3)}, {"scale": round(s0, 3)}, sel))   # ends just before the next tween
+    def punch(word, s, sel, k=0, d=0.22, ease="power3.out"):
         Z.append((round(at(word, k) - 0.05, 3), d, ease, {"scale": s}, None, sel))
-    shot = {s["n"]: s for s in ED["shots"]}
-    for s in ED["shots"]:                                                        # camera B: a slow push while on screen
-        if s["cam"] == "B":
-            for g in G:
-                a, b = max(s["start"], g["start"]), min(s["start"] + s["duration"], g["end"])
-                if b - a > 0.05:
-                    push(a, b, 1.0, 1.03, f"#zw{s['take']}b")
+    wrap = lambda sh: "#zw" + sh["take"]
+    shots = ED["shots"]
     # intro: tight on her face → zoom out to reveal the laptop, then push and punch on «neerlandés»
     Z.append((0.0, 0.75, "power3.out", {"scale": 1.02}, {"scale": 1.36}, "#zw1"))
-    push(0.75, at("neerlandes") - 0.05, 1.02, 1.06); punch("neerlandes", 1.14)
-    s2 = shot[2]["start"]; push(s2, G[0]["end"], 1.08, 1.11)                     # «En cuatro semanas» (jump cut hidden by the reframe)
-    push(G[1]["start"], G[1]["end"], 1.0, 1.04)                                  # «Vivimos en un país…»
-    s4 = shot[4]["start"]                                                        # (shot 3 = camera B: «El principal error…»)
-    push(s4, at("realidad") - 0.06, 1.04, 1.07); punch("realidad", 1.14)        # camera A: «años o saber inglés… La realidad es que»
-                                                                                 # (G[3] «En Nawar practicas» is camera B)
-    push(G[4]["start"], G[4]["end"], 1.1, 1.14)                                  # «Aprendes con lecciones grabadas»
-    push(G[5]["start"], G[5]["end"], 1.0, 1.04)                                  # «para estudiar cuando tú puedas. Cuentas con»
-    push(G[6]["start"], G[6]["end"], 1.12, 1.15)                                 # «y cada semana te conectas a una»
-    push(G[7]["start"], at("bajan") - 0.05, 1.0, 1.04); punch("bajan", 1.12)     # «Además, mientras las ofertas de trabajo bajan»
-    Z.append((G[8]["start"], 0.26, "power3.out", {"scale": 1.15}, {"scale": 1.02}, "#zw1"))   # CTA: «¿Estás listo…?» lands on a punch
-    cta = [s for s in ED["shots"] if s["start"] >= G[8]["start"] - 1e-3]          # the CTA: take 1, then the side camera (take 2)
-    o = ED["outro"]; push(o + 0.2, cta[0]["start"] + cta[0]["duration"], 1.15, 1.17)   # «haz clic en el botón de aquí abajo,»
-    for k, s in enumerate(cta[1:]):                                              # side camera: she looks into it; the jump cut
-        end = TOTAL if s is ED["shots"][-1] else s["start"] + s["duration"]     # over her pause hides behind a reframe
-        push(s["start"], end, 1.0 + 0.06 * k, 1.03 + 0.06 * k, f"#zw{s['take']}")
+    push(0.75, at("neerlandes") - 0.05, 1.02, 1.06, "#zw1"); punch("neerlandes", 1.14, "#zw1")
+    PUNCH = {"bajan": 1.12}                                     # front camera, on the key word (none right after a camera change)
+    LOOK = {"1": [1.08, 1.0, 1.06, 1.1, 1.0, 1.12], "2": [1.0, 1.06, 1.03, 1.08]}   # start framings, cycling per camera
+    used = {"1": 0, "2": 0}
+    for g in G[:-1]:                                            # (the CTA has its own moves below)
+        for sh in shots:
+            a, b = max(g["start"], sh["start"]), min(g["end"], sh["start"] + sh["duration"])
+            if b - a <= 0.05 or sh["n"] == 1:                   # shot 1 = the hook, done above
+                continue
+            tk = sh["take"]; s0 = LOOK[tk][used[tk] % len(LOOK[tk])]; used[tk] += 1
+            pw = [w for w in PUNCH if tk == "1" and a <= at(w) < b]
+            if pw:
+                push(a, at(pw[0]) - 0.05, s0, s0 + 0.02, wrap(sh)); punch(pw[0], PUNCH[pw[0]], wrap(sh))
+            else:
+                push(a, b, s0, s0 + 0.04, wrap(sh))
+    # the CTA: front camera («¿Estás listo…?» lands on a punch; «haz clic en el botón de aquí abajo,»), then the side
+    # camera she now looks into; the jump cut over her pause hides behind a reframe
+    cta = [s for s in shots if s["start"] >= G[-1]["start"] - 1e-3]
+    Z.append((G[-1]["start"], 0.26, "power3.out", {"scale": 1.15}, {"scale": 1.02}, wrap(cta[0])))
+    o = ED["outro"]; push(o + 0.2, cta[0]["start"] + cta[0]["duration"], 1.15, 1.17, wrap(cta[0]))
+    for k, sh in enumerate(cta[1:]):
+        end = TOTAL if sh is shots[-1] else sh["start"] + sh["duration"]
+        push(sh["start"], end, 1.0 + 0.06 * k, 1.03 + 0.06 * k, wrap(sh))
     return Z
 
 
@@ -230,10 +231,9 @@ def index(sfx_all, out_t0, out_d):
             ztl.append(f'      tl.fromTo("{sel}", {js(frm)} }}, {js(to)}, duration: {du}, ease: "{ease}", immediateRender: false }}, {round(t, 3)});')
         else:
             ztl.append(f'      tl.to("{sel}", {js(to)}, duration: {du}, ease: "{ease}" }}, {round(t, 3)});')
-    # the shots: one zoom wrapper per take and camera (origin = her face there): #zw1 = take 1 (camera A),
-    # #zw1b = take-1-b.mp4 (camera B, the close-up), #zw2 = take 2 (the side camera of the CTA); 12 ms fades at each
-    # cut, 30 ms where the take changes mid-phrase, a longer one at the very end
-    key = lambda sh: sh["take"] + ("b" if sh["cam"] == "B" else "")
+    # the shots: one zoom wrapper per camera (origin = her face there): #zw1 = take 1 (front), #zw2 = take 2 (side);
+    # 12 ms fades at each cut, 30 ms where the take changes, a longer one at the very end
+    key = lambda sh: sh["take"]
     vids, face = {}, {}
     shots = ED["shots"]
     for n, sh in enumerate(shots):
@@ -241,13 +241,13 @@ def index(sfx_all, out_t0, out_d):
         out = 0.12 if last else (0.03 if shots[n + 1]["take"] != sh["take"] else 0.012)
         auto = json.dumps({"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1},
                           {"t": round(dd - out, 3), "v": 1}, {"t": dd, "v": 0}]}]})
-        src = f"assets/video/take-{sh['take']}{'-b' if sh['cam'] == 'B' else ''}.mp4"
+        src = f"assets/video/take-{sh['take']}.mp4"
         vids.setdefault(key(sh), []).append(f'      <video id="v{sh["n"]}" class="clip" src="{src}" data-start="{sh["start"]}" data-duration="{dd}" data-media-start="{sh["media_start"]}" data-playback-rate="{RATE}" data-track-index="{sh["n"] - 1}" playsinline data-has-audio="true" data-automation=\'{auto}\'></video>')
         face.setdefault(key(sh), sh["face"])
     hold, lk = ED["hold"], key(shots[-1])                                        # her last frame, held in the last shot's wrapper
     vids[lk].append(f'      <img id="hold" class="clip" src="assets/img/take-{shots[-1]["take"]}-last.png" alt="" data-start="{hold["start"]}" data-duration="{hold["duration"]}" data-track-index="{len(shots)}" />')
     others = "".join(f'    <div class="shot"><div id="zw{k}" class="zw" data-layout-allow-overflow style="transform-origin: {face[k][0]}px {face[k][1]}px;">\n'
-                     + "\n".join(v) + "\n    </div></div>\n" for k, v in vids.items() if k != "1")   # camera B and the side camera, on top of take 1
+                     + "\n".join(v) + "\n    </div></div>\n" for k, v in vids.items() if k != "1")   # the side camera, on top of the front one
     html = HEAD + f"""  <body>
     <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="{TOTAL}">
     <div class="shot"><div id="zw1" class="zw" data-layout-allow-overflow style="transform-origin: {face['1'][0]}px {face['1'][1]}px;">
