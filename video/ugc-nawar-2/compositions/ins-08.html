@@ -1,0 +1,142 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .i8-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .i8-paper { background: #F5F7FF; }
+    .i8-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .i8-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i8-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .i8-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i8-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .i8-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .i8-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    .i8-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
+    .i8-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    .i8-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .i8-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .i8-pill svg { display: block; width: 28px; height: 28px; }
+    .i8-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .i8-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .i8-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .i8-flag svg { display: block; width: 40px; height: 27px; }
+    .i8-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .i8-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+    .i8-av svg { display: block; width: 96px; height: 96px; }
+    .i8-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .i8-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .i8-bub-g { background: #E8ECF7; color: #374151; }
+    .i8-bub-b { background: #0b6df0; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .i8-bl { border-bottom-left-radius: 10px; }
+    .i8-br { border-bottom-right-radius: 10px; }
+    .i8-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .i8-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .i8-acc { color: #4da3ff; }
+    .i8-w { display: inline-block; }
+
+    #i8-head { position: absolute; left: 0; top: 0; width: 1080px; height: 470px; transform-origin: 50% 321px; }
+    #i8-hrow { top: 214px; height: 150px; align-items: baseline; gap: 26px; }
+    .i8-num { display: block; font-weight: 900; font-size: 148px; line-height: 1; letter-spacing: -0.045em; color: #1D0084;
+      white-space: nowrap; transform-origin: 50% 80%; }
+    #i8-dc { display: block; font-weight: 800; font-size: 64px; line-height: 1; letter-spacing: -0.03em; color: #0C0C1E; white-space: nowrap; }
+    #i8-sub { top: 384px; height: 44px; }
+    #i8-subt { display: block; font-family: "Inter", sans-serif; font-weight: 600; font-size: 34px; line-height: 1; letter-spacing: -0.01em;
+      color: #5A6480; white-space: nowrap; }
+
+    .i8-job { position: absolute; width: 440px; height: 116px; border-radius: 18px; background: #FFFFFF;
+      box-shadow: 0 14px 34px rgba(18,0,129,0.09), 0 2px 8px rgba(18,0,129,0.05); }
+    .i8-ol { position: absolute; left: 0; top: 0; width: 440px; height: 116px; border-radius: 18px; box-sizing: border-box;
+      border: 2px solid #1D0084; box-shadow: 0 0 0 5px rgba(29,0,132,0.07), 0 16px 38px rgba(29,0,132,0.16); opacity: 0; }
+    .i8-ic { position: absolute; left: 22px; top: 26px; width: 64px; height: 64px; border-radius: 16px; background: #ECEFFB; color: #1D0084; }
+    .i8-ic svg { position: absolute; left: 14px; top: 14px; width: 36px; height: 36px; display: block; }
+    .i8-l1 { position: absolute; left: 106px; top: 25px; height: 15px; border-radius: 8px; background: #D6DDEE; }
+    .i8-l2 { position: absolute; left: 106px; top: 50px; height: 11px; border-radius: 6px; background: #E7ECF6; }
+    .i8-slot { position: absolute; left: 106px; top: 70px; width: 124px; height: 34px; border-radius: 999px; background: #F0F2F9; }
+    .i8-tag { position: absolute; left: 106px; top: 70px; height: 34px; display: flex; align-items: center; gap: 8px; padding: 0 14px 0 5px;
+      border-radius: 999px; background: #1D0084; color: #FFFFFF; white-space: nowrap; box-sizing: border-box; transform-origin: 0% 50%;
+      box-shadow: 0 6px 14px rgba(29,0,132,0.22);
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; line-height: 1; letter-spacing: -0.005em; }
+    .i8-fl { display: block; width: 30px; height: 20px; border-radius: 4px; overflow: hidden; flex: 0 0 30px; margin-left: 6px;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .i8-fl svg { display: block; width: 30px; height: 20px; }
+
+  </style>
+  <div id="root" data-composition-id="ins-08" data-width="1080" data-height="1920" data-duration="4.256">
+    <div class="i8-full i8-paper"><div class="i8-paper-dots"></div><div class="i8-paper-light"></div></div>
+    <div id="i8-head"><div id="i8-hrow" class="i8-row"><span id="i8-n9" class="i8-num">9</span><span id="i8-dc">de cada</span><span id="i8-n10" class="i8-num">10</span></div>
+    <div id="i8-sub" class="i8-row"><span id="i8-subt">ofertas de trabajo</span></div></div>
+    <div id="i8-c0" class="i8-job" style="left:86px; top:476px;" data-layout-allow-overflow><div id="i8-ol0" class="i8-ol"></div><div class="i8-ic"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="14" width="36" height="26" rx="5"/><path d="M17 14 V10 A3 3 0 0 1 20 7 H28 A3 3 0 0 1 31 10 V14"/><path d="M6 25 H42"/></g></svg></div><div class="i8-l1" style="width:214px;"></div><div class="i8-l2" style="width:132px;"></div><div class="i8-slot"></div><div id="i8-tg0" class="i8-tag"><span class="i8-fl"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>Nederlands vereist</span></div></div>
+    <div id="i8-c1" class="i8-job" style="left:554px; top:476px;" data-layout-allow-overflow><div id="i8-ol1" class="i8-ol"></div><div class="i8-ic"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="14" width="36" height="26" rx="5"/><path d="M17 14 V10 A3 3 0 0 1 20 7 H28 A3 3 0 0 1 31 10 V14"/><path d="M6 25 H42"/></g></svg></div><div class="i8-l1" style="width:186px;"></div><div class="i8-l2" style="width:150px;"></div><div class="i8-slot"></div><div id="i8-tg1" class="i8-tag"><span class="i8-fl"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>Nederlands vereist</span></div></div>
+    <div id="i8-c2" class="i8-job" style="left:86px; top:614px;" data-layout-allow-overflow><div id="i8-ol2" class="i8-ol"></div><div class="i8-ic"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="14" width="36" height="26" rx="5"/><path d="M17 14 V10 A3 3 0 0 1 20 7 H28 A3 3 0 0 1 31 10 V14"/><path d="M6 25 H42"/></g></svg></div><div class="i8-l1" style="width:236px;"></div><div class="i8-l2" style="width:110px;"></div><div class="i8-slot"></div><div id="i8-tg2" class="i8-tag"><span class="i8-fl"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>Nederlands vereist</span></div></div>
+    <div id="i8-c3" class="i8-job" style="left:554px; top:614px;" data-layout-allow-overflow><div id="i8-ol3" class="i8-ol"></div><div class="i8-ic"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="14" width="36" height="26" rx="5"/><path d="M17 14 V10 A3 3 0 0 1 20 7 H28 A3 3 0 0 1 31 10 V14"/><path d="M6 25 H42"/></g></svg></div><div class="i8-l1" style="width:198px;"></div><div class="i8-l2" style="width:142px;"></div><div class="i8-slot"></div><div id="i8-tg3" class="i8-tag"><span class="i8-fl"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>Nederlands vereist</span></div></div>
+    <div id="i8-c4" class="i8-job" style="left:86px; top:752px;" data-layout-allow-overflow><div id="i8-ol4" class="i8-ol"></div><div class="i8-ic"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="14" width="36" height="26" rx="5"/><path d="M17 14 V10 A3 3 0 0 1 20 7 H28 A3 3 0 0 1 31 10 V14"/><path d="M6 25 H42"/></g></svg></div><div class="i8-l1" style="width:222px;"></div><div class="i8-l2" style="width:120px;"></div><div class="i8-slot"></div><div id="i8-tg4" class="i8-tag"><span class="i8-fl"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>Nederlands vereist</span></div></div>
+    <div id="i8-c5" class="i8-job" style="left:554px; top:752px;" data-layout-allow-overflow><div id="i8-ol5" class="i8-ol"></div><div class="i8-ic"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="14" width="36" height="26" rx="5"/><path d="M17 14 V10 A3 3 0 0 1 20 7 H28 A3 3 0 0 1 31 10 V14"/><path d="M6 25 H42"/></g></svg></div><div class="i8-l1" style="width:180px;"></div><div class="i8-l2" style="width:156px;"></div><div class="i8-slot"></div><div id="i8-tg5" class="i8-tag"><span class="i8-fl"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>Nederlands vereist</span></div></div>
+    <div id="i8-c6" class="i8-job" style="left:86px; top:890px;" data-layout-allow-overflow><div id="i8-ol6" class="i8-ol"></div><div class="i8-ic"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="14" width="36" height="26" rx="5"/><path d="M17 14 V10 A3 3 0 0 1 20 7 H28 A3 3 0 0 1 31 10 V14"/><path d="M6 25 H42"/></g></svg></div><div class="i8-l1" style="width:206px;"></div><div class="i8-l2" style="width:126px;"></div><div class="i8-slot"></div><div id="i8-tg6" class="i8-tag"><span class="i8-fl"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>Nederlands vereist</span></div></div>
+    <div id="i8-c7" class="i8-job" style="left:554px; top:890px;" data-layout-allow-overflow><div id="i8-ol7" class="i8-ol"></div><div class="i8-ic"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="14" width="36" height="26" rx="5"/><path d="M17 14 V10 A3 3 0 0 1 20 7 H28 A3 3 0 0 1 31 10 V14"/><path d="M6 25 H42"/></g></svg></div><div class="i8-l1" style="width:230px;"></div><div class="i8-l2" style="width:104px;"></div><div class="i8-slot"></div><div id="i8-tg7" class="i8-tag"><span class="i8-fl"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>Nederlands vereist</span></div></div>
+    <div id="i8-c8" class="i8-job" style="left:86px; top:1028px;" data-layout-allow-overflow><div id="i8-ol8" class="i8-ol"></div><div class="i8-ic"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="14" width="36" height="26" rx="5"/><path d="M17 14 V10 A3 3 0 0 1 20 7 H28 A3 3 0 0 1 31 10 V14"/><path d="M6 25 H42"/></g></svg></div><div class="i8-l1" style="width:194px;"></div><div class="i8-l2" style="width:146px;"></div><div class="i8-slot"></div><div id="i8-tg8" class="i8-tag"><span class="i8-fl"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>Nederlands vereist</span></div></div>
+    <div id="i8-c9" class="i8-job" style="left:554px; top:1028px;" data-layout-allow-overflow><div class="i8-ic"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="14" width="36" height="26" rx="5"/><path d="M17 14 V10 A3 3 0 0 1 20 7 H28 A3 3 0 0 1 31 10 V14"/><path d="M6 25 H42"/></g></svg></div><div class="i8-l1" style="width:218px;"></div><div class="i8-l2" style="width:128px;"></div><div class="i8-slot"></div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("i8-" + id);
+
+      // «nueve de cada diez»: the two numbers land on their words, «de cada» in between; the row re-centres
+      // itself at each step (the slots are the final centred ones, so the lone «9» starts shifted to the middle)
+      tl.fromTo(q("hrow"), { x: 222 }, { x: 86, duration: 0.3, ease: "power3.out" }, 0.397 - 0.06);
+      tl.to(q("hrow"), { x: 0, duration: 0.3, ease: "power3.out" }, 1.02 - 0.06);
+      tl.fromTo(q("n9"), { opacity: 0, scale: 0.55, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.8)" }, 0);
+      tl.fromTo(q("dc"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 0.397 - 0.06);
+      tl.fromTo(q("n10"), { opacity: 0, scale: 0.55, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.8)" }, 1.02 - 0.06);
+      tl.fromTo(q("subt"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 1.02 + 0.02);
+      // «siguen»: the headline glides up to the top and ten offers land under it, row by row
+      tl.fromTo(q("head"), { y: 330, scale: 1.2 }, { y: 0, scale: 1, duration: 0.42, ease: "power3.inOut" }, 1.26);
+      tl.fromTo(q("c0"), { opacity: 0, y: 34, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "power3.out" }, 1.509 + 0.00);
+      tl.fromTo(q("c1"), { opacity: 0, y: 34, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "power3.out" }, 1.509 + 0.04);
+      tl.fromTo(q("c2"), { opacity: 0, y: 34, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "power3.out" }, 1.509 + 0.08);
+      tl.fromTo(q("c3"), { opacity: 0, y: 34, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "power3.out" }, 1.509 + 0.12);
+      tl.fromTo(q("c4"), { opacity: 0, y: 34, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "power3.out" }, 1.509 + 0.16);
+      tl.fromTo(q("c5"), { opacity: 0, y: 34, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "power3.out" }, 1.509 + 0.20);
+      tl.fromTo(q("c6"), { opacity: 0, y: 34, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "power3.out" }, 1.509 + 0.24);
+      tl.fromTo(q("c7"), { opacity: 0, y: 34, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "power3.out" }, 1.509 + 0.28);
+      tl.fromTo(q("c8"), { opacity: 0, y: 34, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "power3.out" }, 1.509 + 0.32);
+      tl.fromTo(q("c9"), { opacity: 0, y: 34, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "power3.out" }, 1.509 + 0.36);
+      // «requisito»: nine get the tag, the tenth stays plain and steps back
+      tl.fromTo(q("tg0"), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.9)" }, 2.619 + 0.00);
+      tl.fromTo(q("tg1"), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.9)" }, 2.619 + 0.06);
+      tl.fromTo(q("tg2"), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.9)" }, 2.619 + 0.12);
+      tl.fromTo(q("tg3"), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.9)" }, 2.619 + 0.18);
+      tl.fromTo(q("tg4"), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.9)" }, 2.619 + 0.24);
+      tl.fromTo(q("tg5"), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.9)" }, 2.619 + 0.30);
+      tl.fromTo(q("tg6"), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.9)" }, 2.619 + 0.36);
+      tl.fromTo(q("tg7"), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.9)" }, 2.619 + 0.42);
+      tl.fromTo(q("tg8"), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.9)" }, 2.619 + 0.48);
+      tl.to(q("c9"), { opacity: 0.65, duration: 0.3, ease: "power2.out" }, 3.139);
+      // «neerlandés»: the nine tagged offers light up together
+      tl.fromTo([q("ol0"), q("ol1"), q("ol2"), q("ol3"), q("ol4"), q("ol5"), q("ol6"), q("ol7"), q("ol8")], { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 3.413);
+
+      window.__timelines["ins-08"] = tl;
+    })();
+  </script>
+</template>

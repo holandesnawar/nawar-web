@@ -1,0 +1,135 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .i1-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .i1-paper { background: #F5F7FF; }
+    .i1-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .i1-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i1-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .i1-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i1-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .i1-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .i1-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    .i1-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
+    .i1-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    .i1-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .i1-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .i1-pill svg { display: block; width: 28px; height: 28px; }
+    .i1-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .i1-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .i1-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .i1-flag svg { display: block; width: 40px; height: 27px; }
+    .i1-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .i1-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+    .i1-av svg { display: block; width: 96px; height: 96px; }
+    .i1-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .i1-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .i1-bub-g { background: #E8ECF7; color: #374151; }
+    .i1-bub-b { background: #0b6df0; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .i1-bl { border-bottom-left-radius: 10px; }
+    .i1-br { border-bottom-right-radius: 10px; }
+    .i1-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .i1-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .i1-acc { color: #4da3ff; }
+    .i1-w { display: inline-block; }
+
+    #i1-wrow { top: 218px; }
+    #i1-list { position: absolute; left: 0; top: 368px; width: 1080px; display: flex; justify-content: center; }
+    #i1-col { display: flex; flex-direction: column; gap: 58px; }
+    .i1-it { display: grid; grid-template-columns: 66px auto; column-gap: 26px; row-gap: 18px; align-items: center; }
+    .i1-tick { position: relative; width: 66px; height: 66px; grid-row: 1; grid-column: 1; }
+    .i1-ring { position: absolute; left: 0; top: 0; width: 66px; height: 66px; border-radius: 50%; box-sizing: border-box;
+      border: 4px solid rgba(255,255,255,0.34); }
+    .i1-ok { position: absolute; left: 0; top: 0; width: 66px; height: 66px; }
+    .i1-ok svg { display: block; width: 66px; height: 66px; filter: drop-shadow(0 6px 14px rgba(4,0,40,0.30)); }
+    .i1-lab { grid-row: 1; grid-column: 2; font-weight: 700; font-size: 48px; line-height: 60px; letter-spacing: -0.015em; color: #FFFFFF; white-space: nowrap; }
+    .i1-say { grid-row: 2; grid-column: 2; justify-self: start; padding: 22px 32px; border-radius: 30px; border-top-left-radius: 10px; white-space: nowrap;
+      background: #FFFFFF; color: #0C0C1E; box-shadow: 0 22px 46px rgba(4,0,40,0.32), 0 4px 10px rgba(4,0,40,0.16); transform-origin: 0% 0%;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 37px; line-height: 1.22; letter-spacing: -0.01em; }
+    #i1-okrow { top: 1084px; }
+    #i1-done { display: flex; align-items: center; gap: 14px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px; background: #16A34A; color: #FFFFFF;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 31px; line-height: 1; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.32); }
+    #i1-done svg { display: block; width: 40px; height: 40px; }
+
+  </style>
+  <div id="root" data-composition-id="ins-01" data-width="1080" data-height="1920" data-duration="4.491">
+    <div class="i1-full i1-blue"><div class="i1-blue-dots"></div><div class="i1-blue-amb"></div><div class="i1-blue-vig"></div></div>
+    <div id="i1-wrow" class="i1-row"><div id="i1-wk" class="i1-wpill"><span class="i1-flag i1-flagd"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>Semana 4</span></div></div>
+    <div id="i1-list">
+      <div id="i1-col">
+        <div id="i1-r0" class="i1-it">
+          <div class="i1-tick"><div id="i1-g0" class="i1-ring"></div><div id="i1-k0" class="i1-ok"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+          <div id="i1-l0" class="i1-lab">Presentarte</div>
+          <div id="i1-b0" class="i1-say">Hallo, ik ben Ana.</div>
+        </div>
+        <div id="i1-r1" class="i1-it">
+          <div class="i1-tick"><div id="i1-g1" class="i1-ring"></div><div id="i1-k1" class="i1-ok"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+          <div id="i1-l1" class="i1-lab">Hacer compras</div>
+          <div id="i1-b1" class="i1-say">Mag ik een tasje?</div>
+        </div>
+        <div id="i1-r2" class="i1-it">
+          <div class="i1-tick"><div id="i1-g2" class="i1-ring"></div><div id="i1-k2" class="i1-ok"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+          <div id="i1-l2" class="i1-lab">Pedir lo que necesitas</div>
+          <div id="i1-b2" class="i1-say">Een koffie, alstublieft.</div>
+        </div>
+      </div>
+    </div>
+    <div id="i1-okrow" class="i1-row"><div id="i1-done"><svg viewBox="0 0 64 64"><path d="M16 33 L28 45 L49 21" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Sin ayuda</span></div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("i1-" + id);
+
+      tl.fromTo(q("wk"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);
+      // the list starts centred in the content zone and steps up as rows arrive (ends where it is laid out)
+      tl.fromTo(q("list"), { y: 170 }, { y: 170, duration: 0.01 }, 0);
+      tl.to(q("list"), { y: 85, duration: 0.4, ease: "power3.inOut" }, 1.548 - 0.2);
+      tl.to(q("list"), { y: 0, duration: 0.4, ease: "power3.inOut" }, 2.623 - 0.2);
+
+      tl.fromTo(q("g0"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.8)" }, 0.717 - 0.08);
+      tl.fromTo(q("l0"), { opacity: 0, x: -26 }, { opacity: 1, x: 0, duration: 0.34, ease: "power3.out" }, 0.717 - 0.08);
+      tl.fromTo(q("b0"), { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 0.717 + 0.02);
+      tl.fromTo(q("k0"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, 0.717 + 0.25);
+      tl.to(q("g0"), { opacity: 0, duration: 0.14, ease: "power2.out" }, 0.717 + 0.27);
+
+      tl.fromTo(q("g1"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.8)" }, 1.548 - 0.08);
+      tl.fromTo(q("l1"), { opacity: 0, x: -26 }, { opacity: 1, x: 0, duration: 0.34, ease: "power3.out" }, 1.548 - 0.08);
+      tl.fromTo(q("b1"), { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 1.548 + 0.02);
+      tl.fromTo(q("k1"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, 1.548 + 0.25);
+      tl.to(q("g1"), { opacity: 0, duration: 0.14, ease: "power2.out" }, 1.548 + 0.27);
+
+      tl.fromTo(q("g2"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.8)" }, 2.623 - 0.08);
+      tl.fromTo(q("l2"), { opacity: 0, x: -26 }, { opacity: 1, x: 0, duration: 0.34, ease: "power3.out" }, 2.623 - 0.08);
+      tl.fromTo(q("b2"), { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 2.623 + 0.02);
+      tl.fromTo(q("k2"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, 2.623 + 0.25);
+      tl.to(q("g2"), { opacity: 0, duration: 0.14, ease: "power2.out" }, 2.623 + 0.27);
+
+      tl.fromTo(q("done"), { opacity: 0, scale: 0.6, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.8)" }, 3.85 - 0.06);
+
+      window.__timelines["ins-01"] = tl;
+    })();
+  </script>
+</template>
