@@ -251,7 +251,8 @@ def index(sfx_all, out_t0, out_d):
         vids.setdefault(key(sh), []).append(f'      <video id="v{sh["n"]}" class="clip" src="{src}" data-start="{sh["start"]}" data-duration="{dd}" data-media-start="{sh["media_start"]}" data-playback-rate="{RATE}" data-track-index="{sh["n"] - 1}" playsinline data-has-audio="true" data-automation=\'{auto}\'></video>')
         face.setdefault(key(sh), sh["face"])
     hold, lk = ED["hold"], key(shots[-1])                                        # her last frame, held in the last shot's wrapper
-    vids[lk].append(f'      <img id="hold" class="clip" src="assets/img/take-{shots[-1]["take"]}-last.png" alt="" data-start="{hold["start"]}" data-duration="{hold["duration"]}" data-track-index="{len(shots)}" />')
+    if hold["duration"] > 0:                                                     # (only if edit.py asks for a hold)
+        vids[lk].append(f'      <img id="hold" class="clip" src="assets/img/take-{shots[-1]["take"]}-last.png" alt="" data-start="{hold["start"]}" data-duration="{hold["duration"]}" data-track-index="{len(shots)}" />')
     others = "".join(f'    <div class="shot"><div id="zw{k}" class="zw" data-layout-allow-overflow style="transform-origin: {face[k][0]}px {face[k][1]}px;">\n'
                      + "\n".join(v) + "\n    </div></div>\n" for k, v in vids.items() if k != "1")   # the side camera, on top of the front one
     html = HEAD + f"""  <body>
@@ -265,7 +266,7 @@ def index(sfx_all, out_t0, out_d):
     <script>
       const tl = gsap.timeline({{ paused: true }});
       // framing on the girl: opens tight and zooms out; then one look per section, a slow push and a punch on the key word
-      // (origin = her face); the take ends on her smile, held (#hold, its last frame) under the «haz clic» button
+      // (origin = her face); the ad ends when she stops talking, under the «haz clic» button
 {chr(10).join(ztl)}
       window.__timelines["main"] = tl;
     </script>

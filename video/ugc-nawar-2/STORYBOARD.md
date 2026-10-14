@@ -1,4 +1,4 @@
-# Storyboard — Anuncio UGC #2 «Si tienes un ordenador…» (9:16, 62 s)
+# Storyboard — Anuncio UGC #2 «Si tienes un ordenador…» (9:16, 60 s)
 
 **Idea de montaje.** La misma que el anuncio 1 (v2.3).
 - Ella habla a cámara con la toma de frente (POV1) todo el anuncio. Solo el cierre es de la cámara de lado (POV2):
@@ -30,7 +30,7 @@ del portátil van desenfocados.
 | 0:47–0:49 | Chica (frente) | «Además, mientras las ofertas de trabajo bajan,» |
 | 0:49–0:53 | ins-08 · PAPER | «9 de cada 10» ofertas de trabajo: tarjetas con la etiqueta *Nederlands vereist*. |
 | 0:53–0:57 | Chica (frente) + botón | «¿Estás listo para comenzar? Si es así, haz clic en el botón de aquí abajo,»: botón «MATRÍCULA» con cursor en «clic». |
-| 0:57–1:02 | Chica (lado, ahora mirando a esa cámara) + botón | «rellena el formulario» · «y una persona de nuestro equipo te atenderá» (salto sobre su pausa). Al acabar la toma se mantiene su sonrisa. |
+| 0:57–1:00 | Chica (lado, ahora mirando a esa cámara) + botón | «rellena el formulario» · «y una persona de nuestro equipo te atenderá» (salto sobre su pausa). El anuncio termina cuando ella termina de hablar. |
 
 **Sonido.**
 - La voz de cada toma, normalizada a −16 LUFS.

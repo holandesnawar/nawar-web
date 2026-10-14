@@ -7,7 +7,7 @@ turn of the story); the intro runs under the problem, and nothing is heard under
 It is background only: a gentle dip around 2.5 kHz and a little less air leave room for her voice, and the levels
 are set in loudness units (K-weighted, as the ear hears it): HOOK_LUFS under the hook, rising over RISE s to
 INTRO_LUFS when the first graphic comes in, LEVEL_LUFS from the turn on — about 21 LU under the voice (the take is
-normalised to −16 LUFS) and 1.5 LU under the previous bed. Fades out over the end card.
+normalised to −16 LUFS) and 1.5 LU under the previous bed. Fades out under her last words.
 Outputs assets/audio/music-bed.wav and audio.json.
 """
 import json, os, re, subprocess
@@ -21,7 +21,7 @@ LEVEL_LUFS = -37.0     # from the turn on
 INTRO_LUFS = -38.5     # under the problem (before the turn)
 HOOK_LUFS = -45.0      # under the hook, until the first graphic
 RISE = 1.6             # hook → intro level
-FADE = 2.2             # fade out over the end card
+FADE = 1.2             # fade out under her last words (the ad ends when she stops talking)
 SR = 48000
 
 

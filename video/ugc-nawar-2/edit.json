@@ -1,12 +1,12 @@
 {
  "rate": 1.06,
- "clip_end": 60.066,
- "total": 61.466,
- "speech_end": 59.84,
+ "clip_end": 60.16,
+ "total": 60.16,
+ "speech_end": 59.972,
  "outro": 54.991,
  "hold": {
-  "start": 60.066,
-  "duration": 1.4
+  "start": 60.16,
+  "duration": 0.0
  },
  "shots": [
   {
@@ -61,9 +61,9 @@
    "n": 5,
    "take": "1",
    "start": 53.208,
-   "duration": 3.415,
+   "duration": 3.547,
    "media_start": 66.94,
-   "media_end": 70.56,
+   "media_end": 70.7,
    "face": [
     540,
     720
@@ -72,7 +72,7 @@
   {
    "n": 6,
    "take": "2",
-   "start": 56.623,
+   "start": 56.755,
    "duration": 1.33,
    "media_start": 70.84,
    "media_end": 72.25,
@@ -84,10 +84,10 @@
   {
    "n": 7,
    "take": "2",
-   "start": 57.953,
-   "duration": 2.113,
+   "start": 58.085,
+   "duration": 2.075,
    "media_start": 74.5,
-   "media_end": 76.74,
+   "media_end": 76.7,
    "face": [
     450,
     690
@@ -179,7 +179,7 @@
   },
   {
    "start": 53.208,
-   "end": 61.466
+   "end": 60.16
   }
  ],
  "words": [
@@ -1518,84 +1518,84 @@
    "text": "abajo",
    "punct": ",",
    "t": 56.406,
-   "end": 56.623
+   "end": 56.755
   },
   {
    "shot": 6,
    "text": "rellena",
    "punct": "",
-   "t": 56.708,
-   "end": 57.048
+   "t": 56.84,
+   "end": 57.18
   },
   {
    "shot": 6,
    "text": "el",
    "punct": "",
-   "t": 57.048,
-   "end": 57.217
+   "t": 57.18,
+   "end": 57.349
   },
   {
    "shot": 6,
    "text": "formulario",
    "punct": "",
-   "t": 57.217,
-   "end": 57.953
+   "t": 57.349,
+   "end": 58.085
   },
   {
    "shot": 7,
    "text": "y",
    "punct": "",
-   "t": 57.953,
-   "end": 58.057
+   "t": 58.085,
+   "end": 58.189
   },
   {
    "shot": 7,
    "text": "una",
    "punct": "",
-   "t": 58.057,
-   "end": 58.396
+   "t": 58.189,
+   "end": 58.528
   },
   {
    "shot": 7,
    "text": "persona",
    "punct": "",
-   "t": 58.396,
-   "end": 58.585
+   "t": 58.528,
+   "end": 58.717
   },
   {
    "shot": 7,
    "text": "de",
    "punct": "",
-   "t": 58.585,
-   "end": 58.698
+   "t": 58.717,
+   "end": 58.83
   },
   {
    "shot": 7,
    "text": "nuestro",
    "punct": "",
-   "t": 58.698,
-   "end": 59.057
+   "t": 58.83,
+   "end": 59.189
   },
   {
    "shot": 7,
    "text": "equipo",
    "punct": "",
-   "t": 59.057,
-   "end": 59.283
+   "t": 59.189,
+   "end": 59.415
   },
   {
    "shot": 7,
    "text": "te",
    "punct": "",
-   "t": 59.283,
-   "end": 59.378
+   "t": 59.415,
+   "end": 59.51
   },
   {
    "shot": 7,
    "text": "atenderá",
    "punct": ".",
-   "t": 59.378,
-   "end": 59.84
+   "t": 59.51,
+   "end": 59.972
   }
  ]
 }

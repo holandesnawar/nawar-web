@@ -20,8 +20,6 @@ python3 tools/blur_marks.py "$RAW/pov1.mov" assets/video/take-1.mp4
 ffmpeg -v error -y -i "$RAW/pov2.mov" -vf "eq=contrast=1.05:saturation=1.05:gamma=0.98,format=yuv420p" \
   -af "highpass=f=80,afftdn=nr=10:nf=-42,loudnorm=I=-16:TP=-1.5:LRA=11" \
   -c:v libx264 -preset slow -crf 18 -g 15 -r 30 -c:a aac -b:a 192k -ar 48000 -movflags +faststart assets/video/take-2.mp4
-# her last frame (the smile after «te atenderá», side camera), held under the «haz clic» button at the end
-ffmpeg -v error -y -ss 76.70 -i assets/video/take-2.mp4 -frames:v 1 assets/img/take-2-last.png
 # the lesson: the slide cut out of the screen recording (no white margin), 30 fps, silent
 ffmpeg -v error -y -i "$RAW/profe.mov" -vf "crop=1736:964:30:46,fps=30,format=yuv420p" -an \
   -c:v libx264 -preset slow -crf 17 -g 15 -movflags +faststart assets/video/profe-leccion.mp4
@@ -35,4 +33,4 @@ cp "$VSL"/assets/video/{paul-clase-1,completa-frase}.mp4 assets/video/   # paul-
 
 echo "edit, soundtrack, compositions"
 python3 tools/edit.py && python3 tools/build_audio.py && python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc2-v6.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc2-v7.mp4"

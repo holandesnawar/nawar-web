@@ -22,10 +22,11 @@ WHISPER_BIAS = -0.15
 SEGMENTS = [
     ("1", 0.55, 5.80),     # front · hook: «Si tienes un ordenador y ganas de aprender neerlandés, ya tienes todo lo que necesitas para empezar.»
     ("1", 15.30, 66.56),   # front · «En cuatro semanas…» → «…como requisito el neerlandés.»
-    ("1", 66.94, 70.56),   # front · «¿Estás listo para comenzar? Si es así, haz clic en el botón de aquí abajo,» (no silence before
-                           #          «rellena» in this take: cut in the dip, a longer fade in gen.py)
+    ("1", 66.94, 70.70),   # front · «¿Estás listo para comenzar? Si es así, haz clic en el botón de aquí abajo,» (no real pause
+                           #          before «rellena» in this take: cut in the dip right after «abajo», a longer fade in gen.py)
     ("2", 70.84, 72.25),   # side, looking into it: «rellena el formulario»
-    ("2", 74.50, 76.74),   # side, looking into it: «y una persona de nuestro equipo te atenderá» + her smile (her 2 s pause cut)
+    ("2", 74.50, 76.70),   # side, looking into it: «y una persona de nuestro equipo te atenderá» (her 2 s pause cut); the ad
+                           #          ends a breath after her last word
 ]
 FACE = {"1": (540, 720), "2": (450, 690)}   # face centre in each take (zoom origin)
 # cuts already inside the takes (the creator's own edit between sentences), source second of the first new frame —
@@ -35,8 +36,8 @@ FACE = {"1": (540, 720), "2": (450, 690)}   # face centre in each take (zoom ori
 CUT_PRE, CUT_POST = 0.05, 0.005
 JUMPS = {"1": [21.0, 28.3, 32.6, 37.9, 41.6, 43.933, 51.133, 53.6, 56.5, 58.0, 59.5, 61.8, 66.6, 70.8],   # exact frame pts
          "2": []}
-SPEECH_END = 76.50     # «…atenderá» ends here in take 2; the shot runs on to her smile (76.74)
-TAIL = 1.4             # hold on her last frame under the «haz clic» button
+SPEECH_END = 76.50     # «…atenderá» ends here in take 2; the shot runs on a breath (to 76.70) and the ad ends
+TAIL = 0.0             # no held frame after the take: the ad ends when she stops talking (v7)
 LEAD = 0.06            # an insert cuts in this long before its first word (source seconds)
 # (insert id, ground, first words, first words of what comes after)
 INSERTS = [
