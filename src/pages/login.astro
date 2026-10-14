@@ -1,0 +1,8 @@
+---
+// La entrada de verdad está en la escuela (app.holandesnawar.com/login).
+// Quien escribe www.holandesnawar.com/login a mano acaba aquí en vez de en
+// un 404 (14/10/2026). Ver también acceso.astro.
+import { ESCUELA_URL } from '../lib/escuela'
+
+return Astro.redirect(`${ESCUELA_URL}/login`, 302)
+---
