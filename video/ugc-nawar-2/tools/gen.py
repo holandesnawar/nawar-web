@@ -98,7 +98,10 @@ def captions(window=None):
     bounds = sorted({0.0, ED["outro"]} | {s["start"] for s in ED["shots"]} | {i["start"] for i in ED["inserts"]}
                     | {round(i["start"] + i["duration"], 3) for i in ED["inserts"]})
     pages, cur = [], []
-    def region(t): return max(b for b in bounds if b <= t + 1e-6)
+    ends = [round(i["start"] + i["duration"], 3) for i in ED["inserts"]]
+    def region(t):   # a word that starts in the last 0.12 s of a graphic belongs to the girl right after it
+        t = next((e for e in ends if e - 0.12 <= t < e), t)
+        return max(b for b in bounds if b <= t + 1e-6)
     for w in WORDS:
         txt = SHOW.get(norm(w["text"]), w["text"]) + (w.get("punct") or "").replace(":", "").replace(";", "")
         if norm(w["text"]) == "estas" and not txt.startswith("¿"):
@@ -120,12 +123,13 @@ def captions(window=None):
     body, js = [], []
     end_all = round(ED["speech_end"] + 0.12, 3)
     for k, pg in enumerate(pages):
-        t0 = 0.0 if (k == 0 and not window) else max(0.0, pg[0]["t"] - 0.03 - off, region(pg[0]["t"]) - off)
+        r0 = region(pg[0]["t"])                                            # the section the page belongs to
+        t0 = 0.0 if (k == 0 and not window) else max(0.0, pg[0]["t"] - 0.03 - off, r0 - off)
         t1 = (pages[k + 1][0]["t"] - 0.03 - off) if k + 1 < len(pages) else min(end_all - off, total)
-        cut = min([x for x in bounds if x > pg[0]["t"] + 1e-6], default=None)   # a page leaves with its section
+        cut = min([x for x in bounds if x > r0 + 1e-6], default=None)           # a page leaves with its section
         if cut is not None and cut - off < t1:
             t1 = round(cut - off, 3)
-        g = ground_at(pg[0]["t"] + 0.01)
+        g = ground_at(r0 + 0.01)
         spans = " ".join('<span id="cap-w%d-%d" class="cap-w">%s</span>' % (k, i, w["show"]) for i, w in enumerate(pg))
         up = " cap-up" if pg[0]["t"] >= ED["outro"] - 1e-3 else ""      # above the «haz clic» button
         body.append('    <div id="cap-g%d" class="cap-g cap-gr-%s%s">%s</div>' % (k, g, up, spans))
@@ -151,7 +155,8 @@ def zooms():
     """coordinate-target-zoom on the girl (origin = her face in each camera): tweens (time, duration, ease, to,
     from|None, wrapper). The ad opens tight on her face and zooms out fast to reveal the laptop («Si tienes un
     ordenador…»). After that every stretch of a camera inside a girl section starts at its own framing (the cuts hide
-    the change) with a slow push and a punch on a key word. #zw1 = front camera (take 1, the whole ad), #zw2 = side
+    the change) with a slow push and a punch on a key word; a jump cut inside a section (the take's own cuts, see
+    edit.py JUMPS) changes framing too. #zw1 = front camera (take 1, the whole ad), #zw2 = side
     camera (take 2, the ending only)."""
     G = ED["girl"]; Z = []
     def push(t0, t1, s0, s1, sel):
@@ -163,8 +168,9 @@ def zooms():
     # intro: tight on her face → zoom out to reveal the laptop, then push and punch on «neerlandés»
     Z.append((0.0, 0.75, "power3.out", {"scale": 1.02}, {"scale": 1.36}, "#zw1"))
     push(0.75, at("neerlandes") - 0.05, 1.02, 1.06, "#zw1"); punch("neerlandes", 1.14, "#zw1")
-    PUNCH = {"realidad": 1.14, "bajan": 1.12}                   # front camera, on the key word
-    LOOK = {"1": [1.08, 1.0, 1.06, 1.1, 1.0, 1.12], "2": [1.0, 1.06, 1.03, 1.08]}   # start framings, cycling per camera
+    PUNCH = {"bajan": 1.12}                                     # front camera, on the key word
+    LOOK = {"1": [1.08, 1.0, 1.12, 1.02, 1.14, 1.0, 1.1, 1.04], "2": [1.0, 1.06, 1.03, 1.08]}   # start framings, cycling per
+                                                                                 # camera; neighbours differ, so a jump cut reads
     used = {"1": 0, "2": 0}
     for g in G[:-1]:                                            # (the CTA has its own moves below)
         for sh in shots:

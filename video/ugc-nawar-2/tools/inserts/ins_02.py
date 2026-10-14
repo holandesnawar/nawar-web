@@ -132,5 +132,5 @@ def build():
       tl.fromTo(q("ch3"), { opacity: 0, y: 24, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.2, ease: "back.out(1.8)" }, «PUE» - 0.04);
 """
     sfx = [(c["ING"] - 0.08, "pop", 0.2), (c["VEN"] - 0.06, "click-soft", 0.22), (c["ABR"] - 0.04, "click", 0.2),
-           (c["PUE"] - 0.1, "sparkle", 0.12)]
+           (c["PUE"] - 0.1, "sparkle", 0.05)]   # soft: it read as a game sound at 0.12
     return comp(iid, d, P, css, body, js, c), sfx
