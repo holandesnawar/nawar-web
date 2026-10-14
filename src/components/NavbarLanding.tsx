@@ -10,6 +10,13 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 // espera. Con el nombre viejo el botón seguiría funcionando pero llevaría a la
 // lista de espera sin que nadie se diera cuenta.
 import { CTA_PRINCIPAL } from '../lib/cta'
+import { ESCUELA_URL } from '../lib/escuela'
+
+// «Acceso a alumnos» va DIRECTO a la entrada de la escuela (14/10/2026). Antes
+// llevaba a /acceso, un formulario de entrar que solo era diseño: contestaba
+// siempre «Correo o contraseña incorrectos» y los alumnos nuevos creían que su
+// contraseña no valía. /acceso y /login redirigen ahora a la escuela.
+const ACCESO_ALUMNOS = `${ESCUELA_URL}/login`
 
 const NAV_LINKS = [
   { label: 'Inicio',         href: '/' },
@@ -129,7 +136,7 @@ export default function NavbarLanding({ ctaHref = CTA_PRINCIPAL }: { ctaHref?: s
             {/* Desktop CTAs */}
             <div className="hidden lg:flex items-center gap-3">
               <a
-                href="/acceso"
+                href={ACCESO_ALUMNOS}
                 className="px-4 py-2 text-[15px] font-bold text-white/88 hover:text-white/50 transition-colors duration-200"
               >
                 Acceso a alumnos
@@ -211,7 +218,7 @@ export default function NavbarLanding({ ctaHref = CTA_PRINCIPAL }: { ctaHref?: s
               }}
             >
               <a
-                href="/acceso"
+                href={ACCESO_ALUMNOS}
                 onClick={handleLink}
                 className="flex w-full items-center justify-center px-6 py-4 text-[15px] font-semibold rounded-lg bg-transparent border border-white/35 text-white hover:border-white/70 transition-all duration-200"
               >
