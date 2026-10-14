@@ -34,6 +34,7 @@ del portátil van desenfocados.
 
 **Sonido.**
 - La voz de cada toma, normalizada a −16 LUFS.
-- La música del VSL, calmada: casi nada bajo el gancho (−43 dB RMS), sube a −37 dB cuando entra el primer gráfico,
-  y desde «La realidad es que…» suenan los hats a −36 dB, sin golpe final.
+- Música: «musica v1» del cliente (ElevenLabs), un groove ligero a 107,7 BPM, solo de fondo: casi nada bajo el gancho
+  (−45 LUFS), −38,5 LUFS bajo el problema y el groove entra justo en «La realidad es que…» a −37 LUFS; con un hueco en
+  2,5 kHz para la voz. Se funde al final.
 - Efectos suaves.

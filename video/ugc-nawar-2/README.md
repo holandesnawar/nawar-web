@@ -22,7 +22,7 @@ Segundo anuncio en vertical (1080×1920, ~62 s) con el mismo estilo que el prime
 | `tools/common.py` | Sistema de diseño compartido (el `frame.md` del VSL en 9:16) y utilidades |
 | `tools/inserts/ins_NN.py` | Un módulo por gráfico; cada uno devuelve su composición y sus efectos |
 | `tools/gen.py` | Genera todo desde `edit.json`; `--solo ins-NN --out <dir>` genera un gráfico suelto para revisarlo |
-| `tools/build_audio.py` | Música de fondo (el tema del VSL, calmado; casi nada bajo el gancho) |
+| `tools/build_audio.py` | Música de fondo («musica v1» del cliente, muy baja; casi nada bajo el gancho) |
 | `tools/blur_marks.py` | Desenfoca el logo de HP y la pegatina de Intel del portátil (seguimiento en `tools/align/pov1_logo_track.json`) |
 | `tools/align/` | Palabras con tiempos de cada toma (Whisper) y el seguimiento del logo |
 
@@ -31,7 +31,7 @@ Segundo anuncio en vertical (1080×1920, ~62 s) con el mismo estilo que el prime
 ```bash
 bash tools/fetch_assets.sh            # las tomas y la lección del profe desde el Drive + medios de marca del VSL; genera todo
 npx hyperframes check
-npx hyperframes render . --quality high -o renders/nawar-ugc2-v5.mp4
+npx hyperframes render . --quality high -o renders/nawar-ugc2-v6.mp4
 ```
 
 Para cambiar cuándo entra o sale un gráfico, edita `INSERTS` en `tools/edit.py` y vuelve a ejecutar:

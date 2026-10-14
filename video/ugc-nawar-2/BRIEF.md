@@ -24,7 +24,7 @@ inicio ese zoom» (zoom al arrancar) y «en estos vídeos hay algunas tomas extr
 - UGC.POV2 — de lado (tipo entrevista), desde «En cuatro semanas…»: mira fuera de cámara hasta la llamada a la acción,
   donde se gira hacia esa cámara y le habla señalando («rellena el formulario… te atenderá»).
 - «Nuevo material video profe» — lección grabada («Errores comunes») con la webcam del profe junto a la diapositiva.
-- Medios reales de la plataforma y del profe Paul (del VSL), logo, tipografías, música (la del VSL).
+- Medios reales de la plataforma y del profe Paul (del VSL), logo, tipografías. Música: «musica v1» del cliente.
 
 ## Customizations
 
