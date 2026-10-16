@@ -34,7 +34,7 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
         <img src={LOGO} alt="Holandés Nawar" class="vp-logo" width="150" height="38" />
         <h1 class="vp-h1">¡Te falta un paso!</h1>
         <p class="vp-sub">Mira este vídeo corto de <span class="vp-azul">{minutos} minutos</span> para entender bien los siguientes pasos</p>
-        <p class="vp-nota" id="vp-nota">Alguien del equipo de Nawar te va a escribir por WhatsApp muy pronto: estate atento al teléfono.</p>
+        <p class="vp-nota" id="vp-nota">Nos pondremos en contacto contigo muy pronto: estate atento al teléfono.</p>
 
         <div class="vp-flechas" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
@@ -98,7 +98,11 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
   // Sin datos y sin venir del formulario (alguien con el enlace suelto): a
   // dejar los datos primero.
   if (!datos && !new URLSearchParams(location.search).has('d')) location.replace(conLaEntrada(EMBUDO_WEB.landing))
-  if (datos?.first_name) $('vp-nota').textContent = `${datos.first_name}, alguien del equipo de Nawar te va a escribir por WhatsApp muy pronto: estate atento al teléfono.`
+  if (datos?.first_name) {
+    // El nombre con la primera letra en mayúscula, lo escriba como lo escriba.
+    const n = String(datos.first_name).trim()
+    $('vp-nota').textContent = `${n.charAt(0).toUpperCase()}${n.slice(1)}, nos pondremos en contacto contigo muy pronto: estate atento al teléfono.`
+  }
 
   const caja = $('vp-video')
   const proveedor = caja.dataset.proveedor || ''
@@ -313,7 +317,7 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
     background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.7) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .vp-sub { margin: 0; font-size: clamp(18px, 2.3vw, 23px); font-weight: 600; line-height: 1.45; max-width: 640px; color: #fff; text-wrap: balance; }
   .vp-azul { color: #4da3ff; }
-  .vp-nota { margin: 14px 0 0; font-size: clamp(15px, 1.6vw, 17px); line-height: 1.6; color: rgba(255,255,255,0.78); max-width: 600px; }
+  .vp-nota { margin: 14px 0 0; font-size: clamp(15px, 1.6vw, 17px); line-height: 1.6; color: #fff; max-width: 600px; }
 
   .vp-flechas { display: flex; gap: 22px; margin: 30px 0 24px; color: #4da3ff; }
   .vp-flechas svg { animation: vp-baja 1.6s ease-in-out infinite; }
