@@ -1,0 +1,283 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: nawar-blue + white dots + soft vignette ---------- */
+    #f38-ground {
+      position: absolute; inset: 0;
+      background-color: #120081;
+      background-image:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 58%, rgba(4,0,40,0.36) 100%),
+        radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px),
+        radial-gradient(circle at 50% 46%, #025dc7 0%, #120081 74%);
+      background-size: 100% 100%, 28px 28px, 100% 100%;
+      background-position: 0 0, 14px 14px, 0 0;
+    }
+
+    /* ---------- camera: one quiet push under the whole frame ---------- */
+    #f38-world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 540px; }
+
+    /* soft ambient light behind the button / card (static, no bloom) */
+    #f38-glow {
+      position: absolute; left: 260px; top: 175px; width: 1400px; height: 600px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.22) 0%, rgba(77,163,255,0.08) 45%, rgba(77,163,255,0) 70%);
+    }
+
+    /* ---------- the contact card (button morphs into it) · 1360x220 at 280,365 ---------- */
+    #f38-card { position: absolute; left: 280px; top: 365px; width: 1360px; height: 220px; opacity: 0; }
+    #f38-card-clip { position: absolute; inset: 0; clip-path: inset(0px 0px 0px 0px round 28px); }
+    #f38-card-bg { position: absolute; inset: 0; border-radius: 28px; background-color: rgba(255,255,255,0.1); }
+    #f38-card-border {
+      position: absolute; inset: 0; border-radius: 28px; box-sizing: border-box;
+      border: 1.5px solid rgba(255,255,255,0.24);
+      box-shadow: 0 40px 110px rgba(4,0,40,0.34), inset 0 1px 0 rgba(255,255,255,0.16);
+    }
+    #f38-brand { position: absolute; left: 52px; top: 26px; width: 360px; height: 168px; }
+    #f38-brand-label {
+      position: absolute; left: 0; top: 0; width: 360px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; line-height: 1; letter-spacing: 0.16em;
+      text-transform: uppercase; color: rgba(255,255,255,0.72);
+    }
+    #f38-brand-logo { position: absolute; left: 0; top: 36px; width: 360px; height: 128.5px; display: block;
+      filter: drop-shadow(0 10px 18px rgba(4,0,40,0.35)); }
+    #f38-card-div { position: absolute; left: 460px; top: 50px; width: 2px; height: 120px; background: rgba(255,255,255,0.24); transform-origin: 50% 50%; }
+    #f38-title {
+      position: absolute; left: 508px; top: 0; height: 220px; display: flex; align-items: center; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 66px; line-height: 1; letter-spacing: -0.03em;
+      color: #FFFFFF; padding-top: 6px; box-sizing: border-box;
+    }
+    #f38-title-w { display: inline-block; }
+
+    /* ---------- the CTA button (1120 x 156 at 400,397 · centre 960,475) ---------- */
+    #f38-btnunit { position: absolute; left: 400px; top: 397px; width: 1120px; height: 156px; transform-origin: 560px 78px; }
+    #f38-btn {
+      position: absolute; inset: 0; border-radius: 999px; background: #FFFFFF; overflow: hidden;
+      box-shadow: 0 34px 90px rgba(4,0,40,0.42), 0 6px 16px rgba(4,0,40,0.18);
+    }
+    #f38-btn-txt {
+      position: absolute; left: 78px; top: 0; height: 156px; display: flex; align-items: center; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 66px; line-height: 1; letter-spacing: -0.025em;
+      color: #1D0084; padding-top: 6px; box-sizing: border-box;
+    }
+    .f38-bw { display: inline-block; margin-right: 0.24em; }
+    .f38-bw:last-child { margin-right: 0; }
+    #f38-bw3 { color: #0b6df0; }
+    /* press ripple, inside the button (real UI feedback) */
+    #f38-ripple {
+      position: absolute; left: 892px; top: -72px; width: 300px; height: 300px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(11,109,240,0.16) 0%, rgba(11,109,240,0.08) 55%, rgba(11,109,240,0) 72%);
+    }
+    /* one soft sheen across the button */
+    #f38-btn-glint {
+      position: absolute; left: 0; top: -30px; width: 240px; height: 216px;
+      background: linear-gradient(105deg, rgba(159,213,245,0) 20%, rgba(159,213,245,0.32) 50%, rgba(159,213,245,0) 80%);
+    }
+
+    /* orb: arrow -> phone; centre (1442,475) on the button, (1530,475) on the card */
+    #f38-orb {
+      position: absolute; left: 986px; top: 22px; width: 112px; height: 112px; border-radius: 50%;
+      background: #0b6df0; box-shadow: 0 10px 24px rgba(4,0,40,0.28);
+    }
+    #f38-arrow { position: absolute; left: 26px; top: 26px; width: 60px; height: 60px; display: block; }
+    #f38-phone { position: absolute; left: 30px; top: 30px; width: 52px; height: 52px; display: block; transform-origin: 50% 50%; }
+
+    /* ---------- cursor (macOS arrow; tip = hotspot at 1450,488) ---------- */
+    #f38-cursor { position: absolute; left: 1446px; top: 484px; width: 52px; height: 68px; transform-origin: 4px 4px; }
+    #f38-cursor svg { display: block; width: 52px; height: 68px; filter: drop-shadow(0 4px 8px rgba(4,0,40,0.35)); }
+
+    /* ---------- lead line under the button ---------- */
+    #f38-lead {
+      position: absolute; left: 0; top: 604px; width: 1920px; display: flex; justify-content: center; align-items: baseline;
+      white-space: nowrap; font-family: "Poppins", sans-serif; font-weight: 600; font-size: 50px; line-height: 1.2;
+      letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
+    }
+    .f38-lw { display: inline-block; margin-right: 0.26em; }
+    .f38-lw:last-child { margin-right: 0; }
+    .f38-lk { color: #FFFFFF; font-weight: 700; }
+
+    /* ---------- «Sin compromiso.» — clean outlined label ---------- */
+    #f38-label-row {
+      position: absolute; left: 0; top: 636px; width: 1920px; height: 112px; display: flex; justify-content: center; align-items: center;
+    }
+    #f38-label { position: relative; flex: none; }
+    #f38-label-line {
+      position: absolute; inset: 0; border-radius: 999px; box-sizing: border-box;
+      border: 2px solid rgba(255,255,255,0.5);
+    }
+    #f38-label-txt {
+      position: relative; display: flex; align-items: center; white-space: nowrap; padding: 24px 58px 18px;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 50px; line-height: 1; letter-spacing: -0.015em;
+      color: #FFFFFF;
+    }
+    .f38-sw { display: inline-block; }
+    #f38-sw1 { margin-right: 0.26em; color: rgba(255,255,255,0.72); }
+  </style>
+
+  <div id="root" data-composition-id="38-cta" data-width="1920" data-height="1080" data-duration="4.329">
+    <div id="f38-ground" class="clip" data-start="0" data-duration="4.329" data-track-index="0"></div>
+
+    <div id="f38-world">
+      <div id="f38-glow"></div>
+
+      <div id="f38-lead">
+        <span id="f38-lw1" class="f38-lw">en el</span>
+        <span id="f38-lw2" class="f38-lw f38-lk">siguiente</span>
+        <span id="f38-lw3" class="f38-lw f38-lk">paso</span>
+      </div>
+
+      <!-- contact card (the button morphs into it) -->
+      <div id="f38-card">
+        <div id="f38-card-clip">
+          <div id="f38-card-bg"></div>
+          <div id="f38-brand">
+            <div id="f38-brand-label">Equipo</div>
+            <img id="f38-brand-logo" src="assets/img/logo-nawar.png" alt="Nawar" />
+          </div>
+          <div id="f38-card-div"></div>
+          <div id="f38-title"><span id="f38-title-w">Te contactamos</span></div>
+        </div>
+        <div id="f38-card-border"></div>
+      </div>
+
+      <!-- CTA button -->
+      <div id="f38-btnunit">
+        <div id="f38-btn">
+          <div id="f38-ripple"></div>
+          <div id="f38-btn-txt">
+            <span id="f38-bw1" class="f38-bw">Completa</span>
+            <span id="f38-bw2" class="f38-bw">tu</span>
+            <span id="f38-bw3" class="f38-bw">matrícula</span>
+          </div>
+          <div id="f38-btn-glint"></div>
+        </div>
+        <div id="f38-orb">
+          <svg id="f38-arrow" viewBox="0 0 60 60" aria-hidden="true">
+            <path d="M14 30h31M33 18l12 12-12 12" fill="none" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <svg id="f38-phone" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" fill="none" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- «Sin compromiso.» -->
+      <div id="f38-label-row">
+        <div id="f38-label">
+          <div id="f38-label-line"></div>
+          <div id="f38-label-txt">
+            <span id="f38-sw1" class="f38-sw">Sin</span>
+            <span id="f38-sw2" class="f38-sw">compromiso.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- cursor -->
+      <div id="f38-cursor">
+        <svg viewBox="0 0 40 52" aria-hidden="true">
+          <path d="M3 3 L3 40.5 L12.6 31.6 L19.6 47.2 L26.8 44 L19.9 28.6 L32.6 28.6 Z" fill="#0C0C1E" stroke="#FFFFFF" stroke-width="2.6" stroke-linejoin="round" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 4.273;
+      // v3 cue table: Completa -0.03 · tu 0.35 · matrícula 0.46 · en 0.84 · el 0.90 · siguiente 1.01 · paso 1.38 ·
+      //               y 1.77 · contactamos 1.86 · contigo. 2.46 · Sin 3.07 · compromiso. 3.29
+
+      // =====================================================================
+      // Scene 1 (0.00–1.75) — RE-DROP: one confident button entrance; cursor clicks on "paso"
+      // =====================================================================
+      tl.fromTo(q("f38-btnunit"), { opacity: 0, scale: 1.1, y: 18, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 0);
+      tl.fromTo(q("f38-glow"), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0);
+
+      // button text builds on the voice: Completa (with the button) · tu 0.33 · matrícula 0.44
+      tl.fromTo(q("f38-bw2"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.26, ease: "power3.out" }, 0.33);
+      tl.fromTo(q("f38-bw3"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 0.44);
+      tl.fromTo(q("f38-btn-glint"), { x: -300 }, { x: 1300, duration: 0.7, ease: "power2.inOut" }, 0.62);
+
+      // lead: "en el" 0.80 · siguiente 0.97 · paso 1.34
+      const rise = (el, at) => tl.fromTo(el, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, at);
+      rise(q("f38-lw1"), 0.80);
+      rise(q("f38-lw2"), 0.97);
+      rise(q("f38-lw3"), 1.34);
+
+      // cursor glides in and clicks on "paso" (1.38)
+      const cur = q("f38-cursor");
+      tl.fromTo(cur, { x: 360, y: 280, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 0.5);
+      tl.fromTo(cur, { scale: 1 }, { scale: 0.88, duration: 0.06, ease: "power2.out" }, 1.35);
+      tl.fromTo(cur, { scale: 0.88 }, { scale: 1, duration: 0.16, ease: "power2.out", immediateRender: false }, 1.41);
+      const unit = q("f38-btnunit");
+      tl.fromTo(unit, { scale: 1 }, { scale: 0.975, duration: 0.07, ease: "power2.out", immediateRender: false }, 1.36);
+      tl.fromTo(unit, { scale: 0.975 }, { scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, 1.43);
+      tl.fromTo(q("f38-ripple"), { scale: 0, opacity: 1 }, { scale: 3.2, opacity: 0, duration: 0.6, ease: "power2.out" }, 1.37);
+
+      // =====================================================================
+      // Scene 2 (1.75–3.00) — the button MORPHS into the contact card; "Te contactamos" on "contactamos"
+      // =====================================================================
+      const M = 1.78, MD = 0.44;
+      tl.fromTo(q("f38-btn-txt"), { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(6px)", duration: 0.1, ease: "power1.in" }, M - 0.04);
+      tl.fromTo(q("f38-btn"), { opacity: 1 }, { opacity: 0, duration: 0.05, ease: "none" }, M);
+      tl.fromTo(q("f38-card"), { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, M);
+      tl.fromTo(q("f38-card-clip"), { clipPath: "inset(32px 120px 32px 120px round 78px)" },
+        { clipPath: "inset(0px 0px 0px 0px round 28px)", duration: MD, ease: "power3.inOut" }, M);
+      tl.fromTo(q("f38-card-bg"), { backgroundColor: "rgba(255,255,255,1)" },
+        { backgroundColor: "rgba(255,255,255,0.1)", duration: 0.2, ease: "power2.out" }, M + 0.01);
+      tl.fromTo(q("f38-card-border"), { opacity: 0 }, { opacity: 1, duration: 0.26, ease: "power1.out" }, M + 0.22);
+      // the orb rides to the card's right end (arrow -> phone)
+      tl.fromTo(q("f38-orb"), { x: 0, scale: 1 }, { x: 88, scale: 1.15, duration: MD, ease: "power3.inOut" }, M);
+      tl.fromTo(q("f38-arrow"), { opacity: 1, x: 0 }, { opacity: 0, x: 20, duration: 0.14, ease: "power1.in" }, M);
+      tl.fromTo(q("f38-phone"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 1.86);
+      // lead line and cursor give way to the widening card
+      tl.to(q("f38-lead"), { opacity: 0, y: -16, duration: 0.22, ease: "power2.in" }, M - 0.04);
+      tl.to(cur, { opacity: 0, x: 30, y: 30, duration: 0.2, ease: "power2.in" }, M - 0.04);
+
+      // "Te contactamos" lands on "contactamos" (1.86)
+      tl.fromTo(q("f38-title-w"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, 1.82);
+
+      // "contigo." (2.46): Equipo + logo signature
+      tl.fromTo(q("f38-card-div"), { scaleY: 0 }, { scaleY: 1, duration: 0.32, ease: "power3.out" }, 2.42);
+      tl.fromTo(q("f38-brand"), { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, 2.42);
+
+      // =====================================================================
+      // Scene 3 (3.00–4.27) — «Sin compromiso.» clean outlined label; hold
+      // =====================================================================
+      tl.fromTo(q("f38-label-line"), { opacity: 0, clipPath: "inset(0% 100% 0% 0% round 999px)" },
+        { opacity: 1, clipPath: "inset(0% 0% 0% 0% round 999px)", duration: 0.55, ease: "power2.out" }, 3.03);
+      tl.fromTo(q("f38-sw1"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 3.03);
+      tl.fromTo(q("f38-sw2"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, 3.25);
+
+      // macro camera: one quiet monotonic push under the whole frame
+      tl.fromTo(q("f38-world"), { scale: 1 }, { scale: 1.02, duration: D, ease: "power1.inOut" }, 0);
+
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.03, -0.03], [-0.0, 0.0], [0.346, 0.346], [0.457, 0.44], [0.842, 0.872], [0.897, 0.928], [1.007, 1.031], [1.383, 1.426], [1.768, 1.773], [1.856, 1.848], [2.457, 2.458], [3.071, 3.125], [3.291, 3.397], [4.273, 4.329]]);
+      window.__timelines["38-cta"] = tl;
+    })();
+  </script>
+</template>

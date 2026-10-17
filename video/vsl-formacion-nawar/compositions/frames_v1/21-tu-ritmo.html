@@ -1,0 +1,293 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script src="assets/vendor/MotionPathPlugin.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: nawar-blue + white dot grid + soft vignette ---------- */
+    #f21-ground {
+      position: absolute; inset: 0;
+      background-color: #120081;
+      background-image:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+      background-size: 100% 100%, 28px 28px, 100% 100%;
+    }
+
+    /* ---------- world (map) ---------- */
+    #f21-world { position: absolute; inset: 0; }
+    #f21-halo {
+      position: absolute; left: 430px; top: 400px; width: 1100px; height: 440px; opacity: 0;
+      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(77,163,255,0.30) 0%, rgba(77,163,255,0.12) 45%, rgba(77,163,255,0) 72%);
+    }
+    #f21-map { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+    .f21-label { font-family: "Inter", sans-serif; font-weight: 600; font-size: 26px; fill: #FFFFFF; }
+
+    .f21-ring {
+      position: absolute; width: 132px; height: 132px; border-radius: 50%; box-sizing: border-box; opacity: 0;
+    }
+    #f21-ring-n2 { left: 574px; top: 454px; border: 5px solid rgba(255,255,255,0.95); }
+    #f21-ring-n3 { left: 914px; top: 654px; border: 6px solid #4da3ff; box-shadow: 0 0 24px rgba(77,163,255,0.6); }
+
+    /* ---------- companions ---------- */
+    .f21-c { position: absolute; width: 80px; height: 80px; }
+    .f21-pop { position: absolute; inset: 0; }
+    .f21-cring { position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(255,255,255,0.85); box-sizing: border-box; opacity: 0; }
+    .f21-av {
+      position: absolute; left: 4px; top: 4px; width: 72px; height: 72px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -0.01em; line-height: 1;
+      box-shadow: 0 0 0 4px #FFFFFF, 0 14px 26px rgba(4,0,40,0.42);
+    }
+    .f21-av span { display: block; padding-top: 3px; }
+    .f21-av-vivid { background: #0b6df0; color: #FFFFFF; }
+    .f21-av-sky   { background: #9fd5f5; color: #1D0084; }
+    .f21-av-white { background: #FFFFFF; color: #1D0084; box-shadow: 0 0 0 4px #9fd5f5, 0 14px 26px rgba(4,0,40,0.42); }
+    .f21-av-light { background: #4da3ff; color: #1D0084; }
+    .f21-av-nl    { background: #21468C; color: #FFFFFF; }
+    .f21-av-ind   { background: #1D0084; color: #FFFFFF; }
+
+    /* ---------- TÚ ---------- */
+    #f21-tu-pos { position: absolute; left: 640px; top: 520px; width: 0; height: 0; }
+    #f21-tu-drop { position: absolute; left: -66px; top: -66px; width: 132px; height: 132px; opacity: 0; }
+    #f21-tu {
+      position: absolute; left: 6px; top: 6px; width: 120px; height: 120px; border-radius: 50%;
+      background: #FFFFFF; color: #1D0084;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 50px; letter-spacing: -0.03em; line-height: 1;
+      box-shadow: 0 0 0 6px #4da3ff, 0 0 46px 8px rgba(77,163,255,0.55), 0 24px 44px rgba(4,0,40,0.5);
+    }
+    #f21-tu span { display: block; padding-top: 6px; }
+
+    /* ---------- HUD pill ---------- */
+    #f21-pill {
+      position: absolute; left: 80px; top: 70px;
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 28px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; line-height: 1;
+      letter-spacing: 0.14em; text-transform: uppercase; color: #FFFFFF; white-space: nowrap;
+    }
+    #f21-pill svg { display: block; width: 26px; height: 16px; }
+
+    /* ---------- headline slot ---------- */
+    #f21-head { position: absolute; left: 80px; right: 80px; top: 140px; height: 300px; overflow: hidden; }
+    .f21-line {
+      position: absolute; left: 0; right: 0; top: 60px; height: 150px;
+      display: flex; justify-content: center; align-items: baseline; white-space: nowrap;
+    }
+    .f21-w { display: inline-block; will-change: transform, opacity; }
+    .f21-lead {
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 56px; line-height: 1;
+      letter-spacing: -0.01em; color: rgba(255,255,255,0.72); margin-right: 24px;
+    }
+    .f21-key {
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 120px; line-height: 1;
+      letter-spacing: -0.035em; color: #FFFFFF; margin-right: 30px;
+    }
+    .f21-key:last-child { margin-right: 0; }
+    #f21-w-tu {
+      background: #FFFFFF; color: #1D0084; border-radius: 22px; padding: 6px 30px 10px;
+      margin-right: 28px; box-shadow: 0 16px 36px rgba(4,0,40,0.38);
+    }
+    .f21-accent { color: #4da3ff; }
+  </style>
+
+  <div id="root" data-composition-id="21-tu-ritmo" data-width="1920" data-height="1080" data-duration="2.287">
+    <div id="f21-ground" class="clip" data-start="0" data-duration="2.287" data-track-index="0"></div>
+
+    <div id="f21-world">
+      <div id="f21-halo"></div>
+
+      <svg id="f21-map" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true">
+        <!-- road (shared geometry) -->
+        <path id="f21-road" d="M 120 840 C 210 830 250 790 300 760 C 420 690 500 520 640 520 C 780 520 840 720 980 720 C 1120 720 1180 470 1320 470 C 1460 470 1540 660 1640 660 C 1720 660 1760 620 1820 600"
+          fill="none" stroke="rgba(255,255,255,0.20)" stroke-width="14" stroke-linecap="round" />
+        <!-- progress: start -> N2 (handoff state) -->
+        <path id="f21-prog-a" d="M 120 840 C 210 830 250 790 300 760 C 420 690 500 520 640 520"
+          fill="none" stroke="#4da3ff" stroke-width="14" stroke-linecap="round" />
+        <!-- progress: N2 -> N3 (drawn behind TÚ) -->
+        <path id="f21-prog-b" d="M 640 520 C 780 520 840 720 980 720"
+          fill="none" stroke="#4da3ff" stroke-width="14" stroke-linecap="round"
+          style="stroke-dasharray: 406 2000; stroke-dashoffset: 406;" />
+
+        <!-- N1 done -->
+        <g transform="translate(300 760)">
+          <circle r="52" fill="#34D399" />
+          <path d="M -17 1 L -6 12 L 17 -12" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+        <!-- N2 done -->
+        <g transform="translate(640 520)">
+          <circle r="52" fill="#34D399" />
+          <path d="M -17 1 L -6 12 L 17 -12" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+        <!-- N3 open -->
+        <g transform="translate(980 720)">
+          <circle r="52" fill="#4da3ff" />
+          <g transform="translate(0 5)">
+            <path d="M 11 -6 V -22 A 11 11 0 0 0 -11 -22 V -17" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+            <rect x="-17" y="-6" width="34" height="28" rx="6" fill="#FFFFFF" />
+            <circle cx="0" cy="6" r="4" fill="#4da3ff" />
+          </g>
+        </g>
+        <!-- N4 locked -->
+        <g transform="translate(1320 470)">
+          <circle r="52" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" />
+          <g transform="translate(0 5)">
+            <path d="M -11 -6 V -15 A 11 11 0 0 1 11 -15 V -6" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="5" stroke-linecap="round" />
+            <rect x="-17" y="-6" width="34" height="28" rx="6" fill="rgba(255,255,255,0.6)" />
+          </g>
+        </g>
+        <!-- N5 locked -->
+        <g transform="translate(1640 660)">
+          <circle r="52" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" />
+          <g transform="translate(0 5)">
+            <path d="M -11 -6 V -15 A 11 11 0 0 1 11 -15 V -6" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="5" stroke-linecap="round" />
+            <rect x="-17" y="-6" width="34" height="28" rx="6" fill="rgba(255,255,255,0.6)" />
+          </g>
+        </g>
+
+        <!-- labels: centered 96px below each node centre -->
+        <text class="f21-label" x="300" y="856" text-anchor="middle" dominant-baseline="central">1 · Over jou</text>
+        <text class="f21-label" x="640" y="616" text-anchor="middle" dominant-baseline="central">2 · Familie &amp; vrienden</text>
+        <text class="f21-label" x="980" y="816" text-anchor="middle" dominant-baseline="central">3 · Eten en drinken</text>
+        <text class="f21-label" x="1320" y="566" text-anchor="middle" dominant-baseline="central">4 · Het werk</text>
+        <text class="f21-label" x="1640" y="756" text-anchor="middle" dominant-baseline="central">5 · Hobby's &amp; vrije tijd</text>
+      </svg>
+
+      <div class="f21-ring" id="f21-ring-n2"></div>
+      <div class="f21-ring" id="f21-ring-n3"></div>
+
+      <!-- companions (start positions; centre = left/top + 40) -->
+      <div class="f21-c" id="f21-c-LU" style="left:705.5px; top:481.4px"><div class="f21-cring" id="f21-cring-LU"></div><div class="f21-pop" id="f21-pop-LU"><div class="f21-av f21-av-nl"><span>LU</span></div></div></div>
+      <div class="f21-c" id="f21-c-PE" style="left:1139.3px; top:482.6px"><div class="f21-cring" id="f21-cring-PE"></div><div class="f21-pop" id="f21-pop-PE"><div class="f21-av f21-av-light"><span>PE</span></div></div></div>
+      <div class="f21-c" id="f21-c-SO" style="left:773.4px; top:541.1px"><div class="f21-cring" id="f21-cring-SO"></div><div class="f21-pop" id="f21-pop-SO"><div class="f21-av f21-av-white"><span>SO</span></div></div></div>
+      <div class="f21-c" id="f21-c-AN" style="left:1096px; top:559.8px"><div class="f21-cring" id="f21-cring-AN"></div><div class="f21-pop" id="f21-pop-AN"><div class="f21-av f21-av-ind"><span>AN</span></div></div></div>
+      <div class="f21-c" id="f21-c-MA" style="left:815.4px; top:623.5px"><div class="f21-cring" id="f21-cring-MA"></div><div class="f21-pop" id="f21-pop-MA"><div class="f21-av f21-av-vivid"><span>MA</span></div></div></div>
+      <div class="f21-c" id="f21-c-JL" style="left:1042.5px; top:632px"><div class="f21-cring" id="f21-cring-JL"></div><div class="f21-pop" id="f21-pop-JL"><div class="f21-av f21-av-sky"><span>JL</span></div></div></div>
+
+      <!-- TÚ -->
+      <div id="f21-tu-pos">
+        <div id="f21-tu-drop"><div id="f21-tu"><span>TÚ</span></div></div>
+      </div>
+    </div>
+
+    <!-- HUD pill (handoff state) -->
+    <div id="f21-pill">
+      <span>Formación Nawar A0</span>
+      <svg viewBox="0 0 26 16" aria-hidden="true"><path d="M 2 8 H 22 M 15 2 L 22 8 L 15 14" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      <span>A1</span>
+    </div>
+
+    <!-- kinetic headline -->
+    <div id="f21-head">
+      <div class="f21-line" id="f21-l1">
+        <span class="f21-w f21-key" id="f21-w-tu">Tú</span>
+        <span class="f21-w f21-lead" id="f21-w-marcas">marcas</span>
+        <span class="f21-w f21-lead" id="f21-w-el">el</span>
+        <span class="f21-w f21-key" id="f21-w-ritmo">ritmo</span>
+      </div>
+      <div class="f21-line" id="f21-l2">
+        <span class="f21-w f21-lead" id="f21-w-pero">pero</span>
+        <span class="f21-w f21-key f21-accent" id="f21-w-nunca">nunca</span>
+        <span class="f21-w f21-key" id="f21-w-vas">vas</span>
+        <span class="f21-w f21-key" id="f21-w-solo">solo</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      gsap.registerPlugin(MotionPathPlugin);
+      const tl = gsap.timeline({ paused: true });
+
+      // ===== Scene 1 — "Tú" slams onto node 2 (the cut's entrance move) =====
+      tl.fromTo("#f21-tu-drop", { scale: 2.7, filter: "blur(16px)" },
+        { scale: 1, filter: "blur(0px)", duration: 0.17, ease: "power2.in" }, 0.0);
+      tl.to("#f21-tu-drop", { opacity: 1, duration: 0.08, ease: "none" }, 0.02);
+      // landing squash + settle
+      tl.to("#f21-tu-drop", { scale: 0.9, duration: 0.05, ease: "power2.out" }, 0.171);
+      tl.to("#f21-tu-drop", { scale: 1, duration: 0.24, ease: "power3.out" }, 0.223);
+      // impact ring on node 2
+      tl.fromTo("#f21-ring-n2", { scale: 1, opacity: 0.95 },
+        { scale: 2.3, opacity: 0, duration: 0.5, ease: "power2.out", immediateRender: false }, 0.17);
+      // world micro-shake on impact
+      tl.fromTo("#f21-world", { y: 0 }, { y: 7, duration: 0.04, ease: "power1.out" }, 0.17);
+      tl.to("#f21-world", { y: -3, duration: 0.06, ease: "power1.inOut" }, 0.212);
+      tl.to("#f21-world", { y: 0, duration: 0.08, ease: "power1.out" }, 0.274);
+
+      // headline: "Tú" chip slams with the landing
+      tl.fromTo("#f21-w-tu", { opacity: 0, scale: 1.4, rotation: -1.5, filter: "blur(12px)" },
+        { opacity: 1, scale: 1, rotation: -1.5, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.1);
+
+      // ===== "marcas el ritmo" — TÚ travels N2 -> N3, drawing the progress line =====
+      const TRAVEL_AT = 0.24, TRAVEL_DUR = 0.44, TRAVEL_EASE = "power1.inOut";
+      tl.to("#f21-tu-pos", {
+        motionPath: { path: "M 0 0 C 140 0 200 200 340 200" },
+        duration: TRAVEL_DUR, ease: TRAVEL_EASE,
+      }, TRAVEL_AT);
+      tl.fromTo("#f21-prog-b", { strokeDashoffset: 406 },
+        { strokeDashoffset: 0, duration: TRAVEL_DUR, ease: TRAVEL_EASE }, TRAVEL_AT);
+
+      [["#f21-w-marcas", 0.22], ["#f21-w-el", 0.53]].forEach(([sel, t]) => {
+        tl.fromTo(sel, { opacity: 0, y: 36, filter: "blur(6px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, t);
+      });
+      tl.fromTo("#f21-w-ritmo", { opacity: 0, scale: 1.3, filter: "blur(12px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.62);
+
+      // arrival on node 3 ("ritmo")
+      const ARRIVE = TRAVEL_AT + TRAVEL_DUR;
+      tl.to("#f21-tu-drop", { scale: 0.92, duration: 0.05, ease: "power2.out" }, ARRIVE);
+      tl.to("#f21-tu-drop", { scale: 1, duration: 0.24, ease: "power3.out" }, ARRIVE + 0.052);
+      tl.fromTo("#f21-ring-n3", { scale: 1, opacity: 1 },
+        { scale: 2.2, opacity: 0, duration: 0.55, ease: "power2.out", immediateRender: false }, ARRIVE);
+
+      // ===== Scene 2 seam — line 1 rolls up, "pero nunca vas solo" rolls in =====
+      // fade finishes (1.11) before the words reach the slot's top mask, so nothing is sliced flat
+      tl.to("#f21-l1", { opacity: 0, duration: 0.08, ease: "power1.in" }, 1.03);
+      tl.to("#f21-l1", { y: -160, filter: "blur(8px)", duration: 0.14, ease: "power2.in" }, 1.03);
+      tl.fromTo("#f21-w-pero", { y: 290, filter: "blur(6px)" },
+        { y: 0, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, 1.09);
+      [["#f21-w-nunca", 1.29], ["#f21-w-vas", 1.7]].forEach(([sel, t]) => {
+        tl.fromTo(sel, { y: 290, filter: "blur(10px)" },
+          { y: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, t);
+      });
+      tl.fromTo("#f21-w-solo", { opacity: 0, scale: 1.3, filter: "blur(12px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 1.865);
+
+      // ===== companions pop around TÚ (nearest first, alternating ahead / behind), all advancing a bit =====
+      const SETTLE = 2.08;
+      const C = [
+        ["JL", 1.31,  27.0, -27.2],
+        ["MA", 1.385, 27.0,  22.6],
+        ["AN", 1.46,  24.0, -29.9],
+        ["SO", 1.535, 27.4,  27.2],
+        ["PE", 1.61,  26.2, -27.2],
+        ["LU", 1.685, 34.7,  25.0],
+      ];
+      C.forEach(([n, t, dx, dy]) => {
+        tl.fromTo("#f21-pop-" + n, { scale: 0, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.32, ease: "expo.out" }, t);
+        tl.fromTo("#f21-cring-" + n, { scale: 1, opacity: 0.8 },
+          { scale: 1.9, opacity: 0, duration: 0.45, ease: "power2.out", immediateRender: false }, t + 0.03);
+        tl.fromTo("#f21-c-" + n, { x: 0, y: 0 },
+          { x: dx, y: dy, duration: SETTLE - t, ease: "power1.out" }, t);
+      });
+      // TÚ advances with the group (path tangent at N3 is horizontal)
+      tl.fromTo("#f21-tu-drop", { x: 0 }, { x: 18, duration: 0.77, ease: "power1.out", immediateRender: false }, 1.31);
+      // "solo": the group is lit as one
+      tl.fromTo("#f21-halo", { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 0.42, ease: "power2.out" }, 1.87);
+
+      window.__timelines["21-tu-ritmo"] = tl;
+    })();
+  </script>
+</template>
