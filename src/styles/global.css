@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* El proyecto de Remotion (video/) no forma parte de la web */
+@source not "../../video";
 
 @theme {
   /* ─── Brand colors ─── */
