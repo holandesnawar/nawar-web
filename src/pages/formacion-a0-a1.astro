@@ -1,4 +1,5 @@
 ---
+import { PRECIO_FORMACION } from '../lib/precio'
 import Layout from '../layouts/Layout.astro'
 
 /* Sistema de diseño compartido de nawar-web — importado, no modificado */
@@ -46,8 +47,9 @@ export const prerender = true
 /* ─────────────────────────────────────────────────────────────
    AJUSTES RÁPIDOS
    ⚠️ CHECKOUT_URL sigue apuntando al enlace de pago de 297 €.
-      Hay que crear el enlace de 397 € en Stripe y pegarlo aquí
-      antes de mandar tráfico a esta página.
+      Hay que cambiarlo por el pago de la escuela antes de mandar
+      tráfico a esta página. El precio que se enseña sale de
+      src/lib/precio.ts.
    ⚠️ Los valores del desglose (el campo `valor` de cada línea, en
       PrecioSection y en StackValor) son una propuesta. El total, el
       precio tachado y el "te ahorras" se calculan solos a partir de
@@ -80,7 +82,7 @@ const WHATSAPP_MSG = 'Hola, tengo una duda sobre la Formación Nawar A0-A1'
 const WHATSAPP_URL = WHATSAPP
   ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSAPP_MSG)}`
   : ''
-const PRECIO = '397'
+const PRECIO = String(PRECIO_FORMACION)
 /* VALOR_TOTAL vivía aquí escrito a mano porque lo pintaba el precio
    tachado de la barra de móvil. Ese bloque salió del marcado cuando
    la barra pasó a llevar la cuenta atrás, así que la constante ya no
@@ -168,7 +170,7 @@ const incluidoEnPrecio = [
 
 const faqs = [
   {
-    q: '¿Por qué cuesta 397€?',
+    q: `¿Por qué cuesta ${PRECIO}€?`,
     a: 'Porque el precio incluye todo lo que has visto: el programa completo, las clases en directo, la comunidad, el soporte y el certificado. No hay extras ni pagos posteriores. Trabajamos con grupos pequeños en cada convocatoria porque es la única forma de acompañar de verdad a cada alumno.',
   },
   {
@@ -238,7 +240,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
 <Layout
   title={`Formación Nawar A0-A1 | Aprende neerlandés de verdad`}
-  description="La formación de neerlandés diseñada para hispanohablantes. +15 h de vídeo, ejercicios online, clase semanal en directo, comunidad y certificado. Acceso completo por 397 €."
+  description={`La formación de neerlandés diseñada para hispanohablantes. +15 h de vídeo, ejercicios online, clase semanal en directo, comunidad y certificado. Acceso completo por ${PRECIO} €.`}
   keywords="curso neerlandés online, formación neerlandés hispanohablantes, aprender holandés desde el español, inburgering, neerlandés A0 A1"
   noindex={true}
 >

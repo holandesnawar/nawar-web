@@ -1,4 +1,5 @@
 ---
+import { PRECIO_FORMACION } from '../../lib/precio'
 // Stack de valor — la sección central de una oferta tipo 100M Offers.
 // Cada componente lleva su valor individual y el total se ancla muy por
 // encima del precio.
@@ -26,7 +27,7 @@ const bonus = [
 ]
 
 const total = [...nucleo, ...bonus].reduce((a, b) => a + b.valor, 0)
-const precio = 397
+const precio = PRECIO_FORMACION
 const ahorro = total - precio
 const eur = (n: number) => n.toLocaleString('es-ES')
 const matriculaUrl = '/matricula-formacion-nawar'

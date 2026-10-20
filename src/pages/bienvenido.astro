@@ -92,6 +92,7 @@ export const prerender = false
 </Layout>
 
 <script>
+  import { PRECIO_FORMACION } from '../lib/precio'
   /* Purchase para Meta. Aquí sólo se llega cuando Stripe da el pago
      por bueno y redirige con ?session_id=cs_...
 
@@ -112,7 +113,7 @@ export const prerender = false
     ;(window as any).fbq?.(
       'track',
       'Purchase',
-      { value: 397, currency: 'EUR', content_name: 'Formación Nawar A0-A1' },
+      { value: PRECIO_FORMACION, currency: 'EUR', content_name: 'Formación Nawar A0-A1' },
       { eventID: sesion }
     )
   }

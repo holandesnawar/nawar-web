@@ -1,4 +1,5 @@
 ---
+import { PRECIO_FORMACION } from '../../lib/precio'
 // El cierre de la oferta, antes de las preguntas frecuentes.
 //
 // Esta lista vivía dentro de la sección de precio, al lado de la
@@ -24,7 +25,7 @@ const accesoIncluye = [
   'Todo lo que se añada al programa durante tus 6 meses, incluido',
 ]
 const bonusIncluye = 'Los 5 bonus de esta convocatoria, incluidos'
-const precio = '397'
+const precio = String(PRECIO_FORMACION)
 const matriculaUrl = '/matricula-formacion-nawar'
 /* La matrícula de la landing de anuncios: la que NO cobra. Va aparte
    porque la de arriba crea la sesión de pago y además redirige a la
