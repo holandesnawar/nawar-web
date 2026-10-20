@@ -203,9 +203,14 @@ export const LINEAS_ROJAS: { motivo: string; cruza: (r: Record<string, string>) 
   },
 ]
 
-/** Puede pagar (al contado o a plazos) y tiene al menos 2 horas a la semana. */
+/** Puede pagar y tiene al menos 2 horas a la semana. «Puede pagar» es al
+ *  contado, a plazos o «me cuesta, pero busco la forma» (20/10: se quedó
+ *  fuera alguien con esa respuesta, compromiso 5 de 5 y 2-4 horas, por la
+ *  línea roja de la curiosidad; el usuario decidió que esa respuesta cuenta
+ *  como poder pagar). */
+const PUEDE_PAGAR = new Set(['contado', 'plazos', 'busco'])
 export function puedeYTieneTiempo(r: Record<string, string>): boolean {
-  return (r.inversion === 'contado' || r.inversion === 'plazos') && !!r.horas && r.horas !== 'menos2'
+  return PUEDE_PAGAR.has(r.inversion) && !!r.horas && r.horas !== 'menos2'
 }
 
 /** Hasta dónde se guarda una respuesta abierta. */
