@@ -138,10 +138,10 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   import { leerUTM, guardarUTM } from '../../lib/utm'
   import { contextoDelLead } from '../../lib/recorrido'
   import { CLAVE_DATOS, CLAVE_POSICION, CLAVE_VIDEO, telefonoCompleto, type DatosAdmision } from '../../lib/admision'
-  import { marcarPaso, marcarVideo } from '../../lib/pasosEmbudo'
+  import { marcarPaso as pasoEmbudo, marcarVideo } from '../../lib/pasosEmbudo'
   guardarUTM()
   // KPIs del panel (20/10): cuántos entran, dejan sus datos y ven el vídeo.
-  marcarPaso('admision', 'visita')
+  pasoEmbudo('admision', 'visita')
 
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T
   const caja = $('ad-video')
@@ -211,7 +211,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   // pase por los dos). Terminar el vídeo, su propio evento.
   const pixel = (evento: 'datos' | 'video') => {
     const fbq = (window as any).fbq
-    if (evento === 'datos') marcarPaso('admision', 'datos')
+    if (evento === 'datos') pasoEmbudo('admision', 'datos')
     try {
       if (evento === 'datos') {
         if (sessionStorage.getItem('lead-agendar')) return
