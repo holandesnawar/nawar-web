@@ -138,7 +138,10 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   import { leerUTM, guardarUTM } from '../../lib/utm'
   import { contextoDelLead } from '../../lib/recorrido'
   import { CLAVE_DATOS, CLAVE_POSICION, CLAVE_VIDEO, telefonoCompleto, type DatosAdmision } from '../../lib/admision'
+  import { marcarPaso, marcarVideo } from '../../lib/pasosEmbudo'
   guardarUTM()
+  // KPIs del panel (20/10): cuántos entran, dejan sus datos y ven el vídeo.
+  marcarPaso('admision', 'visita')
 
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T
   const caja = $('ad-video')
@@ -208,6 +211,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   // pase por los dos). Terminar el vídeo, su propio evento.
   const pixel = (evento: 'datos' | 'video') => {
     const fbq = (window as any).fbq
+    if (evento === 'datos') marcarPaso('admision', 'datos')
     try {
       if (evento === 'datos') {
         if (sessionStorage.getItem('lead-agendar')) return
@@ -238,6 +242,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   })
 
   const videoTerminado = () => {
+    marcarVideo('admision', 100)
     if (estadoVideo !== 'visto') {
       estadoVideo = 'visto'
       guardar(CLAVE_VIDEO, 'visto')
@@ -289,6 +294,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     else if (t > tope) {
       tope = t
       if (tope - guardadoEn >= 2) { guardadoEn = tope; guardar(CLAVE_POSICION, Math.floor(tope)) }
+      if (duracion > 0) marcarVideo('admision', (tope / duracion) * 100)
     }
   }
   /** Desde dónde arranca el reproductor: donde lo dejó (un pelín antes, para

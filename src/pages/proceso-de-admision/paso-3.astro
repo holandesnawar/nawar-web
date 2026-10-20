@@ -286,7 +286,10 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
   import { contextoDelLead } from '../../lib/recorrido'
   import { CLAVE_DATOS, CLAVE_VIDEO, type DatosAdmision } from '../../lib/admision'
   import { nuevoEventId } from '../../lib/metaNavegador'
+  import { marcarPaso } from '../../lib/pasosEmbudo'
   guardarUTM()
+  // KPIs del panel (20/10): llegó al formulario de admisión.
+  marcarPaso('admision', 'formulario')
 
   const form = document.getElementById('ag-form') as HTMLFormElement
 
@@ -600,6 +603,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
     // conversiones, en /api/cualificacion): Meta lo cuenta una sola vez.
     const scheduleId = nuevoEventId('schedule')
     try { (window as any).fbq?.('track', 'Schedule', { content_name: 'Proceso de admisión' }, { eventID: scheduleId }) } catch {}
+    marcarPaso('admision', 'reserva')
     fetch('/api/cualificacion', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -648,6 +652,7 @@ const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boo
       const data = await res.json().catch(() => null)
       if (!res.ok || !data?.ok) throw new Error('no ok')
       try { (window as any).fbq?.('trackCustom', 'AdmisionCompletada', { apto: !!data.apto }) } catch {}
+      marcarPaso('admision', 'preguntas')
       if (data.apto) {
         abrirReserva()
       } else {

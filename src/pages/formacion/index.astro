@@ -616,8 +616,11 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
 <script>
   import { leerUTM, guardarUTM } from '../../lib/utm'
   import { contextoDelLead } from '../../lib/recorrido'
+  import { marcarPaso } from '../../lib/pasosEmbudo'
   import { CLAVE_DATOS, EMBUDO_WEB, LEAD_WEB, PIXEL_META, conLaEntrada, telefonoCompleto, type DatosAdmision } from '../../lib/admision'
   guardarUTM()
+  // Los KPIs del panel: cuántos entran y cuántos dejan sus datos (20/10).
+  marcarPaso('web', 'visita')
 
   const leer = <T,>(k: string): T | null => {
     try { const v = localStorage.getItem(k); return v ? (JSON.parse(v) as T) : null } catch { return null }
@@ -767,6 +770,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
           // `d=1`: por si el navegador no deja guardar nada (ventana
           // privada), que la página del vídeo no le devuelva aquí. Medio
           // segundo de margen para que salga el aviso del píxel.
+          marcarPaso('web', 'datos')
           setTimeout(() => { window.location.href = conLaEntrada(EMBUDO_WEB.video, { d: '1' }) }, guardado ? 500 : 150)
         })
     })
