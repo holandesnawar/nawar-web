@@ -236,7 +236,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
         <div class="fv-hero-texto">
           <span class="fv-badge-dark">Formación Nawar A0-A1<span class="fv-solo-pc" aria-hidden="true">·</span><span class="fv-solo-pc">Para hispanohablantes</span></span>
           <h1 class="fv-h1">
-            <span class="fv-grad">Aprende neerlandés desde cero y </span><span class="fv-h1-azul">deja de depender de otros</span><span class="fv-grad"> en Países Bajos</span>
+            Aprende neerlandés desde cero y deja de depender de otros en Países Bajos
           </h1>
           <p class="fv-hero-sub">
             Un programa de 16 semanas explicado en español, con clase en directo cada semana y un equipo que
@@ -867,18 +867,40 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     })
   }
 
-  // La barra fija del móvil: sale mientras el plan pasa por debajo de ella
-  // (una franja fina arriba de la pantalla) y se va al salir por arriba o
-  // por abajo. Un solo aviso y sin código en el scroll. Se mira el plan
-  // entero y no dos marcas sueltas: al saltar de golpe por encima de una
-  // marca, el navegador no avisa (nunca llegó a cruzar la pantalla).
+  // La barra de etapas del móvil se queda FIJA arriba al llegar a ella, como
+  // si fuera pegajosa (21/10: "debe quedarse fijo ese bloque y no que
+  // aparezca otro bloque fijo de arriba"; antes bajaba una copia
+  // deslizándose y se veían las dos). Sigue sin ser `position: sticky`, que
+  // en el iPhone tiembla (ver arriba): cuando la barra de la página llega a
+  // la línea de arriba se esconde y en su MISMO sitio sale la copia fija, sin
+  // animación. Se ve una sola barra que se queda quieta.
+  // Sin código en el scroll: dos IntersectionObserver (la barra cruzando la
+  // línea y el final del plan) y, cuando cualquiera avisa, se mira dónde está
+  // la barra de verdad. Si al saltar de golpe uno no avisa, avisa el otro.
   const fija = document.getElementById('fv-fases-fija') as HTMLElement
+  const barra = document.getElementById('fv-fases-barra') as HTMLElement
+  const plan = barra.parentElement as HTMLElement
+  let fijada = false
+  const colocar = () => {
+    const linea = fija.getBoundingClientRect().top
+    const alto = barra.offsetHeight
+    const ahora = alto > 0 && barra.getBoundingClientRect().top <= linea + 0.5 && plan.getBoundingClientRect().bottom > linea + alto
+    if (ahora === fijada) return
+    fijada = ahora
+    // La fila de etapas, donde estaba: que no salte al cambiar de una a otra.
+    const de = (ahora ? barra : fija).querySelector<HTMLElement>('.fv-fases-pills')
+    const a = (ahora ? fija : barra).querySelector<HTMLElement>('.fv-fases-pills')
+    if (de && a) a.scrollLeft = de.scrollLeft
+    fija.classList.toggle('visible', ahora)
+    barra.classList.toggle('oculta', ahora)
+    fija.setAttribute('aria-hidden', ahora ? 'false' : 'true')
+  }
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(([e]) => {
-      const ver = e.isIntersecting
-      fija.classList.toggle('visible', ver)
-      fija.setAttribute('aria-hidden', ver ? 'false' : 'true')
-    }, { rootMargin: '-70px 0px -88% 0px' }).observe(document.getElementById('fv-prog-plan') as HTMLElement)
+    const linea = Math.round(fija.getBoundingClientRect().top)
+    const alto = barra.offsetHeight || 70
+    new IntersectionObserver(colocar, { rootMargin: `-${linea}px 0px 0px 0px`, threshold: [0, 1] }).observe(barra)
+    new IntersectionObserver(colocar, { rootMargin: `-${linea + alto}px 0px 0px 0px`, threshold: [0, 1] }).observe(plan)
+    colocar()
   }
 
   marcar(fases[0].dataset.fase || '')
@@ -989,11 +1011,19 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   .fv-hero-texto { grid-area: texto; align-self: end; }
   .fv-hero-form { grid-area: form; }
   .fv-pruebas { grid-area: pruebas; align-self: start; }
+  /* El titular con el diseño del de la guía (.guide-title +
+     .text-gradient-white): Poppins 700 muy junta y el degradado de blanco a
+     45 %, UNA VEZ POR LÍNEA (background-size = una línea de alto), así cada
+     renglón brilla igual parta donde parta. Sin la parte en azul (21/10: "la
+     letra del título tiene que tener el mismo diseño"). */
   .fv-h1 {
     font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(36px, 4.5vw, 60px); font-weight: 700;
     line-height: 1.06; letter-spacing: -0.045em; margin: 4px 0 26px; color: #fff; text-wrap: balance;
+    padding-bottom: 0.1em;
+    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.45) 100%);
+    background-size: 100% 1.06em; background-repeat: repeat;
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   }
-  .fv-h1-azul { color: #4da3ff; }
   .fv-hero-sub { font-size: clamp(16.5px, 1.5vw, 19px); line-height: 1.65; color: #fff; margin: 0; max-width: 580px; }
   .fv-hero-sub strong { color: #fff; font-weight: 600; }
   .fv-pruebas {
@@ -1316,11 +1346,13 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-prog { grid-template-columns: minmax(0, 1fr); }
     .fv-prog-nav { display: none; }
     .fv-fases-barra { display: block; margin: 0 -24px 22px; padding: 12px 0 0; background: #120a5c; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    /* La copia fija: escondida por encima de la pantalla y baja al entrar en
-       el plan. Fondo sólido y nada de desenfoque. */
-    .fv-fases-fija { display: block; position: fixed; top: 0; left: 0; right: 0; z-index: 45; padding: 12px 0 0; background: #120a5c; border-bottom: 1px solid rgba(255,255,255,0.1);
-      transform: translateY(-110%); visibility: hidden; transition: transform .22s ease, visibility 0s .22s; }
-    .fv-fases-fija.visible { transform: none; visibility: visible; transition: transform .22s ease; }
+    /* La copia fija: igual que la barra de la página y en el sitio donde esa
+       llega arriba. Sale de golpe, sin animación, y la otra se esconde: se ve
+       una sola barra que se queda quieta (21/10). Fondo sólido y nada de
+       desenfoque. */
+    .fv-fases-fija { display: block; position: fixed; top: 0; left: 0; right: 0; z-index: 45; padding: 12px 0 0; background: #120a5c; border-bottom: 1px solid rgba(255,255,255,0.08); visibility: hidden; }
+    .fv-fases-fija.visible { visibility: visible; }
+    .fv-fases-barra.oculta { visibility: hidden; }
     .fv-fases-pills { position: relative; display: flex; gap: 8px; overflow-x: auto; padding: 0 24px 12px; scrollbar-width: none; overscroll-behavior-x: contain; }
     .fv-fases-pills::-webkit-scrollbar { display: none; }
     .fv-pill { flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; padding: 9px 15px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.16); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.8); font-size: 13.5px; font-weight: 600; text-decoration: none; white-space: nowrap; }
@@ -1360,7 +1392,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-solo-pc { display: none; }
     /* El titular parte en cinco renglones en el móvil y con 1,06 las tildes
        tocaban la línea de arriba (usuario, 08/10): más aire. */
-    .fv-h1 { font-size: clamp(32px, 8.8vw, 40px); line-height: 1.18; margin-bottom: 18px; }
+    .fv-h1 { font-size: clamp(32px, 8.8vw, 40px); line-height: 1.18; margin-bottom: 18px; background-size: 100% 1.18em; }
     .fv-hero-sub { font-size: 16px; line-height: 1.55; }
     /* «de cero a independiente» en su propio renglón: si no, se parte en
        "de / cero". Y la flecha de la metodología puede partir. */
@@ -1389,7 +1421,6 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-fase-temas { grid-template-columns: minmax(0, 1fr); }
     .fv-fases-barra { margin: 0 -24px 18px; }
     .fv-fases-pills { padding: 0 24px 12px; }
-    .fv-fases-fija { padding-top: 10px; }
     .fv-fase { padding: 24px 20px 20px; border-radius: 18px; }
     .fv-fase::before { left: 20px; right: 20px; }
     .fv-fase-promesa p { font-size: 15.5px; }
