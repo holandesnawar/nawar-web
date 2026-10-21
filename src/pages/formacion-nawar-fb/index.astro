@@ -1016,12 +1016,24 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
      45 %, UNA VEZ POR LÍNEA (background-size = una línea de alto), así cada
      renglón brilla igual parta donde parta. Sin la parte en azul (21/10: "la
      letra del título tiene que tener el mismo diseño"). */
+  /* ⚠️ Las colas de la y, j, p (21/10, "mira cómo no termina su efecto"): con
+     el degradado de la guía repetido justo al alto de la línea, la cola de cada
+     letra se mete en el renglón de abajo y allí el degradado vuelve a empezar
+     en blanco: la cola salía cortada con un trozo blanco. En la guía no se ve
+     porque su titular no tiene ninguna de esas letras.
+     Medido con la Poppins 700 (alto 1,05 + 0,35 em; colas 0,27 em por debajo
+     de la línea base; tilde de la é a 0,84 em por encima): con 1,14 de
+     interlineado la cola baja 0,05 em en el renglón siguiente y la tilde
+     empieza a 0,08 em. Así el degradado de cada renglón empieza apagado en esa
+     franja (lo que llega de la cola de arriba), se pone blanco justo donde
+     empiezan la tilde y las letras altas, y baja al 45 % en la línea base. Si
+     se cambia el interlineado, rehacer estas cuentas. */
   .fv-h1 {
     font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(36px, 4.5vw, 60px); font-weight: 700;
-    line-height: 1.06; letter-spacing: -0.045em; margin: 4px 0 26px; color: #fff; text-wrap: balance;
+    line-height: 1.14; letter-spacing: -0.045em; margin: 4px 0 26px; color: #fff; text-wrap: balance;
     padding-bottom: 0.1em;
-    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.45) 100%);
-    background-size: 100% 1.06em; background-repeat: repeat;
+    background: linear-gradient(180deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 0.05em, #fff 0.08em, rgba(255,255,255,0.45) 0.98em);
+    background-size: 100% 1.14em; background-repeat: repeat;
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   }
   .fv-hero-sub { font-size: clamp(16.5px, 1.5vw, 19px); line-height: 1.65; color: #fff; margin: 0; max-width: 580px; }
@@ -1392,7 +1404,9 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-solo-pc { display: none; }
     /* El titular parte en cinco renglones en el móvil y con 1,06 las tildes
        tocaban la línea de arriba (usuario, 08/10): más aire. */
-    .fv-h1 { font-size: clamp(32px, 8.8vw, 40px); line-height: 1.18; margin-bottom: 18px; background-size: 100% 1.18em; }
+    /* Con 1,18 la cola baja 0,03 em y la tilde empieza a 0,10 em (ver arriba). */
+    .fv-h1 { font-size: clamp(32px, 8.8vw, 40px); line-height: 1.18; margin-bottom: 18px; background-size: 100% 1.18em;
+      background-image: linear-gradient(180deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 0.04em, #fff 0.09em, rgba(255,255,255,0.45) 1.02em); }
     .fv-hero-sub { font-size: 16px; line-height: 1.55; }
     /* «de cero a independiente» en su propio renglón: si no, se parte en
        "de / cero". Y la flecha de la metodología puede partir. */
