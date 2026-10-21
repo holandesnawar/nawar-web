@@ -924,7 +924,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 18px;
   }
   .fv-badge { background: linear-gradient(135deg, #d6effc 0%, #9fd5f5 100%); color: #1D0084; }
-  .fv-badge-dark { background: rgba(77,163,255,0.12); border: 1px solid rgba(77,163,255,0.32); color: #cfe6ff; }
+  .fv-badge-dark { background: #025dc7; border: 1px solid rgba(77,163,255,0.2); color: #e0f2ff; }
   .fv-h2 {
     font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(28px, 3.9vw, 44px); font-weight: 600;
     line-height: 1.14; letter-spacing: -0.024em; color: #1D0084; margin: 0 0 16px; text-wrap: balance;
@@ -956,16 +956,16 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   .fv-cab-izq .fv-lead { margin: 0; }
   .fv-dots { position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 28px 28px; }
 
-  /* El fondo por capas de la marca (cabecera y cierre): dos luces, la malla
-     de 78 px con máscara y la trama de puntos. Un degradado liso "se lee
-     plantilla". */
+  /* El fondo de la cabecera y del cierre: el MISMO de la guía y la home
+     (.hero-glow1, .hero-glow2 y .dots-dark de nawar-sections.css). Antes
+     llevaba luces más fuertes y una malla de 78 px, y en el móvil se veía
+     otro azul que el de la guía (usuario, 21/10). */
   .fv-capas { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
   .fv-capas span { position: absolute; }
-  .fv-luz1 { top: -260px; right: -200px; width: 900px; height: 760px; background: radial-gradient(closest-side, rgba(11,109,240,0.55), transparent); }
-  .fv-luz2 { bottom: -320px; left: -260px; width: 820px; height: 680px; background: radial-gradient(closest-side, rgba(77,163,255,0.20), transparent); }
-  .fv-malla { inset: 0; background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 78px 78px;
-    -webkit-mask-image: radial-gradient(ellipse 60% 70% at 72% 30%, #000 0%, transparent 72%); mask-image: radial-gradient(ellipse 60% 70% at 72% 30%, #000 0%, transparent 72%); }
-  .fv-capas .fv-dots { inset: 0; opacity: 0.6; }
+  .fv-luz1 { top: -120px; right: -80px; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(11,109,240,0.40) 0%, transparent 65%); }
+  .fv-luz2 { bottom: -200px; left: -100px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(11,109,240,0.18) 0%, transparent 65%); }
+  .fv-malla { display: none; }
+  .fv-capas .fv-dots { inset: 0; }
 
   /* ── Cabecera ───────────────────────────────────────────────────────── */
   .fv-hero { position: relative; background: #1D0084; color: #fff; overflow: clip; padding: 0 24px 96px; }
@@ -984,10 +984,10 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   .fv-pruebas { grid-area: pruebas; align-self: start; }
   .fv-h1 {
     font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(36px, 4.5vw, 60px); font-weight: 700;
-    line-height: 1.06; letter-spacing: -0.034em; margin: 4px 0 26px; color: #fff; text-wrap: balance;
+    line-height: 1.06; letter-spacing: -0.045em; margin: 4px 0 26px; color: #fff; text-wrap: balance;
   }
   .fv-h1-azul { color: #4da3ff; }
-  .fv-hero-sub { font-size: clamp(16.5px, 1.5vw, 19px); line-height: 1.65; color: rgba(255,255,255,0.92); margin: 0; max-width: 580px; }
+  .fv-hero-sub { font-size: clamp(16.5px, 1.5vw, 19px); line-height: 1.65; color: #fff; margin: 0; max-width: 580px; }
   .fv-hero-sub strong { color: #fff; font-weight: 600; }
   .fv-pruebas {
     list-style: none; margin: 34px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1344,15 +1344,17 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
 
   /* ── Móvil ──────────────────────────────────────────────────────────── */
   @media (max-width: 640px) {
-    .fv-sec { padding: 76px 16px; }
-    .fv-hero { padding: 0 16px 56px; }
+    /* 24 px a los lados, como el pie de página y el logo de la barra
+       (21/10: con 16 "hay demasiado poco margen"). */
+    .fv-sec { padding: 76px 24px; }
+    .fv-hero { padding: 0 24px 56px; }
     .fv-hero { padding-top: 72px; }
     .fv-badge-dark { font-size: 10px; letter-spacing: 0.12em; }
     .fv-solo-pc { display: none; }
     /* El titular parte en cinco renglones en el móvil y con 1,06 las tildes
        tocaban la línea de arriba (usuario, 08/10): más aire. */
     .fv-h1 { font-size: clamp(32px, 8.8vw, 40px); line-height: 1.18; margin-bottom: 18px; }
-    .fv-hero-sub { font-size: 16px; }
+    .fv-hero-sub { font-size: 16px; line-height: 1.55; }
     /* «de cero a independiente» en su propio renglón: si no, se parte en
        "de / cero". Y la flecha de la metodología puede partir. */
     .fv-salto-movil { display: block; }
@@ -1373,20 +1375,20 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
     .fv-noes { flex-direction: column; align-items: flex-start; }
     .fv-noes ul { flex-direction: column; align-items: flex-start; gap: 8px; }
     .fv-comp { padding: 36px 22px; border-radius: 22px; }
-    .fv-comp-sec { padding-left: 12px; padding-right: 12px; padding-top: 0; }
+    .fv-comp-sec { padding-left: 24px; padding-right: 24px; padding-top: 0; }
     .fv-cert-tres { grid-template-columns: minmax(0, 1fr); }
     .fv-cert-tres div, .fv-cert-tres div + div { padding: 14px 0 0; border-left: 0; }
     .fv-cert-tres div + div { border-top: 1px solid rgba(255,255,255,0.09); margin-top: 14px; }
     .fv-fase-temas { grid-template-columns: minmax(0, 1fr); }
-    .fv-fases-barra { margin: 0 -16px 18px; }
-    .fv-fases-pills { padding: 0 16px 12px; }
+    .fv-fases-barra { margin: 0 -24px 18px; }
+    .fv-fases-pills { padding: 0 24px 12px; }
     .fv-fases-fija { padding-top: 10px; }
     .fv-fase { padding: 24px 20px 20px; border-radius: 18px; }
     .fv-fase::before { left: 20px; right: 20px; }
     .fv-fase-promesa p { font-size: 15.5px; }
     .fv-fase-n { font-size: 44px; }
     .fv-fase h3 { font-size: 21px; }
-    .fv-cierre { padding: 80px 16px 40px; }
+    .fv-cierre { padding: 80px 24px 40px; }
     .fv-cierre .fv-h2 { margin-bottom: 34px; }
     .fv-pasos { grid-template-columns: minmax(0, 1fr); gap: 22px; text-align: left; }
     /* En columna, el hilo va de bola a bola y no pasa del 3. */
