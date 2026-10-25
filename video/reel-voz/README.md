@@ -36,9 +36,10 @@ python3 reel_voz.py voices                            # las voces de tu cuenta
   alguna, corrígela ahí y vuelve a lanzar `tts` y `mix`: el fichero manda sobre el OCR.
 - **Pronunciación.** Si la voz pronuncia mal una palabra, escribe cómo debe sonar después de una barra:
   `het wc-papier | het weesee-papier`.
-- **Repetir solo una palabra.** `python3 reel_voz.py tts --work trabajo/ --solo 11,17 ...` genera de nuevo solo esas
-  palabras (por su número en `palabras.txt`), en un fichero aparte. Las demás y la frase se quedan como estaban, y
-  luego basta con `mix`.
+- **Repetir solo una palabra.** `python3 reel_voz.py tts --work trabajo/ --solo 11,17` genera de nuevo solo esas
+  palabras (por su número en `palabras.txt`), en un fichero aparte. Usa la misma voz, modelo y velocidad que la toma,
+  que quedan guardados en `trabajo/voz.json`. Las demás palabras y la frase se quedan como estaban, y luego basta con
+  `mix`.
 - **Voces y frase.** Se eligen con `--voz-es` / `--voz-nl` (nombre o id; o con las variables `ELEVENLABS_VOICE_ES` /
   `ELEVENLABS_VOICE_NL`). La frase se cambia con `--frase "¿Sabes decir esto en neerlandés?"`, el modelo con
   `--modelo` (por defecto `eleven_multilingual_v2`).
@@ -49,9 +50,11 @@ python3 reel_voz.py voices                            # las voces de tu cuenta
   así que cambiarla no gasta créditos. El parámetro de velocidad de ElevenLabs (`--velocidad` en `tts`) no es fiable
   para esto: con 0,9 la frase salió más lenta, pero las palabras de la lista salieron más rápidas y solo se alargaron
   las pausas.
-- **Colocación.** La primera palabra espera a que termine la frase. Las demás entran 0,1 s después de que se ilumine su
-  etiqueta. Cada corte empieza y acaba donde hay sonido de verdad, no solo donde ElevenLabs dice que van las letras
-  (a veces se desvía ~0,1 s), así que no se come el principio de ninguna palabra.
+- **Colocación.** La primera palabra espera a que termine la frase. Las demás se empiezan a oír 0,12 s después de que
+  se ilumine su etiqueta.
+  - El momento se mide en el sonido, no en los tiempos de letra de ElevenLabs, que a veces se desvían ~0,1 s.
+  - Cada corte empieza y acaba donde hay voz de verdad, así que no se come el principio ni el final de ninguna
+    palabra.
 
 Necesita ffmpeg, python3 con `numpy`, `opencv-python` y `pytesseract`, y tesseract con el idioma neerlandés
 (`apt install tesseract-ocr tesseract-ocr-nld`).
