@@ -9,8 +9,9 @@ naranja, y las etiquetas se iluminan una tras otra. `reel_voz.py` le pone la voz
    - todas las palabras en neerlandés en una sola llamada (`/with-timestamps`).
 
    Cada palabra se recorta con los tiempos de sus letras, así todas tienen la misma voz y la misma entonación.
-3. **mix** coloca la frase al principio y cada palabra cuando se ilumina su etiqueta. La música original del reel baja
-   3 dB mientras suena la voz y la voz queda a −16 LUFS. La imagen no se toca.
+3. **mix** coloca la frase al principio y cada palabra cuando se ilumina su etiqueta. La música original del reel queda
+   de fondo a un nivel fijo, con los picos en −16 dB, como al bajarla en el editor. La voz queda a −16 LUFS. La imagen
+   no se toca.
 
 ## Uso
 
@@ -34,7 +35,9 @@ python3 reel_voz.py voices                            # las voces de tu cuenta
   `het wc-papier | het weesee-papier`.
 - **Voces y frase.** Se eligen con `--voz-es` / `--voz-nl` (nombre o id; o con las variables `ELEVENLABS_VOICE_ES` /
   `ELEVENLABS_VOICE_NL`). La frase se cambia con `--frase "¿Sabes decir esto en neerlandés?"`, el modelo con
-  `--modelo` (por defecto `eleven_multilingual_v2`) y lo que baja la música con `--duck` (en dB).
+  `--modelo` (por defecto `eleven_multilingual_v2`).
+- **Música.** `--musica -18` la deja más baja y `--musica -14` más alta (es el dB de sus picos). Con `--duck -3`, además,
+  baja 3 dB cada vez que suena la voz.
 - **Colocación.** La primera palabra espera a que termine la frase. Las demás entran 0,1 s después de que se ilumine su
   etiqueta.
 

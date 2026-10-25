@@ -7,8 +7,8 @@ El reel es una cuadrícula de dibujos con su palabra en una etiqueta; las etique
                palabras en neerlandés en una sola llamada (/with-timestamps); cada palabra se recorta con los tiempos
                de sus letras, así suenan con la misma voz y entonación.
   3. mix     — coloca cada palabra cuando se ilumina su etiqueta (la frase, al principio, y la primera palabra justo
-               después), baja un poco la música original mientras habla la voz, deja la voz a −16 LUFS y exporta el
-               vídeo (la imagen no se toca).
+               después), deja la música original de fondo a un nivel fijo (picos en −16 dB, como bajarla en el
+               editor), la voz a −16 LUFS, y exporta el vídeo (la imagen no se toca).
 
   python3 reel_voz.py all  REEL.mp4 --work trabajo/ --out REEL-voz.mp4
   python3 reel_voz.py detect REEL.mp4 --work trabajo/        # solo detectar (revisa trabajo/deteccion.jpg y palabras.txt)
@@ -208,11 +208,13 @@ def lufs_of(x, sr=48000):
     return float(re.findall(r"I:\s+(-?[\d.]+) LUFS", p.stderr.decode())[-1])
 
 
-def mix(video, work, out, lead=0.1, gap=0.2, duck_db=-3.0, voice_lufs=-16.0, phrase_at=0.15):
+def mix(video, work, out, lead=0.1, gap=0.2, music_db=-16.0, duck_db=0.0, voice_lufs=-16.0, phrase_at=0.15):
     sr = 48000
     items = json.load(open(os.path.join(work, "deteccion.json")))["items"]
     cuts = json.load(open(os.path.join(work, "cortes_nl.json")))
-    music = load_audio(video)
+    has_music = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "a", "-show_entries", "stream=index", "-of", "csv=p=0", video],
+                               capture_output=True, text=True).stdout.strip()
+    music = load_audio(video) if has_music else np.zeros((int(round(probe(video)[3] * sr)), 2), np.float32)
     nl = load_audio(os.path.join(work, "palabras_nl.mp3")); es = load_audio(os.path.join(work, "frase_es.mp3"))
     voice = np.zeros_like(music)
     def put(clip, t):
@@ -231,13 +233,20 @@ def mix(video, work, out, lead=0.1, gap=0.2, duck_db=-3.0, voice_lufs=-16.0, phr
         t = max(it["start"] + lead, t_free)
         spans.append(put(clip, t)); t_free = t + len(clip) / sr + 0.05
         plan.append((c["word"], it["start"], round(t, 3)))
-    # loudness: the voice to voice_lufs; the original track ducked under it with short ramps
+    # loudness: the voice to voice_lufs; the original track at one fixed background level, its peaks at music_db
+    # (what setting the music to −16 dB in an editor does to a normal track); optionally ducked under the voice
     g = 10 ** ((voice_lufs - lufs_of(voice)) / 20); voice *= g
-    env = np.ones(len(music), np.float32); r = int(0.2 * sr); d = 10 ** (duck_db / 20)
-    for a, b in spans:
-        env[max(0, a - r):b + r] = np.minimum(env[max(0, a - r):b + r], d)
-    env = np.convolve(env, np.ones(r) / r, mode="same").astype(np.float32)
-    mixd = music * env[:, None] + voice
+    peak = float(np.abs(music).max())
+    if peak > 1e-5:
+        music *= 10 ** (music_db / 20) / peak
+        print(f"música: picos de {20 * np.log10(peak):.1f} a {music_db:.1f} dB ({music_db - 20 * np.log10(peak):+.1f} dB), nivel fijo")
+    if duck_db < 0:
+        env = np.ones(len(music), np.float32); r = int(0.2 * sr); d = 10 ** (duck_db / 20)
+        for a, b in spans:
+            env[max(0, a - r):b + r] = np.minimum(env[max(0, a - r):b + r], d)
+        env = np.convolve(np.pad(env, (r // 2, r - r // 2 - 1), mode="edge"), np.ones(r) / r, mode="valid").astype(np.float32)
+        music *= env[:, None]
+    mixd = music + voice
     wav = os.path.join(work, "mezcla.wav")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", "-", "-af", "alimiter=limit=0.89:level=false", wav],
                    input=mixd.astype(np.float32).tobytes(), check=True)
@@ -263,7 +272,8 @@ def main():
             p.add_argument("--frase", default=DEFAULT_PHRASE)
         if name in ("mix", "all"):
             p.add_argument("--out", required=True)
-            p.add_argument("--duck", type=float, default=-3.0, help="dB que baja la música original mientras suena la voz")
+            p.add_argument("--musica", type=float, default=-16.0, help="nivel de la música original: dB de sus picos (−16 = de fondo)")
+            p.add_argument("--duck", type=float, default=0.0, help="dB que baja además la música mientras suena la voz (0 = no baja)")
     sub.add_parser("voices")
     a = ap.parse_args()
     if a.cmd == "voices":
@@ -273,7 +283,7 @@ def main():
         return
     if a.cmd in ("detect", "all"): detect(a.video, a.work)
     if a.cmd in ("tts", "all"): generate(a.work, a.voz_es, a.voz_nl, a.modelo, a.frase)
-    if a.cmd in ("mix", "all"): mix(a.video, a.work, a.out, duck_db=a.duck)
+    if a.cmd in ("mix", "all"): mix(a.video, a.work, a.out, music_db=a.musica, duck_db=a.duck)
 
 
 if __name__ == "__main__":
