@@ -251,7 +251,7 @@ def mix(video, work, out, lead=0.1, gap=0.2, music_db=-16.0, duck_db=0.0, voice_
         music *= env[:, None]
     mixd = music + voice
     wav = os.path.join(work, "mezcla.wav")
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", "-", "-af", "alimiter=limit=0.89:level=false:latency=1", wav],
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", "-", "-af", "alimiter=limit=0.79:level=false:latency=1", wav],
                    input=mixd.astype(np.float32).tobytes(), check=True)
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", video, "-i", wav, "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
                     "-movflags", "+faststart", "-shortest", out], check=True)
