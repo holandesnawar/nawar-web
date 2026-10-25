@@ -1,0 +1,29 @@
+{
+ "vo_offset": 0.4,
+ "total": 202.92,
+ "stop": 97.7,
+ "drop": 100.92,
+ "redrop": 187.32,
+ "final_hit": 199.32,
+ "breakdown": 168.12,
+ "riser": 182.52,
+ "pre_bar0": -0.7,
+ "bar": 2.4,
+ "segments": [
+  {
+   "from": 0,
+   "to": 97.34,
+   "shift": 0.4
+  },
+  {
+   "from": 97.34,
+   "to": 99.95,
+   "shift": 0.78
+  },
+  {
+   "from": 99.95,
+   "to": 194.4,
+   "shift": 5.01
+  }
+ ]
+}

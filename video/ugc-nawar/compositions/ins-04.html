@@ -1,0 +1,123 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .i4-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .i4-paper { background: #F5F7FF; }
+    .i4-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .i4-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i4-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .i4-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i4-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .i4-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .i4-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    .i4-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
+    .i4-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    .i4-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .i4-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .i4-pill svg { display: block; width: 28px; height: 28px; }
+    .i4-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .i4-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .i4-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .i4-flag svg { display: block; width: 40px; height: 27px; }
+    .i4-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .i4-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+    .i4-av svg { display: block; width: 96px; height: 96px; }
+    .i4-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .i4-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .i4-bub-g { background: #E8ECF7; color: #374151; }
+    .i4-bub-b { background: #0b6df0; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .i4-bl { border-bottom-left-radius: 10px; }
+    .i4-br { border-bottom-right-radius: 10px; }
+    .i4-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .i4-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .i4-acc { color: #4da3ff; }
+    .i4-w { display: inline-block; }
+
+    #i4-h1 { top: 200px; }
+    #i4-h2 { top: 312px; }
+    .i4-card { position: absolute; left: 80px; top: 488px; width: 920px; border-radius: 34px; background: #F1F2F8; transform-origin: 50% 0%;
+      box-shadow: 0 40px 100px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.22); }
+    .i4-in { position: absolute; left: 30px; top: 30px; width: 860px; overflow: hidden; border-radius: 20px; background: #FFFFFF;
+      box-shadow: 0 0 0 1px rgba(29,0,132,0.07); }
+    #i4-cl { height: 421.1px; } #i4-cl .i4-in { height: 361.1px; }
+    #i4-ce { height: 387.6px; } #i4-ce .i4-in { height: 327.6px; }
+    #i4-co { height: 381.7px; } #i4-co .i4-in { height: 321.7px; }
+    #i4-il { position: absolute; left: -133.5px; top: -153.2px; width: 1120.4px; height: 791.6px; display: block; }
+    #i4-ve { position: absolute; left: -577.2px; top: 0.0px; width: 1675.1px; height: 672.8px; }
+    #i4-io { position: absolute; left: -35.6px; top: -10.6px; width: 915.9px; height: 520.0px; display: block; }
+    #i4-skills { top: 1000px; gap: 18px; }
+    .i4-sk { display: flex; align-items: center; gap: 12px; height: 70px; padding: 0 28px 0 16px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 31px; line-height: 1; }
+    .i4-ic { position: relative; width: 44px; height: 44px; }
+    .i4-ic svg { position: absolute; left: 0; top: 0; width: 44px; height: 44px; }
+    .i4-ok { opacity: 0; }
+    #i4-test { top: 1100px; }
+    #i4-tp { position: relative; display: flex; align-items: center; gap: 12px; height: 62px; padding: 0 26px 0 18px; border-radius: 999px;
+      background: rgba(255,255,255,0.08); border: 1px dashed rgba(255,255,255,0.35); color: rgba(255,255,255,0.72); white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; letter-spacing: 0.12em; }
+    .i4-opt { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.45); font-size: 20px; letter-spacing: 0; }
+    #i4-strike { position: absolute; left: -10px; top: 28px; width: calc(100% + 20px); height: 7px; border-radius: 4px; background: #E02D3C; transform-origin: 0% 50%; }
+
+  </style>
+  <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="3.857">
+    <div class="i4-full i4-blue"><div class="i4-blue-dots"></div><div class="i4-blue-amb"></div><div class="i4-blue-vig"></div></div>
+    <div id="i4-h1" class="i4-h1">Ejercicios</div>
+    <div id="i4-h2" class="i4-h1"><span id="i4-chip" class="i4-chip">de verdad</span></div>
+    <div id="i4-cl" class="i4-card"><div class="i4-in"><img id="i4-il" src="assets/img/ui-lezen-texto.png" alt="" /></div></div>
+    <div id="i4-ce" class="i4-card"><div class="i4-in"><video id="i4-ve" class="clip" src="assets/video/completa-frase.mp4" muted playsinline data-start="0.556" data-duration="3.381" data-media-start="5.6" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video></div></div>
+    <div id="i4-co" class="i4-card"><div class="i4-in"><img id="i4-io" src="assets/img/ui-luisteren-audio.png" alt="" /></div></div>
+    <div id="i4-skills" class="i4-row"><div id="i4-s1" class="i4-sk"><div class="i4-ic"><div id="i4-n1"><svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="currentColor" stroke-width="4.2"/></svg></div><div id="i4-k1" class="i4-ok"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span>Leer</span></div><div id="i4-s2" class="i4-sk"><div class="i4-ic"><div id="i4-n2"><svg viewBox="0 0 48 48"><path d="M10 38 L12 30 L32 10 L38 16 L18 36 Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/><path d="M28 14 L34 20" stroke="currentColor" stroke-width="4.2"/></svg></div><div id="i4-k2" class="i4-ok"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span>Escribir</span></div><div id="i4-s3" class="i4-sk"><div class="i4-ic"><div id="i4-n3"><svg viewBox="0 0 48 48"><path d="M10 29 V24 A14 14 0 0 1 38 24 V29" fill="none" stroke="currentColor" stroke-width="4.2"/><rect x="7" y="27" width="9" height="13" rx="4" fill="currentColor"/><rect x="32" y="27" width="9" height="13" rx="4" fill="currentColor"/></svg></div><div id="i4-k3" class="i4-ok"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span>Escuchar</span></div></div>
+    <div id="i4-test" class="i4-row"><div id="i4-tp"><span class="i4-opt">A</span><span class="i4-opt">B</span><span class="i4-opt">C</span><span class="i4-opt">D</span><span>TIPO TEST</span><div id="i4-strike"></div></div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("i4-" + id);
+
+      tl.fromTo(q("h1"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);
+      tl.fromTo(q("chip"), { opacity: 0, scale: 0.7, rotation: -1.5 }, { opacity: 1, scale: 1, rotation: -1.5, duration: 0.32, ease: "back.out(1.8)" }, 0.08);
+      tl.fromTo(q("cl"), { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, 0.228 - 0.1);
+      tl.fromTo(q("ce"), { opacity: 0, y: 110 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, 0.676 - 0.1);
+      tl.to(q("cl"), { y: -34, scale: 0.94, opacity: 0.55, duration: 0.36, ease: "power3.out" }, 0.676 - 0.1);
+      tl.fromTo(q("co"), { opacity: 0, y: 110 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, 1.652 - 0.08);
+      tl.to(q("ce"), { y: -34, scale: 0.94, opacity: 0.55, duration: 0.36, ease: "power3.out" }, 1.652 - 0.08);
+      tl.to(q("cl"), { y: -62, scale: 0.88, opacity: 0.25, duration: 0.36, ease: "power3.out" }, 1.652 - 0.08);
+      tl.fromTo(q("skills"), { opacity: 0 }, { opacity: 1, duration: 0.01 }, 0);
+      tl.fromTo(q("s1"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 0.228 - 0.06);
+      tl.fromTo(q("s2"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 0.676 - 0.06);
+      tl.fromTo(q("s3"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 1.652 - 0.08);   // with the listening card
+      tl.to(q("n1"), { opacity: 0, duration: 0.1 }, 0.228 + 0.24); tl.fromTo(q("k1"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.26, ease: "back.out(2.2)" }, 0.228 + 0.24);
+      tl.to(q("n2"), { opacity: 0, duration: 0.1 }, 0.676 + 0.3); tl.fromTo(q("k2"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.26, ease: "back.out(2.2)" }, 0.676 + 0.3);
+      tl.to(q("n3"), { opacity: 0, duration: 0.1 }, 1.652 + 0.3); tl.fromTo(q("k3"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.26, ease: "back.out(2.2)" }, 1.652 + 0.3);
+      tl.fromTo(q("tp"), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.26, ease: "power3.out" }, 2.781 - 0.06);
+      tl.fromTo(q("strike"), { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power2.out" }, 3.428 - 0.04);
+      tl.to(q("tp"), { opacity: 0.55, duration: 0.2 }, 3.428 + 0.18);
+
+      window.__timelines["ins-04"] = tl;
+    })();
+  </script>
+</template>

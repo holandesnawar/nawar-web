@@ -1,0 +1,146 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE + dots + soft vignette ---------- */
+    #f24-ground { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%); }
+    #f24-dots {
+      position: absolute; left: -160px; top: -100px; width: 2240px; height: 1280px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px;
+    }
+    #f24-amb {
+      position: absolute; left: 700px; top: 150px; width: 1200px; height: 780px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.22) 0%, rgba(77,163,255,0.08) 45%, rgba(77,163,255,0) 70%);
+    }
+    #f24-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 78% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%); }
+    .f24-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+    /* ================= macOS window (tools/mac_mockup.md) ================= */
+    {{WINCSS}}
+    #f24-stage { transform-origin: 1296px 536px; }
+    .f24-pane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: hidden; background: #FFFFFF; }
+    #f24-sheen {
+      position: absolute; left: 0; top: -140px; width: 520px; height: 940px; pointer-events: none;
+      background: linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.16) 50%, rgba(255,255,255,0) 70%);
+    }
+
+    /* ---------- left column ---------- */
+    .f24-col { position: absolute; left: 96px; top: 0; width: 640px; height: 1080px; }
+    #f24-pill {
+      position: absolute; left: 0; top: 334px; display: flex; align-items: center; gap: 12px;
+      padding: 12px 24px 12px 14px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; line-height: 1; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #FFFFFF; white-space: nowrap;
+    }
+    #f24-pill svg { display: block; width: 26px; height: 26px; }
+    .f24-h1 {
+      position: absolute; left: 0; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 112px; line-height: 1; letter-spacing: -0.035em; color: #FFFFFF;
+      text-shadow: 0 10px 34px rgba(4,0,40,0.22);
+    }
+    .f24-lead {
+      position: absolute; left: 0; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 44px; line-height: 1.2; letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
+    }
+    .f24-w { display: inline-block; }
+    .f24-strong { color: #FFFFFF; }
+    .f24-acc { color: #4da3ff; }
+    #f24-h-videos { top: 416px; }
+    #f24-h-cortos { top: 528px; }
+    #f24-lead1 { top: 668px; }
+    #f24-lead2 { top: 398px; }
+    #f24-h-practica { top: 464px; }
+    #f24-h-verdad { top: 576px; }
+  </style>
+
+  <div id="root" data-composition-id="24-videos" data-width="1920" data-height="1080" data-duration="4.431">
+    <div id="f24-ground" class="clip" data-start="0" data-duration="4.431" data-track-index="0"><div id="f24-dots"></div><div id="f24-amb"></div><div id="f24-vig"></div></div>
+
+    <!-- ===== macOS window (right), front-on: Paul's module video, then the reading exercise ===== -->
+    <div id="f24-stage" class="f24-full">
+      <div id="f24-rise" class="f24-full">
+        <div id="f24-win" class="f24-win" style="--sw:1056px; left:768px; top:206px;">
+          {{CHROME}}
+          <div class="f24-content">
+            <div class="f24-pane" id="f24-pa">
+              <!-- media 9.2: the player bar appears at 10.2 (= frame 1.0, on «Vídeos») and fades at 12.3 (= 3.1, under the slide) -->
+              <video id="f24-vid" class="clip f24-media" src="assets/video/paul-clase-2.mp4" muted playsinline
+                data-start="0" data-duration="3.62" data-media-start="9.2" data-hf-media-start-basis="local" data-track-index="2"></video>
+            </div>
+            <div class="f24-pane" id="f24-pb">
+              <img class="f24-media" src="assets/img/ui-lezen-texto.png" alt="" style="--fy:84%;" />
+            </div>
+          </div>
+          <div id="f24-sheen"></div>
+          <div class="f24-win-edge"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== left column — scene 1 ===== -->
+    <div class="f24-col" id="f24-s1">
+      <div id="f24-pill">
+        <svg viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11.2" fill="none" stroke="#9fd5f5" stroke-width="2.2" /><path d="M10.6 8.6 L17.6 13 L10.6 17.4 Z" fill="#9fd5f5" /></svg>
+        <span>Microlearning</span>
+      </div>
+      <div class="f24-h1" id="f24-h-videos">Vídeos</div>
+      <div class="f24-h1" id="f24-h-cortos">cortos</div>
+      <div class="f24-lead" id="f24-lead1"><span class="f24-w" id="f24-w-que">que</span> <span class="f24-w" id="f24-w-te">te</span> <span class="f24-w" id="f24-w-explican">explican</span> <span class="f24-w f24-strong" id="f24-w-cada">cada</span> <span class="f24-w f24-strong" id="f24-w-tema">tema</span></div>
+    </div>
+
+    <!-- ===== left column — scene 2 ===== -->
+    <div class="f24-col" id="f24-s2">
+      <div class="f24-lead" id="f24-lead2"><span class="f24-w" id="f24-w-y">Y</span> <span class="f24-w" id="f24-w-despues">después,</span></div>
+      <div class="f24-h1" id="f24-h-practica">práctica</div>
+      <div class="f24-h1 f24-acc" id="f24-h-verdad">de verdad.</div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 4.431, LEAD = 0.04, W = 1056;
+      const T = { micro: 0.12, videos: 1.06, cortos: 1.40, que: 1.75, te: 1.83, explican: 1.90, cada: 2.39, tema: 2.62,
+                  y: 3.08, despues: 3.16, practica: 3.56, verdad: 3.98 };
+      const head = (id, cue) => tl.fromTo(q(id), { opacity: 0, y: 46, filter: "blur(6px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.5, ease: "power3.out" }, cue - LEAD);
+      const word = (id, cue) => tl.fromTo(q(id), { opacity: 0, y: 22 },
+        { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, cue - LEAD);
+
+      // ===== ENTRANCE: the window rises into place (the one hero move), a soft light passes once =====
+      tl.fromTo(q("f24-rise"), { y: 70 }, { y: 0, duration: 0.8, ease: "expo.out" }, 0);
+      tl.fromTo(q("f24-win"), { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power1.out" }, 0);
+      tl.fromTo(q("f24-stage"), { scale: 1 }, { scale: 1.015, duration: D, ease: "none" }, 0);
+      tl.fromTo(q("f24-sheen"), { x: -640 }, { x: 1700, duration: 1.0, ease: "power2.inOut" }, 0.3);
+
+      // ===== SCENE 1 — Microlearning · Vídeos cortos · que te explican cada tema =====
+      tl.fromTo(q("f24-pill"), { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, T.micro - 0.06);
+      head("f24-h-videos", T.videos);
+      head("f24-h-cortos", T.cortos);
+      word("f24-w-que", T.que); word("f24-w-te", T.te); word("f24-w-explican", T.explican);
+      word("f24-w-cada", T.cada); word("f24-w-tema", T.tema);
+
+      // ===== SEAM on «Y después»: left text clears upward, window content slides to the next lesson item =====
+      tl.fromTo(q("f24-s1"), { y: 0, opacity: 1 }, { y: -40, opacity: 0, duration: 0.24, ease: "power2.in", immediateRender: false }, T.y - 0.1);
+      tl.fromTo(q("f24-pa"), { x: 0 }, { x: -W, duration: 0.5, ease: "power3.inOut" }, T.y - 0.04);
+      tl.fromTo(q("f24-pb"), { x: W }, { x: 0, duration: 0.5, ease: "power3.inOut" }, T.y - 0.04);
+
+      // ===== SCENE 2 — Y después, práctica de verdad. =====
+      word("f24-w-y", T.y); word("f24-w-despues", T.despues);
+      head("f24-h-practica", T.practica);
+      head("f24-h-verdad", T.verdad);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["24-videos"] = tl;
+    })();
+  </script>
+</template>

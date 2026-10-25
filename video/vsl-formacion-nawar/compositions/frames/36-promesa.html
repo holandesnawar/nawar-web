@@ -1,0 +1,300 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE (+ dots, riser brighten, vignette) ---------- */
+    #f36-ground { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 50% 46%, #025dc7 0%, #120081 72%); }
+    #f36-dots {
+      position: absolute; left: -200px; top: -120px; width: 2320px; height: 1320px; transform-origin: 1160px 660px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px;
+    }
+    #f36-bright {
+      position: absolute; inset: 0; opacity: 0;
+      background: radial-gradient(ellipse 72% 70% at 50% 56%, rgba(77,163,255,0.42) 0%, rgba(2,93,199,0.26) 42%, rgba(2,93,199,0) 76%);
+    }
+    #f36-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 72% 70% at 50% 46%, rgba(4,0,40,0) 52%, rgba(4,0,40,0.42) 100%); }
+
+    .f36-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .f36-w { display: inline-block; }
+
+    /* camera: cam = quiet drift, push = the riser push-in */
+    #f36-cam { transform-origin: 960px 520px; }
+    #f36-push { transform-origin: 960px 520px; }
+
+    /* ================= SCENE 1 — «No prometemos MILAGROS» ================= */
+    #f36-oglow {
+      position: absolute; left: 260px; top: 230px; width: 1400px; height: 560px; border-radius: 50%; opacity: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.2) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%);
+    }
+    #f36-lead1 {
+      position: absolute; left: 0; top: 446px; width: 1920px; display: flex; justify-content: center; gap: 0.26em;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 84px; line-height: 1.1; letter-spacing: -0.015em;
+      color: #FFFFFF; white-space: nowrap; text-shadow: 0 12px 36px rgba(4,0,40,0.35);
+    }
+    #f36-milrow { position: absolute; left: 0; top: 452px; width: 1920px; display: flex; justify-content: center; }
+    #f36-milwrap { position: relative; }
+    #f36-milfade { position: relative; }
+    #f36-mil {
+      display: inline-block; transform-origin: 50% 60%;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 188px; line-height: 1; letter-spacing: -0.04em;
+      color: #FFFFFF; white-space: nowrap; text-shadow: 0 18px 50px rgba(4,0,40,0.34);
+    }
+    #f36-strike {
+      position: absolute; left: -26px; right: -18px; top: 124px; height: 18px; border-radius: 9px;
+      background: #E02D3C; transform-origin: 0% 50%; box-shadow: 0 8px 22px rgba(4,0,40,0.4);
+    }
+
+    /* ================= SCENE 2 — the three promises ================= */
+    #f36-rglow {
+      position: absolute; left: 160px; top: 260px; width: 1600px; height: 900px; border-radius: 50%; opacity: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(159,213,245,0.22) 0%, rgba(77,163,255,0.12) 34%, rgba(77,163,255,0.04) 56%, rgba(77,163,255,0) 70%);
+    }
+    #f36-block { position: absolute; left: 318px; top: 126px; width: 1300px; height: 780px; }
+    #f36-lead2 {
+      position: absolute; left: 4px; top: 0; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 70px; line-height: 1.1; letter-spacing: -0.015em;
+      color: #FFFFFF; text-shadow: 0 12px 36px rgba(4,0,40,0.35);
+    }
+    #f36-rail {
+      position: absolute; left: 72px; top: 196px; width: 6px; height: 368px; border-radius: 3px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(159,213,245,0.4) 100%);
+      transform-origin: 50% 0%;
+    }
+    .f36-row { position: absolute; left: 0; height: 150px; display: flex; align-items: center; gap: 48px; white-space: nowrap; }
+    #f36-row1 { top: 121px; }
+    #f36-row2 { top: 305px; }
+    #f36-row3 { top: 489px; }
+    #f36-row4 { position: absolute; left: 198px; top: 664px; white-space: nowrap; }
+    .f36-badge {
+      position: relative; flex: 0 0 150px; width: 150px; height: 150px; border-radius: 50%; background: #FFFFFF;
+      box-shadow: 0 26px 60px rgba(4,0,40,0.42), inset 0 -6px 0 rgba(29,0,132,0.06);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .f36-badge svg { width: 96px; height: 96px; overflow: visible; }
+    .f36-ic { fill: none; stroke: #0b6df0; stroke-width: 5.5; stroke-linecap: round; stroke-linejoin: round; }
+    .f36-icf { fill: #0b6df0; }
+    .f36-txt {
+      display: flex; align-items: center; gap: 0.24em;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 100px; line-height: 1; letter-spacing: -0.03em;
+      color: #FFFFFF; text-shadow: 0 14px 40px rgba(4,0,40,0.38);
+    }
+    .f36-txt > span { display: inline-block; }
+    #f36-chip { position: relative; display: inline-block; transform-origin: 0% 60%; font-size: 118px; letter-spacing: -0.035em; }
+    #f36-chipbg {
+      position: absolute; left: 0; top: 6px; right: 0; bottom: -30px; border-radius: 22px; background: #FFFFFF;
+      box-shadow: 0 26px 60px rgba(4,0,40,0.4);
+      clip-path: inset(0px 0% 0px 0px round 22px);
+    }
+    #f36-chiptx {
+      position: relative; display: flex; gap: 0.24em; padding: 8px 34px 0 32px;
+      color: #1D0084; text-shadow: none;
+    }
+    #f36-chiptx span { display: inline-block; }
+  </style>
+
+  <div id="root" data-composition-id="36-promesa" data-width="1920" data-height="1080" data-duration="5.07">
+    <div id="f36-ground" class="clip" data-start="0" data-duration="5.07" data-track-index="0">
+      <div id="f36-dots"></div>
+      <div id="f36-bright"></div>
+      <div id="f36-vig"></div>
+    </div>
+
+
+    <div id="f36-cam" class="f36-full">
+      <div id="f36-push" class="f36-full">
+
+        <!-- ================= SCENE 1 ================= -->
+        <div id="f36-s1" class="f36-full">
+          <div id="f36-s1shake" class="f36-full">
+            <div id="f36-oglow"></div>
+            <div id="f36-lead1">
+              <span class="f36-w" id="f36-w-no">No</span><span class="f36-w" id="f36-w-prom">prometemos</span>
+            </div>
+            <div id="f36-milrow">
+              <div id="f36-milwrap">
+                <div id="f36-milfade"><div id="f36-mil">milagros</div></div>
+                <div id="f36-strike"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= SCENE 2 ================= -->
+        <div id="f36-s2" class="f36-full">
+          <div id="f36-rglow"></div>
+          <div id="f36-block">
+            <div id="f36-lead2">Prometemos</div>
+            <div id="f36-rail"></div>
+
+            <div class="f36-row" id="f36-row1">
+              <div class="f36-badge" id="f36-b1">
+                <svg viewBox="0 0 100 100" aria-hidden="true">
+                  <path class="f36-ic f36-d" pathLength="1" d="M 8 50 C 22 27 36 19 50 19 C 64 19 78 27 92 50 C 78 73 64 81 50 81 C 36 81 22 73 8 50 Z" />
+                  <circle class="f36-ic f36-d" pathLength="1" cx="50" cy="50" r="17" />
+                  <circle class="f36-icf f36-f" cx="50" cy="50" r="8" />
+                </svg>
+              </div>
+              <div class="f36-txt"><span id="f36-t1">Claridad</span></div>
+            </div>
+
+            <div class="f36-row" id="f36-row2">
+              <div class="f36-badge" id="f36-b2">
+                <svg viewBox="0 0 100 100" aria-hidden="true">
+                  <path class="f36-ic f36-d" pathLength="1" d="M 20 14 H 50 Q 60 14 60 24 V 40 Q 60 50 50 50 H 30 L 17 61 V 50 Q 8 49 8 40 V 24 Q 8 14 20 14 Z" />
+                  <path class="f36-d" pathLength="1" fill="#FFFFFF" stroke="#0b6df0" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round" d="M 50 38 H 82 Q 92 38 92 48 V 64 Q 92 74 82 74 V 87 L 69 74 H 50 Q 40 74 40 64 V 48 Q 40 38 50 38 Z" />
+                  <circle class="f36-icf f36-f" cx="55" cy="56" r="4.2" />
+                  <circle class="f36-icf f36-f" cx="66" cy="56" r="4.2" />
+                  <circle class="f36-icf f36-f" cx="77" cy="56" r="4.2" />
+                </svg>
+              </div>
+              <div class="f36-txt"><span id="f36-t2">Cercanía</span></div>
+            </div>
+
+            <div class="f36-row" id="f36-row3">
+              <div class="f36-badge" id="f36-b3">
+                <svg viewBox="0 0 100 100" aria-hidden="true">
+                  <circle class="f36-ic f36-d" pathLength="1" cx="50" cy="50" r="40" />
+                  <path class="f36-ic f36-d" pathLength="1" d="M 50 10 L 50 19 M 90 50 L 81 50 M 50 90 L 50 81 M 10 50 L 19 50" />
+                  <g transform="rotate(40 50 50)">
+                    <path class="f36-icf f36-f" d="M 50 22 L 59 50 L 41 50 Z" />
+                    <path class="f36-ic f36-d" pathLength="1" style="stroke-width: 4.5" d="M 50 22 L 59 50 L 50 78 L 41 50 Z" />
+                  </g>
+                  <circle class="f36-f" cx="50" cy="50" r="5" fill="#FFFFFF" stroke="#0b6df0" stroke-width="4" />
+                </svg>
+              </div>
+              <div class="f36-txt">
+                <span id="f36-t3a">Un método</span>
+                <span id="f36-t3b">pensado</span>
+              </div>
+            </div>
+            <div id="f36-row4" class="f36-txt">
+              <span id="f36-chip">
+                <span id="f36-chipbg"></span>
+                <span id="f36-chiptx"><span id="f36-c-para">para</span><span id="f36-c-ti">ti</span></span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 5.6;
+      const LEAD = 0.04;
+      // cue table (frame-relative seconds, from the packet)
+      const T = {
+        no: 0.12, prometemos: 0.37, milagros: 0.93, prometemos2: 1.70, claridad: 2.23, cercania: 2.99,
+        un: 3.90, metodo: 4.07, pensado: 4.44, para: 4.97, ti: 5.15, riser: 4.89
+      };
+      const rise = (el, cue, dy) => tl.fromTo(el, { opacity: 0, y: dy || 44, filter: "blur(10px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, cue - LEAD);
+
+      // ================= GROUND (entrance: dots settle out of depth) =================
+      tl.fromTo(q("f36-dots"), { scale: 1.1 }, { scale: 1, duration: 0.8, ease: "expo.out" }, 0);
+
+      // ================= SCENE 1 — «No prometemos» rises from blur out of a soft light opening =================
+      tl.fromTo(q("f36-oglow"), { opacity: 0, scale: 0.35 }, { opacity: 1, scale: 1, duration: 0.45, ease: "power3.out" }, 0);
+      tl.fromTo(q("f36-w-no"), { opacity: 0, y: 60, filter: "blur(16px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, T.no - 0.08);
+      rise(q("f36-w-prom"), T.prometemos, 50);
+
+      // MILAGROS lands on its cue — the lead line steps up to make room
+      const MIL = T.milagros;
+      tl.fromTo(q("f36-lead1"), { y: 0, scale: 1 }, { y: -128, scale: 0.88, duration: 0.34, ease: "power3.out" }, MIL - 0.08);
+      tl.fromTo(q("f36-mil"), { opacity: 0, scale: 1.1, filter: "blur(8px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, MIL - LEAD);
+
+      // the red strike draws 0.12 s later; the word dims (no jolt, no particles)
+      const STR = MIL + 0.12;
+      tl.fromTo(q("f36-strike"), { scaleX: 0, rotation: -2 }, { scaleX: 1, rotation: -2, duration: 0.2, ease: "power3.inOut" }, STR);
+      tl.fromTo(q("f36-milfade"), { opacity: 1 }, { opacity: 0.5, duration: 0.3, ease: "power2.out" }, STR + 0.16);
+
+      // ================= SEAM — scene 1 sinks, «Prometemos» drops in (same direction) =================
+      const s1 = q("f36-s1");
+      tl.fromTo(s1, { y: 0, opacity: 1, filter: "blur(0px)" },
+        { y: 280, opacity: 0, filter: "blur(10px)", duration: 0.24, ease: "power2.in" }, 1.5);
+      tl.fromTo(q("f36-lead2"), { opacity: 0, y: -56, filter: "blur(10px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, T.prometemos2 - LEAD);
+
+      // ================= SCENE 2 — promise rows =================
+      const drawIcon = (badge, t) => {
+        const d = badge.querySelectorAll(".f36-d");
+        const f = badge.querySelectorAll(".f36-f");
+        tl.fromTo(d, { strokeDasharray: "1 2", strokeDashoffset: 1 }, { strokeDasharray: "1 2", strokeDashoffset: 0, duration: 0.36, ease: "power2.out", stagger: 0.04 }, t + 0.06);
+        tl.fromTo(f, { opacity: 0, scale: 0.4, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, transformOrigin: "50% 50%", duration: 0.22, ease: "power3.out", stagger: 0.03 }, t + 0.2);
+      };
+      const badgeIn = (badge, t) => {
+        tl.fromTo(badge, { opacity: 0, scale: 0.8 },
+          { opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, t);
+        drawIcon(badge, t);
+      };
+      const textIn = (el, t) => tl.fromTo(el, { opacity: 0, x: -56, filter: "blur(10px)" },
+        { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, t);
+
+      // CLARIDAD
+      badgeIn(q("f36-b1"), T.claridad - LEAD);
+      textIn(q("f36-t1"), T.claridad - LEAD + 0.02);
+      // CERCANÍA (rail grows down to row 2)
+      badgeIn(q("f36-b2"), T.cercania - LEAD);
+      textIn(q("f36-t2"), T.cercania - LEAD + 0.02);
+      tl.fromTo(q("f36-rail"), { scaleY: 0 }, { scaleY: 0.5, duration: 0.34, ease: "power3.out" }, T.cercania - LEAD);
+      // UN MÉTODO · PENSADO · [PARA TI]
+      badgeIn(q("f36-b3"), T.metodo - LEAD);
+      textIn(q("f36-t3a"), T.metodo - LEAD + 0.02);
+      tl.fromTo(q("f36-rail"), { scaleY: 0.5 }, { scaleY: 1, duration: 0.34, ease: "power3.out", immediateRender: false }, T.metodo - LEAD);
+      // the block is framed on the short rows, then glides left to re-centre as row 3 grows
+      tl.fromTo(q("f36-block"), { x: 282 }, { x: 0, duration: 0.56, ease: "power2.inOut" }, T.pensado - 0.08);
+      tl.fromTo(q("f36-t3b"), { opacity: 0, x: 80, filter: "blur(10px)" },
+        { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, T.pensado - LEAD);
+
+      // word-chip: lands with PARA, then widens for TI
+      const chip = q("f36-chip");
+      tl.fromTo(chip, { opacity: 0, scale: 1.08, rotation: -1.5, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, rotation: -1.5, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, T.para - LEAD);
+      tl.fromTo(q("f36-chipbg"), { clipPath: "inset(0px 26% 0px 0px round 22px)" },
+        { clipPath: "inset(0px 26% 0px 0px round 22px)", duration: 0.01, ease: "none" }, 0);
+      tl.fromTo(q("f36-c-ti"), { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.24, ease: "power3.out" }, T.ti - LEAD);
+      tl.to(q("f36-chipbg"), { clipPath: "inset(0px 0% 0px 0px round 22px)", duration: 0.22, ease: "power3.out" }, T.ti - LEAD);
+
+      // ================= CAMERA =================
+      // quiet drift under scene 2 (monotonic)
+      tl.fromTo(q("f36-cam"), { scale: 1 }, { scale: 1.014, duration: T.riser - 1.6, ease: "power1.inOut" }, 1.6);
+      // RISER (4.89): slow brighten + push-in + a light glow rising behind the rows
+      const RD = D - T.riser;
+      tl.fromTo(q("f36-push"), { scale: 1 }, { scale: 1.06, duration: RD, ease: "power1.in" }, T.riser);
+      tl.fromTo(q("f36-rglow"), { opacity: 0, y: 160, scale: 0.8 }, { opacity: 1, y: 0, scale: 1.08, duration: RD, ease: "power1.in" }, T.riser);
+      tl.fromTo(q("f36-bright"), { opacity: 0 }, { opacity: 1, duration: RD, ease: "power1.in" }, T.riser);
+      tl.fromTo(q("f36-dots"), { y: 0 }, { y: -40, duration: RD, ease: "power1.in" }, T.riser);
+
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.37, 0.308], [0.93, 0.862], [1.7, 1.613], [2.23, 2.12], [2.99, 2.806], [3.82, 3.416], [3.9, 3.482], [4.07, 3.641], [4.44, 4.083], [4.97, 4.543], [5.15, 4.702], [5.6, 5.07]]);
+      window.__timelines["36-promesa"] = tl;
+    })();
+  </script>
+</template>

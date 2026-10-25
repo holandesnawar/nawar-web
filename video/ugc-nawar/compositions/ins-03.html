@@ -1,0 +1,147 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .i3-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .i3-paper { background: #F5F7FF; }
+    .i3-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .i3-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i3-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .i3-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i3-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .i3-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .i3-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    .i3-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
+    .i3-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    .i3-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .i3-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .i3-pill svg { display: block; width: 28px; height: 28px; }
+    .i3-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .i3-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .i3-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .i3-flag svg { display: block; width: 40px; height: 27px; }
+    .i3-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .i3-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+    .i3-av svg { display: block; width: 96px; height: 96px; }
+    .i3-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .i3-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .i3-bub-g { background: #E8ECF7; color: #374151; }
+    .i3-bub-b { background: #0b6df0; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .i3-bl { border-bottom-left-radius: 10px; }
+    .i3-br { border-bottom-right-radius: 10px; }
+    .i3-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .i3-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .i3-acc { color: #4da3ff; }
+    .i3-w { display: inline-block; }
+
+    .i3-win { --u: calc(var(--sw) / 1120); position: absolute; width: calc(var(--u) * 1120); height: calc(var(--u) * 700);
+      border-radius: calc(var(--u) * 14); overflow: hidden; background: #FFFFFF;
+      box-shadow: 0 0 0 calc(var(--u) * 1) rgba(10,10,30,0.28), 0 calc(var(--u) * 34) calc(var(--u) * 90) rgba(4,0,40,0.50), 0 calc(var(--u) * 10) calc(var(--u) * 26) rgba(4,0,40,0.30); }
+    .i3-win-edge { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: calc(var(--u) * 14); box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(255,255,255,0.45); }
+    .i3-chrome { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 70); font-family: "Inter", sans-serif; }
+    .i3-tabs { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--u) * 36); background: #DEE1E6; }
+    .i3-tl { position: absolute; top: calc(var(--u) * 12); width: calc(var(--u) * 12); height: calc(var(--u) * 12); border-radius: 50%; }
+    .i3-tl-r { left: calc(var(--u) * 13); background: #FF5F57; }
+    .i3-tl-y { left: calc(var(--u) * 33); background: #FEBC2E; }
+    .i3-tl-g { left: calc(var(--u) * 53); background: #28C840; }
+    .i3-tab { position: absolute; left: calc(var(--u) * 82); top: calc(var(--u) * 7); width: calc(var(--u) * 232); height: calc(var(--u) * 29);
+      border-radius: calc(var(--u) * 9) calc(var(--u) * 9) 0 0; background: #FFFFFF; }
+    .i3-fav { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 7); width: calc(var(--u) * 15); height: calc(var(--u) * 15);
+      border-radius: calc(var(--u) * 3.5); overflow: hidden; background: radial-gradient(circle at 50% 45%, #2fb6f2 0%, #0b6df0 80%); }
+    .i3-fav img { position: absolute; left: calc(var(--u) * 1.2); top: calc(var(--u) * 5.2); width: calc(var(--u) * 12.6); height: auto; display: block; }
+    .i3-tab-t { position: absolute; left: calc(var(--u) * 35); top: 0; height: calc(var(--u) * 29); line-height: calc(var(--u) * 29);
+      font-size: calc(var(--u) * 12); font-weight: 500; color: #202124; white-space: nowrap; }
+    .i3-bar { position: absolute; left: 0; top: calc(var(--u) * 36); width: 100%; height: calc(var(--u) * 34); background: #FFFFFF; box-shadow: inset 0 calc(var(--u) * -1) 0 #DADCE0; }
+    .i3-url { position: absolute; left: calc(var(--u) * 102); top: calc(var(--u) * 4); width: calc(var(--u) * 962); height: calc(var(--u) * 26);
+      border-radius: calc(var(--u) * 13); background: #F1F3F4; }
+    .i3-url-t { position: absolute; left: calc(var(--u) * 33); top: 0; height: calc(var(--u) * 26); line-height: calc(var(--u) * 26);
+      font-size: calc(var(--u) * 13); font-weight: 500; color: #202124; white-space: nowrap; }
+    .i3-lock { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6.5); width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
+    .i3-content { position: absolute; left: 0; top: calc(var(--u) * 70); width: calc(var(--u) * 1120); height: calc(var(--u) * 630); overflow: hidden; background: #FFFFFF; }
+    .i3-media { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    #i3-card { left: 140px; top: 360px; width: 800px; height: 439.8px; overflow: hidden; border-radius: 36px; background: #0C0C1E; transform-origin: 0% 0%; }
+    #i3-cv { position: absolute; left: -741.4px; top: -196.9px; width: 5076.4px; height: 2592.7px; }
+    #i3-cgrad { position: absolute; left: 0; bottom: 0; width: 800px; height: 200px; background: linear-gradient(180deg, rgba(4,0,40,0) 0%, rgba(4,0,40,0.6) 100%); }
+    #i3-cedge { position: absolute; inset: 0; border-radius: 36px; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.22); }
+    #i3-name { position: absolute; left: 40px; bottom: 84px; font-weight: 700; font-size: 42px; line-height: 1; color: #FFFFFF; white-space: nowrap; }
+    #i3-role { position: absolute; left: 42px; bottom: 44px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 26px; line-height: 1; color: rgba(255,255,255,0.8); white-space: nowrap; }
+    #i3-p1row { top: 852px; }
+    #i3-p2row { top: 940px; }
+    #i3-lrow { top: 208px; }
+    #i3-lz { position: absolute; left: 0; top: 0; width: 100%; height: 100%; transform-origin: 58% 42%; }
+    #i3-phone { position: absolute; left: 712px; top: 594px; width: 300px; height: 618px; border-radius: 54px; background: #0C0C1E;
+      box-shadow: 0 40px 100px rgba(4,0,40,0.55), 0 0 0 2px rgba(255,255,255,0.10); }
+    #i3-screen { position: absolute; left: 14px; top: 14px; width: 272px; height: 590px; border-radius: 42px; overflow: hidden; background: #FFFFFF; }
+    #i3-shot { position: absolute; left: 0; top: 0; width: 272px; height: 592px; display: block; }
+    #i3-notch { position: absolute; left: 96px; top: 12px; width: 80px; height: 22px; border-radius: 11px; background: #0C0C1E; }
+
+  </style>
+  <div id="root" data-composition-id="ins-03" data-width="1080" data-height="1920" data-duration="5.686">
+    <div class="i3-full i3-blue"><div class="i3-blue-dots"></div><div class="i3-blue-amb"></div><div class="i3-blue-vig"></div></div>
+    <div id="i3-s2" class="i3-full">
+      <div id="i3-lrow" class="i3-row"><div id="i3-lp" class="i3-pill"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="13" fill="#FFFFFF"/><path d="M11 8.5 L19.5 14 L11 19.5 Z" fill="#1D0084"/></svg><span>Lecciones grabadas</span></div></div>
+      <div id="i3-win" class="i3-win" style="--sw:960px; left:60px; top:296px;">
+        <div class="i3-chrome">
+          <div class="i3-tabs"><i class="i3-tl i3-tl-r"></i><i class="i3-tl i3-tl-y"></i><i class="i3-tl i3-tl-g"></i>
+            <div class="i3-tab"><div class="i3-fav"><img src="assets/img/logo-nawar.png" alt="" /></div><div class="i3-tab-t">Holandés Nawar</div></div></div>
+          <div class="i3-bar"><div class="i3-url"><svg class="i3-lock" viewBox="0 0 13 13"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="i3-url-t">app.holandesnawar.com</div></div></div>
+        </div>
+        <div class="i3-content"><div id="i3-lz"><video id="i3-lv" class="clip i3-media" src="assets/video/paul-clase-2.mp4" muted playsinline data-start="2.696" data-duration="3.03" data-media-start="3.196" data-track-index="2" data-hf-media-start-basis="local"></video></div></div>
+        <div class="i3-win-edge"></div>
+      </div>
+      <div id="i3-phone"><div id="i3-screen"><img id="i3-shot" src="assets/img/ui-curso-movil.png" alt="" /></div><div id="i3-notch"></div></div>
+    </div>
+    <div id="i3-s1" class="i3-full">
+      <div id="i3-card" class="i3-card i3-on-blue">
+        <video id="i3-cv" class="clip" src="assets/video/paul-clase-2.mp4" muted playsinline data-start="0" data-duration="3.556" data-media-start="0.5" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video>
+        <div id="i3-cgrad"></div><div id="i3-cedge"></div>
+        <div id="i3-name">Paul</div><div id="i3-role">Profesor de Nawar</div>
+      </div>
+      <div id="i3-p1row" class="i3-row"><div id="i3-p1" class="i3-wpill"><span class="i3-flag i3-flagd"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>Profesores nativos holandeses</span></div></div>
+      <div id="i3-p2row" class="i3-row"><div id="i3-p2" class="i3-wpill"><span class="i3-flag i3-flagd"><svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#AA151B" /><rect y="7" width="40" height="13" fill="#F1BF00" /></svg></span><span>Expertos en español</span></div></div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("i3-" + id);
+
+      tl.fromTo(q("card"), { opacity: 0, y: 60, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out" }, 0);
+      tl.fromTo(q("p1"), { opacity: 0, y: 26, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 0.695 - 0.04);
+      tl.fromTo(q("p2"), { opacity: 0, y: 26, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 1.905 - 0.04);
+      // the card flies into the webcam of the lesson player (match cut on the same frame)
+      tl.to([q("p1"), q("p2"), q("name"), q("role"), q("cgrad")], { opacity: 0, duration: 0.16, ease: "power2.out" }, 2.756 - 0.12);
+      tl.fromTo(q("s2"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 2.756);
+      tl.to(q("card"), { x: 25.75, y: 37, scale: 0.208, duration: 0.6, ease: "power3.inOut" }, 2.756);
+      tl.to(q("card"), { opacity: 0, duration: 0.12, ease: "none" }, 3.356);
+      tl.fromTo(q("lp"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 2.756 + 0.3);
+      tl.fromTo(q("lz"), { scale: 1 }, { scale: 1.14, duration: 5.686 - 3.356, ease: "power1.inOut" }, 3.356);
+      tl.fromTo(q("phone"), { opacity: 0, x: 160, rotation: 7 }, { opacity: 1, x: 0, rotation: 0, duration: 0.46, ease: "power3.out" }, 4.743 - 0.16);
+      tl.fromTo(q("shot"), { y: 0 }, { y: -40, duration: 5.686 - 4.743, ease: "power1.inOut" }, 4.743 + 0.1);
+
+      window.__timelines["ins-03"] = tl;
+    })();
+  </script>
+</template>

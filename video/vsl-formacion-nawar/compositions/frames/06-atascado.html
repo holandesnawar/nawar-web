@@ -1,0 +1,302 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", sans-serif; color: #0C0C1E; }
+
+    /* ---------- ground: paper (static) ---------- */
+    #f06-ground { position: absolute; inset: 0; background: #F5F7FF; overflow: hidden; }
+    #f06-light {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 58% at 50% 48%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 95% 95% at 50% 50%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.06) 100%);
+    }
+
+    /* ---------- camera (dots ride with it for parallax) ---------- */
+    #f06-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 540px; }
+    #f06-dots {
+      position: absolute; left: -260px; top: -260px; width: 2440px; height: 1600px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.6px, transparent 1.8px);
+      background-size: 28px 28px; background-position: 6px 8px;
+    }
+    #f06-left, #f06-dim { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+    /* ---------- avatars ---------- */
+    .f06-av {
+      position: absolute; width: 104px; height: 104px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18);
+    }
+    .f06-av svg { display: block; width: 104px; height: 104px; }
+    #f06-av-me { left: 116px; top: 296px; background: #1D0084; }
+    #f06-av-ot { left: 1620px; top: 618px; background: #9fd5f5; }
+
+    /* ---------- bubbles (svg shape + html text) ---------- */
+    .f06-shape { position: absolute; overflow: visible; }
+    .f06-shape-fill { filter: drop-shadow(0 26px 40px rgba(18,0,129,0.14)) drop-shadow(0 4px 10px rgba(18,0,129,0.08)); }
+
+    #f06-me { position: absolute; left: 262px; top: 200px; width: 960px; height: 200px; transform-origin: 0% 100%; }
+    #f06-me-shk { position: absolute; left: 0; top: 0; width: 960px; height: 200px; }
+    #f06-me-txt {
+      position: absolute; left: 70px; top: 0; height: 200px; display: flex; align-items: center;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 84px; line-height: 1; letter-spacing: -0.015em;
+      color: #0C0C1E; white-space: nowrap;
+    }
+    #f06-typed { display: inline-block; }
+    #f06-caret { display: inline-block; width: 7px; height: 96px; margin-left: 6px; border-radius: 4px; background: #1D0084; }
+
+    /* ---------- language pills ---------- */
+    .f06-pill {
+      position: absolute; display: flex; align-items: center; gap: 13px; height: 68px; padding: 0 28px 0 18px;
+      border-radius: 999px; background: #1D0084; color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: 0.14em;
+      box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+    }
+    .f06-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .f06-flag svg { display: block; width: 40px; height: 27px; }
+    #f06-nl { left: 58px; top: -40px; transform-origin: 0% 100%; }
+    #f06-en { right: 58px; top: -40px; transform-origin: 50% 100%; }
+
+    /* ---------- the stamp ---------- */
+    #f06-stamp-pos { position: absolute; left: 740px; top: 320px; width: 620px; height: 150px; }
+    #f06-stamp {
+      position: absolute; left: 0; top: 0; width: 620px; height: 150px; border-radius: 24px;
+      background: rgba(255,255,255,0.9); box-shadow: 0 10px 24px rgba(18,0,129,0.10);
+    }
+    #f06-stamp-ink {
+      position: absolute; left: 0; top: 0; width: 620px; height: 150px; border-radius: 24px; box-sizing: border-box;
+      border: 8px solid #E02D3C; box-shadow: inset 0 0 0 6px rgba(255,255,255,0), inset 0 0 0 9px #E02D3C;
+      display: flex; align-items: center; justify-content: center; filter: url(#f06-grit);
+    }
+    #f06-stamp-t {
+      display: block; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 84px; line-height: 1;
+      letter-spacing: 0.05em; padding-left: 0.05em; padding-top: 8px; white-space: nowrap;
+      color: rgba(224,45,60,0.12); -webkit-text-stroke: 3.5px #E02D3C;
+    }
+
+    /* ---------- the other side ---------- */
+    #f06-typing { position: absolute; left: 1336px; top: 612px; width: 220px; height: 110px; transform-origin: 100% 100%; }
+    #f06-tdots { position: absolute; left: 0; top: 0; width: 220px; height: 110px; display: flex; align-items: center; justify-content: center; gap: 16px; }
+    .f06-tdot { display: block; width: 20px; height: 20px; border-radius: 50%; background: #374151; }
+
+    #f06-stack { position: absolute; left: 556px; top: 552px; width: 1000px; height: 170px; }
+    .f06-rb { position: absolute; left: 0; top: 0; width: 1000px; height: 170px; transform-origin: 100% 100%; }
+    #f06-k1, #f06-k2, #f06-k3 { transform-origin: 50% 50%; }
+    .f06-rtxt {
+      position: absolute; left: 66px; top: 0; height: 170px; display: flex; align-items: center;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 64px; line-height: 1; letter-spacing: -0.015em;
+      color: #0C0C1E; white-space: nowrap;
+    }
+
+    /* ---------- OTRA VEZ. (screen space, over the stack) ---------- */
+    #f06-otra { position: absolute; left: 0; top: 826px; width: 1920px; height: 130px; text-align: center; }
+    #f06-otra-t {
+      display: inline-block; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 120px; line-height: 1;
+      letter-spacing: -0.035em; color: #0C0C1E; white-space: nowrap;
+    }
+  </style>
+
+  <div id="root" data-composition-id="06-atascado" data-width="1920" data-height="1080" data-duration="4.385">
+    <div id="f06-ground" class="clip" data-start="0" data-duration="4.385" data-track-index="0">
+      <div id="f06-light"></div>
+    </div>
+
+    <svg width="0" height="0" style="position:absolute; left:0; top:0;" xmlns="http://www.w3.org/2000/svg">
+      <filter id="f06-grit" x="-4%" y="-8%" width="108%" height="116%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="7" result="n" />
+        <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -3.2 0 0 0 2.75" result="m" />
+        <feComposite in="SourceGraphic" in2="m" operator="in" />
+      </filter>
+    </svg>
+
+    <div id="f06-cam">
+      <div id="f06-dots"></div>
+
+      <!-- ===== YOU (left): typing Dutch ===== -->
+      <div id="f06-left">
+        <div id="f06-dim">
+        <div class="f06-av" id="f06-av-me">
+          <svg viewBox="0 0 104 104" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="52" cy="41" r="19" fill="#FFFFFF" />
+            <path d="M14 110 C14 82 31 68 52 68 C73 68 90 82 90 110 Z" fill="#FFFFFF" />
+          </svg>
+        </div>
+        <div id="f06-me">
+          <div id="f06-me-shk">
+            <svg class="f06-shape" id="f06-me-svg" style="left:-40px; top:-10px; width:1040px; height:240px;" viewBox="-40 -10 1040 240" xmlns="http://www.w3.org/2000/svg">
+              <path class="f06-shape-fill" id="f06-me-path" fill="#FFFFFF" d="" />
+              <path id="f06-me-ring" fill="none" stroke="#E02D3C" stroke-width="7" stroke-linejoin="round" d="" opacity="0" />
+            </svg>
+            <div id="f06-me-txt"><span id="f06-typed"></span><span id="f06-caret"></span></div>
+            <div class="f06-pill" id="f06-nl">
+              <span class="f06-flag">
+                <svg viewBox="0 0 40 27" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" />
+                </svg>
+              </span>
+              <span>NL</span>
+            </div>
+          </div>
+        </div>
+        </div>
+        <!-- stamp -->
+        <div id="f06-stamp-pos">
+          <div id="f06-stamp"><div id="f06-stamp-ink"><span id="f06-stamp-t">ATASCADO</span></div></div>
+        </div>
+      </div>
+
+      <!-- ===== THE OTHER (right): switches to English ===== -->
+
+      <div id="f06-typing">
+        <svg class="f06-shape" id="f06-typing-svg" style="left:-40px; top:-10px; width:300px; height:150px;" viewBox="-40 -10 300 150" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(220 0) scale(-1 1)"><path class="f06-shape-fill" id="f06-typing-path" fill="#E8ECF7" d="" /></g>
+        </svg>
+        <div id="f06-tdots"><span class="f06-tdot"></span><span class="f06-tdot"></span><span class="f06-tdot"></span></div>
+      </div>
+
+      <div id="f06-stack"></div>
+
+      <div class="f06-av" id="f06-av-ot">
+        <svg viewBox="0 0 104 104" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="52" cy="41" r="19" fill="#1D0084" />
+          <path d="M14 110 C14 82 31 68 52 68 C73 68 90 82 90 110 Z" fill="#1D0084" />
+        </svg>
+      </div>
+    </div>
+
+    <div id="f06-otra"><span id="f06-otra-t">Otra vez.</span></div>
+  </div>
+
+  <script>
+    (function () {
+      var $ = function (id) { return document.getElementById("f06-" + id); };
+
+      // ---------- bubble geometry: rounded rect with a swoosh tail at bottom-left ----------
+      function bubble(W, H, r) {
+        return "M" + r + " 0 H" + (W - r) + " A" + r + " " + r + " 0 0 1 " + W + " " + r +
+          " V" + (H - r) + " A" + r + " " + r + " 0 0 1 " + (W - r) + " " + H +
+          " H70 C46 " + H + " 20 " + (H + 10) + " -22 " + (H + 14) +
+          " C-4 " + (H - 2) + " 0 " + (H - 22) + " 0 " + (H - 50) +
+          " V" + r + " A" + r + " " + r + " 0 0 1 " + r + " 0 Z";
+      }
+      var dMe = bubble(960, 200, 58);
+      $("me-path").setAttribute("d", dMe);
+      $("me-ring").setAttribute("d", dMe);
+      $("typing-path").setAttribute("d", bubble(220, 110, 46));
+
+      // ---------- reply bubble + its 3 déjà-vu copies (copies sit behind the original) ----------
+      var REPLY = "Oh, let’s just speak English!";
+      var dReply = bubble(1000, 170, 54);
+      var UK = '<svg viewBox="0 0 40 27" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="27" fill="#21468C"/>' +
+        '<path d="M0 0 L40 27 M40 0 L0 27" stroke="#FFFFFF" stroke-width="6"/>' +
+        '<path d="M0 0 L40 27 M40 0 L0 27" stroke="#AE1C27" stroke-width="2.2"/>' +
+        '<path d="M20 0 V27 M0 13.5 H40" stroke="#FFFFFF" stroke-width="9"/>' +
+        '<path d="M20 0 V27 M0 13.5 H40" stroke="#AE1C27" stroke-width="5"/></svg>';
+      function replyHTML(id, withPill, fill, txtAlpha) {
+        return '<div class="f06-rb" id="' + id + '">' +
+          '<svg class="f06-shape" style="left:-40px; top:-10px; width:1080px; height:210px;" viewBox="-40 -10 1080 210" xmlns="http://www.w3.org/2000/svg">' +
+          '<g transform="translate(1000 0) scale(-1 1)"><path class="f06-shape-fill" fill="' + fill + '" d="' + dReply + '"/></g></svg>' +
+          (txtAlpha > 0 ? '<div class="f06-rtxt" style="opacity:' + txtAlpha + '">' + REPLY + '</div>' : '') +
+          (withPill ? '<div class="f06-pill" id="f06-en"><span class="f06-flag">' + UK + '</span><span>EN</span></div>' : '') +
+          '</div>';
+      }
+      $("stack").innerHTML = replyHTML("f06-k3", false, "#F4F6FD", 0.08) + replyHTML("f06-k2", false, "#F1F3FB", 0.15) +
+        replyHTML("f06-k1", false, "#EDF0F9", 0.25) + replyHTML("f06-reply", true, "#E8ECF7", 1);
+
+      var tl = gsap.timeline({ paused: true });
+      var D = 5.056;
+      var T = { neer: 0.296, queda: 0.972, atas: 1.213, Y: 2.111, el: 2.18, otro: 2.278, cambia: 2.435, ingles: 2.908, otra: 3.759, vez: 4.093 };
+      var FR = 1 / 30;
+
+      // ================= CAMERA =================
+      // screen = 960 + s*(p-960) + x  ->  centre focus point F: x = s*(960-Fx), y = s*(540-Fy)
+      var FX = 730, FY = 338;
+      function camAt(s) { return { scale: s, x: s * (960 - FX), y: s * (540 - FY) }; }
+      var cam = $("cam");
+      tl.fromTo(cam, camAt(1.46), Object.assign({ duration: 0.75, ease: "power3.out" }, camAt(1.36)), 0);
+      // seam into scene 2: pull back + pan (you slide up-left, the other side opens from bottom-right)
+      tl.fromTo(cam, camAt(1.36), { scale: 1, x: 0, y: 70, duration: 0.40, ease: "power3.inOut", immediateRender: false }, 1.86);
+      // déjà-vu: the thread scrolls up + punches in as the copies cascade
+      tl.fromTo(cam, { scale: 1, x: 0, y: 70 }, { scale: 1.03, x: 0, y: -42, duration: 0.45, ease: "power3.out", immediateRender: false }, T.otra - 0.03);
+
+      // ================= SCENE 1 =================
+      // ENTRANCE: your bubble pops in from the left, growing from its tail corner
+      tl.fromTo($("me"), { x: -170, scale: 0.75, opacity: 0.6, filter: "blur(8px)" },
+        { x: 0, scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, 0);
+      tl.fromTo($("av-me"), { x: -120, scale: 0.85, opacity: 0 },
+        { x: 0, scale: 1, opacity: 1, duration: 0.24, ease: "power3.out" }, 0.03);
+
+      // "neerlandés": NL pill pops on the bubble
+      tl.fromTo($("nl"), { scale: 0.85, y: 8, opacity: 0 },
+        { scale: 1, y: 0, opacity: 1, duration: 0.26, ease: "power3.out" }, T.neer - 0.04);
+
+      // typing Dutch, decelerating into the stall
+      var STR = "Ik wil graag een af…";
+      var times = [];
+      for (var i = 0; i < 17; i++) times.push(0.3 + i * 0.033);
+      times.push(0.93, 1.03, 1.17);
+      for (var c = 0; c < STR.length; c++) tl.set($("typed"), { textContent: STR.slice(0, c + 1) }, times[c]);
+      // caret: 3 finite blinks while stuck
+      [1.42, 1.62, 1.84, 2.04, 2.26, 2.46].forEach(function (t, k) { tl.set($("caret"), { opacity: k % 2 ? 1 : 0 }, t); });
+
+      // "atascado": red border + the stamp presses down (no shake)
+      tl.fromTo($("me-ring"), { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, T.atas - 0.01);
+      var SST = 1.12, LAND = 1.24;
+      tl.fromTo($("stamp"), { scale: 1.3, rotation: -6 }, { scale: 0.98, rotation: -6, duration: LAND - SST, ease: "power2.in" }, SST);
+      tl.fromTo($("stamp"), { opacity: 0, filter: "blur(4px)" }, { opacity: 1, filter: "blur(0px)", duration: LAND - SST, ease: "power2.in" }, SST);
+      tl.fromTo($("stamp"), { scale: 0.98 }, { scale: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, LAND);
+
+      // ================= SCENE 2 =================
+      tl.fromTo($("av-ot"), { x: 60, scale: 0.85, opacity: 0 }, { x: 0, scale: 1, opacity: 1, duration: 0.22, ease: "power3.out" }, T.Y);
+      tl.fromTo($("typing"), { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.12, ease: "power3.out" }, T.el - 0.03);
+      tl.fromTo($("typing").querySelectorAll(".f06-tdot"), { y: 9, opacity: 0.25 },
+        { y: 0, opacity: 1, duration: 0.08, ease: "power2.out", stagger: 0.03 }, T.el + 0.01);
+      // "cambia": the reply replaces the typing indicator, growing from the same tail corner
+      tl.fromTo($("typing"), { scale: 1, opacity: 1 }, { scale: 0.85, opacity: 0, duration: 0.05, ease: "none", immediateRender: false }, T.cambia - 0.05);
+      tl.fromTo($("reply"), { scale: 0.75, x: 30, y: 16, opacity: 0 },
+        { scale: 1, x: 0, y: 0, opacity: 1, duration: 0.22, ease: "power3.out" }, T.cambia - 0.03);
+      // your side steps back
+      tl.fromTo($("dim"), { opacity: 1 }, { opacity: 0.72, duration: 0.4, ease: "power2.out" }, T.cambia);
+
+      // "inglés": EN pill flips in
+      tl.fromTo($("en"), { rotationX: -70, y: 10, opacity: 0, transformPerspective: 600 },
+        { rotationX: 0, y: 0, opacity: 1, transformPerspective: 600, duration: 0.32, ease: "power3.out" }, T.ingles - 0.04);
+
+      // ================= SCENE 3 =================
+      // "Otra vez.": three copies cascade out from behind the reply (déjà vu)
+      for (var k = 1; k <= 3; k++) {
+        tl.fromTo($("k" + k), { x: 0, y: 0, rotation: 0, opacity: 0 },
+          { x: 24 * k, y: 18 * k, rotation: -2 * k, opacity: 1, duration: 0.2, ease: "power3.out" }, T.otra - 0.03 + (k - 1) * 0.07);
+      }
+
+      // "vez.": OTRA VEZ. slams bottom-centre over the stack, then holds
+      tl.fromTo($("otra-t"), { scale: 1.12, y: -10, opacity: 0, filter: "blur(8px)" },
+        { scale: 1, y: 0, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, T.vez - 0.04);
+      // the earlier context recedes most, the déjà-vu stack stays as the echo under the type
+      tl.fromTo($("left"), { opacity: 1 }, { opacity: 0.4, duration: 0.3, ease: "power2.out", immediateRender: false }, T.vez - 0.04);
+      tl.fromTo([$("stack"), $("av-ot")], { opacity: 1 }, { opacity: 0.6, duration: 0.3, ease: "power2.out", immediateRender: false }, T.vez - 0.04);
+
+      tl.set({}, {}, D);
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.185, 0.186], [0.296, 0.261], [0.796, 0.768], [0.935, 0.89], [0.972, 0.993], [1.213, 1.228], [2.111, 1.998], [2.176, 2.073], [2.278, 2.176], [2.435, 2.402], [2.806, 2.74], [2.908, 2.796], [3.759, 3.519], [4.093, 3.801], [5.056, 4.385]]);
+      window.__timelines["06-atascado"] = tl;
+    })();
+  </script>
+</template>

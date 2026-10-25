@@ -1,0 +1,271 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: paper + indigo dot grid (identical to frame 18's end state) ---------- */
+    #f19-ground {
+      position: absolute; inset: 0;
+      background-color: #F5F7FF;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px;
+    }
+
+    /* ---------- camera ---------- */
+    #f19-cam { position: absolute; inset: 0; transform-origin: 987px 580px; }
+
+    /* ---------- headline slot (above the keys) ---------- */
+    #f19-head { position: absolute; left: 54px; right: 0; top: 176px; height: 200px; overflow: hidden; }
+    .f19-line {
+      position: absolute; left: 0; right: 0; top: 50px; height: 130px;
+      display: flex; justify-content: center; align-items: baseline;
+      white-space: nowrap;
+    }
+    .f19-w { display: inline-block; will-change: transform, opacity; }
+    .f19-lead {
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 56px; line-height: 1.1;
+      letter-spacing: -0.02em; color: #0C0C1E; margin-right: 18px;
+    }
+    .f19-key-w {
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 112px;
+      letter-spacing: -0.035em; line-height: 1; margin-right: 22px;
+    }
+    .f19-key-w:last-child, .f19-lead:last-child { margin-right: 0; }
+    .f19-red { color: #E02D3C; }
+    #f19-w-delatan { transform-origin: 0% 75%; }
+    .f19-ind { color: #1D0084; }
+
+    /* ---------- keycaps (shared geometry with frame 18) ---------- */
+    .f19-slot { position: absolute; top: 430px; width: 300px; height: 300px; }
+    .f19-shake { position: absolute; inset: 0; }
+    .f19-key {
+      position: absolute; inset: 0; box-sizing: border-box;
+      background: #FFFFFF; border: 1px solid #DDE6F5; border-radius: 22px;
+      box-shadow: 0px 18px 0px rgb(221,230,245), 0px 30px 60px rgba(18,0,129,0.16);
+    }
+    .f19-face {
+      position: absolute; inset: 0; box-sizing: border-box;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .f19-glyph {
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 150px; line-height: 1;
+      letter-spacing: -0.04em; color: #1D0084;
+    }
+    .f19-ex {
+      margin-top: 10px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 26px; line-height: 1;
+      color: #5A6480;
+    }
+    .f19-tint { position: absolute; inset: -1px; border-radius: 22px; background: rgba(224,45,60,0.07); opacity: 0; }
+    .f19-fill {
+      position: absolute; inset: -1px; border-radius: 22px; overflow: hidden;
+      background: linear-gradient(180deg, #2A0C9E 0%, #1D0084 55%, #170070 100%);
+      clip-path: circle(0px at 96% 4%);
+    }
+    .f19-fill .f19-glyph { color: #FFFFFF; }
+    .f19-fill .f19-ex { color: rgba(255,255,255,0.72); }
+    .f19-alert {
+      position: absolute; left: -13px; right: -13px; top: -13px; bottom: -30px;
+      border: 5px solid #E02D3C; border-radius: 34px; opacity: 0; box-sizing: border-box;
+    }
+    .f19-badge {
+      position: absolute; right: -22px; top: -22px; width: 56px; height: 56px;
+      border: 5px solid #FFFFFF; border-radius: 50%; background: #16A34A;
+      box-shadow: 0 6px 14px rgba(12,12,30,0.18);
+      opacity: 0;
+    }
+    .f19-badge svg { position: absolute; inset: 0; width: 56px; height: 56px; }
+
+    /* ---------- "uno a uno" (below the keys) ---------- */
+    #f19-uno {
+      position: absolute; left: 54px; right: 0; top: 818px; height: 90px;
+      display: flex; justify-content: center; align-items: center; white-space: nowrap;
+    }
+    .f19-uw {
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 72px; line-height: 1;
+      letter-spacing: -0.03em; color: #1D0084; margin: 0 14px;
+    }
+    .f19-uw-a { color: #5A6480; font-weight: 700; font-size: 56px; }
+    .f19-hair {
+      position: absolute; top: 862px; height: 4px; border-radius: 4px; background: #DDE6F5;
+    }
+    #f19-hair-l { left: 282px; width: 477px; transform-origin: 100% 50%; }
+    #f19-hair-r { left: 1215px; width: 477px; transform-origin: 0% 50%; }
+  </style>
+
+  <div id="root" data-composition-id="19-delatan" data-width="1920" data-height="1080" data-duration="2.907">
+    <div id="f19-ground" class="clip" data-start="0" data-duration="2.907" data-track-index="0"></div>
+
+    <div id="f19-cam">
+      <!-- headline: scene 1 -->
+      <div id="f19-head">
+      <div class="f19-line" id="f19-l1">
+        <span class="f19-w f19-lead" id="f19-w-son">Son</span>
+        <span class="f19-w f19-lead" id="f19-w-los">los</span>
+        <span class="f19-w f19-lead" id="f19-w-que">que</span>
+        <span class="f19-w f19-key-w f19-red" id="f19-w-te">te</span>
+        <span class="f19-w f19-key-w f19-red" id="f19-w-delatan">delatan</span>
+      </div>
+      <!-- headline: scene 2 -->
+      <div class="f19-line" id="f19-l2">
+        <span class="f19-w f19-lead" id="f19-w-y">y</span>
+        <span class="f19-w f19-lead" id="f19-w-los2">los</span>
+        <span class="f19-w f19-key-w f19-ind" id="f19-w-entrenamos">entrenamos</span>
+      </div>
+      </div>
+
+      <!-- keycaps -->
+      <div class="f19-slot" style="left:282px">
+        <div class="f19-shake" id="f19-shake-0">
+          <div class="f19-key" id="f19-key-0">
+            <div class="f19-face"><div class="f19-glyph">G</div><div class="f19-ex">goed</div></div>
+            <div class="f19-tint" id="f19-tint-0"></div>
+            <div class="f19-fill" id="f19-fill-0"><div class="f19-face"><div class="f19-glyph">G</div><div class="f19-ex">goed</div></div></div>
+            <div class="f19-badge" id="f19-badge-0"><svg viewBox="0 0 56 56"><path class="f19-tick" id="f19-tick-0" d="M16 29 L24.5 37.5 L41 20" fill="none" stroke="#FFFFFF" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg></div>
+          </div>
+          <div class="f19-alert" id="f19-alert-0"></div>
+        </div>
+      </div>
+      <div class="f19-slot" style="left:652px">
+        <div class="f19-shake" id="f19-shake-1">
+          <div class="f19-key" id="f19-key-1">
+            <div class="f19-face"><div class="f19-glyph">UI</div><div class="f19-ex">huis</div></div>
+            <div class="f19-tint" id="f19-tint-1"></div>
+            <div class="f19-fill" id="f19-fill-1"><div class="f19-face"><div class="f19-glyph">UI</div><div class="f19-ex">huis</div></div></div>
+            <div class="f19-badge" id="f19-badge-1"><svg viewBox="0 0 56 56"><path class="f19-tick" id="f19-tick-1" d="M16 29 L24.5 37.5 L41 20" fill="none" stroke="#FFFFFF" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg></div>
+          </div>
+          <div class="f19-alert" id="f19-alert-1"></div>
+        </div>
+      </div>
+      <div class="f19-slot" style="left:1022px">
+        <div class="f19-shake" id="f19-shake-2">
+          <div class="f19-key" id="f19-key-2">
+            <div class="f19-face"><div class="f19-glyph">UU</div><div class="f19-ex">uur</div></div>
+            <div class="f19-tint" id="f19-tint-2"></div>
+            <div class="f19-fill" id="f19-fill-2"><div class="f19-face"><div class="f19-glyph">UU</div><div class="f19-ex">uur</div></div></div>
+            <div class="f19-badge" id="f19-badge-2"><svg viewBox="0 0 56 56"><path class="f19-tick" id="f19-tick-2" d="M16 29 L24.5 37.5 L41 20" fill="none" stroke="#FFFFFF" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg></div>
+          </div>
+          <div class="f19-alert" id="f19-alert-2"></div>
+        </div>
+      </div>
+      <div class="f19-slot" style="left:1392px">
+        <div class="f19-shake" id="f19-shake-3">
+          <div class="f19-key" id="f19-key-3">
+            <div class="f19-face"><div class="f19-glyph">EU</div><div class="f19-ex">leuk</div></div>
+            <div class="f19-tint" id="f19-tint-3"></div>
+            <div class="f19-fill" id="f19-fill-3"><div class="f19-face"><div class="f19-glyph">EU</div><div class="f19-ex">leuk</div></div></div>
+            <div class="f19-badge" id="f19-badge-3"><svg viewBox="0 0 56 56"><path class="f19-tick" id="f19-tick-3" d="M16 29 L24.5 37.5 L41 20" fill="none" stroke="#FFFFFF" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg></div>
+          </div>
+          <div class="f19-alert" id="f19-alert-3"></div>
+        </div>
+      </div>
+
+      <!-- "uno a uno" -->
+      <div class="f19-hair" id="f19-hair-l"></div>
+      <div class="f19-hair" id="f19-hair-r"></div>
+      <div id="f19-uno">
+        <span class="f19-w f19-uw" id="f19-u1">uno</span>
+        <span class="f19-w f19-uw f19-uw-a" id="f19-u2">a</span>
+        <span class="f19-w f19-uw" id="f19-u3">uno</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const $ = (id) => document.getElementById(id);
+
+      // ---------- camera: gentle push from frame 18's end state, a little closer on "delatan",
+      //            eases back on "y" (no punches)
+      tl.fromTo("#f19-cam", { scale: 1 }, { scale: 1.015, duration: 0.24, ease: "power2.out" }, 0);
+      tl.to("#f19-cam", { scale: 1.02, duration: 0.42, ease: "none" }, 0.24);
+      tl.to("#f19-cam", { scale: 1.045, duration: 0.42, ease: "power3.out" }, 0.68);
+      tl.to("#f19-cam", { scale: 1.03, duration: 0.5, ease: "power2.inOut" }, 1.2);
+      tl.to("#f19-cam", { scale: 1.035, duration: 0.4, ease: "power2.out" }, 2.42);
+
+      // ---------- Scene 1 lead-in words: "Son los que"
+      [["#f19-w-son", 0.08], ["#f19-w-los", 0.30], ["#f19-w-que", 0.46]].forEach(([sel, t]) => {
+        tl.fromTo(sel, { opacity: 0, y: 56, filter: "blur(8px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, t);
+      });
+      // "te" rises, "delatan" slams
+      tl.fromTo("#f19-w-te", { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 0.55);
+      tl.fromTo("#f19-w-delatan", { opacity: 0, scale: 1.1, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.67);
+
+      // ---------- "delatan": red alert on every key
+      for (let i = 0; i < 4; i++) {
+        const t0 = 0.68 + i * 0.015;
+        tl.fromTo("#f19-alert-" + i, { opacity: 0, scale: 1.03 }, { opacity: 1, scale: 1, duration: 0.22, ease: "power3.out" }, t0);
+        tl.fromTo("#f19-tint-" + i, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out" }, t0);
+        // the ledge turns red with the face so the alert box reads fully filled
+        tl.fromTo("#f19-key-" + i,
+          { boxShadow: "0px 18px 0px rgb(221,230,245), 0px 30px 60px rgba(18,0,129,0.16)" },
+          { boxShadow: "0px 18px 0px rgb(246,200,206), 0px 30px 60px rgba(224,45,60,0.18)", duration: 0.12, ease: "power2.out" }, t0);
+      }
+
+      // ---------- Scene 2 seam (1.22 "y"): red clears, headline line rolls up into the next one
+      for (let i = 0; i < 4; i++) {
+        tl.to("#f19-alert-" + i, { opacity: 0, scale: 1.03, duration: 0.2, ease: "power2.out" }, 1.2 + i * 0.02);
+        tl.to("#f19-tint-" + i, { opacity: 0, duration: 0.2, ease: "power2.out" }, 1.2 + i * 0.02);
+        tl.to("#f19-key-" + i, { boxShadow: "0px 18px 0px rgb(221,230,245), 0px 30px 60px rgba(18,0,129,0.16)", duration: 0.2, ease: "power2.out" }, 1.2 + i * 0.02);
+      }
+      tl.to("#f19-l1", { y: -190, filter: "blur(6px)", duration: 0.14, ease: "power2.in" }, 1.13);
+      [["#f19-w-y", 1.21], ["#f19-w-los2", 1.27]].forEach(([sel, t]) => {
+        tl.fromTo(sel, { opacity: 1, y: 190, filter: "blur(6px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, t);
+      });
+      tl.fromTo("#f19-w-entrenamos", { opacity: 1, y: 190, filter: "blur(10px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 1.43);
+
+      // ---------- checks: one by one (1.50, 1.85, 2.20, 2.45)
+      const CHECKS = [1.50, 1.85, 2.20, 2.45];
+      CHECKS.forEach((T, i) => {
+        // badge appears (no overshoot) and its tick draws
+        tl.fromTo("#f19-badge-" + i, { opacity: 0, scale: 0.6, rotation: 0 },
+          { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "power3.out" }, T - 0.04);
+        tl.fromTo("#f19-tick-" + i, { strokeDashoffset: 40 }, { strokeDashoffset: 0, duration: 0.2, ease: "power2.out" }, T + 0.04);
+        // indigo floods out of the badge corner
+        tl.fromTo("#f19-fill-" + i, { clipPath: "circle(0px at 96% 4%)" },
+          { clipPath: "circle(440px at 96% 4%)", duration: 0.34, ease: "power2.out" }, T - 0.03);
+        // key press: down, then settle as a solid indigo key
+        tl.fromTo("#f19-key-" + i,
+          { y: 0, boxShadow: "0px 18px 0px rgb(221,230,245), 0px 30px 60px rgba(18,0,129,0.16)" },
+          { y: 10, boxShadow: "0px 8px 0px rgb(14,0,102), 0px 16px 32px rgba(18,0,129,0.24)", duration: 0.08, ease: "power2.in" }, T - 0.03);
+        tl.to("#f19-key-" + i,
+          { y: 0, boxShadow: "0px 18px 0px rgb(14,0,102), 0px 30px 60px rgba(18,0,129,0.30)", duration: 0.32, ease: "power3.out" }, T + 0.05);
+      });
+
+      // ---------- "uno a uno" under the row
+      tl.fromTo("#f19-hair-l", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "power3.out" }, 2.16);
+      tl.fromTo("#f19-hair-r", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "power3.out" }, 2.16);
+      [["#f19-u1", 2.16], ["#f19-u2", 2.34], ["#f19-u3", 2.40]].forEach(([sel, t]) => {
+        tl.fromTo(sel, { opacity: 0, y: 44, filter: "blur(6px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, t);
+      });
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.333, 0.317], [0.491, 0.496], [0.583, 0.59], [0.703, 0.683], [1.222, 1.247], [1.296, 1.322], [1.472, 1.491], [2.194, 2.176], [2.37, 2.345], [2.426, 2.411], [2.871, 2.907]]);
+
+      window.__timelines["19-delatan"] = tl;
+    })();
+  </script>
+</template>

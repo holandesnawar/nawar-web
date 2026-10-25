@@ -1,0 +1,135 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .i5-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .i5-paper { background: #F5F7FF; }
+    .i5-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .i5-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i5-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .i5-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i5-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .i5-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .i5-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    .i5-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
+    .i5-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    .i5-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .i5-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .i5-pill svg { display: block; width: 28px; height: 28px; }
+    .i5-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .i5-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .i5-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .i5-flag svg { display: block; width: 40px; height: 27px; }
+    .i5-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .i5-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+    .i5-av svg { display: block; width: 96px; height: 96px; }
+    .i5-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .i5-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .i5-bub-g { background: #E8ECF7; color: #374151; }
+    .i5-bub-b { background: #0b6df0; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .i5-bl { border-bottom-left-radius: 10px; }
+    .i5-br { border-bottom-right-radius: 10px; }
+    .i5-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .i5-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .i5-acc { color: #4da3ff; }
+    .i5-w { display: inline-block; }
+
+    #i5-h1 { top: 200px; }
+    #i5-h2 { top: 294px; }
+    #i5-call { position: absolute; left: 60px; top: 452px; width: 960px; height: 576px; border-radius: 30px; overflow: hidden; background: #0C0C1E; }
+    #i5-top { position: absolute; left: 0; top: 0; width: 960px; height: 72px; display: flex; align-items: center; gap: 18px; padding-left: 22px; box-sizing: border-box; }
+    #i5-live { display: flex; align-items: center; gap: 10px; height: 42px; padding: 0 18px 0 14px; border-radius: 999px; background: #E02D3C; color: #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 0.14em; white-space: nowrap; }
+    #i5-ldot { display: block; width: 12px; height: 12px; border-radius: 50%; background: #FFFFFF; }
+    #i5-ttl { font-family: "Inter", sans-serif; font-weight: 600; font-size: 24px; color: rgba(255,255,255,0.74); white-space: nowrap; }
+    #i5-vid { position: absolute; left: 0; top: 72px; width: 960px; height: 504px; overflow: hidden; }
+    #i5-v { position: absolute; left: -411.4px; top: -19px; width: 1383.6px; height: 548.6px; }
+    #i5-ctl { position: absolute; left: 330px; top: 414px; width: 300px; height: 72px; display: flex; justify-content: center; gap: 18px; }
+    .i5-cb { position: relative; width: 66px; height: 66px; border-radius: 50%; background: rgba(12,12,30,0.62); }
+    .i5-cb svg { position: absolute; left: 15px; top: 15px; width: 36px; height: 36px; }
+    #i5-hang { background: #E02D3C; }
+    #i5-fix { top: 1078px; gap: 18px; }
+    .i5-fx { display: flex; align-items: center; gap: 12px; height: 70px; padding: 0 28px; border-radius: 999px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 32px; line-height: 1; }
+    #i5-bad { position: relative; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.8); }
+    #i5-bads { position: absolute; left: 22px; top: 32px; width: calc(100% - 44px); height: 6px; border-radius: 3px; background: #E02D3C; transform-origin: 0% 50%; }
+    #i5-arr { width: 44px; height: 44px; color: #FFFFFF; }
+    #i5-arr svg { display: block; width: 44px; height: 44px; }
+    #i5-good { background: #FFFFFF; color: #1D0084; padding-left: 14px; box-shadow: 0 16px 40px rgba(4,0,40,0.3); }
+    #i5-good svg { display: block; width: 40px; height: 40px; }
+    #i5-prow { top: 250px; }
+    .i5-tile { position: absolute; width: 404px; height: 330px; border-radius: 36px; background: #FFFFFF;
+      box-shadow: 0 40px 100px rgba(4,0,40,0.42), 0 8px 24px rgba(4,0,40,0.2); }
+    .i5-big { position: absolute; left: 0; top: 52px; width: 404px; text-align: center; font-weight: 900; font-size: 150px; line-height: 1;
+      letter-spacing: -0.04em; color: #1D0084; }
+    .i5-ex { position: absolute; left: 0; top: 236px; width: 404px; text-align: center; font-family: "Inter", sans-serif; font-weight: 600;
+      font-size: 34px; line-height: 1; color: #5A6480; }
+
+  </style>
+  <div id="root" data-composition-id="ins-05" data-width="1080" data-height="1920" data-duration="4.458">
+    <div class="i5-full i5-blue"><div class="i5-blue-dots"></div><div class="i5-blue-amb"></div><div class="i5-blue-vig"></div></div>
+    <div id="i5-s1" class="i5-full">
+      <div id="i5-h1" class="i5-h1">Clase en directo</div>
+      <div id="i5-h2" class="i5-h1 i5-acc">cada semana</div>
+      <div id="i5-call" class="i5-on-blue">
+        <div id="i5-top"><div id="i5-live"><span id="i5-ldot"></span><span>EN DIRECTO</span></div><div id="i5-ttl">Clase semanal · Holandés Nawar</div></div>
+        <div id="i5-vid"><video id="i5-v" class="clip" src="assets/video/paul-clase-1.mp4" muted playsinline data-start="0" data-duration="3.645" data-media-start="5.2" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video>
+          <div id="i5-ctl"><div class="i5-cb"><svg viewBox="0 0 48 48"><rect x="18" y="7" width="12" height="22" rx="6" fill="#FFFFFF"/><path d="M12 23 A12 12 0 0 0 36 23 M24 35 V41" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round"/></svg></div><div class="i5-cb"><svg viewBox="0 0 48 48"><rect x="6" y="14" width="25" height="20" rx="5" fill="#FFFFFF"/><path d="M31 21 L42 15 V33 L31 27 Z" fill="#FFFFFF"/></svg></div><div id="i5-hang" class="i5-cb"><svg viewBox="0 0 48 48"><path d="M6 27 C14 18 34 18 42 27 l-3.5 5.5 -7 -2.5 -0.5 -4.5 C27 24.5 21 24.5 17 25.5 l-0.5 4.5 -7 2.5 z" fill="#FFFFFF"/></svg></div></div></div>
+      </div>
+      <div id="i5-fix" class="i5-row"><div id="i5-bad" class="i5-fx"><span>Werkt jij?</span><div id="i5-bads"></div></div><div id="i5-arr"><svg viewBox="0 0 48 48"><path d="M8 24 H38 M27 12 L39 24 L27 36" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div id="i5-good" class="i5-fx"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Werk jij?</span></div></div>
+    </div>
+    <div id="i5-s2" class="i5-full">
+      <div id="i5-prow" class="i5-row"><div id="i5-pp" class="i5-pill"><span>Pronunciación</span></div></div>
+      <div id="i5-t0" class="i5-tile" style="left:121px; top:366px;"><div class="i5-big">G</div><div class="i5-ex">goed</div></div>
+      <div id="i5-t1" class="i5-tile" style="left:555px; top:366px;"><div class="i5-big">UI</div><div class="i5-ex">huis</div></div>
+      <div id="i5-t2" class="i5-tile" style="left:121px; top:730px;"><div class="i5-big">UU</div><div class="i5-ex">uur</div></div>
+      <div id="i5-t3" class="i5-tile" style="left:555px; top:730px;"><div class="i5-big">EU</div><div class="i5-ex">leuk</div></div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("i5-" + id);
+
+      tl.fromTo(q("h1"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);
+      tl.fromTo(q("h2"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.1);
+      tl.fromTo(q("call"), { opacity: 0, y: 100, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.44, ease: "power3.out" }, 0.04);
+      tl.fromTo(q("live"), { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2.2)" }, 0.81 - 0.06);
+      tl.fromTo(q("ldot"), { opacity: 1 }, { keyframes: [{ opacity: 0.25, duration: 0.3 }, { opacity: 1, duration: 0.3 }, { opacity: 0.25, duration: 0.3 }, { opacity: 1, duration: 0.3 }], immediateRender: false }, 0.81 + 0.3);
+      tl.fromTo(q("bad"), { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.28, ease: "power3.out" }, 1.629 - 0.08);
+      tl.fromTo(q("bads"), { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power2.out" }, 1.629 + 0.3);
+      tl.fromTo(q("arr"), { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.22, ease: "power3.out" }, 1.629 + 0.42);
+      tl.fromTo(q("good"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, 1.629 + 0.52);
+      tl.to(q("s1"), { opacity: 0, y: -90, duration: 0.24, ease: "power2.in" }, 3.345 - 0.2);
+      tl.fromTo(q("s2"), { opacity: 0 }, { opacity: 1, duration: 0.01 }, 3.345 - 0.02);
+      tl.fromTo(q("pp"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.26, ease: "power3.out" }, 3.345);
+      tl.fromTo(q("t0"), { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.8)" }, 3.345 + 0.02);
+      tl.fromTo(q("t1"), { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.8)" }, 3.345 + 0.12);
+      tl.fromTo(q("t2"), { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.8)" }, 3.345 + 0.22);
+      tl.fromTo(q("t3"), { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.8)" }, 3.345 + 0.32);
+
+      window.__timelines["ins-05"] = tl;
+    })();
+  </script>
+</template>
