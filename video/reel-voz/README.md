@@ -36,6 +36,9 @@ python3 reel_voz.py voices                            # las voces de tu cuenta
   alguna, corrígela ahí y vuelve a lanzar `tts` y `mix`: el fichero manda sobre el OCR.
 - **Pronunciación.** Si la voz pronuncia mal una palabra, escribe cómo debe sonar después de una barra:
   `het wc-papier | het weesee-papier`.
+- **Repetir solo una palabra.** `python3 reel_voz.py tts --work trabajo/ --solo 11,17 ...` genera de nuevo solo esas
+  palabras (por su número en `palabras.txt`), en un fichero aparte. Las demás y la frase se quedan como estaban, y
+  luego basta con `mix`.
 - **Voces y frase.** Se eligen con `--voz-es` / `--voz-nl` (nombre o id; o con las variables `ELEVENLABS_VOICE_ES` /
   `ELEVENLABS_VOICE_NL`). La frase se cambia con `--frase "¿Sabes decir esto en neerlandés?"`, el modelo con
   `--modelo` (por defecto `eleven_multilingual_v2`).
@@ -47,7 +50,8 @@ python3 reel_voz.py voices                            # las voces de tu cuenta
   para esto: con 0,9 la frase salió más lenta, pero las palabras de la lista salieron más rápidas y solo se alargaron
   las pausas.
 - **Colocación.** La primera palabra espera a que termine la frase. Las demás entran 0,1 s después de que se ilumine su
-  etiqueta.
+  etiqueta. Cada corte empieza y acaba donde hay sonido de verdad, no solo donde ElevenLabs dice que van las letras
+  (a veces se desvía ~0,1 s), así que no se come el principio de ninguna palabra.
 
 Necesita ffmpeg, python3 con `numpy`, `opencv-python` y `pytesseract`, y tesseract con el idioma neerlandés
 (`apt install tesseract-ocr tesseract-ocr-nld`).
@@ -55,5 +59,8 @@ Necesita ffmpeg, python3 con `numpy`, `opencv-python` y `pytesseract`, y tessera
 ## Probado con «Reel 3-3 - Vocab» (cuarto de baño, 20 palabras)
 
 La detección encuentra las 20 etiquetas, lee bien todas las palabras (también «de föhn») y da los tiempos: una
-etiqueta cada 3,0 s, desde 0,00 s hasta 56,93 s. La música del reel venía con picos en −13,7 dB (−25,9 LUFS): baja
+etiqueta cada 3,0 s, desde 0,00 s hasta 56,93 s. Con la voz de Yair (española, elegida para las dos generaciones) se
+entienden las 20 palabras y todos los artículos. «het douchegordijn» tiene una g algo suave. Escribirla de otras ocho
+maneras no lo mejoró, y el reconocedor tampoco entiende mejor «scheermes» con voces holandesas nativas, así que se
+quedan las tomas originales. La música del reel venía con picos en −13,7 dB (−25,9 LUFS): baja
 5,3 dB y queda a unos −31 LUFS, unos 20 dB por debajo de la voz. El vídeo final mide −11,7 LUFS con picos de −1 dBTP.

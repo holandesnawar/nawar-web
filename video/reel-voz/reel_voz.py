@@ -171,29 +171,56 @@ def tts(text, voice, model, work, name, language=None, speed=1.0):
     return mp3, al
 
 
-def generate(work, voice_es, voice_nl, model, phrase, speed=1.0):
+def sentence(w):
+    return w[0].upper() + w[1:]
+
+
+def word_times(al, words):
+    """(start, end) of each word in an ElevenLabs alignment, in order."""
+    chars, st, en = al["characters"], al["character_start_times_seconds"], al["character_end_times_seconds"]
+    joined, out, pos = "".join(chars), [], 0
+    for w in words:
+        i = joined.find(sentence(w), pos)
+        if i < 0:
+            sys.exit(f"no encuentro «{w}» en la alineación de ElevenLabs")
+        j = i + len(sentence(w)) - 1; pos = j + 1
+        out.append((round(st[i], 3), round(en[j], 3)))
+    return out
+
+
+def generate(work, voice_es, voice_nl, model, phrase, speed=1.0, only=None):
+    """only: 1-based numbers of the words to generate again (the others and the phrase stay as they are)."""
     items = json.load(open(os.path.join(work, "deteccion.json")))["items"]
     lines = [w.strip() for w in open(os.path.join(work, "palabras.txt")).read().splitlines() if w.strip()]
     words = [(l.split("|")[1] if "|" in l else l).strip() for l in lines]   # what the voice reads
+    labels = [l.split("|")[0].strip() for l in lines]
     if len(words) != len(items):
         sys.exit(f"palabras.txt tiene {len(words)} palabras y hay {len(items)} etiquetas")
     ves, nes = voice_id(voice_es); vnl, nnl = voice_id(voice_nl)
+    lang = lambda code: code if "v2_5" in model or "flash" in model else None
     print(f"voz ES: {nes} · voz NL: {nnl} · modelo {model} · velocidad {speed}")
+    if only:
+        # just these words, in a call of their own (same voice and settings, same one-sentence-per-word text); the cut
+        # list points them at the new file, so every other word keeps the take that was already approved
+        cuts = json.load(open(os.path.join(work, "cortes_nl.json")))
+        ks = sorted({int(n) - 1 for n in only})
+        if not ks or ks[0] < 0 or ks[-1] >= len(words):
+            sys.exit(f"--solo: números de 1 a {len(words)}")
+        n = 1
+        while os.path.exists(os.path.join(work, f"palabras_nl_fix{n}.mp3")): n += 1
+        name = f"palabras_nl_fix{n}"
+        _, al = tts("\n\n".join(sentence(words[k]) + "." for k in ks), vnl, model, work, name, language=lang("nl"), speed=speed)
+        for k, (a, b) in zip(ks, word_times(al, [words[k] for k in ks])):
+            cuts[k] = {"word": labels[k], "said": words[k], "src": name + ".mp3", "start": a, "end": b}
+        json.dump(cuts, open(os.path.join(work, "cortes_nl.json"), "w"), ensure_ascii=False, indent=1)
+        print(f"generadas de nuevo: {', '.join(labels[k] for k in ks)} → {name}.mp3")
+        return
     # generation 1: the Spanish question
-    tts(phrase, ves, model, work, "frase_es", language="es" if "v2_5" in model or "flash" in model else None, speed=speed)
+    tts(phrase, ves, model, work, "frase_es", language=lang("es"), speed=speed)
     # generation 2: every Dutch word in one go, each as its own short sentence, so they share voice and intonation
-    text = "\n\n".join(w[0].upper() + w[1:] + "." for w in words)
-    _, al = tts(text, vnl, model, work, "palabras_nl", language="nl" if "v2_5" in model or "flash" in model else None, speed=speed)
-    chars, st, en = al["characters"], al["character_start_times_seconds"], al["character_end_times_seconds"]
-    joined = "".join(chars)
-    cuts, pos = [], 0
-    for w in words:
-        target = w[0].upper() + w[1:]
-        i = joined.find(target, pos)
-        if i < 0:
-            sys.exit(f"no encuentro «{w}» en la alineación de ElevenLabs")
-        j = i + len(target) - 1; pos = j + 1
-        cuts.append({"word": lines[len(cuts)].split("|")[0].strip(), "said": w, "start": round(st[i], 3), "end": round(en[j], 3)})
+    _, al = tts("\n\n".join(sentence(w) + "." for w in words), vnl, model, work, "palabras_nl", language=lang("nl"), speed=speed)
+    cuts = [{"word": labels[k], "said": words[k], "src": "palabras_nl.mp3", "start": a, "end": b}
+            for k, (a, b) in enumerate(word_times(al, words))]
     json.dump(cuts, open(os.path.join(work, "cortes_nl.json"), "w"), ensure_ascii=False, indent=1)
     print("generadas: frase en español + %d palabras en neerlandés" % len(cuts))
 
@@ -227,7 +254,11 @@ def mix(video, work, out, lead=0.1, gap=0.2, music_db=-19.0, duck_db=0.0, voice_
     has_music = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "a", "-show_entries", "stream=index", "-of", "csv=p=0", video],
                                capture_output=True, text=True).stdout.strip()
     music = load_audio(video) if has_music else np.zeros((int(round(probe(video)[3] * sr)), 2), np.float32)
-    nl = load_audio(os.path.join(work, "palabras_nl.mp3")); es = load_audio(os.path.join(work, "frase_es.mp3"))
+    es = load_audio(os.path.join(work, "frase_es.mp3"))
+    srcs = {}
+    for c in cuts:
+        c.setdefault("src", "palabras_nl.mp3")
+        if c["src"] not in srcs: srcs[c["src"]] = load_audio(os.path.join(work, c["src"]))
     voice = np.zeros_like(music)
     def put(clip, t):
         a = int(round(t * sr)); b = min(len(voice), a + len(clip)); voice[a:b] += clip[:b - a]; return a, b
@@ -240,11 +271,27 @@ def mix(video, work, out, lead=0.1, gap=0.2, music_db=-19.0, duck_db=0.0, voice_
     spans = [put(es, phrase_at)]
     t_free = phrase_at + len(es) / sr + gap              # the first word waits for the question to finish
     plan = []
+    def edges(src, c):
+        # ElevenLabs' letter times can be ~0.1 s off (the voicing before a «d» starts earlier than its «d»), so the cut
+        # starts 0.03 s before the first letter and then keeps going back while there is still sound (above the word's
+        # loudest 5 ms − 40 dB), and the same after the last letter (from +0.10 s); never into the neighbouring words
+        x = srcs[src]; h = int(0.005 * sr)
+        rms = lambda i: float(np.sqrt((x[max(0, i):max(0, i) + h] ** 2).mean() + 1e-12))
+        s0, e0 = int(c["start"] * sr), int(c["end"] * sr)
+        thr = max(rms(i) for i in range(s0, max(s0 + h, e0), h)) * 10 ** (-40 / 20)
+        same = sorted((d for d in cuts if d["src"] == src), key=lambda d: d["start"]); k = same.index(c)
+        lo = int((same[k - 1]["end"] + 0.12) * sr) if k else 0
+        hi = int((same[k + 1]["start"] - 0.10) * sr) if k + 1 < len(same) else len(x)
+        a = max(lo, int((c["start"] - 0.03) * sr)); b = min(hi, int((c["end"] + 0.10) * sr))
+        while a - h >= lo and rms(a - h) > thr: a -= h
+        while b + h <= hi and rms(b) > thr: b += h
+        return a, b
     for it, c in zip(items, cuts):
-        a = int(max(0, (c["start"] - 0.03)) * sr); b = int((c["end"] + 0.10) * sr)
-        clip = slow(nl[a:b].copy()); f = int(0.008 * sr)
+        a, b = edges(c["src"], c)
+        clip = slow(srcs[c["src"]][a:b].copy()); f = int(0.008 * sr)
         clip[:f] *= np.linspace(0, 1, f)[:, None]; clip[-f * 3:] *= np.linspace(1, 0, f * 3)[:, None]
-        t = max(it["start"] + lead, t_free)
+        # the first letter lands lead + 0.03 s after the label lights (whatever extra sound the cut kept before it)
+        t = max(it["start"] + lead + 0.03 - (c["start"] - a / sr) / tempo, t_free)
         spans.append(put(clip, t)); t_free = t + len(clip) / sr + 0.05
         plan.append((c["word"], it["start"], round(t, 3)))
     # loudness: the voice to voice_lufs, after a gentle compressor (from −16 LUFS: −18 dB threshold, 3:1) that evens out
@@ -268,7 +315,7 @@ def mix(video, work, out, lead=0.1, gap=0.2, music_db=-19.0, duck_db=0.0, voice_
     mixd = music + voice
     over = 20 * np.log10(max(float(np.abs(mixd).max()), 1e-9) / 0.75)
     print(f"voz a {voice_lufs:.1f} LUFS · el limitador recorta {max(0.0, over):.1f} dB en los picos más altos")
-    wav = os.path.join(work, "mezcla.wav")
+    wav = os.path.join(work, os.path.splitext(os.path.basename(out))[0] + ".mezcla.wav")   # one mix per video
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", "-", "-af", "alimiter=limit=0.75:level=false:latency=1", wav],
                    input=mixd.astype(np.float32).tobytes(), check=True)
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", video, "-i", wav, "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
@@ -291,6 +338,8 @@ def main():
             p.add_argument("--voz-nl", default=os.environ.get("ELEVENLABS_VOICE_NL", "Sarah"))
             p.add_argument("--modelo", default="eleven_multilingual_v2")
             p.add_argument("--frase", default=DEFAULT_PHRASE)
+            if name == "tts":
+                p.add_argument("--solo", help="genera de nuevo solo estas palabras (números separados por comas, p. ej. 11,17)")
             p.add_argument("--velocidad", type=float, default=1.0, help="velocidad de ElevenLabs, de 0.7 a 1.2 (por defecto 1.0; para ir más lento usa --tempo en mix, que es más fiable)")
         if name in ("mix", "all"):
             p.add_argument("--out", required=True)
@@ -306,7 +355,9 @@ def main():
             print(f"  {v['name']:<28} {v['voice_id']}  {lab.get('accent', '')} {lab.get('language', '')} {lab.get('gender', '')}")
         return
     if a.cmd in ("detect", "all"): detect(a.video, a.work)
-    if a.cmd in ("tts", "all"): generate(a.work, a.voz_es, a.voz_nl, a.modelo, a.frase, speed=a.velocidad)
+    if a.cmd in ("tts", "all"):
+        generate(a.work, a.voz_es, a.voz_nl, a.modelo, a.frase, speed=a.velocidad,
+                 only=[n for n in (getattr(a, "solo", None) or "").split(",") if n.strip()])
     if a.cmd in ("mix", "all"): mix(a.video, a.work, a.out, music_db=a.musica, duck_db=a.duck, voice_lufs=a.voz, tempo=a.tempo)
 
 
