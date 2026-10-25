@@ -7,8 +7,9 @@ El reel es una cuadrícula de dibujos con su palabra en una etiqueta; las etique
                palabras en neerlandés en una sola llamada (/with-timestamps); cada palabra se recorta con los tiempos
                de sus letras, así suenan con la misma voz y entonación.
   3. mix     — coloca cada palabra cuando se ilumina su etiqueta (la frase, al principio, y la primera palabra justo
-               después), deja la música original de fondo a un nivel fijo (picos en −16 dB, como bajarla en el
-               editor), la voz a −16 LUFS, y exporta el vídeo (la imagen no se toca).
+               después), deja la música original de fondo a un nivel fijo (los picos en −16 dB como mucho: si viene
+               más alta, baja; si ya está más baja, no se toca), la voz a −16 LUFS, y exporta el vídeo (la imagen no se
+               toca).
 
   python3 reel_voz.py all  REEL.mp4 --work trabajo/ --out REEL-voz.mp4
   python3 reel_voz.py detect REEL.mp4 --work trabajo/        # solo detectar (revisa trabajo/deteccion.jpg y palabras.txt)
@@ -233,22 +234,24 @@ def mix(video, work, out, lead=0.1, gap=0.2, music_db=-16.0, duck_db=0.0, voice_
         t = max(it["start"] + lead, t_free)
         spans.append(put(clip, t)); t_free = t + len(clip) / sr + 0.05
         plan.append((c["word"], it["start"], round(t, 3)))
-    # loudness: the voice to voice_lufs; the original track at one fixed background level, its peaks at music_db
-    # (what setting the music to −16 dB in an editor does to a normal track); optionally ducked under the voice
+    # loudness: the voice to voice_lufs; the original track at one fixed background level with its peaks at music_db at
+    # most (a track that is already quieter is left as it is, never raised); optionally ducked under the voice
     g = 10 ** ((voice_lufs - lufs_of(voice)) / 20); voice *= g
     peak = float(np.abs(music).max())
-    if peak > 1e-5:
+    if peak > 10 ** (music_db / 20):
         music *= 10 ** (music_db / 20) / peak
         print(f"música: picos de {20 * np.log10(peak):.1f} a {music_db:.1f} dB ({music_db - 20 * np.log10(peak):+.1f} dB), nivel fijo")
-    if duck_db < 0:
-        env = np.ones(len(music), np.float32); r = int(0.2 * sr); d = 10 ** (duck_db / 20)
+    elif peak > 0:
+        print(f"música: picos en {20 * np.log10(peak):.1f} dB, ya por debajo de {music_db:.1f} dB, se deja igual")
+    if duck_db:
+        env = np.ones(len(music), np.float32); r = int(0.2 * sr); d = 10 ** (-abs(duck_db) / 20)
         for a, b in spans:
             env[max(0, a - r):b + r] = np.minimum(env[max(0, a - r):b + r], d)
         env = np.convolve(np.pad(env, (r // 2, r - r // 2 - 1), mode="edge"), np.ones(r) / r, mode="valid").astype(np.float32)
         music *= env[:, None]
     mixd = music + voice
     wav = os.path.join(work, "mezcla.wav")
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", "-", "-af", "alimiter=limit=0.89:level=false", wav],
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", "-", "-af", "alimiter=limit=0.89:level=false:latency=1", wav],
                    input=mixd.astype(np.float32).tobytes(), check=True)
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", video, "-i", wav, "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
                     "-movflags", "+faststart", "-shortest", out], check=True)
@@ -272,8 +275,8 @@ def main():
             p.add_argument("--frase", default=DEFAULT_PHRASE)
         if name in ("mix", "all"):
             p.add_argument("--out", required=True)
-            p.add_argument("--musica", type=float, default=-16.0, help="nivel de la música original: dB de sus picos (−16 = de fondo)")
-            p.add_argument("--duck", type=float, default=0.0, help="dB que baja además la música mientras suena la voz (0 = no baja)")
+            p.add_argument("--musica", type=float, default=-16.0, help="dB máximos de los picos de la música original (por defecto −16, de fondo; nunca la sube)")
+            p.add_argument("--duck", type=float, default=0.0, help="dB que baja además la música mientras suena la voz (por defecto 0, no baja; p. ej. 3)")
     sub.add_parser("voices")
     a = ap.parse_args()
     if a.cmd == "voices":

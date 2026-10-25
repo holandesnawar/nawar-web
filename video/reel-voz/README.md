@@ -10,8 +10,8 @@ naranja, y las etiquetas se iluminan una tras otra. `reel_voz.py` le pone la voz
 
    Cada palabra se recorta con los tiempos de sus letras, así todas tienen la misma voz y la misma entonación.
 3. **mix** coloca la frase al principio y cada palabra cuando se ilumina su etiqueta. La música original del reel queda
-   de fondo a un nivel fijo, con los picos en −16 dB, como al bajarla en el editor. La voz queda a −16 LUFS. La imagen
-   no se toca.
+   de fondo a un nivel fijo, con los picos en −16 dB como mucho: si viene más alta, baja; si ya está más baja, no se
+   toca. La voz queda a −16 LUFS. La imagen no se toca.
 
 ## Uso
 
@@ -36,8 +36,8 @@ python3 reel_voz.py voices                            # las voces de tu cuenta
 - **Voces y frase.** Se eligen con `--voz-es` / `--voz-nl` (nombre o id; o con las variables `ELEVENLABS_VOICE_ES` /
   `ELEVENLABS_VOICE_NL`). La frase se cambia con `--frase "¿Sabes decir esto en neerlandés?"`, el modelo con
   `--modelo` (por defecto `eleven_multilingual_v2`).
-- **Música.** `--musica -18` la deja más baja y `--musica -14` más alta (es el dB de sus picos). Con `--duck -3`, además,
-  baja 3 dB cada vez que suena la voz.
+- **Música.** `--musica` es el dB máximo de sus picos: `--musica -18` la deja más baja y `--musica -14` más alta (nunca
+  por encima de como viene en el reel). Con `--duck 3`, además, baja 3 dB cada vez que suena la voz.
 - **Colocación.** La primera palabra espera a que termine la frase. Las demás entran 0,1 s después de que se ilumine su
   etiqueta.
 
@@ -47,4 +47,5 @@ Necesita ffmpeg, python3 con `numpy`, `opencv-python` y `pytesseract`, y tessera
 ## Probado con «Reel 3-3 - Vocab» (cuarto de baño, 20 palabras)
 
 La detección encuentra las 20 etiquetas, lee bien todas las palabras (también «de föhn») y da los tiempos: una
-etiqueta cada 3,0 s, desde 0,00 s hasta 56,93 s.
+etiqueta cada 3,0 s, desde 0,00 s hasta 56,93 s. La música del reel ya venía bajada (picos en −13,7 dB, −25,9 LUFS):
+para quedar en −16 dB baja 2,3 dB, y queda a −28 LUFS, unos 12 dB por debajo de la voz.
