@@ -7,9 +7,9 @@ El reel es una cuadrícula de dibujos con su palabra en una etiqueta; las etique
                palabras en neerlandés en una sola llamada (/with-timestamps); cada palabra se recorta con los tiempos
                de sus letras, así suenan con la misma voz y entonación.
   3. mix     — coloca cada palabra cuando se ilumina su etiqueta (la frase, al principio, y la primera palabra justo
-               después), deja la música original de fondo a un nivel fijo (los picos en −16 dB como mucho: si viene
-               más alta, baja; si ya está más baja, no se toca), la voz a −16 LUFS, y exporta el vídeo (la imagen no se
-               toca).
+               después), deja la música original de fondo a un nivel fijo (los picos en −19 dB como mucho: si viene
+               más alta, baja; si ya está más baja, no se toca), la voz a −11 LUFS y un 10 % más lenta (sin cambiar el
+               tono), y exporta el vídeo (la imagen no se toca).
 
   python3 reel_voz.py all  REEL.mp4 --work trabajo/ --out REEL-voz.mp4
   python3 reel_voz.py detect REEL.mp4 --work trabajo/        # solo detectar (revisa trabajo/deteccion.jpg y palabras.txt)
@@ -159,8 +159,9 @@ def voice_id(name_or_id):
     sys.exit(f"no encuentro la voz «{name_or_id}» en tu cuenta (mira `reel_voz.py voices`)")
 
 
-def tts(text, voice, model, work, name, language=None):
-    body = {"text": text, "model_id": model, "voice_settings": {"stability": 0.55, "similarity_boost": 0.8, "style": 0.0}}
+def tts(text, voice, model, work, name, language=None, speed=1.0):
+    body = {"text": text, "model_id": model,
+            "voice_settings": {"stability": 0.55, "similarity_boost": 0.8, "style": 0.0, "speed": speed}}
     if language:
         body["language_code"] = language
     j = api(f"/text-to-speech/{voice}/with-timestamps?output_format=mp3_44100_128", body)
@@ -170,19 +171,19 @@ def tts(text, voice, model, work, name, language=None):
     return mp3, al
 
 
-def generate(work, voice_es, voice_nl, model, phrase):
+def generate(work, voice_es, voice_nl, model, phrase, speed=1.0):
     items = json.load(open(os.path.join(work, "deteccion.json")))["items"]
     lines = [w.strip() for w in open(os.path.join(work, "palabras.txt")).read().splitlines() if w.strip()]
     words = [(l.split("|")[1] if "|" in l else l).strip() for l in lines]   # what the voice reads
     if len(words) != len(items):
         sys.exit(f"palabras.txt tiene {len(words)} palabras y hay {len(items)} etiquetas")
     ves, nes = voice_id(voice_es); vnl, nnl = voice_id(voice_nl)
-    print(f"voz ES: {nes} · voz NL: {nnl} · modelo {model}")
+    print(f"voz ES: {nes} · voz NL: {nnl} · modelo {model} · velocidad {speed}")
     # generation 1: the Spanish question
-    tts(phrase, ves, model, work, "frase_es", language="es" if "v2_5" in model or "flash" in model else None)
+    tts(phrase, ves, model, work, "frase_es", language="es" if "v2_5" in model or "flash" in model else None, speed=speed)
     # generation 2: every Dutch word in one go, each as its own short sentence, so they share voice and intonation
     text = "\n\n".join(w[0].upper() + w[1:] + "." for w in words)
-    _, al = tts(text, vnl, model, work, "palabras_nl", language="nl" if "v2_5" in model or "flash" in model else None)
+    _, al = tts(text, vnl, model, work, "palabras_nl", language="nl" if "v2_5" in model or "flash" in model else None, speed=speed)
     chars, st, en = al["characters"], al["character_start_times_seconds"], al["character_end_times_seconds"]
     joined = "".join(chars)
     cuts, pos = [], 0
@@ -203,13 +204,23 @@ def load_audio(path, sr=48000):
     return np.frombuffer(raw, np.float32).reshape(-1, 2).copy()
 
 
+def ffilter(x, af, sr=48000, same_length=True):
+    """runs a stereo float buffer through an ffmpeg audio filter chain."""
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", "-", "-af", af, "-f", "f32le", "-"],
+                         input=x.astype(np.float32).tobytes(), capture_output=True, check=True).stdout
+    y = np.frombuffer(raw, np.float32).reshape(-1, 2)
+    if not same_length:
+        return y.copy()
+    return np.concatenate([y, np.zeros((max(0, len(x) - len(y)), 2), np.float32)])[:len(x)].copy()
+
+
 def lufs_of(x, sr=48000):
     p = subprocess.run(["ffmpeg", "-nostats", "-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", "-", "-af", "ebur128", "-f", "null", "-"],
                        input=x.astype(np.float32).tobytes(), capture_output=True)
     return float(re.findall(r"I:\s+(-?[\d.]+) LUFS", p.stderr.decode())[-1])
 
 
-def mix(video, work, out, lead=0.1, gap=0.2, music_db=-16.0, duck_db=0.0, voice_lufs=-16.0, phrase_at=0.15):
+def mix(video, work, out, lead=0.1, gap=0.2, music_db=-19.0, duck_db=0.0, voice_lufs=-11.0, tempo=0.9, phrase_at=0.15):
     sr = 48000
     items = json.load(open(os.path.join(work, "deteccion.json")))["items"]
     cuts = json.load(open(os.path.join(work, "cortes_nl.json")))
@@ -223,20 +234,25 @@ def mix(video, work, out, lead=0.1, gap=0.2, music_db=-16.0, duck_db=0.0, voice_
     def trim(x):                                          # drop leading/trailing silence of a clip
         e = np.abs(x).max(1); on = np.where(e > 10 ** (-45 / 20))[0]
         return x[max(0, on[0] - int(0.01 * sr)):on[-1] + int(0.06 * sr)] if len(on) else x
-    es = trim(es)
+    def slow(x):                                          # tempo < 1: same voice and pitch, a little slower (Rubber Band)
+        return ffilter(x, f"rubberband=tempo={tempo}:pitchq=quality", same_length=False) if tempo != 1 else x
+    es = slow(trim(es))
     spans = [put(es, phrase_at)]
     t_free = phrase_at + len(es) / sr + gap              # the first word waits for the question to finish
     plan = []
     for it, c in zip(items, cuts):
         a = int(max(0, (c["start"] - 0.03)) * sr); b = int((c["end"] + 0.10) * sr)
-        clip = nl[a:b].copy(); f = int(0.008 * sr)
+        clip = slow(nl[a:b].copy()); f = int(0.008 * sr)
         clip[:f] *= np.linspace(0, 1, f)[:, None]; clip[-f * 3:] *= np.linspace(1, 0, f * 3)[:, None]
         t = max(it["start"] + lead, t_free)
         spans.append(put(clip, t)); t_free = t + len(clip) / sr + 0.05
         plan.append((c["word"], it["start"], round(t, 3)))
-    # loudness: the voice to voice_lufs; the original track at one fixed background level with its peaks at music_db at
-    # most (a track that is already quieter is left as it is, never raised); optionally ducked under the voice
-    g = 10 ** ((voice_lufs - lufs_of(voice)) / 20); voice *= g
+    # loudness: the voice to voice_lufs, after a gentle compressor (from −16 LUFS: −18 dB threshold, 3:1) that evens out
+    # the plosives so a loud voice doesn't lean on the limiter; the original track at one fixed background level with its
+    # peaks at music_db at most (a track that is already quieter is left as it is, never raised); optionally ducked
+    voice *= 10 ** ((-16.0 - lufs_of(voice)) / 20)
+    voice = ffilter(voice, "highpass=f=80,acompressor=threshold=0.125:ratio=3:attack=3:release=100:knee=4:makeup=1")
+    voice *= 10 ** ((voice_lufs - lufs_of(voice)) / 20)
     peak = float(np.abs(music).max())
     if peak > 10 ** (music_db / 20):
         music *= 10 ** (music_db / 20) / peak
@@ -250,8 +266,10 @@ def mix(video, work, out, lead=0.1, gap=0.2, music_db=-16.0, duck_db=0.0, voice_
         env = np.convolve(np.pad(env, (r // 2, r - r // 2 - 1), mode="edge"), np.ones(r) / r, mode="valid").astype(np.float32)
         music *= env[:, None]
     mixd = music + voice
+    over = 20 * np.log10(max(float(np.abs(mixd).max()), 1e-9) / 0.75)
+    print(f"voz a {voice_lufs:.1f} LUFS · el limitador recorta {max(0.0, over):.1f} dB en los picos más altos")
     wav = os.path.join(work, "mezcla.wav")
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", "-", "-af", "alimiter=limit=0.79:level=false:latency=1", wav],
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", "-", "-af", "alimiter=limit=0.75:level=false:latency=1", wav],
                    input=mixd.astype(np.float32).tobytes(), check=True)
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", video, "-i", wav, "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
                     "-movflags", "+faststart", "-shortest", out], check=True)
@@ -273,9 +291,12 @@ def main():
             p.add_argument("--voz-nl", default=os.environ.get("ELEVENLABS_VOICE_NL", "Sarah"))
             p.add_argument("--modelo", default="eleven_multilingual_v2")
             p.add_argument("--frase", default=DEFAULT_PHRASE)
+            p.add_argument("--velocidad", type=float, default=1.0, help="velocidad de ElevenLabs, de 0.7 a 1.2 (por defecto 1.0; para ir más lento usa --tempo en mix, que es más fiable)")
         if name in ("mix", "all"):
             p.add_argument("--out", required=True)
-            p.add_argument("--musica", type=float, default=-16.0, help="dB máximos de los picos de la música original (por defecto −16, de fondo; nunca la sube)")
+            p.add_argument("--musica", type=float, default=-19.0, help="dB máximos de los picos de la música original (por defecto −19, de fondo; nunca la sube)")
+            p.add_argument("--voz", type=float, default=-11.0, help="volumen de la voz en LUFS (por defecto −11)")
+            p.add_argument("--tempo", type=float, default=0.9, help="velocidad de la voz al mezclar, sin cambiar el tono (por defecto 0.9, un 10%% más lenta; 1 = como sale de ElevenLabs)")
             p.add_argument("--duck", type=float, default=0.0, help="dB que baja además la música mientras suena la voz (por defecto 0, no baja; p. ej. 3)")
     sub.add_parser("voices")
     a = ap.parse_args()
@@ -285,8 +306,8 @@ def main():
             print(f"  {v['name']:<28} {v['voice_id']}  {lab.get('accent', '')} {lab.get('language', '')} {lab.get('gender', '')}")
         return
     if a.cmd in ("detect", "all"): detect(a.video, a.work)
-    if a.cmd in ("tts", "all"): generate(a.work, a.voz_es, a.voz_nl, a.modelo, a.frase)
-    if a.cmd in ("mix", "all"): mix(a.video, a.work, a.out, music_db=a.musica, duck_db=a.duck)
+    if a.cmd in ("tts", "all"): generate(a.work, a.voz_es, a.voz_nl, a.modelo, a.frase, speed=a.velocidad)
+    if a.cmd in ("mix", "all"): mix(a.video, a.work, a.out, music_db=a.musica, duck_db=a.duck, voice_lufs=a.voz, tempo=a.tempo)
 
 
 if __name__ == "__main__":

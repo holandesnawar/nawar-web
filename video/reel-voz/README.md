@@ -9,9 +9,12 @@ naranja, y las etiquetas se iluminan una tras otra. `reel_voz.py` le pone la voz
    - todas las palabras en neerlandés en una sola llamada (`/with-timestamps`).
 
    Cada palabra se recorta con los tiempos de sus letras, así todas tienen la misma voz y la misma entonación.
-3. **mix** coloca la frase al principio y cada palabra cuando se ilumina su etiqueta. La música original del reel queda
-   de fondo a un nivel fijo, con los picos en −16 dB como mucho: si viene más alta, baja; si ya está más baja, no se
-   toca. La voz queda a −16 LUFS. La imagen no se toca.
+3. **mix** coloca la frase al principio y cada palabra cuando se ilumina su etiqueta.
+   - La voz va un 10 % más lenta que como sale de ElevenLabs, sin cambiar el tono (Rubber Band).
+   - Lleva una compresión suave y queda a −11 LUFS.
+   - La música original del reel queda de fondo a un nivel fijo, con los picos en −19 dB como mucho: si viene más
+     alta, baja; si ya está más baja, no se toca.
+   - La imagen no se toca.
 
 ## Uso
 
@@ -36,8 +39,13 @@ python3 reel_voz.py voices                            # las voces de tu cuenta
 - **Voces y frase.** Se eligen con `--voz-es` / `--voz-nl` (nombre o id; o con las variables `ELEVENLABS_VOICE_ES` /
   `ELEVENLABS_VOICE_NL`). La frase se cambia con `--frase "¿Sabes decir esto en neerlandés?"`, el modelo con
   `--modelo` (por defecto `eleven_multilingual_v2`).
-- **Música.** `--musica` es el dB máximo de sus picos: `--musica -18` la deja más baja y `--musica -14` más alta (nunca
-  por encima de como viene en el reel). Con `--duck 3`, además, baja 3 dB cada vez que suena la voz.
+- **Volumen.** `--voz` es el volumen de la voz en LUFS: `--voz -9` más alta, `--voz -13` más baja. `--musica` es el dB
+  máximo de los picos de la música: `--musica -22` la deja más baja y `--musica -16` más alta (nunca por encima de como
+  viene en el reel). Con `--duck 3`, además, la música baja 3 dB cada vez que suena la voz.
+- **Velocidad.** `--tempo 0.85` la hace más lenta y `--tempo 1` la deja como sale de ElevenLabs. Se aplica al mezclar,
+  así que cambiarla no gasta créditos. El parámetro de velocidad de ElevenLabs (`--velocidad` en `tts`) no es fiable
+  para esto: con 0,9 la frase salió más lenta, pero las palabras de la lista salieron más rápidas y solo se alargaron
+  las pausas.
 - **Colocación.** La primera palabra espera a que termine la frase. Las demás entran 0,1 s después de que se ilumine su
   etiqueta.
 
@@ -47,5 +55,5 @@ Necesita ffmpeg, python3 con `numpy`, `opencv-python` y `pytesseract`, y tessera
 ## Probado con «Reel 3-3 - Vocab» (cuarto de baño, 20 palabras)
 
 La detección encuentra las 20 etiquetas, lee bien todas las palabras (también «de föhn») y da los tiempos: una
-etiqueta cada 3,0 s, desde 0,00 s hasta 56,93 s. La música del reel ya venía bajada (picos en −13,7 dB, −25,9 LUFS):
-para quedar en −16 dB baja 2,3 dB, y queda a −28 LUFS, unos 12 dB por debajo de la voz.
+etiqueta cada 3,0 s, desde 0,00 s hasta 56,93 s. La música del reel venía con picos en −13,7 dB (−25,9 LUFS): baja
+5,3 dB y queda a unos −31 LUFS, unos 20 dB por debajo de la voz. El vídeo final mide −11,7 LUFS con picos de −1 dBTP.
