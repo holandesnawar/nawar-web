@@ -108,7 +108,7 @@ const CAMBIO = [
 /** Lo que se ve bajo el formulario de la cabecera. */
 const PRUEBAS = [
   { i: 'charla', t: 'En español', d: 'Todo explicado en tu idioma' },
-  { i: 'video', t: 'Clase en directo', d: 'Cada semana, con un profesor' },
+  { i: 'video', t: 'Clases en directo', d: 'Masterclass y grupos de conversación' },
   { i: 'premio', t: 'Certificado', d: 'Al terminar el A1' },
 ]
 
@@ -122,7 +122,26 @@ const SEMANA = [
   // Sin imagen: la videollamada dibujada (07/10: "que parezca una clase en
   // directo, sin las imágenes de alumnos, con la letra de la foto de
   // perfil"). La de la comunidad, con caras, "parece un poco IA": no usarla.
-  { img: '', i: 'video', t: 'Hablas en la clase en directo', d: 'Cada semana, con un profesor que habla español y con tu grupo: practicas en voz alta lo que has aprendido. Si no puedes asistir, la clase queda grabada.' },
+  { img: '', i: 'video', t: 'Lo pones en práctica en directo', d: 'Cada semana, una masterclass con un profesor sobre un tema concreto y dos grupos de conversación para hablar con otros alumnos. Entras desde la escuela, sin instalar nada.' },
+]
+
+/** Las dos citas en directo de cada semana (27/10/2026, el programa nuevo):
+ *  la masterclass y los grupos de conversación (el Spreken Club de la
+ *  escuela). Pedido: "una sección con grupos de conversación para practicar
+ *  y la masterclass semanal donde se habla de un tema para ponerlo en
+ *  práctica". ⚠️ Que la masterclass queda grabada y que los grupos son dos a
+ *  la semana: confirmar con el usuario si cambia. */
+const EN_DIRECTO = [
+  {
+    i: 'video', cuando: 'Una vez a la semana · con un profesor', t: 'Masterclass semanal',
+    d: 'Cada semana, un tema concreto explicado en directo por un profesor, pensado para que lo pongas en práctica esa misma semana.',
+    puntos: ['Un tema por sesión, de principio a fin', 'Preguntas en directo, o antes desde Consultas', 'Queda grabada si no puedes venir'],
+  },
+  {
+    i: 'charla', cuando: 'Dos veces por semana · en grupo', t: 'Grupos de conversación',
+    d: 'Sesiones para hablar en neerlandés con otros alumnos y un profe que te guía. Aquí no se explica teoría: se habla.',
+    puntos: ['Hablas desde la primera semana', 'Un profe que te guía y te corrige', 'Sin miedo a equivocarte: es para eso'],
+  },
 ]
 
 /** Los alumnos de la videollamada: solo la letra, como cuando no hay foto de
@@ -165,7 +184,7 @@ const FASES = [
     n: '01', c: '#4da3ff', nombre: 'Los cimientos', sub: 'Te presentas y te haces entender', semanas: 'Semanas 1-4',
     objetivo: 'Pasas de cero a mantener tu primera conversación: quién eres, tu familia, tu día y lo que quieres tomar.',
     temas: ['Saludar, presentarte y dar tus datos', 'Los verbos en presente y el orden de la frase', 'Números, precios, días, meses y la hora', 'Tu familia, tu rutina y tus planes', 'Pedir en un café y moverte por el supermercado', 'La pronunciación que más cuesta: vocales largas, ei, ij, ui'],
-    hito: 'Te presentas y mantienes tu primera conversación en la clase en directo.',
+    hito: 'Te presentas y mantienes tu primera conversación en un grupo de conversación.',
     modulos: ['Sobre ti', 'Familia y amigos', 'Comer y beber'],
   },
   {
@@ -185,7 +204,7 @@ const FASES = [
   {
     n: '04', c: '#f2cd6b', nombre: 'Consolidación', sub: 'Todo junto, y el A1 cerrado', semanas: 'Semanas 14-16',
     objetivo: 'Juntas todo lo aprendido y lo usas con soltura en tu día a día. Aquí el nivel se asienta.',
-    temas: ['Situaciones de la vida diaria, de principio a fin', 'Repaso guiado de todo el nivel', 'Refuerzo de lo que más te cuesta', 'Práctica oral en la clase en directo', 'Revisión final de tu progreso'],
+    temas: ['Situaciones de la vida diaria, de principio a fin', 'Repaso guiado de todo el nivel', 'Refuerzo de lo que más te cuesta', 'Práctica oral en los grupos de conversación', 'Revisión final de tu progreso'],
     hito: 'Cierras el nivel A1 y recibes tu certificado.',
     modulos: ['Vida diaria', 'Repaso final'],
   },
@@ -199,7 +218,7 @@ const PERFILES = [
   { q: 'Llevo años aquí y sigo tirando de inglés.', r: 'Empiezas por lo que usas cada día, no por listas de palabras.' },
   { q: 'Me mudo en unos meses y quiero llegar con base.', r: 'Llegas sabiendo presentarte, comprar y pedir una cita.' },
   { q: 'Empiezo de cero. No sé ni cómo se saluda.', r: 'Todo explicado en español, desde la primera palabra.' },
-  { q: 'Probé apps y no paso de ahí.', r: 'Aquí hay un camino, clase en directo y alguien que te corrige.' },
+  { q: 'Probé apps y no paso de ahí.', r: 'Aquí hay un camino, clases en directo para hablar y alguien que te corrige.' },
 ]
 const NO_ES = ['Ya tienes un nivel A2 o superior', 'Buscas resultados sin práctica', 'No puedes dedicarle al menos dos horas a la semana']
 
@@ -216,7 +235,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
 <Layout
   fuentesLocales
   title="Formación Nawar A0-A1 · Neerlandés de cero a A1 — Holandés Nawar"
-  description="Neerlandés de cero a A1 para hispanohablantes, en 16 semanas y explicado en español. Clase en directo cada semana, consultas con el equipo y certificado."
+  description="Neerlandés de cero a A1 para hispanohablantes, en 16 semanas y explicado en español. Masterclass y grupos de conversación en directo cada semana, consultas con el equipo y certificado."
   noindex={true}
 >
   <!-- La barra de siempre de la web; su botón «Matricularme» baja al formulario. -->
@@ -236,7 +255,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
             Aprende neerlandés desde cero y deja de depender de otros en Países Bajos
           </h1>
           <p class="fv-hero-sub">
-            Un programa de 16 semanas explicado en español, con clase en directo cada semana y un equipo que
+            Un programa de 16 semanas explicado en español, con una masterclass y grupos de conversación en directo cada semana, y un equipo que
             te acompaña hasta que vas al médico, haces tus gestiones y hablas con la gente <strong>sin depender de nadie</strong>.
           </p>
         </div>
@@ -369,7 +388,7 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
                     <div class="vc-pantalla">
                       <div class="vc-top">
                         <span class="vc-vivo"><i></i>En directo</span>
-                        <span class="vc-tit">Clase semanal · Módulo 1</span>
+                        <span class="vc-tit">Grupo de conversación · Módulo 1</span>
                         <span class="vc-hora">32:14</span>
                       </div>
                       <!-- La diapositiva de la lección a todo lo ancho y la
@@ -406,6 +425,30 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
                 </div>
               )}
             </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ En directo cada semana: masterclass y grupos de conversación (27/10) ═══ -->
+    <section class="fv-sec fv-claro" id="en-directo">
+      <div class="fv-in">
+        <div class="fv-cab">
+          <span class="fv-badge">En directo, cada semana</span>
+          <h2 class="fv-h2">Lo aprendes en la escuela <span class="fv-acento">y lo pones en práctica hablando</span></h2>
+          <p class="fv-lead">Además de las lecciones, cada semana tienes dos citas en directo para usar lo que aprendes. Entras desde la escuela con un clic, sin instalar nada.</p>
+        </div>
+        <div class="fv-vivo">
+          {EN_DIRECTO.map((x) => (
+            <article class="fv-vivo-t">
+              <span class="fv-vivo-i" set:html={icono(x.i, 28, 1.7)} />
+              <p class="fv-vivo-cuando">{x.cuando}</p>
+              <h3 class="fv-vivo-tit">{x.t}</h3>
+              <p class="fv-vivo-d">{x.d}</p>
+              <ul class="fv-vivo-lista">
+                {x.puntos.map((pt) => <li><span set:html={icono('check', 15, 2.6)} />{pt}</li>)}
+              </ul>
+            </article>
           ))}
         </div>
       </div>
@@ -1079,6 +1122,23 @@ const MARQUESINA = ['Los cimientos', 'Tu vida aquí', 'Valerte por ti mismo', 'C
   .fv-cambio-cab .fv-cambio-hoy { border-bottom-color: #E3EAF6; }
   .fv-cambio-fila.ultima > span { border-bottom: 0; }
   .fv-cambio-fila.ultima .fv-cambio-con { border-radius: 0 0 20px 20px; padding-bottom: 28px; }
+
+  /* ── En directo cada semana (27/10) ──────────────────────────────────
+     Iconos solos, sin baldosa; letra casi negra sobre blanco. */
+  .fv-vivo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .fv-vivo-t { background: #fff; border: 1px solid #DDE6F5; border-radius: 20px; padding: 36px 34px; }
+  .fv-vivo-i { display: inline-flex; color: #025dc7; }
+  .fv-vivo-cuando { margin: 18px 0 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #025dc7; }
+  .fv-vivo-tit { margin: 0 0 10px; font-family: 'Poppins', system-ui, sans-serif; font-size: 24px; font-weight: 600; letter-spacing: -0.02em; color: #1D0084; }
+  .fv-vivo-d { margin: 0 0 20px; font-size: 16px; line-height: 1.65; color: #171a2e; }
+  .fv-vivo-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .fv-vivo-lista li { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.5; color: #171a2e; }
+  .fv-vivo-lista li span { display: inline-flex; flex-shrink: 0; margin-top: 3px; color: #025dc7; }
+  @media (max-width: 760px) {
+    .fv-vivo { grid-template-columns: 1fr; gap: 16px; }
+    .fv-vivo-t { padding: 26px 22px; }
+    .fv-vivo-tit { font-size: 21px; }
+  }
 
   /* ── Así es una semana ─────────────────────────────────────────────── */
   .fv-sem { display: grid; grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); grid-template-areas: "cab escena" "pasos escena"; column-gap: 40px; align-items: start; }

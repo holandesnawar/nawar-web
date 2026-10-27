@@ -184,7 +184,7 @@ const stats = [
 const stack = [
   { nombre: 'Formación completa A0 → A1', detalle: '10 módulos y +15 h de vídeo estructurado, explicado desde el español', valor: '€800', bonus: false },
   { nombre: 'Escuela con ejercicios interactivos', detalle: 'Feedback inmediato, vocabulario con audio nativo, diálogos y seguimiento de tu progreso', valor: '€150', bonus: false },
-  { nombre: 'Clase semanal en directo', detalle: 'Con profesor interno según tu módulo. Todas quedan grabadas', valor: '€780', bonus: true },
+  { nombre: 'Masterclass semanal y grupos de conversación', detalle: 'En directo cada semana, con profesores de la escuela. La masterclass queda grabada', valor: '€780', bonus: true },
   { nombre: 'Comunidad privada de hispanohablantes', detalle: 'Gente en tu misma situación, no aprendes solo', valor: '€120', bonus: true },
   { nombre: 'Ejercicios y lecciones extra', detalle: 'Material adicional para repasar y practicar sin límite', valor: '€90', bonus: true },
   { nombre: 'Soporte y resolución de dudas', detalle: 'Preguntas y te respondemos. No te quedas atascado', valor: '€150', bonus: true },
@@ -195,8 +195,8 @@ const stack = [
 const bonuses = [
   {
     n: '01', icon: 'i-calendar', valor: '€780',
-    title: 'Clase semanal online en directo',
-    desc: 'Cada semana una clase en vivo con un profesor interno de la formación, asignado según el módulo que estés cursando. ¿No puedes conectarte? La clase queda grabada y la tienes a tu disposición.',
+    title: 'Masterclass semanal y grupos de conversación',
+    desc: 'Cada semana, una masterclass en directo con un profesor sobre un tema concreto, para ponerlo en práctica esa misma semana, y dos grupos de conversación para hablar con otros alumnos. ¿No puedes conectarte a la masterclass? Queda grabada y la tienes a tu disposición.',
   },
   {
     n: '02', icon: 'i-users', valor: '€120',
@@ -257,12 +257,12 @@ const faqs = [
     a: 'Sí. Contamos con varios espacios donde puedes preguntar: la comunidad de alumnos, las consultas si quieres una respuesta de los profesores, o un mensaje privado si prefieres que tu duda no se publique.',
   },
   {
-    q: '¿Cómo funcionan las clases semanales?',
-    a: 'Cada semana hay una clase en directo con uno de los profesores de la formación. Es un espacio para repasar, practicar y resolver dudas en grupo. Las grabaciones están disponibles si no puedes asistir en vivo.',
+    q: '¿Cómo funcionan las clases en directo?',
+    a: 'Cada semana hay una masterclass en directo con un profesor de la escuela: un tema concreto, explicado de principio a fin, para que lo pongas en práctica esa misma semana. Y dos grupos de conversación, para hablar en neerlandés con otros alumnos y un profe que te guía. Entras desde la escuela, sin instalar nada, y la masterclass queda grabada si no puedes asistir.',
   },
   {
-    q: '¿Cuántos alumnos hay en la clase semanal?',
-    a: 'Pocos, y a propósito: el grupo se mantiene reducido para que dé tiempo a preguntar. En la práctica es aún más pequeño, porque no todo el mundo se conecta a la misma hora. Y si un día prefieres solo escuchar o no puedes venir, la clase se graba.',
+    q: '¿Cuántos alumnos hay en las clases en directo?',
+    a: 'Pocos, y a propósito: cada grupo se mantiene reducido para que dé tiempo a hablar y a preguntar. En la práctica es aún más pequeño, porque no todo el mundo se conecta a la misma hora. Y si un día no puedes venir a la masterclass, queda grabada.',
   },
   {
     q: '¿Puedo hacerlo desde el móvil?',
@@ -295,7 +295,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
 
 <Layout
   title={`Formación Nawar A0-A1 | Aprende neerlandés de verdad`}
-  description="La formación de neerlandés diseñada para hispanohablantes. +15 h de vídeo, ejercicios online, clase semanal en directo, comunidad y certificado. Reserva tu plaza y te contamos cómo funciona."
+  description="La formación de neerlandés diseñada para hispanohablantes. +15 h de vídeo, ejercicios online, masterclass y grupos de conversación en directo, comunidad y certificado. Reserva tu plaza y te contamos cómo funciona."
   keywords="curso neerlandés online, formación neerlandés hispanohablantes, aprender holandés desde el español, inburgering, neerlandés A0 A1"
   noindex={true}
 >
@@ -653,7 +653,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
             </li>
             <li>
               <span class="hero-check"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
-              Clase en directo cada semana, y todas quedan grabadas
+              Masterclass y grupos de conversación en directo cada semana
             </li>
             <li>
               <span class="hero-check"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
@@ -760,7 +760,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
               plano y cuentan dos cosas que el texto no repite. */}
           <div class="float-badge hero-fb-top">
             <span style="font-size:18px;">🎥</span>
-            <div><p>Clase en directo</p><p>cada semana, con el equipo</p></div>
+            <div><p>Clases en directo</p><p>masterclass y grupos de conversación</p></div>
           </div>
           <div class="float-badge hero-fb-bot">
             <span style="font-size:18px;">🎓</span>
@@ -785,7 +785,7 @@ const arrow = 'M17 8l4 4m0 0l-4 4m4-4H3'
         <div class="trust-bar-div"></div>
         <div class="trust-bar-item"><strong>15 días</strong><span>garantía de devolución</span></div>
         <div class="trust-bar-div"></div>
-        <div class="trust-bar-item"><strong>Clase semanal</strong><span>en directo</span></div>
+        <div class="trust-bar-item"><strong>Masterclass</strong><span>y grupos de conversación</span></div>
       </div>
     </section>
     )}

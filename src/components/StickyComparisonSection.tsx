@@ -22,7 +22,7 @@ const DEFAULT_ITEMS: ComparisonItem[] = [
   {
     icon: '🎥',
     title: 'Clases en vivo cada semana',
-    nawarText: 'Sesiones en directo donde puedes preguntar, practicar y recibir feedback inmediato. Aprendes interactuando, no solo escuchando.',
+    nawarText: 'Una masterclass y dos grupos de conversación en directo cada semana: preguntas, practicas hablando y recibes feedback en el momento. Aprendes interactuando, no solo escuchando.',
     classicText: 'Nadie te escucha hablar ni te corrige en el momento: estudias la teoría y la conversación llega, si llega, mucho después.',
   },
   {
