@@ -1,22 +1,27 @@
 /**
  * El embudo de Black Friday (29/10 → 30/11/2026), todo en un sitio.
  *
- * Cómo va (28/10, segunda vuelta, "como YouTalk"):
- *  1. La PORTADA (`/`) es solo un formulario para desbloquear la oferta:
- *     nombre, correo y WhatsApp. La escuela lo apunta (`bf-lista`), le manda
- *     el correo de acceso y lo mete en la campaña. Para orgánico, bio y
- *     correos. Recorrido `bf-desbloquear`.
- *  2. La LANDING (`/oferta`), con luz: la formación contada SIN precio,
- *     "acceso anticipado a las condiciones especiales". Las condiciones las
- *     cuenta el closer. Los correos de la campaña llevan aquí con nombre y
- *     correo en la dirección, así que nadie los vuelve a escribir.
- *  3. La página del ebook a 1 € sigue para los anuncios, en dos copias
- *     (/ebook orgánico, /ebook-ads anuncios). Al pagar, Stripe le devuelve a
- *     /oferta?compra=cs_… con la barra roja de "no cierres esta página".
- *  4. Todos los botones, al formulario de admisión (/admision): la edad la
- *     primera, sin pedir lo que ya se sabe, y de ahí a Calendly.
- * La escuela manda el ebook, el correo de acceso y la campaña hasta el 30/11
- * (learnhouse: services/ebook).
+ * Cómo va (28/10, tercera vuelta; usuario: "en el formulario no sale nada
+ * aún de una formación… luego se le desbloquea la oferta y es la del ebook,
+ * todo gira al inicio en torno al ebook"):
+ *  1. La PORTADA (`/`) es solo un formulario: nombre, correo y WhatsApp para
+ *     desbloquear la oferta de Black Friday. Ni una palabra de la formación.
+ *     La escuela lo apunta (`bf-lista`) y le manda el correo de acceso, con
+ *     el botón al ebook. Es el enlace para los anuncios, la bio, las
+ *     historias y los DM. Recorrido `bf-desbloquear`.
+ *  2. La oferta desbloqueada ES EL EBOOK a 1 € («Neerlandés sin miedo», el
+ *     A0-A1 de siempre): la portada le lleva a /ebook (o a /ebook-ads si llegó
+ *     por un anuncio, `esDePago`) con «Oferta desbloqueada» arriba y sus datos
+ *     puestos: al pulsar «Consíguelo» va directo a la caja de Stripe, dentro
+ *     de la página. Si no compra, al día siguiente la escuela le recuerda el
+ *     ebook.
+ *  3. Al pagar, Stripe le lleva a /oferta?compra=cs_…: «¡No cierres esta
+ *     página!», «acabas de desbloquear nuestra mejor oferta» (la formación,
+ *     SIN precio: las condiciones las cuenta el closer) y el botón a la
+ *     llamada. Los correos de la campaña (solo a quien compró) llevan aquí o
+ *     al formulario.
+ *  4. El formulario de la llamada (/admision): la edad la primera, sin pedir
+ *     lo que ya se sabe, y de ahí a Calendly.
  *
  * ⚠️ Dos sitios para las mismas páginas: en producción se sirven en el
  * subdominio blackfriday.holandesnawar.com, en `/`, `/oferta`, `/ebook`,
@@ -58,11 +63,23 @@ export const META_BF = 'Black Friday'
 export const CLAVE_COMPRA = 'nawar.bf.compra'
 
 /**
- * Que este navegador ya tiene la oferta desbloqueada (se apuntó en la portada
- * o compró el ebook): /oferta le enseña su cabecera aunque vuelva sin nada en
- * la dirección. El script en línea de /oferta lo lee con este mismo nombre.
+ * Que este navegador ya desbloqueó la oferta en la portada: la página del
+ * ebook le enseña «Oferta desbloqueada» aunque vuelva sin nada en la dirección.
+ * El script en línea del ebook lo lee con este mismo nombre.
  */
 export const CLAVE_DESBLOQUEADA = 'nawar.bf.desbloqueada'
+
+/**
+ * Que este navegador ya compró el ebook: /oferta le enseña «nuestra mejor
+ * oferta» aunque vuelva otro día sin nada en la dirección. El script en línea
+ * de /oferta lo lee con este mismo nombre.
+ */
+export const CLAVE_COMPRADOR = 'nawar.bf.comprador'
+
+/** ¿Llegó por un anuncio de pago? Los mismos medios que la escuela
+ *  (`_MEDIOS_DE_PAGO` en learnhouse/services/panel/pipeline.py). */
+export const esDePago = (medium?: string | null) =>
+  ['paid', 'cpc', 'ppc', 'ads', 'paid_social', 'paidsocial', 'paid-social'].includes((medium || '').trim().toLowerCase())
 
 /**
  * La luz que sigue al ratón en las tarjetas oscuras (`.bf-sigue`): pone

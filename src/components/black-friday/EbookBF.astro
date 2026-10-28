@@ -25,6 +25,13 @@
  * (/oferta?compra=cs_…), que hace de página de gracias y de upsell. El correo con
  * el PDF y la campaña de correos los manda la escuela.
  *
+ * La OFERTA DESBLOQUEADA (28/10, tercera vuelta): la portada de Black Friday
+ * es solo un formulario y la oferta que desbloquea es este ebook. Quien llega
+ * de ahí (o de los correos, con ?nombre=&email=) ve «Oferta desbloqueada,
+ * [nombre]» encima del titular, y al pulsar «Consíguelo» va directo a la caja
+ * de pago: sus datos ya los tenemos. El navegador lo recuerda
+ * (`CLAVE_DESBLOQUEADA`). Quien llega sin pasar por ahí ve la página normal.
+ *
  * ⚠️ Las tres opiniones son las de /ebook-a0-a1, tal cual. Si alguna no es de
  * una persona real, se quita: en un anuncio, una opinión inventada es un
  * problema legal.
@@ -32,7 +39,7 @@
 import Layout from '../../layouts/Layout.astro'
 import FAQNuevo from '../FAQNuevo.astro'
 import { icono } from './iconos'
-import { EBOOK_MOCKUP, EBOOK_MOCKUP_ABIERTO, EBOOK_NOMBRE, EBOOK_PRECIO, EBOOK_SUB } from '../../lib/blackFriday'
+import { BF_HASTA_TEXTO, EBOOK_MOCKUP, EBOOK_MOCKUP_ABIERTO, EBOOK_NOMBRE, EBOOK_PRECIO, EBOOK_SUB } from '../../lib/blackFriday'
 import '../../styles/nawar-sections.css'
 import '../../styles/fuentes-locales.css'
 import '../../styles/black-friday.css'
@@ -97,6 +104,19 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   noindex={true}
 >
   <div class="eb" data-canal={canal}>
+    <!-- Antes de pintar: ¿viene de desbloquear la oferta? (sin parpadeo) -->
+    <script is:inline>
+      (function () {
+        try {
+          var q = new URLSearchParams(location.search)
+          var antes = false
+          try { antes = localStorage.getItem('nawar.bf.desbloqueada') === '1' } catch (e) {}
+          if (q.get('desbloqueada') === '1' || (q.get('nombre') && q.get('email')) || antes) {
+            document.documentElement.classList.add('bf-desbloqueada')
+          }
+        } catch (e) {}
+      })()
+    </script>
     <!-- ════ NAVBAR: logo + comprar ════ -->
     <header class="ebook-nav" id="ebook-nav">
       <div class="ebook-nav-inner">
@@ -118,6 +138,10 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
 
       <div class="ebook-hero-wrap">
         <div class="ebook-hero-text">
+          <p class="eb-desbloq h-anim" style="--hd:0.04s">
+            <span class="eb-desbloq-ico" set:html={icono('check', 13, 3)} />
+            <span><strong id="eb-desbloq-t">Oferta desbloqueada.</strong> Es tuya hasta el {BF_HASTA_TEXTO}.</span>
+          </p>
           <span class="badge-dark h-anim" style="--hd:0.08s">
             <svg class="check-icon" fill="none" viewBox="0 0 12 12">
               <path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -348,7 +372,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   import { leerUTM, guardarUTM } from '../../lib/utm'
   import { contextoDelLead } from '../../lib/recorrido'
   import { CLAVE_DATOS, type DatosAdmision } from '../../lib/admision'
-  import { EBOOK_PRECIO, META_EBOOK, arrancarCuentaAtras, bfRuta, bfTerminado } from '../../lib/blackFriday'
+  import { CLAVE_DESBLOQUEADA, EBOOK_PRECIO, META_EBOOK, arrancarCuentaAtras, bfRuta, bfTerminado } from '../../lib/blackFriday'
   import { ESCUELA_URL } from '../../lib/escuela'
   guardarUTM()
   // Sin cuenta atrás en la página: solo pone `bf-terminado` en <html> pasado
@@ -408,17 +432,40 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   nombreEl.value = (q.get('nombre') || previos?.first_name || '').slice(0, 120)
   emailEl.value = (q.get('email') || previos?.email || '').slice(0, 200)
 
+  // Viene de desbloquear la oferta: su nombre en el aviso, y que el navegador
+  // lo recuerde (sin el ?desbloqueada= en la dirección, por si la comparte).
+  const desbloqueada = document.documentElement.classList.contains('bf-desbloqueada')
+  if (desbloqueada) {
+    const pila = nombreEl.value.trim().split(/\s+/)[0]
+    if (pila) (document.getElementById('eb-desbloq-t') as HTMLElement).textContent = `Oferta desbloqueada, ${pila}.`
+    try { localStorage.setItem(CLAVE_DESBLOQUEADA, '1') } catch {}
+    if (q.has('desbloqueada')) {
+      try {
+        const u = new URL(location.href)
+        u.searchParams.delete('desbloqueada')
+        history.replaceState(null, '', u.toString())
+      } catch {}
+    }
+  }
+
   const verPaso = (p: string) => pasos.forEach((x) => { x.hidden = x.dataset.paso !== p })
   let pagoMontado: { destroy: () => void } | null = null
 
+  const datosValidos = () => !!nombreEl.value.trim() && /^\S+@\S+\.\S+$/.test(emailEl.value.trim())
   const abrir = () => {
     if (bfTerminado()) return
     modal.hidden = false
     document.documentElement.classList.add('eb-modal-abierto')
-    if (!pagoMontado) {
-      verPaso('datos')
-      setTimeout(() => (nombreEl.value ? emailEl : nombreEl).focus({ preventScroll: true }), 60)
+    if (pagoMontado) return
+    // Desbloqueada y con sus datos: directo a la caja, sin volver a escribirlos.
+    if (desbloqueada && datosValidos()) {
+      ;(document.getElementById('eb-quien') as HTMLElement).textContent = `${nombreEl.value.trim()} · ${emailEl.value.trim().toLowerCase()}`
+      verPaso('pago')
+      form.requestSubmit()
+      return
     }
+    verPaso('datos')
+    setTimeout(() => (nombreEl.value ? emailEl : nombreEl).focus({ preventScroll: true }), 60)
   }
   const cerrar = () => {
     modal.hidden = true
@@ -440,7 +487,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
       document.head.appendChild(sc)
     })
 
-  const mostrarError = (t: string) => { err.textContent = t; err.classList.add('visible') }
+  const mostrarError = (t: string) => { verPaso('datos'); err.textContent = t; err.classList.add('visible') }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault()
@@ -515,6 +562,18 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
 </script>
 
 <style>
+  /* ════ Oferta desbloqueada (viene de la portada de Black Friday) ════ */
+  .eb-desbloq {
+    display: none; align-items: flex-start; gap: 10px; max-width: 470px; margin: 0 0 18px; padding: 11px 15px; border-radius: 12px;
+    background: rgba(34,197,94,0.13); border: 1px solid rgba(134,239,172,0.38); color: rgba(255,255,255,0.93); font-size: 14.5px; line-height: 1.5;
+  }
+  .eb-desbloq strong { color: #fff; font-weight: 600; }
+  :global(html.bf-desbloqueada) .eb-desbloq { display: flex; }
+  .eb-desbloq-ico {
+    flex-shrink: 0; width: 22px; height: 22px; margin-top: 0; border-radius: 50%; background: #22c55e; color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+
   /* ════ Lo de /ebook-a0-a1, tal cual (menos «Por qué este eBook») ════ */
   .ebook-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background-color: rgba(29, 0, 132, 0); }
   .ebook-nav-inner { max-width: 1152px; margin: 0 auto; padding: 0 24px; height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
