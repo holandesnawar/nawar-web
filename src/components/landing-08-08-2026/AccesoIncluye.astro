@@ -54,8 +54,10 @@ const FOTO_PACK_MOVIL = 'https://docs.holandesnawar.com/img/Landing/todoo.movil.
    enseñar la cifra y aun así llevar a la matrícula de verdad (la que se
    manda a mano a alguien con quien ya has hablado). Atados, cambiar una
    cambiaba la otra sin que se notara. */
-interface Props { plazas?: boolean; conPrecio?: boolean; ctaUrl?: string }
-const { plazas = true, conPrecio = true, ctaUrl } = Astro.props
+/* `ctaTexto` y `nota` los cambia quien la monta (la oferta de Black Friday);
+   sin ellos, los de siempre. */
+interface Props { plazas?: boolean; conPrecio?: boolean; ctaUrl?: string; ctaTexto?: string; nota?: string }
+const { plazas = true, conPrecio = true, ctaUrl, ctaTexto, nota } = Astro.props
 const destinoCta = ctaUrl || (conPrecio ? matriculaUrl : matriculaAdsUrl)
 ---
 <section class="ai-section" data-navbar="light">
@@ -132,17 +134,17 @@ const destinoCta = ctaUrl || (conPrecio ? matriculaUrl : matriculaAdsUrl)
           </p>
         )}
         <a href={destinoCta} class="ai-cta">
-          {conPrecio ? 'Empezar ahora' : 'Reservar mi plaza'}
+          {ctaTexto || (conPrecio ? 'Empezar ahora' : 'Reservar mi plaza')}
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>
         {/* Espacios duros dentro de cada dato: así la línea sólo puede
             partir por los separadores y no deja un "Solo" colgando al
             final del renglón. */}
-        <p class="ai-nota">{!conPrecio
+        <p class="ai-nota">{nota || (!conPrecio
           ? `No se te cobra nada ahora`
           : plazas
             ? `15 días de garantía · Acceso inmediato · Solo 40 plazas`
-            : `15 días de garantía · Acceso inmediato`}</p>
+            : `15 días de garantía · Acceso inmediato`)}</p>
       </aside>
 
     </div>
