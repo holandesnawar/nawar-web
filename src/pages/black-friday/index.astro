@@ -17,16 +17,27 @@
  *    Enfoque del closer). Nada de opiniones de alumnos, cifras de seguidores ni
  *    caras: no hay de verdad todavía, y no se inventan.
  *
- * Al volver de pagar el ebook, se pregunta a la escuela si está pagado
- * (/api/ebook-compra) y, si lo está: el aviso de "tu ebook va de camino", el
- * «Purchase» del píxel (con el id de la sesión de pago, el mismo que manda el
- * servidor) y sus datos guardados para el formulario.
+ * ES LA PÁGINA DE GRACIAS DEL EBOOK, y hace de upsell (usuario, 28/10: "la
+ * página de gracias tendría que ser un upsell, no cierres esta página en rojo
+ * arriba, y luego sobre la formación: ya tienes este ebook pero acabas de
+ * desbloquear nuestra mejor oferta, y de ahí directo CTA a la formación"):
+ *  - Recién pagado (?compra=cs_…): la barra roja «¡No cierres esta página!».
+ *  - Quien ha comprado (recién pagado, o llega por los correos de la campaña,
+ *    o lo recuerda el navegador): la cabecera «Acabas de desbloquear nuestra
+ *    mejor oferta», con «Ya tienes tu ebook» encima. El resto, la de siempre
+ *    («Adelántate al Black Friday»). Se decide ANTES de pintar (un script en
+ *    línea pone `bf-recien` / `bf-comprador` en <html>): sin parpadeo.
  *
- * Pasado el lunes 30 a las 23:59, la cuenta atrás desaparece, sale "la oferta
- * ha terminado" y el botón lleva al proceso de admisión de siempre.
+ * Al volver de pagar el ebook, se pregunta a la escuela si está pagado
+ * (/api/ebook-compra) y, si lo está: "te llega a tu correo", el «Purchase» del
+ * píxel (con el id de la sesión de pago, el mismo que manda el servidor) y sus
+ * datos guardados para el formulario.
+ *
+ * Sin cuenta atrás (no le convencía al usuario). Pasado el lunes 30 a las
+ * 23:59 sale "la oferta ha terminado" y el botón lleva al proceso de admisión
+ * de siempre.
  */
 import Layout from '../../layouts/Layout.astro'
-import Cuenta from '../../components/black-friday/Cuenta.astro'
 import { icono } from '../../components/black-friday/iconos'
 import { BF_HASTA_TEXTO, EBOOK_NOMBRE, bfRuta } from '../../lib/blackFriday'
 import '../../styles/fuentes-locales.css'
@@ -123,11 +134,27 @@ const DUDAS = [
   noindex={true}
 >
   <div class="bf lp">
-    <!-- Al volver de pagar el ebook. -->
-    <div class="lp-aviso" id="lp-aviso" hidden role="status">
-      <div class="lp-aviso-in">
-        <span class="lp-aviso-ico" set:html={icono('check', 16, 3)} />
-        <p><strong id="lp-aviso-t">¡Hecho!</strong> <span id="lp-aviso-d"></span></p>
+    <!-- Antes de pintar nada: ¿acaba de pagar? ¿ha comprado el ebook? -->
+    <script is:inline>
+      (function () {
+        try {
+          var q = new URLSearchParams(location.search)
+          var h = document.documentElement
+          var recien = /^cs_(test|live)_[A-Za-z0-9]{10,240}$/.test(q.get('compra') || '')
+          var deCorreo = q.get('utm_source') === 'email' && q.get('utm_campaign') === 'black-friday'
+          var antes = false
+          try { antes = localStorage.getItem('nawar.bf.comprador') === '1' } catch (e) {}
+          if (recien) h.classList.add('bf-recien')
+          if (recien || deCorreo || antes) h.classList.add('bf-comprador')
+        } catch (e) {}
+      })()
+    </script>
+
+    <!-- Recién pagado: que no se vaya. -->
+    <div class="lp-alerta" role="status">
+      <div class="lp-alerta-in">
+        <span set:html={icono('alerta', 20, 2.2)} />
+        <p><strong>¡No cierres esta página!</strong> <span>Tienes una oferta desbloqueada justo aquí debajo.</span></p>
       </div>
     </div>
 
@@ -142,15 +169,33 @@ const DUDAS = [
 
       <div class="lp-hero-in">
         <div class="lp-hero-texto">
-          <span class="bf-badge-dark">Black Friday <i>·</i> Acceso anticipado</span>
-          <h1 class="bf-h1"><span id="lp-nombre"></span>Adelántate al Black Friday</h1>
-          <p class="bf-hero-sub">
-            Accede antes que nadie a las <strong>condiciones especiales de la Formación Nawar A0-A1</strong>: neerlandés de cero a A1 en
-            16 semanas, explicado en español y con clases en directo cada semana.
-          </p>
+          <!-- Quien ha comprado el ebook: la oferta desbloqueada. -->
+          <div class="lp-comp">
+            <p class="lp-ya">
+              <span class="lp-ya-ico" set:html={icono('check', 13, 3)} />
+              <span id="lp-ya-t">Ya tienes tu ebook «{EBOOK_NOMBRE}».</span>
+            </p>
+            <span class="bf-badge-dark">Black Friday <i>·</i> Oferta desbloqueada</span>
+            <h1 class="bf-h1" data-titulo="Acabas de desbloquear nuestra mejor oferta">Acabas de desbloquear nuestra mejor oferta</h1>
+            <p class="bf-hero-sub">
+              Por tener el ebook, accedes antes que nadie a las <strong>condiciones de Black Friday de la Formación Nawar A0-A1</strong>:
+              neerlandés de cero a A1 en 16 semanas, explicado en español y con clases en directo cada semana.
+            </p>
+          </div>
+          <!-- Los demás. -->
+          <div class="lp-gen">
+            <span class="bf-badge-dark">Black Friday <i>·</i> Acceso anticipado</span>
+            <h1 class="bf-h1" data-titulo="Adelántate al Black Friday">Adelántate al Black Friday</h1>
+            <p class="bf-hero-sub">
+              Accede antes que nadie a las <strong>condiciones especiales de la Formación Nawar A0-A1</strong>: neerlandés de cero a A1 en
+              16 semanas, explicado en español y con clases en directo cada semana.
+            </p>
+          </div>
           <div class="lp-hero-cta bf-solo-activa">
-            <a href={ADMISION} class="bf-btn" data-bf-cta>Agendar mi llamada gratuita <Fragment set:html={flecha} /></a>
-            <p class="bf-nota">Media hora con el equipo · Sin compromiso</p>
+            <a href={ADMISION} class="bf-btn lp-comp" data-bf-cta>Quiero mi oferta de Black Friday <Fragment set:html={flecha} /></a>
+            <a href={ADMISION} class="bf-btn lp-gen" data-bf-cta>Agendar mi llamada gratuita <Fragment set:html={flecha} /></a>
+            <p class="bf-nota lp-comp">Rellenas un formulario corto y te contamos la oferta en una llamada de media hora · Sin compromiso</p>
+            <p class="bf-nota lp-gen">Media hora con el equipo · Sin compromiso</p>
           </div>
           <div class="lp-fin bf-fin">
             <p><strong>La oferta de Black Friday ha terminado.</strong> Puedes seguir pidiendo información sobre la formación.</p>
@@ -163,9 +208,6 @@ const DUDAS = [
           <ul class="lp-tarjeta-lista">
             {EN_LA_LLAMADA.map((x) => <li><span set:html={icono('check', 13, 3)} />{x}</li>)}
           </ul>
-          <div class="lp-tarjeta-cuenta">
-            <Cuenta titulo={`Hasta el ${BF_HASTA_TEXTO}`} />
-          </div>
         </aside>
       </div>
     </header>
@@ -317,10 +359,9 @@ const DUDAS = [
     <section class="bf-sec bf-oscuro lp-cierre" id="lp-cierre">
       <div class="bf-capas" aria-hidden="true"><span class="bf-luz1"></span><span class="bf-luz2"></span><span class="bf-dots"></span></div>
       <div class="bf-in lp-centro">
-        <span class="bf-badge-dark">Black Friday <i>·</i> Hasta el {BF_HASTA_TEXTO}</span>
+        <span class="bf-badge-dark">Black Friday <i>·</i> Acceso anticipado</span>
         <h2 class="bf-h2 bf-h2-blanco lp-cierre-t"><span class="bf-grad">Adelántate y asegura </span><span class="bf-azul">las condiciones de Black Friday</span></h2>
         <div class="lp-cierre-cta bf-solo-activa">
-          <Cuenta titulo="Termina en" />
           <a href={ADMISION} class="bf-btn" data-bf-cta id="lp-cierre-btn">Agendar mi llamada gratuita <Fragment set:html={flecha} /></a>
           <p class="bf-nota">Llamada gratuita de media hora · Sin compromiso</p>
         </div>
@@ -369,14 +410,14 @@ const DUDAS = [
     const destino = conLaEntradaBF(base, { nombre, email })
     ctas.forEach((a) => { a.href = destino })
   }
-  // El nombre delante del titular: «Ana, adelántate al Black Friday».
+  // El nombre delante del titular: «Ana, acabas de desbloquear…» o «Ana,
+  // adelántate al Black Friday».
   const ponerNombre = () => {
-    const el = document.getElementById('lp-nombre') as HTMLElement
     const pila = nombre.split(/\s+/)[0]
-    el.textContent = pila ? `${pila}, ` : ''
-    const h1 = el.parentElement as HTMLElement
-    const resto = h1.lastChild
-    if (resto && resto.nodeType === 3) resto.textContent = pila ? 'adelántate al Black Friday' : 'Adelántate al Black Friday'
+    document.querySelectorAll<HTMLElement>('[data-titulo]').forEach((h1) => {
+      const t = h1.dataset.titulo || ''
+      h1.textContent = pila ? `${pila}, ${t.charAt(0).toLowerCase()}${t.slice(1)}` : t
+    })
   }
   ponerEnlaces()
   ponerNombre()
@@ -398,11 +439,10 @@ const DUDAS = [
     }
     nombre = limpio(d.nombre) || nombre
     email = limpio(d.email, 200).toLowerCase() || email
-    const pila = nombre.split(/\s+/)[0]
-    ;(document.getElementById('lp-aviso-t') as HTMLElement).textContent = pila ? `¡Hecho, ${pila}!` : '¡Hecho!'
-    ;(document.getElementById('lp-aviso-d') as HTMLElement).textContent =
-      `Tu ebook «Neerlandés sin miedo» va de camino${email ? ` a ${email}` : ''}. Revisa también spam o promociones.`
-    ;(document.getElementById('lp-aviso') as HTMLElement).hidden = false
+    ;(document.getElementById('lp-ya-t') as HTMLElement).textContent =
+      `Ya tienes tu ebook: te llega${email ? ` a ${email}` : ' a tu correo'} en un minuto. Revisa también spam o promociones.`
+    // Si vuelve otro día a esta página, que siga viendo su oferta.
+    try { localStorage.setItem('nawar.bf.comprador', '1') } catch {}
     ponerNombre()
     ponerEnlaces()
 
@@ -457,13 +497,19 @@ const DUDAS = [
 </script>
 
 <style>
-  /* ── El aviso de la compra ──────────────────────────────────────────── */
-  .lp-aviso { background: #F0FDF4; border-bottom: 1px solid #BBF7D0; padding: 14px 24px; }
-  .lp-aviso[hidden] { display: none; }
-  .lp-aviso-in { max-width: 1152px; margin: 0 auto; display: flex; align-items: flex-start; gap: 12px; }
-  .lp-aviso-ico { flex-shrink: 0; width: 26px; height: 26px; border-radius: 9999px; background: #15803D; color: #fff; display: inline-flex; align-items: center; justify-content: center; margin-top: -1px; }
-  .lp-aviso p { margin: 0; font-size: 15px; line-height: 1.5; color: #171a2e; }
-  .lp-aviso strong { color: #14532d; font-weight: 700; }
+  /* ── Recién pagado: la barra roja ───────────────────────────────────── */
+  .lp-alerta { display: none; background: #DC2626; color: #fff; padding: 13px 24px; }
+  :global(html.bf-recien) .lp-alerta { display: block; }
+  .lp-alerta-in { max-width: 1152px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 10px; text-align: center; }
+  .lp-alerta-in > span { flex-shrink: 0; display: inline-flex; }
+  .lp-alerta p { margin: 0; font-size: 15.5px; line-height: 1.45; }
+  .lp-alerta strong { font-weight: 800; letter-spacing: 0.01em; text-transform: uppercase; }
+
+  /* ── Quien compró el ebook / los demás ──────────────────────────────── */
+  :global(html:not(.bf-comprador)) .lp-comp { display: none; }
+  :global(html.bf-comprador) .lp-gen { display: none; }
+  .lp-ya { display: inline-flex; align-items: flex-start; gap: 10px; margin: 0 0 22px; padding: 10px 16px 10px 12px; border-radius: 14px; background: rgba(34,197,94,0.14); border: 1px solid rgba(134,239,172,0.35); max-width: 560px; font-size: 14.5px; line-height: 1.5; color: #fff; }
+  .lp-ya-ico { flex-shrink: 0; width: 22px; height: 22px; border-radius: 9999px; background: #22C55E; color: #052e16; display: inline-flex; align-items: center; justify-content: center; margin-top: 0; }
 
   /* ── Cabecera ───────────────────────────────────────────────────────── */
   .lp-hero { position: relative; padding: 0 24px 104px; }
@@ -482,9 +528,6 @@ const DUDAS = [
   .lp-tarjeta-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 13px; }
   .lp-tarjeta-lista li { display: flex; gap: 11px; align-items: flex-start; font-size: 15.5px; line-height: 1.5; color: #fff; }
   .lp-tarjeta-lista li > span { flex-shrink: 0; margin-top: 2px; width: 22px; height: 22px; border-radius: 9999px; background: #4da3ff; color: #0a1656; display: inline-flex; align-items: center; justify-content: center; }
-  .lp-tarjeta-cuenta { margin-top: 24px; padding-top: 22px; border-top: 1px solid rgba(170,210,255,0.18); }
-  .lp-tarjeta-cuenta :global(.bf-cuenta) { width: 100%; }
-  .lp-tarjeta-cuenta :global(.bf-cuenta-caja) { flex: 1; min-width: 0; }
 
   /* ── Todo lo que te llevas ──────────────────────────────────────────── */
   .lp-todo { list-style: none; margin: 0 auto; padding: 0; max-width: 1000px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid #E3EAF6; border-radius: 22px; overflow: hidden; }
@@ -603,7 +646,6 @@ const DUDAS = [
     .lp-etapas { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 640px) {
-    .lp-aviso { padding: 12px 24px; }
     .lp-hero { padding: 0 24px 64px; }
     .lp-hero-cta { width: 100%; }
     .lp-tarjeta { padding: 22px 20px 20px; }
@@ -622,7 +664,6 @@ const DUDAS = [
     .lp-etapa-n { font-size: 40px; }
     .lp-etapa h3 { font-size: 20px; }
     .lp-cierre-cta { width: 100%; }
-    .lp-cierre-cta :global(.bf-cuenta) { width: 100%; }
     .lp-pegado { left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); justify-content: space-between; }
     .lp-pegado-txt { flex: 1; padding-right: 0; }
   }
