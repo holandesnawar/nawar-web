@@ -61,7 +61,7 @@
 /* Los botones. */
 .bf-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 17px 32px; border-radius: 12px; border: 0; cursor: pointer;
-  background: #4da3ff; color: #0a1656; font-family: inherit; font-size: 16.5px; font-weight: 700; text-decoration: none; line-height: 1.2;
+  background: #4da3ff; color: #0a1656; font-family: inherit; font-size: 16.5px; font-weight: 700; text-decoration: none; line-height: 1.2; text-align: center;
   transition: background .15s, transform .15s;
 }
 .bf-btn:hover { background: #5eb4ff; }
@@ -92,23 +92,9 @@
 .bf-nav { position: relative; z-index: 2; max-width: 1152px; margin: 0 auto; padding: 28px 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .bf-logo { height: 36px; width: auto; display: block; }
 
-/* ── La cuenta atrás ─────────────────────────────────────────────────── */
-.bf-cuenta { display: inline-flex; flex-direction: column; gap: 10px; }
-.bf-cuenta-t { margin: 0; font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9fd0ff; }
-.bf-cuenta-cajas { display: flex; gap: 8px; }
-.bf-cuenta-caja {
-  min-width: 66px; padding: 10px 8px 8px; border-radius: 14px; text-align: center;
-  background: linear-gradient(160deg, rgba(110,200,255,0.16), rgba(0,140,255,0.10)); border: 1px solid rgba(170,210,255,0.22);
-}
-.bf-cuenta-caja b { display: block; font-family: 'Poppins', system-ui, sans-serif; font-size: 26px; font-weight: 600; line-height: 1.1; color: #fff; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
-.bf-cuenta-caja span { display: block; margin-top: 2px; font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(235,244,255,0.8); }
-.bf-cuenta-claro .bf-cuenta-t { color: #025dc7; }
-.bf-cuenta-claro .bf-cuenta-caja { background: #fff; border-color: #DDE6F5; }
-.bf-cuenta-claro .bf-cuenta-caja b { color: #1D0084; }
-.bf-cuenta-claro .bf-cuenta-caja span { color: #171a2e; }
-/* Pasado el lunes 30, la cuenta atrás no sale y salen los avisos de "terminó". */
+/* ── Pasado el lunes 30 ──────────────────────────────────────────────── */
 .bf-fin { display: none; }
-html.bf-terminado .bf-cuenta, html.bf-terminado .bf-solo-activa { display: none !important; }
+html.bf-terminado .bf-solo-activa { display: none !important; }
 html.bf-terminado .bf-fin { display: block; }
 
 /* ── Listas con icono ───────────────────────────────────────────────── */
@@ -153,10 +139,74 @@ html.bf-terminado .bf-fin { display: block; }
     background-image: linear-gradient(180deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 0.04em, #fff 0.09em, rgba(255,255,255,0.45) 1.02em); }
   .bf-hero-sub { font-size: 16px; line-height: 1.6; }
   .bf-btn { width: 100%; }
-  .bf-cuenta-cajas { gap: 6px; }
-  .bf-cuenta-caja { min-width: 0; flex: 1; padding: 9px 4px 7px; }
-  .bf-cuenta-caja b { font-size: 22px; }
-  .bf-cuenta-caja span { font-size: 9.5px; }
   .bf-faq summary { font-size: 16.5px; padding: 18px 2px; }
   .bf-pie { margin-top: 64px; flex-direction: column; align-items: flex-start; padding-bottom: 104px; }
 }
+
+/* ══ La luz (28/10, "más chula, con luz") ═══════════════════════════════════
+   Piezas para las secciones oscuras. Todo quieto con «reducir movimiento». */
+
+/* El foco: unos haces de luz que caen desde arriba y el resplandor donde
+   dan. --x mueve el foco a lo ancho (por defecto, al centro). */
+.bf-foco { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; --x: 50%; }
+.bf-foco::before {
+  content: ''; position: absolute; left: var(--x); top: -42%; width: 1500px; height: 1200px; transform: translateX(-50%);
+  background: conic-gradient(from 180deg at 50% 0%,
+    transparent 0deg, transparent 148deg,
+    rgba(130,195,255,0.22) 160deg, transparent 168deg,
+    rgba(170,215,255,0.32) 176deg, rgba(170,215,255,0.10) 182deg,
+    rgba(130,195,255,0.24) 191deg, transparent 200deg,
+    rgba(110,180,255,0.16) 207deg, transparent 214deg, transparent 360deg);
+  filter: blur(8px);
+  -webkit-mask-image: radial-gradient(ellipse 55% 75% at 50% 0%, #000 25%, transparent 78%);
+  mask-image: radial-gradient(ellipse 55% 75% at 50% 0%, #000 25%, transparent 78%);
+  animation: bf-respira 8s ease-in-out infinite;
+}
+.bf-foco::after {
+  content: ''; position: absolute; left: var(--x); top: -300px; width: 980px; height: 560px; transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(77,163,255,0.55) 0%, rgba(77,163,255,0.16) 38%, transparent 70%);
+  filter: blur(28px);
+}
+@keyframes bf-respira { 0%, 100% { opacity: 0.78; } 50% { opacity: 1; } }
+
+/* La línea del horizonte: un filo de luz al pie de la cabecera. */
+.bf-horizonte {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 1px; z-index: 1; pointer-events: none;
+  background: linear-gradient(90deg, transparent 0%, rgba(159,208,255,0.25) 20%, rgba(200,230,255,0.95) 50%, rgba(159,208,255,0.25) 80%, transparent 100%);
+  box-shadow: 0 0 22px 2px rgba(77,163,255,0.55);
+}
+
+/* El botón que brilla: un destello que lo cruza cada pocos segundos. */
+.bf-brillo { position: relative; overflow: hidden; isolation: isolate; box-shadow: 0 10px 40px -10px rgba(77,163,255,0.85), inset 0 1px 0 rgba(255,255,255,0.45); }
+.bf-brillo::after {
+  content: ''; position: absolute; top: -20%; bottom: -20%; left: -70%; width: 45%; z-index: -1; pointer-events: none;
+  background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,0.65) 50%, transparent 100%);
+  transform: skewX(-18deg); animation: bf-destello 5s ease-in-out infinite;
+}
+@keyframes bf-destello { 0%, 62% { left: -70%; } 86%, 100% { left: 135%; } }
+
+/* El borde de luz: un filo que da la vuelta a la tarjeta. */
+@property --bf-ang { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+.bf-borde-luz { position: relative; isolation: isolate; }
+.bf-borde-luz::before {
+  content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1.5px; pointer-events: none;
+  background: conic-gradient(from var(--bf-ang), transparent 0deg, rgba(190,225,255,0.95) 34deg, rgba(77,163,255,0.4) 70deg, transparent 110deg, transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: bf-gira 7s linear infinite;
+}
+@keyframes bf-gira { to { --bf-ang: 360deg; } }
+
+/* La luz que sigue al ratón (iluminarAlPasar en src/lib/blackFriday.ts). */
+.bf-sigue { position: relative; }
+.bf-sigue::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(77,163,255,0.16), transparent 45%);
+}
+.bf-sigue:hover::after { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bf-foco::before, .bf-brillo::after, .bf-borde-luz::before { animation: none; }
+  .bf-brillo::after { display: none; }
+}
+

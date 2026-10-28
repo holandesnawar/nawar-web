@@ -17,7 +17,7 @@
  * Mete al principio de las rutas, antes de mirar los archivos, unas reglas
  * que solo valen con ese dominio (`has: host`):
  *   /          → /black-friday
- *   /ebook     → /black-friday/ebook          (y /ebook-ads, /admision)
+ *   /ebook     → /black-friday/ebook          (y /oferta, /ebook-ads, /admision)
  * Lo demás (/_astro, /api, /politica-de-privacidad…) sigue su camino normal:
  * en el subdominio se sirve lo mismo que en www.
  *
@@ -31,7 +31,7 @@ import { fileURLToPath } from 'node:url'
 
 const HOST = 'blackfriday.holandesnawar.com'
 const CARPETA = '/black-friday'
-const PAGINAS = ['ebook', 'ebook-ads', 'admision']
+const PAGINAS = ['oferta', 'ebook', 'ebook-ads', 'admision']
 
 export function rutasDelSubdominio() {
   const has = [{ type: 'host', value: HOST }]

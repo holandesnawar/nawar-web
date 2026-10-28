@@ -1,25 +1,26 @@
 /**
  * El embudo de Black Friday (29/10 → 30/11/2026), todo en un sitio.
  *
- * Cómo va, pedido del usuario el 28/10:
- *  1. La página del ebook, en dos copias iguales: una para el tráfico
- *     orgánico (/ebook) y otra para los anuncios (/ebook-ads). Cada una
- *     apunta de dónde viene la persona (recorrido `bf-ebook` / `bf-ebook-ads`).
- *  2. El ebook de siempre (el A0-A1, 7 lecciones) con nombre nuevo,
- *     «Neerlandés sin miedo», a 1 €: es el imán. Se paga en la caja de Stripe
- *     de la escuela, incrustada en la página (no se sale de aquí).
- *  3. Al pagar, Stripe le devuelve a la página de Black Friday de la
- *     formación (/?compra=cs_…): el aviso de "tu ebook va de camino", y la
- *     formación contada como YouTalk, SIN precio: "acceso anticipado a las
- *     condiciones especiales". Las condiciones las cuenta el closer.
- *  4. Todos los botones, al formulario de admisión (/admision), con la edad
- *     como primera pregunta, y de ahí a Calendly.
- * La escuela manda el ebook por correo y la campaña de calentamiento hasta
- * el 30/11 (learnhouse: services/ebook).
+ * Cómo va (28/10, segunda vuelta, "como YouTalk"):
+ *  1. La PORTADA (`/`) es solo un formulario para desbloquear la oferta:
+ *     nombre, correo y WhatsApp. La escuela lo apunta (`bf-lista`), le manda
+ *     el correo de acceso y lo mete en la campaña. Para orgánico, bio y
+ *     correos. Recorrido `bf-desbloquear`.
+ *  2. La LANDING (`/oferta`), con luz: la formación contada SIN precio,
+ *     "acceso anticipado a las condiciones especiales". Las condiciones las
+ *     cuenta el closer. Los correos de la campaña llevan aquí con nombre y
+ *     correo en la dirección, así que nadie los vuelve a escribir.
+ *  3. La página del ebook a 1 € sigue para los anuncios, en dos copias
+ *     (/ebook orgánico, /ebook-ads anuncios). Al pagar, Stripe le devuelve a
+ *     /oferta?compra=cs_… con la barra roja de "no cierres esta página".
+ *  4. Todos los botones, al formulario de admisión (/admision): la edad la
+ *     primera, sin pedir lo que ya se sabe, y de ahí a Calendly.
+ * La escuela manda el ebook, el correo de acceso y la campaña hasta el 30/11
+ * (learnhouse: services/ebook).
  *
  * ⚠️ Dos sitios para las mismas páginas: en producción se sirven en el
- * subdominio blackfriday.holandesnawar.com, en `/`, `/ebook`, `/ebook-ads` y
- * `/admision` (ver src/lib/integracionSubdominios.ts); en www y en local viven
+ * subdominio blackfriday.holandesnawar.com, en `/`, `/oferta`, `/ebook`,
+ * `/ebook-ads` y `/admision` (ver src/lib/integracionSubdominios.ts); en www y en local viven
  * en `/black-friday/…`. Por eso los enlaces entre ellas salen SIEMPRE de
  * `bfRuta()`, nunca escritos a mano. PUBLIC_BLACKFRIDAY_URL lo cambia (en
  * local: http://localhost:<puerto>/black-friday).
@@ -55,6 +56,29 @@ export const META_BF = 'Black Friday'
 
 /** Lo que se recuerda de la compra en esta visita (el Purchase, una vez). */
 export const CLAVE_COMPRA = 'nawar.bf.compra'
+
+/**
+ * Que este navegador ya tiene la oferta desbloqueada (se apuntó en la portada
+ * o compró el ebook): /oferta le enseña su cabecera aunque vuelva sin nada en
+ * la dirección. El script en línea de /oferta lo lee con este mismo nombre.
+ */
+export const CLAVE_DESBLOQUEADA = 'nawar.bf.desbloqueada'
+
+/**
+ * La luz que sigue al ratón en las tarjetas oscuras (`.bf-sigue`): pone
+ * --mx/--my y black-friday.css pinta ahí un foco. Solo con ratón (en el móvil
+ * no hay "pasar por encima").
+ */
+export function iluminarAlPasar(): void {
+  if (!window.matchMedia?.('(hover: hover) and (pointer: fine)').matches) return
+  document.querySelectorAll<HTMLElement>('.bf-sigue').forEach((el) => {
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect()
+      el.style.setProperty('--mx', `${e.clientX - r.left}px`)
+      el.style.setProperty('--my', `${e.clientY - r.top}px`)
+    })
+  })
+}
 
 /** ¿Ya pasó el 30/11 a las 23:59 en Países Bajos? */
 export const bfTerminado = (ahora = Date.now()) => ahora > Date.parse(BF_HASTA)
