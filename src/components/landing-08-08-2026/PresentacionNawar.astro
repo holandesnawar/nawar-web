@@ -19,8 +19,10 @@ const matriculaUrl = '/matricula-formacion-nawar'
 const matriculaAdsUrl = '/agendar'
 /* `ctaUrl` manda sobre `ads`: la landing que lo monta sabe a dónde
    quiere mandar, y no siempre coincide con "es de anuncios". */
-interface Props { ads?: boolean; ctaUrl?: string }
-const { ads = false, ctaUrl } = Astro.props
+/* `ctaTexto` lo cambia quien la monta (la oferta de Black Friday: «Quiero
+   mi oferta de Black Friday»); sin él, el de siempre. */
+interface Props { ads?: boolean; ctaUrl?: string; ctaTexto?: string }
+const { ads = false, ctaUrl, ctaTexto } = Astro.props
 const destino = ctaUrl || (ads ? matriculaAdsUrl : matriculaUrl)
 // La ilustración de la objeción. En ordenador va a la izquierda, con
 // la pregunta a su derecha; en móvil cae debajo del titular y la
@@ -75,7 +77,7 @@ const FOTO_CURSOS = 'https://docs.holandesnawar.com/img/Landing/cuantos%20cursos
           clases en directo y una comunidad activa que avanza contigo.
         </p>
         <a href={destino} class="pn-cta">
-          {ads ? 'Reservar mi plaza' : 'Unirme a Nawar'}
+          {ctaTexto || (ads ? 'Reservar mi plaza' : 'Unirme a Nawar')}
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>
       </div>
