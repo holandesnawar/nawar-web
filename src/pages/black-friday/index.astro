@@ -1,45 +1,32 @@
 ---
 /**
- * blackfriday.holandesnawar.com — la página de Black Friday de la Formación
- * Nawar A0-A1 (29/10 → lunes 30/11/2026). En www vive en /black-friday.
+ * blackfriday.holandesnawar.com — la portada: el formulario para desbloquear
+ * la oferta de Black Friday de la Formación Nawar A0-A1 (29/10 → lunes
+ * 30/11/2026). En www vive en /black-friday.
  *
- * Se llega aquí al comprar el ebook de 1 € (Stripe vuelve con
- * ?compra=cs_…) o con un enlace de los correos (?nombre=&email=).
+ * El camino de YouTalk (usuario, 28/10: "el dominio blackfriday solo tiene el
+ * formulario para desbloquear la oferta, y luego mails con CTA a la oferta con
+ * nombre y mail rellenos, y de ahí formulario para agendar sin volver a pedir
+ * nombre ni mail"):
+ *  1. Aquí: nombre, correo y WhatsApp. El navegador los manda a la escuela
+ *     (POST {ESCUELA}/api/v1/ebook/lista, directo: así el tope de intentos es
+ *     por la IP de quien se apunta). La escuela le apunta en su ficha, le
+ *     manda el correo de acceso y le mete en la campaña de correos.
+ *  2. Y al momento, a /oferta con sus datos (?desbloqueada=1&nombre=&email=).
+ *  3. De /oferta, al formulario de la llamada (/admision), que ya no pide los
+ *     datos: solo las preguntas, y Calendly.
  *
- * Copia el CAMINO de la de YouTalk (blackfriday.youtalkonline.com/oferta-bf26,
- * pedido del usuario el 28/10), no su diseño ni su texto: la marca es la de
- * /formacion-nawar-fb, la página que más le gusta al usuario.
- *  - SIN precio: "acceso anticipado a las condiciones especiales de Black
- *    Friday". Las condiciones las cuenta el equipo en la llamada.
- *  - Todos los botones, al formulario de admisión (/admision), con el nombre y
- *    el correo ya puestos.
- *  - Solo hechos de la escuela (los mismos que /formacion-nawar-fb y el
- *    Enfoque del closer). Nada de opiniones de alumnos, cifras de seguidores ni
- *    caras: no hay de verdad todavía, y no se inventan.
+ * Quien llega aquí con sus datos en la dirección (los correos de antes del
+ * cambio) o al volver de pagar el ebook (?compra=cs_…, las sesiones de pago
+ * abiertas antes del cambio), va directo a /oferta: no tiene que volver a
+ * apuntarse.
  *
- * ES LA PÁGINA DE GRACIAS DEL EBOOK, y hace de upsell (usuario, 28/10: "la
- * página de gracias tendría que ser un upsell, no cierres esta página en rojo
- * arriba, y luego sobre la formación: ya tienes este ebook pero acabas de
- * desbloquear nuestra mejor oferta, y de ahí directo CTA a la formación"):
- *  - Recién pagado (?compra=cs_…): la barra roja «¡No cierres esta página!».
- *  - Quien ha comprado (recién pagado, o llega por los correos de la campaña,
- *    o lo recuerda el navegador): la cabecera «Acabas de desbloquear nuestra
- *    mejor oferta», con «Ya tienes tu ebook» encima. El resto, la de siempre
- *    («Adelántate al Black Friday»). Se decide ANTES de pintar (un script en
- *    línea pone `bf-recien` / `bf-comprador` en <html>): sin parpadeo.
- *
- * Al volver de pagar el ebook, se pregunta a la escuela si está pagado
- * (/api/ebook-compra) y, si lo está: "te llega a tu correo", el «Purchase» del
- * píxel (con el id de la sesión de pago, el mismo que manda el servidor) y sus
- * datos guardados para el formulario.
- *
- * Sin cuenta atrás (no le convencía al usuario). Pasado el lunes 30 a las
- * 23:59 sale "la oferta ha terminado" y el botón lleva al proceso de admisión
- * de siempre.
+ * Píxel: `Lead` (content_name «Black Friday»), una vez por visita.
  */
 import Layout from '../../layouts/Layout.astro'
 import { icono } from '../../components/black-friday/iconos'
-import { BF_HASTA_TEXTO, EBOOK_NOMBRE, bfRuta } from '../../lib/blackFriday'
+import { PREFIJOS } from '../../lib/admision'
+import { BF_HASTA_TEXTO, bfRuta } from '../../lib/blackFriday'
 import '../../styles/fuentes-locales.css'
 import '../../styles/black-friday.css'
 
@@ -47,331 +34,105 @@ export const prerender = true
 
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
 const WWW = 'https://www.holandesnawar.com'
-const ADMISION = bfRuta('/admision')
+const OFERTA = bfRuta('/oferta')
 const DESPUES = `${WWW}/proceso-de-admision`
-const flecha = icono('flecha', 16, 2.5)
+const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
 
-/** Lo que se lleva quien entra: el programa y lo que lo rodea. Solo lo que
- *  la escuela tiene de verdad hoy (28/10). */
-const TODO = [
-  { i: 'libro', t: 'La Formación Nawar A0-A1 completa', d: '16 semanas y 10 módulos, con más de 360 lecciones explicadas en español.' },
-  { i: 'altavoz', t: 'Ejercicios interactivos con audio', d: 'Escuchas, lees, escribes y hablas, y cada ejercicio se corrige al momento.' },
-  { i: 'video', t: 'Masterclass semanal en directo', d: 'Un tema concreto explicado por un profesor. Queda grabada si no puedes venir.' },
-  { i: 'charla', t: 'Grupos de conversación', d: 'Dos veces por semana, para hablar con otros alumnos y un profe que te guía.' },
-  { i: 'micro', t: 'Tu tarea, corregida cada semana', d: 'La entregas por escrito o con una nota de voz, y te la devolvemos corregida.' },
-  { i: 'consulta', t: 'Consultas con el equipo', d: 'Resuelves tus dudas en español, para no quedarte nunca bloqueado.' },
-  { i: 'calendario', t: 'Seguimiento cada 4 semanas', d: 'Un check-in con el equipo para ver cómo vas y qué ajustar.' },
-  { i: 'imprimir', t: 'Werkboek para imprimir', d: 'Un cuaderno en PDF por lección, para repasar en papel.' },
-  { i: 'grupo', t: 'La comunidad Nawar', d: 'Alumnos que están en tu mismo camino, para preguntar, practicar y compartir.' },
-  { i: 'premio', t: 'Certificado', d: 'Al completar la formación, con tu nombre.' },
-]
-
-/** Lo que pasa en la llamada (la tarjeta de la cabecera). */
-const EN_LA_LLAMADA = [
-  'Te contamos las condiciones especiales de Black Friday',
-  'Vemos tu nivel, para qué lo necesitas y cuánto tiempo tienes',
-  'Te decimos con sinceridad si podemos ayudarte',
-]
-
-const PASOS = [
-  { t: 'Completa el formulario', d: 'Cuéntanos tu situación. Te lleva dos minutos.' },
-  { t: 'Revisamos tu caso', d: 'Vemos si la Formación Nawar encaja contigo.' },
-  { t: 'Habla con admisiones', d: 'Una llamada de media hora en la que te contamos las condiciones de Black Friday.' },
-]
-
-const DOLORES = [
-  { i: 'medico', t: 'Al médico, siempre acompañado', d: 'Alguien tiene que entrar contigo para explicar qué te pasa y entender lo que te dicen. Hasta para pedir cita.' },
-  { i: 'carta', t: 'Llega una carta y ya no estás tranquilo', d: 'La gemeente, el seguro, el colegio. Foto al traductor del móvil y a cruzar los dedos para no equivocarte.' },
-  { i: 'familia', t: 'Tu pareja o tus hijos hablan por ti', d: 'En la tienda, en la reunión del colegio, al teléfono. Te ayudan con todo el cariño, pero tú quieres poder hacerlo por tu cuenta.' },
-  { i: 'charla', t: 'Fuera de la conversación', d: 'Con los vecinos, en el trabajo, en un cumpleaños. Sonríes, asientes y esperas a que alguien te lo cuente después.' },
-  { i: 'compra', t: 'Lo básico, en inglés o por señas', d: 'La compra, el tren, una pregunta en la ventanilla. Sales del paso, pero así nunca terminas de sentirte de aquí.' },
-  { i: 'candado', t: 'Puertas que ni te planteas abrir', d: 'Un trabajo mejor, amigos holandeses, algo tuyo. Todo pasa por el idioma, y el idioma se queda para “algún día”.' },
-]
-
-const CAMBIO = [
-  { i: 'medico', t: 'En el médico', hoy: 'Alguien entra contigo para explicar qué te pasa.', con: 'Pides la cita y explicas qué te pasa con tus palabras.' },
-  { i: 'carta', t: 'Con las cartas', hoy: 'Foto al traductor y a cruzar los dedos.', con: 'Entiendes los avisos sencillos y sabes qué te piden.' },
-  { i: 'familia', t: 'En casa', hoy: 'Tu pareja o tus hijos hacen de intérpretes.', con: 'Hablas tú. Ellos dejan de traducirte.' },
-  { i: 'charla', t: 'Con la gente', hoy: 'Sonríes y asientes mientras hablan los demás.', con: 'Entras en la conversación con vecinos y compañeros.' },
-  { i: 'maletin', t: 'En el trabajo', hoy: 'Todo en inglés, siempre un paso por detrás.', con: 'Te presentas y te desenvuelves en el día a día.' },
-]
-
-/** Las cuatro etapas del plan de estudios (las de /formacion-nawar-fb). */
-const ETAPAS = [
-  { n: '01', c: '#4da3ff', nombre: 'Los cimientos', semanas: 'Semanas 1-4', objetivo: 'Pasas de cero a mantener tu primera conversación: quién eres, tu familia, tu día y lo que quieres tomar.', hito: 'Te presentas y mantienes tu primera conversación en un grupo de conversación.' },
-  { n: '02', c: '#5ad1c5', nombre: 'Tu vida aquí', semanas: 'Semanas 5-10', objetivo: 'Hablas de lo que te preguntan en cualquier conversación: a qué te dedicas, qué te gusta y dónde vives.', hito: 'Hablas de tu trabajo y de tu vida sin pasarte al inglés.' },
-  { n: '03', c: '#8e9cff', nombre: 'Valerte por ti mismo', semanas: 'Semanas 11-13', objetivo: 'Resuelves por tu cuenta las situaciones que hoy te obligan a pedir ayuda.', hito: 'Vas al médico o haces una gestión sin que nadie te acompañe.' },
-  { n: '04', c: '#f2cd6b', nombre: 'Consolidación', semanas: 'Semanas 14-16', objetivo: 'Juntas todo lo aprendido y lo usas con soltura en tu día a día. Aquí el nivel se asienta.', hito: 'Cierras el nivel A1 y recibes tu certificado.' },
-]
-
-/** «Imagina…»: lo que hace alguien con un A1 que vive en Países Bajos. Nada
- *  de prometer hablar como un nativo. */
-const IMAGINA = [
-  'Pedir cita con el huisarts y explicar tú qué te pasa, con tus palabras.',
-  'Leer un aviso sencillo de la gemeente y saber qué te piden.',
-  'Hablar tú con la profesora de tus hijos en la reunión del colegio.',
-  'Contestar en la caja del supermercado sin pasarte al inglés.',
-  'Entrar en la conversación con tus vecinos y tus compañeros.',
-  'Que tu pareja o tus hijos dejen de traducirte.',
-]
-
-const DUDAS = [
-  { q: '¿En qué consiste la oferta de Black Friday?', a: `Son condiciones especiales para entrar en la Formación Nawar A0-A1 durante el Black Friday, solo hasta el ${BF_HASTA_TEXTO}. Te las contamos en la llamada de admisión, donde además vemos si la formación encaja contigo.` },
-  { q: '¿La llamada cuesta algo?', a: 'No. Es una llamada gratuita de media hora con el equipo, sin compromiso. Puedes hacernos todas las preguntas que tengas.' },
-  { q: '¿Necesito saber algo de neerlandés?', a: 'No. La formación empieza desde cero y todo está explicado en español.' },
-  { q: '¿Cuánto tiempo tengo que dedicarle?', a: 'Con 20-30 minutos al día mantienes el ritmo. Te pedimos al menos dos horas a la semana: con menos, no es para ti ahora.' },
-  { q: '¿Y si no puedo ir a la masterclass en directo?', a: 'Queda grabada, y la ves cuando quieras.' },
-  { q: '¿Cuándo empiezo?', a: 'En cuanto te matriculas entras en la escuela, y los módulos se van abriendo a medida que avanzas.' },
-  { q: '¿Hay garantía?', a: 'Sí. Tienes 15 días de garantía de devolución total y sin preguntas.' },
-  { q: `¿Y el ebook «${EBOOK_NOMBRE}»?`, a: 'Es tuyo: te llega por correo para descargarlo en PDF. Si no lo encuentras, mira en spam o en promociones, o escríbenos a info@holandesnawar.com.' },
+const PUNTOS = [
+  { i: 'libro', t: 'La Formación Nawar A0-A1', d: 'De cero a A1 en 16 semanas, explicado en español.' },
+  { i: 'telefono', t: 'Una llamada con el equipo', d: 'Gratuita, de media hora: ahí te contamos la oferta.' },
+  { i: 'escudo', t: 'Sin compromiso', d: `Condiciones especiales hasta el ${BF_HASTA_TEXTO}.` },
 ]
 ---
 
 <Layout
   fuentesLocales
-  title="Black Friday · Acceso anticipado a la Formación Nawar A0-A1 | Holandés Nawar"
-  description="Adelántate al Black Friday: acceso anticipado a las condiciones especiales de la Formación Nawar A0-A1. Neerlandés de cero a A1 en 16 semanas, explicado en español."
+  title="Desbloquea la oferta de Black Friday · Formación Nawar A0-A1 | Holandés Nawar"
+  description="Desbloquea las condiciones especiales de Black Friday de la Formación Nawar A0-A1: neerlandés de cero a A1 en 16 semanas, explicado en español."
   noindex={true}
 >
-  <div class="bf lp">
-    <!-- Antes de pintar nada: ¿acaba de pagar? ¿ha comprado el ebook? -->
-    <script is:inline>
-      (function () {
-        try {
-          var q = new URLSearchParams(location.search)
-          var h = document.documentElement
-          var recien = /^cs_(test|live)_[A-Za-z0-9]{10,240}$/.test(q.get('compra') || '')
-          var deCorreo = q.get('utm_source') === 'email' && q.get('utm_campaign') === 'black-friday'
-          var antes = false
-          try { antes = localStorage.getItem('nawar.bf.comprador') === '1' } catch (e) {}
-          if (recien) h.classList.add('bf-recien')
-          if (recien || deCorreo || antes) h.classList.add('bf-comprador')
-        } catch (e) {}
-      })()
-    </script>
+  <!-- Ya desbloqueada (correos de antes, vuelta del pago del ebook): directo a la oferta. -->
+  <script is:inline define:vars={{ OFERTA }}>
+    (function () {
+      try {
+        var q = new URLSearchParams(location.search)
+        var compra = /^cs_(test|live)_[A-Za-z0-9]{10,240}$/.test(q.get('compra') || '')
+        if (compra || (q.get('nombre') && q.get('email'))) {
+          location.replace(OFERTA + (location.search || ''))
+        }
+      } catch (e) {}
+    })()
+  </script>
 
-    <!-- Recién pagado: que no se vaya. -->
-    <div class="lp-alerta" role="status">
-      <div class="lp-alerta-in">
-        <span set:html={icono('alerta', 20, 2.2)} />
-        <p><strong>¡No cierres esta página!</strong> <span>Tienes una oferta desbloqueada justo aquí debajo.</span></p>
-      </div>
-    </div>
-
-    <!-- ═══ Cabecera ═══ -->
-    <header class="bf-oscuro lp-hero" id="lp-hero">
+  <div class="bf dl">
+    <main class="bf-oscuro dl-hero">
       <div class="bf-capas" aria-hidden="true"><span class="bf-luz1"></span><span class="bf-luz2"></span><span class="bf-dots"></span></div>
-      <nav class="bf-nav">
+      <div class="bf-foco" aria-hidden="true"></div>
+
+      <nav class="bf-nav dl-nav">
         <a href={`${WWW}/`} aria-label="Holandés Nawar">
           <img src={LOGO} alt="Holandés Nawar" class="bf-logo" width="150" height="38" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'bf-logo-txt',textContent:'Holandés Nawar'}))" />
         </a>
       </nav>
 
-      <div class="lp-hero-in">
-        <div class="lp-hero-texto">
-          <!-- Quien ha comprado el ebook: la oferta desbloqueada. -->
-          <div class="lp-comp">
-            <p class="lp-ya">
-              <span class="lp-ya-ico" set:html={icono('check', 13, 3)} />
-              <span id="lp-ya-t">Ya tienes tu ebook «{EBOOK_NOMBRE}».</span>
-            </p>
-            <span class="bf-badge-dark">Black Friday <i>·</i> Oferta desbloqueada</span>
-            <h1 class="bf-h1" data-titulo="Acabas de desbloquear nuestra mejor oferta">Acabas de desbloquear nuestra mejor oferta</h1>
-            <p class="bf-hero-sub">
-              Por tener el ebook, accedes antes que nadie a las <strong>condiciones de Black Friday de la Formación Nawar A0-A1</strong>:
-              neerlandés de cero a A1 en 16 semanas, explicado en español y con clases en directo cada semana.
-            </p>
+      <div class="dl-in">
+        <span class="bf-badge-dark">Black Friday <i>·</i> Acceso anticipado</span>
+        <h1 class="bf-h1 dl-h1">Desbloquea la oferta de Black Friday</h1>
+        <p class="bf-hero-sub dl-sub">
+          Condiciones especiales para entrar en la <strong>Formación Nawar A0-A1</strong>. Déjanos tus datos y accede antes que nadie.
+        </p>
+
+        <form class="dl-form bf-borde-luz bf-solo-activa" id="dl-form" novalidate>
+          <div class="dl-hp" aria-hidden="true"><label>No rellenar <input type="text" id="dl-hp" tabindex="-1" autocomplete="off" /></label></div>
+
+          <label class="dl-label" for="dl-nombre">Nombre</label>
+          <input id="dl-nombre" type="text" class="dl-input" placeholder="Tu nombre" autocomplete="given-name" required />
+
+          <label class="dl-label" for="dl-email">Correo electrónico</label>
+          <input id="dl-email" type="email" class="dl-input" placeholder="correo@ejemplo.com" autocomplete="email" required />
+
+          <label class="dl-label" for="dl-tel">WhatsApp</label>
+          <div class="dl-tel">
+            <!-- Cerrado enseña bandera y prefijo; el select va encima, transparente,
+                 para que el desplegable sea el del móvil. -->
+            <div class="dl-input dl-prefijo">
+              <span id="dl-prefijo-ver" aria-hidden="true">{opciones[0].bandera} {opciones[0].prefijo}</span>
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              <select id="dl-prefijo" aria-label="Prefijo del país">
+                {opciones.map((p) => <option value={p.valor} data-prefijo={p.prefijo} data-pais={p.pais} data-bandera={p.bandera}>{p.bandera} {p.pais} ({p.prefijo})</option>)}
+              </select>
+            </div>
+            <input id="dl-tel" type="tel" class="dl-input" placeholder="6 12345678" autocomplete="tel-national" inputmode="tel" required />
           </div>
-          <!-- Los demás. -->
-          <div class="lp-gen">
-            <span class="bf-badge-dark">Black Friday <i>·</i> Acceso anticipado</span>
-            <h1 class="bf-h1" data-titulo="Adelántate al Black Friday">Adelántate al Black Friday</h1>
-            <p class="bf-hero-sub">
-              Accede antes que nadie a las <strong>condiciones especiales de la Formación Nawar A0-A1</strong>: neerlandés de cero a A1 en
-              16 semanas, explicado en español y con clases en directo cada semana.
-            </p>
-          </div>
-          <div class="lp-hero-cta bf-solo-activa">
-            <a href={ADMISION} class="bf-btn lp-comp" data-bf-cta>Quiero mi oferta de Black Friday <Fragment set:html={flecha} /></a>
-            <a href={ADMISION} class="bf-btn lp-gen" data-bf-cta>Agendar mi llamada gratuita <Fragment set:html={flecha} /></a>
-            <p class="bf-nota lp-comp">Rellenas un formulario corto y te contamos la oferta en una llamada de media hora · Sin compromiso</p>
-            <p class="bf-nota lp-gen">Media hora con el equipo · Sin compromiso</p>
-          </div>
-          <div class="lp-fin bf-fin">
-            <p><strong>La oferta de Black Friday ha terminado.</strong> Puedes seguir pidiendo información sobre la formación.</p>
-            <a href={DESPUES} class="bf-btn">Solicitar información <Fragment set:html={flecha} /></a>
-          </div>
+
+          <p class="dl-err" id="dl-err" role="alert">Revisa el nombre, el correo y el número.</p>
+          <button type="submit" class="bf-btn bf-brillo dl-btn" id="dl-btn">
+            <span set:html={icono('candado', 18, 2.2)} />
+            Desbloquear la oferta
+          </button>
+          <p class="dl-legal">
+            Al desbloquearla aceptas la <a href={`${WWW}/politica-de-privacidad`} target="_blank" rel="noopener">política de privacidad</a> y
+            recibir nuestros correos sobre la oferta. Te das de baja cuando quieras.
+          </p>
+        </form>
+
+        <div class="dl-fin bf-fin">
+          <p><strong>La oferta de Black Friday ha terminado.</strong> Puedes seguir pidiendo información sobre la formación.</p>
+          <a href={DESPUES} class="bf-btn">Solicitar información <Fragment set:html={icono('flecha', 16, 2.5)} /></a>
         </div>
 
-        <aside class="lp-tarjeta bf-solo-activa">
-          <p class="lp-tarjeta-t">En tu llamada de admisión</p>
-          <ul class="lp-tarjeta-lista">
-            {EN_LA_LLAMADA.map((x) => <li><span set:html={icono('check', 13, 3)} />{x}</li>)}
-          </ul>
-        </aside>
-      </div>
-    </header>
-
-    <!-- ═══ Todo lo que te llevas ═══ -->
-    <section class="bf-sec bf-blanco">
-      <div class="bf-in">
-        <div class="bf-cab">
-          <span class="bf-badge">Tu programa y todo lo que lo rodea</span>
-          <h2 class="bf-h2">Todo lo que te llevas con la <span class="bf-acento bf-nw">Formación Nawar</span></h2>
-          <p class="bf-lead">Un programa completo, práctica en directo cada semana y un equipo que te acompaña hasta el final.</p>
-        </div>
-        <ul class="lp-todo">
-          {TODO.map((x) => (
+        <ul class="dl-puntos">
+          {PUNTOS.map((p) => (
             <li>
-              <span class="bf-ico" set:html={icono(x.i, 26, 1.6)} />
-              <div><b>{x.t}</b><p>{x.d}</p></div>
+              <span class="bf-ico" set:html={icono(p.i, 22, 1.7)} />
+              <div><b>{p.t}</b><span>{p.d}</span></div>
             </li>
           ))}
         </ul>
-        <div class="lp-garantia">
-          <span class="bf-ico" set:html={icono('escudo', 26, 1.6)} />
-          <p><strong>15 días de garantía.</strong> Devolución total y sin preguntas.</p>
-        </div>
       </div>
-    </section>
 
-    <!-- ═══ Admisiones: tres pasos ═══ -->
-    <section class="bf-sec bf-oscuro lp-pasos-sec">
-      <div class="bf-capas" aria-hidden="true"><span class="bf-luz1"></span><span class="bf-luz2"></span><span class="bf-dots"></span></div>
-      <div class="bf-in lp-centro">
-        <span class="bf-badge-dark">Acceso anticipado</span>
-        <h2 class="bf-h2 bf-h2-blanco"><span class="bf-grad">Habla con nuestro </span><span class="bf-azul bf-nw">equipo de admisiones</span></h2>
-        <p class="bf-lead bf-lead-blanco">Haz una llamada con el equipo y descubre si esta oferta encaja contigo.</p>
-        <ol class="lp-pasos">
-          {PASOS.map((p, k) => (
-            <li><span class="lp-pasos-n"><i>{k + 1}</i></span><b>{p.t}</b><p>{p.d}</p></li>
-          ))}
-        </ol>
-        <a href={ADMISION} class="bf-btn bf-solo-activa" data-bf-cta>Agendar mi llamada gratuita <Fragment set:html={flecha} /></a>
-        <a href={DESPUES} class="bf-btn lp-fin bf-fin">Solicitar información <Fragment set:html={flecha} /></a>
-      </div>
-    </section>
-
-    <!-- ═══ Los dolores ═══ -->
-    <section class="bf-sec bf-blanco">
-      <div class="bf-in">
-        <div class="bf-cab">
-          <span class="bf-badge">¿Te suena?</span>
-          <h2 class="bf-h2">Vives aquí, pero <span class="bf-acento">otros hablan por ti</span></h2>
-          <p class="bf-lead">Llevas tiempo en Países Bajos y para lo importante todavía necesitas a alguien al lado.</p>
-        </div>
-        <div class="lp-dolores">
-          {DOLORES.map((d) => (
-            <article>
-              <span class="bf-ico" set:html={icono(d.i, 26, 1.6)} />
-              <div><h3>{d.t}</h3><p>{d.d}</p></div>
-            </article>
-          ))}
-        </div>
-        <p class="lp-giro">
-          No es falta de capacidad. Es que nunca has tenido <strong>un método pensado para ti</strong>: en español, paso a paso y con alguien que te corrija.
-        </p>
-      </div>
-    </section>
-
-    <!-- ═══ Antes / después ═══ -->
-    <section class="bf-sec bf-claro">
-      <div class="bf-in">
-        <div class="bf-cab">
-          <span class="bf-badge">Lo que cambia</span>
-          <h2 class="bf-h2">Lo que hoy hacen por ti, <span class="bf-acento">en 16 semanas lo haces tú</span></h2>
-        </div>
-        <div class="lp-cambio" role="table" aria-label="Antes y después de la formación">
-          <div class="lp-cambio-fila lp-cambio-cab" role="row">
-            <span role="columnheader"></span>
-            <span role="columnheader" class="lp-hoy">Hoy</span>
-            <span role="columnheader" class="lp-con">Con la Formación Nawar</span>
-          </div>
-          {CAMBIO.map((c, k) => (
-            <div class={`lp-cambio-fila${k === CAMBIO.length - 1 ? ' ultima' : ''}`} role="row">
-              <span class="lp-cambio-t" role="cell"><span set:html={icono(c.i, 22, 1.7)} />{c.t}</span>
-              <span class="lp-hoy" role="cell"><span class="lp-x" set:html={icono('x', 15, 2.2)} />{c.hoy}</span>
-              <span class="lp-con" role="cell"><span class="lp-ok" set:html={icono('check', 14, 2.8)} />{c.con}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ El plan de estudios ═══ -->
-    <section class="bf-sec lp-plan">
-      <span class="bf-dots lp-plan-dots" aria-hidden="true"></span>
-      <div class="bf-in">
-        <div class="bf-cab">
-          <span class="bf-badge-dark">4 etapas · 16 semanas · certificado</span>
-          <h2 class="bf-h2 bf-h2-blanco"><span class="bf-grad">Plan de estudios: </span><span class="bf-azul bf-nw">de cero a independiente</span></h2>
-          <p class="bf-lead bf-lead-blanco">Cada etapa termina con un hito concreto. Sabes en todo momento dónde estás y qué viene después.</p>
-        </div>
-        <div class="lp-etapas">
-          {ETAPAS.map((e) => (
-            <article class="lp-etapa" style={`--c:${e.c}`}>
-              <div class="lp-etapa-cab">
-                <span class="lp-etapa-n">{e.n}</span>
-                <div><h3>{e.nombre}</h3><p>{e.semanas}</p></div>
-              </div>
-              <p class="lp-etapa-obj">{e.objetivo}</p>
-              <p class="lp-etapa-hito"><span set:html={icono('diana', 17, 2)} /><span><b>Hito:</b> {e.hito}</span></p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ Imagina ═══ -->
-    <section class="bf-sec bf-blanco">
-      <div class="bf-in lp-imagina">
-        <div class="lp-imagina-cab">
-          <span class="bf-badge">Imagina</span>
-          <h2 class="bf-h2">Tu día a día, <span class="bf-acento">en neerlandés</span></h2>
-          <p class="bf-lead">En 16 semanas no vas a hablar como un nativo. Pero sí lo bastante para hacer todo esto por tu cuenta.</p>
-          <a href={ADMISION} class="bf-btn bf-solo-activa" data-bf-cta>Agendar mi llamada gratuita <Fragment set:html={flecha} /></a>
-        </div>
-        <ul class="bf-check-lista lp-imagina-lista">
-          {IMAGINA.map((x) => <li><span set:html={icono('check', 13, 3)} /><span><b>Imagina</b> {x.charAt(0).toLowerCase() + x.slice(1)}</span></li>)}
-        </ul>
-      </div>
-    </section>
-
-    <!-- ═══ Dudas ═══ -->
-    <section class="bf-sec bf-claro">
-      <div class="bf-in">
-        <div class="bf-cab">
-          <span class="bf-badge">Dudas</span>
-          <h2 class="bf-h2">Preguntas frecuentes</h2>
-        </div>
-        <div class="bf-faq">
-          {DUDAS.map((d) => (
-            <details>
-              <summary>{d.q}<Fragment set:html={icono('mas', 20, 2)} /></summary>
-              <p>{d.a}</p>
-            </details>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ Cierre ═══ -->
-    <section class="bf-sec bf-oscuro lp-cierre" id="lp-cierre">
-      <div class="bf-capas" aria-hidden="true"><span class="bf-luz1"></span><span class="bf-luz2"></span><span class="bf-dots"></span></div>
-      <div class="bf-in lp-centro">
-        <span class="bf-badge-dark">Black Friday <i>·</i> Acceso anticipado</span>
-        <h2 class="bf-h2 bf-h2-blanco lp-cierre-t"><span class="bf-grad">Adelántate y asegura </span><span class="bf-azul">las condiciones de Black Friday</span></h2>
-        <div class="lp-cierre-cta bf-solo-activa">
-          <a href={ADMISION} class="bf-btn" data-bf-cta id="lp-cierre-btn">Agendar mi llamada gratuita <Fragment set:html={flecha} /></a>
-          <p class="bf-nota">Llamada gratuita de media hora · Sin compromiso</p>
-        </div>
-        <div class="lp-fin bf-fin">
-          <p><strong>La oferta de Black Friday ha terminado.</strong> Puedes seguir pidiendo información sobre la formación.</p>
-          <a href={DESPUES} class="bf-btn">Solicitar información <Fragment set:html={flecha} /></a>
-        </div>
-      </div>
-      <footer class="bf-pie">
-        <img src={LOGO} alt="Holandés Nawar" class="bf-logo-pie" width="110" height="28" onerror="this.remove()" />
+      <span class="bf-horizonte" aria-hidden="true"></span>
+      <footer class="dl-pie">
         <nav>
           <a href={`${WWW}/politica-de-privacidad`}>Privacidad</a>
           <a href={`${WWW}/condiciones-de-contratacion`}>Condiciones</a>
@@ -379,292 +140,159 @@ const DUDAS = [
         </nav>
         <p>© Holandés Nawar</p>
       </footer>
-    </section>
-
-    <!-- El botón siempre a mano (como el de /formacion-nawar-fb): sale cuando
-         no se ve ningún otro botón de agendar. -->
-    <div class="lp-pegado bf-solo-activa" id="lp-pegado" aria-hidden="true">
-      <span class="lp-pegado-ico" set:html={icono('telefono', 19, 2)} />
-      <span class="lp-pegado-txt"><b>Acceso anticipado</b>Agendar mi llamada</span>
-      <a href={ADMISION} class="lp-pegado-btn" data-bf-cta tabindex="-1" aria-label="Agendar mi llamada gratuita" set:html={icono('flecha', 18, 2.5)} />
-    </div>
+    </main>
   </div>
 </Layout>
 
 <script>
-  import { guardarUTM } from '../../lib/utm'
-  import { CLAVE_DATOS, type DatosAdmision } from '../../lib/admision'
-  import { CLAVE_COMPRA, META_EBOOK, arrancarCuentaAtras, conLaEntradaBF } from '../../lib/blackFriday'
+  import { leerUTM, guardarUTM } from '../../lib/utm'
+  import { contextoDelLead } from '../../lib/recorrido'
+  import { CLAVE_DATOS, telefonoCompleto, type DatosAdmision } from '../../lib/admision'
+  import { CLAVE_DESBLOQUEADA, META_BF, arrancarCuentaAtras, bfRuta, conLaEntradaBF } from '../../lib/blackFriday'
+  import { nuevoEventId } from '../../lib/metaNavegador'
+  import { ESCUELA_URL } from '../../lib/escuela'
   guardarUTM()
+  // Sin cuenta atrás: solo marca `bf-terminado` pasado el lunes 30.
   arrancarCuentaAtras()
 
-  const q = new URLSearchParams(location.search)
-  const limpio = (v: string | null | undefined, n = 120) => (v || '').replace(/[<>]/g, '').trim().slice(0, n)
-  let nombre = limpio(q.get('nombre'))
-  let email = limpio(q.get('email'), 200).toLowerCase()
+  const form = document.getElementById('dl-form') as HTMLFormElement
+  const nombreEl = document.getElementById('dl-nombre') as HTMLInputElement
+  const emailEl = document.getElementById('dl-email') as HTMLInputElement
+  const telEl = document.getElementById('dl-tel') as HTMLInputElement
+  const prefijoEl = document.getElementById('dl-prefijo') as HTMLSelectElement
+  const prefijoVer = document.getElementById('dl-prefijo-ver') as HTMLElement
+  const err = document.getElementById('dl-err') as HTMLElement
+  const btn = document.getElementById('dl-btn') as HTMLButtonElement
 
-  // Los botones al formulario, con el nombre, el correo y la procedencia.
-  const ctas = Array.from(document.querySelectorAll<HTMLAnchorElement>('a[data-bf-cta]'))
-  const base = ctas[0]?.getAttribute('href') || ''
-  const ponerEnlaces = () => {
-    const destino = conLaEntradaBF(base, { nombre, email })
-    ctas.forEach((a) => { a.href = destino })
+  const pintarPrefijo = () => {
+    const o = prefijoEl.selectedOptions[0]
+    prefijoVer.textContent = `${o?.dataset.bandera || ''} ${o?.dataset.prefijo || ''}`
   }
-  // El nombre delante del titular: «Ana, acabas de desbloquear…» o «Ana,
-  // adelántate al Black Friday».
-  const ponerNombre = () => {
-    const pila = nombre.split(/\s+/)[0]
-    document.querySelectorAll<HTMLElement>('[data-titulo]').forEach((h1) => {
-      const t = h1.dataset.titulo || ''
-      h1.textContent = pila ? `${pila}, ${t.charAt(0).toLowerCase()}${t.slice(1)}` : t
-    })
-  }
-  ponerEnlaces()
-  ponerNombre()
-
-  // ── Al volver de pagar el ebook ───────────────────────────────────────
-  const cs = q.get('compra') || ''
-  if (/^cs_(test|live)_[A-Za-z0-9]{10,240}$/.test(cs)) comprobarCompra(cs, 0)
-
-  async function comprobarCompra(cs: string, intento: number) {
-    let d: { pagado?: boolean; nombre?: string; email?: string; importe_cents?: number } | null = null
-    try {
-      const r = await fetch(`/api/ebook-compra?cs=${encodeURIComponent(cs)}&pagina=${encodeURIComponent(location.href)}`)
-      d = await r.json().catch(() => null)
-    } catch {}
-    // Stripe ya cobró al volver, pero por si la escuela tarda un momento.
-    if (!d?.pagado) {
-      if (intento < 2) setTimeout(() => comprobarCompra(cs, intento + 1), 2500)
-      return
+  prefijoEl.addEventListener('change', pintarPrefijo)
+  // Desde Bélgica, el prefijo belga de entrada.
+  try {
+    if (Intl.DateTimeFormat().resolvedOptions().timeZone === 'Europe/Brussels') {
+      const be = Array.from(prefijoEl.options).find((o) => o.dataset.prefijo === '+32')
+      if (be) { prefijoEl.value = be.value; pintarPrefijo() }
     }
-    nombre = limpio(d.nombre) || nombre
-    email = limpio(d.email, 200).toLowerCase() || email
-    ;(document.getElementById('lp-ya-t') as HTMLElement).textContent =
-      `Ya tienes tu ebook: te llega${email ? ` a ${email}` : ' a tu correo'} en un minuto. Revisa también spam o promociones.`
-    // Si vuelve otro día a esta página, que siga viendo su oferta.
-    try { localStorage.setItem('nawar.bf.comprador', '1') } catch {}
-    ponerNombre()
-    ponerEnlaces()
+  } catch {}
 
-    // Para el formulario de la llamada: sus datos, sin perder el teléfono si ya lo dejó.
+  // Quien ya dejó sus datos en otro formulario de la web: puestos.
+  try {
+    const d = JSON.parse(localStorage.getItem(CLAVE_DATOS) || 'null') as DatosAdmision | null
+    if (d?.first_name) nombreEl.value = d.first_name
+    if (d?.email) emailEl.value = d.email
+    if (d?.phone) telEl.value = d.phone
+  } catch {}
+
+  const mal = (t: string) => { err.textContent = t; err.classList.add('visible') }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    err.classList.remove('visible')
+    const nombre = nombreEl.value.trim().replace(/\s+/g, ' ')
+    const email = emailEl.value.trim().toLowerCase()
+    const o = prefijoEl.selectedOptions[0]
+    const telefono = telefonoCompleto(o?.dataset.prefijo || '+31', telEl.value)
+    if (!nombre || !/^\S+@\S+\.\S+$/.test(email) || telefono.replace(/\D/g, '').length < 8) {
+      return mal('Revisa el nombre, el correo y el número.')
+    }
+    btn.classList.add('enviando')
+    const u = leerUTM()
+    const { recorrido, referrer } = contextoDelLead()
+    let r: Response | null = null
     try {
-      const antes = JSON.parse(localStorage.getItem(CLAVE_DATOS) || 'null') as DatosAdmision | null
-      const mismo = antes?.email === email
-      localStorage.setItem(CLAVE_DATOS, JSON.stringify({ first_name: nombre, email, phone: mismo ? antes?.phone || '' : '', pais: mismo ? antes?.pais || '' : '' }))
+      r = await fetch(`${ESCUELA_URL}/api/v1/ebook/lista`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre, email, telefono,
+          utm_source: u.utmSource, utm_medium: u.utmMedium, utm_campaign: u.utmCampaign,
+          utm_content: u.utmContent, utm_term: u.utmTerm, utm_placement: u.utmPlacement,
+          recorrido, referrer,
+          website: (document.getElementById('dl-hp') as HTMLInputElement).value,
+        }),
+      })
     } catch {}
+    const d = await r?.json().catch(() => null)
+    if (!r?.ok) {
+      btn.classList.remove('enviando')
+      return mal(typeof d?.detail === 'string' ? d.detail : 'No se ha podido enviar. Revisa tu conexión y vuelve a intentarlo.')
+    }
 
-    // «Purchase», una vez por visita y con el id de la sesión de pago: el
-    // servidor (/api/ebook-compra) manda el mismo y Meta lo cuenta una vez.
+    // Para la oferta y el formulario de la llamada: que no vuelva a escribir nada.
     try {
-      const k = `${CLAVE_COMPRA}.${cs}`
-      if (!sessionStorage.getItem(k)) {
-        sessionStorage.setItem(k, '1')
-        ;(window as any).fbq?.('track', 'Purchase', { value: (d.importe_cents || 0) / 100, currency: 'EUR', content_name: META_EBOOK }, { eventID: cs })
+      localStorage.setItem(CLAVE_DATOS, JSON.stringify({ first_name: nombre, email, phone: telefono, pais: o?.dataset.pais || '' }))
+      localStorage.setItem(CLAVE_DESBLOQUEADA, '1')
+    } catch {}
+    // «Lead», una vez por visita.
+    try {
+      if (!sessionStorage.getItem('nawar.bf.lead')) {
+        sessionStorage.setItem('nawar.bf.lead', '1')
+        ;(window as any).fbq?.('track', 'Lead', { content_name: META_BF }, { eventID: nuevoEventId('bf') })
       }
     } catch {}
-
-    // La dirección sin el ?compra=: si la comparte o la recarga, no vuelve a salir el aviso.
-    try {
-      const u = new URL(location.href)
-      u.searchParams.delete('compra')
-      history.replaceState(null, '', u.toString())
-    } catch {}
-  }
-
-  // ── El botón pegado: cuando no se ve ningún otro botón de agendar ─────
-  const pegado = document.getElementById('lp-pegado') as HTMLElement
-  const vigilados = ctas.filter((a) => !a.closest('#lp-pegado'))
-  const hero = document.getElementById('lp-hero') as HTMLElement
-  if ('IntersectionObserver' in window) {
-    const visibles = new Set<Element>()
-    const pintar = () => {
-      const pasadoHero = hero.getBoundingClientRect().bottom < 0
-      const ver = visibles.size === 0 && pasadoHero
-      pegado.classList.toggle('visible', ver)
-      pegado.setAttribute('aria-hidden', ver ? 'false' : 'true')
-    }
-    const io = new IntersectionObserver((es) => {
-      es.forEach((e) => (e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target)))
-      pintar()
-    })
-    vigilados.forEach((a) => io.observe(a))
-    const pie = document.querySelector('.bf-pie')
-    if (pie) io.observe(pie)
-    // La cabecera aparte: al acabar de salir de la pantalla no cambia ningún
-    // botón, y sin esto el pegado no saldría hasta el siguiente.
-    new IntersectionObserver(pintar).observe(hero)
-  }
+    location.href = conLaEntradaBF(bfRuta('/oferta'), { nombre, email, desbloqueada: '1' })
+  })
 </script>
 
 <style>
-  /* ── Recién pagado: la barra roja ───────────────────────────────────── */
-  .lp-alerta { display: none; background: #DC2626; color: #fff; padding: 13px 24px; }
-  :global(html.bf-recien) .lp-alerta { display: block; }
-  .lp-alerta-in { max-width: 1152px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 10px; text-align: center; }
-  .lp-alerta-in > span { flex-shrink: 0; display: inline-flex; }
-  .lp-alerta p { margin: 0; font-size: 15.5px; line-height: 1.45; }
-  .lp-alerta strong { font-weight: 800; letter-spacing: 0.01em; text-transform: uppercase; }
+  .dl-hero { position: relative; min-height: 100vh; padding: 0 24px; display: flex; flex-direction: column; }
+  .dl-nav { width: 100%; }
+  .dl-in { position: relative; z-index: 1; flex: 1; width: 100%; max-width: 640px; margin: 0 auto; padding: 24px 0 72px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .dl-h1 { margin-top: 14px; filter: drop-shadow(0 0 34px rgba(77,163,255,0.35)); }
+  .dl-sub { margin: 0 auto 34px; max-width: 540px; }
 
-  /* ── Quien compró el ebook / los demás ──────────────────────────────── */
-  :global(html:not(.bf-comprador)) .lp-comp { display: none; }
-  :global(html.bf-comprador) .lp-gen { display: none; }
-  .lp-ya { display: inline-flex; align-items: flex-start; gap: 10px; margin: 0 0 22px; padding: 10px 16px 10px 12px; border-radius: 14px; background: rgba(34,197,94,0.14); border: 1px solid rgba(134,239,172,0.35); max-width: 560px; font-size: 14.5px; line-height: 1.5; color: #fff; }
-  .lp-ya-ico { flex-shrink: 0; width: 22px; height: 22px; border-radius: 9999px; background: #22C55E; color: #052e16; display: inline-flex; align-items: center; justify-content: center; margin-top: 0; }
-
-  /* ── Cabecera ───────────────────────────────────────────────────────── */
-  .lp-hero { position: relative; padding: 0 24px 104px; }
-  .lp-hero-in { position: relative; z-index: 1; max-width: 1152px; margin: 0 auto; padding-top: 40px; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 64px; align-items: center; }
-  /* Pasado el lunes 30 no hay tarjeta: la cabecera, a una columna. */
-  :global(html.bf-terminado) .lp-hero-in { grid-template-columns: minmax(0, 1fr); }
-  .lp-hero-cta { margin-top: 34px; display: flex; flex-direction: column; align-items: flex-start; }
-  .lp-fin p { margin: 28px 0 16px; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.93); max-width: 560px; }
-  .lp-fin p strong { color: #fff; }
-  .lp-tarjeta {
-    border-radius: 22px; padding: 28px 26px 26px;
-    background: linear-gradient(160deg, rgba(110,200,255,0.20) 0%, rgba(0,140,255,0.15) 45%, rgba(0,125,250,0.13) 100%);
-    border: 1px solid rgba(170,210,255,0.24); box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
+  /* El formulario, en cristal con su borde de luz. */
+  .dl-form {
+    width: 100%; max-width: 480px; text-align: left; padding: 26px 24px 22px; border-radius: 22px;
+    background: linear-gradient(160deg, rgba(0,150,255,0.16) 0%, rgba(0,125,250,0.10) 100%);
+    border: 1px solid rgba(170,210,255,0.16); box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 40px 80px -40px rgba(0,0,0,0.6);
   }
-  .lp-tarjeta-t { margin: 0 0 16px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9fd0ff; }
-  .lp-tarjeta-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 13px; }
-  .lp-tarjeta-lista li { display: flex; gap: 11px; align-items: flex-start; font-size: 15.5px; line-height: 1.5; color: #fff; }
-  .lp-tarjeta-lista li > span { flex-shrink: 0; margin-top: 2px; width: 22px; height: 22px; border-radius: 9999px; background: #4da3ff; color: #0a1656; display: inline-flex; align-items: center; justify-content: center; }
-
-  /* ── Todo lo que te llevas ──────────────────────────────────────────── */
-  .lp-todo { list-style: none; margin: 0 auto; padding: 0; max-width: 1000px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid #E3EAF6; border-radius: 22px; overflow: hidden; }
-  .lp-todo li { display: flex; gap: 18px; align-items: flex-start; padding: 26px 28px; border-bottom: 1px solid #E3EAF6; }
-  .lp-todo li:nth-child(odd) { border-right: 1px solid #E3EAF6; }
-  .lp-todo li:nth-last-child(-n+2) { border-bottom: 0; }
-  .lp-todo b { display: block; font-family: 'Poppins', system-ui, sans-serif; font-size: 17px; font-weight: 600; letter-spacing: -0.012em; color: #1D0084; line-height: 1.3; }
-  .lp-todo p { margin: 5px 0 0; font-size: 15px; line-height: 1.6; color: #171a2e; }
-  .lp-garantia { max-width: 1000px; margin: 18px auto 0; display: flex; align-items: center; gap: 14px; padding: 18px 24px; border-radius: 18px; background: #F5F8FF; }
-  .lp-garantia p { margin: 0; font-size: 15.5px; line-height: 1.5; color: #171a2e; }
-  .lp-garantia strong { color: #1D0084; font-weight: 600; }
-
-  /* ── Admisiones: los tres pasos ─────────────────────────────────────── */
-  .lp-centro { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 980px; }
-  .lp-centro .bf-lead { margin: 0 auto; }
-  .lp-pasos { list-style: none; margin: 48px 0 44px; padding: 0; position: relative; width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
-  .lp-pasos::before { content: ''; position: absolute; top: 19px; left: 16.6%; right: 16.6%; height: 1px; background: linear-gradient(90deg, #4da3ff, rgba(77,163,255,0.25)); }
-  .lp-pasos li { position: relative; display: flex; flex-direction: column; align-items: center; }
-  .lp-pasos-n { width: 38px; height: 38px; border-radius: 9999px; background: #1D0084; border: 1px solid #4da3ff; color: #fff; font-weight: 700; font-size: 14px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; position: relative; }
-  .lp-pasos-n i { display: block; font-style: normal; line-height: 1; text-box: trim-both cap alphabetic; }
-  .lp-pasos b { display: block; font-family: 'Poppins', system-ui, sans-serif; font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px; }
-  .lp-pasos p { margin: 0; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,0.92); max-width: 300px; }
-
-  /* ── Dolores ────────────────────────────────────────────────────────── */
-  .lp-dolores { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid #E3EAF6; border-radius: 22px; overflow: hidden; }
-  .lp-dolores article { display: flex; flex-direction: column; gap: 18px; padding: 32px 30px; border-right: 1px solid #E3EAF6; border-bottom: 1px solid #E3EAF6; }
-  .lp-dolores article:nth-child(3n) { border-right: 0; }
-  .lp-dolores article:nth-last-child(-n+3) { border-bottom: 0; }
-  .lp-dolores h3 { font-family: 'Poppins', system-ui, sans-serif; font-size: 17.5px; font-weight: 600; line-height: 1.3; letter-spacing: -0.012em; color: #1D0084; margin: 0 0 7px; }
-  .lp-dolores p { margin: 0; font-size: 15px; line-height: 1.62; color: #171a2e; }
-  .lp-giro { margin: 40px auto 0; max-width: 760px; text-align: center; font-size: clamp(17px, 1.7vw, 20px); line-height: 1.6; color: #171a2e; }
-  .lp-giro strong { color: #1D0084; font-weight: 600; }
-
-  /* ── Antes / después ────────────────────────────────────────────────── */
-  .lp-cambio { max-width: 980px; margin: 0 auto; }
-  .lp-cambio-fila { display: grid; grid-template-columns: 200px minmax(0, 1fr) minmax(0, 1.1fr); }
-  .lp-cambio-fila > span { padding: 22px 26px; font-size: 15.5px; line-height: 1.5; display: flex; align-items: center; gap: 12px; }
-  .lp-cambio-t { font-family: 'Poppins', system-ui, sans-serif; font-weight: 600; color: #1D0084; border-bottom: 1px solid #E3EAF6; padding-left: 4px !important; }
-  .lp-cambio-t :global(svg) { color: #025dc7; flex-shrink: 0; }
-  .lp-hoy { color: #171a2e; border-bottom: 1px solid #E3EAF6; }
-  .lp-x { color: #b4bdd6; display: inline-flex; flex-shrink: 0; }
-  .lp-con { background: #1D0084; color: #fff; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.08); }
-  .lp-ok { flex-shrink: 0; width: 24px; height: 24px; border-radius: 9999px; background: #4da3ff; color: #0a1656; display: inline-flex; align-items: center; justify-content: center; }
-  .lp-cambio-cab > span { padding-top: 26px; padding-bottom: 18px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
-  .lp-cambio-cab .lp-con { border-radius: 20px 20px 0 0; color: #9fd0ff; }
-  .lp-cambio-cab .lp-cambio-t { border-bottom-color: transparent; }
-  .lp-cambio-fila.ultima > span { border-bottom: 0; }
-  .lp-cambio-fila.ultima .lp-con { border-radius: 0 0 20px 20px; padding-bottom: 28px; }
-
-  /* ── Plan de estudios ───────────────────────────────────────────────── */
-  .lp-plan { background: #120a5c; color: #fff;
-    background-image: radial-gradient(circle 900px at 85% 0%, rgba(11,109,240,0.28) 0%, transparent 60%), radial-gradient(circle 700px at 0% 100%, rgba(77,163,255,0.10) 0%, transparent 60%); }
-  .lp-plan-dots { position: absolute; opacity: 0.5; pointer-events: none; }
-  .lp-etapas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-  .lp-etapa { position: relative; background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.09); border-radius: 22px; padding: 28px 30px 24px; }
-  .lp-etapa::before { content: ''; position: absolute; left: 30px; right: 30px; top: -1px; height: 2px; border-radius: 0 0 4px 4px; background: var(--c); }
-  .lp-etapa-cab { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
-  .lp-etapa-n { font-family: 'Poppins', system-ui, sans-serif; font-size: 46px; font-weight: 700; line-height: 0.9; letter-spacing: -0.05em; color: color-mix(in srgb, var(--c) 60%, transparent); }
-  .lp-etapa h3 { margin: 0; font-family: 'Poppins', system-ui, sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.018em; color: #fff; }
-  .lp-etapa-cab p { margin: 3px 0 0; font-size: 13.5px; color: rgba(255,255,255,0.8); }
-  .lp-etapa-obj { margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(255,255,255,0.93); }
-  .lp-etapa-hito { display: flex; gap: 10px; align-items: flex-start; margin: 18px 0 0; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.09); font-size: 14.5px; line-height: 1.55; color: rgba(255,255,255,0.9); }
-  .lp-etapa-hito > span:first-child { color: var(--c); display: inline-flex; flex-shrink: 0; margin-top: 2px; }
-  .lp-etapa-hito b { color: #fff; font-weight: 600; }
-
-  /* ── Imagina ────────────────────────────────────────────────────────── */
-  .lp-imagina { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 64px; align-items: center; }
-  .lp-imagina-cab .bf-lead { margin-bottom: 30px; }
-  .lp-imagina-lista { gap: 0; border-top: 1px solid #E3EAF6; }
-  .lp-imagina-lista li { padding: 18px 2px; border-bottom: 1px solid #E3EAF6; font-size: 16.5px; }
-  .lp-imagina-lista b { color: #1D0084; font-weight: 600; }
-
-  /* ── Cierre ─────────────────────────────────────────────────────────── */
-  .lp-cierre { padding-bottom: 0; }
-  .lp-cierre-t { font-size: clamp(30px, 4.2vw, 48px); margin-bottom: 36px; }
-  .lp-cierre-cta { display: flex; flex-direction: column; align-items: center; gap: 26px; }
-  .lp-cierre-cta .bf-nota { margin-top: -12px; }
-
-  /* ── El botón pegado ────────────────────────────────────────────────── */
-  .lp-pegado {
-    display: flex; align-items: center; gap: 14px; position: fixed; right: 28px; bottom: calc(28px + env(safe-area-inset-bottom)); z-index: 50; padding: 8px;
-    border-radius: 9999px; background: #160a6e; border: 1px solid rgba(255,255,255,0.2);
-    transform: translateY(160%); visibility: hidden; transition: transform .3s ease, visibility 0s .3s, background .15s;
+  .dl-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .dl-label { display: block; margin: 0 0 7px; font-size: 13px; font-weight: 600; letter-spacing: 0.01em; color: #fff; }
+  .dl-label:not(:first-of-type) { margin-top: 16px; }
+  .dl-input {
+    width: 100%; height: 50px; padding: 0 15px; border-radius: 12px; border: 1px solid rgba(170,210,255,0.22);
+    background: rgba(5,20,90,0.45); color: #fff; font-family: inherit; font-size: 16px; outline: none; transition: border-color .15s, box-shadow .15s;
   }
-  .lp-pegado:global(.visible) { transform: translateY(0); visibility: visible; transition: transform .3s ease, background .15s; }
-  .lp-pegado-ico { flex-shrink: 0; width: 46px; height: 46px; border-radius: 9999px; background: rgba(77,163,255,0.2); color: #9fd0ff; display: inline-flex; align-items: center; justify-content: center; }
-  .lp-pegado-txt { min-width: 0; display: flex; flex-direction: column; gap: 4px; padding-right: 6px; color: #fff; font-size: 15.5px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
-  .lp-pegado-txt b { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #9fd0ff; }
-  .lp-pegado-btn { flex-shrink: 0; width: 48px; height: 48px; border-radius: 9999px; background: #4da3ff; color: #0a1656; display: inline-flex; align-items: center; justify-content: center; }
-  .lp-pegado-btn::after { content: ''; position: absolute; inset: 0; border-radius: 9999px; }
+  .dl-input::placeholder { color: rgba(220,235,255,0.55); }
+  .dl-input:focus { border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.25); }
+  .dl-tel { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 8px; }
+  .dl-prefijo { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 15.5px; cursor: pointer; white-space: nowrap; }
+  .dl-prefijo svg { color: rgba(255,255,255,0.6); }
+  .dl-prefijo:focus-within { border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.25); }
+  .dl-prefijo select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; color: #0a1656; }
+  .dl-err { display: none; margin: 14px 0 0; padding: 10px 13px; border-radius: 11px; background: rgba(254,226,226,0.95); color: #991b1b; font-size: 13.5px; line-height: 1.5; }
+  .dl-err:global(.visible) { display: block; }
+  .dl-btn { width: 100%; margin-top: 20px; font-size: 17px; }
+  .dl-btn > span { display: inline-flex; }
+  .dl-legal { margin: 14px 0 0; font-size: 12.5px; line-height: 1.55; color: rgba(255,255,255,0.82); }
+  .dl-legal a { color: #fff; text-decoration: underline; }
 
-  /* ── Tableta ────────────────────────────────────────────────────────── */
-  @media (max-width: 1023px) {
-    .lp-hero-in { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-top: 12px; }
-    .lp-tarjeta { max-width: 520px; }
-    .lp-dolores { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .lp-dolores article:nth-child(3n) { border-right: 1px solid #E3EAF6; }
-    .lp-dolores article:nth-child(2n) { border-right: 0; }
-    .lp-dolores article:nth-last-child(-n+3) { border-bottom: 1px solid #E3EAF6; }
-    .lp-dolores article:nth-last-child(-n+2) { border-bottom: 0; }
-    .lp-imagina { grid-template-columns: minmax(0, 1fr); gap: 32px; }
-  }
+  .dl-fin p { margin: 0 0 16px; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.93); }
+  .dl-fin p strong { color: #fff; }
+
+  .dl-puntos { list-style: none; margin: 40px 0 0; padding: 0; width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; text-align: left; }
+  .dl-puntos li { display: flex; gap: 12px; align-items: flex-start; }
+  .dl-puntos li > span { flex-shrink: 0; margin-top: 1px; }
+  .dl-puntos b { display: block; font-size: 14.5px; font-weight: 600; color: #fff; line-height: 1.35; }
+  .dl-puntos span span, .dl-puntos div > span { display: block; margin-top: 3px; font-size: 13.5px; line-height: 1.5; color: rgba(255,255,255,0.85); }
+
+  .dl-pie { position: relative; z-index: 1; width: 100%; max-width: 1152px; margin: 0 auto; padding: 22px 0 28px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 22px; }
+  .dl-pie nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+  .dl-pie a { font-size: 13px; color: rgba(255,255,255,0.82); text-decoration: none; }
+  .dl-pie a:hover { color: #fff; }
+  .dl-pie p { margin: 0; font-size: 12.5px; color: rgba(255,255,255,0.6); }
+  .dl-hero .bf-horizonte { position: relative; display: block; margin-top: auto; }
+
   @media (max-width: 760px) {
-    .lp-todo { grid-template-columns: minmax(0, 1fr); }
-    .lp-todo li, .lp-todo li:nth-child(odd) { border-right: 0; padding: 22px 20px; }
-    .lp-todo li:nth-last-child(2) { border-bottom: 1px solid #E3EAF6; }
-    .lp-cambio-cab { display: none; }
-    .lp-cambio { display: flex; flex-direction: column; gap: 12px; }
-    .lp-cambio-fila { grid-template-columns: minmax(0, 1fr); background: #fff; border: 1px solid #E3EAF6; border-radius: 18px; overflow: hidden; }
-    .lp-cambio-fila > span { border-bottom: 0 !important; align-items: flex-start; font-size: 15px; }
-    .lp-cambio-t { padding: 16px 18px 4px !important; font-size: 16.5px; align-items: center !important; }
-    .lp-hoy { padding: 6px 18px 14px !important; gap: 10px !important; }
-    .lp-con, .lp-cambio-fila.ultima .lp-con { border-radius: 0; padding: 14px 18px 16px !important; gap: 10px !important; }
-    .lp-x { margin: 3px 4px 0 4px; }
-    .lp-ok { width: 22px; height: 22px; }
-    .lp-etapas { grid-template-columns: minmax(0, 1fr); }
+    .dl-puntos { grid-template-columns: minmax(0, 1fr); gap: 16px; max-width: 420px; }
   }
   @media (max-width: 640px) {
-    .lp-hero { padding: 0 24px 64px; }
-    .lp-hero-cta { width: 100%; }
-    .lp-tarjeta { padding: 22px 20px 20px; }
-    .lp-dolores { grid-template-columns: minmax(0, 1fr); }
-    .lp-dolores article, .lp-dolores article:nth-child(2n), .lp-dolores article:nth-child(3n) { border-right: 0; border-bottom: 1px solid #E3EAF6; padding: 22px 20px; flex-direction: row; gap: 16px; }
-    .lp-dolores article:last-child { border-bottom: 0; }
-    .lp-pasos { grid-template-columns: minmax(0, 1fr); gap: 22px; text-align: left; margin: 36px 0; }
-    .lp-pasos::before { display: none; }
-    .lp-pasos li:not(:last-child)::after { content: ''; position: absolute; left: 18px; top: 38px; bottom: -22px; width: 1px; background: rgba(77,163,255,0.55); }
-    .lp-pasos li { display: grid; grid-template-columns: 38px minmax(0, 1fr); column-gap: 16px; align-items: start; }
-    .lp-pasos-n { grid-row: 1 / 3; margin-bottom: 0; }
-    .lp-pasos b { margin: 7px 0 4px; }
-    .lp-pasos p { max-width: none; }
-    .lp-etapa { padding: 24px 20px 20px; border-radius: 18px; }
-    .lp-etapa::before { left: 20px; right: 20px; }
-    .lp-etapa-n { font-size: 40px; }
-    .lp-etapa h3 { font-size: 20px; }
-    .lp-cierre-cta { width: 100%; }
-    .lp-pegado { left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); justify-content: space-between; }
-    .lp-pegado-txt { flex: 1; padding-right: 0; }
+    .dl-in { padding: 8px 0 48px; }
+    .dl-sub { margin-bottom: 26px; }
+    .dl-form { padding: 22px 18px 18px; }
+    .dl-pie { flex-direction: column; align-items: flex-start; }
   }
 </style>

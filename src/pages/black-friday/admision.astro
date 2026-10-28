@@ -87,19 +87,20 @@ const WWW = 'https://www.holandesnawar.com'
         </section>
 
         <!-- 1 · Tu contacto -->
-        <section class="ag-pane" data-pane="datos" hidden>
-          <h2 class="ag-q">Tu contacto</h2>
-          <p class="ag-lead">Antes de continuar, necesitamos conocerte un poquito mejor.</p>
+        <section class="ag-pane" data-pane="datos" id="ag-datos" hidden>
+          <h2 class="ag-q"><span class="ag-solo-no">Tu contacto</span><span class="ag-solo-si">Tu WhatsApp</span></h2>
+          <p class="ag-lead"><span class="ag-solo-no">Antes de continuar, necesitamos conocerte un poquito mejor.</span><span class="ag-solo-si">Tu nombre y tu correo ya los tenemos. Solo nos falta tu número, para confirmarte la llamada.</span></p>
+          <p class="ag-conocidos ag-solo-si"><span id="ag-conocidos-t"></span> <button type="button" class="ag-cambiar" id="ag-cambiar">Cambiar</button></p>
           <div class="ag-fields">
-            <div class="ag-field">
+            <div class="ag-field ag-solo-no">
               <label class="ag-label" for="first_name">Nombre <span class="ag-req">*</span></label>
               <input id="first_name" name="first_name" type="text" class="ag-input" placeholder="Juan" autocomplete="given-name" required />
             </div>
-            <div class="ag-field">
+            <div class="ag-field ag-solo-no">
               <label class="ag-label" for="last_name">Apellidos <span class="ag-req">*</span></label>
               <input id="last_name" name="last_name" type="text" class="ag-input" placeholder="García" autocomplete="family-name" />
             </div>
-            <div class="ag-field">
+            <div class="ag-field ag-solo-no">
               <label class="ag-label" for="email">Tu mejor email <span class="ag-req">*</span></label>
               <p class="ag-help">Te mandamos tu plan y el acceso. Nada de spam.</p>
               <input id="email" name="email" type="email" class="ag-input" placeholder="correo@ejemplo.com" autocomplete="email" required />
@@ -323,6 +324,13 @@ const WWW = 'https://www.holandesnawar.com'
   ;(document.getElementById('phone') as HTMLInputElement).value = previos.phone
   if (previos.first_name && previos.email && previos.phone) {
     ;(document.getElementById('ag-empezar') as HTMLButtonElement).dataset.go = 'q0'
+  } else if (previos.first_name && previos.email) {
+    // El nombre y el correo ya se saben (los correos, la oferta, el ebook):
+    // en la pantalla de contacto, solo el WhatsApp. «Cambiar» enseña todo.
+    const pane = document.getElementById('ag-datos') as HTMLElement
+    pane.classList.add('ag-solo-tel')
+    ;(document.getElementById('ag-conocidos-t') as HTMLElement).textContent = `${previos.first_name} · ${previos.email}`
+    document.getElementById('ag-cambiar')?.addEventListener('click', () => pane.classList.remove('ag-solo-tel'))
   }
   const panes = Array.from(form.querySelectorAll<HTMLElement>('.ag-pane'))
   const preguntas = panes.filter((p) => p.dataset.clave)
@@ -709,6 +717,14 @@ const WWW = 'https://www.holandesnawar.com'
   .ag-logo { height: 38px; width: auto; object-fit: contain; }
   .ag-eyebrow { margin: 0 0 12px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #4da3ff; }
   :global(body.ag-split) .ag-eyebrow { display: none; }
+
+  /* Contacto con el nombre y el correo ya sabidos: solo el WhatsApp. */
+  .ag-solo-si { display: none; }
+  .ag-solo-tel .ag-solo-no { display: none; }
+  .ag-solo-tel .ag-solo-si { display: initial; }
+  .ag-solo-tel .ag-conocidos { display: flex; }
+  .ag-conocidos { flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: 0 0 18px; font-size: 15px; color: rgba(255,255,255,0.9); }
+  .ag-cambiar { border: 0; background: none; padding: 0; font: inherit; font-weight: 600; color: #9fd0ff; text-decoration: underline; cursor: pointer; }
 
   /* Solo la línea. Sin "paso X de N": la línea ya lo dice. */
   .ag-progress { width: 100%; height: 4px; border-radius: 9999px; background: rgba(255,255,255,0.14); overflow: hidden; margin-bottom: 36px; }

@@ -34,7 +34,10 @@ const PAGINAS: { prueba: RegExp; marca: string }[] = [
   { prueba: /^\/black-friday\/ebook-ads\/?$/, marca: 'bf-ebook-ads' },
   { prueba: /^\/black-friday\/ebook\/?$/, marca: 'bf-ebook' },
   { prueba: /^\/black-friday\/admision\/?$/, marca: 'bf-admision' },
-  { prueba: /^\/black-friday\/?$/, marca: 'black-friday' },
+  // La oferta (la formación, sin precio) y la portada, que es el formulario
+  // para desbloquearla (28/10).
+  { prueba: /^\/black-friday\/oferta\/?$/, marca: 'black-friday' },
+  { prueba: /^\/black-friday\/?$/, marca: 'bf-desbloquear' },
   // /proceso-agendar: el formulario de llamada solo, sin vídeo (06/10). /agendar ya
   // lleva al proceso de admisión.
   { prueba: /^\/(proceso-)?agendar\/?$/, marca: 'agendar' },
