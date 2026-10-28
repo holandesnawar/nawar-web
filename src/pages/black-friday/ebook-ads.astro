@@ -1,0 +1,13 @@
+---
+/**
+ * blackfriday.holandesnawar.com/ebook-ads — el ebook de Black Friday a 1 €, para
+ * los ANUNCIOS. La misma página que /ebook (EbookBF.astro); lo único que
+ * cambia es el canal que se manda con la compra y la marca del recorrido
+ * (`bf-ebook-ads`), que en la escuela cuenta como anuncio.
+ */
+import EbookBF from '../../components/black-friday/EbookBF.astro'
+
+export const prerender = true
+---
+
+<EbookBF canal="ads" />

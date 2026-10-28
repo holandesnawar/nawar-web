@@ -1,0 +1,572 @@
+---
+/**
+ * La página del ebook de Black Friday (29/10 → lunes 30/11/2026): el ebook
+ * A0-A1 de siempre, con nombre nuevo («Neerlandés sin miedo»), a 1 €.
+ *
+ * Dos copias iguales que solo cambian en `canal` (y en la marca del
+ * recorrido, que sale de la dirección): /ebook para el tráfico orgánico y
+ * /ebook-ads para los anuncios. Así el panel de la escuela sabe de dónde vino
+ * cada comprador sin tener que fiarse de los utm.
+ *
+ * La compra, sin salir de aquí: el botón abre una ventana con nombre y correo;
+ * con eso la escuela crea la sesión de pago de Stripe (POST
+ * {ESCUELA}/api/v1/ebook/pago, directo desde el navegador) y la
+ * caja de Stripe se monta dentro de la misma ventana (Embedded Checkout). Al
+ * pagar, Stripe le lleva a la página de Black Friday de la formación
+ * (?compra=cs_…), donde se le dice que el ebook va de camino. El correo con
+ * el PDF y la campaña de correos los manda la escuela.
+ *
+ * Contenido sacado de /ebook-a0-a1 (lo que incluye, para quién es, las dudas).
+ * ⚠️ Sin las opiniones de esa página: no se ha podido comprobar que sean de
+ * personas reales, y aquí no se pone nada que no lo sea.
+ */
+import Layout from '../../layouts/Layout.astro'
+import Cuenta from './Cuenta.astro'
+import { icono } from './iconos'
+import {
+  BF_HASTA_TEXTO,
+  EBOOK_MOCKUP,
+  EBOOK_MOCKUP_ABIERTO,
+  EBOOK_NOMBRE,
+  EBOOK_PRECIO,
+  EBOOK_SUB,
+} from '../../lib/blackFriday'
+import '../../styles/fuentes-locales.css'
+import '../../styles/black-friday.css'
+
+interface Props {
+  canal: 'organico' | 'ads'
+}
+const { canal } = Astro.props
+
+const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
+const WWW = 'https://www.holandesnawar.com'
+const PRECIO = `${EBOOK_PRECIO} €`
+
+const BULLETS = [
+  'Explicado en español, sin pasar por el inglés',
+  '7 lecciones con ejercicios y todas las respuestas',
+  'En PDF: lo descargas al momento y es tuyo para siempre',
+]
+
+const POR_QUE = [
+  { i: 'idioma', t: 'Pensado desde el español', d: 'Cada explicación, regla y ejemplo está pensado para hispanohablantes. Te lleva de lo más básico al nivel A0-A1 sin pasar por el inglés.' },
+  { i: 'lapiz', t: 'Ejercicios al final de cada lección', d: 'Para fijar lo que aprendes. Refuerzan el vocabulario y la gramática, y al final tienes todas las respuestas para corregirte tú.' },
+  { i: 'libro', t: 'Lo que necesitas para empezar', d: 'Frases de uso diario, el vocabulario esencial y las estructuras básicas del neerlandés. Los fundamentos, sin relleno.' },
+]
+
+const INCLUYE = [
+  '7 lecciones sobre los temas básicos de la gramática neerlandesa',
+  'Vocabulario esencial en cada lección',
+  'Ejercicios prácticos al final de cada lección',
+  'Explicaciones y traducciones completas al español',
+  'Las respuestas de todos los ejercicios',
+  'En PDF, para descargarlo en cualquier dispositivo o imprimirlo',
+]
+
+const PARA_TI = [
+  { i: 'ruta', t: 'Empiezas con el neerlandés', d: 'Buscas una introducción clara a la gramática básica y a las primeras frases para defenderte en el día a día.' },
+  { i: 'calendario', t: 'Te preparas el Basisexamen o el inburgering', d: 'Necesitas asentar las bases del idioma antes de ponerte con el examen.' },
+  { i: 'libro', t: 'Quieres repasar la base', d: 'Ya empezaste, pero hay reglas que no se te quedan: este ebook es la referencia limpia que estabas buscando.' },
+]
+
+const DUDAS = [
+  { q: '¿Cómo lo recibo?', a: `En cuanto pagas, te llega un correo con el enlace para descargar «${EBOOK_NOMBRE}» en PDF. Si no lo ves en unos minutos, mira en spam o en promociones.` },
+  { q: '¿Por qué cuesta solo 1 €?', a: `Es la oferta de Black Friday: queremos que pruebes cómo enseñamos en Nawar sin que te cueste casi nada. Solo hasta el ${BF_HASTA_TEXTO}.` },
+  { q: '¿En qué formato está?', a: 'En PDF: lo abres en el móvil, la tablet o el ordenador, lo guardas donde quieras o lo imprimes si te gusta estudiar en papel.' },
+  { q: '¿Necesito internet para usarlo?', a: 'Solo para descargarlo. Después lo tienes sin conexión, siempre que quieras.' },
+  { q: '¿Para qué nivel es?', a: 'Para empezar desde cero o repasar la base: cubre lo esencial del nivel A0-A1.' },
+  { q: '¿Y si tengo dudas?', a: 'Escríbenos a info@holandesnawar.com y te ayudamos.' },
+]
+
+const flecha = icono('flecha', 16, 2.5)
+---
+
+<Layout
+  fuentesLocales
+  title={`${EBOOK_NOMBRE} · Ebook de neerlandés a ${PRECIO} — Black Friday | Holandés Nawar`}
+  description={`${EBOOK_NOMBRE}: ${EBOOK_SUB}, explicadas en español. Ebook en PDF a ${PRECIO} solo por Black Friday.`}
+  noindex={true}
+>
+  <div class="bf eb" data-canal={canal}>
+    <!-- ═══ Cabecera ═══ -->
+    <header class="bf-oscuro eb-hero">
+      <div class="bf-capas" aria-hidden="true"><span class="bf-luz1"></span><span class="bf-luz2"></span><span class="bf-dots"></span></div>
+      <nav class="bf-nav">
+        <a href={`${WWW}/`} aria-label="Holandés Nawar" class="eb-logo-link">
+          <img src={LOGO} alt="Holandés Nawar" class="bf-logo" width="150" height="38" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'bf-logo-txt',textContent:'Holandés Nawar'}))" />
+        </a>
+        <span class="eb-nav-oferta bf-solo-activa">Black Friday · hasta el {BF_HASTA_TEXTO}</span>
+      </nav>
+
+      <div class="eb-hero-in">
+        <div class="eb-hero-texto">
+          <span class="bf-badge-dark">Black Friday <i>·</i> Ebook a {PRECIO}</span>
+          <h1 class="bf-h1">{EBOOK_NOMBRE}</h1>
+          <p class="bf-hero-sub eb-sub">
+            {EBOOK_SUB}, explicadas <strong>en español</strong>: la gramática clara, el vocabulario esencial y ejercicios con sus respuestas.
+          </p>
+          <ul class="eb-bullets">
+            {BULLETS.map((b) => <li><span set:html={icono('check', 13, 3)} />{b}</li>)}
+          </ul>
+
+          <div class="eb-compra bf-solo-activa">
+            <div class="eb-precio">
+              <b>{PRECIO}</b>
+              <span>Precio de Black Friday<br />Pago único · PDF al momento</span>
+            </div>
+            <button type="button" class="bf-btn eb-btn" data-bf-comprar>
+              Consíguelo por {PRECIO}
+              <Fragment set:html={flecha} />
+            </button>
+          </div>
+          <p class="eb-puente bf-solo-activa">
+            <span set:html={icono('premio', 18, 1.8)} />
+            <span>Con tu ebook, <strong>acceso anticipado a las condiciones de Black Friday</strong> de la Formación Nawar A0-A1.</span>
+          </p>
+          <div class="eb-fin bf-fin">
+            <p><strong>La oferta de Black Friday ha terminado.</strong> El ebook sigue disponible en su página de siempre.</p>
+            <a class="bf-btn" href={`${WWW}/ebook-a0-a1`}>Ver el ebook <Fragment set:html={flecha} /></a>
+          </div>
+          <div class="eb-cuenta"><Cuenta titulo="La oferta termina en" /></div>
+        </div>
+
+        <div class="eb-hero-visual">
+          <figure class="eb-portada" id="eb-portada">
+            <img src={EBOOK_MOCKUP} alt={`${EBOOK_NOMBRE}, el ebook A0-A1 de Holandés Nawar`} class="eb-mockup" width="900" height="900"
+              onerror="this.closest('figure').classList.add('sin-foto'); this.remove();" />
+            <!-- Si la foto no carga, el libro dibujado. -->
+            <div class="eb-libro" aria-hidden="true">
+              <div class="eb-libro-tapa">
+                <span class="eb-libro-marca">Holandés Nawar</span>
+                <span class="eb-libro-nivel">Ebook · A0-A1</span>
+                <span class="eb-libro-titulo">{EBOOK_NOMBRE}</span>
+                <span class="eb-libro-sub">7 lecciones para arrancar desde cero</span>
+                <span class="eb-libro-pie">Explicado en español</span>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </header>
+
+    <!-- ═══ Por qué este ebook ═══ -->
+    <section class="bf-sec bf-blanco">
+      <div class="bf-in">
+        <div class="bf-cab">
+          <span class="bf-badge">Por qué este ebook</span>
+          <h2 class="bf-h2">El punto de partida que <span class="bf-acento">te faltaba</span></h2>
+          <p class="bf-lead">Sin recursos sueltos, sin saltos imposibles y sin pasar por el inglés. Un comienzo claro, pensado para hispanohablantes.</p>
+        </div>
+        <div class="eb-tres">
+          {POR_QUE.map((x) => (
+            <article class="eb-tres-item">
+              <span class="bf-ico" set:html={icono(x.i, 28, 1.6)} />
+              <h3>{x.t}</h3>
+              <p>{x.d}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Qué hay dentro ═══ -->
+    <section class="bf-sec bf-claro" id="que-incluye">
+      <div class="bf-in eb-dentro" id="eb-dentro">
+        <figure class="eb-dentro-foto">
+          <img src={EBOOK_MOCKUP_ABIERTO} alt={`${EBOOK_NOMBRE} por dentro: explicaciones en español y ejercicios`} loading="lazy" decoding="async" width="900" height="700"
+            onerror="document.getElementById('eb-dentro').classList.add('sin-foto'); this.closest('figure').remove();" />
+        </figure>
+        <div class="eb-dentro-texto">
+          <span class="bf-badge">Qué encontrarás dentro</span>
+          <h2 class="bf-h2">Todo lo que necesitas para <span class="bf-acento bf-nw">tu A0-A1</span></h2>
+          <ul class="bf-check-lista eb-incluye">
+            {INCLUYE.map((x) => <li><span set:html={icono('check', 13, 3)} />{x}</li>)}
+          </ul>
+          <div class="eb-dentro-cta bf-solo-activa">
+            <button type="button" class="bf-btn" data-bf-comprar>Consíguelo por {PRECIO} <Fragment set:html={flecha} /></button>
+            <p class="bf-nota bf-nota-oscura">Pago único de {PRECIO} · Solo hasta el {BF_HASTA_TEXTO}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Para ti si… ═══ -->
+    <section class="bf-sec bf-blanco">
+      <div class="bf-in">
+        <div class="bf-cab">
+          <span class="bf-badge">Para ti si…</span>
+          <h2 class="bf-h2">¿Te <span class="bf-acento">reconoces</span>?</h2>
+        </div>
+        <div class="eb-tres">
+          {PARA_TI.map((x) => (
+            <article class="eb-tres-item eb-tres-claro">
+              <span class="bf-ico" set:html={icono(x.i, 28, 1.6)} />
+              <h3>{x.t}</h3>
+              <p>{x.d}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Dudas ═══ -->
+    <section class="bf-sec bf-claro">
+      <div class="bf-in">
+        <div class="bf-cab">
+          <span class="bf-badge">Dudas</span>
+          <h2 class="bf-h2">Preguntas frecuentes</h2>
+        </div>
+        <div class="bf-faq">
+          {DUDAS.map((d) => (
+            <details>
+              <summary>{d.q}<Fragment set:html={icono('mas', 20, 2)} /></summary>
+              <p>{d.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Cierre ═══ -->
+    <section class="bf-sec bf-oscuro eb-cierre">
+      <div class="bf-capas" aria-hidden="true"><span class="bf-luz1"></span><span class="bf-luz2"></span><span class="bf-dots"></span></div>
+      <div class="bf-in eb-cierre-in">
+        <span class="bf-badge-dark">Solo hasta el {BF_HASTA_TEXTO}</span>
+        <h2 class="bf-h2 bf-h2-blanco"><span class="bf-grad">Empieza hoy, </span><span class="bf-azul bf-nw">por {PRECIO}</span></h2>
+        <p class="bf-lead bf-lead-blanco">«{EBOOK_NOMBRE}» en tu correo en un minuto, y con él, acceso anticipado a las condiciones de Black Friday de la formación.</p>
+        <div class="eb-cierre-cta bf-solo-activa">
+          <Cuenta titulo="La oferta termina en" />
+          <button type="button" class="bf-btn" data-bf-comprar>Consíguelo por {PRECIO} <Fragment set:html={flecha} /></button>
+        </div>
+        <div class="eb-fin bf-fin">
+          <p><strong>La oferta de Black Friday ha terminado.</strong></p>
+          <a class="bf-btn" href={`${WWW}/ebook-a0-a1`}>Ver el ebook <Fragment set:html={flecha} /></a>
+        </div>
+      </div>
+      <footer class="bf-pie">
+        <img src={LOGO} alt="Holandés Nawar" class="bf-logo-pie" width="110" height="28" onerror="this.remove()" />
+        <nav>
+          <a href={`${WWW}/politica-de-privacidad`}>Privacidad</a>
+          <a href={`${WWW}/condiciones-de-contratacion`}>Condiciones</a>
+          <a href="mailto:info@holandesnawar.com">info@holandesnawar.com</a>
+        </nav>
+        <p>© Holandés Nawar</p>
+      </footer>
+    </section>
+
+    <!-- ═══ La compra: datos y la caja de Stripe, en una ventana ═══ -->
+    <div class="eb-modal" id="eb-modal" hidden>
+      <div class="eb-modal-fondo" data-cerrar></div>
+      <div class="eb-modal-caja" role="dialog" aria-modal="true" aria-labelledby="eb-modal-titulo">
+        <div class="eb-modal-barra">
+          <span class="eb-modal-seguro"><Fragment set:html={icono('candado', 15, 2)} />Pago seguro</span>
+          <button type="button" class="eb-modal-x" data-cerrar aria-label="Cerrar">×</button>
+        </div>
+
+        <div class="eb-resumen">
+          <div class="eb-resumen-libro" aria-hidden="true"><span>{EBOOK_NOMBRE}</span></div>
+          <div class="eb-resumen-txt">
+            <b>{EBOOK_NOMBRE}</b>
+            <span>Ebook A0-A1 en PDF · 7 lecciones</span>
+          </div>
+          <b class="eb-resumen-precio">{PRECIO}</b>
+        </div>
+
+        <form class="eb-paso" data-paso="datos" id="eb-form" novalidate>
+          <h2 class="eb-modal-titulo" id="eb-modal-titulo">¿A dónde te lo mandamos?</h2>
+          <p class="eb-modal-lead">Te llega al correo en cuanto pagues.</p>
+          <div class="eb-hp" aria-hidden="true"><label>No rellenar <input type="text" name="website" id="eb-hp" tabindex="-1" autocomplete="off" /></label></div>
+          <label class="eb-label" for="eb-nombre">Nombre</label>
+          <input id="eb-nombre" class="eb-input" type="text" autocomplete="given-name" placeholder="Tu nombre" required />
+          <label class="eb-label" for="eb-email">Correo electrónico</label>
+          <input id="eb-email" class="eb-input" type="email" autocomplete="email" placeholder="correo@ejemplo.com" required />
+          <p class="eb-err" id="eb-err" role="alert"></p>
+          <button type="submit" class="bf-btn eb-ir" id="eb-ir">Ir al pago seguro <Fragment set:html={flecha} /></button>
+          <p class="eb-legal">
+            Al comprar aceptas la <a href={`${WWW}/politica-de-privacidad`} target="_blank" rel="noopener">política de privacidad</a> y recibir
+            nuestros correos sobre la Formación Nawar. Puedes darte de baja cuando quieras.
+          </p>
+        </form>
+
+        <div class="eb-paso" data-paso="pago" hidden>
+          <div class="eb-pagando">
+            <span>Pagando como <b id="eb-quien"></b></span>
+            <button type="button" class="eb-cambiar" id="eb-cambiar">Cambiar</button>
+          </div>
+          <div class="eb-stripe" id="eb-stripe"><p class="eb-cargando">Cargando el pago seguro…</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { leerUTM, guardarUTM } from '../../lib/utm'
+  import { contextoDelLead } from '../../lib/recorrido'
+  import { CLAVE_DATOS, type DatosAdmision } from '../../lib/admision'
+  import { EBOOK_PRECIO, META_EBOOK, arrancarCuentaAtras, bfRuta, bfTerminado } from '../../lib/blackFriday'
+  import { ESCUELA_URL } from '../../lib/escuela'
+  guardarUTM()
+  arrancarCuentaAtras()
+
+  const raiz = document.querySelector<HTMLElement>('.eb') as HTMLElement
+  const canal = raiz.dataset.canal === 'ads' ? 'ads' : 'organico'
+  const fbq = (...a: unknown[]) => { try { (window as any).fbq?.(...a) } catch {} }
+  fbq('track', 'ViewContent', { content_name: META_EBOOK, value: EBOOK_PRECIO, currency: 'EUR' })
+
+  const modal = document.getElementById('eb-modal') as HTMLElement
+  const form = document.getElementById('eb-form') as HTMLFormElement
+  const nombreEl = document.getElementById('eb-nombre') as HTMLInputElement
+  const emailEl = document.getElementById('eb-email') as HTMLInputElement
+  const err = document.getElementById('eb-err') as HTMLElement
+  const ir = document.getElementById('eb-ir') as HTMLButtonElement
+  const pasos = Array.from(modal.querySelectorAll<HTMLElement>('.eb-paso'))
+  const cajaStripe = document.getElementById('eb-stripe') as HTMLElement
+
+  // Quien vuelve (o llega desde un correo con ?nombre=&email=): sus datos puestos.
+  const leer = <T,>(k: string): T | null => { try { const v = localStorage.getItem(k); return v ? (JSON.parse(v) as T) : null } catch { return null } }
+  const previos = leer<DatosAdmision>(CLAVE_DATOS)
+  const q = new URLSearchParams(location.search)
+  nombreEl.value = (q.get('nombre') || previos?.first_name || '').slice(0, 120)
+  emailEl.value = (q.get('email') || previos?.email || '').slice(0, 200)
+
+  const verPaso = (p: string) => pasos.forEach((x) => { x.hidden = x.dataset.paso !== p })
+  let pagoMontado: { destroy: () => void } | null = null
+
+  const abrir = () => {
+    if (bfTerminado()) return
+    modal.hidden = false
+    document.documentElement.classList.add('eb-modal-abierto')
+    if (!pagoMontado) {
+      verPaso('datos')
+      setTimeout(() => (nombreEl.value ? emailEl : nombreEl).focus({ preventScroll: true }), 60)
+    }
+  }
+  const cerrar = () => {
+    modal.hidden = true
+    document.documentElement.classList.remove('eb-modal-abierto')
+  }
+  document.querySelectorAll('[data-bf-comprar]').forEach((b) => b.addEventListener('click', abrir))
+  modal.querySelectorAll('[data-cerrar]').forEach((b) => b.addEventListener('click', cerrar))
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) cerrar() })
+
+  // La caja de Stripe, cargada solo cuando hace falta.
+  const cargarStripe = () =>
+    new Promise<any>((ok, mal) => {
+      if ((window as any).Stripe) return ok((window as any).Stripe)
+      const sc = document.createElement('script')
+      sc.src = 'https://js.stripe.com/v3/'
+      sc.async = true
+      sc.onload = () => ((window as any).Stripe ? ok((window as any).Stripe) : mal(new Error('stripe')))
+      sc.onerror = () => mal(new Error('stripe'))
+      document.head.appendChild(sc)
+    })
+
+  const mostrarError = (t: string) => { err.textContent = t; err.classList.add('visible') }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    err.classList.remove('visible')
+    const nombre = nombreEl.value.trim()
+    const email = emailEl.value.trim().toLowerCase()
+    if (!nombre || !/^\S+@\S+\.\S+$/.test(email)) return mostrarError('Escribe tu nombre y un correo válido.')
+    ir.classList.add('enviando')
+
+    // Para el formulario de la llamada: que salga relleno.
+    try {
+      const antes = leer<DatosAdmision>(CLAVE_DATOS)
+      const mismo = antes?.email === email
+      localStorage.setItem(CLAVE_DATOS, JSON.stringify({ first_name: nombre, email, phone: mismo ? antes?.phone || '' : '', pais: mismo ? antes?.pais || '' : '' }))
+    } catch {}
+
+    // El campo trampa: un bot lo rellena; una persona no lo ve.
+    if ((document.getElementById('eb-hp') as HTMLInputElement).value.trim()) {
+      ir.classList.remove('enviando')
+      return mostrarError('No se pudo preparar el pago. Vuelve a intentarlo en un momento.')
+    }
+
+    const u = leerUTM()
+    const { recorrido, referrer } = contextoDelLead()
+    try {
+      // Directo a la escuela desde el navegador, NO por una ruta de esta web:
+      // la escuela pone un tope de intentos por IP, y por Vercel todos los
+      // compradores saldrían con las mismas IP. Los errores llegan como
+      // {detail}: 400 datos, 429 demasiados intentos, 502 Stripe, 503 la
+      // oferta ya cerró. Se enseñan tal cual. Después de pagar, Stripe le
+      // lleva a `vuelta` con ?compra={CHECKOUT_SESSION_ID} (lo añade la escuela).
+      const r = await fetch(`${ESCUELA_URL}/api/v1/ebook/pago`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre, email, canal,
+          utm_source: u.utmSource, utm_medium: u.utmMedium, utm_campaign: u.utmCampaign,
+          utm_content: u.utmContent, utm_term: u.utmTerm, utm_placement: u.utmPlacement,
+          recorrido, referrer,
+          vuelta: bfRuta('/'),
+        }),
+      })
+      const d = await r.json().catch(() => null)
+      if (!r.ok || !d?.client_secret || !d?.publishable_key) {
+        ir.classList.remove('enviando')
+        return mostrarError(typeof d?.detail === 'string' ? d.detail : 'No se pudo preparar el pago. Vuelve a intentarlo en un momento.')
+      }
+      ;(document.getElementById('eb-quien') as HTMLElement).textContent = `${nombre} · ${email}`
+      verPaso('pago')
+      const Stripe = await cargarStripe()
+      const stripe = Stripe(d.publishable_key)
+      const checkout = await stripe.initEmbeddedCheckout({ fetchClientSecret: async () => d.client_secret })
+      cajaStripe.innerHTML = ''
+      checkout.mount(cajaStripe)
+      pagoMontado = checkout
+      fbq('track', 'InitiateCheckout', { content_name: META_EBOOK, value: EBOOK_PRECIO, currency: 'EUR' })
+    } catch {
+      verPaso('datos')
+      mostrarError('No se pudo cargar el pago. Revisa tu conexión y vuelve a intentarlo.')
+    } finally {
+      ir.classList.remove('enviando')
+    }
+  })
+
+  // Cambiar el nombre o el correo: se quita la caja y se vuelve a los datos.
+  document.getElementById('eb-cambiar')?.addEventListener('click', () => {
+    try { pagoMontado?.destroy() } catch {}
+    pagoMontado = null
+    cajaStripe.innerHTML = '<p class="eb-cargando">Cargando el pago seguro…</p>'
+    verPaso('datos')
+  })
+</script>
+
+<style>
+  /* ── Cabecera ───────────────────────────────────────────────────────── */
+  .eb-hero { position: relative; padding: 0 24px 104px; }
+  .eb-nav-oferta { font-size: 12.5px; font-weight: 600; color: #9fd0ff; letter-spacing: 0.02em; }
+  .eb-hero-in { position: relative; z-index: 1; max-width: 1152px; margin: 0 auto; padding-top: 28px; display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 56px; align-items: center; }
+  .eb-sub { margin-bottom: 22px; }
+  .eb-bullets { list-style: none; margin: 0 0 30px; padding: 0; display: grid; gap: 10px; }
+  .eb-bullets li { display: flex; align-items: flex-start; gap: 11px; font-size: 15.5px; line-height: 1.5; color: rgba(255,255,255,0.93); }
+  .eb-bullets li > span { flex-shrink: 0; margin-top: 2px; width: 22px; height: 22px; border-radius: 9999px; background: #4da3ff; color: #0a1656; display: inline-flex; align-items: center; justify-content: center; }
+  .eb-compra { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 26px; }
+  .eb-precio { display: flex; align-items: center; gap: 14px; }
+  .eb-precio b { font-family: 'Poppins', system-ui, sans-serif; font-size: 54px; font-weight: 700; line-height: 1; letter-spacing: -0.04em; color: #fff; }
+  .eb-precio span { font-size: 13px; line-height: 1.45; color: rgba(235,244,255,0.88); }
+  .eb-btn { padding: 18px 30px; }
+  .eb-puente { display: flex; align-items: flex-start; gap: 10px; margin: 22px 0 0; max-width: 520px; font-size: 14.5px; line-height: 1.55; color: rgba(255,255,255,0.9); }
+  .eb-puente > span:first-child { flex-shrink: 0; color: #4da3ff; display: inline-flex; margin-top: 1px; }
+  .eb-puente strong { color: #fff; font-weight: 600; }
+  .eb-cuenta { margin-top: 30px; }
+  .eb-fin p { margin: 0 0 16px; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.93); }
+  .eb-fin p strong { color: #fff; }
+
+  /* La foto del ebook, y el libro dibujado si no carga. */
+  .eb-hero-visual { display: flex; justify-content: center; }
+  .eb-portada { position: relative; margin: 0; width: 100%; max-width: 520px; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; }
+  .eb-mockup { width: 100%; height: 100%; object-fit: contain; display: block; position: relative; z-index: 1; filter: drop-shadow(0 30px 50px rgba(3,9,33,0.45)); }
+  .eb-libro { position: absolute; inset: 9% 17%; display: none; }
+  .eb-portada.sin-foto .eb-libro { display: block; }
+  .eb-libro::before { content: ''; position: absolute; left: -12%; top: 10%; width: 64%; height: 66%; border-radius: 22px; background: radial-gradient(circle at 30% 30%, #1d3fd8, #0b2aa8 75%); opacity: 0.9; }
+  .eb-libro::after { content: ''; position: absolute; right: -14%; bottom: 4%; width: 46%; height: 40%; border-radius: 18px; background: #9fd5ff; }
+  .eb-libro-tapa {
+    position: absolute; inset: 0; z-index: 1; border-radius: 6px 14px 14px 6px; padding: 12% 11% 10%;
+    display: flex; flex-direction: column; color: #fff; transform: rotate(-4deg);
+    background: linear-gradient(160deg, #2a1ab0 0%, #1D0084 55%, #12065e 100%);
+    box-shadow: inset 10px 0 0 rgba(255,255,255,0.10), inset 12px 0 18px rgba(0,0,0,0.25), 0 40px 60px -26px rgba(3,9,33,0.75);
+  }
+  .eb-libro-marca { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #9fd0ff; }
+  .eb-libro-nivel { margin-top: 6px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.75); }
+  .eb-libro-titulo { margin-top: auto; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(28px, 3.4vw, 40px); font-weight: 700; line-height: 1.05; letter-spacing: -0.035em; }
+  .eb-libro-sub { margin-top: 12px; font-size: 13.5px; line-height: 1.4; color: rgba(255,255,255,0.86); max-width: 85%; }
+  .eb-libro-pie { margin-top: 26px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.18); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #4da3ff; }
+
+  /* ── Tres columnas (por qué, para ti) ─────────────────────────────────── */
+  .eb-tres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid #E3EAF6; border-radius: 22px; overflow: hidden; }
+  .eb-tres-item { padding: 34px 30px; display: flex; flex-direction: column; gap: 14px; }
+  .eb-tres-item + .eb-tres-item { border-left: 1px solid #E3EAF6; }
+  .eb-tres-item h3 { margin: 4px 0 0; font-family: 'Poppins', system-ui, sans-serif; font-size: 18.5px; font-weight: 600; line-height: 1.3; letter-spacing: -0.012em; color: #1D0084; }
+  .eb-tres-item p { margin: 0; font-size: 15.5px; line-height: 1.62; color: #171a2e; }
+  .eb-tres-claro { background: #fff; }
+
+  /* ── Qué hay dentro ─────────────────────────────────────────────────── */
+  .eb-dentro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+  .eb-dentro.sin-foto { grid-template-columns: minmax(0, 1fr); max-width: 720px; }
+  .eb-dentro-foto { margin: 0; }
+  .eb-dentro-foto img { width: 100%; height: auto; display: block; border-radius: 18px; }
+  .eb-incluye { margin: 6px 0 30px; }
+  .eb-dentro-cta .bf-nota { margin-top: 12px; }
+
+  /* ── Cierre ─────────────────────────────────────────────────────────── */
+  .eb-cierre { padding-bottom: 0; }
+  .eb-cierre-in { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 820px; }
+  .eb-cierre .bf-lead { margin: 0 auto 34px; }
+  .eb-cierre-cta { display: flex; flex-direction: column; align-items: center; gap: 26px; }
+
+  /* ── La ventana de la compra ────────────────────────────────────────── */
+  :global(html.eb-modal-abierto) { overflow: hidden; }
+  .eb-modal { position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .eb-modal[hidden] { display: none; }
+  .eb-modal-fondo { position: absolute; inset: 0; background: rgba(7,4,40,0.72); }
+  .eb-modal-caja {
+    position: relative; width: 100%; max-width: 520px; max-height: calc(100vh - 48px); overflow-y: auto; overscroll-behavior: contain;
+    background: #fff; color: #0a1656; border-radius: 20px; padding: 0 26px 26px; box-shadow: 0 40px 90px -30px rgba(3,9,33,0.7);
+  }
+  .eb-modal-barra { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 10px; }
+  .eb-modal-seguro { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; color: #171a2e; }
+  .eb-modal-seguro :global(svg) { color: #15803d; }
+  .eb-modal-x { width: 38px; height: 38px; margin-right: -8px; border: 0; background: transparent; font-size: 28px; line-height: 1; color: #171a2e; cursor: pointer; border-radius: 10px; }
+  .eb-modal-x:hover { background: #F0F5FF; }
+  .eb-resumen { display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 14px; background: #F0F5FF; }
+  .eb-resumen-libro { flex-shrink: 0; width: 46px; height: 60px; border-radius: 3px 7px 7px 3px; background: linear-gradient(160deg, #2a1ab0, #1D0084); display: flex; align-items: flex-end; padding: 5px; box-shadow: inset 4px 0 0 rgba(255,255,255,0.12); }
+  .eb-resumen-libro span { font-family: 'Poppins', system-ui, sans-serif; font-size: 7px; font-weight: 700; line-height: 1.05; color: #fff; }
+  .eb-resumen-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .eb-resumen-txt b { font-family: 'Poppins', system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #1D0084; }
+  .eb-resumen-txt span { font-size: 13px; color: #171a2e; }
+  .eb-resumen-precio { font-family: 'Poppins', system-ui, sans-serif; font-size: 22px; font-weight: 700; color: #1D0084; }
+  .eb-modal-titulo { margin: 22px 0 4px; font-family: 'Poppins', system-ui, sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.018em; color: #1D0084; }
+  .eb-modal-lead { margin: 0 0 6px; font-size: 14.5px; color: #171a2e; }
+  .eb-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .eb-label { display: block; margin: 16px 0 6px; font-size: 13px; font-weight: 600; letter-spacing: 0.01em; color: #0a1656; }
+  .eb-input {
+    width: 100%; background: #F0F5FF; border: 1px solid transparent; border-radius: 12px; padding: 13px 15px; font-size: 16px; font-family: inherit;
+    color: #1D0084; outline: none; transition: background .15s, border-color .15s, box-shadow .15s;
+  }
+  .eb-input::placeholder { color: rgba(29,0,132,0.45); }
+  .eb-input:focus { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
+  .eb-err { display: none; margin: 14px 0 0; padding: 11px 14px; border-radius: 12px; background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; font-size: 13.5px; line-height: 1.5; }
+  .eb-err:global(.visible) { display: block; }
+  .eb-ir { width: 100%; margin-top: 20px; }
+  .eb-legal { margin: 14px 0 0; font-size: 12.5px; line-height: 1.55; color: #171a2e; }
+  .eb-legal a { color: #025dc7; text-decoration: underline; }
+  .eb-pagando { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 16px 0 14px; padding: 11px 14px; border-radius: 12px; border: 1px solid #DDE6F5; font-size: 13.5px; color: #171a2e; }
+  .eb-pagando b { color: #1D0084; font-weight: 600; word-break: break-all; }
+  .eb-cambiar { flex-shrink: 0; border: 0; background: none; color: #025dc7; font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; padding: 0; }
+  .eb-stripe { min-height: 320px; }
+  .eb-cargando { margin: 0; padding: 60px 0; text-align: center; font-size: 14.5px; color: #171a2e; }
+
+  /* ── Tableta y móvil ────────────────────────────────────────────────── */
+  @media (max-width: 1023px) {
+    .eb-hero-in { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-top: 8px; }
+    .eb-portada { max-width: 380px; }
+    .eb-dentro { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  }
+  @media (max-width: 760px) {
+    .eb-tres { grid-template-columns: minmax(0, 1fr); }
+    .eb-tres-item + .eb-tres-item { border-left: 0; border-top: 1px solid #E3EAF6; }
+    .eb-tres-item { padding: 26px 22px; }
+  }
+  @media (max-width: 640px) {
+    .eb-hero { padding: 0 24px 72px; }
+    .eb-nav-oferta { display: none; }
+    .eb-portada { max-width: 280px; }
+    .eb-precio b { font-size: 46px; }
+    .eb-compra { gap: 16px; }
+    .eb-compra .bf-btn { width: 100%; }
+    .eb-cuenta { margin-top: 26px; }
+    .eb-cuenta :global(.bf-cuenta) { width: 100%; }
+    .eb-cierre-cta { width: 100%; }
+    .eb-cierre-cta :global(.bf-cuenta) { width: 100%; }
+    /* La ventana, a pantalla completa en el móvil. */
+    .eb-modal { padding: 0; align-items: stretch; }
+    .eb-modal-caja { max-width: none; max-height: none; height: 100%; border-radius: 0; padding: 0 20px 28px; }
+    .eb-modal-barra { position: relative; }
+  }
+</style>
