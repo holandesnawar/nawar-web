@@ -26,6 +26,15 @@ const TOPE = 12
 
 /** Las páginas que dicen algo del producto, y qué enseña cada una. */
 const PAGINAS: { prueba: RegExp; marca: string }[] = [
+  // El embudo de Black Friday (29/10): el ebook a 1 € en sus dos copias (la
+  // de los anuncios cuenta como anuncio en el panel), la página de la
+  // formación y el formulario. En el subdominio blackfriday.holandesnawar.com
+  // se sirven en /, /ebook… y `rutaDeLaPagina` las pasa a /black-friday/…
+  // antes de mirar aquí. Van las primeras: si no, "/" sería la home.
+  { prueba: /^\/black-friday\/ebook-ads\/?$/, marca: 'bf-ebook-ads' },
+  { prueba: /^\/black-friday\/ebook\/?$/, marca: 'bf-ebook' },
+  { prueba: /^\/black-friday\/admision\/?$/, marca: 'bf-admision' },
+  { prueba: /^\/black-friday\/?$/, marca: 'black-friday' },
   // /proceso-agendar: el formulario de llamada solo, sin vídeo (06/10). /agendar ya
   // lleva al proceso de admisión.
   { prueba: /^\/(proceso-)?agendar\/?$/, marca: 'agendar' },
@@ -75,9 +84,22 @@ const PAGINAS: { prueba: RegExp; marca: string }[] = [
  * solo tiene que añadir su regla aquí arriba, y no hay que acordarse de tocar
  * la página. Las que no encajan no guardan nada.
  */
+/**
+ * La ruta "de verdad" de la página. En el subdominio de Black Friday las
+ * páginas viven en la raíz (/, /ebook, /admision) pero son las de
+ * /black-friday/…: sin esto, la portada del subdominio se apuntaría como la
+ * home de la web.
+ */
+export function rutaDeLaPagina(host: string, ruta: string): string {
+  if (/^blackfriday\./.test(host) && !ruta.startsWith('/black-friday')) {
+    return ruta === '/' ? '/black-friday' : `/black-friday${ruta}`
+  }
+  return ruta
+}
+
 export function registrarPagina(): void {
   try {
-    const ruta = window.location.pathname
+    const ruta = rutaDeLaPagina(window.location.hostname, window.location.pathname)
     const encontrada = PAGINAS.find((p) => p.prueba.test(ruta))
     if (!encontrada) return
 

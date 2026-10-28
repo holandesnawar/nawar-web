@@ -1,0 +1,28 @@
+---
+/**
+ * La cuenta atrás hasta el lunes 30 de noviembre a las 23:59 (hora de Países
+ * Bajos). La mueve `arrancarCuentaAtras()` de src/lib/blackFriday.ts; aquí
+ * solo va el hueco, con lo que queda calculado al publicar para que no salga
+ * vacía mientras carga el script.
+ */
+import { quedaHasta } from '../../lib/blackFriday'
+
+interface Props {
+  titulo?: string
+  /** Sobre fondo claro. */
+  claro?: boolean
+}
+const { titulo = 'Termina en', claro = false } = Astro.props
+const q = quedaHasta()
+const dos = (n: number) => String(n).padStart(2, '0')
+---
+
+<div class={`bf-cuenta${claro ? ' bf-cuenta-claro' : ''}`} data-bf-cuenta role="timer" aria-label={`${titulo}: la oferta de Black Friday termina el lunes 30 de noviembre a las 23:59`}>
+  <p class="bf-cuenta-t">{titulo}</p>
+  <div class="bf-cuenta-cajas">
+    <div class="bf-cuenta-caja"><b data-d>{q.dias}</b><span>días</span></div>
+    <div class="bf-cuenta-caja"><b data-h>{dos(q.horas)}</b><span>horas</span></div>
+    <div class="bf-cuenta-caja"><b data-m>{dos(q.min)}</b><span>min</span></div>
+    <div class="bf-cuenta-caja"><b data-s>{dos(q.seg)}</b><span>seg</span></div>
+  </div>
+</div>

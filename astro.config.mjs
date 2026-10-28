@@ -4,6 +4,7 @@ import vercel from '@astrojs/vercel'
 import tailwindcss from '@tailwindcss/vite'
 import sitemap from '@astrojs/sitemap'
 import { REDIRECCIONES } from './src/lib/redirecciones.ts'
+import subdominios from './src/lib/integracionSubdominios.ts'
 
 export default defineConfig({
   site: 'https://www.holandesnawar.com',
@@ -19,6 +20,10 @@ export default defineConfig({
   },
   integrations: [
     react(),
+    // blackfriday.holandesnawar.com → /black-friday (ver el archivo). Tiene
+    // que ir DESPUÉS del adaptador, que es quien escribe config.json; Astro
+    // pone el adaptador el primero, así que vale en cualquier sitio de aquí.
+    subdominios(),
     sitemap({
       // Sólo indexamos home, /nuestra-vision, /blog, /blog/*, /guia/*
       // El resto (contacto, acceso, lista-de-espera, legales, admin, api,
@@ -41,6 +46,9 @@ export default defineConfig({
         !page.includes('/proceso-de-admision') &&
         !page.includes('/proceso-agendar') &&
         !page.includes('/v4/') &&
+        // El embudo de Black Friday (29/10): ebook, landing y formulario,
+        // solo por enlace y con noindex.
+        !page.includes('/black-friday') &&
         // Las guías SÍ se indexan, pero su variante de anuncios no: lleva
         // noindex y la canónica apuntando a la original. Estando además en
         // el sitemap le decíamos a Google dos cosas contrarias —"indexa

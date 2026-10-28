@@ -16,7 +16,10 @@
  *  - Lead y Schedule: de /api/cualificacion, que ya recibe el nombre, el
  *    correo y el teléfono (los cifra aquí antes de mandarlos);
  *  - VSLVisto y VSL50: de /api/embudo; el navegador manda los datos YA
- *    cifrados, así que esa ruta nunca ve un correo en claro.
+ *    cifrados, así que esa ruta nunca ve un correo en claro;
+ *  - Purchase (el ebook de Black Friday, 29/10): de /api/ebook-compra, solo
+ *    cuando la escuela confirma con Stripe que está pagado; el id es el de la
+ *    sesión de pago (cs_…), el mismo que usa el píxel de la página.
  *
  * ⚠️ Datos de la persona: SOLO cifrados. `cuerpoEvento` tira cualquier valor
  * de em/ph/fn que no sea una huella SHA-256, venga de donde venga.
@@ -38,7 +41,7 @@ import { leerEnv } from './systeme'
 /** La versión actual de la Graph API (v26.0 salió el 29/07/2026). */
 const VERSION_API = 'v26.0'
 
-export type NombreEvento = 'Lead' | 'Schedule' | 'VSLVisto' | 'VSL50'
+export type NombreEvento = 'Lead' | 'Schedule' | 'VSLVisto' | 'VSL50' | 'Purchase'
 
 export type EventoServidor = {
   nombre: NombreEvento
@@ -54,6 +57,10 @@ export type EventoServidor = {
   fbp?: string
   /** `content_name`, el mismo que lleva el evento del navegador. */
   contenido?: string
+  /** Solo en las compras (Purchase, el ebook de Black Friday): el importe y
+   *  la moneda, que Meta pide para ese evento. */
+  valor?: number
+  moneda?: string
 }
 
 const tokenCapi = () => leerEnv('META_CAPI_ACCESS_TOKEN') || leerEnv('META_CAPI_TOKEN') || ''
@@ -124,7 +131,14 @@ export function cuerpoEvento(e: EventoServidor, ahora = Date.now()) {
         action_source: 'website',
         event_source_url: e.url,
         user_data,
-        ...(e.contenido ? { custom_data: { content_name: e.contenido } } : {}),
+        ...(e.contenido || e.valor !== undefined
+          ? {
+              custom_data: {
+                ...(e.contenido ? { content_name: e.contenido } : {}),
+                ...(e.valor !== undefined && isFinite(e.valor) ? { value: e.valor, currency: (e.moneda || 'EUR').toUpperCase() } : {}),
+              },
+            }
+          : {}),
       },
     ],
     ...(test ? { test_event_code: test } : {}),

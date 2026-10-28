@@ -30,7 +30,7 @@ export const prerender = false
 const ETIQUETA = 'Llamada'
 /** El `content_name` de los eventos de Meta de cada embudo: el del anuncio y
  *  el de la web (/formacion, 09/10). Lista cerrada: viene del navegador. */
-const CONTENIDOS_META = ['Formación Nawar FB', 'Formación Nawar web']
+const CONTENIDOS_META = ['Formación Nawar FB', 'Formación Nawar web', 'Black Friday']
 const PRESUPUESTO_MS = 8000
 
 /**
@@ -49,6 +49,9 @@ const ETIQUETAS_ADMISION = {
   video: 'Admisión - vio el vídeo',
   completada: 'Admisión - completada',
 } as const
+
+/** La del formulario de admisión de Black Friday (29/10, blackfriday.holandesnawar.com/admision). */
+const ETIQUETA_BLACK_FRIDAY = 'Black Friday - llamada'
 
 /** Alta en systeme.io con sus etiquetas, en blando: si falla, lo dice en el
  *  log y sigue. El lead ya está en la escuela para entonces. */
@@ -306,9 +309,16 @@ export const POST: APIRoute = async (ctx) => {
   })
 
   // 2) systeme.io, en blando. Del proceso de admisión, además, su etiqueta.
+  // Del formulario de Black Friday (29/10), la suya y `origen`, para poder
+  // sacar a esa gente de las secuencias de la guía o colgarles la suya.
   const crm = alCRM(
     { email, firstName, lastName, phone },
-    embudo === 'admision' ? [ETIQUETA, ETIQUETAS_ADMISION.completada] : [ETIQUETA]
+    embudo === 'admision'
+      ? [ETIQUETA, ETIQUETAS_ADMISION.completada]
+      : embudo === 'black-friday'
+        ? [ETIQUETA, ETIQUETA_BLACK_FRIDAY]
+        : [ETIQUETA],
+    embudo === 'black-friday' ? [{ slug: 'origen', value: 'black-friday' }] : []
   )
 
   await Promise.all([solicitud, evento, crm])

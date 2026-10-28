@@ -23,5 +23,8 @@ Disallow: /proceso-agendar
 Disallow: /v4/
 # /formacion/v2: la página de la formación para anuncios, en pruebas (07/10).
 Disallow: /formacion/
+# El embudo de Black Friday (29/10): ebook a 1 €, landing y formulario.
+# En el subdominio blackfriday.holandesnawar.com las páginas llevan noindex.
+Disallow: /black-friday
 
 Sitemap: https://www.holandesnawar.com/sitemap-index.xml
