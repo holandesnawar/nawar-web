@@ -1,32 +1,30 @@
 ---
 /**
- * blackfriday.holandesnawar.com — la portada: el formulario para desbloquear
- * la oferta de Black Friday de la Formación Nawar A0-A1 (29/10 → lunes
- * 30/11/2026). En www vive en /black-friday.
+ * blackfriday.holandesnawar.com — la portada: SOLO el formulario para
+ * desbloquear la oferta de Black Friday (29/10 → lunes 30/11/2026). En www
+ * vive en /black-friday.
  *
- * El camino de YouTalk (usuario, 28/10: "el dominio blackfriday solo tiene el
- * formulario para desbloquear la oferta, y luego mails con CTA a la oferta con
- * nombre y mail rellenos, y de ahí formulario para agendar sin volver a pedir
- * nombre ni mail"):
+ * Usuario, 28/10: "en el formulario no tiene que salir nada aún de una
+ * formación, solo formulario y ya. Luego se le desbloquea la oferta y es la del
+ * ebook". O sea:
  *  1. Aquí: nombre, correo y WhatsApp. El navegador los manda a la escuela
  *     (POST {ESCUELA}/api/v1/ebook/lista, directo: así el tope de intentos es
- *     por la IP de quien se apunta). La escuela le apunta en su ficha, le
- *     manda el correo de acceso y le mete en la campaña de correos.
- *  2. Y al momento, a /oferta con sus datos (?desbloqueada=1&nombre=&email=).
- *  3. De /oferta, al formulario de la llamada (/admision), que ya no pide los
- *     datos: solo las preguntas, y Calendly.
+ *     por la IP de quien se apunta). La escuela le apunta en su ficha y le
+ *     manda el correo de acceso, con el botón al ebook.
+ *  2. Y al momento, a la página del ebook (/ebook, o /ebook-ads si llegó por
+ *     un anuncio) con «Oferta desbloqueada» y sus datos puestos: un toque y
+ *     está en la caja de pago.
+ *  3. Al pagar, a /oferta: «¡No cierres esta página!» y la formación.
  *
- * Quien llega aquí con sus datos en la dirección (los correos de antes del
- * cambio) o al volver de pagar el ebook (?compra=cs_…, las sesiones de pago
- * abiertas antes del cambio), va directo a /oferta: no tiene que volver a
- * apuntarse.
+ * Quien llega aquí al volver de pagar el ebook (?compra=cs_…, una sesión de
+ * pago abierta con la vuelta vieja) va directo a /oferta.
  *
  * Píxel: `Lead` (content_name «Black Friday»), una vez por visita.
  */
 import Layout from '../../layouts/Layout.astro'
 import { icono } from '../../components/black-friday/iconos'
 import { PREFIJOS } from '../../lib/admision'
-import { BF_HASTA_TEXTO, bfRuta } from '../../lib/blackFriday'
+import { bfRuta } from '../../lib/blackFriday'
 import '../../styles/fuentes-locales.css'
 import '../../styles/black-friday.css'
 
@@ -35,29 +33,21 @@ export const prerender = true
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
 const WWW = 'https://www.holandesnawar.com'
 const OFERTA = bfRuta('/oferta')
-const DESPUES = `${WWW}/proceso-de-admision`
 const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
-
-const PUNTOS = [
-  { i: 'libro', t: 'La Formación Nawar A0-A1', d: 'De cero a A1 en 16 semanas, explicado en español.' },
-  { i: 'telefono', t: 'Una llamada con el equipo', d: 'Gratuita, de media hora: ahí te contamos la oferta.' },
-  { i: 'escudo', t: 'Sin compromiso', d: `Condiciones especiales hasta el ${BF_HASTA_TEXTO}.` },
-]
 ---
 
 <Layout
   fuentesLocales
-  title="Desbloquea la oferta de Black Friday · Formación Nawar A0-A1 | Holandés Nawar"
-  description="Desbloquea las condiciones especiales de Black Friday de la Formación Nawar A0-A1: neerlandés de cero a A1 en 16 semanas, explicado en español."
+  title="Desbloquea la oferta de Black Friday | Holandés Nawar"
+  description="Déjanos tus datos y desbloquea antes que nadie la oferta de Black Friday de Holandés Nawar."
   noindex={true}
 >
-  <!-- Ya desbloqueada (correos de antes, vuelta del pago del ebook): directo a la oferta. -->
+  <!-- Vuelta del pago del ebook con una sesión vieja: directo a la oferta. -->
   <script is:inline define:vars={{ OFERTA }}>
     (function () {
       try {
         var q = new URLSearchParams(location.search)
-        var compra = /^cs_(test|live)_[A-Za-z0-9]{10,240}$/.test(q.get('compra') || '')
-        if (compra || (q.get('nombre') && q.get('email'))) {
+        if (/^cs_(test|live)_[A-Za-z0-9]{10,240}$/.test(q.get('compra') || '')) {
           location.replace(OFERTA + (location.search || ''))
         }
       } catch (e) {}
@@ -78,9 +68,7 @@ const PUNTOS = [
       <div class="dl-in">
         <span class="bf-badge-dark">Black Friday <i>·</i> Acceso anticipado</span>
         <h1 class="bf-h1 dl-h1">Desbloquea la oferta de Black Friday</h1>
-        <p class="bf-hero-sub dl-sub">
-          Condiciones especiales para entrar en la <strong>Formación Nawar A0-A1</strong>. Déjanos tus datos y accede antes que nadie.
-        </p>
+        <p class="bf-hero-sub dl-sub">Déjanos tus datos y descubre antes que nadie lo que hemos preparado para ti.</p>
 
         <form class="dl-form bf-borde-luz bf-solo-activa" id="dl-form" novalidate>
           <div class="dl-hp" aria-hidden="true"><label>No rellenar <input type="text" id="dl-hp" tabindex="-1" autocomplete="off" /></label></div>
@@ -117,18 +105,9 @@ const PUNTOS = [
         </form>
 
         <div class="dl-fin bf-fin">
-          <p><strong>La oferta de Black Friday ha terminado.</strong> Puedes seguir pidiendo información sobre la formación.</p>
-          <a href={DESPUES} class="bf-btn">Solicitar información <Fragment set:html={icono('flecha', 16, 2.5)} /></a>
+          <p><strong>La oferta de Black Friday ha terminado.</strong> Gracias por tu interés.</p>
+          <a href={`${WWW}/`} class="bf-btn">Ir a Holandés Nawar <Fragment set:html={icono('flecha', 16, 2.5)} /></a>
         </div>
-
-        <ul class="dl-puntos">
-          {PUNTOS.map((p) => (
-            <li>
-              <span class="bf-ico" set:html={icono(p.i, 22, 1.7)} />
-              <div><b>{p.t}</b><span>{p.d}</span></div>
-            </li>
-          ))}
-        </ul>
       </div>
 
       <span class="bf-horizonte" aria-hidden="true"></span>
@@ -148,7 +127,7 @@ const PUNTOS = [
   import { leerUTM, guardarUTM } from '../../lib/utm'
   import { contextoDelLead } from '../../lib/recorrido'
   import { CLAVE_DATOS, telefonoCompleto, type DatosAdmision } from '../../lib/admision'
-  import { CLAVE_DESBLOQUEADA, META_BF, arrancarCuentaAtras, bfRuta, conLaEntradaBF } from '../../lib/blackFriday'
+  import { CLAVE_DESBLOQUEADA, META_BF, arrancarCuentaAtras, bfRuta, conLaEntradaBF, esDePago } from '../../lib/blackFriday'
   import { nuevoEventId } from '../../lib/metaNavegador'
   import { ESCUELA_URL } from '../../lib/escuela'
   guardarUTM()
@@ -168,20 +147,31 @@ const PUNTOS = [
     const o = prefijoEl.selectedOptions[0]
     prefijoVer.textContent = `${o?.dataset.bandera || ''} ${o?.dataset.prefijo || ''}`
   }
-  prefijoEl.addEventListener('change', pintarPrefijo)
-  // Desde Bélgica, el prefijo belga de entrada.
-  try {
-    if (Intl.DateTimeFormat().resolvedOptions().timeZone === 'Europe/Brussels') {
-      const be = Array.from(prefijoEl.options).find((o) => o.dataset.prefijo === '+32')
-      if (be) { prefijoEl.value = be.value; pintarPrefijo() }
-    }
-  } catch {}
+  let prefijoAMano = false
+  prefijoEl.addEventListener('change', () => { prefijoAMano = true; pintarPrefijo() })
+  const elegirPrefijo = (prefijo: string) => {
+    const o = Array.from(prefijoEl.options).find((x) => x.dataset.prefijo === prefijo)
+    if (o && prefijoEl.value !== o.value) { prefijoEl.value = o.value; pintarPrefijo() }
+  }
+  // Desde Bélgica, el prefijo belga de entrada; y por el número, como en la
+  // página del anuncio: un 04… belga con +31 pasa a +32, un 06… con +32 a +31
+  // (nunca si lo eligió a mano).
+  try { if (Intl.DateTimeFormat().resolvedOptions().timeZone === 'Europe/Brussels') elegirPrefijo('+32') } catch {}
+  telEl.addEventListener('input', () => {
+    if (prefijoAMano) return
+    const d = telEl.value.replace(/\D/g, '')
+    const actual = prefijoEl.selectedOptions[0]?.dataset.prefijo
+    if (actual === '+31' && /^04[5-9]/.test(d)) elegirPrefijo('+32')
+    else if (actual === '+32' && /^06/.test(d)) elegirPrefijo('+31')
+  })
 
-  // Quien ya dejó sus datos en otro formulario de la web: puestos.
+  // Quien ya dejó sus datos en otro formulario de la web (o llega con ellos en
+  // la dirección): puestos.
   try {
     const d = JSON.parse(localStorage.getItem(CLAVE_DATOS) || 'null') as DatosAdmision | null
-    if (d?.first_name) nombreEl.value = d.first_name
-    if (d?.email) emailEl.value = d.email
+    const q = new URLSearchParams(location.search)
+    nombreEl.value = (q.get('nombre') || d?.first_name || '').slice(0, 120)
+    emailEl.value = (q.get('email') || d?.email || '').slice(0, 200)
     if (d?.phone) telEl.value = d.phone
   } catch {}
 
@@ -220,7 +210,7 @@ const PUNTOS = [
       return mal(typeof d?.detail === 'string' ? d.detail : 'No se ha podido enviar. Revisa tu conexión y vuelve a intentarlo.')
     }
 
-    // Para la oferta y el formulario de la llamada: que no vuelva a escribir nada.
+    // Para el ebook, la oferta y el formulario de la llamada: que no vuelva a escribir nada.
     try {
       localStorage.setItem(CLAVE_DATOS, JSON.stringify({ first_name: nombre, email, phone: telefono, pais: o?.dataset.pais || '' }))
       localStorage.setItem(CLAVE_DESBLOQUEADA, '1')
@@ -232,7 +222,9 @@ const PUNTOS = [
         ;(window as any).fbq?.('track', 'Lead', { content_name: META_BF }, { eventID: nuevoEventId('bf') })
       }
     } catch {}
-    location.href = conLaEntradaBF(bfRuta('/oferta'), { nombre, email, desbloqueada: '1' })
+    // La oferta desbloqueada es el ebook: a su página, la de anuncios si llegó
+    // por uno (así la compra sale como «Ads» en su ficha).
+    location.href = conLaEntradaBF(bfRuta(esDePago(u.utmMedium) ? '/ebook-ads' : '/ebook'), { nombre, email, desbloqueada: '1' })
   })
 </script>
 
@@ -273,12 +265,6 @@ const PUNTOS = [
   .dl-fin p { margin: 0 0 16px; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.93); }
   .dl-fin p strong { color: #fff; }
 
-  .dl-puntos { list-style: none; margin: 40px 0 0; padding: 0; width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; text-align: left; }
-  .dl-puntos li { display: flex; gap: 12px; align-items: flex-start; }
-  .dl-puntos li > span { flex-shrink: 0; margin-top: 1px; }
-  .dl-puntos b { display: block; font-size: 14.5px; font-weight: 600; color: #fff; line-height: 1.35; }
-  .dl-puntos span span, .dl-puntos div > span { display: block; margin-top: 3px; font-size: 13.5px; line-height: 1.5; color: rgba(255,255,255,0.85); }
-
   .dl-pie { position: relative; z-index: 1; width: 100%; max-width: 1152px; margin: 0 auto; padding: 22px 0 28px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 22px; }
   .dl-pie nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
   .dl-pie a { font-size: 13px; color: rgba(255,255,255,0.82); text-decoration: none; }
@@ -286,9 +272,6 @@ const PUNTOS = [
   .dl-pie p { margin: 0; font-size: 12.5px; color: rgba(255,255,255,0.6); }
   .dl-hero .bf-horizonte { position: relative; display: block; margin-top: auto; }
 
-  @media (max-width: 760px) {
-    .dl-puntos { grid-template-columns: minmax(0, 1fr); gap: 16px; max-width: 420px; }
-  }
   @media (max-width: 640px) {
     .dl-in { padding: 8px 0 48px; }
     .dl-sub { margin-bottom: 26px; }

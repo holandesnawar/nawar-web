@@ -4,13 +4,12 @@
  * Formación Nawar A0-A1 (29/10 → lunes 30/11/2026). En www vive en
  * /black-friday/oferta.
  *
- * El camino, como el de YouTalk (usuario, 28/10: "el dominio blackfriday solo
- * tiene el formulario para desbloquear la oferta, luego mails con CTA a la
- * oferta con nombre y mail rellenos, y de ahí formulario para agendar"):
- *  - La portada (/) es el formulario para desbloquearla (nombre, correo y
- *    WhatsApp). Al enviarlo, aquí con ?desbloqueada=1.
- *  - Al pagar el ebook de 1 €, Stripe vuelve aquí con ?compra=cs_….
- *  - Todos los botones de los correos traen aquí ?nombre=&email=.
+ * El camino (usuario, 28/10, tercera vuelta): la portada (/) es solo el
+ * formulario para desbloquear la oferta, la oferta desbloqueada es el ebook a
+ * 1 € y ESTA es la página de después de comprarlo, el upsell:
+ *  - Al pagar el ebook, Stripe vuelve aquí con ?compra=cs_….
+ *  - Los botones de los correos de la campaña (solo a quien compró) traen aquí
+ *    ?nombre=&email=.
  *  - SIN precio: las condiciones las cuenta el equipo en la llamada.
  *  - Todos los botones, al formulario de admisión (/admision), con los datos
  *    puestos: allí solo quedan las preguntas.
@@ -19,10 +18,10 @@
  *
  * Qué cabecera ve cada uno (lo decide un script en línea ANTES de pintar, con
  * clases en <html>; sin parpadeo):
- *  - `bf-recien` (acaba de pagar el ebook o de desbloquearla): la barra roja
- *    «¡No cierres esta página!».
- *  - `bf-comprador` (desbloqueada: recién, desde los correos o recordado por
- *    el navegador): «Ya tienes tu ebook» / «Oferta desbloqueada» y «[Nombre],
+ *  - `bf-recien` (acaba de pagar el ebook): la barra roja «¡No cierres esta
+ *    página!».
+ *  - `bf-comprador` (compró el ebook: recién, desde los correos o recordado
+ *    por el navegador, `CLAVE_COMPRADOR`): «Ya tienes tu ebook» y «[Nombre],
  *    acabas de desbloquear nuestra mejor oferta». Si vuelve otro día, «tu
  *    oferta de Black Friday te está esperando».
  *  - El resto: «Adelántate al Black Friday».
@@ -147,20 +146,19 @@ const DUDAS = [
   noindex={true}
 >
   <div class="bf lp">
-    <!-- Antes de pintar nada: ¿acaba de pagar o de desbloquearla? ¿la tiene desbloqueada? -->
+    <!-- Antes de pintar nada: ¿acaba de pagar el ebook? ¿ya lo tenía? -->
     <script is:inline>
       (function () {
         try {
           var q = new URLSearchParams(location.search)
           var h = document.documentElement
           var ebook = /^cs_(test|live)_[A-Za-z0-9]{10,240}$/.test(q.get('compra') || '')
-          var lista = q.get('desbloqueada') === '1'
           var deCorreo = q.get('utm_source') === 'email' && q.get('utm_campaign') === 'black-friday'
           var antes = false
-          try { antes = localStorage.getItem('nawar.bf.comprador') === '1' || localStorage.getItem('nawar.bf.desbloqueada') === '1' } catch (e) {}
-          if (ebook || lista) h.classList.add('bf-recien')
-          h.classList.add(ebook ? 'bf-de-ebook' : lista ? 'bf-de-lista' : 'bf-de-vuelta')
-          if (ebook || lista || deCorreo || antes) h.classList.add('bf-comprador')
+          try { antes = localStorage.getItem('nawar.bf.comprador') === '1' } catch (e) {}
+          if (ebook) h.classList.add('bf-recien')
+          h.classList.add(ebook ? 'bf-de-ebook' : 'bf-de-vuelta')
+          if (ebook || deCorreo || antes) h.classList.add('bf-comprador')
         } catch (e) {}
       })()
     </script>
@@ -191,7 +189,6 @@ const DUDAS = [
               <span class="lp-ya-ico" set:html={icono('check', 13, 3)} />
               <span id="lp-ya-t">
                 <span class="lp-ya-ebook">Ya tienes tu ebook «{EBOOK_NOMBRE}».</span>
-                <span class="lp-ya-lista">Oferta desbloqueada. También te la hemos mandado a tu correo.</span>
                 <span class="lp-ya-vuelta">Tu oferta de Black Friday sigue desbloqueada.</span>
               </span>
             </p>
@@ -439,7 +436,7 @@ const DUDAS = [
 <script>
   import { guardarUTM } from '../../lib/utm'
   import { CLAVE_DATOS, type DatosAdmision } from '../../lib/admision'
-  import { CLAVE_COMPRA, CLAVE_DESBLOQUEADA, META_EBOOK, arrancarCuentaAtras, conLaEntradaBF, iluminarAlPasar } from '../../lib/blackFriday'
+  import { CLAVE_COMPRA, CLAVE_COMPRADOR, META_EBOOK, arrancarCuentaAtras, conLaEntradaBF, iluminarAlPasar } from '../../lib/blackFriday'
   guardarUTM()
   arrancarCuentaAtras()
   iluminarAlPasar()
@@ -448,8 +445,8 @@ const DUDAS = [
   const limpio = (v: string | null | undefined, n = 120) => (v || '').replace(/[<>]/g, '').trim().slice(0, n)
   let nombre = limpio(q.get('nombre'))
   let email = limpio(q.get('email'), 200).toLowerCase()
-  // Sin datos en la dirección, los que dejó en este navegador (al
-  // desbloquearla o al comprar el ebook): el formulario sale relleno igual.
+  // Sin datos en la dirección, los que dejó en este navegador (en la portada o
+  // al comprar el ebook): el formulario sale relleno igual.
   if (!email) {
     try {
       const d = JSON.parse(localStorage.getItem(CLAVE_DATOS) || 'null') as DatosAdmision | null
@@ -478,17 +475,6 @@ const DUDAS = [
   ponerEnlaces()
   ponerNombre()
 
-  // ── Recién desbloqueada en la portada ─────────────────────────────────
-  // Que el navegador la recuerde y que recargar no vuelva a sacar la barra roja.
-  if (q.get('desbloqueada') === '1') {
-    try { localStorage.setItem(CLAVE_DESBLOQUEADA, '1') } catch {}
-    try {
-      const u = new URL(location.href)
-      u.searchParams.delete('desbloqueada')
-      history.replaceState(null, '', u.toString())
-    } catch {}
-  }
-
   // ── Al volver de pagar el ebook ───────────────────────────────────────
   const cs = q.get('compra') || ''
   if (/^cs_(test|live)_[A-Za-z0-9]{10,240}$/.test(cs)) comprobarCompra(cs, 0)
@@ -509,7 +495,7 @@ const DUDAS = [
     ;(document.getElementById('lp-ya-t') as HTMLElement).textContent =
       `Ya tienes tu ebook: te llega${email ? ` a ${email}` : ' a tu correo'} en un minuto. Revisa también spam o promociones.`
     // Si vuelve otro día a esta página, que siga viendo su oferta.
-    try { localStorage.setItem(CLAVE_DESBLOQUEADA, '1') } catch {}
+    try { localStorage.setItem(CLAVE_COMPRADOR, '1') } catch {}
     ponerNombre()
     ponerEnlaces()
 
@@ -589,8 +575,8 @@ const DUDAS = [
   /* ── Quien compró el ebook / los demás ──────────────────────────────── */
   :global(html:not(.bf-comprador)) .lp-comp { display: none; }
   :global(html.bf-comprador) .lp-gen { display: none; }
-  .lp-ya-ebook, .lp-ya-lista, .lp-ya-vuelta { display: none; }
-  :global(html.bf-de-ebook) .lp-ya-ebook, :global(html.bf-de-lista) .lp-ya-lista, :global(html.bf-de-vuelta) .lp-ya-vuelta { display: inline; }
+  .lp-ya-ebook, .lp-ya-vuelta { display: none; }
+  :global(html.bf-de-ebook) .lp-ya-ebook, :global(html.bf-de-vuelta) .lp-ya-vuelta { display: inline; }
   .lp-ya { display: inline-flex; align-items: flex-start; gap: 10px; margin: 0 0 22px; padding: 10px 16px 10px 12px; border-radius: 14px; background: rgba(34,197,94,0.14); border: 1px solid rgba(134,239,172,0.35); max-width: 560px; font-size: 14.5px; line-height: 1.5; color: #fff; }
   .lp-ya-ico { flex-shrink: 0; width: 22px; height: 22px; border-radius: 9999px; background: #22C55E; color: #052e16; display: inline-flex; align-items: center; justify-content: center; margin-top: 0; }
 
