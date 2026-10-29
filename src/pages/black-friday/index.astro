@@ -85,9 +85,8 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   </script>
 
   <div class="bf dl">
-    <main class="bf-oscuro dl-hero">
-      <div class="bf-capas" aria-hidden="true"><span class="bf-luz1"></span><span class="bf-luz2"></span><span class="bf-dots"></span></div>
-      <div class="bf-foco" aria-hidden="true"></div>
+    <main class="dl-hero">
+      <div class="dl-fondo" aria-hidden="true"><span class="dl-luz1"></span><span class="dl-luz2"></span><span class="dl-puntos"></span></div>
 
       <nav class="bf-nav dl-nav">
         <a href={`${WWW}/`} aria-label="Holandés Nawar">
@@ -121,6 +120,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
         </ul>
 
         <form class="dl-form bf-solo-activa" id="dl-form" novalidate>
+          <div class="dl-form-capas" aria-hidden="true"><span></span></div>
           <div class="dl-hp" aria-hidden="true"><label>No rellenar <input type="text" id="dl-hp" tabindex="-1" autocomplete="off" /></label></div>
 
           <p class="dl-ceja"><span class="dl-punto" aria-hidden="true"></span>Lista prioritaria</p>
@@ -170,7 +170,6 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
         <p class="dl-cargando-sub">Un momento: te llevamos a ella.</p>
       </div>
 
-      <span class="bf-horizonte" aria-hidden="true"></span>
       <footer class="dl-pie">
         <nav>
           <a href={`${WWW}/politica-de-privacidad`}>Privacidad</a>
@@ -402,17 +401,17 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   .dl-input:focus { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
   .dl-tel { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 10px; }
   .dl-prefijo { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 15.5px; cursor: pointer; white-space: nowrap; }
-  .dl-prefijo svg { color: rgba(29,0,132,0.55); }
-  .dl-prefijo:focus-within { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
+  .dl-prefijo svg { color: rgba(255,255,255,0.7); }
+  .dl-prefijo:focus-within { background: rgba(255,255,255,0.12); border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.3); }
   .dl-prefijo select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; color: #0a1656; }
-  .dl-err { display: none; margin: 14px 0 0; padding: 10px 13px; border-radius: 11px; background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; font-size: 13.5px; line-height: 1.5; }
+  .dl-err { display: none; margin: 14px 0 0; padding: 10px 13px; border-radius: 11px; background: rgba(229,72,77,0.16); border: 1px solid rgba(255,140,140,0.45); color: #ffe1e1; font-size: 13.5px; line-height: 1.5; }
   .dl-err:global(.visible) { display: block; }
   .dl-btn { width: 100%; margin-top: 24px; font-size: 17px; }
   .dl-legal { margin: 14px 0 0; font-size: 12.5px; line-height: 1.55; color: #171a2e; }
   .dl-legal a { color: #025dc7; text-decoration: underline; }
 
-  .dl-fin p { margin: 0 0 16px; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.93); }
-  .dl-fin p strong { color: #fff; }
+  .dl-fin p { margin: 0 0 16px; font-size: 16px; line-height: 1.6; color: #171a2e; }
+  .dl-fin p strong { color: #1D0084; }
 
   .dl-hero .bf-horizonte { position: relative; display: block; margin-top: auto; }
   .dl-pie {
@@ -433,12 +432,12 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   }
   .dl-spin {
     width: 44px; height: 44px; margin-bottom: 18px; border-radius: 50%;
-    border: 3px solid rgba(255,255,255,0.18); border-top-color: #4da3ff; animation: dl-girar 0.9s linear infinite;
+    border: 3px solid rgba(29,0,132,0.12); border-top-color: #4da3ff; animation: dl-girar 0.9s linear infinite;
   }
   @keyframes dl-girar { to { transform: rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .dl-spin { animation-duration: 2.4s; } }
-  .dl-cargando-t { margin: 0; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(24px, 3vw, 32px); font-weight: 700; letter-spacing: -0.025em; color: #fff; }
-  .dl-cargando-sub { margin: 0; font-size: 16px; color: rgba(255,255,255,0.88); }
+  .dl-cargando-t { margin: 0; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(24px, 3vw, 32px); font-weight: 700; letter-spacing: -0.025em; color: #1D0084; }
+  .dl-cargando-sub { margin: 0; font-size: 16px; color: #171a2e; }
 
   @media (max-width: 1023px) {
     /* En la tableta y el móvil: titular, formulario y lo que se lleva, uno debajo de otro. */
