@@ -21,6 +21,12 @@
  *
  * Píxel: `Lead` (content_name «Black Friday»), una vez por visita.
  *
+ * 29/10, noche ("¿no sería mejor no pedir el teléfono en el formulario sino en
+ * la compra del ebook?… igual hasta lo ponen mejor"): la portada pide solo
+ * NOMBRE y CORREO. El WhatsApp lo pide la caja de pago del ebook (Stripe, que
+ * lo exige y lo comprueba) y va a su ficha al pagar. Quien solo se apunta y
+ * no compra ya no deja teléfono, así que no sale para llamar.
+ *
  * 29/10, noche ("ese tiene que ser el título de la web… y que el título quede
  * en una frase"): «Únete a la lista prioritaria…» en una sola frase. Se probó
  * la página en blanco con el formulario en azul y no gustó ("dale la vuelta de
@@ -47,7 +53,6 @@
  */
 import Layout from '../../layouts/Layout.astro'
 import { icono } from '../../components/black-friday/iconos'
-import { PREFIJOS } from '../../lib/admision'
 import { bfRuta } from '../../lib/blackFriday'
 import '../../styles/fuentes-locales.css'
 import '../../styles/black-friday.css'
@@ -57,7 +62,6 @@ export const prerender = true
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
 const WWW = 'https://www.holandesnawar.com'
 const OFERTA = bfRuta('/oferta')
-const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
 ---
 
 <Layout
@@ -133,21 +137,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
           <label class="dl-label" for="dl-email">Correo electrónico</label>
           <input id="dl-email" type="email" class="dl-input" placeholder="Tu mejor correo" autocomplete="email" required />
 
-          <label class="dl-label" for="dl-tel">WhatsApp</label>
-          <div class="dl-tel">
-            <!-- Cerrado enseña bandera y prefijo; el select va encima, transparente,
-                 para que el desplegable sea el del móvil. -->
-            <div class="dl-input dl-prefijo">
-              <span id="dl-prefijo-ver" aria-hidden="true">{opciones[0].bandera} {opciones[0].prefijo}</span>
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-              <select id="dl-prefijo" aria-label="Prefijo del país">
-                {opciones.map((p) => <option value={p.valor} data-prefijo={p.prefijo} data-pais={p.pais} data-bandera={p.bandera}>{p.bandera} {p.pais} ({p.prefijo})</option>)}
-              </select>
-            </div>
-            <input id="dl-tel" type="tel" class="dl-input" placeholder="6 12345678" autocomplete="tel-national" inputmode="tel" required />
-          </div>
-
-          <p class="dl-err" id="dl-err" role="alert">Revisa el nombre, el correo y el número.</p>
+          <p class="dl-err" id="dl-err" role="alert">Revisa el nombre y el correo.</p>
           <button type="submit" class="bf-btn bf-brillo dl-btn" id="dl-btn">
             Apuntarme a la lista prioritaria
           </button>
@@ -186,7 +176,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
 <script>
   import { leerUTM, guardarUTM } from '../../lib/utm'
   import { contextoDelLead } from '../../lib/recorrido'
-  import { CLAVE_DATOS, telefonoCompleto, type DatosAdmision } from '../../lib/admision'
+  import { CLAVE_DATOS, type DatosAdmision } from '../../lib/admision'
   import { CLAVE_COMPRADOR, CLAVE_DESBLOQUEADA, META_BF, arrancarCuentaAtras, bfRuta, conLaEntradaBF, esDePago } from '../../lib/blackFriday'
   import { nuevoEventId } from '../../lib/metaNavegador'
   import { ESCUELA_URL } from '../../lib/escuela'
@@ -197,33 +187,8 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   const form = document.getElementById('dl-form') as HTMLFormElement
   const nombreEl = document.getElementById('dl-nombre') as HTMLInputElement
   const emailEl = document.getElementById('dl-email') as HTMLInputElement
-  const telEl = document.getElementById('dl-tel') as HTMLInputElement
-  const prefijoEl = document.getElementById('dl-prefijo') as HTMLSelectElement
-  const prefijoVer = document.getElementById('dl-prefijo-ver') as HTMLElement
   const err = document.getElementById('dl-err') as HTMLElement
   const btn = document.getElementById('dl-btn') as HTMLButtonElement
-
-  const pintarPrefijo = () => {
-    const o = prefijoEl.selectedOptions[0]
-    prefijoVer.textContent = `${o?.dataset.bandera || ''} ${o?.dataset.prefijo || ''}`
-  }
-  let prefijoAMano = false
-  prefijoEl.addEventListener('change', () => { prefijoAMano = true; pintarPrefijo() })
-  const elegirPrefijo = (prefijo: string) => {
-    const o = Array.from(prefijoEl.options).find((x) => x.dataset.prefijo === prefijo)
-    if (o && prefijoEl.value !== o.value) { prefijoEl.value = o.value; pintarPrefijo() }
-  }
-  // Desde Bélgica, el prefijo belga de entrada; y por el número, como en la
-  // página del anuncio: un 04… belga con +31 pasa a +32, un 06… con +32 a +31
-  // (nunca si lo eligió a mano).
-  try { if (Intl.DateTimeFormat().resolvedOptions().timeZone === 'Europe/Brussels') elegirPrefijo('+32') } catch {}
-  telEl.addEventListener('input', () => {
-    if (prefijoAMano) return
-    const d = telEl.value.replace(/\D/g, '')
-    const actual = prefijoEl.selectedOptions[0]?.dataset.prefijo
-    if (actual === '+31' && /^04[5-9]/.test(d)) elegirPrefijo('+32')
-    else if (actual === '+32' && /^06/.test(d)) elegirPrefijo('+31')
-  })
 
   // Un correo llega por la dirección con el «+» convertido en espacio, y si
   // systeme.io no sustituyó algo, llega «{first_name}» tal cual: eso no vale.
@@ -242,7 +207,6 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     previos = JSON.parse(localStorage.getItem(CLAVE_DATOS) || 'null') as DatosAdmision | null
     nombreEl.value = (nombreDireccion || previos?.first_name || '').slice(0, 120)
     emailEl.value = (correoDireccion || previos?.email || '').slice(0, 200)
-    if (previos?.phone) telEl.value = previos.phone
   } catch {}
 
   const mal = (t: string) => { err.textContent = t; err.classList.add('visible') }
@@ -302,10 +266,12 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     err.classList.remove('visible')
     const nombre = nombreEl.value.trim().replace(/\s+/g, ' ')
     const email = emailEl.value.trim().toLowerCase()
-    const o = prefijoEl.selectedOptions[0]
-    const telefono = telefonoCompleto(o?.dataset.prefijo || '+31', telEl.value)
-    if (!nombre || !/^\S+@\S+\.\S+$/.test(email) || telefono.replace(/\D/g, '').length < 8) {
-      return mal('Revisa el nombre, el correo y el número.')
+    // Sin WhatsApp aquí: lo pide la caja de pago del ebook. Si ya lo dejó en
+    // otro formulario de la web con ese mismo correo, se manda igual.
+    const mismo = previos?.email === email
+    const telefono = mismo ? previos?.phone || '' : ''
+    if (!nombre || !/^\S+@\S+\.\S+$/.test(email)) {
+      return mal('Revisa el nombre y el correo.')
     }
     btn.classList.add('enviando')
     const r = await apuntar(nombre, email, telefono)
@@ -313,7 +279,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
       btn.classList.remove('enviando')
       return mal(r.error || '')
     }
-    seguir(nombre, email, telefono, o?.dataset.pais || '', r, true)
+    seguir(nombre, email, telefono, mismo ? previos?.pais || '' : '', r, true)
   })
 
   // Desde el botón de un correo (?desbloquear=1&email=…&nombre=…): se apunta
@@ -400,11 +366,6 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   }
   .dl-input::placeholder { color: rgba(29,0,132,0.45); }
   .dl-input:focus { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
-  .dl-tel { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 10px; }
-  .dl-prefijo { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 15.5px; cursor: pointer; white-space: nowrap; }
-  .dl-prefijo svg { color: rgba(29,0,132,0.55); }
-  .dl-prefijo:focus-within { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
-  .dl-prefijo select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; color: #0a1656; }
   .dl-err { display: none; margin: 14px 0 0; padding: 10px 13px; border-radius: 11px; background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; font-size: 13.5px; line-height: 1.5; }
   .dl-err:global(.visible) { display: block; }
   .dl-btn { width: 100%; margin-top: 24px; font-size: 17px; }
@@ -447,7 +408,6 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   }
   @media (max-width: 640px) {
     .dl-form { padding: 26px 20px 20px; border-radius: 18px; }
-    .dl-tel { grid-template-columns: 112px minmax(0, 1fr); gap: 8px; }
     .dl-btn { font-size: 15.5px; padding: 17px 14px; }
     .dl-pie { flex-direction: column; align-items: flex-start; }
   }

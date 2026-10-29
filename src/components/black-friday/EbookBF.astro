@@ -361,6 +361,9 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
             <span>Pagando como <b id="eb-quien"></b></span>
             <button type="button" class="eb-cambiar" id="eb-cambiar">Cambiar</button>
           </div>
+          <!-- 29/10: el WhatsApp ya no se pide en la portada; lo pide aquí la
+               caja de Stripe, con el nombre de «Teléfono». -->
+          <p class="eb-whatsapp">En <b>Teléfono</b>, pon el número con el que usas WhatsApp: por ahí te escribimos.</p>
           <div class="eb-stripe" id="eb-stripe"><p class="eb-cargando">Cargando el pago seguro…</p></div>
         </div>
       </div>
@@ -731,6 +734,8 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   .eb-legal a { color: #025dc7; text-decoration: underline; }
   .eb-pagando { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 16px 0 14px; padding: 11px 14px; border-radius: 12px; border: 1px solid #DDE6F5; font-size: 13.5px; color: #171a2e; }
   .eb-pagando b { color: #1D0084; font-weight: 600; word-break: break-all; }
+  .eb-whatsapp { margin: -4px 0 14px; font-size: 13.5px; line-height: 1.5; color: #171a2e; }
+  .eb-whatsapp b { color: #1D0084; font-weight: 600; }
   .eb-cambiar { flex-shrink: 0; border: 0; background: none; color: #025dc7; font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; padding: 0; }
   .eb-stripe { min-height: 320px; }
   .eb-cargando { margin: 0; padding: 60px 0; text-align: center; font-size: 14.5px; color: #171a2e; }
