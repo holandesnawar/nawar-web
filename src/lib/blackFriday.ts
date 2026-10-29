@@ -48,8 +48,21 @@ export const BF_HASTA_TEXTO = 'lunes 30 de noviembre'
 /** El ebook: el A0-A1 de siempre con nombre nuevo (usuario: "algo que llame
  *  la atención, no A0-A1 solo"). El PDF sigue siendo el mismo. */
 export const EBOOK_NOMBRE = 'Neerlandés sin miedo'
-export const EBOOK_SUB = '7 lecciones para arrancar desde cero (nivel A0-A1)'
+/** "70 páginas", no "7 lecciones" (usuario, 29/10: se entiende mejor lo que
+ *  te llevas). Es el mismo PDF. */
+export const EBOOK_PAGINAS = 70
+export const EBOOK_SUB = `${EBOOK_PAGINAS} páginas para arrancar desde cero (nivel A0-A1)`
 export const EBOOK_PRECIO = 1
+/**
+ * El precio de siempre del ebook: el de su página (/ebook-a0-a1), que cobra
+ * systeme.io (plan «Holandés Nawar eBook A0-A1», 12,50 €, mirado el 29/10).
+ * Es el que sale tachado. ⚠️ Solo vale tachar un precio que se cobra de verdad:
+ * si cambia en systeme.io, cambiarlo aquí.
+ */
+export const EBOOK_PRECIO_NORMAL = 12.5
+/** Cuánta gente tiene ya el ebook: la etiqueta «Mi ebook» de systeme.io tenía
+ *  42 contactos el 29/10/2026. Se dice «más de 40»; subirlo solo con datos. */
+export const EBOOK_LECTORES = 40
 
 /** Las fotos del ebook, las de la página de siempre (/ebook-a0-a1). */
 export const EBOOK_MOCKUP = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/6733be7eb79b8_MOCKUP10.png'
