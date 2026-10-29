@@ -21,6 +21,17 @@
  *
  * Píxel: `Lead` (content_name «Black Friday»), una vez por visita.
  *
+ * 29/10, el botón de las newsletters de systeme.io («Abrimos el Black
+ * Friday… desbloquea tu oferta»), como YouTalk: quien ya está en la lista no
+ * vuelve a escribir nada. El botón lleva
+ *   /?desbloquear=1&email={email}&nombre={first_name}&utm_source=email&…
+ * y la página le apunta sola (sin WhatsApp, que no hace falta) y le lleva al
+ * ebook con la oferta desbloqueada; si ya compró el ebook, a /oferta. Mientras,
+ * «Desbloqueando tu oferta…» en lugar del formulario. Si algo falla (o el
+ * correo llega sin sustituir), el formulario de siempre con lo que se sepa.
+ * Sin `desbloquear=1` no se apunta a nadie solo: el nombre y el correo de la
+ * dirección solo rellenan el formulario.
+ *
  * 29/10 (tarde), el diseño de la página de YouTalk que enseñó el usuario: a la
  * izquierda la etiqueta, el titular «¡Adelántate al Black Friday de Holandés
  * Nawar!» con la letra de la landing (blanco y la parte en azul, sin el
@@ -56,6 +67,12 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
         var q = new URLSearchParams(location.search)
         if (/^cs_(test|live)_[A-Za-z0-9]{10,240}$/.test(q.get('compra') || '')) {
           location.replace(OFERTA + (location.search || ''))
+        }
+        // Desde el botón de un correo, con su correo en la dirección: sin
+        // enseñar el formulario (un «+» del correo llega como espacio).
+        var correo = (q.get('email') || '').replace(/ /g, '+').trim()
+        if (q.get('desbloquear') === '1' && /^[^\s@{}]+@[^\s@{}]+\.[^\s@{}]+$/.test(correo)) {
+          document.documentElement.classList.add('dl-auto')
         }
       } catch (e) {}
     })()
@@ -138,6 +155,13 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
         </div>
       </div>
 
+      <!-- Desde el botón de un correo: se apunta sola y sigue (ver arriba). -->
+      <div class="dl-cargando" role="status" aria-live="polite">
+        <span class="dl-spin" aria-hidden="true"></span>
+        <p class="dl-cargando-t" id="dl-cargando-t">Desbloqueando tu oferta…</p>
+        <p class="dl-cargando-sub">Un momento: te llevamos a ella.</p>
+      </div>
+
       <span class="bf-horizonte" aria-hidden="true"></span>
       <footer class="dl-pie">
         <nav>
@@ -155,7 +179,7 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   import { leerUTM, guardarUTM } from '../../lib/utm'
   import { contextoDelLead } from '../../lib/recorrido'
   import { CLAVE_DATOS, telefonoCompleto, type DatosAdmision } from '../../lib/admision'
-  import { CLAVE_DESBLOQUEADA, META_BF, arrancarCuentaAtras, bfRuta, conLaEntradaBF, esDePago } from '../../lib/blackFriday'
+  import { CLAVE_COMPRADOR, CLAVE_DESBLOQUEADA, META_BF, arrancarCuentaAtras, bfRuta, conLaEntradaBF, esDePago } from '../../lib/blackFriday'
   import { nuevoEventId } from '../../lib/metaNavegador'
   import { ESCUELA_URL } from '../../lib/escuela'
   guardarUTM()
@@ -193,29 +217,30 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     else if (actual === '+32' && /^06/.test(d)) elegirPrefijo('+31')
   })
 
+  // Un correo llega por la dirección con el «+» convertido en espacio, y si
+  // systeme.io no sustituyó algo, llega «{first_name}» tal cual: eso no vale.
+  const q = new URLSearchParams(location.search)
+  const deLaDireccion = (k: string) => {
+    const v = (q.get(k) || '').trim()
+    return /[{}\[\]]/.test(v) ? '' : v
+  }
+  const correoDireccion = deLaDireccion('email').replace(/ /g, '+').toLowerCase()
+  const nombreDireccion = deLaDireccion('nombre').replace(/\s+/g, ' ')
+
   // Quien ya dejó sus datos en otro formulario de la web (o llega con ellos en
   // la dirección): puestos.
+  let previos: DatosAdmision | null = null
   try {
-    const d = JSON.parse(localStorage.getItem(CLAVE_DATOS) || 'null') as DatosAdmision | null
-    const q = new URLSearchParams(location.search)
-    nombreEl.value = (q.get('nombre') || d?.first_name || '').slice(0, 120)
-    emailEl.value = (q.get('email') || d?.email || '').slice(0, 200)
-    if (d?.phone) telEl.value = d.phone
+    previos = JSON.parse(localStorage.getItem(CLAVE_DATOS) || 'null') as DatosAdmision | null
+    nombreEl.value = (nombreDireccion || previos?.first_name || '').slice(0, 120)
+    emailEl.value = (correoDireccion || previos?.email || '').slice(0, 200)
+    if (previos?.phone) telEl.value = previos.phone
   } catch {}
 
   const mal = (t: string) => { err.textContent = t; err.classList.add('visible') }
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault()
-    err.classList.remove('visible')
-    const nombre = nombreEl.value.trim().replace(/\s+/g, ' ')
-    const email = emailEl.value.trim().toLowerCase()
-    const o = prefijoEl.selectedOptions[0]
-    const telefono = telefonoCompleto(o?.dataset.prefijo || '+31', telEl.value)
-    if (!nombre || !/^\S+@\S+\.\S+$/.test(email) || telefono.replace(/\D/g, '').length < 8) {
-      return mal('Revisa el nombre, el correo y el número.')
-    }
-    btn.classList.add('enviando')
+  /** Apunta a la persona en la escuela. Sin teléfono también vale. */
+  async function apuntar(nombre: string, email: string, telefono: string) {
     const u = leerUTM()
     const { recorrido, referrer } = contextoDelLead()
     let r: Response | null = null
@@ -234,26 +259,84 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
     } catch {}
     const d = await r?.json().catch(() => null)
     if (!r?.ok) {
-      btn.classList.remove('enviando')
-      return mal(typeof d?.detail === 'string' ? d.detail : 'No se ha podido enviar. Revisa tu conexión y vuelve a intentarlo.')
+      return { ok: false, error: typeof d?.detail === 'string' ? d.detail : 'No se ha podido enviar. Revisa tu conexión y vuelve a intentarlo.' }
     }
+    return { ok: true, nuevo: d?.nuevo !== false, compro: d?.compro === true, utmMedium: u.utmMedium }
+  }
 
+  /** Lo de después de apuntarse: recordar sus datos, avisar al píxel y seguir. */
+  function seguir(nombre: string, email: string, telefono: string, pais: string, r: { nuevo?: boolean; compro?: boolean; utmMedium?: string }, lead: boolean) {
     // Para el ebook, la oferta y el formulario de la llamada: que no vuelva a escribir nada.
     try {
-      localStorage.setItem(CLAVE_DATOS, JSON.stringify({ first_name: nombre, email, phone: telefono, pais: o?.dataset.pais || '' }))
+      localStorage.setItem(CLAVE_DATOS, JSON.stringify({ first_name: nombre, email, phone: telefono, pais }))
       localStorage.setItem(CLAVE_DESBLOQUEADA, '1')
+      if (r.compro) localStorage.setItem(CLAVE_COMPRADOR, '1')
     } catch {}
     // «Lead», una vez por visita.
     try {
-      if (!sessionStorage.getItem('nawar.bf.lead')) {
+      if (lead && !sessionStorage.getItem('nawar.bf.lead')) {
         sessionStorage.setItem('nawar.bf.lead', '1')
         ;(window as any).fbq?.('track', 'Lead', { content_name: META_BF }, { eventID: nuevoEventId('bf') })
       }
     } catch {}
+    // Si ya tiene el ebook, a la oferta de la formación.
+    if (r.compro) {
+      location.href = conLaEntradaBF(bfRuta('/oferta'), { nombre, email })
+      return
+    }
     // La oferta desbloqueada es el ebook: a su página, la de anuncios si llegó
     // por uno (así la compra sale como «Ads» en su ficha).
-    location.href = conLaEntradaBF(bfRuta(esDePago(u.utmMedium) ? '/ebook-ads' : '/ebook'), { nombre, email, desbloqueada: '1' })
+    location.href = conLaEntradaBF(bfRuta(esDePago(r.utmMedium || '') ? '/ebook-ads' : '/ebook'), { nombre, email, desbloqueada: '1' })
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    err.classList.remove('visible')
+    const nombre = nombreEl.value.trim().replace(/\s+/g, ' ')
+    const email = emailEl.value.trim().toLowerCase()
+    const o = prefijoEl.selectedOptions[0]
+    const telefono = telefonoCompleto(o?.dataset.prefijo || '+31', telEl.value)
+    if (!nombre || !/^\S+@\S+\.\S+$/.test(email) || telefono.replace(/\D/g, '').length < 8) {
+      return mal('Revisa el nombre, el correo y el número.')
+    }
+    btn.classList.add('enviando')
+    const r = await apuntar(nombre, email, telefono)
+    if (!r.ok) {
+      btn.classList.remove('enviando')
+      return mal(r.error || '')
+    }
+    seguir(nombre, email, telefono, o?.dataset.pais || '', r, true)
   })
+
+  // Desde el botón de un correo (?desbloquear=1&email=…&nombre=…): se apunta
+  // sola, sin pedir nada. Sin nombre (systeme.io no lo tiene de todos), el de
+  // antes de la @.
+  if (document.documentElement.classList.contains('dl-auto')) {
+    const html = document.documentElement
+    const nombreDeCorreo = (email: string) => {
+      const t = (email.split('@')[0] || '').split(/[._+\-\d]+/).find(Boolean) || ''
+      return t ? t.charAt(0).toUpperCase() + t.slice(1, 40) : ''
+    }
+    const email = correoDireccion
+    const nombre = (nombreDireccion || previos?.first_name || nombreDeCorreo(email)).slice(0, 120)
+    const pila = nombre.split(' ')[0]
+    if (pila) (document.getElementById('dl-cargando-t') as HTMLElement).textContent = `Desbloqueando tu oferta, ${pila}…`
+    const volverAlFormulario = (t: string) => {
+      html.classList.remove('dl-auto')
+      nombreEl.value = nombre
+      emailEl.value = email
+      mal(t)
+    }
+    if (html.classList.contains('bf-terminado') || !/^\S+@\S+\.\S+$/.test(email)) {
+      html.classList.remove('dl-auto')
+    } else {
+      apuntar(nombre, email, previos?.email === email ? previos?.phone || '' : '').then((r) => {
+        if (!r.ok) return volverAlFormulario(r.error || '')
+        const telefono = previos?.email === email ? previos?.phone || '' : ''
+        seguir(nombre, email, telefono, previos?.email === email ? previos?.pais || '' : '', r, !!r.nuevo)
+      })
+    }
+  }
 </script>
 
 <style>
@@ -331,6 +414,22 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   .dl-pie a:hover { color: #fff; }
   .dl-pie p { margin: 0; font-size: 12.5px; color: rgba(255,255,255,0.6); }
   .dl-hero .bf-horizonte { position: relative; display: block; margin-top: auto; }
+
+  /* Desde el botón de un correo: «Desbloqueando tu oferta…» en lugar del formulario. */
+  .dl-cargando { display: none; }
+  :global(html.dl-auto) .dl-in { display: none; }
+  :global(html.dl-auto) .dl-cargando {
+    position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 6px; padding: 48px 0 96px; text-align: center;
+  }
+  .dl-spin {
+    width: 44px; height: 44px; margin-bottom: 18px; border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.18); border-top-color: #4da3ff; animation: dl-girar 0.9s linear infinite;
+  }
+  @keyframes dl-girar { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .dl-spin { animation-duration: 2.4s; } }
+  .dl-cargando-t { margin: 0; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(24px, 3vw, 32px); font-weight: 700; letter-spacing: -0.025em; color: #fff; }
+  .dl-cargando-sub { margin: 0; font-size: 16px; color: rgba(255,255,255,0.88); }
 
   @media (max-width: 959px) {
     /* En el móvil, el formulario justo después del titular: lo de «solo por
