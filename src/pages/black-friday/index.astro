@@ -21,6 +21,11 @@
  *
  * Píxel: `Lead` (content_name «Black Friday»), una vez por visita.
  *
+ * 29/10, noche ("ese tiene que ser el título de la web, invertir los colores,
+ * página blanca y el cuadrado del correo en azul, y que el título quede en una
+ * frase"): «Únete a la lista prioritaria…» en una sola frase, página blanca
+ * con la luz suave de las portadas, y el formulario en una tarjeta azul.
+ *
  * 29/10, el botón de las newsletters de systeme.io («Abrimos el Black
  * Friday… desbloquea tu oferta»), como YouTalk: quien ya está en la lista no
  * vuelve a escribir nada. El botón lleva
@@ -56,8 +61,8 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
 
 <Layout
   fuentesLocales
-  title="Desbloquea la oferta de Black Friday | Holandés Nawar"
-  description="Déjanos tus datos y desbloquea antes que nadie la oferta de Black Friday de Holandés Nawar."
+  title="Lista prioritaria del Black Friday | Holandés Nawar"
+  description="Únete a la lista prioritaria del Black Friday de Holandés Nawar y desbloquea la oferta antes que nadie."
   noindex={true}
 >
   <!-- Vuelta del pago del ebook con una sesión vieja: directo a la oferta. -->
@@ -79,9 +84,8 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   </script>
 
   <div class="bf dl">
-    <main class="bf-oscuro dl-hero">
-      <div class="bf-capas" aria-hidden="true"><span class="bf-luz1"></span><span class="bf-luz2"></span><span class="bf-dots"></span></div>
-      <div class="bf-foco" aria-hidden="true"></div>
+    <main class="dl-hero">
+      <div class="dl-fondo" aria-hidden="true"><span class="dl-luz1"></span><span class="dl-luz2"></span><span class="dl-puntos"></span></div>
 
       <nav class="bf-nav dl-nav">
         <a href={`${WWW}/`} aria-label="Holandés Nawar">
@@ -91,33 +95,36 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
 
       <div class="dl-in">
         <div class="dl-texto">
-          <span class="bf-badge-dark">Black Friday <i>·</i> Lista prioritaria</span>
-          <h1 class="dl-h1">
-            <span class="dl-blanco">¡Adelántate al</span>
-            <em>Black Friday</em>
-            <span class="dl-blanco">de Holandés Nawar!</span>
-          </h1>
-          <p class="bf-hero-sub dl-sub">
-            Apúntate gratis para acceder a <strong>la mejor oferta del año</strong> antes que nadie y
-            <strong>aprender neerlandés</strong> de una vez por todas.
+          <span class="dl-badge"><span class="dl-punto" aria-hidden="true"></span>Black Friday 2026</span>
+          <h1 class="dl-h1">Únete a la <span class="dl-marca">lista prioritaria</span> del Black&nbsp;Friday</h1>
+          <p class="dl-sub">
+            Apúntate gratis y accede antes que nadie a <strong>la mejor oferta del año</strong> de
+            Holandés Nawar para <strong>aprender neerlandés</strong> de una vez por todas.
           </p>
         </div>
 
-        <div class="dl-regalo bf-solo-activa">
-          <span class="dl-regalo-ico" set:html={icono('regalo', 22, 1.9)} />
-          <div>
-            <p class="dl-regalo-tit">Solo por apuntarte</p>
-            <p class="dl-regalo-txt">Tu oferta de Black Friday, desbloqueada al momento.</p>
-            <p class="dl-regalo-nota">Válida hasta el lunes 30 de noviembre.</p>
-          </div>
-        </div>
+        <ul class="dl-ventajas bf-solo-activa">
+          <li>
+            <span class="dl-ico" set:html={icono('candado', 22, 1.9)} />
+            <div><strong>Acceso anticipado</strong><span>Conoces la oferta antes de que sea pública.</span></div>
+          </li>
+          <li>
+            <span class="dl-ico" set:html={icono('regalo', 22, 1.9)} />
+            <div><strong>Tu oferta, al momento</strong><span>Se desbloquea en cuanto te apuntas.</span></div>
+          </li>
+          <li>
+            <span class="dl-ico" set:html={icono('calendario', 22, 1.9)} />
+            <div><strong>Hasta el lunes 30 de noviembre</strong><span>Después, la oferta se cierra.</span></div>
+          </li>
+        </ul>
 
         <form class="dl-form bf-solo-activa" id="dl-form" novalidate>
+          <div class="dl-form-capas" aria-hidden="true"><span></span></div>
           <div class="dl-hp" aria-hidden="true"><label>No rellenar <input type="text" id="dl-hp" tabindex="-1" autocomplete="off" /></label></div>
 
-          <p class="dl-ceja"><span class="dl-punto" aria-hidden="true"></span>Consigue tu acceso anticipado</p>
-          <h2 class="dl-form-tit">Apúntate a la lista prioritaria.</h2>
-          <p class="dl-form-sub">Y desbloquea la oferta antes de que llegue el Black Friday.</p>
+          <p class="dl-ceja">Lista prioritaria</p>
+          <h2 class="dl-form-tit">Reserva tu acceso anticipado</h2>
+          <p class="dl-form-sub">Es gratis. Desbloqueas la oferta al momento, antes de que llegue el Black Friday.</p>
 
           <label class="dl-label" for="dl-nombre">Nombre</label>
           <input id="dl-nombre" type="text" class="dl-input" placeholder="Tu nombre" autocomplete="given-name" required />
@@ -162,7 +169,6 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
         <p class="dl-cargando-sub">Un momento: te llevamos a ella.</p>
       </div>
 
-      <span class="bf-horizonte" aria-hidden="true"></span>
       <footer class="dl-pie">
         <nav>
           <a href={`${WWW}/politica-de-privacidad`}>Privacidad</a>
@@ -340,80 +346,105 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
 </script>
 
 <style>
-  .dl-hero { position: relative; min-height: 100vh; padding: 0 24px; display: flex; flex-direction: column; }
-  .dl-nav { width: 100%; }
+  /* 29/10, noche: página BLANCA y el formulario en una tarjeta AZUL (antes era
+     al revés), y el titular en una sola frase («lista prioritaria» es el
+     título de la página), en una columna más ancha. */
+  .dl-hero { position: relative; min-height: 100vh; padding: 0 24px; display: flex; flex-direction: column; background: #fff; overflow: clip; }
+  .dl-fondo { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .dl-fondo span { position: absolute; }
+  .dl-luz1 { top: -260px; right: -220px; width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(circle, rgba(77,163,255,0.22) 0%, transparent 62%); }
+  .dl-luz2 { bottom: -320px; left: -260px; width: 820px; height: 820px; border-radius: 50%; background: radial-gradient(circle, rgba(29,0,132,0.08) 0%, transparent 62%); }
+  .dl-puntos {
+    inset: 0; background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1px, transparent 1px); background-size: 28px 28px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 70% 30%, #000 20%, transparent 75%);
+    mask-image: radial-gradient(ellipse 70% 60% at 70% 30%, #000 20%, transparent 75%);
+  }
+  .dl-nav { width: 100%; max-width: 1200px; }
+  .dl :global(.bf-logo-txt) { color: #1D0084; }
   .dl-in {
-    position: relative; z-index: 1; flex: 1; width: 100%; max-width: 1152px; margin: 0 auto; padding: 32px 0 80px;
-    display: grid; grid-template-columns: minmax(0, 1fr) 460px; column-gap: 64px; align-content: center;
-    grid-template-areas: "texto form" "regalo form" "fin fin";
+    position: relative; z-index: 1; flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 24px 0 88px;
+    display: grid; grid-template-columns: minmax(0, 1fr) 420px; column-gap: 64px; row-gap: 36px; align-content: center;
+    grid-template-areas: "texto form" "ventajas form" "fin fin";
   }
   .dl-texto { grid-area: texto; align-self: end; }
-  .dl-regalo { grid-area: regalo; align-self: start; }
+  .dl-ventajas { grid-area: ventajas; align-self: start; }
   .dl-form { grid-area: form; align-self: center; }
   .dl-in > .dl-fin { grid-area: fin; }
 
-  /* El titular con la letra de la landing (.hero-headline): blanco con su
-     degradado suave y la parte importante en azul, cada trozo en su línea. */
+  .dl-badge {
+    display: inline-flex; align-items: center; gap: 9px; padding: 8px 15px; border-radius: 9999px; background: #F0F5FF; border: 1px solid #DDE6F5;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #025dc7;
+  }
+  .dl-punto { width: 7px; height: 7px; border-radius: 50%; background: #E5484D; box-shadow: 0 0 0 4px rgba(229,72,77,0.15); }
+
+  /* El titular: una sola frase, en azul de la marca, con la marca de
+     rotulador bajo «lista prioritaria» (el gesto de resaltar de las
+     lecciones; va en una pieza que no parte de línea). */
   .dl-h1 {
-    font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(40px, 4.3vw, 58px); font-weight: 700;
-    line-height: 1.08; letter-spacing: -0.035em; color: #fff; margin: 6px 0 22px;
+    font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(40px, 4vw, 58px); font-weight: 700;
+    line-height: 1.1; letter-spacing: -0.035em; color: #1D0084; margin: 20px 0 22px; text-wrap: balance;
   }
-  .dl-h1 > span, .dl-h1 > em { display: block; text-wrap: balance; }
-  .dl-h1 em { font-style: normal; color: #4da3ff; }
-  .dl-blanco {
-    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.78) 100%);
-    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; padding-bottom: 0.06em;
+  .dl-marca {
+    white-space: nowrap; color: #025dc7;
+    background: linear-gradient(transparent 64%, rgba(77,163,255,0.38) 64%, rgba(77,163,255,0.38) 90%, transparent 90%);
+    padding: 0 0.04em;
   }
-  .dl-sub { margin: 0 0 28px; max-width: 560px; color: rgba(255,255,255,0.93); }
+  .dl-sub { margin: 0; max-width: 640px; font-size: clamp(16.5px, 1.45vw, 19px); line-height: 1.65; color: #171a2e; }
+  .dl-sub strong { color: #1D0084; font-weight: 600; }
 
   /* Lo que se lleva por apuntarse. */
-  .dl-regalo {
-    display: flex; gap: 14px; align-items: flex-start; max-width: 560px; padding: 18px 20px; border-radius: 16px;
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);
-  }
-  .dl-regalo-ico { display: inline-flex; color: #4da3ff; margin-top: 1px; }
-  .dl-regalo-tit { margin: 0 0 6px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #9fd0ff; }
-  .dl-regalo-txt { margin: 0; font-size: 16.5px; font-weight: 600; line-height: 1.45; color: #fff; }
-  .dl-regalo-nota { margin: 4px 0 0; font-size: 14px; color: rgba(255,255,255,0.85); }
+  .dl-ventajas { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; max-width: 600px; }
+  .dl-ventajas li { display: flex; gap: 14px; align-items: flex-start; }
+  .dl-ico { display: inline-flex; color: #025dc7; margin-top: 1px; flex-shrink: 0; }
+  .dl-ventajas strong { display: block; font-size: 16px; font-weight: 700; color: #1D0084; margin-bottom: 2px; }
+  .dl-ventajas div span { display: block; font-size: 15px; line-height: 1.5; color: #171a2e; }
 
-  /* El formulario, en una tarjeta blanca (como la caja de pago de la escuela). */
+  /* El formulario, en una tarjeta AZUL con la luz y los puntos de la marca. */
   .dl-form {
-    position: relative; width: 100%; text-align: left; padding: 30px 28px 24px; border-radius: 22px; background: #fff;
-    box-shadow: 0 40px 80px -36px rgba(0,0,0,0.55);
+    position: relative; isolation: isolate; width: 100%; text-align: left; padding: 34px 30px 26px; border-radius: 22px;
+    background: #1D0084; color: #fff; overflow: hidden; box-shadow: 0 40px 80px -40px rgba(29,0,132,0.55);
+  }
+  .dl-form-capas { position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px),
+      radial-gradient(circle 420px at 100% 0%, rgba(11,109,240,0.55) 0%, transparent 65%),
+      radial-gradient(circle 360px at 0% 100%, rgba(11,109,240,0.25) 0%, transparent 65%);
+    background-size: 24px 24px, auto, auto; background-repeat: repeat, no-repeat, no-repeat;
   }
   .dl-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-  .dl-ceja { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #025dc7; }
-  .dl-punto { width: 7px; height: 7px; border-radius: 50%; background: #E5484D; box-shadow: 0 0 0 4px rgba(229,72,77,0.15); }
-  .dl-form-tit { margin: 0 0 6px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(24px, 2.3vw, 29px); font-weight: 700; line-height: 1.15; letter-spacing: -0.025em; color: #1D0084; }
-  .dl-form-sub { margin: 0 0 20px; font-size: 14.5px; line-height: 1.55; color: #171a2e; }
-  .dl-label { display: block; margin: 0 0 7px; font-size: 13px; font-weight: 600; letter-spacing: 0.01em; color: #0a1656; }
+  .dl-ceja { margin: 0 0 10px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9fd0ff; }
+  .dl-form-tit { margin: 0 0 8px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(24px, 2.2vw, 28px); font-weight: 700; line-height: 1.15; letter-spacing: -0.025em; color: #fff; }
+  .dl-form-sub { margin: 0 0 22px; font-size: 14.5px; line-height: 1.55; color: rgba(255,255,255,0.88); }
+  .dl-label { display: block; margin: 0 0 7px; font-size: 13px; font-weight: 600; letter-spacing: 0.01em; color: rgba(255,255,255,0.92); }
   .dl-label:not(:first-of-type) { margin-top: 14px; }
   .dl-input {
-    width: 100%; height: 50px; padding: 0 15px; border-radius: 12px; border: 1px solid transparent; background: #F0F5FF;
-    color: #1D0084; font-family: inherit; font-size: 16px; outline: none; transition: border-color .15s, box-shadow .15s, background .15s;
+    width: 100%; height: 50px; padding: 0 15px; border-radius: 12px; border: 1px solid rgba(159,208,255,0.28); background: rgba(255,255,255,0.08);
+    color: #fff; font-family: inherit; font-size: 16px; outline: none; transition: border-color .15s, box-shadow .15s, background .15s;
   }
-  .dl-input::placeholder { color: rgba(29,0,132,0.45); }
-  .dl-input:focus { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
+  .dl-input::placeholder { color: rgba(255,255,255,0.5); }
+  .dl-input:focus { background: rgba(255,255,255,0.12); border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.3); }
   .dl-tel { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 8px; }
   .dl-prefijo { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 15.5px; cursor: pointer; white-space: nowrap; }
-  .dl-prefijo svg { color: rgba(29,0,132,0.55); }
-  .dl-prefijo:focus-within { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
+  .dl-prefijo svg { color: rgba(255,255,255,0.7); }
+  .dl-prefijo:focus-within { background: rgba(255,255,255,0.12); border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.3); }
   .dl-prefijo select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; color: #0a1656; }
-  .dl-err { display: none; margin: 14px 0 0; padding: 10px 13px; border-radius: 11px; background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; font-size: 13.5px; line-height: 1.5; }
+  .dl-err { display: none; margin: 14px 0 0; padding: 10px 13px; border-radius: 11px; background: rgba(229,72,77,0.16); border: 1px solid rgba(255,140,140,0.45); color: #ffe1e1; font-size: 13.5px; line-height: 1.5; }
   .dl-err:global(.visible) { display: block; }
-  .dl-btn { width: 100%; margin-top: 20px; font-size: 17px; }
-  .dl-legal { margin: 14px 0 0; font-size: 12.5px; line-height: 1.55; color: #171a2e; }
-  .dl-legal a { color: #025dc7; text-decoration: underline; }
+  .dl-btn { width: 100%; margin-top: 22px; font-size: 17px; }
+  .dl-legal { margin: 14px 0 0; font-size: 12.5px; line-height: 1.55; color: rgba(255,255,255,0.78); }
+  .dl-legal a { color: #9fd0ff; text-decoration: underline; }
 
-  .dl-fin p { margin: 0 0 16px; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.93); }
-  .dl-fin p strong { color: #fff; }
+  .dl-fin p { margin: 0 0 16px; font-size: 16px; line-height: 1.6; color: #171a2e; }
+  .dl-fin p strong { color: #1D0084; }
 
-  .dl-pie { position: relative; z-index: 1; width: 100%; max-width: 1152px; margin: 0 auto; padding: 22px 0 28px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 22px; }
+  .dl-pie {
+    position: relative; z-index: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 22px 0 28px; border-top: 1px solid #DDE6F5;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 22px;
+  }
   .dl-pie nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
-  .dl-pie a { font-size: 13px; color: rgba(255,255,255,0.82); text-decoration: none; }
-  .dl-pie a:hover { color: #fff; }
-  .dl-pie p { margin: 0; font-size: 12.5px; color: rgba(255,255,255,0.6); }
-  .dl-hero .bf-horizonte { position: relative; display: block; margin-top: auto; }
+  .dl-pie a { font-size: 13px; color: #171a2e; text-decoration: none; }
+  .dl-pie a:hover { color: #025dc7; }
+  .dl-pie p { margin: 0; font-size: 12.5px; color: #4b5068; }
 
   /* Desde el botón de un correo: «Desbloqueando tu oferta…» en lugar del formulario. */
   .dl-cargando { display: none; }
@@ -424,23 +455,21 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   }
   .dl-spin {
     width: 44px; height: 44px; margin-bottom: 18px; border-radius: 50%;
-    border: 3px solid rgba(255,255,255,0.18); border-top-color: #4da3ff; animation: dl-girar 0.9s linear infinite;
+    border: 3px solid rgba(29,0,132,0.12); border-top-color: #4da3ff; animation: dl-girar 0.9s linear infinite;
   }
   @keyframes dl-girar { to { transform: rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .dl-spin { animation-duration: 2.4s; } }
-  .dl-cargando-t { margin: 0; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(24px, 3vw, 32px); font-weight: 700; letter-spacing: -0.025em; color: #fff; }
-  .dl-cargando-sub { margin: 0; font-size: 16px; color: rgba(255,255,255,0.88); }
+  .dl-cargando-t { margin: 0; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(24px, 3vw, 32px); font-weight: 700; letter-spacing: -0.025em; color: #1D0084; }
+  .dl-cargando-sub { margin: 0; font-size: 16px; color: #171a2e; }
 
-  @media (max-width: 959px) {
-    /* En el móvil, el formulario justo después del titular: lo de «solo por
-       apuntarte», debajo. */
-    .dl-in { grid-template-columns: minmax(0, 1fr); grid-template-areas: "texto" "form" "regalo" "fin"; row-gap: 28px; max-width: 600px; padding: 12px 0 56px; }
-    .dl-h1 { font-size: clamp(36px, 9.6vw, 52px); line-height: 1.1; margin-bottom: 18px; }
+  @media (max-width: 1023px) {
+    /* En la tableta y el móvil: titular, formulario y lo que se lleva, uno debajo de otro. */
+    .dl-in { grid-template-columns: minmax(0, 1fr); grid-template-areas: "texto" "form" "ventajas" "fin"; row-gap: 32px; max-width: 620px; padding: 8px 0 56px; }
+    .dl-h1 { font-size: clamp(34px, 8.6vw, 50px); line-height: 1.12; margin: 16px 0 18px; }
   }
   @media (max-width: 640px) {
-    .dl-sub { margin-bottom: 22px; }
-    .dl-regalo { padding: 16px; }
-    .dl-form { padding: 24px 20px 20px; }
+    .dl-badge { font-size: 11px; padding: 7px 13px; }
+    .dl-form { padding: 26px 20px 20px; border-radius: 18px; }
     .dl-btn { font-size: 15.5px; padding: 17px 14px; }
     .dl-pie { flex-direction: column; align-items: flex-start; }
   }
