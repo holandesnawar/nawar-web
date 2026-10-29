@@ -113,6 +113,18 @@ export function quedaHasta(ahora = Date.now()) {
  * el correo para rellenar el formulario. El `compra=cs_…` de Stripe NO pasa:
  * es de esta página, y llevarlo al formulario no sirve de nada.
  */
+/**
+ * El nombre o el correo que llega en la dirección (?nombre=&email=), desde los
+ * botones de los correos de systeme.io o de la propia web. Dos cosas que
+ * pasan de verdad: el «+» de un correo llega como espacio, y si systeme.io no
+ * sustituye un hueco llega «{first_name}» tal cual. Eso último no vale nada.
+ */
+export function datoDeLaDireccion(q: URLSearchParams, campo: 'nombre' | 'email'): string {
+  const v = (q.get(campo) || '').trim()
+  if (/[{}\[\]<>]/.test(v)) return ''
+  return campo === 'email' ? v.replace(/ /g, '+').toLowerCase().slice(0, 200) : v.replace(/\s+/g, ' ').slice(0, 120)
+}
+
 export function conLaEntradaBF(destino: string, mas: Record<string, string> = {}): string {
   try {
     const actual = new URLSearchParams(window.location.search)

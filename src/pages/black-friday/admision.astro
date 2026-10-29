@@ -292,7 +292,7 @@ const WWW = 'https://www.holandesnawar.com'
   import { leerUTM, guardarUTM } from '../../lib/utm'
   import { contextoDelLead } from '../../lib/recorrido'
   import { CLAVE_DATOS, type DatosAdmision } from '../../lib/admision'
-  import { META_BF } from '../../lib/blackFriday'
+  import { META_BF, datoDeLaDireccion } from '../../lib/blackFriday'
   import { nuevoEventId } from '../../lib/metaNavegador'
   guardarUTM()
 
@@ -307,7 +307,7 @@ const WWW = 'https://www.holandesnawar.com'
   }
   const guardados = leerLocal<DatosAdmision>(CLAVE_DATOS)
   const dir = new URLSearchParams(location.search)
-  const deLaDir = { nombre: (dir.get('nombre') || '').trim().slice(0, 120), email: (dir.get('email') || '').trim().toLowerCase().slice(0, 200) }
+  const deLaDir = { nombre: datoDeLaDireccion(dir, 'nombre'), email: datoDeLaDireccion(dir, 'email') }
   const mismoCorreo = !deLaDir.email || deLaDir.email === (guardados?.email || '').toLowerCase()
   const previos = {
     first_name: deLaDir.nombre || guardados?.first_name || '',

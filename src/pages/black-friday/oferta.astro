@@ -367,15 +367,15 @@ const DUDAS = [
 <script>
   import { guardarUTM } from '../../lib/utm'
   import { CLAVE_DATOS, type DatosAdmision } from '../../lib/admision'
-  import { CLAVE_COMPRA, CLAVE_COMPRADOR, META_EBOOK, arrancarCuentaAtras, conLaEntradaBF, iluminarAlPasar } from '../../lib/blackFriday'
+  import { CLAVE_COMPRA, CLAVE_COMPRADOR, META_EBOOK, arrancarCuentaAtras, conLaEntradaBF, datoDeLaDireccion, iluminarAlPasar } from '../../lib/blackFriday'
   guardarUTM()
   arrancarCuentaAtras()
   iluminarAlPasar()
 
   const q = new URLSearchParams(location.search)
   const limpio = (v: string | null | undefined, n = 120) => (v || '').replace(/[<>]/g, '').trim().slice(0, n)
-  let nombre = limpio(q.get('nombre'))
-  let email = limpio(q.get('email'), 200).toLowerCase()
+  let nombre = limpio(datoDeLaDireccion(q, 'nombre'))
+  let email = limpio(datoDeLaDireccion(q, 'email'), 200)
   // Sin datos en la dirección, los que dejó en este navegador (en la portada o
   // al comprar el ebook): el formulario sale relleno igual.
   if (!email) {
