@@ -52,6 +52,9 @@ const ETIQUETAS_ADMISION = {
 
 /** La del formulario de admisión de Black Friday (29/10, blackfriday.holandesnawar.com/admision). */
 const ETIQUETA_BLACK_FRIDAY = 'Black Friday - llamada'
+/** Y si al terminar las preguntas no encaja (29/10): con ella systeme.io la
+ *  saca de las campañas de correo de Black Friday, que se mandan desde allí. */
+const ETIQUETA_BLACK_FRIDAY_NO_ENCAJA = 'Black Friday - no encaja'
 
 /** Alta en systeme.io con sus etiquetas, en blando: si falla, lo dice en el
  *  log y sigue. El lead ya está en la escuela para entonces. */
@@ -316,7 +319,7 @@ export const POST: APIRoute = async (ctx) => {
     embudo === 'admision'
       ? [ETIQUETA, ETIQUETAS_ADMISION.completada]
       : embudo === 'black-friday'
-        ? [ETIQUETA, ETIQUETA_BLACK_FRIDAY]
+        ? [ETIQUETA, ETIQUETA_BLACK_FRIDAY, ...(resultado.apto ? [] : [ETIQUETA_BLACK_FRIDAY_NO_ENCAJA])]
         : [ETIQUETA],
     embudo === 'black-friday' ? [{ slug: 'origen', value: 'black-friday' }] : []
   )
