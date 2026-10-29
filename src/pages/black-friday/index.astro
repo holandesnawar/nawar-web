@@ -20,6 +20,13 @@
  * pago abierta con la vuelta vieja) va directo a /oferta.
  *
  * Píxel: `Lead` (content_name «Black Friday»), una vez por visita.
+ *
+ * 29/10 (tarde), el diseño de la página de YouTalk que enseñó el usuario: a la
+ * izquierda la etiqueta, el titular «¡Adelántate al Black Friday de Holandés
+ * Nawar!» con la letra de la landing (blanco y la parte en azul, sin el
+ * degradado por renglones) y lo que se lleva por apuntarse; a la derecha, el
+ * formulario en una tarjeta BLANCA, no en cristal. Sin cifras de alumnos ni
+ * de reseñas: no se ponen números que no sean de verdad.
  */
 import Layout from '../../layouts/Layout.astro'
 import { icono } from '../../components/black-friday/iconos'
@@ -66,18 +73,40 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
       </nav>
 
       <div class="dl-in">
-        <span class="bf-badge-dark">Black Friday <i>·</i> Acceso anticipado</span>
-        <h1 class="bf-h1 dl-h1">Desbloquea la oferta de Black Friday</h1>
-        <p class="bf-hero-sub dl-sub">Déjanos tus datos y descubre antes que nadie lo que hemos preparado para ti.</p>
+        <div class="dl-texto">
+          <span class="bf-badge-dark">Black Friday <i>·</i> Lista prioritaria</span>
+          <h1 class="dl-h1">
+            <span class="dl-blanco">¡Adelántate al</span>
+            <em>Black Friday</em>
+            <span class="dl-blanco">de Holandés Nawar!</span>
+          </h1>
+          <p class="bf-hero-sub dl-sub">
+            Apúntate gratis para acceder a <strong>la mejor oferta del año</strong> antes que nadie y
+            <strong>aprender neerlandés</strong> de una vez por todas.
+          </p>
+        </div>
 
-        <form class="dl-form bf-borde-luz bf-solo-activa" id="dl-form" novalidate>
+        <div class="dl-regalo bf-solo-activa">
+          <span class="dl-regalo-ico" set:html={icono('regalo', 22, 1.9)} />
+          <div>
+            <p class="dl-regalo-tit">Solo por apuntarte</p>
+            <p class="dl-regalo-txt">Tu oferta de Black Friday, desbloqueada al momento.</p>
+            <p class="dl-regalo-nota">Válida hasta el lunes 30 de noviembre.</p>
+          </div>
+        </div>
+
+        <form class="dl-form bf-solo-activa" id="dl-form" novalidate>
           <div class="dl-hp" aria-hidden="true"><label>No rellenar <input type="text" id="dl-hp" tabindex="-1" autocomplete="off" /></label></div>
+
+          <p class="dl-ceja"><span class="dl-punto" aria-hidden="true"></span>Consigue tu acceso anticipado</p>
+          <h2 class="dl-form-tit">Apúntate a la lista prioritaria.</h2>
+          <p class="dl-form-sub">Y desbloquea la oferta antes de que llegue el Black Friday.</p>
 
           <label class="dl-label" for="dl-nombre">Nombre</label>
           <input id="dl-nombre" type="text" class="dl-input" placeholder="Tu nombre" autocomplete="given-name" required />
 
           <label class="dl-label" for="dl-email">Correo electrónico</label>
-          <input id="dl-email" type="email" class="dl-input" placeholder="correo@ejemplo.com" autocomplete="email" required />
+          <input id="dl-email" type="email" class="dl-input" placeholder="Tu mejor correo" autocomplete="email" required />
 
           <label class="dl-label" for="dl-tel">WhatsApp</label>
           <div class="dl-tel">
@@ -95,11 +124,10 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
 
           <p class="dl-err" id="dl-err" role="alert">Revisa el nombre, el correo y el número.</p>
           <button type="submit" class="bf-btn bf-brillo dl-btn" id="dl-btn">
-            <span set:html={icono('candado', 18, 2.2)} />
-            Desbloquear la oferta
+            Apuntarme a la lista prioritaria
           </button>
           <p class="dl-legal">
-            Al desbloquearla aceptas la <a href={`${WWW}/politica-de-privacidad`} target="_blank" rel="noopener">política de privacidad</a> y
+            Al apuntarte aceptas la <a href={`${WWW}/politica-de-privacidad`} target="_blank" rel="noopener">política de privacidad</a> y
             recibir nuestros correos sobre la oferta. Te das de baja cuando quieras.
           </p>
         </form>
@@ -231,36 +259,68 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
 <style>
   .dl-hero { position: relative; min-height: 100vh; padding: 0 24px; display: flex; flex-direction: column; }
   .dl-nav { width: 100%; }
-  .dl-in { position: relative; z-index: 1; flex: 1; width: 100%; max-width: 640px; margin: 0 auto; padding: 24px 0 72px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-  .dl-h1 { margin-top: 14px; filter: drop-shadow(0 0 34px rgba(77,163,255,0.35)); }
-  .dl-sub { margin: 0 auto 34px; max-width: 540px; }
+  .dl-in {
+    position: relative; z-index: 1; flex: 1; width: 100%; max-width: 1152px; margin: 0 auto; padding: 32px 0 80px;
+    display: grid; grid-template-columns: minmax(0, 1fr) 460px; column-gap: 64px; align-content: center;
+    grid-template-areas: "texto form" "regalo form" "fin fin";
+  }
+  .dl-texto { grid-area: texto; align-self: end; }
+  .dl-regalo { grid-area: regalo; align-self: start; }
+  .dl-form { grid-area: form; align-self: center; }
+  .dl-in > .dl-fin { grid-area: fin; }
 
-  /* El formulario, en cristal con su borde de luz. */
+  /* El titular con la letra de la landing (.hero-headline): blanco con su
+     degradado suave y la parte importante en azul, cada trozo en su línea. */
+  .dl-h1 {
+    font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(40px, 4.3vw, 58px); font-weight: 700;
+    line-height: 1.08; letter-spacing: -0.035em; color: #fff; margin: 6px 0 22px;
+  }
+  .dl-h1 > span, .dl-h1 > em { display: block; text-wrap: balance; }
+  .dl-h1 em { font-style: normal; color: #4da3ff; }
+  .dl-blanco {
+    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.78) 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; padding-bottom: 0.06em;
+  }
+  .dl-sub { margin: 0 0 28px; max-width: 560px; color: rgba(255,255,255,0.93); }
+
+  /* Lo que se lleva por apuntarse. */
+  .dl-regalo {
+    display: flex; gap: 14px; align-items: flex-start; max-width: 560px; padding: 18px 20px; border-radius: 16px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);
+  }
+  .dl-regalo-ico { display: inline-flex; color: #4da3ff; margin-top: 1px; }
+  .dl-regalo-tit { margin: 0 0 6px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #9fd0ff; }
+  .dl-regalo-txt { margin: 0; font-size: 16.5px; font-weight: 600; line-height: 1.45; color: #fff; }
+  .dl-regalo-nota { margin: 4px 0 0; font-size: 14px; color: rgba(255,255,255,0.85); }
+
+  /* El formulario, en una tarjeta blanca (como la caja de pago de la escuela). */
   .dl-form {
-    width: 100%; max-width: 480px; text-align: left; padding: 26px 24px 22px; border-radius: 22px;
-    background: linear-gradient(160deg, rgba(0,150,255,0.16) 0%, rgba(0,125,250,0.10) 100%);
-    border: 1px solid rgba(170,210,255,0.16); box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 40px 80px -40px rgba(0,0,0,0.6);
+    position: relative; width: 100%; text-align: left; padding: 30px 28px 24px; border-radius: 22px; background: #fff;
+    box-shadow: 0 40px 80px -36px rgba(0,0,0,0.55);
   }
   .dl-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-  .dl-label { display: block; margin: 0 0 7px; font-size: 13px; font-weight: 600; letter-spacing: 0.01em; color: #fff; }
-  .dl-label:not(:first-of-type) { margin-top: 16px; }
+  .dl-ceja { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #025dc7; }
+  .dl-punto { width: 7px; height: 7px; border-radius: 50%; background: #E5484D; box-shadow: 0 0 0 4px rgba(229,72,77,0.15); }
+  .dl-form-tit { margin: 0 0 6px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(24px, 2.3vw, 29px); font-weight: 700; line-height: 1.15; letter-spacing: -0.025em; color: #1D0084; }
+  .dl-form-sub { margin: 0 0 20px; font-size: 14.5px; line-height: 1.55; color: #171a2e; }
+  .dl-label { display: block; margin: 0 0 7px; font-size: 13px; font-weight: 600; letter-spacing: 0.01em; color: #0a1656; }
+  .dl-label:not(:first-of-type) { margin-top: 14px; }
   .dl-input {
-    width: 100%; height: 50px; padding: 0 15px; border-radius: 12px; border: 1px solid rgba(170,210,255,0.22);
-    background: rgba(5,20,90,0.45); color: #fff; font-family: inherit; font-size: 16px; outline: none; transition: border-color .15s, box-shadow .15s;
+    width: 100%; height: 50px; padding: 0 15px; border-radius: 12px; border: 1px solid transparent; background: #F0F5FF;
+    color: #1D0084; font-family: inherit; font-size: 16px; outline: none; transition: border-color .15s, box-shadow .15s, background .15s;
   }
-  .dl-input::placeholder { color: rgba(220,235,255,0.55); }
-  .dl-input:focus { border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.25); }
+  .dl-input::placeholder { color: rgba(29,0,132,0.45); }
+  .dl-input:focus { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
   .dl-tel { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 8px; }
   .dl-prefijo { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 15.5px; cursor: pointer; white-space: nowrap; }
-  .dl-prefijo svg { color: rgba(255,255,255,0.6); }
-  .dl-prefijo:focus-within { border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.25); }
+  .dl-prefijo svg { color: rgba(29,0,132,0.55); }
+  .dl-prefijo:focus-within { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
   .dl-prefijo select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; color: #0a1656; }
-  .dl-err { display: none; margin: 14px 0 0; padding: 10px 13px; border-radius: 11px; background: rgba(254,226,226,0.95); color: #991b1b; font-size: 13.5px; line-height: 1.5; }
+  .dl-err { display: none; margin: 14px 0 0; padding: 10px 13px; border-radius: 11px; background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; font-size: 13.5px; line-height: 1.5; }
   .dl-err:global(.visible) { display: block; }
   .dl-btn { width: 100%; margin-top: 20px; font-size: 17px; }
-  .dl-btn > span { display: inline-flex; }
-  .dl-legal { margin: 14px 0 0; font-size: 12.5px; line-height: 1.55; color: rgba(255,255,255,0.82); }
-  .dl-legal a { color: #fff; text-decoration: underline; }
+  .dl-legal { margin: 14px 0 0; font-size: 12.5px; line-height: 1.55; color: #171a2e; }
+  .dl-legal a { color: #025dc7; text-decoration: underline; }
 
   .dl-fin p { margin: 0 0 16px; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.93); }
   .dl-fin p strong { color: #fff; }
@@ -272,10 +332,17 @@ const opciones = PREFIJOS.map((p, i) => ({ ...p, valor: `${i}` }))
   .dl-pie p { margin: 0; font-size: 12.5px; color: rgba(255,255,255,0.6); }
   .dl-hero .bf-horizonte { position: relative; display: block; margin-top: auto; }
 
+  @media (max-width: 959px) {
+    /* En el móvil, el formulario justo después del titular: lo de «solo por
+       apuntarte», debajo. */
+    .dl-in { grid-template-columns: minmax(0, 1fr); grid-template-areas: "texto" "form" "regalo" "fin"; row-gap: 28px; max-width: 600px; padding: 12px 0 56px; }
+    .dl-h1 { font-size: clamp(36px, 9.6vw, 52px); line-height: 1.1; margin-bottom: 18px; }
+  }
   @media (max-width: 640px) {
-    .dl-in { padding: 8px 0 48px; }
-    .dl-sub { margin-bottom: 26px; }
-    .dl-form { padding: 22px 18px 18px; }
+    .dl-sub { margin-bottom: 22px; }
+    .dl-regalo { padding: 16px; }
+    .dl-form { padding: 24px 20px 20px; }
+    .dl-btn { font-size: 15.5px; padding: 17px 14px; }
     .dl-pie { flex-direction: column; align-items: flex-start; }
   }
 </style>
