@@ -372,7 +372,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   import { leerUTM, guardarUTM } from '../../lib/utm'
   import { contextoDelLead } from '../../lib/recorrido'
   import { CLAVE_DATOS, type DatosAdmision } from '../../lib/admision'
-  import { CLAVE_DESBLOQUEADA, EBOOK_PRECIO, META_EBOOK, arrancarCuentaAtras, bfRuta, bfTerminado } from '../../lib/blackFriday'
+  import { CLAVE_DESBLOQUEADA, EBOOK_PRECIO, META_EBOOK, arrancarCuentaAtras, bfRuta, bfTerminado, datoDeLaDireccion } from '../../lib/blackFriday'
   import { ESCUELA_URL } from '../../lib/escuela'
   guardarUTM()
   // Sin cuenta atrás en la página: solo pone `bf-terminado` en <html> pasado
@@ -429,8 +429,8 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   const leer = <T,>(k: string): T | null => { try { const v = localStorage.getItem(k); return v ? (JSON.parse(v) as T) : null } catch { return null } }
   const previos = leer<DatosAdmision>(CLAVE_DATOS)
   const q = new URLSearchParams(location.search)
-  nombreEl.value = (q.get('nombre') || previos?.first_name || '').slice(0, 120)
-  emailEl.value = (q.get('email') || previos?.email || '').slice(0, 200)
+  nombreEl.value = (datoDeLaDireccion(q, 'nombre') || previos?.first_name || '').slice(0, 120)
+  emailEl.value = (datoDeLaDireccion(q, 'email') || previos?.email || '').slice(0, 200)
 
   // Viene de desbloquear la oferta: su nombre en el aviso, y que el navegador
   // lo recuerde (sin el ?desbloqueada= en la dirección, por si la comparte).
