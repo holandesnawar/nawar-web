@@ -36,9 +36,18 @@
  * dice «me ascendieron a los 4 meses», que no se puede sostener) y el
  * cronograma (habla de pagar ya).
  *
- * La LUZ (28/10, "más chula, con luz"): el foco de arriba, la línea del
- * horizonte, el brillo de los botones y el borde de luz de la tarjeta salen de
- * black-friday.css (`bf-foco`, `bf-horizonte`, `bf-brillo`, `bf-borde-luz`);
+ * La CABECERA (29/10, usuario: "me gustaba más la landing que usábamos…
+ * primera sección como la antigua, tenía esa vida"): el banner de
+ * /formacion-nawar (LandingCaptacion.astro) dentro de `.l8`, con su titular,
+ * sus viñetas, la nota a mano y la escuela dibujada; lo de Black Friday va en
+ * la etiqueta, la entradilla y la etiqueta flotante. La de antes (titular
+ * grande «Adelántate al Black Friday» y la captura en el portátil) se quitó.
+ *
+ * El EQUIPO («Quién te acompaña en el camino», EquipoNawar.astro) va después
+ * del método y no sale hasta que haya alguien en src/lib/equipo.ts.
+ *
+ * La LUZ de las otras secciones (28/10): el brillo de los botones y el borde de
+ * luz de la tarjeta salen de black-friday.css (`bf-brillo`, `bf-borde-luz`);
  * en el ordenador, las tarjetas oscuras se iluminan donde está el ratón
  * (`bf-sigue`). Todo quieto con «reducir movimiento».
  *
@@ -65,6 +74,7 @@ import CadaUnidad from '../../components/landing-08-08-2026/CadaUnidad.astro'
 import BonusSection from '../../components/landing-08-08-2026/BonusSection.astro'
 import ParaTiSection from '../../components/landing-08-08-2026/ParaTiSection.astro'
 import AccesoIncluye from '../../components/landing-08-08-2026/AccesoIncluye.astro'
+import EquipoNawar from '../../components/black-friday/EquipoNawar.astro'
 import '../../styles/fuentes-locales.css'
 import '../../styles/nawar-sections.css'
 import '../../styles/landing-08-08-2026.css'
@@ -79,6 +89,16 @@ const DESPUES = `${WWW}/proceso-de-admision`
 const flecha = icono('flecha', 16, 2.5)
 /** El botón de las secciones de la landing. */
 const QUIERO = 'Quiero mi oferta de Black Friday'
+/** «hasta el 30 de noviembre», para la etiqueta de la cabecera. */
+const BF_HASTA_CORTO = BF_HASTA_TEXTO.replace(/^lunes\s+/, '')
+
+/** Las tres viñetas del banner de la landing de la formación, tal cual. */
+const HERO_PUNTOS = [
+  'Desde cero: 10 módulos, +15 h de vídeo y +360 lecciones',
+  'Masterclass y grupos de conversación en directo cada semana',
+  'Explicado desde el español, sin pasar por el inglés',
+]
+const check = `<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>`
 
 /** Lo que pasa en la llamada (junto a los pasos de admisión). */
 const EN_LA_LLAMADA = [
@@ -145,70 +165,141 @@ const DUDAS = [
       </div>
     </div>
 
-    <!-- ═══ Cabecera ═══ -->
-    <header class="bf-oscuro lp-hero" id="lp-hero">
-      <div class="bf-capas" aria-hidden="true"><span class="bf-luz1"></span><span class="bf-luz2"></span><span class="bf-dots"></span></div>
-      <div class="bf-foco lp-foco" aria-hidden="true"></div>
-      <nav class="bf-nav">
-        <a href={`${WWW}/`} aria-label="Holandés Nawar">
-          <img src={LOGO} alt="Holandés Nawar" class="bf-logo" width="150" height="38" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'bf-logo-txt',textContent:'Holandés Nawar'}))" />
-        </a>
-      </nav>
+    <!-- ═══ Cabecera: la de /formacion-nawar, con lo de Black Friday ═══
+         (29/10, usuario: "me gustaba más la landing que usábamos, la primera
+         sección como la antigua, tenía esa vida que la de Black Friday no
+         tenía"). Es el mismo marcado que el banner de LandingCaptacion.astro
+         dentro de `.l8`, así que lo pintan las mismas reglas de
+         landing-08-08-2026.css, animaciones de entrada incluidas. Si se
+         cambia el banner de la landing, mirar si hay que traerlo aquí. -->
+    <div class="l8 lp-top">
+      <section class="hero lp-hero" id="lp-hero">
+        <div class="hero-glow1" aria-hidden="true"></div>
+        <div class="hero-glow2" aria-hidden="true"></div>
+        <div class="hero-dots dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></div>
 
-      <div class="lp-hero-in">
-        <div class="lp-hero-texto">
-          <!-- Quien ha comprado el ebook: la oferta desbloqueada. -->
-          <div class="lp-comp">
-            <p class="lp-ya">
+        <nav class="bf-nav lp-nav">
+          <a href={`${WWW}/`} aria-label="Holandés Nawar">
+            <img src={LOGO} alt="Holandés Nawar" class="bf-logo" width="150" height="38" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'bf-logo-txt',textContent:'Holandés Nawar'}))" />
+          </a>
+        </nav>
+
+        <div class="hero-inner">
+          <div class="hero-texto-col">
+            <!-- Quien ha comprado el ebook: que lo sepa antes que nada. -->
+            <p class="lp-ya lp-comp">
               <span class="lp-ya-ico" set:html={icono('check', 13, 3)} />
               <span id="lp-ya-t">
                 <span class="lp-ya-ebook">Ya tienes tu ebook «{EBOOK_NOMBRE}».</span>
                 <span class="lp-ya-vuelta">Tu oferta de Black Friday sigue desbloqueada.</span>
               </span>
             </p>
-            <span class="bf-badge-dark">Black Friday <i>·</i> Oferta desbloqueada</span>
-            <h1 class="bf-h1 lp-h1-luz" data-titulo="Acabas de desbloquear nuestra mejor oferta" data-vuelta="Tu oferta de Black Friday te está esperando">Acabas de desbloquear nuestra mejor oferta</h1>
-            <p class="bf-hero-sub">
-              Tienes acceso antes que nadie a las <strong>condiciones de Black Friday de la Formación Nawar A0-A1</strong>:
-              neerlandés de cero a A1 en 16 semanas, explicado en español y con clases en directo cada semana.
+            <div class="hero-badge">
+              <span class="badge-dot" aria-hidden="true"></span>
+              <span class="lp-comp">Black Friday · Oferta desbloqueada</span>
+              <span class="lp-gen">Black Friday · Acceso anticipado</span>
+            </div>
+            <h1 class="hero-headline">
+              <span class="text-gradient-white">El neerlandés no se te da mal.</span>
+              <em>Te lo estaban enseñando en inglés.</em>
+            </h1>
+            <p class="hero-sub lp-comp">
+              <strong class="lp-quien" data-titulo="Acabas de desbloquear nuestra mejor oferta" data-vuelta="Tu oferta de Black Friday te está esperando">Acabas de desbloquear nuestra mejor oferta</strong>:
+              la Formación Nawar A0-A1 con <strong>condiciones de Black Friday</strong>, antes que nadie. De A0 a A1 en
+              <strong>16 semanas</strong>, pensada para hispanohablantes.
             </p>
-          </div>
-          <!-- Los demás. -->
-          <div class="lp-gen">
-            <span class="bf-badge-dark">Black Friday <i>·</i> Acceso anticipado</span>
-            <h1 class="bf-h1 lp-h1-luz" data-titulo="Adelántate al Black Friday">Adelántate al Black Friday</h1>
-            <p class="bf-hero-sub">
-              Accede antes que nadie a las <strong>condiciones especiales de la Formación Nawar A0-A1</strong>: neerlandés de cero a A1 en
-              16 semanas, explicado en español y con clases en directo cada semana.
+            <p class="hero-sub lp-gen">
+              <strong class="lp-quien" data-titulo="Adelántate al Black Friday">Adelántate al Black Friday</strong>:
+              accede antes que nadie a las <strong>condiciones especiales</strong> de la primera formación de neerlandés
+              diseñada para hispanohablantes. De A0 a A1 en <strong>16 semanas</strong>.
             </p>
-          </div>
-          <div class="lp-hero-cta bf-solo-activa">
-            <a href={ADMISION} class="bf-btn bf-brillo lp-comp" data-bf-cta>Quiero mi oferta de Black Friday <Fragment set:html={flecha} /></a>
-            <a href={ADMISION} class="bf-btn bf-brillo lp-gen" data-bf-cta>Agendar mi llamada gratuita <Fragment set:html={flecha} /></a>
-            <p class="bf-nota lp-comp">Rellenas un formulario corto y te contamos la oferta en una llamada de media hora · Sin compromiso</p>
-            <p class="bf-nota lp-gen">Media hora con el equipo · Sin compromiso</p>
-          </div>
-          <div class="lp-fin bf-fin">
-            <p><strong>La oferta de Black Friday ha terminado.</strong> Puedes seguir pidiendo información sobre la formación.</p>
-            <a href={DESPUES} class="bf-btn">Solicitar información <Fragment set:html={flecha} /></a>
-          </div>
-        </div>
+            <ul class="hero-bullets">
+              {HERO_PUNTOS.map((p) => (
+                <li><span class="hero-check" set:html={check} />{p}</li>
+              ))}
+            </ul>
 
-        <div class="lp-visual" aria-hidden="true">
-          <span class="lp-visual-luz"></span>
-          <img src="/img/black-friday/escuela.webp" alt="" width="1066" height="604" fetchpriority="high" decoding="async" />
-          <div class="lp-visual-chapa lp-vc1">
-            <span set:html={icono('video', 20, 1.8)} />
-            <div><b>En directo cada semana</b><span>Masterclass y grupos de conversación</span></div>
+            <div class="hero-ctas bf-solo-activa">
+              <div class="hero-cta-fila">
+                <div class="hero-cta-col">
+                  <a href={ADMISION} class="btn btn-primary btn-lg" data-bf-cta>{QUIERO}</a>
+                  <p class="hero-nota">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    Sin compromiso: te la contamos en una llamada de media hora
+                  </p>
+                </div>
+                <span class="hero-empieza" aria-hidden="true">
+                  <span class="hero-empieza-txt">empieza hoy</span>
+                  <svg class="hero-empieza-flecha" viewBox="0 0 64 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M58 4C57 20 47 34 30 40" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M38 41l-9 1 3-9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <div class="lp-fin bf-fin">
+              <p><strong>La oferta de Black Friday ha terminado.</strong> Puedes seguir pidiendo información sobre la formación.</p>
+              <a href={DESPUES} class="bf-btn">Solicitar información <Fragment set:html={flecha} /></a>
+            </div>
           </div>
-          <div class="lp-visual-chapa lp-vc2">
-            <span set:html={icono('premio', 20, 1.8)} />
-            <div><b>Certificado Nawar</b><span>Al terminar la formación</span></div>
+
+          <!-- La escuela por dentro, dibujada como en la landing (con datos de
+               las lecciones de verdad). En el móvil no sale: empujaba el botón
+               fuera de la primera pantalla. -->
+          <div class="hero-mockup-col" aria-hidden="true">
+            <div class="platform-mockup">
+              <div class="mockup-header">
+                <div class="mockup-dots"><span></span><span></span><span></span></div>
+                <span class="mockup-title">Formación Nawar A0-A1</span>
+              </div>
+              <div class="mockup-body">
+                <div>
+                  <div class="mockup-label">Tu progreso — Módulo 1</div>
+                  <div class="mockup-progress-bar"><div class="mockup-progress-fill" style="width:65%"></div></div>
+                  <div class="mockup-pct">65% completado</div>
+                </div>
+                <div class="mockup-modules">
+                  <div class="mockup-module active">
+                    <div class="module-icon">📹</div>
+                    <div class="module-info"><span class="module-title">Les 1 — Woordenschat</span><span class="module-sub">Vocabulario · 20 min</span></div>
+                    <span class="module-badge done">✓</span>
+                  </div>
+                  <div class="mockup-module active">
+                    <div class="module-icon">📝</div>
+                    <div class="module-info"><span class="module-title">Les 2 — Grammatica</span><span class="module-sub">Gramática · 18 min</span></div>
+                    <span class="module-badge done">✓</span>
+                  </div>
+                  <div class="mockup-module current">
+                    <div class="module-icon">🎯</div>
+                    <div class="module-info"><span class="module-title">Les 3 — Uitspraak</span><span class="module-sub">Pronunciación · 15 min</span></div>
+                    <span class="module-badge current-badge">→</span>
+                  </div>
+                  <div class="mockup-module locked">
+                    <div class="module-icon">🔒</div>
+                    <div class="module-info"><span class="module-title">Les 4 — Spreken</span><span class="module-sub">Hablar · 25 min</span></div>
+                  </div>
+                </div>
+                <div class="mockup-vocab-card">
+                  <div class="vocab-article">de</div>
+                  <div class="vocab-word">naam</div>
+                  <div class="vocab-translation">el nombre</div>
+                  <div class="vocab-example">"Mijn naam is Anna."</div>
+                </div>
+              </div>
+            </div>
+            <div class="float-badge hero-fb-top">
+              <span style="font-size:18px;">🏷️</span>
+              <div><p>Black Friday</p><p>condiciones solo hasta el {BF_HASTA_CORTO}</p></div>
+            </div>
+            <div class="float-badge hero-fb-bot">
+              <span style="font-size:18px;">🎥</span>
+              <div><p>Clases en directo</p><p>masterclass y grupos de conversación</p></div>
+            </div>
           </div>
         </div>
-      </div>
-      <span class="bf-horizonte" aria-hidden="true"></span>
-    </header>
+        <div class="hero-scroll-hint" aria-hidden="true">↓</div>
+      </section>
+    </div>
 
     <!-- ═══ La landing de la formación (las mismas piezas que /formacion-nawar-a0-a1) ═══ -->
     <div class="l8 lp-l8">
@@ -218,6 +309,8 @@ const DUDAS = [
       <PilaresSection />
       <PresentacionNawar ctaUrl={ADMISION} ctaTexto={QUIERO} />
       <MetodoFunciona ads={true} />
+      <!-- Quién te acompaña: no sale hasta que haya alguien en src/lib/equipo.ts. -->
+      <EquipoNawar />
     </div>
 
     <!-- ═══ El plan de estudios ═══ -->
@@ -493,9 +586,6 @@ const DUDAS = [
   .lp-alerta p { margin: 0; font-size: 15.5px; line-height: 1.45; }
   .lp-alerta strong { font-weight: 800; letter-spacing: 0.01em; text-transform: uppercase; }
 
-  /* ── La luz de la cabecera ──────────────────────────────────────────── */
-  .lp-foco { --x: 30%; }
-  .lp-h1-luz { filter: drop-shadow(0 0 34px rgba(77,163,255,0.35)); }
   .lp-tarjeta.bf-borde-luz { border-color: rgba(170,210,255,0.14); }
 
   /* ── Quien compró el ebook / los demás ──────────────────────────────── */
@@ -503,28 +593,18 @@ const DUDAS = [
   :global(html.bf-comprador) .lp-gen { display: none; }
   .lp-ya-ebook, .lp-ya-vuelta { display: none; }
   :global(html.bf-de-ebook) .lp-ya-ebook, :global(html.bf-de-vuelta) .lp-ya-vuelta { display: inline; }
-  .lp-ya { display: inline-flex; align-items: flex-start; gap: 10px; margin: 0 0 22px; padding: 10px 16px 10px 12px; border-radius: 14px; background: rgba(34,197,94,0.14); border: 1px solid rgba(134,239,172,0.35); max-width: 560px; font-size: 14.5px; line-height: 1.5; color: #fff; }
+  .lp-ya { display: inline-flex; align-items: flex-start; gap: 10px; margin: 0 0 20px; padding: 10px 16px 10px 12px; border-radius: 14px; background: rgba(34,197,94,0.14); border: 1px solid rgba(134,239,172,0.35); max-width: 560px; font-size: 14.5px; line-height: 1.5; color: #fff; }
   .lp-ya-ico { flex-shrink: 0; width: 22px; height: 22px; border-radius: 9999px; background: #22C55E; color: #052e16; display: inline-flex; align-items: center; justify-content: center; margin-top: 0; }
 
-  /* ── Cabecera ───────────────────────────────────────────────────────── */
-  .lp-hero { position: relative; padding: 0 24px 104px; }
-  .lp-hero-in { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding-top: 40px; display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.1fr); gap: 56px; align-items: center; }
-
-  /* La escuela por dentro, a la derecha: la lección de verdad en el portátil,
-     con su luz detrás y dos chapas, como la cabecera de la landing. */
-  .lp-visual { position: relative; }
-  .lp-visual img { position: relative; z-index: 1; display: block; width: 112%; max-width: none; height: auto; margin-left: -2%; filter: drop-shadow(0 40px 60px rgba(0,0,0,0.35)); }
-  .lp-visual-luz { position: absolute; inset: 8% 4% 0 10%; z-index: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(77,163,255,0.55), rgba(77,163,255,0) 72%); filter: blur(30px); }
-  .lp-visual-chapa {
-    position: absolute; z-index: 2; display: flex; align-items: center; gap: 11px; padding: 11px 16px 11px 12px; border-radius: 14px;
-    background: rgba(255,255,255,0.96); color: #1D0084; box-shadow: 0 18px 40px -12px rgba(5,0,60,0.55);
+  /* ── Cabecera: el banner de la landing (sus reglas, en landing-08-08-2026.css)
+     con el logo encima, sin la barra fija de la landing. ─────────────── */
+  .lp-nav { position: absolute; top: 0; left: 0; right: 0; max-width: 1200px; margin: 0 auto; padding: 28px 24px; z-index: 2; }
+  .lp-top :global(.hero-sub) { color: rgba(255,255,255,0.9); }
+  .lp-quien { color: #fff; font-weight: 700; }
+  @media (max-width: 959px) {
+    .lp-top :global(.hero-inner) { padding-top: 104px; }
+    .lp-nav { padding: 20px 24px; }
   }
-  .lp-visual-chapa > span { flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px; background: #EAF3FF; color: #025dc7; display: inline-flex; align-items: center; justify-content: center; }
-  .lp-visual-chapa b { display: block; font-size: 14px; font-weight: 700; line-height: 1.25; }
-  .lp-visual-chapa div > span { display: block; font-size: 12.5px; color: #3b4266; line-height: 1.3; }
-  .lp-vc1 { top: 2%; right: -2%; }
-  .lp-vc2 { bottom: 4%; left: -4%; }
-  .lp-hero-cta { margin-top: 34px; display: flex; flex-direction: column; align-items: flex-start; }
   .lp-fin p { margin: 28px 0 16px; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.93); max-width: 560px; }
   .lp-fin p strong { color: #fff; }
   .lp-tarjeta {
@@ -588,23 +668,10 @@ const DUDAS = [
   .lp-pegado-btn { flex-shrink: 0; width: 48px; height: 48px; border-radius: 9999px; background: #4da3ff; color: #0a1656; display: inline-flex; align-items: center; justify-content: center; }
   .lp-pegado-btn::after { content: ''; position: absolute; inset: 0; border-radius: 9999px; }
 
-  /* ── Tableta ────────────────────────────────────────────────────────── */
-  @media (max-width: 1023px) {
-    .lp-hero-in { grid-template-columns: minmax(0, 1fr); gap: 40px; padding-top: 12px; }
-    .lp-visual { max-width: 640px; }
-    .lp-visual img { width: 100%; margin-left: 0; }
-    .lp-vc1 { right: 0; }
-    .lp-vc2 { left: 0; }
-  }
   @media (max-width: 760px) {
-    .lp-foco { --x: 50%; }
     .lp-etapas { grid-template-columns: minmax(0, 1fr); }
-    /* En el móvil las chapas tapaban la pantalla del portátil. */
-    .lp-visual-chapa { display: none; }
   }
   @media (max-width: 640px) {
-    .lp-hero { padding: 0 24px 64px; }
-    .lp-hero-cta { width: 100%; }
     .lp-tarjeta { padding: 22px 20px 20px; }
     .lp-pasos { grid-template-columns: minmax(0, 1fr); gap: 22px; text-align: left; margin: 36px 0; }
     .lp-pasos::before { display: none; }

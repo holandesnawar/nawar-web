@@ -1,0 +1,141 @@
+---
+/**
+ * «Quién te acompaña en el camino»: una tarjeta por persona del equipo, con
+ * la foto y el nombre sobre el azul; al pasar el ratón (o al tocarla en el
+ * móvil) sube una cortina con quién es. El diseño es el de /v4/pruebas
+ * (06/10), que al usuario le gustó; las personas salen de src/lib/equipo.ts.
+ *
+ * Sin nadie en la lista, no pinta nada: así puede estar puesta en la página
+ * antes de tener las fotos.
+ */
+import { EQUIPO, type MiembroEquipo } from '../../lib/equipo'
+
+interface Props {
+  /** Para probar el diseño en local; en las páginas, sin nada. */
+  equipo?: MiembroEquipo[]
+}
+const lista = Astro.props.equipo ?? EQUIPO
+
+const iniciales = (n: string) =>
+  n.split(/\s+/).filter(Boolean).slice(0, 2).map((p) => p[0]?.toUpperCase() ?? '').join('')
+const escapar = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+const conNegrita = (t: string) => escapar(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+---
+
+{lista.length > 0 && (
+  <section class="eq-sec">
+    <div class="eq-in">
+      <div class="eq-cab">
+        <span class="badge-light">
+          <svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          El equipo
+        </span>
+        <h2 class="mf-title">Quién te acompaña <span class="mf-accent">en el camino</span></h2>
+        <p class="eq-sub"><span class="eq-pista-raton">Pasa el ratón por cada tarjeta</span><span class="eq-pista-dedo">Toca cada tarjeta</span> para conocer a quien te acompaña.</p>
+      </div>
+      <div class="eq-marco">
+        <button type="button" class="eq-flecha eq-izq" data-eq-mover="-1" aria-label="Anteriores">‹</button>
+        <ul class="eq-fila" id="eq-fila" data-n={lista.length}>
+          {lista.map((p) => (
+            <li>
+              <button type="button" class="eq-card" aria-label={`${p.nombre}, ${p.rol}`}>
+                <span class="eq-foto">
+                  {p.foto ? <img src={p.foto} alt="" loading="lazy" decoding="async" /> : <span class="eq-ini">{iniciales(p.nombre)}</span>}
+                </span>
+                <span class="eq-nombre">
+                  <strong>{p.nombre}</strong>
+                  <span>{p.rol}</span>
+                </span>
+                <span class="eq-bio">
+                  <span class="eq-bio-nombre">{p.nombre}</span>
+                  <span set:html={conNegrita(p.bio)} />
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+        <button type="button" class="eq-flecha eq-der" data-eq-mover="1" aria-label="Siguientes">›</button>
+      </div>
+    </div>
+  </section>
+)}
+
+<script>
+  // Con ratón, la cortina sube al pasar por encima (CSS). Al tocar (móvil), se
+  // abre y se cierra; abrir una cierra las demás.
+  const tarjetas = Array.from(document.querySelectorAll<HTMLButtonElement>('.eq-card'))
+  tarjetas.forEach((t) =>
+    t.addEventListener('click', () => {
+      const abrir = !t.classList.contains('abierta')
+      tarjetas.forEach((x) => x.classList.remove('abierta'))
+      if (abrir) t.classList.add('abierta')
+    }),
+  )
+  const fila = document.getElementById('eq-fila')
+  document.querySelectorAll<HTMLButtonElement>('[data-eq-mover]').forEach((b) =>
+    b.addEventListener('click', () => {
+      const paso = (fila?.firstElementChild as HTMLElement | null)?.offsetWidth || 260
+      fila?.scrollBy({ left: Number(b.dataset.eqMover) * (paso + 16), behavior: 'smooth' })
+    }),
+  )
+</script>
+
+<style>
+  .eq-sec { background: #fff; padding: 104px 24px; }
+  .eq-in { max-width: 1152px; margin: 0 auto; }
+  .eq-cab { text-align: center; max-width: 780px; margin: 0 auto 48px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .eq-cab .mf-title { margin: 0; }
+  .eq-sub { margin: 0; font-size: 16px; line-height: 1.6; color: #171a2e; }
+  .eq-pista-dedo { display: none; }
+  @media (hover: none) { .eq-pista-raton { display: none; } .eq-pista-dedo { display: inline; } }
+
+  .eq-marco { position: relative; max-width: 1100px; margin: 0 auto; }
+  .eq-fila { list-style: none; margin: 0; padding: 4px 2px 12px; display: flex; justify-content: center; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; text-align: left; }
+  .eq-fila::-webkit-scrollbar { display: none; }
+  .eq-fila li { flex: 0 0 calc((100% - 60px) / 4); min-width: 220px; scroll-snap-align: start; }
+  /* Con más de cuatro, se desliza: que empiece por la izquierda. */
+  .eq-fila[data-n='5'], .eq-fila[data-n='6'], .eq-fila[data-n='7'], .eq-fila[data-n='8'] { justify-content: flex-start; }
+
+  .eq-card {
+    position: relative; display: block; width: 100%; aspect-ratio: 3 / 4; padding: 0; border: 0; border-radius: 20px; overflow: hidden;
+    cursor: pointer; font-family: inherit; text-align: left; color: #fff; box-shadow: 0 18px 40px -24px rgba(29,0,132,0.55);
+    background: radial-gradient(circle at 70% 20%, rgba(77,163,255,0.35), transparent 60%), linear-gradient(170deg, #2b3cb0 0%, #14248f 55%, #0a1656 100%);
+    transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s;
+  }
+  @media (hover: hover) { .eq-card:hover { transform: translateY(-4px); box-shadow: 0 26px 50px -24px rgba(29,0,132,0.65); } }
+  .eq-foto { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .eq-foto img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+  @media (hover: hover) { .eq-card:hover .eq-foto img { transform: scale(1.04); } }
+  .eq-ini { font-family: 'Poppins', system-ui, sans-serif; font-size: 62px; font-weight: 700; color: rgba(255,255,255,0.2); letter-spacing: -0.02em; margin-bottom: 40px; }
+  .eq-nombre {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 80px 18px 18px; display: flex; flex-direction: column; gap: 3px;
+    background: linear-gradient(180deg, transparent 0%, rgba(11,109,240,0.55) 45%, rgba(37,123,255,0.96) 100%);
+  }
+  .eq-nombre strong { font-family: 'Poppins', system-ui, sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+  .eq-nombre span { font-size: 13.5px; color: rgba(255,255,255,0.92); }
+  .eq-bio {
+    position: absolute; inset: 0; background: #E3ECFF; color: #0a1656; padding: 22px 20px; display: flex; flex-direction: column; gap: 10px;
+    font-size: 15px; line-height: 1.6; transform: translateY(101%); transition: transform .45s cubic-bezier(.2,.8,.2,1);
+  }
+  .eq-bio :global(strong) { color: #1D0084; font-weight: 700; }
+  .eq-bio-nombre { font-family: 'Poppins', system-ui, sans-serif; font-weight: 600; font-size: 17px; color: #1D0084; }
+  @media (hover: hover) { .eq-card:hover .eq-bio { transform: translateY(0); } }
+  .eq-card:global(.abierta) .eq-bio, .eq-card:focus-visible .eq-bio { transform: translateY(0); }
+  .eq-card:focus-visible { outline: 2px solid #4da3ff; outline-offset: 3px; }
+
+  .eq-flecha {
+    display: none; position: absolute; top: 50%; transform: translateY(-50%); width: 42px; height: 42px; border-radius: 9999px;
+    border: 1px solid #DDE6F5; background: #fff; color: #1D0084; font-size: 22px; line-height: 1; cursor: pointer; z-index: 2;
+    box-shadow: 0 6px 18px -8px rgba(29,0,132,0.3);
+  }
+  .eq-izq { left: -12px; } .eq-der { right: -12px; }
+  @media (max-width: 1023px) and (hover: hover) { .eq-flecha { display: inline-flex; align-items: center; justify-content: center; } }
+  @media (prefers-reduced-motion: reduce) { .eq-bio, .eq-card, .eq-foto img { transition: none; } }
+
+  @media (max-width: 1023px) { .eq-fila { justify-content: flex-start; } }
+  @media (max-width: 760px) {
+    .eq-sec { padding: 72px 24px; }
+    .eq-cab { margin-bottom: 32px; }
+    .eq-fila li { flex-basis: 72%; min-width: 0; }
+  }
+</style>
