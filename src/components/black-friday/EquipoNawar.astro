@@ -14,7 +14,21 @@ interface Props {
   /** Para probar el diseño en local; en las páginas, sin nada. */
   equipo?: MiembroEquipo[]
 }
-const lista = Astro.props.equipo ?? EQUIPO
+const reales = Astro.props.equipo ?? EQUIPO
+/**
+ * Mientras no haya nadie en src/lib/equipo.ts, la sección sale con tarjetas de
+ * PRUEBA, pero escondida: solo se ve con `?equipo=prueba` en la dirección
+ * (29/10, usuario: "solo quiero ver el diseño ahora"). Quien llega por un
+ * anuncio o un correo no la ve nunca. Con el equipo de verdad, sale para todos.
+ */
+const PRUEBA: MiembroEquipo[] = [
+  { nombre: 'Nombre Apellido', rol: 'Fundador · Dirección académica', foto: '', bio: 'Texto de prueba: aquí van **dos o tres frases** sobre quién es y qué hace por el alumno.' },
+  { nombre: 'Nombre Apellido', rol: 'Profesor · Masterclass', foto: '', bio: 'Texto de prueba: aquí van **dos o tres frases** sobre quién es y qué hace por el alumno.' },
+  { nombre: 'Nombre Apellido', rol: 'Profesora · Conversación', foto: '', bio: 'Texto de prueba: aquí van **dos o tres frases** sobre quién es y qué hace por el alumno.' },
+  { nombre: 'Nombre Apellido', rol: 'Admisiones', foto: '', bio: 'Texto de prueba: aquí van **dos o tres frases** sobre quién es y qué hace por el alumno.' },
+]
+const deVerdad = reales.length > 0
+const lista = deVerdad ? reales : PRUEBA
 
 const iniciales = (n: string) =>
   n.split(/\s+/).filter(Boolean).slice(0, 2).map((p) => p[0]?.toUpperCase() ?? '').join('')
@@ -23,8 +37,9 @@ const conNegrita = (t: string) => escapar(t).replace(/\*\*(.+?)\*\*/g, '<strong>
 ---
 
 {lista.length > 0 && (
-  <section class="eq-sec">
+  <section class="eq-sec" hidden={!deVerdad} data-eq-prueba={deVerdad ? undefined : ''}>
     <div class="eq-in">
+      {!deVerdad && <p class="eq-aviso">Vista previa con datos de prueba: solo la ves tú, con <b>?equipo=prueba</b> en la dirección.</p>}
       <div class="eq-cab">
         <span class="badge-light">
           <svg class="check-icon" fill="none" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5 5.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -61,6 +76,10 @@ const conNegrita = (t: string) => escapar(t).replace(/\*\*(.+?)\*\*/g, '<strong>
 )}
 
 <script>
+  // Sin el equipo de verdad, la sección de prueba solo sale con ?equipo=prueba.
+  if (new URLSearchParams(location.search).has('equipo')) {
+    document.querySelectorAll<HTMLElement>('[data-eq-prueba]').forEach((s) => { s.hidden = false })
+  }
   // Con ratón, la cortina sube al pasar por encima (CSS). Al tocar (móvil), se
   // abre y se cierra; abrir una cierra las demás.
   const tarjetas = Array.from(document.querySelectorAll<HTMLButtonElement>('.eq-card'))
@@ -82,6 +101,8 @@ const conNegrita = (t: string) => escapar(t).replace(/\*\*(.+?)\*\*/g, '<strong>
 
 <style>
   .eq-sec { background: #fff; padding: 104px 24px; }
+  .eq-sec[hidden] { display: none; }
+  .eq-aviso { max-width: 640px; margin: 0 auto 28px; padding: 10px 14px; border-radius: 12px; background: #FFFBF2; border: 1px dashed #E4B252; color: #8A6A2A; font-size: 13.5px; text-align: center; }
   .eq-in { max-width: 1152px; margin: 0 auto; }
   .eq-cab { text-align: center; max-width: 780px; margin: 0 auto 48px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
   .eq-cab .mf-title { margin: 0; }
