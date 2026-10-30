@@ -29,6 +29,8 @@ const PRUEBA: MiembroEquipo[] = [
 ]
 const deVerdad = reales.length > 0
 const lista = deVerdad ? reales : PRUEBA
+/** Sin ninguna bio, no hay cortina que abrir: fuera la pista de «pasa el ratón». */
+const conBios = lista.some((p) => p.bio.trim())
 
 const iniciales = (n: string) =>
   n.split(/\s+/).filter(Boolean).slice(0, 2).map((p) => p[0]?.toUpperCase() ?? '').join('')
@@ -46,26 +48,38 @@ const conNegrita = (t: string) => escapar(t).replace(/\*\*(.+?)\*\*/g, '<strong>
           El equipo
         </span>
         <h2 class="mf-title">Quién te acompaña <span class="mf-accent">en el camino</span></h2>
-        <p class="eq-sub"><span class="eq-pista-raton">Pasa el ratón por cada tarjeta</span><span class="eq-pista-dedo">Toca cada tarjeta</span> para conocer a quien te acompaña.</p>
+        {conBios && <p class="eq-sub"><span class="eq-pista-raton">Pasa el ratón por cada tarjeta</span><span class="eq-pista-dedo">Toca cada tarjeta</span> para conocer a quien te acompaña.</p>}
       </div>
       <div class="eq-marco">
         <button type="button" class="eq-flecha eq-izq" data-eq-mover="-1" aria-label="Anteriores">‹</button>
         <ul class="eq-fila" id="eq-fila" data-n={lista.length}>
           {lista.map((p) => (
             <li>
-              <button type="button" class="eq-card" aria-label={`${p.nombre}, ${p.rol}`}>
-                <span class="eq-foto">
-                  {p.foto ? <img src={p.foto} alt="" loading="lazy" decoding="async" /> : <span class="eq-ini">{iniciales(p.nombre)}</span>}
-                </span>
-                <span class="eq-nombre">
-                  <strong>{p.nombre}</strong>
-                  <span>{p.rol}</span>
-                </span>
-                <span class="eq-bio">
-                  <span class="eq-bio-nombre">{p.nombre}</span>
-                  <span set:html={conNegrita(p.bio)} />
-                </span>
-              </button>
+              {p.bio.trim() ? (
+                <button type="button" class="eq-card" aria-label={p.rol ? `${p.nombre}, ${p.rol}` : p.nombre}>
+                  <span class="eq-foto">
+                    {p.foto ? <img src={p.foto} alt="" loading="lazy" decoding="async" /> : <span class="eq-ini">{iniciales(p.nombre)}</span>}
+                  </span>
+                  <span class="eq-nombre">
+                    <strong>{p.nombre}</strong>
+                    {p.rol && <span>{p.rol}</span>}
+                  </span>
+                  <span class="eq-bio">
+                    <span class="eq-bio-nombre">{p.nombre}</span>
+                    <span set:html={conNegrita(p.bio)} />
+                  </span>
+                </button>
+              ) : (
+                <div class="eq-card eq-card-quieta">
+                  <span class="eq-foto">
+                    {p.foto ? <img src={p.foto} alt={p.nombre} loading="lazy" decoding="async" /> : <span class="eq-ini">{iniciales(p.nombre)}</span>}
+                  </span>
+                  <span class="eq-nombre">
+                    <strong>{p.nombre}</strong>
+                    {p.rol && <span>{p.rol}</span>}
+                  </span>
+                </div>
+              )}
             </li>
           ))}
         </ul>
@@ -82,7 +96,7 @@ const conNegrita = (t: string) => escapar(t).replace(/\*\*(.+?)\*\*/g, '<strong>
   }
   // Con ratón, la cortina sube al pasar por encima (CSS). Al tocar (móvil), se
   // abre y se cierra; abrir una cierra las demás.
-  const tarjetas = Array.from(document.querySelectorAll<HTMLButtonElement>('.eq-card'))
+  const tarjetas = Array.from(document.querySelectorAll<HTMLButtonElement>('button.eq-card'))
   tarjetas.forEach((t) =>
     t.addEventListener('click', () => {
       const abrir = !t.classList.contains('abierta')
@@ -143,6 +157,8 @@ const conNegrita = (t: string) => escapar(t).replace(/\*\*(.+?)\*\*/g, '<strong>
   @media (hover: hover) { .eq-card:hover .eq-bio { transform: translateY(0); } }
   .eq-card:global(.abierta) .eq-bio, .eq-card:focus-visible .eq-bio { transform: translateY(0); }
   .eq-card:focus-visible { outline: 2px solid #4da3ff; outline-offset: 3px; }
+  /* Sin bio: solo foto y nombre, sin nada que abrir. */
+  .eq-card-quieta { cursor: default; }
 
   .eq-flecha {
     display: none; position: absolute; top: 50%; transform: translateY(-50%); width: 42px; height: 42px; border-radius: 9999px;

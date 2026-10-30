@@ -117,14 +117,6 @@ html.bf-terminado .bf-fin { display: block; }
 .bf-faq details[open] summary svg { transform: rotate(45deg); }
 .bf-faq p { margin: 0 0 22px; padding: 0 4px; font-size: 16px; line-height: 1.65; color: #171a2e; max-width: 720px; }
 
-/* ── El pie ─────────────────────────────────────────────────────────── */
-.bf-pie { position: relative; z-index: 1; max-width: 1120px; margin: 96px auto 0; padding: 26px 0 34px; border-top: 1px solid rgba(255,255,255,0.1);
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; font-size: 13px; color: rgba(255,255,255,0.62); }
-.bf-logo-pie { height: 26px; width: auto; opacity: 0.85; }
-.bf-pie nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
-.bf-pie a { color: rgba(255,255,255,0.75); text-decoration: none; }
-.bf-pie a:hover { color: #fff; }
-.bf-pie p { margin: 0; }
 
 /* El logo, si la imagen no carga: el nombre escrito. */
 .bf-logo-txt { font-family: 'Poppins', system-ui, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; color: #fff; text-decoration: none; }
@@ -140,7 +132,6 @@ html.bf-terminado .bf-fin { display: block; }
   .bf-hero-sub { font-size: 16px; line-height: 1.6; }
   .bf-btn { width: 100%; }
   .bf-faq summary { font-size: 16.5px; padding: 18px 2px; }
-  .bf-pie { margin-top: 64px; flex-direction: column; align-items: flex-start; padding-bottom: 104px; }
 }
 
 /* ══ La luz (28/10, "más chula, con luz") ═══════════════════════════════════
