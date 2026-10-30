@@ -52,10 +52,19 @@
  * «¿Qué incluye?») y «Empieza hoy» (AccesoIncluye, otra vez «¿Qué incluye?»
  * con la misma imagen, justo antes de los pasos de la llamada). Para volver a
  * ponerlas basta importarlas: no se ha borrado nada de los componentes.
- * El mismo día, los dibujos: la cabecera enseña la lección 1 de verdad
- * (LECCION) y «El Método Holandés Nawar» «Tu camino» (CAMINO, por el
- * `slot="foto"` de PresentacionNawar) en vez del libro de la landing, que
- * aquí se confundía con el ebook. Los botones, en una línea en el móvil.
+ * El mismo día, «El Método Holandés Nawar» lleva «Tu camino» (CAMINO, por el
+ * `slot="foto"` de PresentacionNawar) en vez del libro de la landing. Los
+ * botones, en una línea en el móvil.
+ *
+ * 30/10, más tarde (usuario: "más estilo YouTalk… que esté claro en el título
+ * que es Black Friday"): el titular de la cabecera es como el suyo
+ * («Adelántate al» / BLACK FRIDAY enorme / acceso anticipado / «Accede antes
+ * que nadie a las condiciones especiales…»), sin las viñetas ni la nota a mano
+ * de la landing. A la derecha, la escuela entera en una imagen
+ * (public/img/black-friday/escuela-todo.webp, «todoo.movil.png» de
+ * docs.holandesnawar.com con el fondo blanco quitado) y en «El método, paso a
+ * paso», el libro de la formación (libro-formacion.webp, «cuantos cursos has
+ * empezado.png»). Las dos, servidas desde la web en WebP.
  *
  * La LUZ de las otras secciones (28/10): el brillo de los botones y el borde de
  * luz de la tarjeta salen de black-friday.css (`bf-brillo`, `bf-borde-luz`);
@@ -100,28 +109,6 @@ const flecha = icono('flecha', 16, 2.5)
 const QUIERO = 'Quiero mi oferta de Black Friday'
 /** «hasta el 30 de noviembre», para la etiqueta de la cabecera. */
 const BF_HASTA_CORTO = BF_HASTA_TEXTO.replace(/^lunes\s+/, '')
-
-/** Las tres viñetas del banner de la landing de la formación, tal cual. */
-const HERO_PUNTOS = [
-  'Desde cero: 10 módulos, +15 h de vídeo y +360 lecciones',
-  'Masterclass y grupos de conversación en directo cada semana',
-  'Explicado desde el español, sin pasar por el inglés',
-]
-const check = `<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>`
-
-/**
- * La lección 1 de la formación, como sale en la barra del curso: el vídeo y
- * sus partes (Samenvatting → resumen, Flashcards, Oefening → ejercicios,
- * Lezen → lectura, Luisteren → escucha). Para el mockup de la cabecera.
- */
-const LECCION = [
-  { n: '1 · Video', es: 'la explicación', ico: 'video' },
-  { n: '1.1 Samenvatting', es: 'resumen', ico: 'libro' },
-  { n: '1.2 Flashcards', es: 'vocabulario', ico: 'idioma' },
-  { n: '1.3 Oefening', es: 'ejercicios', ico: 'lapiz' },
-  { n: '1.4 Lezen', es: 'lectura', ico: 'libro' },
-  { n: '1.5 Luisteren', es: 'escucha', ico: 'altavoz' },
-]
 
 /**
  * «Tu camino», el dibujo de «El Método Holandés Nawar» (30/10; antes, la
@@ -231,30 +218,23 @@ const DUDAS = [
                 <span class="lp-ya-vuelta">Tu oferta de Black Friday sigue desbloqueada.</span>
               </span>
             </p>
-            <div class="hero-badge">
-              <span class="badge-dot" aria-hidden="true"></span>
-              <span class="lp-comp">Black Friday · Oferta desbloqueada</span>
-              <span class="lp-gen">Black Friday · Acceso anticipado</span>
-            </div>
-            <h1 class="hero-headline">
-              <span class="text-gradient-white">El neerlandés no se te da mal.</span>
-              <em>Te lo estaban enseñando en inglés.</em>
-            </h1>
-            <p class="hero-sub lp-comp">
-              <strong class="lp-quien" data-titulo="Acabas de desbloquear nuestra mejor oferta" data-vuelta="Tu oferta de Black Friday te está esperando">Acabas de desbloquear nuestra mejor oferta</strong>:
-              la Formación Nawar A0-A1 con <strong>condiciones de Black Friday</strong>, antes que nadie. De A0 a A1 en
-              <strong>16 semanas</strong>, pensada para hispanohablantes.
+            <!-- El titular, como el de YouTalk (30/10, usuario: "que esté claro
+                 en el título que es Black Friday"): «Adelántate al», BLACK
+                 FRIDAY enorme, una línea de acceso anticipado y debajo qué es. -->
+            <p class="lp-pre"><span class="lp-pre-raya" aria-hidden="true"></span>Adelántate al</p>
+            <h1 class="lp-bf">Black Friday</h1>
+            <p class="lp-acceso">
+              <span class="lp-acceso-punto" aria-hidden="true"></span>
+              <span class="lp-gen">Acceso anticipado a la mejor oferta del año</span>
+              <span class="lp-comp lp-quien" data-titulo="Acabas de desbloquear nuestra mejor oferta" data-vuelta="Tu oferta te está esperando">Acabas de desbloquear nuestra mejor oferta</span>
             </p>
-            <p class="hero-sub lp-gen">
-              <strong class="lp-quien" data-titulo="Adelántate al Black Friday">Adelántate al Black Friday</strong>:
-              accede antes que nadie a las <strong>condiciones especiales</strong> de la primera formación de neerlandés
-              diseñada para hispanohablantes. De A0 a A1 en <strong>16 semanas</strong>.
+            <h2 class="lp-h2">
+              Accede antes que nadie a las <span class="lp-marca">condiciones especiales</span> de la Formación Nawar A0-A1
+            </h2>
+            <p class="lp-sub">
+              Neerlandés de cero a A1 en 16 semanas, explicado en español. Solicita tu llamada de admisión
+              gratuita y descubre si puedes acceder a la oferta anticipada.
             </p>
-            <ul class="hero-bullets">
-              {HERO_PUNTOS.map((p) => (
-                <li><span class="hero-check" set:html={check} />{p}</li>
-              ))}
-            </ul>
 
             <div class="hero-ctas bf-solo-activa">
               <div class="hero-cta-fila">
@@ -265,13 +245,6 @@ const DUDAS = [
                     Sin compromiso: te la contamos en una llamada de media hora
                   </p>
                 </div>
-                <span class="hero-empieza" aria-hidden="true">
-                  <span class="hero-empieza-txt">empieza hoy</span>
-                  <svg class="hero-empieza-flecha" viewBox="0 0 64 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M58 4C57 20 47 34 30 40" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                    <path d="M38 41l-9 1 3-9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </span>
               </div>
             </div>
             <div class="lp-fin bf-fin">
@@ -280,42 +253,13 @@ const DUDAS = [
             </div>
           </div>
 
-          <!-- La escuela por dentro (30/10, usuario: "el mockup de la primera
-               sección también puede ser mejor"). Antes era la ventana de la
-               landing con lecciones que no existen («Les 2 — Grammatica»,
-               candados, emojis). Ahora es la lección 1 de verdad, con sus
-               partes como salen en la barra del curso, y una flashcard de su
-               vocabulario (courseData.ts: «de naam», «Mijn naam is Maria»).
-               Una sola etiqueta (la de Black Friday): la de las clases en
-               directo chocaba con la flashcard y ya lo dicen las viñetas.
-               En el móvil sale DEBAJO del botón: no lo empuja. -->
-          <div class="hero-mockup-col lp-maq-col" aria-hidden="true">
-            <div class="lp-maq">
-              <div class="lp-maq-barra">
-                <span class="lp-maq-puntos"><i></i><i></i><i></i></span>
-                <span class="lp-maq-url"><Fragment set:html={icono('candado', 11, 2.4)} />app.holandesnawar.com</span>
-              </div>
-              <div class="lp-maq-cuerpo">
-                <p class="lp-maq-k">Módulo 1 · Over jou</p>
-                <p class="lp-maq-t">Les 1 — Jezelf voorstellen</p>
-                <div class="lp-maq-prog"><span class="lp-maq-prog-barra"><i></i></span><b>3 de 6</b></div>
-                <ol class="lp-maq-lista">
-                  {LECCION.map((l, k) => (
-                    <li class={k < 3 ? 'hecho' : k === 3 ? 'ahora' : ''}>
-                      <span class="lp-maq-ico" set:html={k < 3 ? icono('check', 11, 3) : icono(l.ico, 13, 2)} />
-                      <span class="lp-maq-nombre">{l.n}<small>{l.es}</small></span>
-                      {k === 3 && <span class="lp-maq-seguir">Seguir</span>}
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </div>
-            <div class="lp-maq-flash">
-              <span class="lp-maq-flash-k">Flashcard · Les 1</span>
-              <span class="lp-maq-flash-nl"><small>de</small> naam <span set:html={icono('altavoz', 15, 2)} /></span>
-              <span class="lp-maq-flash-es">el nombre</span>
-              <span class="lp-maq-flash-ej">Mijn naam is Maria.</span>
-            </div>
+          <!-- La escuela entera en una imagen (30/10, usuario: "quita mockup,
+               mejor esta"): certificado, consulta, lección, ejercicios, libro y
+               comunidad. Es «todoo.movil.png» de docs.holandesnawar.com con el
+               fondo blanco quitado (la cabecera es azul oscura), servida desde
+               la web en WebP. En el móvil sale DEBAJO del botón: no lo empuja. -->
+          <div class="hero-mockup-col lp-todo-col" aria-hidden="true">
+            <img src="/img/black-friday/escuela-todo.webp" alt="" class="lp-todo" width="1400" height="861" fetchpriority="high" decoding="async" />
             <div class="float-badge hero-fb-top">
               <span class="lp-fb-ico" set:html={icono('calendario', 17, 2)} />
               <div><p>Black Friday</p><p>condiciones solo hasta el {BF_HASTA_CORTO}</p></div>
@@ -373,58 +317,12 @@ const DUDAS = [
         </div>
       </PresentacionNawar>
       <MetodoFunciona ads={true}>
-        <!-- «El método, paso a paso»: a la derecha, el dibujo de la escuela que
-             llevaba antes la cabecera (30/10, usuario: "en ese mockup pon el que
-             teníamos antes arriba"). En la cabecera va ahora la lección 1. -->
-        <div slot="mockup" class="lp-mf-maq">
-          <div class="platform-mockup">
-            <div class="mockup-header">
-              <div class="mockup-dots"><span></span><span></span><span></span></div>
-              <span class="mockup-title">Formación Nawar A0-A1</span>
-            </div>
-            <div class="mockup-body">
-              <div>
-                <div class="mockup-label">Tu progreso — Módulo 1</div>
-                <div class="mockup-progress-bar"><div class="mockup-progress-fill" style="width:65%"></div></div>
-                <div class="mockup-pct">65% completado</div>
-              </div>
-              <div class="mockup-modules">
-                <div class="mockup-module active">
-                  <div class="module-icon">📹</div>
-                  <div class="module-info"><span class="module-title">Les 1 — Woordenschat</span><span class="module-sub">Vocabulario · 20 min</span></div>
-                  <span class="module-badge done">✓</span>
-                </div>
-                <div class="mockup-module active">
-                  <div class="module-icon">📝</div>
-                  <div class="module-info"><span class="module-title">Les 2 — Grammatica</span><span class="module-sub">Gramática · 18 min</span></div>
-                  <span class="module-badge done">✓</span>
-                </div>
-                <div class="mockup-module current">
-                  <div class="module-icon">🎯</div>
-                  <div class="module-info"><span class="module-title">Les 3 — Uitspraak</span><span class="module-sub">Pronunciación · 15 min</span></div>
-                  <span class="module-badge current-badge">→</span>
-                </div>
-                <div class="mockup-module locked">
-                  <div class="module-icon">🔒</div>
-                  <div class="module-info"><span class="module-title">Les 4 — Spreken</span><span class="module-sub">Hablar · 25 min</span></div>
-                </div>
-              </div>
-              <div class="mockup-vocab-card">
-                <div class="vocab-article">de</div>
-                <div class="vocab-word">naam</div>
-                <div class="vocab-translation">el nombre</div>
-                <div class="vocab-example">"Mijn naam is Anna."</div>
-              </div>
-            </div>
-          </div>
-          <div class="float-badge lp-mf-fb-top">
-            <span style="font-size:18px;">🏷️</span>
-            <div><p>Black Friday</p><p>condiciones solo hasta el {BF_HASTA_CORTO}</p></div>
-          </div>
-          <div class="float-badge lp-mf-fb-bot">
-            <span style="font-size:18px;">🎥</span>
-            <div><p>Clases en directo</p><p>masterclass y grupos de conversación</p></div>
-          </div>
+        <!-- «El método, paso a paso»: el libro de la formación (30/10, usuario:
+             "pon esta imagen"; «cuantos cursos has empezado.png» de
+             docs.holandesnawar.com, servida desde la web en WebP). Va sobre
+             blanco, como su fondo. También en el móvil, debajo de los pasos. -->
+        <div slot="mockup" class="lp-libro">
+          <img src="/img/black-friday/libro-formacion.webp" alt="" width="900" height="1209" loading="lazy" decoding="async" />
         </div>
       </MetodoFunciona>
       <!-- Quién te acompaña: no sale hasta que haya alguien en src/lib/equipo.ts. -->
@@ -714,8 +612,6 @@ const DUDAS = [
   /* ── Cabecera: el banner de la landing (sus reglas, en landing-08-08-2026.css)
      con el logo encima, sin la barra fija de la landing. ─────────────── */
   .lp-nav { position: absolute; top: 0; left: 0; right: 0; max-width: 1200px; margin: 0 auto; padding: 28px 24px; z-index: 2; }
-  .lp-top :global(.hero-sub) { color: rgba(255,255,255,0.9); }
-  .lp-quien { color: #fff; font-weight: 700; }
   @media (max-width: 959px) {
     .lp-top :global(.hero-inner) { padding-top: 104px; }
     .lp-nav { padding: 20px 24px; }
@@ -770,76 +666,65 @@ const DUDAS = [
   .lp-cierre-cta { display: flex; flex-direction: column; align-items: center; gap: 26px; }
   .lp-cierre-cta .bf-nota { margin-top: -12px; }
 
-  /* ── Cabecera: la lección 1, dibujada (30/10) ───────────────────────────
-     Una ventana de la escuela con la lección 1 y sus partes, una flashcard de
-     su vocabulario que flota encima y las dos etiquetas, sin sombras (con un
-     marco de cristal, como el vídeo del ebook). */
-  .lp-maq-col { position: relative; padding: 0 28px 62px; }
-  .lp-maq { position: relative; z-index: 1; background: #fff; border-radius: 20px; overflow: hidden; outline: 8px solid rgba(255,255,255,0.07); }
-  .lp-maq-barra { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: #F0F5FF; border-bottom: 1px solid #DDE6F5; }
-  .lp-maq-puntos { display: inline-flex; gap: 5px; }
-  .lp-maq-puntos i { display: block; width: 9px; height: 9px; border-radius: 50%; background: #C9D6EE; }
-  .lp-maq-url { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 5px 10px; border-radius: 8px; background: #fff; border: 1px solid #DDE6F5; font-size: 11px; color: #5b6380; }
-  .lp-maq-url :global(svg) { color: #15803d; }
-  .lp-maq-cuerpo { padding: 18px 18px 20px; }
-  .lp-maq-k { margin: 0; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #025dc7; }
-  .lp-maq-t { margin: 4px 0 12px; font-family: 'Poppins', system-ui, sans-serif; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: #101336; }
-  .lp-maq-prog { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .lp-maq-prog-barra { flex: 1; height: 7px; border-radius: 9999px; background: #EEF2FA; overflow: hidden; }
-  .lp-maq-prog-barra i, .lp-cam-barra i { display: block; height: 100%; border-radius: 9999px; background: linear-gradient(90deg, #4da3ff, #0b6df0); transform-origin: left; animation: lp-crece 1.3s 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
-  .lp-maq-prog-barra i { width: 50%; }
-  @keyframes lp-crece { from { transform: scaleX(0); } }
-  .lp-maq-prog b { font-size: 11px; font-weight: 600; color: #5b6380; }
-  .lp-maq-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-  .lp-maq-lista li { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 11px; border: 1px solid #EEF2FA; }
-  .lp-maq-ico, .lp-cam-ico { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #F0F5FF; color: #8A93AB; }
-  .lp-maq-lista li.hecho .lp-maq-ico, .lp-cam-mods li.hecho .lp-cam-ico { background: #10b981; color: #fff; }
-  .lp-maq-lista li.ahora, .lp-cam-mods li.ahora { border-color: #4da3ff; background: #F3F8FF; }
-  .lp-maq-lista li.ahora .lp-maq-ico, .lp-cam-mods li.ahora .lp-cam-ico { background: #4da3ff; color: #0a1656; }
-  .lp-maq-nombre { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 6px; font-size: 13px; font-weight: 600; color: #101336; white-space: nowrap; overflow: hidden; }
-  .lp-maq-nombre small { font-size: 11px; font-weight: 500; color: #8A93AB; }
-  .lp-maq-lista li.hecho .lp-maq-nombre { color: #5b6380; }
-  .lp-maq-seguir { flex-shrink: 0; padding: 4px 10px; border-radius: 8px; background: #4da3ff; color: #0a1656; font-size: 11px; font-weight: 700; }
-  .lp-maq-flash {
-    position: absolute; z-index: 2; right: 0; bottom: 0; width: 190px; padding: 14px 16px 15px; border-radius: 16px;
-    background: linear-gradient(150deg, #0b6df0 0%, #1D0084 100%); color: #fff; display: flex; flex-direction: column; gap: 2px;
-    outline: 4px solid rgba(255,255,255,0.14); transform: rotate(3deg); animation: lp-flota 6s ease-in-out infinite;
+  /* ── Cabecera: el titular de Black Friday, como el de YouTalk (30/10) ──
+     «Adelántate al» en rojo con su raya, BLACK FRIDAY enorme en una línea,
+     el acceso anticipado en azul y debajo qué es, con «condiciones
+     especiales» subrayado como con rotulador. La columna del texto es un
+     contenedor: BLACK FRIDAY ocupa su ancho entero a cualquier tamaño. */
+  @media (min-width: 960px) {
+    .lp-top :global(.hero-inner.hero-inner) { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 44px; max-width: 1240px; }
+    /* El botón alineado con el texto (la landing lo centraba sobre la nota). */
+    .lp-top :global(.hero-cta-col) { align-items: flex-start; }
   }
-  @keyframes lp-flota { 0%, 100% { transform: rotate(3deg) translateY(0); } 50% { transform: rotate(3deg) translateY(-8px); } }
-  .lp-maq-flash-k { margin-bottom: 4px; font-size: 9.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #9fd0ff; }
-  .lp-maq-flash-nl { display: flex; align-items: baseline; gap: 6px; font-family: 'Poppins', system-ui, sans-serif; font-size: 25px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
-  .lp-maq-flash-nl small { font-size: 13px; font-weight: 600; color: #9fd0ff; }
-  .lp-maq-flash-nl > span { margin-left: auto; align-self: center; display: inline-flex; color: #9fd0ff; }
-  .lp-maq-flash-es { font-size: 13px; color: rgba(255,255,255,0.92); }
-  .lp-maq-flash-ej { margin-top: 6px; font-size: 12px; font-style: italic; color: rgba(255,255,255,0.85); }
+  .lp-top :global(.hero-texto-col) { container-type: inline-size; min-width: 0; }
+  .lp-pre { display: flex; align-items: center; gap: 14px; margin: 0 0 4px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(16px, 1.8vw, 22px); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FF5C74; }
+  .lp-pre-raya { width: 36px; height: 3px; border-radius: 3px; background: currentColor; flex-shrink: 0; }
+  .lp-bf {
+    margin: 0; font-family: 'Poppins', system-ui, sans-serif; font-weight: 800; text-transform: uppercase; white-space: nowrap;
+    font-size: clamp(40px, 11.5vw, 82px); font-size: min(14.4cqw, 88px); line-height: 1; letter-spacing: -0.045em; color: #fff;
+  }
+  .lp-acceso { display: flex; align-items: center; gap: 10px; margin: 16px 0 26px; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; line-height: 1.45; text-transform: uppercase; color: #4da3ff; }
+  .lp-acceso-punto { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+  .lp-h2 { margin: 0 0 16px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(25px, 2.9vw, 38px); font-weight: 700; line-height: 1.16; letter-spacing: -0.03em; color: #fff; max-width: 580px; text-wrap: balance; }
+  .lp-marca { color: #4da3ff; background: linear-gradient(transparent 80%, rgba(77,163,255,0.32) 80%); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  .lp-sub { margin: 0 0 30px; font-size: clamp(16px, 1.55vw, 18px); line-height: 1.65; font-weight: 500; color: rgba(255,255,255,0.9); max-width: 520px; }
+  .lp-pre, .lp-bf, .lp-acceso, .lp-h2, .lp-sub { animation: l8-entra-izq 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .lp-bf { animation-delay: 0.08s; }
+  .lp-acceso { animation-delay: 0.16s; }
+  .lp-h2 { animation-delay: 0.24s; }
+  .lp-sub { animation-delay: 0.32s; }
+
+  /* La escuela entera, recortada sobre el azul: sin marco ni sombra. */
+  .lp-todo-col.lp-todo-col { position: relative; padding: 0; }
+  .lp-todo { display: block; width: 100%; height: auto; }
+  /* Con sitio a la derecha, la imagen crece y asoma un poco fuera de su
+     columna (más estrecho que 1400 px, se saldría de la pantalla). */
+  @media (min-width: 1400px) {
+    .lp-todo { width: 112%; max-width: none; }
+  }
   .lp-fb-ico { flex-shrink: 0; width: 32px; height: 32px; border-radius: 10px; background: #EAF3FF; color: #025dc7; display: inline-flex; align-items: center; justify-content: center; }
-  .lp-maq-col :global(.float-badge) { z-index: 3; box-shadow: none; border: 1px solid #DDE6F5; }
-  /* Por encima de la ventana: más abajo tapaba la dirección. */
-  .lp-maq-col :global(.hero-fb-top) { top: -54px; right: 0; }
+  .lp-todo-col :global(.float-badge) { z-index: 3; box-shadow: none; border: 1px solid #DDE6F5; }
+  .lp-todo-col :global(.hero-fb-top) { top: -44px; right: 4%; }
   /* En el móvil también sale, debajo del botón (no lo empuja fuera de la
-     primera pantalla): es lo único que enseña la escuela antes de bajar. */
+     primera pantalla). */
   @media (max-width: 959px) {
-    .lp-top .hero-mockup-col.lp-maq-col { display: block; width: 100%; max-width: 440px; margin: 0 auto; padding: 50px 0 62px; }
-    .lp-maq-col :global(.hero-fb-top) { top: -4px; }
+    .lp-top .hero-mockup-col.lp-todo-col { display: block; width: 100%; max-width: 620px; margin: 0 auto; padding: 46px 0 40px; }
+    .lp-todo-col :global(.hero-fb-top) { top: -4px; right: 0; }
+    .lp-acceso { font-size: 12px; margin: 12px 0 22px; }
   }
   @media (max-width: 420px) {
-    /* Sin la etiqueta (la landing la esconde a esta anchura), sin su hueco. */
-    .lp-top .hero-mockup-col.lp-maq-col { padding-top: 22px; }
-  }
-  @media (max-width: 420px) {
-    .lp-maq-cuerpo { padding: 16px 14px 18px; }
-    .lp-maq-nombre small { display: none; }
-    .lp-maq-flash { width: 172px; padding: 12px 14px 13px; }
-    .lp-maq-flash-nl { font-size: 22px; }
+    .lp-top .hero-mockup-col.lp-todo-col { padding-top: 14px; }
   }
 
-  /* ── «El método, paso a paso»: el dibujo que llevaba antes la cabecera ──
-     Sus reglas son las de la landing (.l8 .platform-mockup…); aquí, sobre
-     blanco, con un borde fino y una sombra más suave que la del azul. */
-  .lp-mf-maq { position: relative; padding: 34px 28px 30px; }
-  .lp-mf-maq .platform-mockup { border: 1px solid #DDE6F5; box-shadow: 0 30px 70px -20px rgba(29,0,132,0.28); }
-  .lp-mf-fb-top { position: absolute; top: 0; right: 0; z-index: 2; }
-  .lp-mf-fb-bot { position: absolute; bottom: 0; left: 0; z-index: 2; }
+  /* ── «El método, paso a paso»: el libro de la formación (30/10) ────────
+     Su fondo es blanco, como el de la sección. También en el móvil (la
+     sección esconde su columna por debajo de 960 px), debajo de los pasos. */
+  .lp-libro { max-width: 500px; margin: 0 auto; }
+  .lp-libro img { display: block; width: 100%; height: auto; mix-blend-mode: multiply; }
+  @media (max-width: 960px) {
+    .lp-l8 :global(.mf-mock-col) { display: block; }
+    .lp-libro { max-width: 360px; margin-top: 8px; }
+  }
 
   /* ── «El método»: tu camino en la escuela (30/10) ───────────────────── */
   .lp-cam { position: relative; max-width: 540px; margin: 0 auto; padding: 40px 26px 64px; }
@@ -858,14 +743,18 @@ const DUDAS = [
   @keyframes lp-late { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
   .lp-cam-mods { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
   .lp-cam-mods li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid #EEF2FA; }
-  .lp-cam-ico { width: 26px; height: 26px; }
+  .lp-cam-ico { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #F0F5FF; color: #8A93AB; }
+  .lp-cam-mods li.hecho .lp-cam-ico { background: #10b981; color: #fff; }
+  .lp-cam-mods li.ahora { border-color: #4da3ff; background: #F3F8FF; }
+  .lp-cam-mods li.ahora .lp-cam-ico { background: #4da3ff; color: #0a1656; }
   .lp-cam-mods li.cerrado { background: #FAFBFE; }
   .lp-cam-nombre { flex: 1; min-width: 0; font-size: 13.5px; font-weight: 600; color: #101336; }
   .lp-cam-mods li.cerrado .lp-cam-nombre { color: #5b6380; }
   .lp-cam-est { flex-shrink: 0; font-size: 11.5px; font-weight: 500; color: #5b6380; white-space: nowrap; }
   .lp-cam-mods li.hecho .lp-cam-est { color: #15803d; font-weight: 600; }
   .lp-cam-barra { flex-shrink: 0; width: 84px; height: 7px; border-radius: 9999px; background: #DDE6F5; overflow: hidden; }
-  .lp-cam-barra i { width: 60%; }
+  .lp-cam-barra i { display: block; width: 60%; height: 100%; border-radius: 9999px; background: linear-gradient(90deg, #4da3ff, #0b6df0); transform-origin: left; animation: lp-crece 1.3s 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  @keyframes lp-crece { from { transform: scaleX(0); } }
   .lp-cam-chip { position: absolute; z-index: 2; display: flex; align-items: center; gap: 10px; padding: 9px 14px 9px 9px; border-radius: 14px; background: #fff; border: 1px solid #DDE6F5; }
   .lp-cam-chip b { display: block; font-size: 12.5px; font-weight: 600; color: #1D0084; line-height: 1.3; }
   .lp-cam-chip span:not(.lp-fb-ico) { display: block; font-size: 11.5px; color: #5b6380; line-height: 1.3; }
@@ -896,7 +785,7 @@ const DUDAS = [
     .lp-l8 :global(.pn-cta.pn-cta), .lp-l8 :global(.l8-cta-band-btn.l8-cta-band-btn), .lp-top :global(.btn-lg.btn-lg) { font-size: 14px; padding-left: 12px; padding-right: 12px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .lp-maq-flash, .lp-cam-semanas i.hoy, .lp-maq-prog-barra i, .lp-cam-barra i { animation: none; }
+    .lp-cam-semanas i.hoy, .lp-cam-barra i, .lp-pre, .lp-bf, .lp-acceso, .lp-h2, .lp-sub { animation: none; }
   }
 
   /* ── El botón pegado ────────────────────────────────────────────────── */
