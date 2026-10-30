@@ -680,7 +680,9 @@ const DUDAS = [
     .lp-top :global(.hero-cta-col) { align-items: flex-start; }
   }
   .lp-top :global(.hero-texto-col) { container-type: inline-size; min-width: 0; }
-  .lp-pre { display: flex; align-items: center; gap: 14px; margin: 0 0 4px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(16px, 1.8vw, 22px); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FF5C74; }
+  .lp-pre { display: flex; align-items: center; gap: 14px; margin: 0 0 4px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(16px, 1.8vw, 22px); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #E8283B; }
+  /* El rojo del logo (#AE1C28), encendido: tal cual no se leía sobre el azul
+     oscuro (30/10, usuario: "más rojo, tipo el del logo"). */
   .lp-pre-raya { width: 36px; height: 3px; border-radius: 3px; background: currentColor; flex-shrink: 0; }
   .lp-bf {
     margin: 0; font-family: 'Poppins', system-ui, sans-serif; font-weight: 800; text-transform: uppercase; white-space: nowrap;
@@ -689,7 +691,10 @@ const DUDAS = [
   .lp-acceso { display: flex; align-items: center; gap: 10px; margin: 16px 0 26px; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; line-height: 1.45; text-transform: uppercase; color: #4da3ff; }
   .lp-acceso-punto { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
   .lp-h2 { margin: 0 0 16px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(25px, 2.9vw, 38px); font-weight: 700; line-height: 1.16; letter-spacing: -0.03em; color: #fff; max-width: 580px; text-wrap: balance; }
-  .lp-marca { color: #4da3ff; background: linear-gradient(transparent 80%, rgba(77,163,255,0.32) 80%); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  /* La raya, fina y pegada a la línea de la letra: más gruesa y más abajo tocaba
+     la tilde de «Formación» del renglón siguiente en el móvil (30/10). La
+     letra ocupa 1,4em y la línea de la letra cae al 75 %. */
+  .lp-marca { color: #4da3ff; background: linear-gradient(transparent 76%, rgba(77,163,255,0.4) 76%, rgba(77,163,255,0.4) 85%, transparent 85%); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
   .lp-sub { margin: 0 0 30px; font-size: clamp(16px, 1.55vw, 18px); line-height: 1.65; font-weight: 500; color: rgba(255,255,255,0.9); max-width: 520px; }
   .lp-pre, .lp-bf, .lp-acceso, .lp-h2, .lp-sub { animation: l8-entra-izq 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
   .lp-bf { animation-delay: 0.08s; }
@@ -772,8 +777,9 @@ const DUDAS = [
     .lp-cam-mods li { flex-wrap: wrap; row-gap: 4px; }
     .lp-cam-est, .lp-cam-barra { margin-left: 36px; }
     .lp-cam-nombre { flex-basis: calc(100% - 36px); }
-    /* Arriba del todo, por encima de la tarjeta: más abajo tapaba «Tu camino». */
-    .lp-cam-chip1 { top: 6px; right: 0; }
+    /* Arriba del todo, por encima de la tarjeta: más abajo tapaba «Tu camino»;
+       y con aire hasta ella (30/10, usuario: "un poco más alta en móvil"). */
+    .lp-cam-chip1 { top: -12px; right: 0; }
   }
 
   /* ── Los botones de la landing, en una línea en el móvil (30/10) ───────
