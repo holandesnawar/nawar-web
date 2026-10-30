@@ -81,7 +81,12 @@
  * de sus colores. Se probó en CLARO y el usuario se quedó con el azul ("nos
  * quedamos con el fondo oscuro"), y el titular pasó a ser el de YouTalk con
  * nuestro nombre: «Accede antes que nadie a las condiciones especiales de la
- * Formación Nawar A0-A1». Justo debajo, «Todo lo que recibes» (QueIncluye,
+ * Formación Nawar A0-A1». Ese mismo día, cuarta vuelta (usuario: "en el móvil
+ * se ve fea… ¿por qué hay fondo blanco para el logo?… me gustaba más antes la
+ * letra en grande, BLACK FRIDAY"): vuelve el titular de YouTalk («Adelántate
+ * al», BLACK FRIDAY enorme, el acceso anticipado y «Accede antes que nadie…»
+ * debajo) y la barra del logo pasa al azul de la cabecera, con su línea roja
+ * y azul. Justo debajo, «Todo lo que recibes» (QueIncluye,
  * sin su foto, que repetía la de la cabecera): "como YouTalk, que su segunda
  * sección ya es todo lo que recibes".
  *
@@ -125,12 +130,6 @@ const DESPUES = `${WWW}/proceso-de-admision`
 const flecha = icono('flecha', 16, 2.5)
 /** El botón de las secciones de la landing. */
 const QUIERO = 'Quiero mi oferta de Black Friday'
-/** Las viñetas de la cabecera: las del banner de /formacion-nawar. */
-const HERO_PUNTOS = [
-  'Desde cero: 10 módulos, +15 h de vídeo y +360 lecciones',
-  'Masterclass y grupos de conversación en directo cada semana',
-  'Explicado desde el español, sin pasar por el inglés',
-]
 /** «30 de noviembre», para la etiqueta de Black Friday de la cabecera. */
 const BF_HASTA_CORTO = BF_HASTA_TEXTO.replace(/^lunes\s+/, '')
 
@@ -215,8 +214,9 @@ const DUDAS = [
 
     <!-- ═══ La barra de arriba: el logo centrado y una línea con sus colores ═══
          (30/10, usuario: "el logo arriba centrado para que se vea landing… como
-         YouTalk, que tiene una línea así"). El logo es «Nawar» con su borde
-         negro, servido desde la web: se lee en claro y en oscuro. -->
+         YouTalk, que tiene una línea así"). En el azul de la cabecera, no en
+         blanco ("¿por qué hay fondo blanco para el logo? debería ser como la
+         sección"). El logo es «Nawar» con su borde negro, servido desde la web. -->
     <header class="lp-cab">
       <a href={`${WWW}/`} class="lp-cab-a" aria-label="Holandés Nawar">
         <img src="/img/black-friday/logo-nawar.webp" alt="Holandés Nawar" class="lp-cab-logo" width="360" height="131" fetchpriority="high" />
@@ -224,20 +224,17 @@ const DUDAS = [
     </header>
     <div class="lp-cab-linea" aria-hidden="true"></div>
 
-    <!-- ═══ Cabecera: el banner de /formacion-nawar, tercera vuelta (30/10) ═══
-         Usuario: "volvemos a como lo teníamos antes… en la columna derecha la
-         imagen que te di… algo de Black Friday en el título que llame la
-         atención, sin lo de adelántate y tal, que no se vea marca barata… y
-         probar con el fondo claro". Es el marcado del banner de
+    <!-- ═══ Cabecera: BLACK FRIDAY en grande (30/10, cuarta vuelta) ═══
+         Se probaron el banner de la landing con una etiqueta negra y el fondo
+         claro, y el usuario volvió a esta: "me gustaba más antes la letra en
+         grande, BLACK FRIDAY". Es el marcado del banner de
          LandingCaptacion.astro dentro de `.l8` (lo pintan sus reglas de
-         landing-08-08-2026.css) con «Black Friday» en una etiqueta negra
-         encima del titular. En el azul de la landing: se probó en claro y el
-         usuario se quedó con el oscuro (30/10). -->
+         landing-08-08-2026.css), con el titular propio de Black Friday. -->
     <div class="l8 lp-top" id="lp-top">
       <section class="hero lp-hero" id="lp-hero">
         <div class="hero-glow1" aria-hidden="true"></div>
         <div class="hero-glow2" aria-hidden="true"></div>
-        <div class="hero-dots dots-dark lp-puntos" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></div>
+        <div class="hero-dots dots-dark" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></div>
 
         <div class="hero-inner">
           <div class="hero-texto-col">
@@ -254,45 +251,29 @@ const DUDAS = [
                 <span class="lp-ya-vuelta">Tu oferta sigue desbloqueada</span>
               </span>
             </p>
-            <!-- Black Friday, a la vista y sin gritar: una etiqueta negra (el
-                 color de las rebajas de las marcas serias) y al lado qué es. -->
-            <p class="lp-bfsello">
-              <span class="lp-bfsello-bf">Black Friday</span>
-              <span class="lp-bfsello-t">Acceso anticipado · hasta el {BF_HASTA_CORTO}</span>
+            <!-- El titular, como el de YouTalk (30/10, usuario: "que esté claro
+                 en el título que es Black Friday"): «Adelántate al», BLACK
+                 FRIDAY enorme, una línea de acceso anticipado y debajo qué es. -->
+            <p class="lp-pre"><span class="lp-pre-raya" aria-hidden="true"></span>Adelántate al</p>
+            <h1 class="lp-bf">Black Friday</h1>
+            <p class="lp-acceso">
+              <span class="lp-acceso-punto" aria-hidden="true"></span>
+              <span class="lp-gen">Acceso anticipado a la mejor oferta del año</span>
+              <span class="lp-comp lp-quien" data-titulo="Acabas de desbloquear nuestra mejor oferta" data-vuelta="Tu oferta te está esperando">Acabas de desbloquear nuestra mejor oferta</span>
             </p>
-            <!-- El titular de YouTalk con nuestro nombre (30/10, usuario: "para
-                 título mejor: Accede antes que nadie a las condiciones
-                 especiales de…"). -->
-            <h1 class="hero-headline">
-              <span class="text-gradient-white">Accede antes que nadie a las condiciones especiales</span>
-              <em>de la Formación Nawar A0-A1</em>
-            </h1>
-            <p class="hero-sub lp-comp">
-              <strong class="lp-quien" data-titulo="Acabas de desbloquear nuestra mejor oferta" data-vuelta="Tu oferta te está esperando">Acabas de desbloquear nuestra mejor oferta</strong>.
-              De A0 a A1 en <strong>16 semanas</strong>, explicado en español.
+            <h2 class="lp-h2">
+              Accede antes que nadie a las <span class="lp-marca">condiciones especiales</span> de la Formación Nawar A0-A1
+            </h2>
+            <p class="lp-sub">
+              Neerlandés de cero a A1 en 16 semanas, explicado en español. Solicita tu llamada de admisión
+              gratuita y descubre si puedes acceder a la oferta anticipada.
             </p>
-            <p class="hero-sub lp-gen">
-              La primera formación de neerlandés diseñada para hispanohablantes. De A0 a A1 en
-              <strong>16 semanas</strong>.
-            </p>
-            <ul class="hero-bullets">
-              {HERO_PUNTOS.map((t) => (
-                <li><span class="hero-check" set:html={icono('check', 11, 2.5)} />{t}</li>
-              ))}
-            </ul>
 
             <div class="hero-ctas bf-solo-activa">
               <div class="hero-cta-fila">
                 <div class="hero-cta-col">
                   <a href={ADMISION} class="btn btn-primary btn-lg" data-bf-cta>{QUIERO}</a>
                 </div>
-                <span class="hero-empieza" aria-hidden="true">
-                  <span class="hero-empieza-txt">empieza hoy</span>
-                  <svg class="hero-empieza-flecha" viewBox="0 0 64 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M58 4C57 20 47 34 30 40" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                    <path d="M38 41l-9 1 3-9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </span>
               </div>
             </div>
             <div class="lp-fin bf-fin">
@@ -307,6 +288,10 @@ const DUDAS = [
                del botón: no lo empuja. -->
           <div class="hero-mockup-col lp-todo-col" aria-hidden="true">
             <img src="/img/black-friday/escuela-todo.webp" alt="" class="lp-todo" width="1400" height="861" fetchpriority="high" decoding="async" />
+            <div class="float-badge hero-fb-top">
+              <span class="lp-fb-ico" set:html={icono('calendario', 17, 2)} />
+              <div><p>Black Friday</p><p>condiciones solo hasta el {BF_HASTA_CORTO}</p></div>
+            </div>
           </div>
         </div>
         <div class="hero-scroll-hint" aria-hidden="true">↓</div>
@@ -653,14 +638,15 @@ const DUDAS = [
   .lp-ya-ico { flex-shrink: 0; width: 22px; height: 22px; border-radius: 9999px; background: #22C55E; color: #052e16; display: inline-flex; align-items: center; justify-content: center; margin-top: 0; }
 
   /* ── La barra de arriba: el logo centrado y la línea de sus colores ────
-     (30/10, como la de YouTalk: rojo y luego azul, los del logo). ─────── */
-  .lp-cab { background: #fff; display: flex; align-items: center; justify-content: center; height: 64px; padding: 0 24px; }
+     (30/10, como la de YouTalk: rojo y luego azul, los del logo). En el azul
+     de la cabecera (el de `.l8 .hero`): en blanco "no tiene sentido". ──── */
+  .lp-cab { background: #1a0078; display: flex; align-items: center; justify-content: center; height: 72px; padding: 0 24px; }
   .lp-cab-a { display: inline-flex; }
   .lp-cab-logo { display: block; height: 34px; width: auto; }
   .lp-cab-linea { height: 3px; background: linear-gradient(90deg, #AE1C28 0 30%, #21468C 30% 100%); }
   @media (max-width: 959px) {
-    .lp-cab { height: 54px; }
-    .lp-cab-logo { height: 28px; }
+    .lp-cab { height: 68px; padding-top: 6px; }
+    .lp-cab-logo { height: 30px; }
   }
   .lp-fin p { margin: 28px 0 16px; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.93); max-width: 560px; }
   .lp-fin p strong { color: #fff; }
@@ -713,54 +699,69 @@ const DUDAS = [
   .lp-etapa-hito b { color: #fff; font-weight: 600; }
 
 
-  /* ── Cabecera: el banner de la landing (sus reglas, en landing-08-08-2026.css)
-     ─────────────────────────────────────────────────────────────────────
-     Sin la barra fija de la landing encima (la de esta página va en su
-     sitio), así que el titular no tiene que bajar 132 px. */
-  .lp-top :global(.hero.hero) { min-height: calc(100vh - 67px); }
+  /* ── Cabecera: el titular de Black Friday, como el de YouTalk (30/10) ──
+     «Adelántate al» en rojo con su raya, BLACK FRIDAY enorme en una línea,
+     el acceso anticipado en azul y debajo qué es, con «condiciones
+     especiales» subrayado como con rotulador. La columna del texto es un
+     contenedor: BLACK FRIDAY ocupa su ancho entero a cualquier tamaño. */
+  .lp-top :global(.hero.hero) { min-height: calc(100vh - 75px); }
   .lp-top :global(.hero-inner.hero-inner) { padding-top: 64px; padding-bottom: 92px; }
+  @media (max-width: 959px) {
+    /* Más aire entre la barra del logo y el titular en el móvil (30/10). */
+    .lp-top :global(.hero.hero) { min-height: 0; }
+    .lp-top :global(.hero-inner.hero-inner) { padding-top: 52px; padding-bottom: 28px; }
+  }
+  .lp-quien { color: inherit; }
   @media (min-width: 960px) {
-    /* La imagen de la escuela es ancha: las dos columnas, casi iguales. La
-       del texto, algo más ancha: con el titular largo (30/10) a 52 px salían
-       seis renglones; así son cuatro. */
-    .lp-top :global(.hero-inner.hero-inner) { grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr); gap: 52px; max-width: 1240px; }
-    .lp-top :global(.hero-headline.hero-headline) { font-size: clamp(34px, 3.1vw, 46px); }
+    .lp-top :global(.hero-inner.hero-inner) { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 44px; max-width: 1240px; }
     /* El botón alineado con el texto (la landing lo centraba sobre la nota). */
     .lp-top :global(.hero-cta-col) { align-items: flex-start; }
   }
-  @media (max-width: 959px) {
-    .lp-top :global(.hero.hero) { min-height: 0; }
-    .lp-top :global(.hero-inner.hero-inner) { padding-top: 36px; padding-bottom: 28px; }
+  .lp-top :global(.hero-texto-col) { container-type: inline-size; min-width: 0; }
+  .lp-pre { display: flex; align-items: center; gap: 14px; margin: 0 0 4px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(16px, 1.8vw, 22px); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #E8283B; }
+  /* El rojo del logo (#AE1C28), encendido: tal cual no se leía sobre el azul
+     oscuro (30/10, usuario: "más rojo, tipo el del logo"). */
+  .lp-pre-raya { width: 36px; height: 3px; border-radius: 3px; background: currentColor; flex-shrink: 0; }
+  .lp-bf {
+    margin: 0; font-family: 'Poppins', system-ui, sans-serif; font-weight: 800; text-transform: uppercase; white-space: nowrap;
+    font-size: clamp(40px, 11.5vw, 82px); font-size: min(14.4cqw, 88px); line-height: 1; letter-spacing: -0.045em; color: #fff;
   }
-  .lp-top :global(.hero-texto-col) { min-width: 0; }
-  .lp-quien { color: #fff; font-weight: 700; }
+  .lp-acceso { display: flex; align-items: center; gap: 10px; margin: 16px 0 26px; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; line-height: 1.45; text-transform: uppercase; color: #4da3ff; }
+  .lp-acceso-punto { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+  .lp-h2 { margin: 0 0 16px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(25px, 2.9vw, 38px); font-weight: 700; line-height: 1.16; letter-spacing: -0.03em; color: #fff; max-width: 580px; text-wrap: balance; }
+  /* La raya, fina y pegada a la línea de la letra: más gruesa y más abajo tocaba
+     la tilde de «Formación» del renglón siguiente en el móvil (30/10). La
+     letra ocupa 1,4em y la línea de la letra cae al 75 %. */
+  .lp-marca { color: #4da3ff; background: linear-gradient(transparent 76%, rgba(77,163,255,0.4) 76%, rgba(77,163,255,0.4) 85%, transparent 85%); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  .lp-sub { margin: 0 0 30px; font-size: clamp(16px, 1.55vw, 18px); line-height: 1.65; font-weight: 500; color: rgba(255,255,255,0.9); max-width: 520px; }
+  .lp-pre, .lp-bf, .lp-acceso, .lp-h2, .lp-sub { animation: l8-entra-izq 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .lp-bf { animation-delay: 0.08s; }
+  .lp-acceso { animation-delay: 0.16s; }
+  .lp-h2 { animation-delay: 0.24s; }
+  .lp-sub { animation-delay: 0.32s; }
 
-  /* Black Friday, a la vista y sin gritar: una etiqueta (negra en claro,
-     blanca en oscuro) y al lado qué es. Nada de rojo ni de letras enormes:
-     "que no se vea marca barata" (usuario, 30/10). */
-  .lp-bfsello { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; margin: 0 0 24px; }
-  .lp-bfsello-bf {
-    display: inline-flex; align-items: center; padding: 9px 14px; border-radius: 8px;
-    background: #fff; color: #0b0b14;
-    font-family: 'Poppins', system-ui, sans-serif; font-size: 14px; font-weight: 700; line-height: 1;
-    letter-spacing: 0.16em; text-transform: uppercase;
-  }
-  .lp-bfsello-bf { text-box: trim-both cap alphabetic; }
-  .lp-bfsello-t { font-size: 14.5px; font-weight: 600; letter-spacing: 0.01em; color: rgba(255,255,255,0.92); }
-
-  /* La escuela entera, sin marco ni sombra. Con sitio a la derecha, crece y
-     asoma un poco fuera de su columna (más estrecho que 1400 px, se saldría
-     de la pantalla). */
+  /* La escuela entera, recortada sobre el azul: sin marco ni sombra. */
   .lp-todo-col.lp-todo-col { position: relative; padding: 0; }
-  .lp-fb-ico { flex-shrink: 0; width: 32px; height: 32px; border-radius: 10px; background: #EAF3FF; color: #025dc7; display: inline-flex; align-items: center; justify-content: center; }
   .lp-todo { display: block; width: 100%; height: auto; }
+  /* Con sitio a la derecha, la imagen crece y asoma un poco fuera de su
+     columna (más estrecho que 1400 px, se saldría de la pantalla). */
   @media (min-width: 1400px) {
-    .lp-todo { width: 110%; max-width: none; }
+    .lp-todo { width: 112%; max-width: none; }
   }
+  .lp-fb-ico { flex-shrink: 0; width: 32px; height: 32px; border-radius: 10px; background: #EAF3FF; color: #025dc7; display: inline-flex; align-items: center; justify-content: center; }
+  .lp-todo-col :global(.float-badge) { z-index: 3; box-shadow: none; border: 1px solid #DDE6F5; }
+  .lp-todo-col :global(.hero-fb-top) { top: -44px; right: 4%; }
   /* En el móvil también sale, debajo del botón (no lo empuja fuera de la
      primera pantalla). */
   @media (max-width: 959px) {
-    .lp-top .hero-mockup-col.lp-todo-col { display: block; width: 100%; max-width: 620px; margin: 0 auto; padding: 20px 0 28px; }
+    .lp-top .hero-mockup-col.lp-todo-col { display: block; width: 100%; max-width: 620px; margin: 0 auto; padding: 46px 0 40px; }
+    .lp-todo-col :global(.hero-fb-top) { top: -4px; right: 0; }
+    .lp-acceso { font-size: 12px; margin: 12px 0 22px; }
+  }
+  @media (max-width: 420px) {
+    .lp-top .hero-mockup-col.lp-todo-col { padding-top: 14px; }
+    /* «Acceso anticipado a la mejor oferta del año» en una línea en el móvil. */
+    .lp-acceso { font-size: 11.5px; letter-spacing: 0.04em; }
   }
 
   /* ── «El método, paso a paso»: el libro de la formación (30/10) ────────
@@ -840,7 +841,7 @@ const DUDAS = [
     .lp-l8 :global(.pn-cta.pn-cta), .lp-l8 :global(.l8-cta-band-btn.l8-cta-band-btn), .lp-top :global(.btn-lg.btn-lg) { font-size: 14px; padding-left: 12px; padding-right: 12px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .lp-cam-semanas i.hoy, .lp-cam-barra i { animation: none; }
+    .lp-cam-semanas i.hoy, .lp-cam-barra i, .lp-pre, .lp-bf, .lp-acceso, .lp-h2, .lp-sub { animation: none; }
   }
 
   /* ── El botón pegado ────────────────────────────────────────────────── */
