@@ -46,6 +46,17 @@
  * El EQUIPO («Quién te acompaña en el camino», EquipoNawar.astro) va después
  * del método y no sale hasta que haya alguien en src/lib/equipo.ts.
  *
+ * 30/10 (usuario: "¿hay alguna sección que sobra?"): fuera tres que repetían
+ * lo de al lado: «Un método efectivo… por tres razones» (PilaresSection, la
+ * cuarta seguida sobre el método), «Cada unidad incluye» (CadaUnidad, ya en
+ * «¿Qué incluye?») y «Empieza hoy» (AccesoIncluye, otra vez «¿Qué incluye?»
+ * con la misma imagen, justo antes de los pasos de la llamada). Para volver a
+ * ponerlas basta importarlas: no se ha borrado nada de los componentes.
+ * El mismo día, los dibujos: la cabecera enseña la lección 1 de verdad
+ * (LECCION) y «El Método Holandés Nawar» «Tu camino» (CAMINO, por el
+ * `slot="foto"` de PresentacionNawar) en vez del libro de la landing, que
+ * aquí se confundía con el ebook. Los botones, en una línea en el móvil.
+ *
  * La LUZ de las otras secciones (28/10): el brillo de los botones y el borde de
  * luz de la tarjeta salen de black-friday.css (`bf-brillo`, `bf-borde-luz`);
  * en el ordenador, las tarjetas oscuras se iluminan donde está el ratón
@@ -66,14 +77,11 @@ import { BF_HASTA_TEXTO, EBOOK_NOMBRE, bfRuta } from '../../lib/blackFriday'
 import LoQueCambia from '../../components/landing-08-08-2026/LoQueCambia.astro'
 import PorQueNawar from '../../components/landing-08-08-2026/PorQueNawar.astro'
 import MarcaSection from '../../components/landing-08-08-2026/MarcaSection.astro'
-import PilaresSection from '../../components/landing-08-08-2026/PilaresSection.astro'
 import PresentacionNawar from '../../components/landing-08-08-2026/PresentacionNawar.astro'
 import MetodoFunciona from '../../components/landing-08-08-2026/MetodoFunciona.astro'
 import QueIncluye from '../../components/landing-08-08-2026/QueIncluye.astro'
-import CadaUnidad from '../../components/landing-08-08-2026/CadaUnidad.astro'
 import BonusSection from '../../components/landing-08-08-2026/BonusSection.astro'
 import ParaTiSection from '../../components/landing-08-08-2026/ParaTiSection.astro'
-import AccesoIncluye from '../../components/landing-08-08-2026/AccesoIncluye.astro'
 import EquipoNawar from '../../components/black-friday/EquipoNawar.astro'
 import '../../styles/fuentes-locales.css'
 import '../../styles/nawar-sections.css'
@@ -99,6 +107,34 @@ const HERO_PUNTOS = [
   'Explicado desde el español, sin pasar por el inglés',
 ]
 const check = `<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>`
+
+/**
+ * La lección 1 de la formación, como sale en la barra del curso: el vídeo y
+ * sus partes (Samenvatting → resumen, Flashcards, Oefening → ejercicios,
+ * Lezen → lectura, Luisteren → escucha). Para el mockup de la cabecera.
+ */
+const LECCION = [
+  { n: '1 · Video', es: 'la explicación', ico: 'video' },
+  { n: '1.1 Samenvatting', es: 'resumen', ico: 'libro' },
+  { n: '1.2 Flashcards', es: 'vocabulario', ico: 'idioma' },
+  { n: '1.3 Oefening', es: 'ejercicios', ico: 'lapiz' },
+  { n: '1.4 Lezen', es: 'lectura', ico: 'libro' },
+  { n: '1.5 Luisteren', es: 'escucha', ico: 'altavoz' },
+]
+
+/**
+ * «Tu camino», el dibujo de «El Método Holandés Nawar» (30/10; antes, la
+ * ilustración del libro de la landing, que aquí se confundía con el ebook).
+ * Los módulos son los de la formación, con sus nombres del curso, y el 4 se
+ * abre al terminar el 3: es como funciona para quien entra ahora (apertura
+ * por avance).
+ */
+const CAMINO = [
+  { n: 'Módulo 1 · Over jou', estado: 'hecho' },
+  { n: 'Módulo 2 · Familie & vrienden', estado: 'hecho' },
+  { n: 'Módulo 3 · Eten en drinken', estado: 'ahora' },
+  { n: 'Módulo 4 · Het werk', estado: 'cerrado' },
+]
 
 /** Lo que pasa en la llamada (junto a los pasos de admisión). */
 const EN_LA_LLAMADA = [
@@ -243,57 +279,45 @@ const DUDAS = [
             </div>
           </div>
 
-          <!-- La escuela por dentro, dibujada como en la landing (con datos de
-               las lecciones de verdad). En el móvil no sale: empujaba el botón
-               fuera de la primera pantalla. -->
-          <div class="hero-mockup-col" aria-hidden="true">
-            <div class="platform-mockup">
-              <div class="mockup-header">
-                <div class="mockup-dots"><span></span><span></span><span></span></div>
-                <span class="mockup-title">Formación Nawar A0-A1</span>
+          <!-- La escuela por dentro (30/10, usuario: "el mockup de la primera
+               sección también puede ser mejor"). Antes era la ventana de la
+               landing con lecciones que no existen («Les 2 — Grammatica»,
+               candados, emojis). Ahora es la lección 1 de verdad, con sus
+               partes como salen en la barra del curso, y una flashcard de su
+               vocabulario (courseData.ts: «de naam», «Mijn naam is Maria»).
+               Una sola etiqueta (la de Black Friday): la de las clases en
+               directo chocaba con la flashcard y ya lo dicen las viñetas.
+               En el móvil sale DEBAJO del botón: no lo empuja. -->
+          <div class="hero-mockup-col lp-maq-col" aria-hidden="true">
+            <div class="lp-maq">
+              <div class="lp-maq-barra">
+                <span class="lp-maq-puntos"><i></i><i></i><i></i></span>
+                <span class="lp-maq-url"><Fragment set:html={icono('candado', 11, 2.4)} />app.holandesnawar.com</span>
               </div>
-              <div class="mockup-body">
-                <div>
-                  <div class="mockup-label">Tu progreso — Módulo 1</div>
-                  <div class="mockup-progress-bar"><div class="mockup-progress-fill" style="width:65%"></div></div>
-                  <div class="mockup-pct">65% completado</div>
-                </div>
-                <div class="mockup-modules">
-                  <div class="mockup-module active">
-                    <div class="module-icon">📹</div>
-                    <div class="module-info"><span class="module-title">Les 1 — Woordenschat</span><span class="module-sub">Vocabulario · 20 min</span></div>
-                    <span class="module-badge done">✓</span>
-                  </div>
-                  <div class="mockup-module active">
-                    <div class="module-icon">📝</div>
-                    <div class="module-info"><span class="module-title">Les 2 — Grammatica</span><span class="module-sub">Gramática · 18 min</span></div>
-                    <span class="module-badge done">✓</span>
-                  </div>
-                  <div class="mockup-module current">
-                    <div class="module-icon">🎯</div>
-                    <div class="module-info"><span class="module-title">Les 3 — Uitspraak</span><span class="module-sub">Pronunciación · 15 min</span></div>
-                    <span class="module-badge current-badge">→</span>
-                  </div>
-                  <div class="mockup-module locked">
-                    <div class="module-icon">🔒</div>
-                    <div class="module-info"><span class="module-title">Les 4 — Spreken</span><span class="module-sub">Hablar · 25 min</span></div>
-                  </div>
-                </div>
-                <div class="mockup-vocab-card">
-                  <div class="vocab-article">de</div>
-                  <div class="vocab-word">naam</div>
-                  <div class="vocab-translation">el nombre</div>
-                  <div class="vocab-example">"Mijn naam is Anna."</div>
-                </div>
+              <div class="lp-maq-cuerpo">
+                <p class="lp-maq-k">Módulo 1 · Over jou</p>
+                <p class="lp-maq-t">Les 1 — Jezelf voorstellen</p>
+                <div class="lp-maq-prog"><span class="lp-maq-prog-barra"><i></i></span><b>3 de 6</b></div>
+                <ol class="lp-maq-lista">
+                  {LECCION.map((l, k) => (
+                    <li class={k < 3 ? 'hecho' : k === 3 ? 'ahora' : ''}>
+                      <span class="lp-maq-ico" set:html={k < 3 ? icono('check', 11, 3) : icono(l.ico, 13, 2)} />
+                      <span class="lp-maq-nombre">{l.n}<small>{l.es}</small></span>
+                      {k === 3 && <span class="lp-maq-seguir">Seguir</span>}
+                    </li>
+                  ))}
+                </ol>
               </div>
+            </div>
+            <div class="lp-maq-flash">
+              <span class="lp-maq-flash-k">Flashcard · Les 1</span>
+              <span class="lp-maq-flash-nl"><small>de</small> naam <span set:html={icono('altavoz', 15, 2)} /></span>
+              <span class="lp-maq-flash-es">el nombre</span>
+              <span class="lp-maq-flash-ej">Mijn naam is Maria.</span>
             </div>
             <div class="float-badge hero-fb-top">
-              <span style="font-size:18px;">🏷️</span>
+              <span class="lp-fb-ico" set:html={icono('calendario', 17, 2)} />
               <div><p>Black Friday</p><p>condiciones solo hasta el {BF_HASTA_CORTO}</p></div>
-            </div>
-            <div class="float-badge hero-fb-bot">
-              <span style="font-size:18px;">🎥</span>
-              <div><p>Clases en directo</p><p>masterclass y grupos de conversación</p></div>
             </div>
           </div>
         </div>
@@ -306,8 +330,47 @@ const DUDAS = [
       <LoQueCambia />
       <PorQueNawar />
       <MarcaSection />
-      <PilaresSection />
-      <PresentacionNawar ctaUrl={ADMISION} ctaTexto={QUIERO} />
+      <!-- Fuera «Un método efectivo… por tres razones» (30/10): era la cuarta
+           sección seguida sobre el método y repetía la de arriba. -->
+      <PresentacionNawar ctaUrl={ADMISION} ctaTexto={QUIERO}>
+        <!-- El dibujo de esta sección: tu camino en la escuela, no el libro de
+             la landing (aquí se confundía con el ebook que acaba de comprar). -->
+        <div slot="foto" class="lp-cam" aria-hidden="true">
+          <span class="lp-cam-deco1"></span>
+          <span class="lp-cam-deco2"></span>
+          <div class="lp-cam-card">
+            <div class="lp-cam-cab">
+              <div>
+                <p class="lp-cam-k">Tu camino · A0 → A1</p>
+                <p class="lp-cam-t">Semana 6 de 16</p>
+              </div>
+              <span class="lp-cam-racha"><Fragment set:html={icono('calendario', 13, 2.2)} />12 días seguidos</span>
+            </div>
+            <div class="lp-cam-semanas">
+              {Array.from({ length: 16 }, (_, k) => <i class={k < 5 ? 'on' : k === 5 ? 'hoy' : ''} />)}
+            </div>
+            <ul class="lp-cam-mods">
+              {CAMINO.map((m) => (
+                <li class={m.estado}>
+                  <span class="lp-cam-ico" set:html={m.estado === 'hecho' ? icono('check', 12, 3) : m.estado === 'cerrado' ? icono('candado', 12, 2.2) : icono('libro', 13, 2)} />
+                  <span class="lp-cam-nombre">{m.n}</span>
+                  {m.estado === 'hecho' && <span class="lp-cam-est">Terminado</span>}
+                  {m.estado === 'ahora' && <span class="lp-cam-barra"><i /></span>}
+                  {m.estado === 'cerrado' && <span class="lp-cam-est">Se abre al terminar el 3</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="lp-cam-chip lp-cam-chip1">
+            <span class="lp-fb-ico" set:html={icono('video', 16, 2)} />
+            <div><b>Masterclass en directo</b><span>esta semana · queda grabada</span></div>
+          </div>
+          <div class="lp-cam-chip lp-cam-chip2">
+            <span class="lp-fb-ico" set:html={icono('consulta', 16, 2)} />
+            <div><b>Tu consulta, respondida</b><span>por el equipo de Nawar</span></div>
+          </div>
+        </div>
+      </PresentacionNawar>
       <MetodoFunciona ads={true} />
       <!-- Quién te acompaña: no sale hasta que haya alguien en src/lib/equipo.ts. -->
       <EquipoNawar />
@@ -339,7 +402,8 @@ const DUDAS = [
 
     <div class="l8 lp-l8">
       <QueIncluye />
-      <CadaUnidad />
+      <!-- Fuera «Cada unidad incluye» (30/10): sus tres tarjetas ya están en
+           «¿Qué incluye la formación?», justo encima. -->
       <section class="l8-cta-band bf-solo-activa">
         <div class="inner">
           <div class="l8-cta-band-inner sr">
@@ -375,8 +439,9 @@ const DUDAS = [
           </div>
         </div>
       </section>
-
-      <AccesoIncluye plazas={false} conPrecio={false} ctaUrl={ADMISION} ctaTexto={QUIERO} nota="Llamada gratuita de media hora · Sin compromiso" />
+      <!-- Fuera «Empieza hoy. Tu neerlandés cambia esta semana» (30/10): repetía
+           «¿Qué incluye?» con la misma imagen y su botón, justo antes de los
+           pasos de la llamada, que ya cierran con el suyo. -->
     </div>
 
     <!-- ═══ Admisiones: tres pasos ═══ -->
@@ -654,6 +719,127 @@ const DUDAS = [
   .lp-cierre-t { font-size: clamp(30px, 4.2vw, 48px); margin-bottom: 36px; }
   .lp-cierre-cta { display: flex; flex-direction: column; align-items: center; gap: 26px; }
   .lp-cierre-cta .bf-nota { margin-top: -12px; }
+
+  /* ── Cabecera: la lección 1, dibujada (30/10) ───────────────────────────
+     Una ventana de la escuela con la lección 1 y sus partes, una flashcard de
+     su vocabulario que flota encima y las dos etiquetas, sin sombras (con un
+     marco de cristal, como el vídeo del ebook). */
+  .lp-maq-col { position: relative; padding: 0 28px 62px; }
+  .lp-maq { position: relative; z-index: 1; background: #fff; border-radius: 20px; overflow: hidden; outline: 8px solid rgba(255,255,255,0.07); }
+  .lp-maq-barra { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: #F0F5FF; border-bottom: 1px solid #DDE6F5; }
+  .lp-maq-puntos { display: inline-flex; gap: 5px; }
+  .lp-maq-puntos i { display: block; width: 9px; height: 9px; border-radius: 50%; background: #C9D6EE; }
+  .lp-maq-url { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 5px 10px; border-radius: 8px; background: #fff; border: 1px solid #DDE6F5; font-size: 11px; color: #5b6380; }
+  .lp-maq-url :global(svg) { color: #15803d; }
+  .lp-maq-cuerpo { padding: 18px 18px 20px; }
+  .lp-maq-k { margin: 0; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #025dc7; }
+  .lp-maq-t { margin: 4px 0 12px; font-family: 'Poppins', system-ui, sans-serif; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: #101336; }
+  .lp-maq-prog { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .lp-maq-prog-barra { flex: 1; height: 7px; border-radius: 9999px; background: #EEF2FA; overflow: hidden; }
+  .lp-maq-prog-barra i, .lp-cam-barra i { display: block; height: 100%; border-radius: 9999px; background: linear-gradient(90deg, #4da3ff, #0b6df0); transform-origin: left; animation: lp-crece 1.3s 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .lp-maq-prog-barra i { width: 50%; }
+  @keyframes lp-crece { from { transform: scaleX(0); } }
+  .lp-maq-prog b { font-size: 11px; font-weight: 600; color: #5b6380; }
+  .lp-maq-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .lp-maq-lista li { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 11px; border: 1px solid #EEF2FA; }
+  .lp-maq-ico, .lp-cam-ico { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #F0F5FF; color: #8A93AB; }
+  .lp-maq-lista li.hecho .lp-maq-ico, .lp-cam-mods li.hecho .lp-cam-ico { background: #10b981; color: #fff; }
+  .lp-maq-lista li.ahora, .lp-cam-mods li.ahora { border-color: #4da3ff; background: #F3F8FF; }
+  .lp-maq-lista li.ahora .lp-maq-ico, .lp-cam-mods li.ahora .lp-cam-ico { background: #4da3ff; color: #0a1656; }
+  .lp-maq-nombre { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 6px; font-size: 13px; font-weight: 600; color: #101336; white-space: nowrap; overflow: hidden; }
+  .lp-maq-nombre small { font-size: 11px; font-weight: 500; color: #8A93AB; }
+  .lp-maq-lista li.hecho .lp-maq-nombre { color: #5b6380; }
+  .lp-maq-seguir { flex-shrink: 0; padding: 4px 10px; border-radius: 8px; background: #4da3ff; color: #0a1656; font-size: 11px; font-weight: 700; }
+  .lp-maq-flash {
+    position: absolute; z-index: 2; right: 0; bottom: 0; width: 190px; padding: 14px 16px 15px; border-radius: 16px;
+    background: linear-gradient(150deg, #0b6df0 0%, #1D0084 100%); color: #fff; display: flex; flex-direction: column; gap: 2px;
+    outline: 4px solid rgba(255,255,255,0.14); transform: rotate(3deg); animation: lp-flota 6s ease-in-out infinite;
+  }
+  @keyframes lp-flota { 0%, 100% { transform: rotate(3deg) translateY(0); } 50% { transform: rotate(3deg) translateY(-8px); } }
+  .lp-maq-flash-k { margin-bottom: 4px; font-size: 9.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #9fd0ff; }
+  .lp-maq-flash-nl { display: flex; align-items: baseline; gap: 6px; font-family: 'Poppins', system-ui, sans-serif; font-size: 25px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+  .lp-maq-flash-nl small { font-size: 13px; font-weight: 600; color: #9fd0ff; }
+  .lp-maq-flash-nl > span { margin-left: auto; align-self: center; display: inline-flex; color: #9fd0ff; }
+  .lp-maq-flash-es { font-size: 13px; color: rgba(255,255,255,0.92); }
+  .lp-maq-flash-ej { margin-top: 6px; font-size: 12px; font-style: italic; color: rgba(255,255,255,0.85); }
+  .lp-fb-ico { flex-shrink: 0; width: 32px; height: 32px; border-radius: 10px; background: #EAF3FF; color: #025dc7; display: inline-flex; align-items: center; justify-content: center; }
+  .lp-maq-col :global(.float-badge) { z-index: 3; box-shadow: none; border: 1px solid #DDE6F5; }
+  /* Por encima de la ventana: más abajo tapaba la dirección. */
+  .lp-maq-col :global(.hero-fb-top) { top: -54px; right: 0; }
+  /* En el móvil también sale, debajo del botón (no lo empuja fuera de la
+     primera pantalla): es lo único que enseña la escuela antes de bajar. */
+  @media (max-width: 959px) {
+    .lp-top .hero-mockup-col.lp-maq-col { display: block; width: 100%; max-width: 440px; margin: 0 auto; padding: 50px 0 62px; }
+    .lp-maq-col :global(.hero-fb-top) { top: -4px; }
+  }
+  @media (max-width: 420px) {
+    /* Sin la etiqueta (la landing la esconde a esta anchura), sin su hueco. */
+    .lp-top .hero-mockup-col.lp-maq-col { padding-top: 22px; }
+  }
+  @media (max-width: 420px) {
+    .lp-maq-cuerpo { padding: 16px 14px 18px; }
+    .lp-maq-nombre small { display: none; }
+    .lp-maq-flash { width: 172px; padding: 12px 14px 13px; }
+    .lp-maq-flash-nl { font-size: 22px; }
+  }
+
+  /* ── «El método»: tu camino en la escuela (30/10) ───────────────────── */
+  .lp-cam { position: relative; max-width: 540px; margin: 0 auto; padding: 40px 26px 64px; }
+  .lp-cam-deco1 { position: absolute; left: 0; top: 0; width: 60%; height: 64%; border-radius: 24px; background: #1D0084; background-image: radial-gradient(circle 320px at 100% 0%, rgba(11,109,240,0.55) 0%, transparent 70%); }
+  .lp-cam-deco2 { position: absolute; right: 0; bottom: 20px; width: 46%; height: 44%; border-radius: 24px; background: #9fd0ff; }
+  .lp-cam-card { position: relative; z-index: 1; background: #fff; border: 1px solid #DDE6F5; border-radius: 22px; padding: 22px 22px 20px; }
+  .lp-cam-cab { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+  .lp-cam-k { margin: 0; font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #025dc7; }
+  .lp-cam-t { margin: 3px 0 0; font-family: 'Poppins', system-ui, sans-serif; font-size: 21px; font-weight: 600; letter-spacing: -0.015em; color: #101336; }
+  .lp-cam-racha { display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 9999px; background: #F0F5FF; color: #1D0084; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+  .lp-cam-racha :global(svg) { color: #025dc7; }
+  .lp-cam-semanas { display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); gap: 4px; margin-bottom: 18px; }
+  .lp-cam-semanas i { height: 8px; border-radius: 9999px; background: #EEF2FA; }
+  .lp-cam-semanas i.on { background: #4da3ff; }
+  .lp-cam-semanas i.hoy { background: #0b6df0; animation: lp-late 1.8s ease-in-out infinite; }
+  @keyframes lp-late { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+  .lp-cam-mods { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .lp-cam-mods li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid #EEF2FA; }
+  .lp-cam-ico { width: 26px; height: 26px; }
+  .lp-cam-mods li.cerrado { background: #FAFBFE; }
+  .lp-cam-nombre { flex: 1; min-width: 0; font-size: 13.5px; font-weight: 600; color: #101336; }
+  .lp-cam-mods li.cerrado .lp-cam-nombre { color: #5b6380; }
+  .lp-cam-est { flex-shrink: 0; font-size: 11.5px; font-weight: 500; color: #5b6380; white-space: nowrap; }
+  .lp-cam-mods li.hecho .lp-cam-est { color: #15803d; font-weight: 600; }
+  .lp-cam-barra { flex-shrink: 0; width: 84px; height: 7px; border-radius: 9999px; background: #DDE6F5; overflow: hidden; }
+  .lp-cam-barra i { width: 60%; }
+  .lp-cam-chip { position: absolute; z-index: 2; display: flex; align-items: center; gap: 10px; padding: 9px 14px 9px 9px; border-radius: 14px; background: #fff; border: 1px solid #DDE6F5; }
+  .lp-cam-chip b { display: block; font-size: 12.5px; font-weight: 600; color: #1D0084; line-height: 1.3; }
+  .lp-cam-chip span:not(.lp-fb-ico) { display: block; font-size: 11.5px; color: #5b6380; line-height: 1.3; }
+  .lp-cam-chip1 { top: 8px; right: -4px; }
+  .lp-cam-chip2 { bottom: 12px; left: 8px; }
+  @media (max-width: 480px) {
+    .lp-cam { padding: 40px 12px 60px; }
+    .lp-cam-card { padding: 18px 16px 16px; }
+    .lp-cam-cab { flex-direction: column; gap: 10px; }
+    .lp-cam-mods li { flex-wrap: wrap; row-gap: 4px; }
+    .lp-cam-est, .lp-cam-barra { margin-left: 36px; }
+    .lp-cam-nombre { flex-basis: calc(100% - 36px); }
+    /* Arriba del todo, por encima de la tarjeta: más abajo tapaba «Tu camino». */
+    .lp-cam-chip1 { top: 0; right: 0; }
+  }
+
+  /* ── Los botones de la landing, en una línea en el móvil (30/10) ───────
+     «Quiero mi oferta de Black Friday» a 17 px partía en dos y tres
+     renglones. A 15 px, sin partir y centrado, cabe desde 360 px. */
+  @media (max-width: 640px) {
+    .lp-l8 :global(.pn-cta.pn-cta), .lp-l8 :global(.l8-cta-band-btn.l8-cta-band-btn), .lp-top :global(.btn-lg.btn-lg) {
+      white-space: nowrap; font-size: 15px; letter-spacing: 0; padding-left: 16px; padding-right: 16px; gap: 8px; justify-content: center;
+    }
+    /* Y los de la llamada («Agendar mi llamada gratuita»): a 360 px partían. */
+    .bf-btn { white-space: nowrap; font-size: 15px; padding-left: 18px; padding-right: 18px; }
+  }
+  @media (max-width: 370px) {
+    .lp-l8 :global(.pn-cta.pn-cta), .lp-l8 :global(.l8-cta-band-btn.l8-cta-band-btn), .lp-top :global(.btn-lg.btn-lg) { font-size: 14px; padding-left: 12px; padding-right: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lp-maq-flash, .lp-cam-semanas i.hoy, .lp-maq-prog-barra i, .lp-cam-barra i { animation: none; }
+  }
 
   /* ── El botón pegado ────────────────────────────────────────────────── */
   .lp-pegado {

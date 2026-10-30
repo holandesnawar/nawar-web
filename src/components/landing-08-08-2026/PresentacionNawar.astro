@@ -28,6 +28,10 @@ const destino = ctaUrl || (ads ? matriculaAdsUrl : matriculaUrl)
 // la pregunta a su derecha; en móvil cae debajo del titular y la
 // entradilla, que es el orden en que está en el marcado.
 const FOTO_CURSOS = 'https://docs.holandesnawar.com/img/Landing/cuantos%20cursos%20has%20empezado.png'
+/* Quien la monta puede poner su propio dibujo con `slot="foto"` (la oferta de
+   Black Friday, 30/10: allí el libro se confundía con el ebook). Sin él, la
+   ilustración de siempre. */
+const conFoto = Astro.slots.has('foto')
 ---
 <section class="pn-section" data-navbar="light">
   <div class="inner">
@@ -44,7 +48,9 @@ const FOTO_CURSOS = 'https://docs.holandesnawar.com/img/Landing/cuantos%20cursos
         </p>
       </div>
 
-      {FOTO_CURSOS && (
+      {conFoto ? (
+        <div class="pn-foto sr"><slot name="foto" /></div>
+      ) : FOTO_CURSOS && (
         <figure class="pn-foto sr">
           <img
             src={FOTO_CURSOS}
