@@ -1,0 +1,60 @@
+---
+/**
+ * El pie de las páginas de Black Friday: el de /formacion-nawar
+ * (LandingCaptacion.astro), solo con lo legal. 30/10, usuario: "el footer que
+ * había en /formacion-nawar, que es simple para landing", primero en /oferta y
+ * después "igual para el ebook". Sustituye a PieBF (logo, redes y contacto).
+ *
+ * Dos formas, según lo que tenga encima:
+ *  - `claro` (/oferta, sobre las dudas): la barra azul con las dos esquinas de
+ *    arriba redondeadas, como en /formacion-nawar.
+ *  - `oscuro` (el ebook, dentro de su cierre azul): sin barra propia, una raya
+ *    fina encima; una barra azul sobre azul no se vería.
+ *
+ * Los enlaces van a www: en el subdominio blackfriday una ruta relativa no
+ * existe. `data-pie-bf`: /oferta lo vigila para esconder su botón pegado.
+ */
+interface Props {
+  fondo?: 'claro' | 'oscuro'
+}
+const { fondo = 'claro' } = Astro.props
+const WWW = 'https://www.holandesnawar.com'
+---
+
+<footer class:list={['pl', `pl-${fondo}`]} data-pie-bf>
+  <div class="pl-caja">
+    <div class="pl-links">
+      <a href={`${WWW}/terminos-y-condiciones`}>Términos y condiciones</a>
+      <a href={`${WWW}/condiciones-de-contratacion`}>Aviso legal</a>
+      <a href={`${WWW}/politica-de-privacidad`}>Política de privacidad</a>
+    </div>
+    <div class="pl-raya" aria-hidden="true"></div>
+    <p class="pl-copy">HOLANDÉS NAWAR © {new Date().getFullYear()}</p>
+  </div>
+</footer>
+
+<style>
+  /* Las medidas, las de LandingCaptacion.astro. */
+  /* Sin la raya ni el fondo de `footer` de nawar-sections.css (toda la web). */
+  .pl { border-top: none; }
+  .pl-claro { background: #F5F8FF; padding: 56px 0 0; }
+  .pl-claro .pl-caja { background: #1D0084; border-radius: 28px 28px 0 0; }
+  .pl-oscuro { position: relative; z-index: 1; margin-top: 88px; background: transparent; }
+  .pl-oscuro .pl-caja { border-top: 1px solid rgba(255,255,255,0.14); max-width: 1152px; margin: 0 auto; }
+  .pl-caja { padding: 34px 24px 30px; text-align: center; }
+  .pl-links { display: flex; justify-content: center; gap: 44px; flex-wrap: wrap; max-width: 1152px; margin: 0 auto; }
+  .pl-links a { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.95); text-decoration: none; }
+  .pl-links a:hover { color: #fff; }
+  .pl-raya { height: 1px; background: rgba(255,255,255,0.75); margin: 26px auto 20px; max-width: 1152px; }
+  .pl-copy { margin: 0; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; color: rgba(255,255,255,0.88); }
+  @media (max-width: 640px) {
+    .pl-claro { padding-top: 40px; }
+    .pl-claro .pl-caja { border-radius: 22px 22px 0 0; }
+    .pl-oscuro { margin-top: 64px; }
+    .pl-caja { padding: 26px 24px 22px; }
+    /* Apilados: en fila, tres enlaces de 15 px no caben en 360 px. */
+    .pl-links { flex-direction: column; gap: 14px; }
+    .pl-raya { margin: 20px 0 16px; }
+    .pl-copy { font-size: 12px; }
+  }
+</style>
