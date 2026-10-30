@@ -115,7 +115,12 @@ html.bf-terminado .bf-fin { display: block; }
 .bf-faq summary::-webkit-details-marker { display: none; }
 .bf-faq summary svg { flex-shrink: 0; color: #025dc7; transition: transform .2s; }
 .bf-faq details[open] summary svg { transform: rotate(45deg); }
-.bf-faq p { margin: 0 0 22px; padding: 0 4px; font-size: 16px; line-height: 1.65; color: #171a2e; max-width: 720px; }
+.bf-faq p { margin: 0 0 22px; padding: 0 4px; font-size: 16px; line-height: 1.65; font-weight: 500; color: #0b0d1a; max-width: 720px; }
+/* Las respuestas, más negras (30/10, usuario: "algo más negras"): en el
+   iPhone el 400 en #171a2e se leía gris. Y el título, más pegado a las
+   preguntas ("muy separado"): 52 px en el móvil y 72 en el ordenador. */
+.bf-cab-dudas { margin-bottom: 32px; }
+.bf-cab-dudas .bf-h2 { margin-bottom: 0; }
 
 
 /* El logo, si la imagen no carga: el nombre escrito. */
@@ -132,6 +137,7 @@ html.bf-terminado .bf-fin { display: block; }
   .bf-hero-sub { font-size: 16px; line-height: 1.6; }
   .bf-btn { width: 100%; }
   .bf-faq summary { font-size: 16.5px; padding: 18px 2px; }
+  .bf-cab-dudas { margin-bottom: 20px; }
 }
 
 /* ══ La luz (28/10, "más chula, con luz") ═══════════════════════════════════
