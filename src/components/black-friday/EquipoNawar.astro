@@ -32,8 +32,6 @@ const PRUEBA: MiembroEquipo[] = [
 ]
 const deVerdad = reales.length > 0
 const lista = deVerdad ? reales : PRUEBA
-/** Sin ninguna bio, no hay cortina que abrir: fuera la pista de «pasa el ratón». */
-const conBios = lista.some((p) => p.bio.trim())
 
 const iniciales = (n: string) =>
   n.split(/\s+/).filter(Boolean).slice(0, 2).map((p) => p[0]?.toUpperCase() ?? '').join('')
@@ -51,7 +49,9 @@ const conNegrita = (t: string) => escapar(t).replace(/\*\*(.+?)\*\*/g, '<strong>
           El equipo
         </span>
         <h2 class="mf-title">Quién te acompaña <span class="mf-accent">en el camino</span></h2>
-        {conBios && <p class="eq-sub"><span class="eq-pista-raton">Pasa el ratón por cada tarjeta</span><span class="eq-pista-dedo">Desliza las tarjetas</span> para conocer a quien te acompaña.</p>}
+        <!-- Sin la pista de «pasa el ratón» (30/10, usuario: "tontería"): lo
+             que cuenta es que no aprende solo. -->
+        <p class="eq-sub">Un equipo de expertos dispuesto a acompañarte en cada paso del camino. Aquí no estás solo.</p>
       </div>
       <div class="eq-marco">
         <button type="button" class="eq-flecha eq-izq" data-eq-mover="-1" aria-label="Anteriores">‹</button>
@@ -166,9 +166,7 @@ const conNegrita = (t: string) => escapar(t).replace(/\*\*(.+?)\*\*/g, '<strong>
   .eq-in { max-width: 1152px; margin: 0 auto; }
   .eq-cab { text-align: center; max-width: 780px; margin: 0 auto 48px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
   .eq-cab .mf-title { margin: 0; }
-  .eq-sub { margin: 0; font-size: 16px; line-height: 1.6; color: #171a2e; }
-  .eq-pista-dedo { display: none; }
-  @media (hover: none) { .eq-pista-raton { display: none; } .eq-pista-dedo { display: inline; } }
+  .eq-sub { margin: 0; font-size: 16px; line-height: 1.6; color: #171a2e; text-wrap: balance; }
 
   .eq-marco { position: relative; max-width: 1100px; margin: 0 auto; }
   .eq-fila { list-style: none; margin: 0; padding: 4px 2px 12px; display: flex; justify-content: center; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; text-align: left; }
