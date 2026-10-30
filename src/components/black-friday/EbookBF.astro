@@ -57,7 +57,7 @@ import FAQNuevo from '../FAQNuevo.astro'
 import { icono } from './iconos'
 import {
   BF_HASTA_TEXTO, EBOOK_LECTORES, EBOOK_MOCKUP, EBOOK_MOCKUP_ABIERTO, EBOOK_NOMBRE, EBOOK_PAGINAS, EBOOK_PRECIO, EBOOK_PRECIO_NORMAL, EBOOK_SUB,
-  POSTER_LIBRO, VIDEO_LIBRO,
+  ANIM_LIBRO, POSTER_LIBRO, VIDEO_LIBRO,
 } from '../../lib/blackFriday'
 import '../../styles/nawar-sections.css'
 import '../../styles/fuentes-locales.css'
@@ -262,28 +262,25 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
           </div>
         </div>
 
-        <!-- El libro por dentro, en vídeo y en bucle (30/10, usuario: "mete esto
-             en la columna derecha… en bucle, queda muy guapo"). Sin sonido ni
-             botones; el póster es su primer fotograma (la portada), que es
-             también el último: el bucle no salta. Servido desde la web
-             (public/video), no desde docs.holandesnawar.com: mismo dominio y
-             la caché de Vercel. -->
+        <!-- El libro por dentro, animado y en bucle, SIN fondo (30/10: "mete
+             esto en la columna derecha… en bucle"; luego "mejor sin fondo y algo
+             más grande"). Primero sale la portada quieta (POSTER_LIBRO) y el
+             script la cambia por lo animado: el WebM con transparencia donde se
+             puede y, en Safari y el iPhone, el WebP animado. Cómo se hizo, en
+             src/lib/blackFriday.ts. -->
         <div class="ebook-hero-visual h-anim" style="--hd:0.2s">
-          <div class="eb-libro">
+          <div class="eb-libro" id="eb-libro" data-video={VIDEO_LIBRO} data-anim={ANIM_LIBRO}>
             <span class="eb-luz" aria-hidden="true"></span>
-            <video
-              class="eb-libro-video"
-              src={VIDEO_LIBRO}
-              poster={POSTER_LIBRO}
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="auto"
-              disablepictureinpicture
-              aria-label={`${EBOOK_NOMBRE}: la portada y las páginas del libro por dentro`}
-            ></video>
-            <span class="eb-sello bf-solo-activa" aria-hidden="true"><b>{PRECIO}</b><small>Black Friday</small></span>
+            <img
+              class="eb-libro-img"
+              id="eb-libro-img"
+              src={POSTER_LIBRO}
+              alt={`${EBOOK_NOMBRE}: la portada y las páginas del libro por dentro`}
+              width="720"
+              height="528"
+              fetchpriority="high"
+            />
+            <span class="eb-sello bf-solo-activa" aria-hidden="true"><small>Black Friday</small><b>{PRECIO}</b></span>
             <div class="float-badge fb-top">
               <span class="eb-fb-ico" set:html={icono('libro', 18, 2)} />
               <div>
@@ -530,6 +527,37 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   // Sin cuenta atrás en la página: solo pone `bf-terminado` en <html> pasado
   // el lunes 30, para esconder los botones de compra.
   arrancarCuentaAtras()
+
+  // ── El libro animado: la portada quieta primero; luego, lo animado.
+  //    El WebM con transparencia no se ve transparente en Safari ni en el
+  //    iPhone (todos sus navegadores son Safari por dentro): ahí, el WebP
+  //    animado. Con «reducir movimiento», se queda la portada quieta.
+  ;(() => {
+    const caja = document.getElementById('eb-libro')
+    const img = document.getElementById('eb-libro-img') as HTMLImageElement | null
+    if (!caja || !img) return
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    const ua = navigator.userAgent
+    const iphone = /iP(hone|ad|od)/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)
+    const safari = iphone || (/Safari\//.test(ua) && !/(Chrome|Chromium|CriOS|FxiOS|Edg|OPR|Android)/.test(ua))
+    const animado = () => {
+      const anim = new Image()
+      anim.onload = () => { img.src = anim.src }
+      anim.src = caja.dataset.anim || ''
+    }
+    if (safari) { animado(); return }
+    const v = document.createElement('video')
+    v.className = 'eb-libro-img eb-libro-anim'
+    v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true
+    v.setAttribute('playsinline', ''); v.setAttribute('muted', ''); v.setAttribute('aria-hidden', 'true')
+    v.disablePictureInPicture = true
+    v.preload = 'auto'
+    v.addEventListener('playing', () => { img.style.visibility = 'hidden'; v.classList.add('ya') }, { once: true })
+    v.addEventListener('error', animado, { once: true })
+    v.src = caja.dataset.video || ''
+    img.after(v)
+    v.play()?.catch(() => { v.remove(); animado() })
+  })()
 
   const raiz = document.querySelector<HTMLElement>('.eb') as HTMLElement
   const canal = raiz.dataset.canal === 'ads' ? 'ads' : 'organico'
@@ -932,31 +960,37 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   .eb-luz { position: absolute; inset: 6% 2% 0 6%; z-index: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(77,163,255,0.6), rgba(77,163,255,0) 72%); filter: blur(34px); pointer-events: none; }
   .eb-flota { animation: eb-flota 6s ease-in-out infinite; }
   @keyframes eb-flota { 0%, 100% { transform: rotate(var(--rot, -2deg)) translateY(0); } 50% { transform: rotate(var(--rot, -2deg)) translateY(-14px); } }
+  /* El sello del precio (30/10: "más profesional… ahora parece que casi no
+     entra en el círculo"): más grande, «Black Friday» arriba en una línea
+     corta y el «1 €» debajo, con un aro fino por dentro, como un sello de
+     verdad. Quieto (sin latir), con un giro leve. */
   .eb-sello {
-    position: absolute; z-index: 2; top: 6%; left: -4%; width: 108px; height: 108px; border-radius: 9999px; background: #DC2626; color: #fff;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transform: rotate(-12deg);
-    box-shadow: inset 0 0 0 4px rgba(255,255,255,0.22); animation: eb-sello 4s ease-in-out infinite;
+    position: absolute; z-index: 2; top: 6%; left: -4%; width: 124px; height: 124px; border-radius: 9999px; background: #DC2626; color: #fff;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-align: center; transform: rotate(-8deg);
+    box-shadow: inset 0 0 0 6px #DC2626, inset 0 0 0 7.5px rgba(255,255,255,0.6);
   }
-  .eb-sello b { font-family: 'Poppins', system-ui, sans-serif; font-size: 34px; font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
-  .eb-sello small { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; }
-  @keyframes eb-sello { 0%, 100% { transform: rotate(-12deg) scale(1); } 50% { transform: rotate(-6deg) scale(1.05); } }
+  .eb-sello b { font-family: 'Poppins', system-ui, sans-serif; font-size: 40px; font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
+  .eb-sello small { font-size: 9.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; line-height: 1; margin-top: 2px; }
   .ebook-mockup-wrap .float-badge { z-index: 2; }
 
-  /* ════ 30/10: el libro en vídeo, sin sombras por fuera ════
-     El vídeo es 16:9 con el libro en el centro (entre el 21 % y el 79 % del
-     ancho, abierto o cerrado): se enseña en 4:3, que gana alto en la columna
-     sin cortar nada del libro. Va dentro de un marco de cristal, como las
-     capturas de la escuela en otras páginas. */
-  .eb-libro { position: relative; width: 100%; max-width: 540px; }
-  .eb-libro-video {
-    position: relative; z-index: 1; display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 50%;
-    border-radius: 22px; background: #E7DECF; padding: 0;
-    outline: 8px solid rgba(255,255,255,0.08); outline-offset: 0;
-  }
-  .eb-libro .eb-sello { top: -18px; left: -22px; }
+  /* ════ 30/10: el libro animado, sin fondo y más grande ════
+     El fotograma (720 × 528) deja el libro abierto casi de borde a borde: la
+     caja crece un poco más que la columna para que el libro se vea grande. */
+  /* Sale por la derecha de la columna lo que deje el margen de la página
+     (hasta 140 px): en un portátil estrecho no se corta. */
+  .eb-libro { --sale: clamp(0px, calc((100vw - 1120px) / 2), 140px); position: relative; width: calc(100% + var(--sale)); margin: 40px calc(-1 * var(--sale)) 44px 0; }
+  @media (min-width: 901px) { .ebook-hero-visual { justify-content: flex-start; } }
+  .eb-libro-img { position: relative; z-index: 1; display: block; width: 100%; height: auto; aspect-ratio: 720 / 528; }
+  /* El <video> lo crea el script: no lleva la marca de estilos de este
+     componente, por eso va con :global. */
+  .eb-libro :global(.eb-libro-anim) { position: absolute; inset: 0; z-index: 1; display: block; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .3s; }
+  .eb-libro :global(.eb-libro-anim.ya) { opacity: 1; }
+  /* Fuera del libro abierto (que va casi de borde a borde): el sello y las
+     etiquetas no tapan las páginas. */
+  .eb-libro .eb-sello { top: -13%; left: -5%; }
   .eb-libro .float-badge { z-index: 2; box-shadow: none; border: 1px solid #DDE6F5; }
-  .eb-libro .fb-top { top: -30px; right: -18px; }
-  .eb-libro .fb-bot { bottom: -22px; left: 8%; }
+  .eb-libro .fb-top { top: -9%; right: 6%; }
+  .eb-libro .fb-bot { bottom: -9%; left: 18%; }
   .eb-fb-ico { flex-shrink: 0; width: 34px; height: 34px; border-radius: 10px; background: #EAF3FF; color: #025dc7; display: inline-flex; align-items: center; justify-content: center; }
   /* Los botones de esta página, sin el halo de luz por fuera (30/10: "quita las
      sombras exteriores de botones e iconos, no queda bien"). El destello que
@@ -997,7 +1031,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   .eb-cierre-sub s { color: rgba(255,255,255,0.75); }
 
   @media (prefers-reduced-motion: reduce) {
-    .eb-precio-dto, .eb-flota, .eb-sello, .eb-cinta-pista, .eb-punto { animation: none; }
+    .eb-precio-dto, .eb-flota, .eb-cinta-pista, .eb-punto { animation: none; }
   }
 
   /* ════ Tableta y móvil ════ */
@@ -1007,9 +1041,8 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
     .ebook-hero-text { order: 1; }
     .ebook-hero-visual { order: 2; margin-top: 4px; }
     .ebook-mockup-wrap { max-width: 320px; margin: 0 auto; }
-    .eb-libro { max-width: 560px; margin: 0 auto; }
-    .eb-libro .eb-sello { top: -16px; left: -6px; }
-    .eb-libro-video { border-radius: 18px; outline-width: 6px; }
+    .eb-libro { width: 100%; max-width: 560px; margin: 52px auto 0; }
+    .eb-libro .eb-sello { top: -20%; left: -2%; }
     .ebook-mockup-wrap { --rot: 0deg; }
     .ebook-cta-primary { justify-content: center; }
     .float-badge { display: none; }
@@ -1019,8 +1052,9 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   @media (max-width: 900px) {
     .eb-cta-fila { width: 100%; flex-direction: column; align-items: stretch; }
     .eb-mano { display: none; }
-    .eb-sello { width: 88px; height: 88px; left: -2%; }
-    .eb-sello b { font-size: 28px; }
+    .eb-sello { width: 104px; height: 104px; left: -2%; box-shadow: inset 0 0 0 5px #DC2626, inset 0 0 0 6.5px rgba(255,255,255,0.6); }
+    .eb-sello b { font-size: 33px; }
+    .eb-sello small { font-size: 8.5px; letter-spacing: 0.12em; }
   }
   @media (max-width: 767px) {
     .eb-precio-ya { font-size: 52px; }

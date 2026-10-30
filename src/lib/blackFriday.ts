@@ -68,14 +68,24 @@ export const EBOOK_PRECIO_NORMAL = 12.5
 export const EBOOK_LECTORES = 40
 
 /**
- * El libro en vídeo (portada → páginas → portada, 4 s, en bucle) para la
- * cabecera de la página del ebook. Lo pasó el usuario el 30/10
- * (docs.holandesnawar.com/img/Animación Libro Interactivo.mp4); está copiado en
- * public/video con `-movflags +faststart` (arranca antes de bajarse entero) y
- * sin pista de audio. El póster es su primer fotograma, igual que el último:
- * el bucle no salta.
+ * El libro animado (portada → páginas → portada, 4 s, en bucle) para la
+ * cabecera de la página del ebook. Sale del vídeo que pasó el usuario el 30/10
+ * (docs.holandesnawar.com/img/Animación Libro Interactivo.mp4), SIN su fondo
+ * beige ("el vídeo mejor sin fondo"): se recortó fotograma a fotograma (un
+ * modelo de recorte + el tono del fondo, que es beige y las páginas blancas).
+ * Tres archivos en public/video, porque la transparencia no se reproduce igual
+ * en todas partes:
+ *  - VIDEO_LIBRO: WebM VP9 con transparencia (720 × 528, 1,1 MB). Chrome, Edge, Firefox y
+ *    Android.
+ *  - ANIM_LIBRO: WebP animado con transparencia (1,7 MB, 20 fps). Safari e
+ *    iPhone (cualquier navegador del iPhone es Safari por dentro), que no
+ *    pintan la transparencia del WebM.
+ *  - POSTER_LIBRO: el primer fotograma, quieto (40 KB). Sale al cargar, con
+ *    «reducir movimiento» y si lo animado falla. Es igual al último: el bucle
+ *    no salta.
  */
-export const VIDEO_LIBRO = '/video/holandes-sin-miedo.mp4'
+export const VIDEO_LIBRO = '/video/holandes-sin-miedo.webm'
+export const ANIM_LIBRO = '/video/holandes-sin-miedo-anim.webp'
 export const POSTER_LIBRO = '/video/holandes-sin-miedo.webp'
 
 /** Las fotos del ebook, las de la página de siempre (/ebook-a0-a1). */
