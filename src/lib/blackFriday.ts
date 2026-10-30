@@ -68,24 +68,21 @@ export const EBOOK_PRECIO_NORMAL = 12.5
 export const EBOOK_LECTORES = 40
 
 /**
- * El libro animado (portada → páginas → portada, 4 s, en bucle) para la
+ * El libro en vídeo (portada → páginas → portada, 4 s, en bucle) para la
  * cabecera de la página del ebook. Sale del vídeo que pasó el usuario el 30/10
- * (docs.holandesnawar.com/img/Animación Libro Interactivo.mp4), SIN su fondo
- * beige ("el vídeo mejor sin fondo"): se recortó fotograma a fotograma (un
- * modelo de recorte + el tono del fondo, que es beige y las páginas blancas).
- * Tres archivos en public/video, porque la transparencia no se reproduce igual
- * en todas partes:
- *  - VIDEO_LIBRO: WebM VP9 con transparencia (720 × 528, 1,1 MB). Chrome, Edge, Firefox y
- *    Android.
- *  - ANIM_LIBRO: WebP animado con transparencia (1,7 MB, 20 fps). Safari e
- *    iPhone (cualquier navegador del iPhone es Safari por dentro), que no
- *    pintan la transparencia del WebM.
- *  - POSTER_LIBRO: el primer fotograma, quieto (40 KB). Sale al cargar, con
- *    «reducir movimiento» y si lo animado falla. Es igual al último: el bucle
- *    no salta.
+ * (docs.holandesnawar.com/img/Animación Libro Interactivo.mp4), recortado a
+ * 4:3 (800 × 600), sin sonido y con `-movflags +faststart`.
+ *
+ * ⚠️ El fondo NO es el beige del original: se cambió por un azul grisáceo
+ * suave (≈ #D1DAED) fotograma a fotograma, para que el bloque no llame tanto
+ * la atención sobre el azul de la cabecera (30/10). Se probó también SIN fondo
+ * (transparente) y el usuario lo descartó: "se rompe el vídeo" (las hojas que
+ * pasan quedaban medio transparentes). Para otro color: el recorte de cada
+ * fotograma separa libro y fondo, y el fondo se multiplica por el color nuevo
+ * (las sombras se quedan). El póster es su primer fotograma, igual que el
+ * último: el bucle no salta.
  */
-export const VIDEO_LIBRO = '/video/holandes-sin-miedo.webm'
-export const ANIM_LIBRO = '/video/holandes-sin-miedo-anim.webp'
+export const VIDEO_LIBRO = '/video/holandes-sin-miedo.mp4'
 export const POSTER_LIBRO = '/video/holandes-sin-miedo.webp'
 
 /** Las fotos del ebook, las de la página de siempre (/ebook-a0-a1). */

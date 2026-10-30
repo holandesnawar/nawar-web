@@ -1,0 +1,112 @@
+---
+/**
+ * El pie de las páginas de Black Friday (el ebook y /oferta). 30/10, usuario:
+ * "ajusta el footer, puede ser mejor": antes era una sola línea de enlaces.
+ *
+ * Va DENTRO de la última sección oscura de cada página (fondo transparente,
+ * letra blanca). Logo, una frase de qué es Nawar, las redes, el contacto y lo
+ * legal; abajo, el copyright y, en la página del ebook, cómo se paga.
+ * Sin la columna de navegación de la web a propósito: son páginas de venta y
+ * no conviene mandar a nadie al blog desde aquí.
+ *
+ * ⚠️ /oferta vigila este pie (`data-pie-bf`) para esconder el botón pegado del
+ * móvil al llegar abajo: si se cambia el atributo, cambiarlo allí.
+ */
+import { icono } from './iconos'
+
+interface Props {
+  /** Una línea de cómo se paga (solo donde se paga: la página del ebook). */
+  pago?: string
+}
+const { pago } = Astro.props
+const WWW = 'https://www.holandesnawar.com'
+const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
+const ANIO = new Date().getFullYear()
+---
+
+<footer class="pbf" data-pie-bf>
+  <div class="pbf-arriba">
+    <div class="pbf-marca">
+      <a href={WWW} class="pbf-logo-enlace" aria-label="Holandés Nawar">
+        <img src={LOGO} alt="Holandés Nawar" class="pbf-logo" width="132" height="34" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'pbf-logo-txt',textContent:'Holandés Nawar'}))" />
+      </a>
+      <p class="pbf-frase">La escuela online de neerlandés para hispanohablantes. Con método, en español y acompañado de principio a fin.</p>
+      <div class="pbf-redes">
+        <a href="https://www.instagram.com/holandes.nawar" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="0.6" fill="currentColor"/></svg>
+        </a>
+        <a href="https://www.facebook.com/holandes.nawar/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <svg width="17" height="17" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H7.9v3h2.6V21h3z"/></svg>
+        </a>
+        <a href="mailto:info@holandesnawar.com" aria-label="Correo">
+          <span set:html={icono('carta', 17, 2)} />
+        </a>
+      </div>
+    </div>
+
+    <div class="pbf-col">
+      <p class="pbf-titulo">Contacto</p>
+      <a href="mailto:info@holandesnawar.com">info@holandesnawar.com</a>
+      <a href="https://www.instagram.com/holandes.nawar" target="_blank" rel="noopener noreferrer">@holandes.nawar</a>
+    </div>
+
+    <div class="pbf-col">
+      <p class="pbf-titulo">Legal</p>
+      <a href={`${WWW}/condiciones-de-contratacion`}>Condiciones de contratación</a>
+      <a href={`${WWW}/terminos-y-condiciones`}>Términos y condiciones</a>
+      <a href={`${WWW}/politica-de-privacidad`}>Política de privacidad</a>
+      <a href={`${WWW}/cookies`}>Cookies</a>
+    </div>
+  </div>
+
+  <div class="pbf-abajo">
+    <p>© {ANIO} Holandés Nawar. Todos los derechos reservados.</p>
+    {pago && (
+      <p class="pbf-pago"><span set:html={icono('candado', 14, 2)} />{pago}</p>
+    )}
+  </div>
+</footer>
+
+<style>
+  .pbf {
+    position: relative; z-index: 1; max-width: 1120px; margin: 96px auto 0; padding: 48px 0 32px;
+    border-top: 1px solid rgba(255,255,255,0.12); text-align: left; color: rgba(255,255,255,0.72); font-size: 14px;
+  }
+  .pbf-arriba { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr) minmax(0, 1fr); gap: 40px 56px; }
+  .pbf-marca { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; max-width: 380px; }
+  .pbf-logo-enlace { display: inline-flex; }
+  .pbf-logo { height: 34px; width: auto; }
+  .pbf :global(.pbf-logo-txt) { font-family: 'Poppins', system-ui, sans-serif; font-weight: 700; font-size: 21px; letter-spacing: -0.02em; color: #fff; }
+  .pbf-frase { margin: 0; font-size: 14.5px; line-height: 1.65; color: rgba(255,255,255,0.78); }
+  .pbf-redes { display: flex; gap: 10px; }
+  .pbf-redes a {
+    width: 38px; height: 38px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; border: 1px solid rgba(255,255,255,0.16); background: rgba(255,255,255,0.04); transition: background .2s, border-color .2s;
+  }
+  .pbf-redes a:hover { background: rgba(77,163,255,0.16); border-color: rgba(77,163,255,0.5); }
+  .pbf-redes :global(svg) { display: block; }
+  .pbf-col { display: flex; flex-direction: column; align-items: flex-start; gap: 11px; }
+  .pbf-titulo { margin: 0 0 4px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #4da3ff; }
+  .pbf-col a { color: rgba(255,255,255,0.82); text-decoration: none; font-size: 14px; line-height: 1.4; transition: color .2s; }
+  .pbf-col a:hover { color: #fff; }
+  .pbf-abajo {
+    margin-top: 44px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px; font-size: 13px; color: rgba(255,255,255,0.6);
+  }
+  .pbf-abajo p { margin: 0; }
+  .pbf-pago { display: inline-flex; align-items: center; gap: 7px; }
+  .pbf-pago :global(svg) { color: #4da3ff; flex-shrink: 0; }
+
+  @media (max-width: 900px) {
+    .pbf-arriba { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .pbf-marca { grid-column: 1 / -1; }
+  }
+  @media (max-width: 640px) {
+    .pbf { margin-top: 64px; padding-top: 40px; }
+    .pbf-arriba { gap: 32px 20px; }
+    .pbf-abajo { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 380px) {
+    .pbf-arriba { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

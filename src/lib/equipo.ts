@@ -8,7 +8,14 @@
  *
  * - `foto`: la ruta de la foto dentro de public/ (p. ej. '/img/equipo/rida.webp'),
  *   vertical 3:4. Vacío = sus iniciales sobre el azul.
- * - `bio`: dos o tres frases; lo que va entre ** sale en negrita.
+ * - `rol`: lo que hace en la escuela. Vacío = solo el nombre.
+ * - `bio`: dos o tres frases; lo que va entre ** sale en negrita. Vacía = la
+ *   tarjeta no tiene cortina (solo foto y nombre).
+ *
+ * Las fotos las pasó el usuario el 30/10 (docs.holandesnawar.com/img/Profes/,
+ * 1254 × 1254 con el fondo azul ya puesto); aquí van recortadas a 3:4, 600 × 800
+ * en WebP. ⚠️ El papel y la bio de cada uno están PENDIENTES de que los mande:
+ * no inventarlos.
  */
 export interface MiembroEquipo {
   nombre: string
@@ -17,4 +24,9 @@ export interface MiembroEquipo {
   bio: string
 }
 
-export const EQUIPO: MiembroEquipo[] = []
+export const EQUIPO: MiembroEquipo[] = [
+  { nombre: 'Bas', rol: '', foto: '/img/equipo/bas.webp', bio: '' },
+  { nombre: 'Luna', rol: '', foto: '/img/equipo/luna.webp', bio: '' },
+  { nombre: 'Paul', rol: '', foto: '/img/equipo/paul.webp', bio: '' },
+  { nombre: 'Rida', rol: '', foto: '/img/equipo/rida.webp', bio: '' },
+]

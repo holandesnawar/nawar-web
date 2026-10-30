@@ -83,6 +83,7 @@ import QueIncluye from '../../components/landing-08-08-2026/QueIncluye.astro'
 import BonusSection from '../../components/landing-08-08-2026/BonusSection.astro'
 import ParaTiSection from '../../components/landing-08-08-2026/ParaTiSection.astro'
 import EquipoNawar from '../../components/black-friday/EquipoNawar.astro'
+import PieBF from '../../components/black-friday/PieBF.astro'
 import '../../styles/fuentes-locales.css'
 import '../../styles/nawar-sections.css'
 import '../../styles/landing-08-08-2026.css'
@@ -555,15 +556,7 @@ const DUDAS = [
           <a href={DESPUES} class="bf-btn">Solicitar información <Fragment set:html={flecha} /></a>
         </div>
       </div>
-      <footer class="bf-pie">
-        <img src={LOGO} alt="Holandés Nawar" class="bf-logo-pie" width="110" height="28" onerror="this.remove()" />
-        <nav>
-          <a href={`${WWW}/politica-de-privacidad`}>Privacidad</a>
-          <a href={`${WWW}/condiciones-de-contratacion`}>Condiciones</a>
-          <a href="mailto:info@holandesnawar.com">info@holandesnawar.com</a>
-        </nav>
-        <p>© Holandés Nawar</p>
-      </footer>
+      <PieBF />
     </section>
 
     <!-- El botón siempre a mano (como el de /formacion-nawar-fb): sale cuando
@@ -688,7 +681,7 @@ const DUDAS = [
       pintar()
     })
     vigilados.forEach((a) => io.observe(a))
-    const pie = document.querySelector('.bf-pie')
+    const pie = document.querySelector('[data-pie-bf]')
     if (pie) io.observe(pie)
     // La cabecera aparte: al acabar de salir de la pantalla no cambia ningún
     // botón, y sin esto el pegado no saldría hasta el siguiente.
@@ -697,6 +690,9 @@ const DUDAS = [
 </script>
 
 <style>
+  /* El pie (PieBF), con sitio abajo en el móvil para el botón pegado. */
+  @media (max-width: 640px) { .lp-cierre :global(.pbf) { padding-bottom: 104px; } }
+
   /* ── Recién pagado: la barra roja ───────────────────────────────────── */
   .lp-alerta { display: none; background: #DC2626; color: #fff; padding: 13px 24px; }
   :global(html.bf-recien) .lp-alerta { display: block; }
