@@ -77,9 +77,11 @@
  * una línea como YouTalk… y probar con el fondo claro"): otra vez el banner de
  * la landing («El neerlandés no se te da mal…», viñetas y «empieza hoy»), con
  * la escuela entera a la derecha, «Black Friday» en una etiqueta negra encima
- * del titular, el logo centrado en una barra blanca con la línea roja y azul
- * de sus colores y el fondo CLARO. Con ?fondo=oscuro sale en el azul de la
- * landing, para comparar. Justo debajo, «Todo lo que recibes» (QueIncluye,
+ * del titular y el logo centrado en una barra blanca con la línea roja y azul
+ * de sus colores. Se probó en CLARO y el usuario se quedó con el azul ("nos
+ * quedamos con el fondo oscuro"), y el titular pasó a ser el de YouTalk con
+ * nuestro nombre: «Accede antes que nadie a las condiciones especiales de la
+ * Formación Nawar A0-A1». Justo debajo, «Todo lo que recibes» (QueIncluye,
  * sin su foto, que repetía la de la cabecera): "como YouTalk, que su segunda
  * sección ya es todo lo que recibes".
  *
@@ -229,12 +231,9 @@ const DUDAS = [
          probar con el fondo claro". Es el marcado del banner de
          LandingCaptacion.astro dentro de `.l8` (lo pintan sus reglas de
          landing-08-08-2026.css) con «Black Friday» en una etiqueta negra
-         encima del titular. Sale en CLARO (`lp-claro`); con ?fondo=oscuro, el
-         azul de la landing, para comparar. -->
-    <div class="l8 lp-top lp-claro" id="lp-top">
-      <script is:inline>
-        try { if (/[?&]fondo=oscuro\b/.test(location.search)) document.getElementById('lp-top').classList.remove('lp-claro') } catch (e) {}
-      </script>
+         encima del titular. En el azul de la landing: se probó en claro y el
+         usuario se quedó con el oscuro (30/10). -->
+    <div class="l8 lp-top" id="lp-top">
       <section class="hero lp-hero" id="lp-hero">
         <div class="hero-glow1" aria-hidden="true"></div>
         <div class="hero-glow2" aria-hidden="true"></div>
@@ -261,18 +260,20 @@ const DUDAS = [
               <span class="lp-bfsello-bf">Black Friday</span>
               <span class="lp-bfsello-t">Acceso anticipado · hasta el {BF_HASTA_CORTO}</span>
             </p>
+            <!-- El titular de YouTalk con nuestro nombre (30/10, usuario: "para
+                 título mejor: Accede antes que nadie a las condiciones
+                 especiales de…"). -->
             <h1 class="hero-headline">
-              <span class="text-gradient-white">El neerlandés no se te da mal.</span>
-              <em>Te lo estaban enseñando en inglés.</em>
+              <span class="text-gradient-white">Accede antes que nadie a las condiciones especiales</span>
+              <em>de la Formación Nawar A0-A1</em>
             </h1>
             <p class="hero-sub lp-comp">
-              <strong class="lp-quien" data-titulo="Acabas de desbloquear nuestra mejor oferta" data-vuelta="Tu oferta te está esperando">Acabas de desbloquear nuestra mejor oferta</strong>:
-              la Formación Nawar A0-A1 con <strong>condiciones de Black Friday</strong>, antes que nadie. De A0 a A1 en
-              <strong>16 semanas</strong>, explicado en español.
+              <strong class="lp-quien" data-titulo="Acabas de desbloquear nuestra mejor oferta" data-vuelta="Tu oferta te está esperando">Acabas de desbloquear nuestra mejor oferta</strong>.
+              De A0 a A1 en <strong>16 semanas</strong>, explicado en español.
             </p>
             <p class="hero-sub lp-gen">
-              Este Black Friday, accede antes que nadie a las <strong>condiciones especiales</strong> de la primera
-              formación de neerlandés diseñada para hispanohablantes. De A0 a A1 en <strong>16 semanas</strong>.
+              La primera formación de neerlandés diseñada para hispanohablantes. De A0 a A1 en
+              <strong>16 semanas</strong>.
             </p>
             <ul class="hero-bullets">
               {HERO_PUNTOS.map((t) => (
@@ -653,13 +654,13 @@ const DUDAS = [
 
   /* ── La barra de arriba: el logo centrado y la línea de sus colores ────
      (30/10, como la de YouTalk: rojo y luego azul, los del logo). ─────── */
-  .lp-cab { background: #fff; display: flex; align-items: center; justify-content: center; height: 76px; padding: 0 24px; }
+  .lp-cab { background: #fff; display: flex; align-items: center; justify-content: center; height: 64px; padding: 0 24px; }
   .lp-cab-a { display: inline-flex; }
-  .lp-cab-logo { display: block; height: 44px; width: auto; }
+  .lp-cab-logo { display: block; height: 34px; width: auto; }
   .lp-cab-linea { height: 3px; background: linear-gradient(90deg, #AE1C28 0 30%, #21468C 30% 100%); }
   @media (max-width: 959px) {
-    .lp-cab { height: 62px; }
-    .lp-cab-logo { height: 36px; }
+    .lp-cab { height: 54px; }
+    .lp-cab-logo { height: 28px; }
   }
   .lp-fin p { margin: 28px 0 16px; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.93); max-width: 560px; }
   .lp-fin p strong { color: #fff; }
@@ -716,12 +717,14 @@ const DUDAS = [
      ─────────────────────────────────────────────────────────────────────
      Sin la barra fija de la landing encima (la de esta página va en su
      sitio), así que el titular no tiene que bajar 132 px. */
-  .lp-top :global(.hero.hero) { min-height: calc(100vh - 79px); }
+  .lp-top :global(.hero.hero) { min-height: calc(100vh - 67px); }
   .lp-top :global(.hero-inner.hero-inner) { padding-top: 64px; padding-bottom: 92px; }
   @media (min-width: 960px) {
-    /* La imagen de la escuela es ancha: las dos columnas, casi iguales. */
-    .lp-top :global(.hero-inner.hero-inner) { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 52px; max-width: 1240px; }
-    .lp-top :global(.hero-headline.hero-headline) { font-size: clamp(36px, 3.5vw, 52px); }
+    /* La imagen de la escuela es ancha: las dos columnas, casi iguales. La
+       del texto, algo más ancha: con el titular largo (30/10) a 52 px salían
+       seis renglones; así son cuatro. */
+    .lp-top :global(.hero-inner.hero-inner) { grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr); gap: 52px; max-width: 1240px; }
+    .lp-top :global(.hero-headline.hero-headline) { font-size: clamp(34px, 3.1vw, 46px); }
     /* El botón alineado con el texto (la landing lo centraba sobre la nota). */
     .lp-top :global(.hero-cta-col) { align-items: flex-start; }
   }
@@ -759,34 +762,6 @@ const DUDAS = [
   @media (max-width: 959px) {
     .lp-top .hero-mockup-col.lp-todo-col { display: block; width: 100%; max-width: 620px; margin: 0 auto; padding: 20px 0 28px; }
   }
-
-  /* ── La cabecera en CLARO (30/10, usuario: "probar con el fondo blanco…
-     creo que la imagen se va a ver mejor"). Con ?fondo=oscuro se quita la
-     clase y queda el azul de la landing, para comparar. ───────────────── */
-  .lp-claro :global(.hero.hero) {
-    background:
-      radial-gradient(ellipse 60% 55% at 100% 0%, rgba(77,163,255,0.16) 0%, transparent 62%),
-      radial-gradient(ellipse 55% 50% at 0% 100%, rgba(29,0,132,0.06) 0%, transparent 62%),
-      linear-gradient(180deg, #fff 0%, #F0F5FF 100%);
-  }
-  .lp-claro :global(.hero-glow1), .lp-claro :global(.hero-glow2) { display: none; }
-  .lp-claro .lp-puntos { background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1px, transparent 1px); background-size: 28px 28px; }
-  .lp-claro :global(.text-gradient-white) { background: none; -webkit-text-fill-color: #1D0084; color: #1D0084; }
-  .lp-claro :global(.hero-headline) { color: #1D0084; }
-  .lp-claro :global(.hero-headline em) { color: #025dc7; }
-  .lp-claro :global(.hero-sub) { color: #171a2e; }
-  .lp-claro :global(.hero-sub strong), .lp-claro .lp-quien { color: #1D0084; }
-  .lp-claro :global(.hero-bullets li) { color: #171a2e; }
-  .lp-claro :global(.hero-check) { border-color: #025dc7; color: #025dc7; }
-  .lp-claro :global(.hero-empieza-txt) { color: #1D0084; }
-  .lp-claro :global(.hero-empieza-flecha) { color: #025dc7; }
-  .lp-claro :global(.btn-primary.btn-primary) { color: #0a1656; }
-  .lp-claro :global(.hero-scroll-hint) { color: rgba(29,0,132,0.3); }
-  .lp-claro .lp-bfsello-bf { background: #0b0b14; color: #fff; }
-  .lp-claro .lp-bfsello-t { color: #1D0084; }
-  .lp-claro .lp-ya { background: #ECFDF3; border-color: #A7F3D0; color: #14532d; }
-  .lp-claro .lp-fin p { color: #171a2e; }
-  .lp-claro .lp-fin p strong { color: #1D0084; }
 
   /* ── «El método, paso a paso»: el libro de la formación (30/10) ────────
      Su fondo es blanco, como el de la sección. También en el móvil (la
