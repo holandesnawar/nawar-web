@@ -68,7 +68,7 @@
  *
  * 30/10, después: fuera la nota «Sin compromiso…» bajo el botón de la
  * cabecera y la última sección (el cierre «Adelántate y asegura…»); el pie es
- * el de /formacion-nawar (solo lo legal), no PieBF. La pastilla verde de quien
+ * el de /formacion-nawar (solo lo legal, PieLegal.astro), no PieBF. La pastilla verde de quien
  * compró va en una línea en el móvil (texto corto aparte, `lp-ya-corto`).
  *
  * La LUZ de las otras secciones (28/10): el brillo de los botones y el borde de
@@ -97,6 +97,7 @@ import QueIncluye from '../../components/landing-08-08-2026/QueIncluye.astro'
 import BonusSection from '../../components/landing-08-08-2026/BonusSection.astro'
 import ParaTiSection from '../../components/landing-08-08-2026/ParaTiSection.astro'
 import EquipoNawar from '../../components/black-friday/EquipoNawar.astro'
+import PieLegal from '../../components/black-friday/PieLegal.astro'
 import '../../styles/fuentes-locales.css'
 import '../../styles/nawar-sections.css'
 import '../../styles/landing-08-08-2026.css'
@@ -449,18 +450,8 @@ const DUDAS = [
          fue el cierre («Adelántate y asegura…») y el pie con redes y contacto.
          Una barra oscura con las esquinas de arriba redondeadas sobre el claro
          de las dudas, y solo lo legal. Los enlaces, a www: en el subdominio
-         blackfriday una ruta relativa no existe. -->
-    <footer class="lp-pie" data-pie-bf>
-      <div class="lp-pie-caja">
-        <div class="lp-pie-links">
-          <a href={`${WWW}/terminos-y-condiciones`}>Términos y condiciones</a>
-          <a href={`${WWW}/condiciones-de-contratacion`}>Aviso legal</a>
-          <a href={`${WWW}/politica-de-privacidad`}>Política de privacidad</a>
-        </div>
-        <div class="lp-pie-raya" aria-hidden="true"></div>
-        <p class="lp-pie-copy">HOLANDÉS NAWAR © {new Date().getFullYear()}</p>
-      </div>
-    </footer>
+         blackfriday una ruta relativa no existe (PieLegal.astro). -->
+    <PieLegal />
 
     <!-- El botón siempre a mano (como el de /formacion-nawar-fb): sale cuando
          no se ve ningún otro botón de agendar. -->
@@ -595,21 +586,6 @@ const DUDAS = [
 </script>
 
 <style>
-  /* ── El pie: el de /formacion-nawar (sus medidas, de LandingCaptacion) ── */
-  .lp-pie { background: #F5F8FF; padding: 56px 0 0; }
-  .lp-pie-caja { background: #1D0084; border-radius: 28px 28px 0 0; padding: 34px 24px 30px; text-align: center; }
-  .lp-pie-links { display: flex; justify-content: center; gap: 44px; flex-wrap: wrap; max-width: 1152px; margin: 0 auto; }
-  .lp-pie-links a { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.95); text-decoration: none; }
-  .lp-pie-links a:hover { color: #fff; }
-  .lp-pie-raya { height: 1px; background: rgba(255,255,255,0.75); margin: 26px auto 20px; max-width: 1152px; }
-  .lp-pie-copy { margin: 0; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; color: rgba(255,255,255,0.88); }
-  @media (max-width: 640px) {
-    .lp-pie { padding-top: 40px; }
-    .lp-pie-caja { border-radius: 22px 22px 0 0; padding: 26px 24px 22px; }
-    .lp-pie-links { flex-direction: column; gap: 14px; }
-    .lp-pie-raya { margin: 20px 0 16px; }
-    .lp-pie-copy { font-size: 12px; }
-  }
 
   /* ── Recién pagado: la barra roja ───────────────────────────────────── */
   .lp-alerta { display: none; background: #DC2626; color: #fff; padding: 13px 24px; }
