@@ -27,6 +27,10 @@
  * lo exige y lo comprueba) y va a su ficha al pagar. Quien solo se apunta y
  * no compra ya no deja teléfono, así que no sale para llamar.
  *
+ * 30/10: sin las etiquetas con punto rojo (encima del titular y del
+ * formulario: "queda muy ChatGPT"), el botón sin sombra por fuera y la
+ * entradilla en 500 (en 400 "se veía muy simple").
+ *
  * 29/10, noche ("ese tiene que ser el título de la web… y que el título quede
  * en una frase"): «Únete a la lista prioritaria…» en una sola frase. Se probó
  * la página en blanco con el formulario en azul y no gustó ("dale la vuelta de
@@ -101,7 +105,8 @@ const OFERTA = bfRuta('/oferta')
 
       <div class="dl-in">
         <div class="dl-texto">
-          <span class="bf-badge-dark dl-badge"><span class="dl-punto" aria-hidden="true"></span>Black Friday 2026</span>
+          <!-- Sin etiqueta encima (30/10, usuario: "con el punto rojo… queda muy
+               ChatGPT"): el titular ya dice Black Friday. -->
           <h1 class="dl-h1">Únete a la <span class="dl-marca">lista prioritaria</span> del Black&nbsp;Friday</h1>
           <p class="dl-sub">
             Apúntate gratis y accede antes que nadie a <strong>la mejor oferta del año</strong> de
@@ -127,7 +132,6 @@ const OFERTA = bfRuta('/oferta')
         <form class="dl-form bf-solo-activa" id="dl-form" novalidate>
           <div class="dl-hp" aria-hidden="true"><label>No rellenar <input type="text" id="dl-hp" tabindex="-1" autocomplete="off" /></label></div>
 
-          <p class="dl-ceja"><span class="dl-punto" aria-hidden="true"></span>Lista prioritaria</p>
           <h2 class="dl-form-tit">Reserva tu acceso anticipado</h2>
           <p class="dl-form-sub">Es gratis. Desbloqueas la oferta al momento, antes de que llegue el Black Friday.</p>
 
@@ -329,18 +333,19 @@ const OFERTA = bfRuta('/oferta')
   .dl-form { grid-area: form; align-self: center; }
   .dl-in > .dl-fin { grid-area: fin; }
 
-  .dl-badge { display: inline-flex; align-items: center; gap: 9px; }
-  .dl-punto { width: 7px; height: 7px; border-radius: 50%; background: #E5484D; box-shadow: 0 0 0 4px rgba(229,72,77,0.18); flex-shrink: 0; }
 
   /* El titular: una sola frase en blanco, «lista prioritaria» en el azul de
      los botones (en una pieza que no parte de línea). */
   .dl-h1 {
     font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(40px, 3.9vw, 50px); font-weight: 700;
-    line-height: 1.1; letter-spacing: -0.035em; color: #fff; margin: 20px 0 22px; text-wrap: balance;
+    line-height: 1.1; letter-spacing: -0.035em; color: #fff; margin: 0 0 22px; text-wrap: balance;
   }
   .dl-marca { white-space: nowrap; color: #4da3ff; }
-  .dl-sub { margin: 0; max-width: 600px; font-size: clamp(16.5px, 1.4vw, 18.5px); line-height: 1.65; color: rgba(255,255,255,0.93); }
-  .dl-sub strong { color: #fff; font-weight: 600; }
+  /* La entradilla con un punto más de cuerpo (30/10, usuario: "se ve muy
+     simple… parece fea"): en 400 y blanco sobre azul se veía deslavazada. A
+     500, como el resto de textos sobre azul de la web, y lo resaltado en 700. */
+  .dl-sub { margin: 0; max-width: 580px; font-size: clamp(17px, 1.45vw, 19px); line-height: 1.6; font-weight: 500; letter-spacing: -0.005em; color: rgba(255,255,255,0.9); }
+  .dl-sub strong { color: #fff; font-weight: 700; }
 
   /* Lo que se lleva por apuntarse. */
   .dl-ventajas { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; max-width: 600px; }
@@ -355,7 +360,6 @@ const OFERTA = bfRuta('/oferta')
     box-shadow: 0 40px 80px -36px rgba(0,0,0,0.55);
   }
   .dl-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-  .dl-ceja { display: flex; align-items: center; gap: 9px; margin: 0 0 10px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #025dc7; }
   .dl-form-tit { margin: 0 0 8px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(24px, 2.2vw, 30px); font-weight: 700; line-height: 1.15; letter-spacing: -0.025em; color: #1D0084; }
   .dl-form-sub { margin: 0 0 24px; font-size: 15px; line-height: 1.55; color: #171a2e; }
   .dl-label { display: block; margin: 0 0 7px; font-size: 13px; font-weight: 600; letter-spacing: 0.01em; color: #0a1656; }
@@ -368,7 +372,9 @@ const OFERTA = bfRuta('/oferta')
   .dl-input:focus { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
   .dl-err { display: none; margin: 14px 0 0; padding: 10px 13px; border-radius: 11px; background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; font-size: 13.5px; line-height: 1.5; }
   .dl-err:global(.visible) { display: block; }
+  /* Sin la sombra de fuera (30/10, usuario): solo el brillo de dentro. */
   .dl-btn { width: 100%; margin-top: 24px; font-size: 17px; }
+  .dl-btn.bf-brillo { box-shadow: inset 0 1px 0 rgba(255,255,255,0.45); }
   .dl-legal { margin: 14px 0 0; font-size: 12.5px; line-height: 1.55; color: #171a2e; }
   .dl-legal a { color: #025dc7; text-decoration: underline; }
 
@@ -404,7 +410,7 @@ const OFERTA = bfRuta('/oferta')
   @media (max-width: 1023px) {
     /* En la tableta y el móvil: titular, formulario y lo que se lleva, uno debajo de otro. */
     .dl-in { grid-template-columns: minmax(0, 1fr); grid-template-areas: "texto" "form" "ventajas" "fin"; row-gap: 32px; max-width: 640px; padding: 8px 0 56px; }
-    .dl-h1 { font-size: clamp(34px, 8.6vw, 50px); line-height: 1.12; margin: 16px 0 18px; }
+    .dl-h1 { font-size: clamp(34px, 8.6vw, 50px); line-height: 1.12; margin: 0 0 18px; }
   }
   @media (max-width: 640px) {
     .dl-form { padding: 26px 20px 20px; border-radius: 18px; }
