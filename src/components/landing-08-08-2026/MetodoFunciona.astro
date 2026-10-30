@@ -98,7 +98,12 @@ const losPasos = pasosPropios ?? (ads ? [paso1Ads, ...pasos.slice(1)] : pasos)
             ))}
           </div>
 
-          <!-- Plataforma viva (mockup rico) -->
+          <!-- Plataforma viva (mockup rico). Quien monta la sección puede poner
+               su propio dibujo con slot="mockup" (la oferta de Black Friday,
+               30/10); sin él, el de siempre. -->
+          {Astro.slots.has('mockup') ? (
+            <div class="mf-mock-col sr d1" aria-hidden="true"><slot name="mockup" /></div>
+          ) : (
           <div class="mf-mock-col sr d1" aria-hidden="true">
             <div class="mf-mock">
               <div class="mf-mock-inner">
@@ -157,6 +162,7 @@ const losPasos = pasosPropios ?? (ads ? [paso1Ads, ...pasos.slice(1)] : pasos)
               </div>
             </div>
           </div>
+          )}
 
         </div>
       </div>

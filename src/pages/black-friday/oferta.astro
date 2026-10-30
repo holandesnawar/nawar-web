@@ -371,7 +371,61 @@ const DUDAS = [
           </div>
         </div>
       </PresentacionNawar>
-      <MetodoFunciona ads={true} />
+      <MetodoFunciona ads={true}>
+        <!-- «El método, paso a paso»: a la derecha, el dibujo de la escuela que
+             llevaba antes la cabecera (30/10, usuario: "en ese mockup pon el que
+             teníamos antes arriba"). En la cabecera va ahora la lección 1. -->
+        <div slot="mockup" class="lp-mf-maq">
+          <div class="platform-mockup">
+            <div class="mockup-header">
+              <div class="mockup-dots"><span></span><span></span><span></span></div>
+              <span class="mockup-title">Formación Nawar A0-A1</span>
+            </div>
+            <div class="mockup-body">
+              <div>
+                <div class="mockup-label">Tu progreso — Módulo 1</div>
+                <div class="mockup-progress-bar"><div class="mockup-progress-fill" style="width:65%"></div></div>
+                <div class="mockup-pct">65% completado</div>
+              </div>
+              <div class="mockup-modules">
+                <div class="mockup-module active">
+                  <div class="module-icon">📹</div>
+                  <div class="module-info"><span class="module-title">Les 1 — Woordenschat</span><span class="module-sub">Vocabulario · 20 min</span></div>
+                  <span class="module-badge done">✓</span>
+                </div>
+                <div class="mockup-module active">
+                  <div class="module-icon">📝</div>
+                  <div class="module-info"><span class="module-title">Les 2 — Grammatica</span><span class="module-sub">Gramática · 18 min</span></div>
+                  <span class="module-badge done">✓</span>
+                </div>
+                <div class="mockup-module current">
+                  <div class="module-icon">🎯</div>
+                  <div class="module-info"><span class="module-title">Les 3 — Uitspraak</span><span class="module-sub">Pronunciación · 15 min</span></div>
+                  <span class="module-badge current-badge">→</span>
+                </div>
+                <div class="mockup-module locked">
+                  <div class="module-icon">🔒</div>
+                  <div class="module-info"><span class="module-title">Les 4 — Spreken</span><span class="module-sub">Hablar · 25 min</span></div>
+                </div>
+              </div>
+              <div class="mockup-vocab-card">
+                <div class="vocab-article">de</div>
+                <div class="vocab-word">naam</div>
+                <div class="vocab-translation">el nombre</div>
+                <div class="vocab-example">"Mijn naam is Anna."</div>
+              </div>
+            </div>
+          </div>
+          <div class="float-badge lp-mf-fb-top">
+            <span style="font-size:18px;">🏷️</span>
+            <div><p>Black Friday</p><p>condiciones solo hasta el {BF_HASTA_CORTO}</p></div>
+          </div>
+          <div class="float-badge lp-mf-fb-bot">
+            <span style="font-size:18px;">🎥</span>
+            <div><p>Clases en directo</p><p>masterclass y grupos de conversación</p></div>
+          </div>
+        </div>
+      </MetodoFunciona>
       <!-- Quién te acompaña: no sale hasta que haya alguien en src/lib/equipo.ts. -->
       <EquipoNawar />
     </div>
@@ -782,6 +836,14 @@ const DUDAS = [
     .lp-maq-flash { width: 172px; padding: 12px 14px 13px; }
     .lp-maq-flash-nl { font-size: 22px; }
   }
+
+  /* ── «El método, paso a paso»: el dibujo que llevaba antes la cabecera ──
+     Sus reglas son las de la landing (.l8 .platform-mockup…); aquí, sobre
+     blanco, con un borde fino y una sombra más suave que la del azul. */
+  .lp-mf-maq { position: relative; padding: 34px 28px 30px; }
+  .lp-mf-maq .platform-mockup { border: 1px solid #DDE6F5; box-shadow: 0 30px 70px -20px rgba(29,0,132,0.28); }
+  .lp-mf-fb-top { position: absolute; top: 0; right: 0; z-index: 2; }
+  .lp-mf-fb-bot { position: absolute; bottom: 0; left: 0; z-index: 2; }
 
   /* ── «El método»: tu camino en la escuela (30/10) ───────────────────── */
   .lp-cam { position: relative; max-width: 540px; margin: 0 auto; padding: 40px 26px 64px; }
