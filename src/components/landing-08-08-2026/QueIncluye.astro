@@ -58,6 +58,12 @@ const incluye = [
 // la foto real del producto que hay debajo y dos veces la misma idea
 // resta. El código se queda entero —ponlo en true y vuelve—.
 const MOSTRAR_MOCKUP = false
+interface Props {
+  /** Sin la foto de la escuela: en /black-friday/oferta la cabecera ya la
+   *  enseña y aquí, justo debajo, se repetía (30/10). Sin nada, como siempre. */
+  sinFoto?: boolean
+}
+const { sinFoto = false } = Astro.props
 // Fondo blanco en la propia imagen, por eso la sección va en blanco.
 // Dos versiones: la ancha, con las etiquetas alrededor de las pantallas,
 // y la recompuesta para móvil. Van en un <picture>, así que el navegador
@@ -150,6 +156,7 @@ const tools = [
     )}
 
     <!-- La foto real de todo lo que entra, en sus pantallas -->
+    {!sinFoto && (
     <figure class="qi-foto sr">
       <picture>
         <source media="(max-width: 768px)" srcset={FOTO_PRODUCTO_MOVIL} />
@@ -161,6 +168,7 @@ const tools = [
         />
       </picture>
     </figure>
+    )}
 
     <!-- Grid de lo incluido -->
     <div class="qi-grid">
