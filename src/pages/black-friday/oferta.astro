@@ -66,6 +66,11 @@
  * paso», el libro de la formación (libro-formacion.webp, «cuantos cursos has
  * empezado.png»). Las dos, servidas desde la web en WebP.
  *
+ * 30/10, después: fuera la nota «Sin compromiso…» bajo el botón de la
+ * cabecera y la última sección (el cierre «Adelántate y asegura…»); el pie es
+ * el de /formacion-nawar (solo lo legal), no PieBF. La pastilla verde de quien
+ * compró va en una línea en el móvil (texto corto aparte, `lp-ya-corto`).
+ *
  * La LUZ de las otras secciones (28/10): el brillo de los botones y el borde de
  * luz de la tarjeta salen de black-friday.css (`bf-brillo`, `bf-borde-luz`);
  * en el ordenador, las tarjetas oscuras se iluminan donde está el ratón
@@ -92,7 +97,6 @@ import QueIncluye from '../../components/landing-08-08-2026/QueIncluye.astro'
 import BonusSection from '../../components/landing-08-08-2026/BonusSection.astro'
 import ParaTiSection from '../../components/landing-08-08-2026/ParaTiSection.astro'
 import EquipoNawar from '../../components/black-friday/EquipoNawar.astro'
-import PieBF from '../../components/black-friday/PieBF.astro'
 import '../../styles/fuentes-locales.css'
 import '../../styles/nawar-sections.css'
 import '../../styles/landing-08-08-2026.css'
@@ -213,9 +217,14 @@ const DUDAS = [
             <!-- Quien ha comprado el ebook: que lo sepa antes que nada. -->
             <p class="lp-ya lp-comp">
               <span class="lp-ya-ico" set:html={icono('check', 13, 3)} />
-              <span id="lp-ya-t">
+              <span class="lp-ya-t lp-ya-largo" id="lp-ya-largo">
                 <span class="lp-ya-ebook">Ya tienes tu ebook «{EBOOK_NOMBRE}».</span>
                 <span class="lp-ya-vuelta">Tu oferta de Black Friday sigue desbloqueada.</span>
+              </span>
+              <!-- En el móvil, en una sola línea (30/10, usuario). -->
+              <span class="lp-ya-t lp-ya-corto" id="lp-ya-corto">
+                <span class="lp-ya-ebook">Ya tienes tu ebook de Black Friday</span>
+                <span class="lp-ya-vuelta">Tu oferta sigue desbloqueada</span>
               </span>
             </p>
             <!-- El titular, como el de YouTalk (30/10, usuario: "que esté claro
@@ -240,10 +249,6 @@ const DUDAS = [
               <div class="hero-cta-fila">
                 <div class="hero-cta-col">
                   <a href={ADMISION} class="btn btn-primary btn-lg" data-bf-cta>{QUIERO}</a>
-                  <p class="hero-nota">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                    Sin compromiso: te la contamos en una llamada de media hora
-                  </p>
                 </div>
               </div>
             </div>
@@ -438,24 +443,24 @@ const DUDAS = [
       </div>
     </section>
 
-    <!-- ═══ Cierre ═══ -->
-    <section class="bf-sec bf-oscuro lp-cierre" id="lp-cierre">
-      <div class="bf-capas" aria-hidden="true"><span class="bf-luz1"></span><span class="bf-luz2"></span><span class="bf-dots"></span></div>
-      <div class="bf-foco" aria-hidden="true"></div>
-      <div class="bf-in lp-centro">
-        <span class="bf-badge-dark">Black Friday <i>·</i> Acceso anticipado</span>
-        <h2 class="bf-h2 bf-h2-blanco lp-cierre-t"><span class="bf-grad">Adelántate y asegura </span><span class="bf-azul">las condiciones de Black Friday</span></h2>
-        <div class="lp-cierre-cta bf-solo-activa">
-          <a href={ADMISION} class="bf-btn bf-brillo" data-bf-cta id="lp-cierre-btn">Agendar mi llamada gratuita <Fragment set:html={flecha} /></a>
-          <p class="bf-nota">Llamada gratuita de media hora · Sin compromiso</p>
+    <!-- ═══ El pie: el de /formacion-nawar (LandingCaptacion.astro) ═══
+         30/10, usuario: "quita la última sección, sobra, y el footer fuera;
+         el que había en /formacion-nawar, que es simple para landing". Se
+         fue el cierre («Adelántate y asegura…») y el pie con redes y contacto.
+         Una barra oscura con las esquinas de arriba redondeadas sobre el claro
+         de las dudas, y solo lo legal. Los enlaces, a www: en el subdominio
+         blackfriday una ruta relativa no existe. -->
+    <footer class="lp-pie" data-pie-bf>
+      <div class="lp-pie-caja">
+        <div class="lp-pie-links">
+          <a href={`${WWW}/terminos-y-condiciones`}>Términos y condiciones</a>
+          <a href={`${WWW}/condiciones-de-contratacion`}>Aviso legal</a>
+          <a href={`${WWW}/politica-de-privacidad`}>Política de privacidad</a>
         </div>
-        <div class="lp-fin bf-fin">
-          <p><strong>La oferta de Black Friday ha terminado.</strong> Puedes seguir pidiendo información sobre la formación.</p>
-          <a href={DESPUES} class="bf-btn">Solicitar información <Fragment set:html={flecha} /></a>
-        </div>
+        <div class="lp-pie-raya" aria-hidden="true"></div>
+        <p class="lp-pie-copy">HOLANDÉS NAWAR © {new Date().getFullYear()}</p>
       </div>
-      <PieBF />
-    </section>
+    </footer>
 
     <!-- El botón siempre a mano (como el de /formacion-nawar-fb): sale cuando
          no se ve ningún otro botón de agendar. -->
@@ -530,8 +535,10 @@ const DUDAS = [
     }
     nombre = limpio(d.nombre) || nombre
     email = limpio(d.email, 200).toLowerCase() || email
-    ;(document.getElementById('lp-ya-t') as HTMLElement).textContent =
+    ;(document.getElementById('lp-ya-largo') as HTMLElement).textContent =
       `Ya tienes tu ebook: te llega${email ? ` a ${email}` : ' a tu correo'} en un minuto. Revisa también spam o promociones.`
+    ;(document.getElementById('lp-ya-corto') as HTMLElement).textContent = 'Tu ebook ya va camino de tu correo'
+
     // Si vuelve otro día a esta página, que siga viendo su oferta.
     try { localStorage.setItem(CLAVE_COMPRADOR, '1') } catch {}
     ponerNombre()
@@ -588,8 +595,21 @@ const DUDAS = [
 </script>
 
 <style>
-  /* El pie (PieBF), con sitio abajo en el móvil para el botón pegado. */
-  @media (max-width: 640px) { .lp-cierre :global(.pbf) { padding-bottom: 104px; } }
+  /* ── El pie: el de /formacion-nawar (sus medidas, de LandingCaptacion) ── */
+  .lp-pie { background: #F5F8FF; padding: 56px 0 0; }
+  .lp-pie-caja { background: #1D0084; border-radius: 28px 28px 0 0; padding: 34px 24px 30px; text-align: center; }
+  .lp-pie-links { display: flex; justify-content: center; gap: 44px; flex-wrap: wrap; max-width: 1152px; margin: 0 auto; }
+  .lp-pie-links a { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.95); text-decoration: none; }
+  .lp-pie-links a:hover { color: #fff; }
+  .lp-pie-raya { height: 1px; background: rgba(255,255,255,0.75); margin: 26px auto 20px; max-width: 1152px; }
+  .lp-pie-copy { margin: 0; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; color: rgba(255,255,255,0.88); }
+  @media (max-width: 640px) {
+    .lp-pie { padding-top: 40px; }
+    .lp-pie-caja { border-radius: 22px 22px 0 0; padding: 26px 24px 22px; }
+    .lp-pie-links { flex-direction: column; gap: 14px; }
+    .lp-pie-raya { margin: 20px 0 16px; }
+    .lp-pie-copy { font-size: 12px; }
+  }
 
   /* ── Recién pagado: la barra roja ───────────────────────────────────── */
   .lp-alerta { display: none; background: #DC2626; color: #fff; padding: 13px 24px; }
@@ -607,6 +627,12 @@ const DUDAS = [
   .lp-ya-ebook, .lp-ya-vuelta { display: none; }
   :global(html.bf-de-ebook) .lp-ya-ebook, :global(html.bf-de-vuelta) .lp-ya-vuelta { display: inline; }
   .lp-ya { display: inline-flex; align-items: flex-start; gap: 10px; margin: 0 0 20px; padding: 10px 16px 10px 12px; border-radius: 14px; background: rgba(34,197,94,0.14); border: 1px solid rgba(134,239,172,0.35); max-width: 560px; font-size: 14.5px; line-height: 1.5; color: #fff; }
+  .lp-ya-corto { display: none; }
+  @media (max-width: 640px) {
+    .lp-ya { align-items: center; max-width: 100%; padding: 9px 14px 9px 10px; font-size: 13.5px; white-space: nowrap; }
+    .lp-ya-largo { display: none; }
+    .lp-ya-corto { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  }
   .lp-ya-ico { flex-shrink: 0; width: 22px; height: 22px; border-radius: 9999px; background: #22C55E; color: #052e16; display: inline-flex; align-items: center; justify-content: center; margin-top: 0; }
 
   /* ── Cabecera: el banner de la landing (sus reglas, en landing-08-08-2026.css)
@@ -642,6 +668,12 @@ const DUDAS = [
 
   /* Las secciones de la landing, dentro de esta página. */
   .lp-l8 { background: #fff; }
+  /* «Todo lo que recibes»: en el móvil, el botón quedaba 120 px por debajo de
+     la última tarjeta (el margen de la rejilla y el de la sección). */
+  @media (max-width: 640px) {
+    .lp-l8 :global(.qi-section.qi-section) { padding-bottom: 36px; }
+    .lp-l8 :global(.qi-grid.qi-grid) { margin-bottom: 0; }
+  }
   .lp-escudo { display: inline-flex; color: #025dc7; }
 
   /* ── Plan de estudios ───────────────────────────────────────────────── */
@@ -660,11 +692,6 @@ const DUDAS = [
   .lp-etapa-hito > span:first-child { color: var(--c); display: inline-flex; flex-shrink: 0; margin-top: 2px; }
   .lp-etapa-hito b { color: #fff; font-weight: 600; }
 
-  /* ── Cierre ─────────────────────────────────────────────────────────── */
-  .lp-cierre { padding-bottom: 0; }
-  .lp-cierre-t { font-size: clamp(30px, 4.2vw, 48px); margin-bottom: 36px; }
-  .lp-cierre-cta { display: flex; flex-direction: column; align-items: center; gap: 26px; }
-  .lp-cierre-cta .bf-nota { margin-top: -12px; }
 
   /* ── Cabecera: el titular de Black Friday, como el de YouTalk (30/10) ──
      «Adelántate al» en rojo con su raya, BLACK FRIDAY enorme en una línea,
@@ -723,13 +750,13 @@ const DUDAS = [
   .lp-libro img { display: block; width: 100%; height: auto; mix-blend-mode: multiply; }
   @media (max-width: 960px) {
     .lp-l8 :global(.mf-mock-col) { display: block; }
-    .lp-libro { max-width: 360px; margin-top: 8px; }
+    .lp-libro { max-width: 270px; margin-top: 8px; }
   }
 
   /* ── «El método»: tu camino en la escuela (30/10) ───────────────────── */
-  .lp-cam { position: relative; max-width: 540px; margin: 0 auto; padding: 40px 26px 64px; }
-  .lp-cam-deco1 { position: absolute; left: 0; top: 0; width: 60%; height: 64%; border-radius: 24px; background: #1D0084; background-image: radial-gradient(circle 320px at 100% 0%, rgba(11,109,240,0.55) 0%, transparent 70%); }
-  .lp-cam-deco2 { position: absolute; right: 0; bottom: 20px; width: 46%; height: 44%; border-radius: 24px; background: #9fd0ff; }
+  .lp-cam { position: relative; max-width: 540px; margin: 0 auto; padding: 62px 26px 88px; }
+  .lp-cam-deco1 { position: absolute; left: 0; top: 30px; width: 60%; height: 60%; border-radius: 24px; background: #1D0084; background-image: radial-gradient(circle 320px at 100% 0%, rgba(11,109,240,0.55) 0%, transparent 70%); }
+  .lp-cam-deco2 { position: absolute; right: 0; bottom: 44px; width: 46%; height: 42%; border-radius: 24px; background: #9fd0ff; }
   .lp-cam-card { position: relative; z-index: 1; background: #fff; border: 1px solid #DDE6F5; border-radius: 22px; padding: 22px 22px 20px; }
   .lp-cam-cab { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
   .lp-cam-k { margin: 0; font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #025dc7; }
@@ -758,17 +785,19 @@ const DUDAS = [
   .lp-cam-chip { position: absolute; z-index: 2; display: flex; align-items: center; gap: 10px; padding: 9px 14px 9px 9px; border-radius: 14px; background: #fff; border: 1px solid #DDE6F5; }
   .lp-cam-chip b { display: block; font-size: 12.5px; font-weight: 600; color: #1D0084; line-height: 1.3; }
   .lp-cam-chip span:not(.lp-fb-ico) { display: block; font-size: 11.5px; color: #5b6380; line-height: 1.3; }
-  .lp-cam-chip1 { top: 8px; right: -4px; }
-  .lp-cam-chip2 { bottom: 12px; left: 8px; }
+  /* Las dos etiquetas, montadas a caballo de los cuadros de detrás y no con
+     su borde en la misma línea que el del cuadro (30/10, usuario). */
+  .lp-cam-chip1 { top: 6px; right: -4px; }
+  .lp-cam-chip2 { bottom: 6px; left: 8px; }
   @media (max-width: 480px) {
-    .lp-cam { padding: 40px 12px 60px; }
+    .lp-cam { padding: 62px 12px 84px; }
     .lp-cam-card { padding: 18px 16px 16px; }
     .lp-cam-cab { flex-direction: column; gap: 10px; }
     .lp-cam-mods li { flex-wrap: wrap; row-gap: 4px; }
     .lp-cam-est, .lp-cam-barra { margin-left: 36px; }
     .lp-cam-nombre { flex-basis: calc(100% - 36px); }
     /* Arriba del todo, por encima de la tarjeta: más abajo tapaba «Tu camino». */
-    .lp-cam-chip1 { top: 0; right: 0; }
+    .lp-cam-chip1 { top: 6px; right: 0; }
   }
 
   /* ── Los botones de la landing, en una línea en el móvil (30/10) ───────
@@ -817,7 +846,6 @@ const DUDAS = [
     .lp-etapa::before { left: 20px; right: 20px; }
     .lp-etapa-n { font-size: 40px; }
     .lp-etapa h3 { font-size: 20px; }
-    .lp-cierre-cta { width: 100%; }
     .lp-pegado { left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); justify-content: space-between; }
     .lp-pegado-txt { flex: 1; padding-right: 0; }
   }
