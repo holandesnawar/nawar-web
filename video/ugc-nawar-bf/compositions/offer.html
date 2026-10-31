@@ -1,0 +1,113 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .f-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .f-paper { background: #F5F7FF; }
+    .f-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .f-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .f-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .f-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .f-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .f-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .f-dark { background: radial-gradient(circle at 50% 34%, #1b1846 0%, #0b0a1c 56%, #050409 100%); }
+    .f-dark-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1.6px, transparent 1.8px); background-size: 30px 30px; }
+    .f-dark-amb { position: absolute; left: 40px; top: 220px; width: 1000px; height: 980px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(11,109,240,0.22) 0%, rgba(11,109,240,0.07) 45%, rgba(11,109,240,0) 70%); }
+    .f-dark-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%); }
+    .f-on-dark { box-shadow: 0 40px 110px rgba(0,0,0,0.60), 0 8px 24px rgba(0,0,0,0.40); }
+    /* Black Friday pieces: the tape (a yellow strip with «BLACK FRIDAY» running on it), the yellow pill and the burst */
+    .f-tape { position: absolute; height: 92px; background: #FFD60A; overflow: hidden; box-shadow: 0 18px 40px rgba(0,0,0,0.45); }
+    .f-tape-run { position: absolute; left: 0; top: 0; height: 92px; display: flex; align-items: center; gap: 34px; white-space: nowrap;
+      font-weight: 900; font-size: 52px; line-height: 1; letter-spacing: 0.02em; color: #08070F; padding-top: 4px; box-sizing: border-box; }
+    .f-tape-run i { display: block; width: 16px; height: 16px; border-radius: 50%; background: #08070F; font-style: normal; }
+    .f-ypill { display: flex; align-items: center; gap: 14px; height: 72px; padding: 0 32px 0 22px; border-radius: 999px; background: #FFD60A;
+      color: #08070F; white-space: nowrap; box-shadow: 0 16px 40px rgba(0,0,0,0.40);
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 31px; line-height: 1; letter-spacing: -0.005em; }
+    .f-ypill svg { display: block; width: 38px; height: 38px; }
+    .f-acc-y { color: #FFD60A; }
+    .f-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    .f-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
+    .f-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    .f-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .f-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .f-pill svg { display: block; width: 28px; height: 28px; }
+    .f-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .f-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .f-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .f-flag svg { display: block; width: 40px; height: 27px; }
+    .f-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .f-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+    .f-av svg { display: block; width: 96px; height: 96px; }
+    .f-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .f-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .f-bub-g { background: #E8ECF7; color: #374151; }
+    .f-bub-b { background: #0b6df0; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .f-bl { border-bottom-left-radius: 10px; }
+    .f-br { border-bottom-right-radius: 10px; }
+    .f-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .f-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .f-acc { color: #4da3ff; }
+    .f-w { display: inline-block; }
+
+    #f-burst { position: absolute; left: 700px; top: 300px; width: 330px; height: 330px; transform: rotate(9deg); }
+    #f-burst svg { position: absolute; left: 0; top: 0; width: 330px; height: 330px; filter: drop-shadow(0 18px 30px rgba(0,0,0,0.45)); }
+    #f-price { position: absolute; left: 0; top: 0; width: 330px; height: 330px; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; color: #08070F; }
+    #f-solo { font-family: "Inter", sans-serif; font-weight: 800; font-size: 30px; line-height: 1; letter-spacing: 0.16em; margin-bottom: 2px; }
+    #f-eur { font-weight: 900; font-size: 140px; line-height: 0.95; letter-spacing: -0.04em; }
+    #f-drow { top: 1130px; }
+    #f-date { display: flex; align-items: center; gap: 16px; height: 84px; padding: 0 36px 0 26px; border-radius: 999px; background: #FFFFFF;
+      color: #0C0C1E; white-space: nowrap; box-shadow: 0 18px 44px rgba(0,0,0,0.40);
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 38px; line-height: 1; letter-spacing: -0.01em; }
+    #f-date svg { display: block; width: 44px; height: 44px; color: #E02D3C; }
+    #f-date b { color: #E02D3C; font-weight: 900; }
+    #f-tw { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+
+  </style>
+  <div id="root" data-composition-id="offer" data-width="1080" data-height="1920" data-duration="5.892">
+    <div id="f-burst"><svg viewBox="0 0 330 330"><polygon points="165.0,0.0 189.3,27.1 221.4,10.0 235.0,43.8 271.1,38.6 272.2,75.0 307.9,82.5 296.6,117.1 327.5,136.3 305.0,165.0 327.5,193.7 296.6,212.9 307.9,247.5 272.2,255.0 271.1,291.4 235.0,286.2 221.4,320.0 189.3,302.9 165.0,330.0 140.7,302.9 108.6,320.0 95.0,286.2 58.9,291.4 57.8,255.0 22.1,247.5 33.4,212.9 2.5,193.7 25.0,165.0 2.5,136.3 33.4,117.1 22.1,82.5 57.8,75.0 58.9,38.6 95.0,43.8 108.6,10.0 140.7,27.1" fill="#FFD60A"/></svg><div id="f-price"><div id="f-solo">SOLO</div><div id="f-eur">1 €</div></div></div>
+    <div id="f-drow" class="f-row"><div id="f-date"><svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="33" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><path d="M6 19 H42 M16 5 V13 M32 5 V13" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span>Hasta el <b>30 de noviembre</b></span></div></div>
+    <div id="f-tw"><div id="f-t" class="f-tape" style="left:-80px; top:150px; width:1240px; transform: rotate(-5deg);"><div id="f-t-run" class="f-tape-run"><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i></div></div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("f-" + id);
+
+      tl.fromTo(q("burst"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 9, duration: 0.42, ease: "back.out(2.2)" }, 1.076 - 0.08);
+      tl.fromTo(q("burst"), { rotation: 9 }, { keyframes: [{ rotation: 5, duration: 0.6, ease: "sine.inOut" }, { rotation: 11, duration: 0.6, ease: "sine.inOut" },
+        { rotation: 6, duration: 0.6, ease: "sine.inOut" }, { rotation: 10, duration: 0.6, ease: "sine.inOut" }, { rotation: 7, duration: 0.6, ease: "sine.inOut" },
+        { rotation: 9, duration: 0.6, ease: "sine.inOut" }, { rotation: 6, duration: 0.6, ease: "sine.inOut" }, { rotation: 9, duration: 0.6, ease: "sine.inOut" }],
+        immediateRender: false }, 1.076 + 0.36);
+      tl.fromTo(q("date"), { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.8)" }, 2.038 - 0.08);
+      tl.fromTo(q("tw"), { opacity: 0, x: -1200 }, { opacity: 1, x: 0, duration: 0.26, ease: "power4.out" }, 4.854 - 0.05);
+      tl.fromTo(q("t-run"), { x: 0 }, { x: -380, duration: 5.892 - 4.854 + 0.05, ease: "none" }, 4.854 - 0.05);
+      tl.to([q("burst"), q("date"), q("tw")], { opacity: 0, scale: 0.9, duration: 0.16, ease: "power2.in" }, 5.892 - 0.16);
+
+      window.__timelines["offer"] = tl;
+    })();
+  </script>
+</template>
