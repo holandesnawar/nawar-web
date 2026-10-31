@@ -640,7 +640,7 @@ const DUDAS = [
   /* ── La barra de arriba: el logo centrado y la línea de sus colores ────
      (30/10, como la de YouTalk: rojo y luego azul, los del logo). En el azul
      de la cabecera (el de `.l8 .hero`): en blanco "no tiene sentido". ──── */
-  .lp-cab { background: #1a0078; display: flex; align-items: center; justify-content: center; height: 72px; padding: 0 24px; }
+  .lp-cab { background: #24109E; display: flex; align-items: center; justify-content: center; height: 72px; padding: 0 24px; }
   .lp-cab-a { display: inline-flex; }
   .lp-cab-logo { display: block; height: 34px; width: auto; }
   .lp-cab-linea { height: 3px; background: linear-gradient(90deg, #AE1C28 0 30%, #21468C 30% 100%); }
@@ -674,11 +674,16 @@ const DUDAS = [
 
   /* Las secciones de la landing, dentro de esta página. */
   .lp-l8 { background: #fff; }
-  /* «Todo lo que recibes»: en el móvil, el botón quedaba 120 px por debajo de
-     la última tarjeta (el margen de la rejilla y el de la sección). */
+  /* «Todo lo que recibes»: el botón es parte de la sección (31/10, usuario:
+     "está muy abajo… parece que está en otra sección"). Su franja iba en
+     #F0F4FF y 150 px por debajo de la última tarjeta (el margen de la rejilla
+     y el relleno de la sección): ahora en blanco, como la sección, y a 40 px. */
+  .lp-l8 :global(.qi-section.qi-section) { padding-bottom: 40px; }
+  .lp-l8 :global(.qi-grid.qi-grid) { margin-bottom: 0; }
+  .lp-l8 :global(.l8-cta-band.l8-cta-band) { background: #fff; padding: 0 0 8px; }
   @media (max-width: 640px) {
-    .lp-l8 :global(.qi-section.qi-section) { padding-bottom: 36px; }
-    .lp-l8 :global(.qi-grid.qi-grid) { margin-bottom: 0; }
+    .lp-l8 :global(.qi-section.qi-section) { padding-bottom: 32px; }
+    .lp-l8 :global(.l8-cta-band.l8-cta-band) { padding-bottom: 8px; }
   }
   .lp-escudo { display: inline-flex; color: #025dc7; }
 
@@ -705,6 +710,16 @@ const DUDAS = [
      especiales» subrayado como con rotulador. La columna del texto es un
      contenedor: BLACK FRIDAY ocupa su ancho entero a cualquier tamaño. */
   .lp-top :global(.hero.hero) { min-height: calc(100vh - 75px); }
+  /* El fondo, un punto más claro que el de la landing (31/10, usuario: "la
+     primera sección tiene un fondo muy oscuro… mismo diseño, un poquito más
+     clarito"): la base sube de #1a0078 a #24109E y la luz azul se abre más.
+     La barra del logo lleva la misma base. */
+  .lp-top :global(.hero.hero) {
+    background:
+      radial-gradient(ellipse 85% 65% at 70% 35%, rgba(11,109,240,0.30) 0%, transparent 62%),
+      radial-gradient(ellipse 70% 55% at 8% 95%, rgba(77,163,255,0.14) 0%, transparent 60%),
+      #24109E;
+  }
   .lp-top :global(.hero-inner.hero-inner) { padding-top: 64px; padding-bottom: 92px; }
   @media (max-width: 959px) {
     /* Más aire entre la barra del logo y el titular en el móvil (30/10). */
@@ -718,10 +733,10 @@ const DUDAS = [
     .lp-top :global(.hero-cta-col) { align-items: flex-start; }
   }
   .lp-top :global(.hero-texto-col) { container-type: inline-size; min-width: 0; }
-  .lp-pre { display: flex; align-items: center; gap: 14px; margin: 0 0 4px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(16px, 1.8vw, 22px); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #AE1C28; }
-  /* El rojo del logo, tal cual (#AE1C28, medido en el logo). Hubo una vuelta
-     con uno más encendido (#E8283B) y el usuario lo quiso "algo más oscuro,
-     como el logo" (30/10). */
+  .lp-pre { display: flex; align-items: center; gap: 14px; margin: 0 0 4px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(16px, 1.8vw, 22px); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F03A4A; }
+  /* El rojo de «Adelántate al»: #F03A4A (31/10). Se probó el del logo tal
+     cual (#AE1C28, 30/10) y sobre el azul "quedó muy oscuro, apenas se lee";
+     antes, #E8283B. Este se lee y sigue siendo rojo, no rosa. */
   .lp-pre-raya { width: 36px; height: 3px; border-radius: 3px; background: currentColor; flex-shrink: 0; }
   .lp-bf {
     margin: 0; font-family: 'Poppins', system-ui, sans-serif; font-weight: 800; text-transform: uppercase; white-space: nowrap;
