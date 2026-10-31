@@ -48,9 +48,14 @@
  *    inventados. Con fotos de verdad y su permiso, en `CARAS`.
  *  - «Todo lo que te llevas por 1 €» (`PILA`): solo lo que se entrega. El
  *    único precio es el del ebook; lo demás, «incluido» o «bonus».
- *  - La vida: el sello rojo del precio, el libro que flota, la nota a mano
+ *  - La vida: el sello del precio, el libro que flota, la nota a mano
  *    junto al botón (la de la landing de la formación, en Caveat), la cinta
  *    que pasa y el destello del botón. Todo quieto con «reducir movimiento».
+ *
+ * 31/10 (usuario): el libro sin bloque detrás (el vídeo lleva el azul de la
+ * cabecera), el sello en tarjeta blanca (el círculo rojo "se veía barato"),
+ * la flecha con la punta en el botón, «Así es por dentro» con tres dobles
+ * páginas de verdad y más preguntas frecuentes ("queda un poco corta").
  */
 import Layout from '../../layouts/Layout.astro'
 import FAQNuevo from '../FAQNuevo.astro'
@@ -133,6 +138,16 @@ const incluye = [
   'Acceso de por vida en PDF: descárgalo en cualquier dispositivo',
 ]
 
+/**
+ * «Así es por dentro»: tres dobles páginas de verdad (fotogramas del vídeo de
+ * la cabecera, sobre #F0F5FF). Los títulos son los que llevan esas páginas.
+ */
+const DENTRO = [
+  { img: '/img/black-friday/por-dentro-1.webp', alt: 'Páginas «Cómo usar este libro» y «Klanken (Sonidos)»', t: 'Los sonidos (Klanken)', d: 'Cómo se pronuncian las combinaciones de letras, con ejemplos: kaas → queso, lezen → leer.' },
+  { img: '/img/black-friday/por-dentro-2.webp', alt: 'Páginas «De familie (La familia)» y «Onbepaalde lidwoorden»', t: 'La familia y el artículo «een»', d: 'El vocabulario de la familia en un árbol y cuándo se usa «een», con su nota importante.' },
+  { img: '/img/black-friday/por-dentro-3.webp', alt: 'Páginas «De nummers (Los números)» y «Hebben en zijn»', t: 'Los números y hebben / zijn', d: 'Del 1 al 20, la conjugación en una tabla y los ejercicios de «¡Repasemos lo aprendido!».' },
+]
+
 const ebookTestimonials = [
   { name: 'Daniel Jiménez', stars: 5, title: 'Claro y bien organizado', text: 'Una herramienta clara y bien organizada para quienes empiezan a estudiar neerlandés. Con explicaciones sencillas y ejemplos prácticos. ¡Muchas gracias!' },
   { name: 'Manuel Gutiérrez', stars: 5, title: 'Aplicable desde el primer día', text: 'Me gustó especialmente que incluye ejemplos útiles para el día a día: puedes aplicar lo aprendido casi de inmediato. También hay ejercicios que te obligan a practicar, algo que se agradece mucho cuando estás empezando.' },
@@ -143,8 +158,14 @@ const faqEbook = {
   badge: '¿Tienes dudas?',
   title: 'Preguntas frecuentes',
   items: [
+    { question: '¿Me sirve si empiezo desde cero?', answer: 'Sí. Está pensado para el nivel A0-A1: empieza por lo más básico (cómo suenan las letras, los artículos, los números) y todo está explicado en español, sin pasar por el inglés.' },
+    { question: '¿Qué temas trae?', answer: `${EBOOK_PAGINAS} páginas en 7 lecciones con la gramática básica, el vocabulario esencial y frases del día a día. Cada lección acaba con ejercicios, y al final del libro tienes todas las respuestas para corregirte por tu cuenta.` },
+    { question: '¿Me sirve si ya sé algo de neerlandés?', answer: 'Sí, como repaso de la base: si hay reglas que no se te quedan, aquí las tienes explicadas de forma clara y con ejercicios para fijarlas.' },
+    { question: '¿Me prepara para el examen de inburgering?', answer: 'Te da la base del idioma (A0-A1) que necesitas antes de ponerte con el examen. No es un curso de examen: es el primer paso.' },
     { question: '¿Cómo lo recibo?', answer: `En cuanto pagas, te llega un correo con el enlace para descargar «${EBOOK_NOMBRE}» en PDF. Si no lo ves en unos minutos, mira en spam o en promociones.` },
     { question: '¿Por qué cuesta solo 1 €?', answer: `Es nuestra oferta de Black Friday (su precio de siempre es ${PRECIO_NORMAL}): queremos que pruebes cómo enseñamos en Nawar sin que te cueste casi nada. Solo hasta el ${BF_HASTA_TEXTO}.` },
+    { question: '¿Cómo puedo pagar?', answer: 'Con tarjeta, iDEAL o Bancontact, en una caja de pago segura sin salir de esta página. Al pagar te llega el recibo por correo.' },
+    { question: '¿Qué pasa después de comprarlo?', answer: `El ebook te llega al correo en un minuto. En la misma pantalla verás, antes que nadie, la oferta de Black Friday de la Formación Nawar: solo para mirarla, sin compromiso.` },
     { question: '¿En qué formato está disponible?', answer: 'En PDF: lo abres en el móvil, la tablet o el ordenador, lo guardas donde prefieras o lo imprimes si te gusta estudiar en papel.' },
     { question: '¿Necesito conexión a internet para usarlo?', answer: 'Solo para descargarlo. Después lo tienes sin conexión, siempre que quieras.' },
     { question: '¿Cuánto tiempo tendré acceso?', answer: 'Es tuyo para siempre: puedes consultarlo cuando lo necesites.' },
@@ -237,10 +258,12 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
               Consíguelo por {PRECIO}
               <Fragment set:html={flecha} />
             </button>
+            <!-- La nota a mano: la flecha sale del texto y su punta se queda en el
+                 borde del botón, a media altura (31/10: "no señala justo al botón"). -->
             <span class="eb-mano" aria-hidden="true">
-              <svg class="eb-mano-flecha" viewBox="0 0 64 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M58 4C57 20 47 34 30 40" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                <path d="M38 41l-9 1 3-9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <svg class="eb-mano-flecha" viewBox="0 0 56 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M53 7C40 5 24 22 6 26" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                <path d="M14 19L5.5 26 15 31" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               <span class="eb-mano-txt">¡es tuyo hoy!</span>
             </span>
@@ -268,11 +291,10 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
         <!-- El libro por dentro, en vídeo y en bucle (30/10, usuario: "mete esto
              en la columna derecha… en bucle, queda muy guapo"). Sin sonido ni
              botones; el póster es su primer fotograma (la portada), que es
-             también el último: el bucle no salta. El fondo del vídeo es un azul
-             grisáceo suave, no el beige del original (ver VIDEO_LIBRO). -->
+             también el último: el bucle no salta. El fondo del vídeo es el azul
+             de la cabecera (31/10): solo se ve el libro (ver VIDEO_LIBRO). -->
         <div class="ebook-hero-visual h-anim" style="--hd:0.2s">
           <div class="eb-libro">
-            <span class="eb-luz" aria-hidden="true"></span>
             <video
               class="eb-libro-video"
               src={VIDEO_LIBRO}
@@ -285,7 +307,10 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
               disablepictureinpicture
               aria-label={`${EBOOK_NOMBRE}: la portada y las páginas del libro por dentro`}
             ></video>
-            <span class="eb-sello bf-solo-activa" aria-hidden="true"><small>Black Friday</small><b>{PRECIO}</b></span>
+            <span class="eb-sello bf-solo-activa" aria-hidden="true">
+              <small>Black Friday</small>
+              <span class="eb-sello-fila"><b>{PRECIO}</b><s>{PRECIO_NORMAL}</s></span>
+            </span>
             <div class="float-badge fb-top">
               <span class="eb-fb-ico" set:html={icono('libro', 18, 2)} />
               <div>
@@ -368,7 +393,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
               <s>{PRECIO_NORMAL}</s>
             </div>
             <div class="eb-pila-total-fila eb-pila-hoy">
-              <span>Hoy, por Black Friday</span>
+              <span>Precio especial Black Friday</span>
               <b>{PRECIO}</b>
             </div>
             <div class="bf-solo-activa eb-pila-cta">
@@ -407,6 +432,35 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
       </div>
     </section>
 
+    <!-- ════ ASÍ ES POR DENTRO (light) ════
+         31/10, usuario: "queda un poco corta… algo sobre las lecciones para
+         convencer más". Tres dobles páginas DE VERDAD del libro, sacadas del
+         vídeo de la cabecera (public/img/black-friday/por-dentro-*.webp), con
+         su tema. Nada inventado: los títulos son los de esas páginas. -->
+    <section class="section-light eb-dentro-sec" data-navbar="light">
+      <div class="inner">
+        <div class="eb-pila-cab">
+          <span class="badge-light">Un vistazo por dentro</span>
+          <h2 class="title" style="color:#1D0084;margin:0;">Así son las páginas de «{EBOOK_NOMBRE}»</h2>
+          <p class="eb-dentro-sub">Explicaciones claras, ejemplos traducidos y ejercicios para repasar lo aprendido. Todo en español.</p>
+        </div>
+        <div class="eb-dentro">
+          {DENTRO.map((d) => (
+            <figure class="eb-dentro-item sr-s">
+              <div class="eb-dentro-foto"><img src={d.img} alt={d.alt} width="784" height="557" loading="lazy" decoding="async" /></div>
+              <figcaption><b>{d.t}</b><span>{d.d}</span></figcaption>
+            </figure>
+          ))}
+        </div>
+        <div class="bf-solo-activa eb-dentro-cta">
+          <button type="button" class="ebook-cta-primary ebook-cta-big bf-brillo" data-bf-comprar>
+            Lo quiero por {PRECIO}
+            <Fragment set:html={flecha} />
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- ════ QUÉ INCLUYE + comprar ════ -->
     <section id="que-incluye" class="section-dark py-section" data-navbar="dark" style="position:relative;overflow:hidden;padding-top:32px;">
       <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:1000px;height:700px;background:radial-gradient(ellipse at center,rgba(11,109,240,0.30) 0%,transparent 65%);pointer-events:none;" aria-hidden="true"></div>
@@ -418,8 +472,8 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
           <div class="ebook-incluye-text sr d1">
             <span class="badge-dark">¿Qué encontrarás dentro?</span>
             <h2 class="value-title">
-              <span class="text-gradient-white">Todo lo que necesitas para</span><br class="hidden md:block" />
-              <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;">tu nivel A0 – A1</span>
+              <span class="text-gradient-white">Todo lo que necesitas</span><br class="eb-br-pc" />
+              <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;">para tu nivel A0 – A1</span>
             </h2>
             <ul class="ebook-incluye-list">
               {incluye.map((item) => (
@@ -482,7 +536,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
             <b>{EBOOK_NOMBRE}</b>
             <span>eBook A0-A1 en PDF · {EBOOK_PAGINAS} páginas</span>
           </div>
-          <span class="eb-resumen-precios"><s>{PRECIO_NORMAL}</s><b class="eb-resumen-precio">{PRECIO}</b></span>
+          <span class="eb-resumen-precios"><b class="eb-resumen-precio">{PRECIO}</b><s>{PRECIO_NORMAL}</s></span>
         </div>
 
         <form class="eb-paso" data-paso="datos" id="eb-form" novalidate>
@@ -870,7 +924,11 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   .eb-resumen-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
   .eb-resumen-txt b { font-family: 'Poppins', system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #1D0084; }
   .eb-resumen-txt span { font-size: 13px; color: #171a2e; }
-  .eb-resumen-precio { font-family: 'Poppins', system-ui, sans-serif; font-size: 22px; font-weight: 700; color: #1D0084; }
+  /* El precio de hoy arriba y el de siempre debajo, sin pegarse (31/10:
+     "el 12,50 y el 1 € están muy juntos"). */
+  .eb-resumen-precios { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; line-height: 1; }
+  .eb-resumen-precio { font-family: 'Poppins', system-ui, sans-serif; font-size: 24px; font-weight: 700; color: #1D0084; line-height: 1; }
+  .eb-resumen-precios s { font-size: 13px; font-weight: 500; color: #475069; text-decoration-color: #DC2626; text-decoration-thickness: 1.5px; white-space: nowrap; }
   .eb-modal-titulo { margin: 22px 0 4px; font-family: 'Poppins', system-ui, sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.018em; color: #1D0084; }
   .eb-modal-lead { margin: 0 0 6px; font-size: 14.5px; color: #171a2e; }
   .eb-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
@@ -912,10 +970,16 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   .eb-precio-hasta { margin: 10px 0 0; font-size: 13.5px; color: rgba(255,255,255,0.88); }
 
   /* El botón con la nota a mano (la de la landing: «empieza hoy»). */
-  .eb-cta-fila { display: flex; align-items: center; gap: 14px; margin: 2px 0 26px; }
-  .eb-mano { display: inline-flex; align-items: flex-start; gap: 2px; color: #4da3ff; }
-  .eb-mano-txt { font-family: 'Caveat', 'Segoe Script', cursive; font-size: 27px; font-weight: 700; line-height: 1; color: #fff; transform: rotate(-7deg); white-space: nowrap; padding-top: 18px; }
-  .eb-mano-flecha { width: 42px; height: 34px; margin-top: 4px; }
+  .eb-cta-fila { display: flex; align-items: flex-start; gap: 14px; margin: 2px 0 26px; }
+  /* El salto de «Todo lo que necesitas / para tu nivel A0 – A1», solo con las
+     dos columnas: en una sola, el título corre solo. */
+  .eb-br-pc { display: none; }
+  @media (min-width: 1024px) { .eb-br-pc { display: inline; } }
+  /* La flecha sale del texto (arriba a la derecha) y su punta se queda a 8 px
+     del botón, a media altura: el botón mide 56 px y la punta cae a 28. */
+  .eb-mano { display: inline-flex; align-items: flex-start; color: #4da3ff; margin-left: -6px; }
+  .eb-mano-txt { font-family: 'Caveat', 'Segoe Script', cursive; font-size: 27px; font-weight: 700; line-height: 1; color: #fff; transform: rotate(-6deg); white-space: nowrap; margin: -10px 0 0 -2px; }
+  .eb-mano-flecha { width: 50px; height: 40px; margin-top: 4px; flex-shrink: 0; }
 
   /* Las caras de quien ya lo tiene. */
   .eb-caras { display: flex; align-items: center; gap: 12px; }
@@ -931,35 +995,48 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   .ebook-test-name { display: inline-flex; align-items: center; gap: 10px; }
   .eb-cara-op { width: 32px; height: 32px; border: 0; background: #EAF3FF; color: #1D0084; }
 
-  /* El libro: flota, con su luz detrás y el sello del precio. */
-  .eb-luz { position: absolute; inset: 6% 2% 0 6%; z-index: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(77,163,255,0.6), rgba(77,163,255,0) 72%); filter: blur(34px); pointer-events: none; }
+  /* El libro y el sello del precio. */
   .eb-flota { animation: eb-flota 6s ease-in-out infinite; }
   @keyframes eb-flota { 0%, 100% { transform: rotate(var(--rot, -2deg)) translateY(0); } 50% { transform: rotate(var(--rot, -2deg)) translateY(-14px); } }
-  /* El sello del precio (30/10: "más profesional… ahora parece que casi no
-     entra en el círculo"): más grande, «Black Friday» arriba en una línea
-     corta y el «1 €» debajo, con un aro fino por dentro, como un sello de
-     verdad. Quieto (sin latir), con un giro leve. */
+  /* El sello del precio (31/10: "se ve algo barato"): ya no es el círculo
+     rojo, sino una tarjeta blanca como las otras dos que flotan junto al libro
+     («+70 páginas», «100% en español»): «Black Friday» en rojo, pequeño y en
+     mayúsculas, y debajo el 1 € con el precio de siempre tachado. Sin sombra
+     y sin giro. */
   .eb-sello {
-    position: absolute; z-index: 2; top: 6%; left: -4%; width: 124px; height: 124px; border-radius: 9999px; background: #DC2626; color: #fff;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-align: center; transform: rotate(-8deg);
-    box-shadow: inset 0 0 0 6px #DC2626, inset 0 0 0 7.5px rgba(255,255,255,0.6);
+    position: absolute; z-index: 2; top: 6%; left: -4%; display: flex; flex-direction: column; gap: 6px;
+    padding: 12px 16px 13px; border-radius: 14px; background: #fff; border: 1px solid #DDE6F5; color: #1D0084;
   }
-  .eb-sello b { font-family: 'Poppins', system-ui, sans-serif; font-size: 40px; font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
-  .eb-sello small { font-size: 9.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; line-height: 1; margin-top: 2px; }
+  .eb-sello small { font-size: 10.5px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; line-height: 1; color: #C81E1E; }
+  .eb-sello-fila { display: flex; align-items: baseline; gap: 9px; }
+  .eb-sello b { font-family: 'Poppins', system-ui, sans-serif; font-size: 32px; font-weight: 700; line-height: 1; letter-spacing: -0.03em; color: #1D0084; }
+  .eb-sello s { font-size: 14px; font-weight: 600; color: #475069; text-decoration-color: #DC2626; text-decoration-thickness: 1.5px; }
   .ebook-mockup-wrap .float-badge { z-index: 2; }
 
-  /* ════ 30/10: el libro en vídeo, en su bloque ════
-     El vídeo es 4:3 con el libro en el centro. El bloque es el propio fondo
-     del vídeo, en un azul grisáceo suave (antes beige: llamaba demasiado la
-     atención sobre el azul). Se probó sin fondo y se descartó. */
+  /* ════ 31/10: el libro en vídeo, sin bloque detrás ════
+     El vídeo es 4:3 con el libro en el centro y su fondo es el mismo azul de
+     la cabecera (#1D0084): solo se ve el libro (usuario: "no me gusta el
+     fondo de atrás"). Los cuatro bordes se funden con una máscara, por si
+     detrás la cabecera tiene algo de luz y no es exactamente ese azul. Los
+     márgenes de la máscara caben en el hueco que el libro deja en el vídeo
+     (2 % a los lados, más arriba, donde suben las hojas). */
   .eb-libro { position: relative; width: 100%; max-width: 540px; }
+  /* Alrededor del vídeo, el mismo azul que fundido: la luz de la cabecera
+     (arriba a la derecha) no deja ver dónde acaba el vídeo. */
+  .eb-libro::before {
+    content: ''; position: absolute; inset: -7% -9%; z-index: 0; pointer-events: none;
+    background: radial-gradient(closest-side, #1D0084 74%, rgba(29,0,132,0) 100%);
+  }
   .eb-libro-video {
     position: relative; z-index: 1; display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 50%;
-    border-radius: 22px; background: #D1DAED; padding: 0;
-    outline: 8px solid rgba(255,255,255,0.08); outline-offset: 0;
+    background: #1D0084; padding: 0;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 2%, #000 98%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 6%, #000 95%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent 0, #000 2%, #000 98%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 6%, #000 95%, transparent 100%);
+    mask-composite: intersect;
   }
-  /* El sello, fuera de la esquina del bloque: así no tapa las páginas. */
-  .eb-libro .eb-sello { top: -44px; left: -48px; }
+  /* El sello, en la esquina de arriba a la izquierda, pisando un poco el libro. */
+  .eb-libro .eb-sello { top: -8px; left: -22px; }
   .eb-libro .float-badge { z-index: 2; box-shadow: none; border: 1px solid #DDE6F5; }
   .eb-libro .fb-top { top: -30px; right: -18px; }
   /* Debajo del bloque, sin tocar el libro (30/10: "un poco más abajo para
@@ -979,10 +1056,28 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   .eb-cinta-item i { font-style: normal; color: #1D0084; font-size: 13px; }
   @keyframes eb-cinta { to { transform: translateX(-50%); } }
 
+  /* Así es por dentro. */
+  .eb-dentro-sec { position: relative; padding: 24px 0 96px; }
+  .eb-dentro-sub { margin: 0; font-size: 16.5px; line-height: 1.6; color: #171a2e; max-width: 560px; }
+  .eb-dentro { display: grid; grid-template-columns: 1fr; gap: 22px; max-width: 1060px; margin: 0 auto; }
+  @media (min-width: 900px) { .eb-dentro { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .eb-dentro-item { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  .eb-dentro-foto { border-radius: 18px; background: #F0F5FF; border: 1px solid #DDE6F5; padding: 14px 12px; }
+  .eb-dentro-foto img { display: block; width: 100%; height: auto; }
+  .eb-dentro-item figcaption { display: flex; flex-direction: column; gap: 4px; padding: 0 4px; }
+  .eb-dentro-item figcaption b { font-size: 16.5px; font-weight: 700; color: #1D0084; line-height: 1.35; }
+  .eb-dentro-item figcaption span { font-size: 14.5px; line-height: 1.55; color: #171a2e; }
+  .eb-dentro-cta { display: flex; justify-content: center; margin-top: 40px; }
+  @media (max-width: 767px) {
+    .eb-dentro-sec { padding: 8px 0 60px; }
+    .eb-dentro-cta, .eb-dentro-cta .ebook-cta-primary { width: 100%; justify-content: center; }
+  }
+
   /* Todo lo que te llevas por 1 €. */
   .eb-pila-sec { position: relative; padding: 96px 0; }
   .eb-pila-cab { text-align: center; max-width: 760px; margin: 0 auto 40px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-  .eb-pila-acento { color: #025dc7; white-space: nowrap; }
+  /* «por 1 €» del mismo color que el resto del título (31/10, usuario). */
+  .eb-pila-acento { color: inherit; white-space: nowrap; }
   /* «Todo lo que te llevas por 1 €» en una línea en el móvil (30/10, usuario):
      mide 13,4 veces su letra. */
   @media (max-width: 767px) {
@@ -1022,8 +1117,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
     .ebook-mockup-wrap { max-width: 320px; margin: 0 auto; }
     .eb-libro { max-width: 560px; margin: 0 auto; }
     .eb-libro { margin-top: 30px; }
-    .eb-libro .eb-sello { top: -40px; left: -10px; }
-    .eb-libro-video { border-radius: 18px; outline-width: 6px; }
+    .eb-libro .eb-sello { top: -18px; left: -4px; }
     .ebook-mockup-wrap { --rot: 0deg; }
     .ebook-cta-primary { justify-content: center; }
     .float-badge { display: none; }
@@ -1033,9 +1127,10 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   @media (max-width: 900px) {
     .eb-cta-fila { width: 100%; flex-direction: column; align-items: stretch; }
     .eb-mano { display: none; }
-    .eb-sello { width: 104px; height: 104px; left: -2%; box-shadow: inset 0 0 0 5px #DC2626, inset 0 0 0 6.5px rgba(255,255,255,0.6); }
-    .eb-sello b { font-size: 33px; }
-    .eb-sello small { font-size: 8.5px; letter-spacing: 0.12em; }
+    .eb-sello { padding: 9px 12px 10px; gap: 5px; border-radius: 12px; }
+    .eb-sello b { font-size: 26px; }
+    .eb-sello s { font-size: 12.5px; }
+    .eb-sello small { font-size: 9.5px; letter-spacing: 0.14em; }
   }
   @media (max-width: 767px) {
     .eb-precio-ya { font-size: 52px; }

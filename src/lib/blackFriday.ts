@@ -73,17 +73,27 @@ export const EBOOK_LECTORES = 40
  * (docs.holandesnawar.com/img/Animación Libro Interactivo.mp4), recortado a
  * 4:3 (800 × 600), sin sonido y con `-movflags +faststart`.
  *
- * ⚠️ El fondo NO es el beige del original: se cambió por un azul grisáceo
- * suave (≈ #D1DAED) fotograma a fotograma, para que el bloque no llame tanto
- * la atención sobre el azul de la cabecera (30/10). Se probó también SIN fondo
- * (transparente) y el usuario lo descartó: "se rompe el vídeo" (las hojas que
- * pasan quedaban medio transparentes). Para otro color: el recorte de cada
- * fotograma separa libro y fondo, y el fondo se multiplica por el color nuevo
- * (las sombras se quedan). El póster es su primer fotograma, igual que el
- * último: el bucle no salta.
+ * ⚠️ El fondo es el AZUL DE LA CABECERA (#1D0084), liso (31/10, usuario: "no
+ * me gusta el fondo de atrás… que se vea solo el ebook"): sobre la cabecera
+ * solo se ve el libro, y los bordes del vídeo se funden con una máscara (ver
+ * `.eb-libro-video`). Antes fue beige (el original) y luego azul grisáceo
+ * (≈ #D1DAED, 30/10), en un bloque que se veía como una caja.
+ *
+ * Cómo se hizo (por si hay que repetirlo con otro color): el recorte guardado
+ * de cada fotograma (rembg) dice qué es fondo, PERO solo se acepta donde el
+ * color es el del fondo (beige cálido o sombra gris lisa) y se le suma el
+ * beige liso unido al borde del fotograma. Así las hojas que pasan (blancas o
+ * frías) no quedan medio transparentes, que es lo que "rompía" la versión
+ * transparente del 30/10. NO es transparente de verdad: es el mismo azul que
+ * hay detrás. Un vídeo transparente de verdad pide exportarlo ya sin fondo
+ * (o sobre verde liso) desde la herramienta con la que se hizo.
+ *
+ * Los nombres llevan «-azul» para que ningún navegador ni la CDN sirvan el
+ * vídeo viejo con el mismo nombre. El póster es su primer fotograma, igual
+ * que el último: el bucle no salta.
  */
-export const VIDEO_LIBRO = '/video/holandes-sin-miedo.mp4'
-export const POSTER_LIBRO = '/video/holandes-sin-miedo.webp'
+export const VIDEO_LIBRO = '/video/holandes-sin-miedo-azul.mp4'
+export const POSTER_LIBRO = '/video/holandes-sin-miedo-azul.webp'
 
 /** Las fotos del ebook, las de la página de siempre (/ebook-a0-a1). */
 export const EBOOK_MOCKUP = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/6733be7eb79b8_MOCKUP10.png'
