@@ -19,7 +19,11 @@ FIX = {"g": {"ves": "vives", "países": "Países", "bajos.": "Bajos.", "bajos": 
              "como": "cómo"}}
 # first words the onset rule can't reach (no pause before them: the take's own jump cut removed it, or room noise
 # before the first word), read off the energy envelope by hand: (word, Whisper's start) → real start
-MANUAL = {"p": {("Antes", 0.74): 1.00, ("algo", 5.48): 5.70, ("algo", 12.74): 12.94}}
+MANUAL = {"p": {("Antes", 0.74): 1.00, ("algo", 5.48): 5.70, ("algo", 12.74): 12.94,
+               # phrase starts after a short pause inside Whisper's previous word (its words touch, so the gap rule above
+               # misses them), measured on the envelope and checked with forced alignment (QA of v1)
+               ("la", 4.72): 5.01, ("cada", 16.94): 17.21, ("tú", 18.48): 18.69, ("porque", 21.74): 21.88,
+               ("este", 25.64): 25.85, ("para", 28.12): 28.41, ("con", 29.04): 29.27, ("y", 44.46): 44.83}}
 SR, H = 16000, 160                                   # 10 ms frames
 
 

@@ -112,22 +112,22 @@ def build():
     .i4-lab span { display: inline-block; }
     .i4-chk { position: absolute; right: 40px; top: 20px; width: 56px; height: 56px; }
     .i4-chk svg { display: block; width: 56px; height: 56px; }
-    #i4-snds { position: absolute; left: 128px; top: «SNDS_TOP»px; height: 96px; display: flex; align-items: center; gap: 14px; }
-    .i4-snd { width: 84px; height: 76px; border-radius: 18px; background: #FFFFFF; color: «BLUE»; box-sizing: border-box; box-shadow: inset 0 0 0 3px «BLUE»;
+    #i4-snds { position: absolute; left: 128px; top: «SNDS_TOP»px; height: 96px; display: flex; align-items: center; gap: 12px; }
+    .i4-snd { width: 72px; height: 68px; border-radius: 18px; background: #FFFFFF; color: «BLUE»; box-sizing: border-box; box-shadow: inset 0 0 0 3px «BLUE»;
       display: flex; align-items: center; justify-content: center; padding-bottom: 4px;
-      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 40px; line-height: 1; }
-    #i4-bub { position: absolute; left: 530px; top: «BUB_TOP»px; width: 330px; height: 92px; transform-origin: 0% 100%; }
-    #i4-bubi { position: absolute; left: 0; top: 0; width: 330px; height: 92px; box-sizing: border-box; padding: 0 20px; border-radius: 26px;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 36px; line-height: 1; }
+    #i4-bub { position: absolute; left: 470px; top: «BUB_TOP»px; width: 390px; height: 92px; transform-origin: 0% 100%; }
+    #i4-bubi { position: absolute; left: 0; top: 0; width: 390px; height: 92px; box-sizing: border-box; padding: 0 20px; border-radius: 26px;
       border-bottom-left-radius: 8px; background: #FFFFFF; display: flex; align-items: center; gap: 14px;
       box-shadow: inset 0 0 0 2px «LINE», 0 12px 26px rgba(12,12,30,0.14); }
     #i4-bico { position: relative; width: 44px; height: 44px; flex: 0 0 44px; }
     #i4-bflag { position: absolute; left: 2px; top: 8px; width: 40px; height: 27px; }
     #i4-bx { position: absolute; left: 0; top: 0; width: 44px; height: 44px; }
     #i4-bx svg { display: block; width: 44px; height: 44px; filter: drop-shadow(0 4px 8px rgba(224,45,60,0.40)); }
-    #i4-bubt { font-family: "Inter", sans-serif; font-weight: 600; font-size: 27px; line-height: 1.18; letter-spacing: -0.01em; color: «INK2»; white-space: nowrap; }
+    #i4-bubt { font-family: "Inter", sans-serif; font-weight: 600; font-size: 32px; line-height: 1.12; letter-spacing: -0.01em; color: «INK2»; white-space: nowrap; }
     .i4-bl { position: relative; display: inline-block; }
     .i4-st { position: absolute; left: -5px; right: -5px; top: 50%; height: 4px; margin-top: -1px; border-radius: 2px; background: «RED»; transform-origin: 0 50%; }
-    #i4-bubr { position: absolute; left: 0; top: 0; width: 330px; height: 92px; border-radius: 26px; border-bottom-left-radius: 8px; box-shadow: inset 0 0 0 3px «RED»; }
+    #i4-bubr { position: absolute; left: 0; top: 0; width: 390px; height: 92px; border-radius: 26px; border-bottom-left-radius: 8px; box-shadow: inset 0 0 0 3px «RED»; }
 """
     snds_top, bub_top = ROW0 + 3 * RH + RH - 4, ROW0 + 3 * RH + RH
     geo = dict(BX0=BX0, BY0=BY0, BW=BW, BH=BH, PX0=PX0, CARD_TOP=CARD_TOP, RH=RH, SNDS_TOP=snds_top, BUB_TOP=bub_top)
@@ -249,7 +249,7 @@ def build():
       tl.fromTo(q("bubr"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out" }, «ING» - 0.04);
       tl.fromTo(q("st0"), { scaleX: 0 }, { scaleX: 1, duration: 0.16, ease: "power2.out" }, «ING» - 0.04);
       tl.fromTo(q("st1"), { scaleX: 0 }, { scaleX: 1, duration: 0.16, ease: "power2.out" }, «ING» + 0.06);
-      tl.fromTo(q("bubt"), { color: "«INK2»" }, { color: "«MUTED»", duration: 0.2, ease: "power2.out" }, «ING» + 0.08);
+      tl.fromTo(q("bubt"), { color: "«INK2»" }, { color: "#4B5563", duration: 0.2, ease: "power2.out" }, «ING» + 0.08);
       tl.fromTo(q("bflag"), { opacity: 1 }, { opacity: 0, duration: 0.1 }, «ING» + 0.04);
       tl.fromTo(q("bx"), { opacity: 0, scale: 0.3, rotation: -60 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, «ING» + 0.04);
       tl.to(q("bub"), { keyframes: [{ x: -9, duration: 0.05 }, { x: 8, duration: 0.05 }, { x: -5, duration: 0.05 }, { x: 0, duration: 0.05 }] }, «ING» + 0.12);
@@ -267,5 +267,5 @@ def build():
            (t2, "whoosh-short", 0.08)]
     sfx += [(t_row[k], "pop", 0.11) for k in range(4)]
     sfx += [(t_tick[k], "click-soft", 0.13) for k in range(3)] + [(t_tick[3], "ping", 0.08)]
-    sfx += [(t_snd[0], "sparkle", 0.09), (c["TE"] - 0.05, "notification", 0.12), (c["ING"] - 0.04, "error", 0.12)]
+    sfx += [(t_snd[0], "sparkle", 0.09), (c["TE"] - 0.05, "notification", 0.12), (c["ING"] - 0.04, "error", 0.3)]
     return comp(iid, d, P, css, body, js, c), sfx

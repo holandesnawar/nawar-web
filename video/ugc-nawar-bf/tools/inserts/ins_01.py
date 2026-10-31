@@ -24,9 +24,9 @@ def build():
     #i1-hdr { position: absolute; left: 232px; top: 46px; font-weight: 800; font-size: 60px; line-height: 1; color: «INK»; letter-spacing: -0.02em; }
     #i1-sub { position: absolute; left: 232px; top: 122px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 38px; line-height: 1;
       color: «MUTED»; white-space: nowrap; }
-    #i1-chg { position: absolute; left: 232px; top: 178px; display: flex; align-items: center; gap: 10px; height: 50px; padding: 0 22px 0 14px;
+    #i1-chg { position: absolute; left: 232px; top: 178px; display: flex; align-items: center; gap: 10px; height: 54px; padding: 0 22px 0 14px;
       border-radius: 999px; background: «RED»; color: #FFFFFF; white-space: nowrap;
-      font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; }
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 29px; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; }
     #i1-chg svg { display: block; width: 30px; height: 30px; }
     #i1-me { right: 90px; top: 640px; transform-origin: 100% 100%; font-size: 46px; padding: 30px 40px; }
     .i1-rep { position: absolute; left: 90px; display: flex; align-items: flex-end; gap: 18px; transform-origin: 0% 100%; }
@@ -66,5 +66,5 @@ def build():
       tl.fromTo(q("chg"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(2)", immediateRender: false }, «CAM» + 0.18);
 """
     sfx = [(c["MIR"] + 0.42, "pop", 0.16), (c["NO"] - 0.12, "notification", 0.14), (c["NAD"] - 0.02, "notification", 0.14),
-           (c["CAM"] + 0.08, "error", 0.12)]
+           (c["CAM"] + 0.08, "error", 0.3)]
     return comp(iid, d, P, css, body, js, c), sfx

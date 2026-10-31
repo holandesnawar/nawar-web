@@ -66,17 +66,17 @@ def hook():
 
 def offer():
     """«(un) entero por un euro, solo hasta el 30 de noviembre. Esta es una de nuestras ofertas del Black Friday.»
-    over the girl: a yellow 1 € burst lands beside her face on «euro» (and keeps a slow wobble), a white «Hasta el 30 de
+    over the girl: a yellow 1 € burst lands up in the right corner on «euro», clear of her face (and keeps a slow wobble), a white «Hasta el 30 de
     noviembre» pill on «30», the «BLACK FRIDAY» tape across the top on «Black Friday»; all leave at the call to action."""
     P = "f"; t0 = ED["offer"]; d = round(ED["outro"] - t0, 3); wcue = wcue_from(t0)
     c = dict(EUR=wcue("euro"), TRE=wcue("30"), BF=wcue("black"), END=d)
     css = """
-    #f-burst { position: absolute; left: 700px; top: 300px; width: 330px; height: 330px; transform: rotate(9deg); }
-    #f-burst svg { position: absolute; left: 0; top: 0; width: 330px; height: 330px; filter: drop-shadow(0 18px 30px rgba(0,0,0,0.45)); }
-    #f-price { position: absolute; left: 0; top: 0; width: 330px; height: 330px; display: flex; flex-direction: column; align-items: center;
+    #f-burst { position: absolute; left: 790px; top: 250px; width: 270px; height: 270px; transform: rotate(9deg); }
+    #f-burst svg { position: absolute; left: 0; top: 0; width: 270px; height: 270px; filter: drop-shadow(0 18px 30px rgba(0,0,0,0.45)); }
+    #f-price { position: absolute; left: 0; top: 0; width: 270px; height: 270px; display: flex; flex-direction: column; align-items: center;
       justify-content: center; color: «DARK»; }
-    #f-solo { font-family: "Inter", sans-serif; font-weight: 800; font-size: 30px; line-height: 1; letter-spacing: 0.16em; margin-bottom: 2px; }
-    #f-eur { font-weight: 900; font-size: 140px; line-height: 0.95; letter-spacing: -0.04em; }
+    #f-solo { font-family: "Inter", sans-serif; font-weight: 800; font-size: 28px; line-height: 1; letter-spacing: 0.16em; margin-bottom: 2px; }
+    #f-eur { font-weight: 900; font-size: 116px; line-height: 0.95; letter-spacing: -0.04em; }
     #f-drow { top: 1130px; }
     #f-date { display: flex; align-items: center; gap: 16px; height: 84px; padding: 0 36px 0 26px; border-radius: 999px; background: #FFFFFF;
       color: «INK»; white-space: nowrap; box-shadow: 0 18px 44px rgba(0,0,0,0.40);
@@ -157,7 +157,8 @@ def outro():
 
 # ============================================================================== captions (clean, white, no box)
 SHOW = {}
-HL = {"black", "friday", "euro", "30", "noviembre", "70", "paginas", "lista", "prioritaria"}   # in BF yellow
+HL_PHRASES = [["black", "friday"], ["70", "paginas"], ["30", "de", "noviembre"], ["lista", "prioritaria"], ["euro"]]   # in BF yellow
+GLUE = {"y", "que", "con", "los", "las", "la", "el", "de", "del", "por", "en", "un", "una", "te", "tu", "cuando", "si", "a", "al", "lo", "ni"}
 
 
 def ground_at(t):
@@ -173,23 +174,51 @@ def captions(window=None):
     P = "cap"
     bounds = sorted({0.0, ED["outro"]} | {s["start"] for s in ED["shots"]} | {i["start"] for i in ED["inserts"]}
                     | {round(i["start"] + i["duration"], 3) for i in ED["inserts"]})
-    pages, cur = [], []
     ends = [round(i["start"] + i["duration"], 3) for i in ED["inserts"]]
     def region(t):   # a word that starts in the last 0.12 s of a graphic belongs to the girl right after it
         t = next((e for e in ends if e - 0.12 <= t < e), t)
         return max(b for b in bounds if b <= t + 1e-6)
-    for w in WORDS:
-        txt = SHOW.get(norm(w["text"]), w["text"]) + (w.get("punct") or "").replace(":", "").replace(";", "")
-        if cur and region(w["t"]) != region(cur[0]["t"]):
-            pages.append(cur); cur = []
-        cur.append(dict(w, show=txt))
-        first = not pages
-        brk = any(ch in (w.get("punct") or "") for ch in ".?!,:") or len(cur) >= 3 or sum(len(x["show"]) for x in cur) >= 16
-        if first:   # the very first page («Si vives en Países Bajos») is on screen from frame 0
-            brk = norm(w["text"]) == "bajos"
-        if brk:
-            pages.append(cur); cur = []
-    if cur: pages.append(cur)
+    # the highlighted phrases (word indices), which a page never splits
+    nw = [norm(w["text"]) for w in WORDS]; hl, inside = set(), set()
+    for ph in HL_PHRASES:
+        for i in range(len(nw) - len(ph) + 1):
+            if nw[i:i + len(ph)] == ph:
+                hl.update(range(i, i + len(ph))); inside.update(range(i, i + len(ph) - 1))
+    # sections (no page straddles a cut), split into phrases at commas and full stops; each phrase is cut into pages by a
+    # small search for the cheapest split: about 3 words / ≤ 17 characters a page, never inside a highlighted phrase, a
+    # one-word page or a page ending on a word that belongs to what follows (y, que, con, de…) costs extra
+    secs = []
+    for i, w in enumerate(WORDS):
+        if secs and region(w["t"]) == region(WORDS[secs[-1][0]]["t"]):
+            secs[-1].append(i)
+        else:
+            secs.append([i])
+    def cost(pg, whole):
+        chars = sum(len(WORDS[j]["text"]) + 1 for j in pg) - 1
+        if chars > 21 or (pg[-1] in inside and pg[-1] != whole[-1]):
+            return 1e9
+        c = abs(len(pg) - 3) * 1.0 + max(0, chars - 16) * 0.6
+        if len(pg) == 1 and len(whole) > 1: c += 4
+        if nw[pg[-1]] in GLUE and pg[-1] != whole[-1]: c += 5
+        return c
+    def split(ph):
+        best = {0: (0.0, [])}
+        for b in range(1, len(ph) + 1):
+            best[b] = min(((best[a][0] + cost(ph[a:b], ph), best[a][1] + [ph[a:b]]) for a in range(max(0, b - 5), b)), key=lambda x: x[0])
+        return best[len(ph)][1]
+    pages = []
+    for sec in secs:
+        if sec[0] == 0:                                    # the very first page («Si vives en Países Bajos») is on screen
+            k = next(n for n, i in enumerate(sec) if nw[i] == "bajos") + 1      # from frame 0
+            pages.append(sec[:k]); sec = sec[k:]
+        ph = []
+        for i in sec:
+            ph.append(i)
+            if any(ch in (WORDS[i].get("punct") or "") for ch in ".?!,:"):
+                pages += split(ph); ph = []
+        if ph: pages += split(ph)
+    pages = [[dict(WORDS[i], show=SHOW.get(nw[i], WORDS[i]["text"]) + (WORDS[i].get("punct") or "").replace(":", "").replace(";", ""),
+                   hl=i in hl) for i in pg] for pg in pages]
     off, total = 0.0, TOTAL
     if window:
         off, total = window[0], window[1] - window[0]
@@ -204,7 +233,7 @@ def captions(window=None):
         if cut is not None and cut - off < t1:
             t1 = round(cut - off, 3)
         g = ground_at(r0 + 0.01)
-        spans = " ".join('<span id="cap-w%d-%d" class="cap-w%s">%s</span>' % (k, i, " cap-y" if norm(w["text"]) in HL else "", w["show"])
+        spans = " ".join('<span id="cap-w%d-%d" class="cap-w%s">%s</span>' % (k, i, " cap-y" if w["hl"] else "", w["show"])
                          for i, w in enumerate(pg))
         up = " cap-up" if pg[0]["t"] >= ED["outro"] - 1e-3 else ""      # above the button
         body.append('    <div id="cap-g%d" class="cap-g cap-gr-%s%s">%s</div>' % (k, g, up, spans))
@@ -244,7 +273,7 @@ def zooms():
     hb = ED["hook_bf"]
     Z.append((0.0, 0.7, "power3.out", {"scale": 1.03}, {"scale": 1.34}, "#zwg"))
     push(0.7, hb - 0.05, 1.03, 1.08, "#zwg"); punch(hb, 1.18, "#zwg", d=0.2, ease="power4.out")
-    PUNCH = {"anos": 1.12, "facil": 1.1, "creado": 1.1, "euro": 1.12, "abajo": 1.1}   # on the key word
+    PUNCH = {"anos": 1.12, "facil": 1.1, "creado": 1.1, "abajo": 1.1}   # on the key word (not on «euro»: she leans in)
     LOOK = {"g": [1.04], "p": [1.0, 1.1, 1.02, 1.12, 1.04, 1.08, 1.0, 1.1]}   # start framings, cycling; neighbours differ
     used = {"g": 0, "p": 0}
     for g in G:
@@ -260,6 +289,14 @@ def zooms():
             else:
                 push(a, b, s0, s0 + 0.04, wrap(sh))
     return Z
+
+
+def lead_silence(path):
+    """seconds of silence at the start of an sfx file (the renderer plays it from its first sample)."""
+    import numpy as np
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", "48000", "-f", "f32le", "-"], capture_output=True, check=True).stdout
+    x = np.abs(np.frombuffer(raw, np.float32)); on = np.flatnonzero(x > x.max() * 0.05)
+    return round(max(0.0, on[0] / 48000 - 0.01), 3) if len(on) else 0.0
 
 
 def media_len(path):
@@ -294,10 +331,10 @@ def index(sfx_all, overlays):
     hosts.append(f'    <div id="captions" data-track-kind="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="{TOTAL}" data-track-index="21" data-width="1080" data-height="1920"></div>')
     auds = [f'    <audio id="music" src="assets/audio/music-bed.wav" data-start="0" data-duration="{TOTAL}" data-track-index="22" data-volume="1"></audio>']
     for k, (t, name, vol, *rest) in enumerate(sfx_all):
-        src = f"assets/sfx/{name}.mp3"
-        dd = min(rest[0] if rest else 99, media_len(os.path.join(ROOT, src)))
+        src = f"assets/sfx/{name}.mp3"; head = lead_silence(os.path.join(ROOT, src))   # it sounds at t, not after its silence
+        dd = min(rest[0] if rest else 99, media_len(os.path.join(ROOT, src)) - head)
         dd = round(min(dd, TOTAL - t), 3)
-        auds.append(f'    <audio id="sfx{k}" src="{src}" data-start="{max(0.0, round(t, 3))}" data-duration="{dd}" data-track-index="{30 + k}" data-volume="{vol}"></audio>')
+        auds.append(f'    <audio id="sfx{k}" src="{src}" data-start="{max(0.0, round(t, 3))}" data-duration="{dd}" data-media-start="{head}" data-track-index="{30 + k}" data-volume="{vol}"></audio>')
     js = lambda dct: "{ " + ", ".join(f"{k}: {v}" for k, v in dct.items())
     ztl = []
     for (t, du, ease, to, frm, sel) in sorted(zooms(), key=lambda z: z[0]):
@@ -382,7 +419,7 @@ def main():
     sfx_all = []
     for iid, html, sfx in build_inserts():
         open(os.path.join(ROOT, "compositions", f"{iid}.html"), "w").write(html)
-        sfx_all.append((INS[iid]["start"], "whoosh-short", 0.1))
+        sfx_all.append((INS[iid]["start"] - 0.06, "whoosh-short", 0.1))   # its peak lands on the cut
         for t, name, vol, *rest in sfx:
             sfx_all.append((INS[iid]["start"] + t, name, vol, *rest))
     overlays = []

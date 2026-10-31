@@ -22,8 +22,8 @@ def build():
     .i2-col { display: flex; flex-direction: column; gap: 14px; }
     .i2-l .i2-col { align-items: flex-start; }
     .i2-r .i2-col { align-items: flex-end; }
-    .i2-lab { font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; line-height: 1; letter-spacing: 0.14em;
-      text-transform: uppercase; color: rgba(255,255,255,0.66); white-space: nowrap; padding: 0 10px; }
+    .i2-lab { font-family: "Inter", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(255,255,255,0.82); white-space: nowrap; padding: 0 10px; }
     .i2-ava { position: relative; width: 104px; height: 104px; border-radius: 50%; flex: 0 0 104px;
       box-shadow: 0 0 0 5px rgba(255,255,255,0.92), 0 14px 30px rgba(0,0,0,0.45); }
     .i2-face { position: absolute; left: 0; top: 0; width: 104px; height: 104px; border-radius: 50%; overflow: hidden; }
@@ -86,5 +86,5 @@ def build():
       tl.to(q("scene"), { keyframes: [{ x: -12, y: 4, duration: 0.05 }, { x: 10, y: -3, duration: 0.05 }, { x: -6, y: 2, duration: 0.05 }, { x: 0, y: 0, duration: 0.05 }] }, «SIN» + 0.11);
 """
     sfx = [(c["CADA"] - 0.04, "notification", 0.14), (c["ALG"] + 0.02, "notification", 0.14), (c["TU"] - 0.06, "pop", 0.16),
-           (c["SIN"] + 0.11, "error", 0.13)]
+           (c["SIN"] + 0.11, "error", 0.3)]
     return comp(iid, d, P, css, body, js, c), sfx

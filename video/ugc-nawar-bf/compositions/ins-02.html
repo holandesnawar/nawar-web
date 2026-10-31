@@ -79,8 +79,8 @@
     .i2-col { display: flex; flex-direction: column; gap: 14px; }
     .i2-l .i2-col { align-items: flex-start; }
     .i2-r .i2-col { align-items: flex-end; }
-    .i2-lab { font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px; line-height: 1; letter-spacing: 0.14em;
-      text-transform: uppercase; color: rgba(255,255,255,0.66); white-space: nowrap; padding: 0 10px; }
+    .i2-lab { font-family: "Inter", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(255,255,255,0.82); white-space: nowrap; padding: 0 10px; }
     .i2-ava { position: relative; width: 104px; height: 104px; border-radius: 50%; flex: 0 0 104px;
       box-shadow: 0 0 0 5px rgba(255,255,255,0.92), 0 14px 30px rgba(0,0,0,0.45); }
     .i2-face { position: absolute; left: 0; top: 0; width: 104px; height: 104px; border-radius: 50%; overflow: hidden; }
@@ -106,7 +106,7 @@
     #i2-st { font-weight: 900; font-size: 80px; line-height: 1; letter-spacing: 0.02em; color: #FFFFFF; white-space: nowrap; padding-top: 6px; }
 
   </style>
-  <div id="root" data-composition-id="ins-02" data-width="1080" data-height="1920" data-duration="2.977">
+  <div id="root" data-composition-id="ins-02" data-width="1080" data-height="1920" data-duration="2.722">
     <div class="i2-full i2-dark"><div class="i2-dark-dots"></div><div class="i2-dark-amb"></div><div class="i2-dark-vig"></div></div>
     <div id="i2-scene" class="i2-full">
     <div id="i2-top" class="i2-row"><div id="i2-pill" class="i2-wpill"><span class="i2-flag i2-flagd"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>En la gemeente</span></div></div>
@@ -134,21 +134,21 @@
       // «cada vez»: the receptionist asks
       tl.fromTo(q("rec"), { opacity: 0, scale: 0.7, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.7)" }, 0.057 - 0.04);
       // «alguien habla por ti»: the companion answers from your side
-      tl.fromTo(q("cmp"), { opacity: 0, scale: 0.7, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.7)" }, 0.737 + 0.02);
+      tl.fromTo(q("cmp"), { opacity: 0, scale: 0.7, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.7)" }, 0.482 + 0.02);
       // «tú»: your bubble comes in, the dots try…
-      tl.fromTo(q("you"), { opacity: 0, scale: 0.7, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.7)" }, 1.51 - 0.06);
+      tl.fromTo(q("you"), { opacity: 0, scale: 0.7, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.7)" }, 1.453 - 0.06);
       ["d0", "d1", "d2"].forEach((id, k) => {
-        tl.fromTo(q(id), { opacity: 0, scale: 0.2 }, { opacity: 1, scale: 1, duration: 0.14, ease: "back.out(2.4)" }, 1.51 + 0.1 + k * 0.08);
+        tl.fromTo(q(id), { opacity: 0, scale: 0.2 }, { opacity: 1, scale: 1, duration: 0.14, ease: "back.out(2.4)" }, 1.453 + 0.1 + k * 0.08);
       });
       // «te quedas»: …and the bubble greys out, nothing comes
-      tl.fromTo(q("yb"), { backgroundColor: "#0b6df0" }, { backgroundColor: "#33496F", duration: 0.3, ease: "power2.out" }, 1.888 - 0.04);
-      tl.fromTo(q("ya"), { backgroundColor: "#0b6df0" }, { backgroundColor: "#33496F", duration: 0.3, ease: "power2.out" }, 1.888 - 0.04);
-      tl.fromTo([q("d0"), q("d1"), q("d2")], { opacity: 1 }, { opacity: 0.45, duration: 0.3, ease: "power2.out", immediateRender: false }, 1.888 - 0.04);
-      tl.fromTo(q("yl"), { opacity: 1 }, { opacity: 0.4, duration: 0.3, ease: "power2.out", immediateRender: false }, 1.888 - 0.04);
+      tl.fromTo(q("yb"), { backgroundColor: "#0b6df0" }, { backgroundColor: "#33496F", duration: 0.3, ease: "power2.out" }, 1.633 - 0.04);
+      tl.fromTo(q("ya"), { backgroundColor: "#0b6df0" }, { backgroundColor: "#33496F", duration: 0.3, ease: "power2.out" }, 1.633 - 0.04);
+      tl.fromTo([q("d0"), q("d1"), q("d2")], { opacity: 1 }, { opacity: 0.45, duration: 0.3, ease: "power2.out", immediateRender: false }, 1.633 - 0.04);
+      tl.fromTo(q("yl"), { opacity: 1 }, { opacity: 0.4, duration: 0.3, ease: "power2.out", immediateRender: false }, 1.633 - 0.04);
       // «sin practicar»: the red stamp slams in, the scene takes the hit
-      tl.fromTo(q("stamp"), { opacity: 0, scale: 1.9, rotation: -14 }, { opacity: 1, scale: 1, rotation: -5, duration: 0.17, ease: "power4.in" }, 2.095 - 0.06);
-      tl.to(q("stamp"), { keyframes: [{ scale: 0.96, duration: 0.05 }, { scale: 1, duration: 0.12, ease: "back.out(2)" }] }, 2.095 + 0.11);
-      tl.to(q("scene"), { keyframes: [{ x: -12, y: 4, duration: 0.05 }, { x: 10, y: -3, duration: 0.05 }, { x: -6, y: 2, duration: 0.05 }, { x: 0, y: 0, duration: 0.05 }] }, 2.095 + 0.11);
+      tl.fromTo(q("stamp"), { opacity: 0, scale: 1.9, rotation: -14 }, { opacity: 1, scale: 1, rotation: -5, duration: 0.17, ease: "power4.in" }, 1.84 - 0.06);
+      tl.to(q("stamp"), { keyframes: [{ scale: 0.96, duration: 0.05 }, { scale: 1, duration: 0.12, ease: "back.out(2)" }] }, 1.84 + 0.11);
+      tl.to(q("scene"), { keyframes: [{ x: -12, y: 4, duration: 0.05 }, { x: 10, y: -3, duration: 0.05 }, { x: -6, y: 2, duration: 0.05 }, { x: 0, y: 0, duration: 0.05 }] }, 1.84 + 0.11);
 
       window.__timelines["ins-02"] = tl;
     })();

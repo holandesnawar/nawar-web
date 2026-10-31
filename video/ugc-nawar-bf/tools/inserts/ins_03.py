@@ -2,8 +2,8 @@
 «aprender neerlandés» types itself on «porque casi»; the blue search button is pressed and the bar slides up to the
 top; on «todo lo que encuentras» four result cards drop in under it one after another, all in English (Learn Dutch
 in 30 days · Dutch grammar explained · Dutch for beginners · 100 Dutch words you need), each with a small UK-flag «EN»
-badge; on «en inglés» the four EN badges turn red one after another with a pulse ring, and a big red «TODO EN
-INGLÉS» tag slams in under the list (the list gives a small shake). Dark ground, white cards, Nawar blue for you
+badge; on «en inglés» the four EN badges turn red one after another with a pulse ring, and a big red «CASI TODO
+EN INGLÉS» tag slams (she says «casi todo») in under the list (the list gives a small shake). Dark ground, white cards, Nawar blue for you
 (your search), red for what goes wrong."""
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -66,7 +66,7 @@ def build():
     #i3-tagrow { top: 1052px; height: 136px; }
     #i3-tag { display: flex; align-items: center; height: 136px; padding: 4px 52px 0; box-sizing: border-box; border-radius: 26px;
       background: «RED»; color: #FFFFFF; white-space: nowrap; box-shadow: 0 0 0 6px #FFFFFF, 0 40px 90px rgba(0,0,0,0.60), 0 8px 24px rgba(0,0,0,0.40);
-      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 82px; line-height: 1; letter-spacing: -0.01em; }
+      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 70px; line-height: 1; letter-spacing: -0.01em; }
 """
     css = css.replace("«RH»", str(RH))
     cards = []
@@ -76,7 +76,7 @@ def build():
         <div class="i3-th i3-th-{th}">{icon(ic)}</div>
         <div class="i3-tt">{tt}</div>
         <div class="i3-ts">{ts}</div>
-        <div class="i3-en"><div id="i3-g{k}" class="i3-ring"></div><div class="i3-enb">{badge}</div><div id="i3-e{k}" class="i3-enr">{badge.replace('i3-flagd', '')}</div></div>
+        <div class="i3-en"><div id="i3-g{k}" class="i3-ring"></div><div id="i3-b{k}" class="i3-enb">{badge}</div><div id="i3-e{k}" class="i3-enr">{badge.replace('i3-flagd', '')}</div></div>
       </div>""")
     body = "\n".join([ground(P, "dark"), f"""    <div id="i3-bar" class="i3-card i3-on-dark">
       <div id="i3-mag">{SEARCH}</div>
@@ -86,7 +86,7 @@ def build():
     <div id="i3-list">
 {chr(10).join(cards)}
     </div>
-    <div id="i3-tagrow" class="i3-row"><div id="i3-tag">TODO EN INGLÉS</div></div>"""])
+    <div id="i3-tagrow" class="i3-row"><div id="i3-tag">CASI TODO EN INGLÉS</div></div>"""])
     js = """
       tl.fromTo(q("bar"), { opacity: 0, y: «LIFT» + 60, scale: 1 }, { opacity: 1, y: «LIFT», scale: 1.06, duration: 0.3, ease: "power3.out" }, 0);
       tl.fromTo(q("bar"), { y: «LIFT», scale: 1.06 }, { y: 0, scale: 1, duration: 0.26, ease: "power3.inOut", immediateRender: false }, «T_UP»);
@@ -101,6 +101,7 @@ def build():
     for k in range(4):
         js += (f'      tl.fromTo(q("e{k}"), {{ opacity: 0, scale: 1 }}, {{ keyframes: [{{ opacity: 1, scale: 1.2, duration: 0.07, ease: "power2.out" }}, '
                f'{{ scale: 1, duration: 0.18, ease: "power2.inOut" }}] }}, {t_red[k]});\n'
+               f'      tl.fromTo(q("b{k}"), {{ opacity: 1 }}, {{ opacity: 0, duration: 0.01 }}, {round(t_red[k] + 0.07, 3)});\n'   # the grey one goes under the red
                f'      tl.fromTo(q("g{k}"), {{ opacity: 0, scale: 1 }}, {{ keyframes: [{{ opacity: 0.9, duration: 0.02 }}, '
                f'{{ opacity: 0, scale: 1.45, duration: 0.38, ease: "power2.out" }}] }}, {t_red[k]});\n')
     js += """      tl.fromTo(q("tag"), { opacity: 0, scale: 1.9, rotation: -11 }, { opacity: 1, scale: 1, rotation: -3, duration: 0.26, ease: "back.out(1.5)" }, «T_TAG»);
@@ -108,6 +109,6 @@ def build():
 """
     sfx = [(t_type0, "typing", 0.12, round(t_type1 - t_type0 + 0.05, 3)), (t_btn, "click-soft", 0.18)]
     sfx += [(t, "pop", 0.12 if k == 0 else 0.1) for k, t in enumerate(t_res)]
-    sfx += [(t_up, "whoosh-short", 0.06), (t_red[0], "ping", 0.07), (t_tag + 0.12, "error", 0.13)]
+    sfx += [(t_up, "whoosh-short", 0.06), (t_red[0], "ping", 0.07), (t_tag + 0.12, "error", 0.3)]
     sfx.sort(key=lambda x: x[0])
     return comp(iid, d, P, css, body, js, c), sfx

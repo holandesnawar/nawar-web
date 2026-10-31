@@ -28,6 +28,7 @@ FACE = {"g": (570, 660), "p": (560, 720)}   # face centre in each take (zoom ori
 # on the decoded frames). Next to a graphic's edge the graphic covers it; well inside a girl section it becomes a shot
 # boundary with a reframe in gen.py, so it reads as a jump cut.
 CUT_PRE, CUT_POST = 0.05, 0.005
+CUT_PRE_AT = {("p", 15.6): 0.02}   # «pensabas»: its /s/ fades right up to the take's own cut — stop closer to it
 JUMPS = {"g": [16.633], "p": [3.567, 7.567, 12.9, 15.6, 20.0, 24.5, 36.7, 39.767, 44.7]}
 SPEECH_END = 49.74     # «…del Black Friday.» ends here in take p; the ad ends a breath later
 TAIL = 0.0
@@ -44,6 +45,16 @@ OFFER = "un entero por"        # the price stickers over her, from here to the c
 OUTRO = "consigue el tuyo"     # the button under her face, from here to the end
 
 FIX = {}
+# the script as she says it, with its punctuation and capitals (Whisper's words carry almost none): one token per word
+SCRIPT = ("Si vives en Países Bajos y para cualquier trámite necesitas que alguien te acompañe, este Black Friday te interesa. "
+          "Antes de pedir cita, miras quién puede ir contigo, y si ese día no puede nadie, la cambias. "
+          "Algo que en tu país lo hacías solo y ni lo pensabas. "
+          "Eso no se arregla con los años. Cada vez que alguien habla por ti, tú te quedas sin practicar. "
+          "Practicar por tu cuenta tampoco es fácil, porque casi todo lo que encuentras está en inglés. "
+          "Por eso hemos creado este libro: 70 páginas en español, para imprimir, con vocabulario, gramática, ejercicios prácticos, "
+          "cómo pronunciar los sonidos por los que te cambian en inglés cuando abres la boca. "
+          "Un entero por un euro, solo hasta el 30 de noviembre. Esta es una de nuestras ofertas del Black Friday. "
+          "Consigue el tuyo en el enlace abajo, y al conseguirlo entras directamente en nuestra lista prioritaria del Black Friday.").split()
 
 
 def norm(t):
@@ -145,10 +156,17 @@ def main():
     for tk, a, b in SEGMENTS:
         cuts = sorted(j for (k, j) in split if k == tk and a < j < b)
         froms = [a] + [j + CUT_POST for j in cuts]
-        tos = [j - CUT_PRE for j in cuts] + [b]
+        tos = [j - CUT_PRE_AT.get((tk, j), CUT_PRE) for j in cuts] + [b]
         segs += list(zip([tk] * len(froms), froms, tos))
     # pass 2, the final pieces
     shots, words, t = layout(AL, segs)
+    if len(SCRIPT) != len(words):
+        raise SystemExit(f"SCRIPT has {len(SCRIPT)} words, the edit {len(words)}: " + " ".join(w["text"] for w in words))
+    for w, tok in zip(words, SCRIPT):                  # same words, now with the script's punctuation and capitals
+        m = re.match(r"^([¿¡]?)(.*?)([.,:;?!]*)$", tok)
+        if norm(m.group(2)) != norm(w["text"]):
+            raise SystemExit(f"SCRIPT «{tok}» ≠ edit «{w['text']}» at {w['t']}")
+        w["text"], w["punct"] = m.group(1) + m.group(2), m.group(3)
     clip_end = t; total = round(clip_end + TAIL, 3)
     last = shots[-1]; speech_end = round(last["start"] + (SPEECH_END - last["media_start"]) / RATE, 3)
     cover = [edit_time(shots, tk, j) for (tk, j) in jumps if (tk, j) not in split]

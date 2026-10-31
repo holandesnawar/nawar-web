@@ -143,25 +143,25 @@
     .i4-lab span { display: inline-block; }
     .i4-chk { position: absolute; right: 40px; top: 20px; width: 56px; height: 56px; }
     .i4-chk svg { display: block; width: 56px; height: 56px; }
-    #i4-snds { position: absolute; left: 128px; top: 466px; height: 96px; display: flex; align-items: center; gap: 14px; }
-    .i4-snd { width: 84px; height: 76px; border-radius: 18px; background: #FFFFFF; color: #0b6df0; box-sizing: border-box; box-shadow: inset 0 0 0 3px #0b6df0;
+    #i4-snds { position: absolute; left: 128px; top: 466px; height: 96px; display: flex; align-items: center; gap: 12px; }
+    .i4-snd { width: 72px; height: 68px; border-radius: 18px; background: #FFFFFF; color: #0b6df0; box-sizing: border-box; box-shadow: inset 0 0 0 3px #0b6df0;
       display: flex; align-items: center; justify-content: center; padding-bottom: 4px;
-      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 40px; line-height: 1; }
-    #i4-bub { position: absolute; left: 530px; top: 470px; width: 330px; height: 92px; transform-origin: 0% 100%; }
-    #i4-bubi { position: absolute; left: 0; top: 0; width: 330px; height: 92px; box-sizing: border-box; padding: 0 20px; border-radius: 26px;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 36px; line-height: 1; }
+    #i4-bub { position: absolute; left: 470px; top: 470px; width: 390px; height: 92px; transform-origin: 0% 100%; }
+    #i4-bubi { position: absolute; left: 0; top: 0; width: 390px; height: 92px; box-sizing: border-box; padding: 0 20px; border-radius: 26px;
       border-bottom-left-radius: 8px; background: #FFFFFF; display: flex; align-items: center; gap: 14px;
       box-shadow: inset 0 0 0 2px #DDE6F5, 0 12px 26px rgba(12,12,30,0.14); }
     #i4-bico { position: relative; width: 44px; height: 44px; flex: 0 0 44px; }
     #i4-bflag { position: absolute; left: 2px; top: 8px; width: 40px; height: 27px; }
     #i4-bx { position: absolute; left: 0; top: 0; width: 44px; height: 44px; }
     #i4-bx svg { display: block; width: 44px; height: 44px; filter: drop-shadow(0 4px 8px rgba(224,45,60,0.40)); }
-    #i4-bubt { font-family: "Inter", sans-serif; font-weight: 600; font-size: 27px; line-height: 1.18; letter-spacing: -0.01em; color: #374151; white-space: nowrap; }
+    #i4-bubt { font-family: "Inter", sans-serif; font-weight: 600; font-size: 32px; line-height: 1.12; letter-spacing: -0.01em; color: #374151; white-space: nowrap; }
     .i4-bl { position: relative; display: inline-block; }
     .i4-st { position: absolute; left: -5px; right: -5px; top: 50%; height: 4px; margin-top: -1px; border-radius: 2px; background: #E02D3C; transform-origin: 0 50%; }
-    #i4-bubr { position: absolute; left: 0; top: 0; width: 330px; height: 92px; border-radius: 26px; border-bottom-left-radius: 8px; box-shadow: inset 0 0 0 3px #E02D3C; }
+    #i4-bubr { position: absolute; left: 0; top: 0; width: 390px; height: 92px; border-radius: 26px; border-bottom-left-radius: 8px; box-shadow: inset 0 0 0 3px #E02D3C; }
 
   </style>
-  <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="10.524">
+  <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="10.326">
     <div class="i4-full i4-dark"><div class="i4-dark-dots"></div><div class="i4-dark-amb"></div><div class="i4-dark-vig"></div></div>
     <div id="i4-stage">
     <div id="i4-card" class="i4-card i4-on-dark">
@@ -211,85 +211,85 @@
       tl.fromTo(q("bk"), { opacity: 0, rotationY: -62, rotation: -9, y: 150, scale: 0.8, transformPerspective: 1800 },
         { opacity: 1, rotationY: 0, rotation: 0, y: 0, scale: 1, transformPerspective: 1800, duration: 0.7, ease: "power3.out" }, 0.02);
       tl.fromTo(q("halo"), { opacity: 0, scale: 0.55 }, { opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" }, 0.18);
-      tl.fromTo(q("sheen"), { x: 0 }, { x: 860, duration: 0.8, ease: "power2.inOut" }, 0.51 + 0.04);
+      tl.fromTo(q("sheen"), { x: 0 }, { x: 860, duration: 0.8, ease: "power2.inOut" }, 0.312 + 0.04);
       tl.fromTo(q("bkf"), { y: 0 }, { keyframes: [{ y: -10, duration: 0.8, ease: "sine.inOut" }, { y: 0, duration: 0.8, ease: "sine.inOut" },
         { y: -7, duration: 0.45, ease: "sine.inOut" }, { y: 0, duration: 0.45, ease: "sine.inOut" }] }, 0.72);
-      tl.fromTo(q("k0"), { opacity: 0, scale: 0, rotation: -120 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2.4)" }, 0.45);
+      tl.fromTo(q("k0"), { opacity: 0, scale: 0, rotation: -120 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2.4)" }, 0.252);
       tl.fromTo(q("k0"), { scale: 1 }, { keyframes: [{ scale: 0.55, duration: 0.3, ease: "sine.inOut" }, { scale: 1, duration: 0.3, ease: "sine.inOut" }], immediateRender: false }, 1.55);
-      tl.fromTo(q("k1"), { opacity: 0, scale: 0, rotation: -120 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2.4)" }, 0.55);
+      tl.fromTo(q("k1"), { opacity: 0, scale: 0, rotation: -120 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2.4)" }, 0.352);
       tl.fromTo(q("k1"), { scale: 1 }, { keyframes: [{ scale: 0.55, duration: 0.3, ease: "sine.inOut" }, { scale: 1, duration: 0.3, ease: "sine.inOut" }], immediateRender: false }, 1.9);
-      tl.fromTo(q("k2"), { opacity: 0, scale: 0, rotation: -120 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2.4)" }, 0.65);
+      tl.fromTo(q("k2"), { opacity: 0, scale: 0, rotation: -120 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2.4)" }, 0.452);
       tl.fromTo(q("k2"), { scale: 1 }, { keyframes: [{ scale: 0.55, duration: 0.3, ease: "sine.inOut" }, { scale: 1, duration: 0.3, ease: "sine.inOut" }], immediateRender: false }, 2.25);
 
       // «70»: the book glides left, «70 páginas» pops (and counts up); «en español»; «para imprimir» (the sheets spread)
-      tl.fromTo(q("bkm"), { x: 0 }, { x: -214, duration: 0.44, ease: "power3.inOut" }, 0.944 - 0.17);
-      tl.fromTo(q("p0"), { opacity: 0, scale: 0.5, x: -30 }, { opacity: 1, scale: 1, x: 0, duration: 0.34, ease: "back.out(1.8)" }, 0.944 - 0.08);
+      tl.fromTo(q("bkm"), { x: 0 }, { x: -214, duration: 0.44, ease: "power3.inOut" }, 0.746 - 0.17);
+      tl.fromTo(q("p0"), { opacity: 0, scale: 0.5, x: -30 }, { opacity: 1, scale: 1, x: 0, duration: 0.34, ease: "back.out(1.8)" }, 0.746 - 0.08);
       (() => { const el = q("num"), o = { n: 0 };
         tl.fromTo(o, { n: 0 }, { n: 70, duration: 0.45, ease: "power2.out", immediateRender: false,
-          onUpdate: () => { el.textContent = String(Math.round(o.n)); } }, 0.944 - 0.06); })();
-      tl.fromTo(q("p1"), { opacity: 0, scale: 0.5, x: -30 }, { opacity: 1, scale: 1, x: 0, duration: 0.34, ease: "back.out(1.8)" }, 1.963 - 0.05);
-      tl.fromTo(q("p2"), { opacity: 0, scale: 0.5, x: -30 }, { opacity: 1, scale: 1, x: 0, duration: 0.34, ease: "back.out(1.8)" }, 2.774 - 0.1);
-      tl.fromTo(q("s2"), { x: 0, y: 0 }, { x: 5, y: 4, duration: 0.34, ease: "back.out(2)" }, 2.774 - 0.02);
-      tl.fromTo(q("s1"), { x: 0, y: 0, rotation: 0 }, { x: 10, y: 8, rotation: 0.8, duration: 0.34, ease: "back.out(2)" }, 2.774 + 0.02);
-      tl.fromTo(q("s0"), { x: 0, y: 0, rotation: 0 }, { x: 16, y: 12, rotation: 1.8, duration: 0.34, ease: "back.out(2)" }, 2.774 + 0.06);
+          onUpdate: () => { el.textContent = String(Math.round(o.n)); } }, 0.746 - 0.06); })();
+      tl.fromTo(q("p1"), { opacity: 0, scale: 0.5, x: -30 }, { opacity: 1, scale: 1, x: 0, duration: 0.34, ease: "back.out(1.8)" }, 1.765 - 0.05);
+      tl.fromTo(q("p2"), { opacity: 0, scale: 0.5, x: -30 }, { opacity: 1, scale: 1, x: 0, duration: 0.34, ease: "back.out(1.8)" }, 2.576 - 0.1);
+      tl.fromTo(q("s2"), { x: 0, y: 0 }, { x: 5, y: 4, duration: 0.34, ease: "back.out(2)" }, 2.576 - 0.02);
+      tl.fromTo(q("s1"), { x: 0, y: 0, rotation: 0 }, { x: 10, y: 8, rotation: 0.8, duration: 0.34, ease: "back.out(2)" }, 2.576 + 0.02);
+      tl.fromTo(q("s0"), { x: 0, y: 0, rotation: 0 }, { x: 16, y: 12, rotation: 1.8, duration: 0.34, ease: "back.out(2)" }, 2.576 + 0.06);
 
       // phase 2 · «con»: the book shrinks into the header, the pills stack beside it, the contents card rises
-      tl.fromTo(q("bkm"), { x: -214, y: 0, scale: 1 }, { x: -84, y: -144, scale: 0.55, duration: 0.52, ease: "power3.inOut", immediateRender: false }, 3.165);
-      tl.fromTo(q("halo"), { opacity: 1 }, { opacity: 0.55, duration: 0.5, ease: "power2.inOut", immediateRender: false }, 3.165);
-      tl.fromTo(q("spk"), { opacity: 1 }, { opacity: 0, duration: 0.25, ease: "power2.in" }, 3.165);
-      tl.fromTo(q("pw0"), { x: 0, y: 0, scale: 1 }, { x: -66, y: -257, scale: 0.9, duration: 0.52, ease: "power3.inOut" }, 3.165);
-      tl.fromTo(q("pw1"), { x: 0, y: 0, scale: 1 }, { x: -66, y: -279, scale: 0.9, duration: 0.52, ease: "power3.inOut" }, 3.205);
-      tl.fromTo(q("pw2"), { x: 0, y: 0, scale: 1 }, { x: -66, y: -301, scale: 0.9, duration: 0.52, ease: "power3.inOut" }, 3.245);
-      tl.fromTo(q("card"), { opacity: 0, y: 110, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out" }, 3.165 + 0.16);
+      tl.fromTo(q("bkm"), { x: -214, y: 0, scale: 1 }, { x: -84, y: -144, scale: 0.55, duration: 0.52, ease: "power3.inOut", immediateRender: false }, 3.184);
+      tl.fromTo(q("halo"), { opacity: 1 }, { opacity: 0.55, duration: 0.5, ease: "power2.inOut", immediateRender: false }, 3.184);
+      tl.fromTo(q("spk"), { opacity: 1 }, { opacity: 0, duration: 0.25, ease: "power2.in" }, 3.184);
+      tl.fromTo(q("pw0"), { x: 0, y: 0, scale: 1 }, { x: -66, y: -257, scale: 0.9, duration: 0.52, ease: "power3.inOut" }, 3.184);
+      tl.fromTo(q("pw1"), { x: 0, y: 0, scale: 1 }, { x: -66, y: -279, scale: 0.9, duration: 0.52, ease: "power3.inOut" }, 3.224);
+      tl.fromTo(q("pw2"), { x: 0, y: 0, scale: 1 }, { x: -66, y: -301, scale: 0.9, duration: 0.52, ease: "power3.inOut" }, 3.264);
+      tl.fromTo(q("card"), { opacity: 0, y: 110, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out" }, 3.184 + 0.16);
       tl.fromTo(q("progf"), { scaleX: 0 }, { scaleX: 0, duration: 0.01 }, 0);
       // row 1 · «vocabulario»
-      tl.fromTo(q("hl"), { opacity: 0, y: 0, scaleY: 1 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, 3.466);
-      tl.fromTo(q("r0"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 3.486);
-      tl.fromTo(q("t0"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 3.486);
-      tl.fromTo(q("c0"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 3.766);
-      tl.fromTo(q("progf"), { scaleX: 0.0 }, { scaleX: 0.25, duration: 0.3, ease: "power3.out", immediateRender: false }, 3.766);
+      tl.fromTo(q("hl"), { opacity: 0, y: 0, scaleY: 1 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, 3.268);
+      tl.fromTo(q("r0"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 3.288);
+      tl.fromTo(q("t0"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 3.288);
+      tl.fromTo(q("c0"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 3.568);
+      tl.fromTo(q("progf"), { scaleX: 0.0 }, { scaleX: 0.25, duration: 0.3, ease: "power3.out", immediateRender: false }, 3.568);
       // row 2 · «gramática»
-      tl.fromTo(q("hl"), { y: 0, scaleY: 1.0 }, { y: 96, scaleY: 1.0, duration: 0.26, ease: "power3.inOut", immediateRender: false }, 4.162);
-      tl.fromTo(q("r1"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 4.222);
-      tl.fromTo(q("t1"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 4.222);
-      tl.fromTo(q("c1"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 4.502);
-      tl.fromTo(q("progf"), { scaleX: 0.25 }, { scaleX: 0.5, duration: 0.3, ease: "power3.out", immediateRender: false }, 4.502);
+      tl.fromTo(q("hl"), { y: 0, scaleY: 1.0 }, { y: 96, scaleY: 1.0, duration: 0.26, ease: "power3.inOut", immediateRender: false }, 3.964);
+      tl.fromTo(q("r1"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 4.024);
+      tl.fromTo(q("t1"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 4.024);
+      tl.fromTo(q("c1"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 4.304);
+      tl.fromTo(q("progf"), { scaleX: 0.25 }, { scaleX: 0.5, duration: 0.3, ease: "power3.out", immediateRender: false }, 4.304);
       // row 3 · «ejercicios»
-      tl.fromTo(q("hl"), { y: 96, scaleY: 1.0 }, { y: 192, scaleY: 1.0, duration: 0.26, ease: "power3.inOut", immediateRender: false }, 4.653);
-      tl.fromTo(q("r2"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 4.713);
-      tl.fromTo(q("t2"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 4.713);
-      tl.fromTo(q("c2"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 5.574);
-      tl.fromTo(q("progf"), { scaleX: 0.5 }, { scaleX: 0.75, duration: 0.3, ease: "power3.out", immediateRender: false }, 5.574);
-      tl.fromTo(q("pra"), { opacity: 0, y: 22, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, 5.434 - 0.06);
+      tl.fromTo(q("hl"), { y: 96, scaleY: 1.0 }, { y: 192, scaleY: 1.0, duration: 0.26, ease: "power3.inOut", immediateRender: false }, 4.455);
+      tl.fromTo(q("r2"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 4.515);
+      tl.fromTo(q("t2"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 4.515);
+      tl.fromTo(q("c2"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 5.376);
+      tl.fromTo(q("progf"), { scaleX: 0.5 }, { scaleX: 0.75, duration: 0.3, ease: "power3.out", immediateRender: false }, 5.376);
+      tl.fromTo(q("pra"), { opacity: 0, y: 22, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, 5.236 - 0.06);
       // row 4 · «pronunciación»
-      tl.fromTo(q("hl"), { y: 192, scaleY: 1.0 }, { y: 288, scaleY: 2.2143, duration: 0.26, ease: "power3.inOut", immediateRender: false }, 5.947);
-      tl.fromTo(q("r3"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 6.007);
-      tl.fromTo(q("t3"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 6.007);
-      tl.fromTo(q("c3"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 6.615);
-      tl.fromTo(q("progf"), { scaleX: 0.75 }, { scaleX: 1.0, duration: 0.3, ease: "power3.out", immediateRender: false }, 6.615);
+      tl.fromTo(q("hl"), { y: 192, scaleY: 1.0 }, { y: 288, scaleY: 2.2143, duration: 0.26, ease: "power3.inOut", immediateRender: false }, 5.749);
+      tl.fromTo(q("r3"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 5.809);
+      tl.fromTo(q("t3"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 5.809);
+      tl.fromTo(q("c3"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 6.417);
+      tl.fromTo(q("progf"), { scaleX: 0.75 }, { scaleX: 1.0, duration: 0.3, ease: "power3.out", immediateRender: false }, 6.417);
       // «sonidos»: the hard Dutch sounds pop under «Pronunciación»
-      tl.fromTo(q("n0"), { opacity: 0, scale: 0.4, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, 6.997);
-      tl.fromTo(q("n1"), { opacity: 0, scale: 0.4, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, 7.087);
-      tl.fromTo(q("n2"), { opacity: 0, scale: 0.4, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, 7.177);
-      tl.fromTo(q("n3"), { opacity: 0, scale: 0.4, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, 7.267);
+      tl.fromTo(q("n0"), { opacity: 0, scale: 0.4, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, 6.799);
+      tl.fromTo(q("n1"), { opacity: 0, scale: 0.4, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, 6.889);
+      tl.fromTo(q("n2"), { opacity: 0, scale: 0.4, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, 6.979);
+      tl.fromTo(q("n3"), { opacity: 0, scale: 0.4, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, 7.069);
       // «te cambian en inglés»: the English bubble pops and is struck out in red
-      tl.fromTo(q("bub"), { opacity: 0, scale: 0.6, y: 16 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "back.out(1.9)" }, 8.321 - 0.05);
-      tl.fromTo(q("bubr"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out" }, 8.906 - 0.04);
-      tl.fromTo(q("st0"), { scaleX: 0 }, { scaleX: 1, duration: 0.16, ease: "power2.out" }, 8.906 - 0.04);
-      tl.fromTo(q("st1"), { scaleX: 0 }, { scaleX: 1, duration: 0.16, ease: "power2.out" }, 8.906 + 0.06);
-      tl.fromTo(q("bubt"), { color: "#374151" }, { color: "#5A6480", duration: 0.2, ease: "power2.out" }, 8.906 + 0.08);
-      tl.fromTo(q("bflag"), { opacity: 1 }, { opacity: 0, duration: 0.1 }, 8.906 + 0.04);
-      tl.fromTo(q("bx"), { opacity: 0, scale: 0.3, rotation: -60 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 8.906 + 0.04);
-      tl.to(q("bub"), { keyframes: [{ x: -9, duration: 0.05 }, { x: 8, duration: 0.05 }, { x: -5, duration: 0.05 }, { x: 0, duration: 0.05 }] }, 8.906 + 0.12);
+      tl.fromTo(q("bub"), { opacity: 0, scale: 0.6, y: 16 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "back.out(1.9)" }, 8.123 - 0.05);
+      tl.fromTo(q("bubr"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out" }, 8.708 - 0.04);
+      tl.fromTo(q("st0"), { scaleX: 0 }, { scaleX: 1, duration: 0.16, ease: "power2.out" }, 8.708 - 0.04);
+      tl.fromTo(q("st1"), { scaleX: 0 }, { scaleX: 1, duration: 0.16, ease: "power2.out" }, 8.708 + 0.06);
+      tl.fromTo(q("bubt"), { color: "#374151" }, { color: "#4B5563", duration: 0.2, ease: "power2.out" }, 8.708 + 0.08);
+      tl.fromTo(q("bflag"), { opacity: 1 }, { opacity: 0, duration: 0.1 }, 8.708 + 0.04);
+      tl.fromTo(q("bx"), { opacity: 0, scale: 0.3, rotation: -60 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 8.708 + 0.04);
+      tl.to(q("bub"), { keyframes: [{ x: -9, duration: 0.05 }, { x: 8, duration: 0.05 }, { x: -5, duration: 0.05 }, { x: 0, duration: 0.05 }] }, 8.708 + 0.12);
       // a gentle push-in to the end; a second sheen on the book; on «boca» the chips wave and the tick pulses
-      tl.fromTo(q("stage"), { scale: 1 }, { scale: 1.035, duration: 1.498, ease: "sine.inOut" }, 9.026);
-      tl.fromTo(q("sheen"), { x: 0 }, { x: 860, duration: 0.8, ease: "power2.inOut", immediateRender: false }, 9.026 + 0.3);
-      tl.fromTo(q("n0"), { y: 0 }, { keyframes: [{ y: -14, duration: 0.13, ease: "power2.out" }, { y: 0, duration: 0.2, ease: "power2.in" }], immediateRender: false }, 9.88);
-      tl.fromTo(q("n1"), { y: 0 }, { keyframes: [{ y: -14, duration: 0.13, ease: "power2.out" }, { y: 0, duration: 0.2, ease: "power2.in" }], immediateRender: false }, 9.95);
-      tl.fromTo(q("n2"), { y: 0 }, { keyframes: [{ y: -14, duration: 0.13, ease: "power2.out" }, { y: 0, duration: 0.2, ease: "power2.in" }], immediateRender: false }, 10.02);
-      tl.fromTo(q("n3"), { y: 0 }, { keyframes: [{ y: -14, duration: 0.13, ease: "power2.out" }, { y: 0, duration: 0.2, ease: "power2.in" }], immediateRender: false }, 10.09);
+      tl.fromTo(q("stage"), { scale: 1 }, { scale: 1.035, duration: 1.498, ease: "sine.inOut" }, 8.828);
+      tl.fromTo(q("sheen"), { x: 0 }, { x: 860, duration: 0.8, ease: "power2.inOut", immediateRender: false }, 8.828 + 0.3);
+      tl.fromTo(q("n0"), { y: 0 }, { keyframes: [{ y: -14, duration: 0.13, ease: "power2.out" }, { y: 0, duration: 0.2, ease: "power2.in" }], immediateRender: false }, 9.682);
+      tl.fromTo(q("n1"), { y: 0 }, { keyframes: [{ y: -14, duration: 0.13, ease: "power2.out" }, { y: 0, duration: 0.2, ease: "power2.in" }], immediateRender: false }, 9.752);
+      tl.fromTo(q("n2"), { y: 0 }, { keyframes: [{ y: -14, duration: 0.13, ease: "power2.out" }, { y: 0, duration: 0.2, ease: "power2.in" }], immediateRender: false }, 9.822);
+      tl.fromTo(q("n3"), { y: 0 }, { keyframes: [{ y: -14, duration: 0.13, ease: "power2.out" }, { y: 0, duration: 0.2, ease: "power2.in" }], immediateRender: false }, 9.892);
       tl.fromTo(q("c3"), { scale: 1 }, { keyframes: [{ scale: 1.22, duration: 0.14, ease: "power2.out" }, { scale: 1, duration: 0.22, ease: "power2.inOut" }],
-        immediateRender: false }, 10 + 0.1);
+        immediateRender: false }, 9.802 + 0.1);
 
       window.__timelines["ins-04"] = tl;
     })();

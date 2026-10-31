@@ -15,9 +15,10 @@ import numpy as np, soundfile as sf
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MUSIC = os.path.join(ROOT, ".raw", "music.mp3")
 BAR, BAR0, GROOVE_BAR = 4 * 60 / 107.7, 0.023, 8   # bar length, first downbeat, the bar where the groove comes in
-EQ = "equalizer=f=2500:t=q:w=0.9:g=-3,highshelf=f=7000:g=-2"
-LEVEL_LUFS = -36.0     # from «este Black Friday» on
-INTRO_LUFS = -42.0     # the soft intro under the hook
+EQ = "lowshelf=f=150:g=-6,equalizer=f=2500:t=q:w=0.9:g=-3,highshelf=f=7000:g=-2"   # less bass: the track is mostly
+                                                     # low end, which phone speakers drop — its keys and hats carry instead
+LEVEL_LUFS = -35.0     # from «este Black Friday» on (≈19 LU under the voice)
+INTRO_LUFS = -41.0     # the soft intro under the hook
 FADE = 1.2             # fade out under her last words (the ad ends when she stops talking)
 SR = 48000
 
