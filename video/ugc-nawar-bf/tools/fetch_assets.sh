@@ -13,6 +13,7 @@ echo "the takes (Drive folder «PEDIDO 4 CLAUDE») and the music"
 dl 1ucWR3IIv8ifqdK4HcUyi9Qzl1yPefi6r gancho.mov   # «intro gancho» — three hook variants; this version uses «Si vives…» (17.6 s)
 dl 1GRe7vt-ynrdU8RQHu4wbpll2zjmUv7G- pedido.mov   # «Estado de pedido FO4233CD» — the body
 dl 1iMcSFRAOoly8OG6jDt3ENBwSntuhA8FL music.mp3    # «musica v1» — the client's background track (ElevenLabs)
+dl 119IsiDdK3uLLjjzrO3hZwp_ZwQjCPk52 libro.mp4    # «Animación Libro Interactivo» — the ebook «Holandés sin miedo» opening (4 s)
 # both takes: HEVC → H.264, light grade; audio cleaned and normalised to −16 LUFS
 for t in g:gancho p:pedido; do
   ffmpeg -v error -y -i "$RAW/${t#*:}.mov" -vf "eq=contrast=1.05:saturation=1.05:gamma=0.98,format=yuv420p" \
@@ -27,5 +28,5 @@ cp "$VSL/assets/vendor/gsap.min.js" assets/vendor/
 cp "$VSL"/assets/sfx/{whoosh,whoosh-short,glitch-1-short,pop,click,click-soft,chime,error,notification,ping,sparkle,typing,key-press}.mp3 assets/sfx/
 
 echo "word times, edit, soundtrack, compositions"
-python3 tools/align_fix.py && python3 tools/edit.py && python3 tools/build_audio.py && python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc-bf-v3.mp4"
+python3 tools/align_fix.py && python3 tools/edit.py && python3 tools/libro_clip.py && python3 tools/build_audio.py && python3 tools/gen.py
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc-bf-v4.mp4"

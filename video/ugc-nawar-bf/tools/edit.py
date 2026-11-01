@@ -35,10 +35,10 @@ TAIL = 0.0
 LEAD = 0.06            # an insert cuts in this long before its first word (source seconds)
 # (insert id, ground, first words, first words of what comes after) — full-screen graphics while she explains
 INSERTS = [
-    ("ins-01", "dark", "miras quien puede", "algo que en"),
-    ("ins-02", "dark", "cada vez que", "practicar por tu"),
-    ("ins-03", "dark", "porque casi todo", "por eso hemos"),
-    ("ins-04", "dark", "este libro", "entero por un"),
+    ("ins-01", "paper", "miras quien puede", "algo que en"),
+    ("ins-02", "blue", "cada vez que", "practicar por tu"),
+    ("ins-03", "paper", "porque casi todo", "por eso hemos"),
+    ("ins-04", "blue", "este libro", "entero por un"),
 ]
 HOOK_BF = "black friday te"    # the «BLACK FRIDAY» sticker slams in on the hook
 OFFER = "entero por un"        # the price stickers over her, from here to the call to action

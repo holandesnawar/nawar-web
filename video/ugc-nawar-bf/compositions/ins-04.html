@@ -72,224 +72,64 @@
     .i4-acc { color: #4da3ff; }
     .i4-w { display: inline-block; }
 
-    #i4-stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 540px 760px; }
-    /* ---- the book ---- */
-    #i4-bkm { position: absolute; left: 320px; top: 390px; width: 440px; height: 622px; transform-origin: 0 0; }
-    #i4-halo { position: absolute; left: -330px; top: -239px; width: 1100px; height: 1100px; border-radius: 50%;
-      background: radial-gradient(circle at 50% 50%, rgba(255,214,10,0.20) 0%, rgba(255,214,10,0.07) 36%, rgba(255,214,10,0) 64%); }
-    #i4-spk { position: absolute; left: 0; top: 0; width: 440px; height: 622px; }
-    .i4-spark { position: absolute; }
-    .i4-spark svg { display: block; width: 100%; height: 100%; filter: drop-shadow(0 0 14px rgba(255,214,10,0.55)); }
-    #i4-bk, #i4-bkf, #i4-bkt { position: absolute; left: 0; top: 0; width: 440px; height: 622px; }
-    #i4-bkt { transform: rotate(-4deg); }
-    .i4-sheet { position: absolute; width: 440px; height: 622px; border-radius: 6px 14px 14px 6px; background: #FFFFFF; overflow: hidden;
-      box-shadow: 0 0 0 1px rgba(12,12,30,0.10), 0 12px 28px rgba(0,0,0,0.30); }
-    .i4-sheet i { position: absolute; left: 64px; height: 9px; border-radius: 5px; background: #DCE3EF; }
-    #i4-s0 { left: 21px; top: 18px; background: #DDE3EE; }
-    #i4-s1 { left: 14px; top: 12px; background: #EBEFF6; }
-    #i4-s2 { left: 7px; top: 6px; background: #F7F9FC; }
-    #i4-cover { position: absolute; left: 0; top: 0; width: 440px; height: 622px; border-radius: 8px 16px 16px 8px; overflow: hidden;
-      background: linear-gradient(155deg, #2b8dff 0%, #0b6df0 34%, #0849c6 68%, #1D0084 100%);
-      box-shadow: 0 44px 100px rgba(0,0,0,0.60), 0 10px 26px rgba(0,0,0,0.38), inset 0 0 0 2px rgba(255,255,255,0.12); }
-    .i4-deco { position: absolute; border-radius: 50%; }
-    #i4-d1 { left: 170px; top: 330px; width: 480px; height: 480px; background: rgba(255,255,255,0.07); }
-    #i4-d2 { left: 260px; top: 430px; width: 300px; height: 300px; background: rgba(255,255,255,0.07); }
-    #i4-d3 { left: 300px; top: -120px; width: 260px; height: 260px; background: rgba(77,163,255,0.22); }
-    #i4-spine { position: absolute; left: 0; top: 0; width: 46px; height: 622px; background: linear-gradient(90deg, rgba(0,0,40,0.38) 0%, rgba(0,0,40,0.06) 100%); }
-    .i4-hole { position: absolute; left: 12px; width: 13px; height: 13px; border-radius: 50%; background: #06103a; box-shadow: inset 0 2px 3px rgba(0,0,0,0.6); }
-    #i4-logo { position: absolute; left: 64px; top: 56px; width: 236px; height: 100px; border-radius: 22px; background: #FFFFFF;
-      display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px rgba(0,0,40,0.28); }
-    #i4-logo img { display: block; width: 200px; height: auto; }
-    #i4-title { position: absolute; left: 64px; top: 196px; color: #FFFFFF; white-space: nowrap;
-      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 54px; line-height: 1.02; letter-spacing: -0.025em; }
-    #i4-csub { position: absolute; left: 64px; top: 384px; height: 46px; padding: 0 20px; border-radius: 999px; background: #FFFFFF;
-      display: flex; align-items: center; white-space: nowrap; color: #0b6df0;
-      font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; line-height: 1; letter-spacing: 0.13em; text-transform: uppercase; }
-    #i4-hoi { position: absolute; left: 238px; top: 470px; padding: 14px 26px; border-radius: 26px; border-bottom-left-radius: 8px;
-      background: #FFD60A; color: #08070F; transform: rotate(-6deg); box-shadow: 0 12px 24px rgba(0,0,40,0.30);
-      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 40px; line-height: 1; white-space: nowrap; }
-    #i4-cflags { position: absolute; left: 64px; top: 548px; display: flex; align-items: center; gap: 12px; }
-    #i4-cflags .i4-flag { width: 46px; height: 31px; flex: 0 0 46px; }
-    #i4-cflags .i4-flag svg { width: 46px; height: 31px; }
-    #i4-cflags b { display: block; width: 18px; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.7); }
-    #i4-rib { position: absolute; left: 220px; top: 47px; width: 300px; height: 46px; transform: rotate(45deg); background: #FFD60A;
-      display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 14px rgba(0,0,0,0.30);
-      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 19px; line-height: 1; letter-spacing: 0.03em; color: #08070F; white-space: nowrap; padding-top: 2px; box-sizing: border-box; }
-    #i4-sheen { position: absolute; left: -260px; top: -160px; width: 150px; height: 960px; transform: rotate(18deg);
-      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.30) 50%, rgba(255,255,255,0) 100%); }
-    .i4-ring { position: absolute; left: -19px; width: 43px; height: 14px; border-radius: 7px;
-      background: linear-gradient(180deg, #FFFFFF 0%, #D3D8E4 50%, #8C93A8 100%); box-shadow: 0 3px 5px rgba(0,0,0,0.45); }
-    /* ---- the spec pills ---- */
-    .i4-pw { position: absolute; left: 600px; transform-origin: 0 0; }
-    .i4-spec { height: 84px; padding: 0 32px 0 22px; gap: 15px; font-size: 34px; transform-origin: 0% 50%; }
-    .i4-spec svg { width: 44px; height: 44px; }
-    .i4-num { display: inline-block; min-width: 50px; font-weight: 900; font-size: 42px; letter-spacing: -0.02em; }
-    .i4-spec .i4-flag { width: 50px; height: 34px; flex: 0 0 50px; border-radius: 7px; box-shadow: 0 0 0 3px #FFFFFF; }
-    .i4-spec .i4-flag svg { width: 50px; height: 34px; }
-    /* ---- the contents card ---- */
-    #i4-card { left: 90px; top: 618px; width: 900px; height: 592px; }
-    #i4-kick { position: absolute; left: 40px; top: 30px; height: 40px; display: flex; align-items: center; white-space: nowrap; color: #5A6480;
-      font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
-    #i4-prog { position: absolute; left: 300px; top: 45px; width: 560px; height: 10px; border-radius: 5px; background: #E6EBF5; overflow: hidden; }
-    #i4-progf { position: absolute; left: 0; top: 0; width: 560px; height: 10px; border-radius: 5px; background: #0b6df0; transform-origin: 0 50%; }
-    #i4-hl { position: absolute; left: 16px; width: 868px; border-radius: 22px; background: #EEF4FF; transform-origin: 50% 0%; }
-    .i4-div { position: absolute; left: 40px; width: 820px; height: 2px; background: #EDF1F7; }
-    .i4-row { position: absolute; left: 0; width: 900px; height: 96px; }
-    .i4-tile { position: absolute; left: 40px; top: 16px; width: 64px; height: 64px; border-radius: 18px; background: #0b6df0; color: #FFFFFF;
-      display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 18px rgba(11,109,240,0.30); }
-    .i4-tile svg { display: block; width: 38px; height: 38px; }
-    .i4-lab { position: absolute; left: 128px; top: 0; height: 96px; display: flex; align-items: center; gap: 13px; white-space: nowrap; color: #0C0C1E;
-      font-family: "Inter", sans-serif; font-weight: 700; font-size: 44px; line-height: 1; letter-spacing: -0.015em; }
-    .i4-lab span { display: inline-block; }
-    .i4-chk { position: absolute; right: 40px; top: 20px; width: 56px; height: 56px; }
-    .i4-chk svg { display: block; width: 56px; height: 56px; }
-    #i4-snds { position: absolute; left: 128px; top: 466px; height: 96px; display: flex; align-items: center; gap: 12px; }
-    .i4-snd { width: 72px; height: 68px; border-radius: 18px; background: #FFFFFF; color: #0b6df0; box-sizing: border-box; box-shadow: inset 0 0 0 3px #0b6df0;
-      display: flex; align-items: center; justify-content: center; padding-bottom: 4px;
-      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 36px; line-height: 1; }
-    #i4-bub { position: absolute; left: 470px; top: 470px; width: 390px; height: 92px; transform-origin: 0% 100%; }
-    #i4-bubi { position: absolute; left: 0; top: 0; width: 390px; height: 92px; box-sizing: border-box; padding: 0 20px; border-radius: 26px;
-      border-bottom-left-radius: 8px; background: #FFFFFF; display: flex; align-items: center; gap: 14px;
-      box-shadow: inset 0 0 0 2px #DDE6F5, 0 12px 26px rgba(12,12,30,0.14); }
-    #i4-bico { position: relative; width: 44px; height: 44px; flex: 0 0 44px; }
-    #i4-bflag { position: absolute; left: 2px; top: 8px; width: 40px; height: 27px; }
-    #i4-bx { position: absolute; left: 0; top: 0; width: 44px; height: 44px; }
-    #i4-bx svg { display: block; width: 44px; height: 44px; filter: drop-shadow(0 4px 8px rgba(224,45,60,0.40)); }
-    #i4-bubt { font-family: "Inter", sans-serif; font-weight: 600; font-size: 32px; line-height: 1.12; letter-spacing: -0.01em; color: #374151; white-space: nowrap; }
-    .i4-bl { position: relative; display: inline-block; }
-    .i4-st { position: absolute; left: -5px; right: -5px; top: 50%; height: 4px; margin-top: -1px; border-radius: 2px; background: #E02D3C; transform-origin: 0 50%; }
-    #i4-bubr { position: absolute; left: 0; top: 0; width: 390px; height: 92px; border-radius: 26px; border-bottom-left-radius: 8px; box-shadow: inset 0 0 0 3px #E02D3C; }
+    #i4-lrow { top: 206px; }
+    #i4-frame { position: absolute; left: 40px; top: 296px; width: 1000px; height: 562.5px; border-radius: 30px; overflow: hidden;
+      background: #F1ECE4; box-shadow: 0 0 0 6px rgba(255,255,255,0.9), 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    .i4-z { position: absolute; left: 0; top: 0; width: 1000px; height: 562.5px; }
+    .i4-z video, .i4-z img { position: absolute; left: 0; top: 0; width: 1000px; height: 562.5px; object-fit: cover; display: block; }
+    #i4-zc { transform-origin: 50% 50%; }
+    #i4-zn { transform-origin: 634.4px 212.5px; }
+    #i4-zk { transform-origin: 640.6px 293px; }
+    #i4-prow { top: 926px; gap: 16px; }
+    .i4-wpill { gap: 12px; height: 76px; padding: 0 30px 0 18px; font-size: 33px; }
+    .i4-wpill svg { display: block; width: 40px; height: 40px; color: #1D0084; }
+    .i4-wpill .i4-flag svg { width: 40px; height: 27px; }
+    #i4-crow { top: 1040px; gap: 14px; flex-wrap: wrap; width: 960px; left: 60px; row-gap: 14px; }
+    .i4-ck { display: flex; align-items: center; gap: 10px; height: 64px; padding: 0 26px 0 12px; border-radius: 999px;
+      background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.30); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; }
+    .i4-ck svg { display: block; width: 40px; height: 40px; }
 
   </style>
   <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="10.326">
-    <div class="i4-full i4-dark"><div class="i4-dark-dots"></div><div class="i4-dark-amb"></div><div class="i4-dark-vig"></div></div>
-    <div id="i4-stage">
-    <div id="i4-card" class="i4-card i4-on-dark">
-      <div id="i4-kick">Qué incluye</div>
-      <div id="i4-prog"><div id="i4-progf"></div></div>
-      <div id="i4-hl" style="top:92px; height:84px;"></div>
-      <div class="i4-div" style="top:181px;"></div><div class="i4-div" style="top:277px;"></div><div class="i4-div" style="top:373px;"></div>
-      <div id="i4-r0" class="i4-row" style="top:86px;"><div id="i4-t0" class="i4-tile"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10 H24 M15 6 V10 M10 10 C11 17 16 22 22 24 M20 10 C19 17 14 22 8 25"/><path d="M26 42 L33 24 L40 42 M28.5 36 H37.5"/></g></svg></div><div class="i4-lab"><span>Vocabulario</span></div><div id="i4-c0" class="i4-chk"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
-      <div id="i4-r1" class="i4-row" style="top:182px;"><div id="i4-t1" class="i4-tile"><svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="currentColor" stroke-width="4.2"/></svg></div><div class="i4-lab"><span>Gramática</span></div><div id="i4-c1" class="i4-chk"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
-      <div id="i4-r2" class="i4-row" style="top:278px;"><div id="i4-t2" class="i4-tile"><svg viewBox="0 0 48 48"><path d="M10 38 L12 30 L32 10 L38 16 L18 36 Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/><path d="M28 14 L34 20" stroke="currentColor" stroke-width="4.2"/></svg></div><div class="i4-lab"><span>Ejercicios</span><span id="i4-pra">prácticos</span></div><div id="i4-c2" class="i4-chk"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
-      <div id="i4-r3" class="i4-row" style="top:374px;"><div id="i4-t3" class="i4-tile"><svg viewBox="0 0 48 48"><rect x="18" y="7" width="12" height="22" rx="6" fill="#FFFFFF"/><path d="M12 23 A12 12 0 0 0 36 23 M24 35 V41" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round"/></svg></div><div class="i4-lab"><span>Pronunciación</span></div><div id="i4-c3" class="i4-chk"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
-      <div id="i4-snds"><div id="i4-n0" class="i4-snd">g</div><div id="i4-n1" class="i4-snd">ui</div><div id="i4-n2" class="i4-snd">ij</div><div id="i4-n3" class="i4-snd">eu</div></div>
-      <div id="i4-bub"><div id="i4-bubi"><div id="i4-bico"><span id="i4-bflag" class="i4-flag i4-flagd"><svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#012169"/><path d="M0 0 L40 27 M40 0 L0 27" stroke="#FFFFFF" stroke-width="5"/><path d="M0 0 L40 27 M40 0 L0 27" stroke="#C8102E" stroke-width="2"/><path d="M20 0 V27 M0 13.5 H40" stroke="#FFFFFF" stroke-width="8"/><path d="M20 0 V27 M0 13.5 H40" stroke="#C8102E" stroke-width="4.5"/></svg></span><div id="i4-bx"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#E02D3C"/><path d="M21 21 L43 43 M43 21 L21 43" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/></svg></div></div>
-        <div id="i4-bubt"><span class="i4-bl">Sorry, do you<i id="i4-st0" class="i4-st"></i></span><br/><span class="i4-bl">speak English?<i id="i4-st1" class="i4-st"></i></span></div></div>
-        <div id="i4-bubr"></div></div>
+    <div class="i4-full i4-blue"><div class="i4-blue-dots"></div><div class="i4-blue-amb"></div><div class="i4-blue-vig"></div></div>
+    <div id="i4-lrow" class="i4-row"><div id="i4-lab" class="i4-pill"><svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="#FFFFFF" stroke-width="4.2"/></svg><span>Ebook · Holandés sin miedo</span></div></div>
+    <div id="i4-frame">
+      <div id="i4-zc" class="i4-z"><video id="i4-v" class="clip" src="assets/video/libro-ins04.mp4" muted playsinline data-start="0" data-duration="4.194" data-track-index="1"></video></div>
+      <div id="i4-zn" class="i4-z"><img src="assets/img/libro-nummers.png" alt="" /></div>
+      <div id="i4-zk" class="i4-z"><img src="assets/img/libro-klanken.png" alt="" /></div>
     </div>
-    <div id="i4-bkm">
-      <div id="i4-halo"></div>
-      <div id="i4-bk"><div id="i4-bkf"><div id="i4-bkt">
-          <div id="i4-s0" class="i4-sheet"><i style="top:80px; width:290px;"></i><i style="top:114px; width:250px;"></i><i style="top:148px; width:310px;"></i><i style="top:182px; width:200px;"></i><i style="top:216px; width:280px;"></i><i style="top:250px; width:240px;"></i><i style="top:284px; width:300px;"></i><i style="top:318px; width:180px;"></i><i style="top:352px; width:260px;"></i><i style="top:386px; width:290px;"></i><i style="top:420px; width:220px;"></i><i style="top:454px; width:270px;"></i><i style="top:488px; width:230px;"></i><i style="top:522px; width:300px;"></i><i style="top:556px; width:190px;"></i><i style="top:590px; width:250px;"></i></div><div id="i4-s1" class="i4-sheet"><i style="top:80px; width:290px;"></i><i style="top:114px; width:250px;"></i><i style="top:148px; width:310px;"></i><i style="top:182px; width:200px;"></i><i style="top:216px; width:280px;"></i><i style="top:250px; width:240px;"></i><i style="top:284px; width:300px;"></i><i style="top:318px; width:180px;"></i><i style="top:352px; width:260px;"></i><i style="top:386px; width:290px;"></i><i style="top:420px; width:220px;"></i><i style="top:454px; width:270px;"></i><i style="top:488px; width:230px;"></i><i style="top:522px; width:300px;"></i><i style="top:556px; width:190px;"></i><i style="top:590px; width:250px;"></i></div><div id="i4-s2" class="i4-sheet"><i style="top:80px; width:290px;"></i><i style="top:114px; width:250px;"></i><i style="top:148px; width:310px;"></i><i style="top:182px; width:200px;"></i><i style="top:216px; width:280px;"></i><i style="top:250px; width:240px;"></i><i style="top:284px; width:300px;"></i><i style="top:318px; width:180px;"></i><i style="top:352px; width:260px;"></i><i style="top:386px; width:290px;"></i><i style="top:420px; width:220px;"></i><i style="top:454px; width:270px;"></i><i style="top:488px; width:230px;"></i><i style="top:522px; width:300px;"></i><i style="top:556px; width:190px;"></i><i style="top:590px; width:250px;"></i></div>
-          <div id="i4-cover">
-            <div id="i4-d1" class="i4-deco"></div><div id="i4-d2" class="i4-deco"></div><div id="i4-d3" class="i4-deco"></div>
-            <div id="i4-spine"></div><i class="i4-hole" style="top:27px;"></i><i class="i4-hole" style="top:67px;"></i><i class="i4-hole" style="top:107px;"></i><i class="i4-hole" style="top:147px;"></i><i class="i4-hole" style="top:187px;"></i><i class="i4-hole" style="top:227px;"></i><i class="i4-hole" style="top:267px;"></i><i class="i4-hole" style="top:307px;"></i><i class="i4-hole" style="top:347px;"></i><i class="i4-hole" style="top:387px;"></i><i class="i4-hole" style="top:427px;"></i><i class="i4-hole" style="top:467px;"></i><i class="i4-hole" style="top:507px;"></i><i class="i4-hole" style="top:547px;"></i><i class="i4-hole" style="top:587px;"></i>
-            <div id="i4-logo"><img src="assets/img/logo-nawar.png" alt="" /></div>
-            <div id="i4-title">Neerlandés<br/>para el<br/>día a día</div>
-            <div id="i4-csub">Cuaderno práctico</div>
-            <div id="i4-hoi">Hoi!</div>
-            <div id="i4-cflags"><span class="i4-flag"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><b></b><span class="i4-flag"><svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#AA151B" /><rect y="7" width="40" height="13" fill="#F1BF00" /></svg></span></div>
-            <div id="i4-rib">BLACK FRIDAY</div>
-            <div id="i4-sheen"></div>
-          </div>
-          <i class="i4-ring" style="top:26px;"></i><i class="i4-ring" style="top:66px;"></i><i class="i4-ring" style="top:106px;"></i><i class="i4-ring" style="top:146px;"></i><i class="i4-ring" style="top:186px;"></i><i class="i4-ring" style="top:226px;"></i><i class="i4-ring" style="top:266px;"></i><i class="i4-ring" style="top:306px;"></i><i class="i4-ring" style="top:346px;"></i><i class="i4-ring" style="top:386px;"></i><i class="i4-ring" style="top:426px;"></i><i class="i4-ring" style="top:466px;"></i><i class="i4-ring" style="top:506px;"></i><i class="i4-ring" style="top:546px;"></i><i class="i4-ring" style="top:586px;"></i>
-      </div></div></div>
-      <div id="i4-spk"><div id="i4-k0" class="i4-spark" style="left:-84px; top:70px; width:60px; height:60px;"><svg viewBox="0 0 24 24"><path d="M12 0 C13 7.5 16.5 11 24 12 C16.5 13 13 16.5 12 24 C11 16.5 7.5 13 0 12 C7.5 11 11 7.5 12 0 Z" fill="#FFD60A"/></svg></div><div id="i4-k1" class="i4-spark" style="left:414px; top:-62px; width:46px; height:46px;"><svg viewBox="0 0 24 24"><path d="M12 0 C13 7.5 16.5 11 24 12 C16.5 13 13 16.5 12 24 C11 16.5 7.5 13 0 12 C7.5 11 11 7.5 12 0 Z" fill="#FFD60A"/></svg></div><div id="i4-k2" class="i4-spark" style="left:-56px; top:590px; width:38px; height:38px;"><svg viewBox="0 0 24 24"><path d="M12 0 C13 7.5 16.5 11 24 12 C16.5 13 13 16.5 12 24 C11 16.5 7.5 13 0 12 C7.5 11 11 7.5 12 0 Z" fill="#FFD60A"/></svg></div></div>
-    </div>
-    <div id="i4-pw0" class="i4-pw" style="top:541px;"><div id="i4-p0" class="i4-ypill i4-spec"><svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="currentColor" stroke-width="4.2"/></svg><b id="i4-num" class="i4-num">70</b><span>páginas</span></div></div>
-    <div id="i4-pw1" class="i4-pw" style="top:659px;"><div id="i4-p1" class="i4-ypill i4-spec"><span class="i4-flag"><svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#AA151B" /><rect y="7" width="40" height="13" fill="#F1BF00" /></svg></span><span>En español</span></div></div>
-    <div id="i4-pw2" class="i4-pw" style="top:777px;"><div id="i4-p2" class="i4-ypill i4-spec"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"><path d="M14 18 V6 H34 V18"/><rect x="5" y="18" width="38" height="16" rx="5"/><path d="M14 28 H34 V42 H14 Z"/></g></svg><span>Para imprimir</span></div></div>
-    </div>
+    <div id="i4-prow" class="i4-row"><div id="i4-p0" class="i4-wpill"><svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="currentColor" stroke-width="4.2"/></svg><span>70 páginas</span></div><div id="i4-p1" class="i4-wpill"><span class="i4-flag i4-flagd"><svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#AA151B" /><rect y="7" width="40" height="13" fill="#F1BF00" /></svg></span><span>En español</span></div><div id="i4-p2" class="i4-wpill"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"><path d="M14 18 V6 H34 V18"/><rect x="5" y="18" width="38" height="16" rx="5"/><path d="M14 28 H34 V42 H14 Z"/></g></svg><span>Para imprimir</span></div></div>
+    <div id="i4-crow" class="i4-row"><div id="i4-c0" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Vocabulario</span></div><div id="i4-c1" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Gramática</span></div><div id="i4-c2" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ejercicios</span></div><div id="i4-c3" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Pronunciación</span></div></div>
   </div>
   <script>
     (function () {
       const tl = gsap.timeline({ paused: true });
       const q = (id) => document.getElementById("i4-" + id);
 
-      // phase 1 · «este libro»: the workbook turns in, centred; halo, sparkles, a sheen across the cover
-      tl.fromTo(q("bk"), { opacity: 0, rotationY: -62, rotation: -9, y: 150, scale: 0.8, transformPerspective: 1800 },
-        { opacity: 1, rotationY: 0, rotation: 0, y: 0, scale: 1, transformPerspective: 1800, duration: 0.7, ease: "power3.out" }, 0.02);
-      tl.fromTo(q("halo"), { opacity: 0, scale: 0.55 }, { opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" }, 0.18);
-      tl.fromTo(q("sheen"), { x: 0 }, { x: 860, duration: 0.8, ease: "power2.inOut" }, 0.312 + 0.04);
-      tl.fromTo(q("bkf"), { y: 0 }, { keyframes: [{ y: -10, duration: 0.8, ease: "sine.inOut" }, { y: 0, duration: 0.8, ease: "sine.inOut" },
-        { y: -7, duration: 0.45, ease: "sine.inOut" }, { y: 0, duration: 0.45, ease: "sine.inOut" }] }, 0.72);
-      tl.fromTo(q("k0"), { opacity: 0, scale: 0, rotation: -120 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2.4)" }, 0.252);
-      tl.fromTo(q("k0"), { scale: 1 }, { keyframes: [{ scale: 0.55, duration: 0.3, ease: "sine.inOut" }, { scale: 1, duration: 0.3, ease: "sine.inOut" }], immediateRender: false }, 1.55);
-      tl.fromTo(q("k1"), { opacity: 0, scale: 0, rotation: -120 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2.4)" }, 0.352);
-      tl.fromTo(q("k1"), { scale: 1 }, { keyframes: [{ scale: 0.55, duration: 0.3, ease: "sine.inOut" }, { scale: 1, duration: 0.3, ease: "sine.inOut" }], immediateRender: false }, 1.9);
-      tl.fromTo(q("k2"), { opacity: 0, scale: 0, rotation: -120 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2.4)" }, 0.452);
-      tl.fromTo(q("k2"), { scale: 1 }, { keyframes: [{ scale: 0.55, duration: 0.3, ease: "sine.inOut" }, { scale: 1, duration: 0.3, ease: "sine.inOut" }], immediateRender: false }, 2.25);
-
-      // «70»: the book glides left, «70 páginas» pops (and counts up); «en español»; «para imprimir» (the sheets spread)
-      tl.fromTo(q("bkm"), { x: 0 }, { x: -214, duration: 0.44, ease: "power3.inOut" }, 0.897 - 0.17);
-      tl.fromTo(q("p0"), { opacity: 0, scale: 0.5, x: -30 }, { opacity: 1, scale: 1, x: 0, duration: 0.34, ease: "back.out(1.8)" }, 0.897 - 0.08);
-      (() => { const el = q("num"), o = { n: 0 };
-        tl.fromTo(o, { n: 0 }, { n: 70, duration: 0.45, ease: "power2.out", immediateRender: false,
-          onUpdate: () => { el.textContent = String(Math.round(o.n)); } }, 0.897 - 0.06); })();
-      tl.fromTo(q("p1"), { opacity: 0, scale: 0.5, x: -30 }, { opacity: 1, scale: 1, x: 0, duration: 0.34, ease: "back.out(1.8)" }, 1.765 - 0.05);
-      tl.fromTo(q("p2"), { opacity: 0, scale: 0.5, x: -30 }, { opacity: 1, scale: 1, x: 0, duration: 0.34, ease: "back.out(1.8)" }, 2.576 - 0.1);
-      tl.fromTo(q("s2"), { x: 0, y: 0 }, { x: 5, y: 4, duration: 0.34, ease: "back.out(2)" }, 2.576 - 0.02);
-      tl.fromTo(q("s1"), { x: 0, y: 0, rotation: 0 }, { x: 10, y: 8, rotation: 0.8, duration: 0.34, ease: "back.out(2)" }, 2.576 + 0.02);
-      tl.fromTo(q("s0"), { x: 0, y: 0, rotation: 0 }, { x: 16, y: 12, rotation: 1.8, duration: 0.34, ease: "back.out(2)" }, 2.576 + 0.06);
-
-      // phase 2 · «con»: the book shrinks into the header, the pills stack beside it, the contents card rises
-      tl.fromTo(q("bkm"), { x: -214, y: 0, scale: 1 }, { x: -84, y: -144, scale: 0.55, duration: 0.52, ease: "power3.inOut", immediateRender: false }, 3.184);
-      tl.fromTo(q("halo"), { opacity: 1 }, { opacity: 0.55, duration: 0.5, ease: "power2.inOut", immediateRender: false }, 3.184);
-      tl.fromTo(q("spk"), { opacity: 1 }, { opacity: 0, duration: 0.25, ease: "power2.in" }, 3.184);
-      tl.fromTo(q("pw0"), { x: 0, y: 0, scale: 1 }, { x: -66, y: -257, scale: 0.9, duration: 0.52, ease: "power3.inOut" }, 3.184);
-      tl.fromTo(q("pw1"), { x: 0, y: 0, scale: 1 }, { x: -66, y: -279, scale: 0.9, duration: 0.52, ease: "power3.inOut" }, 3.224);
-      tl.fromTo(q("pw2"), { x: 0, y: 0, scale: 1 }, { x: -66, y: -301, scale: 0.9, duration: 0.52, ease: "power3.inOut" }, 3.264);
-      tl.fromTo(q("card"), { opacity: 0, y: 110, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out" }, 3.184 + 0.16);
-      tl.fromTo(q("progf"), { scaleX: 0 }, { scaleX: 0, duration: 0.01 }, 0);
-      // row 1 · «vocabulario»
-      tl.fromTo(q("hl"), { opacity: 0, y: 0, scaleY: 1 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, 3.268);
-      tl.fromTo(q("r0"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 3.288);
-      tl.fromTo(q("t0"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 3.288);
-      tl.fromTo(q("c0"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 3.568);
-      tl.fromTo(q("progf"), { scaleX: 0.0 }, { scaleX: 0.25, duration: 0.3, ease: "power3.out", immediateRender: false }, 3.568);
-      // row 2 · «gramática»
-      tl.fromTo(q("hl"), { y: 0, scaleY: 1.0 }, { y: 96, scaleY: 1.0, duration: 0.26, ease: "power3.inOut", immediateRender: false }, 3.964);
-      tl.fromTo(q("r1"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 4.024);
-      tl.fromTo(q("t1"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 4.024);
-      tl.fromTo(q("c1"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 4.304);
-      tl.fromTo(q("progf"), { scaleX: 0.25 }, { scaleX: 0.5, duration: 0.3, ease: "power3.out", immediateRender: false }, 4.304);
-      // row 3 · «ejercicios»
-      tl.fromTo(q("hl"), { y: 96, scaleY: 1.0 }, { y: 192, scaleY: 1.0, duration: 0.26, ease: "power3.inOut", immediateRender: false }, 4.455);
-      tl.fromTo(q("r2"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 4.515);
-      tl.fromTo(q("t2"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 4.515);
-      tl.fromTo(q("c2"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 5.556);
-      tl.fromTo(q("progf"), { scaleX: 0.5 }, { scaleX: 0.75, duration: 0.3, ease: "power3.out", immediateRender: false }, 5.556);
-      tl.fromTo(q("pra"), { opacity: 0, y: 22, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, 5.416 - 0.06);
-      // row 4 · «pronunciación»
-      tl.fromTo(q("hl"), { y: 192, scaleY: 1.0 }, { y: 288, scaleY: 2.2143, duration: 0.26, ease: "power3.inOut", immediateRender: false }, 5.966);
-      tl.fromTo(q("r3"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 6.026);
-      tl.fromTo(q("t3"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 6.026);
-      tl.fromTo(q("c3"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 6.417);
-      tl.fromTo(q("progf"), { scaleX: 0.75 }, { scaleX: 1.0, duration: 0.3, ease: "power3.out", immediateRender: false }, 6.417);
-      // «sonidos»: the hard Dutch sounds pop under «Pronunciación»
-      tl.fromTo(q("n0"), { opacity: 0, scale: 0.4, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, 6.799);
-      tl.fromTo(q("n1"), { opacity: 0, scale: 0.4, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, 6.889);
-      tl.fromTo(q("n2"), { opacity: 0, scale: 0.4, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, 6.979);
-      tl.fromTo(q("n3"), { opacity: 0, scale: 0.4, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, 7.069);
-      // «te cambian en inglés»: the English bubble pops and is struck out in red
-      tl.fromTo(q("bub"), { opacity: 0, scale: 0.6, y: 16 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "back.out(1.9)" }, 8.142 - 0.05);
-      tl.fromTo(q("bubr"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out" }, 8.708 - 0.04);
-      tl.fromTo(q("st0"), { scaleX: 0 }, { scaleX: 1, duration: 0.16, ease: "power2.out" }, 8.708 - 0.04);
-      tl.fromTo(q("st1"), { scaleX: 0 }, { scaleX: 1, duration: 0.16, ease: "power2.out" }, 8.708 + 0.06);
-      tl.fromTo(q("bubt"), { color: "#374151" }, { color: "#4B5563", duration: 0.2, ease: "power2.out" }, 8.708 + 0.08);
-      tl.fromTo(q("bflag"), { opacity: 1 }, { opacity: 0, duration: 0.1 }, 8.708 + 0.04);
-      tl.fromTo(q("bx"), { opacity: 0, scale: 0.3, rotation: -60 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 8.708 + 0.04);
-      tl.to(q("bub"), { keyframes: [{ x: -9, duration: 0.05 }, { x: 8, duration: 0.05 }, { x: -5, duration: 0.05 }, { x: 0, duration: 0.05 }] }, 8.708 + 0.12);
-      // a gentle push-in to the end; a second sheen on the book; on «boca» the chips wave and the tick pulses
-      tl.fromTo(q("stage"), { scale: 1 }, { scale: 1.035, duration: 1.498, ease: "sine.inOut" }, 8.828);
-      tl.fromTo(q("sheen"), { x: 0 }, { x: 860, duration: 0.8, ease: "power2.inOut", immediateRender: false }, 8.828 + 0.3);
-      tl.fromTo(q("n0"), { y: 0 }, { keyframes: [{ y: -14, duration: 0.13, ease: "power2.out" }, { y: 0, duration: 0.2, ease: "power2.in" }], immediateRender: false }, 9.682);
-      tl.fromTo(q("n1"), { y: 0 }, { keyframes: [{ y: -14, duration: 0.13, ease: "power2.out" }, { y: 0, duration: 0.2, ease: "power2.in" }], immediateRender: false }, 9.752);
-      tl.fromTo(q("n2"), { y: 0 }, { keyframes: [{ y: -14, duration: 0.13, ease: "power2.out" }, { y: 0, duration: 0.2, ease: "power2.in" }], immediateRender: false }, 9.822);
-      tl.fromTo(q("n3"), { y: 0 }, { keyframes: [{ y: -14, duration: 0.13, ease: "power2.out" }, { y: 0, duration: 0.2, ease: "power2.in" }], immediateRender: false }, 9.892);
-      tl.fromTo(q("c3"), { scale: 1 }, { keyframes: [{ scale: 1.22, duration: 0.14, ease: "power2.out" }, { scale: 1, duration: 0.22, ease: "power2.inOut" }],
-        immediateRender: false }, 9.802 + 0.1);
+      tl.fromTo(q("lab"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);
+      tl.fromTo(q("frame"), { opacity: 0, y: 90, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out" }, 0);
+      // the cover drifts in while she names it, the book opens and turns its pages (the clip)
+      tl.fromTo(q("zc"), { scale: 1.3 }, { scale: 1.45, duration: 2.576 - 0.06, ease: "power1.inOut" }, 0);
+      tl.fromTo(q("zc"), { scale: 1.45 }, { scale: 1.0, duration: 0.55, ease: "power2.inOut", immediateRender: false }, 2.576 - 0.05);
+      // «gramática»: the spread holds (still), the camera pushes in on the table; «ejercicios»: over to the review box
+      tl.set(q("zn"), { opacity: 0 }, 0);
+      tl.set(q("zn"), { opacity: 1 }, 4.154);
+      tl.fromTo(q("zn"), { scale: 1, x: 0, y: 0 }, { scale: 1.45, x: 500 - 634.4, y: 281 - 212.5, duration: 0.6, ease: "power2.inOut", immediateRender: false }, 4.154);
+      tl.fromTo(q("zn"), { x: 500 - 634.4, y: 281 - 212.5 }, { x: 500 - 634.4 - (638.3 - 634.4) * 1.45, y: 281 - 212.5 - (376.6 - 212.5) * 1.45, duration: 0.55,
+        ease: "power2.inOut", immediateRender: false }, 4.595 - 0.08);
+      // «cómo pronunciar los sonidos»: the «Klanken (Sonidos)» page, pushing in to the end
+      tl.set(q("zk"), { opacity: 0 }, 0);
+      tl.set(q("zk"), { opacity: 1 }, 5.976);
+      tl.fromTo(q("zk"), { scale: 1.4, x: 500 - 640.6, y: 281 - 293 }, { scale: 1.6, x: 500 - 640.6, y: 281 - 293, duration: 10.326 - 5.976, ease: "power1.out",
+        immediateRender: false }, 5.976);
+      tl.fromTo(q("p0"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 0.897 - 0.06);
+      tl.fromTo(q("p1"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 1.859 - 0.06);
+      tl.fromTo(q("p2"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 2.576 - 0.06);
+      tl.fromTo(q("c0"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 3.368 - 0.05);
+      tl.fromTo(q("c1"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 4.104 - 0.05);
+      tl.fromTo(q("c2"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 4.595 - 0.05);
+      tl.fromTo(q("c3"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 6.076 - 0.05);
 
       window.__timelines["ins-04"] = tl;
     })();

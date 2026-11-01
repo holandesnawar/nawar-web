@@ -39,115 +39,110 @@ def wcue_from(t0):
     return wcue
 
 
+BF_CSS = """
+    .«P»-bf { display: flex; align-items: center; gap: 14px; height: 78px; padding: 0 30px; border-radius: 18px; background: #0C0C1E;
+      color: #FFFFFF; white-space: nowrap; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.18), 0 18px 40px rgba(0,0,0,0.35);
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 34px; line-height: 1; letter-spacing: 0.12em; padding-top: 3px; box-sizing: border-box; }
+    .«P»-bf i { display: block; width: 12px; height: 12px; border-radius: 50%; background: «SKY»; font-style: normal; }
+"""
+
+
 def hook():
-    """«Si vives en Países Bajos…»: a white «Países Bajos» pill (NL flag) on «Países»; on «este Black Friday» two
-    crossing yellow tapes slam in over the top of the frame and crawl; everything leaves at the cut to take p."""
+    """«Si vives en Países Bajos…»: a white «Países Bajos» pill (NL flag) on «Países»; on «este Black Friday» a black
+    «BLACK FRIDAY» label lands at the top (with the punch on her); both leave at the cut to take p."""
     P = "h"; d = ED["shots"][1]["start"]; wcue = wcue_from(0.0)
     c = dict(PAI=wcue("paises"), BF=round(ED["hook_bf"] - 0.05, 3), END=d)
-    css = """
-    #h-prow { top: 190px; }
+    css = BF_CSS + """
+    #h-prow { top: 196px; }
     #h-pill { transform-origin: 50% 50%; }
-    #h-t1-wrap, #h-t2-wrap { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    #h-brow { top: 190px; }
 """
     body = f"""    <div id="h-prow" class="h-row"><div id="h-pill" class="h-wpill"><span class="h-flag h-flagd">{FLAG_NL}</span><span>Países Bajos</span></div></div>
-    <div id="h-t1-wrap">{tape(P, "t1", -80, 118, 1240, -5)}</div>
-    <div id="h-t2-wrap">{tape(P, "t2", -80, 312, 1240, 3)}</div>"""
+    <div id="h-brow" class="h-row"><div id="h-bf" class="h-bf"><i></i><span>BLACK FRIDAY</span><i></i></div></div>"""
     js = """
-      tl.fromTo(q("pill"), { opacity: 0, y: 24, scale: 1.1 }, { opacity: 1, y: 0, scale: 1.4, duration: 0.3, ease: "back.out(1.7)" }, «PAI» - 0.05);
-      tl.to(q("pill"), { opacity: 0, y: -20, duration: 0.18, ease: "power2.in" }, «BF» - 0.12);
-      tl.fromTo(q("t1-wrap"), { opacity: 0, x: -1200 }, { opacity: 1, x: 0, duration: 0.24, ease: "power4.out" }, «BF»);
-      tl.fromTo(q("t2-wrap"), { opacity: 0, x: 1200 }, { opacity: 1, x: 0, duration: 0.24, ease: "power4.out" }, «BF» + 0.06);
-      tl.fromTo(q("t1-run"), { x: 0 }, { x: -420, duration: «END» - «BF», ease: "none" }, «BF»);
-      tl.fromTo(q("t2-run"), { x: -420 }, { x: 0, duration: «END» - «BF», ease: "none" }, «BF»);
+      tl.fromTo(q("pill"), { opacity: 0, y: 20, scale: 1.0 }, { opacity: 1, y: 0, scale: 1.2, duration: 0.3, ease: "back.out(1.6)" }, «PAI» - 0.05);
+      tl.to(q("pill"), { opacity: 0, y: -16, duration: 0.16, ease: "power2.in" }, «BF» - 0.14);
+      tl.fromTo(q("bf"), { opacity: 0, scale: 0.6, y: 10 }, { opacity: 1, scale: 1.15, y: 0, duration: 0.3, ease: "back.out(2)" }, «BF»);
 """
-    sfx = [(c["PAI"] - 0.05, "pop", 0.16), (c["BF"], "whoosh", 0.22), (c["BF"] + 0.06, "glitch-1-short", 0.10)]
+    sfx = [(c["PAI"] - 0.05, "pop", 0.16), (c["BF"], "whoosh-short", 0.16), (c["BF"] + 0.02, "pop", 0.22)]
     return comp("hook", d, P, css, body, js, c), 0.0, d, sfx
 
 
 def offer():
-    """«(un) entero por un euro, solo hasta el 30 de noviembre. Esta es una de nuestras ofertas del Black Friday.»
-    over the girl: a yellow 1 € burst lands up in the right corner on «euro», clear of her face (and keeps a slow wobble), a white «Hasta el 30 de
-    noviembre» pill on «30», the «BLACK FRIDAY» tape across the top on «Black Friday»; all leave at the call to action."""
+    """«Entero por un euro, solo hasta el 30 de noviembre. Esta es una de nuestras ofertas del Black Friday.» over the
+    girl: on «euro» a white price card lands in the top-right corner, clear of her face («BLACK FRIDAY» label, «1 €»);
+    a white «Hasta el 30 de noviembre» pill on «30»; on «Black Friday» the label gives a small pulse; all leave at the
+    call to action."""
     P = "f"; t0 = ED["offer"]; d = round(ED["outro"] - t0, 3); wcue = wcue_from(t0)
     c = dict(EUR=wcue("euro"), TRE=wcue("30"), BF=wcue("black"), END=d)
-    css = """
-    #f-burst { position: absolute; left: 790px; top: 250px; width: 270px; height: 270px; transform: rotate(9deg); }
-    #f-burst svg { position: absolute; left: 0; top: 0; width: 270px; height: 270px; filter: drop-shadow(0 18px 30px rgba(0,0,0,0.45)); }
-    #f-price { position: absolute; left: 0; top: 0; width: 270px; height: 270px; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; color: «DARK»; }
-    #f-solo { font-family: "Inter", sans-serif; font-weight: 800; font-size: 28px; line-height: 1; letter-spacing: 0.16em; margin-bottom: 2px; }
-    #f-eur { font-weight: 900; font-size: 116px; line-height: 0.95; letter-spacing: -0.04em; }
+    css = BF_CSS + """
+    #f-card { left: 742px; top: 222px; width: 290px; height: 250px; transform: rotate(4deg); transform-origin: 50% 50%;
+      box-shadow: 0 30px 70px rgba(0,0,0,0.35), 0 6px 16px rgba(0,0,0,0.18); }
+    #f-lab { position: absolute; left: 22px; top: 20px; height: 44px; padding: 0 16px; border-radius: 12px; font-size: 20px; gap: 9px; }
+    #f-lab i { width: 8px; height: 8px; }
+    #f-eur { position: absolute; left: 0; top: 96px; width: 290px; height: 130px; text-align: center; font-weight: 900; font-size: 120px; line-height: 130px;
+      letter-spacing: -0.04em; color: «INDIGO»; }
     #f-drow { top: 1130px; }
-    #f-date { display: flex; align-items: center; gap: 16px; height: 84px; padding: 0 36px 0 26px; border-radius: 999px; background: #FFFFFF;
-      color: «INK»; white-space: nowrap; box-shadow: 0 18px 44px rgba(0,0,0,0.40);
-      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 38px; line-height: 1; letter-spacing: -0.01em; }
-    #f-date svg { display: block; width: 44px; height: 44px; color: «RED»; }
-    #f-date b { color: «RED»; font-weight: 900; }
-    #f-tw { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    #f-date { gap: 14px; height: 80px; padding: 0 34px 0 22px; font-size: 36px; }
+    #f-date svg { display: block; width: 42px; height: 42px; color: «RED»; }
+    #f-date b { color: «RED»; font-weight: 800; }
 """
-    body = f"""    <div id="f-burst">{burst_svg(165, 140, 18)}<div id="f-price"><div id="f-solo">SOLO</div><div id="f-eur">1 €</div></div></div>
-    <div id="f-drow" class="f-row"><div id="f-date">{icon('cal')}<span>Hasta el <b>30 de noviembre</b></span></div></div>
-    <div id="f-tw">{tape(P, "t", -80, 150, 1240, -5)}</div>"""
+    body = f"""    <div id="f-card" class="f-card"><div id="f-lab" class="f-bf"><i></i><span>BLACK FRIDAY</span></div><div id="f-eur">1 €</div></div>
+    <div id="f-drow" class="f-row"><div id="f-date" class="f-wpill">{icon('cal')}<span>Hasta el <b>30 de noviembre</b></span></div></div>"""
     js = """
-      tl.fromTo(q("burst"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 9, duration: 0.42, ease: "back.out(2.2)" }, «EUR» - 0.08);
-      tl.fromTo(q("burst"), { rotation: 9 }, { keyframes: [{ rotation: 5, duration: 0.6, ease: "sine.inOut" }, { rotation: 11, duration: 0.6, ease: "sine.inOut" },
-        { rotation: 6, duration: 0.6, ease: "sine.inOut" }, { rotation: 10, duration: 0.6, ease: "sine.inOut" }, { rotation: 7, duration: 0.6, ease: "sine.inOut" },
-        { rotation: 9, duration: 0.6, ease: "sine.inOut" }, { rotation: 6, duration: 0.6, ease: "sine.inOut" }, { rotation: 9, duration: 0.6, ease: "sine.inOut" }],
-        immediateRender: false }, «EUR» + 0.36);
-      tl.fromTo(q("date"), { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.8)" }, «TRE» - 0.08);
-      tl.fromTo(q("tw"), { opacity: 0, x: -1200 }, { opacity: 1, x: 0, duration: 0.26, ease: "power4.out" }, «BF» - 0.05);
-      tl.fromTo(q("t-run"), { x: 0 }, { x: -380, duration: «END» - «BF» + 0.05, ease: "none" }, «BF» - 0.05);
-      tl.to([q("burst"), q("date"), q("tw")], { opacity: 0, scale: 0.9, duration: 0.16, ease: "power2.in" }, «END» - 0.16);
+      tl.fromTo(q("card"), { opacity: 0, scale: 0.6, rotation: -8 }, { opacity: 1, scale: 1, rotation: 4, duration: 0.38, ease: "back.out(1.8)" }, «EUR» - 0.08);
+      tl.fromTo(q("date"), { opacity: 0, y: 26, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, «TRE» - 0.08);
+      tl.to(q("lab"), { keyframes: [{ scale: 1.12, duration: 0.14, ease: "power2.out" }, { scale: 1, duration: 0.22, ease: "power2.inOut" }] }, «BF» - 0.04);
+      tl.to([q("card"), q("date")], { opacity: 0, scale: 0.92, duration: 0.16, ease: "power2.in" }, «END» - 0.16);
 """
-    sfx = [(c["EUR"] - 0.08, "sparkle", 0.16), (c["EUR"] - 0.02, "pop", 0.2), (c["TRE"] - 0.08, "pop", 0.4), (c["BF"] - 0.05, "whoosh", 0.18)]
+    sfx = [(c["EUR"] - 0.08, "pop", 0.24), (c["TRE"] - 0.08, "pop", 0.3)]
     return comp("offer", d, P, css, body, js, c), t0, d, sfx
 
 
 def outro():
     """«Consigue el tuyo en el enlace abajo, y al conseguirlo entras directamente en nuestra lista prioritaria del Black
-    Friday.» — a glossy yellow button «CONSÍGUELO POR 1 €» pops under her face on «consigue»; an arrow bounces under it
-    on «abajo»; on «lista prioritaria» the arrow gives way to a white «Lista prioritaria Black Friday» badge."""
+    Friday.» — the glossy blue button of UGC #2 («CONSÍGUELO POR 1 €») pops under her face on «consigue»; an arrow
+    bounces under it on «abajo»; on «lista prioritaria» the arrow gives way to a white «Lista prioritaria Black Friday»
+    pill with a green tick."""
     P = "o"; t0 = ED["outro"]; d = round(TOTAL - t0, 3); wcue = wcue_from(t0)
     c = dict(CON=wcue("consigue"), ABA=wcue("abajo"), LIS=wcue("lista"), END=round(ED["speech_end"] - t0, 3))
     css = """
-    #o-wrap { position: absolute; left: 110px; top: 1150px; width: 860px; height: 132px; }
-    #o-glow { position: absolute; left: -40px; top: -30px; width: 940px; height: 192px; border-radius: 96px;
-      background: radial-gradient(ellipse at 50% 50%, rgba(255,214,10,0.50) 0%, rgba(255,214,10,0) 70%); }
-    #o-btn { position: absolute; left: 0; top: 0; width: 860px; height: 132px; border-radius: 66px; overflow: hidden;
-      background: linear-gradient(90deg, #ffc400 0%, #ffd60a 55%, #ffe766 100%);
-      box-shadow: inset 0 0 0 3px rgba(255,255,255,0.6), inset 0 -10px 24px rgba(120,80,0,0.25), 0 20px 50px rgba(0,0,0,0.45); }
-    #o-gloss { position: absolute; left: 22px; top: 8px; width: 816px; height: 52px; border-radius: 30px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%); }
-    #o-shine { position: absolute; left: -240px; top: 0; width: 180px; height: 132px;
-      background: linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.65) 50%, rgba(255,255,255,0) 100%); }
-    #o-label { position: absolute; left: 0; top: 0; width: 860px; height: 132px; display: flex; align-items: center; justify-content: center;
-      font-weight: 900; font-size: 62px; line-height: 1; letter-spacing: -0.01em; color: «DARK»; white-space: nowrap; padding-top: 4px; box-sizing: border-box; }
-    #o-arrow { position: absolute; left: 480px; top: 1300px; width: 120px; height: 120px; color: #FFFFFF; }
-    #o-arrow svg { display: block; width: 120px; height: 120px; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.5)); }
-    #o-lrow { top: 1318px; }
-    #o-list { display: flex; align-items: center; gap: 16px; height: 84px; padding: 0 36px 0 20px; border-radius: 999px; background: #FFFFFF;
-      color: «INK»; white-space: nowrap; box-shadow: 0 18px 44px rgba(0,0,0,0.40);
-      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 36px; line-height: 1; letter-spacing: -0.01em; }
-    #o-list svg { display: block; width: 50px; height: 50px; }
-    #o-list b { color: «BLUE»; font-weight: 900; }
+    #o-wrap { position: absolute; left: 140px; top: 1150px; width: 800px; height: 128px; }
+    #o-glow { position: absolute; left: -40px; top: -30px; width: 880px; height: 188px; border-radius: 94px;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.55) 0%, rgba(77,163,255,0) 70%); }
+    #o-btn { position: absolute; left: 0; top: 0; width: 800px; height: 128px; border-radius: 64px; overflow: hidden;
+      background: linear-gradient(90deg, #0a52d4 0%, #1b74f2 55%, #4a98fb 100%);
+      box-shadow: inset 0 0 0 3px rgba(255,255,255,0.55), inset 0 -10px 24px rgba(4,0,80,0.25), 0 20px 50px rgba(11,109,240,0.5); }
+    #o-gloss { position: absolute; left: 22px; top: 8px; width: 756px; height: 50px; border-radius: 30px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 100%); }
+    #o-shine { position: absolute; left: -240px; top: 0; width: 180px; height: 128px;
+      background: linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0) 100%); }
+    #o-label { position: absolute; left: 0; top: 0; width: 800px; height: 128px; display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 60px; line-height: 1; letter-spacing: -0.01em; color: #FFFFFF; white-space: nowrap; padding-top: 4px; box-sizing: border-box;
+      text-shadow: 0 0 18px rgba(255,255,255,0.45), 0 3px 0 rgba(0,30,120,0.35); }
+    #o-arrow { position: absolute; left: 488px; top: 1296px; width: 104px; height: 104px; color: #FFFFFF; }
+    #o-arrow svg { display: block; width: 104px; height: 104px; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.45)); }
+    #o-lrow { top: 1312px; }
+    #o-list { gap: 14px; height: 80px; padding: 0 34px 0 18px; font-size: 34px; }
+    #o-list svg { display: block; width: 48px; height: 48px; }
+    #o-list b { color: «BLUE»; font-weight: 800; }
 """
     body = f"""    <div id="o-wrap">
       <div id="o-glow"></div>
       <div id="o-btn"><div id="o-gloss"></div><div id="o-shine"></div><div id="o-label">CONSÍGUELO POR 1 €</div></div>
     </div>
     <div id="o-arrow">{icon('down')}</div>
-    <div id="o-lrow" class="o-row"><div id="o-list">{icon('check')}<span>Lista prioritaria <b>Black Friday</b></span></div></div>"""
+    <div id="o-lrow" class="o-row"><div id="o-list" class="o-wpill">{icon('check')}<span>Lista prioritaria <b>Black Friday</b></span></div></div>"""
     js = """
       tl.fromTo(q("wrap"), { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.36, ease: "back.out(1.8)" }, «CON» - 0.06);
       tl.fromTo(q("glow"), { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, «CON»);
-      tl.fromTo(q("shine"), { x: 0 }, { x: 1300, duration: 0.7, ease: "power2.inOut" }, «CON» + 0.3);
+      tl.fromTo(q("shine"), { x: 0 }, { x: 1240, duration: 0.7, ease: "power2.inOut" }, «CON» + 0.3);
       tl.fromTo(q("arrow"), { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, «ABA» - 0.1);
-      tl.fromTo(q("arrow"), { y: 0 }, { keyframes: [{ y: 22, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" },
-        { y: 22, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" }, { y: 22, duration: 0.22, ease: "power1.inOut" },
-        { y: 0, duration: 0.22, ease: "power1.inOut" }], immediateRender: false }, «ABA» + 0.14);
+      tl.fromTo(q("arrow"), { y: 0 }, { keyframes: [{ y: 20, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" },
+        { y: 20, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" }], immediateRender: false }, «ABA» + 0.14);
       tl.to(q("arrow"), { opacity: 0, duration: 0.16, ease: "power2.in" }, «LIS» - 0.2);
-      tl.fromTo(q("list"), { opacity: 0, scale: 0.6, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.8)" }, «LIS» - 0.06);
-      tl.fromTo(q("shine"), { x: 0 }, { x: 1300, duration: 0.7, ease: "power2.inOut", immediateRender: false }, «LIS» + 0.2);
+      tl.fromTo(q("list"), { opacity: 0, scale: 0.7, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.8)" }, «LIS» - 0.06);
+      tl.fromTo(q("shine"), { x: 0 }, { x: 1240, duration: 0.7, ease: "power2.inOut", immediateRender: false }, «LIS» + 0.2);
       tl.fromTo(q("wrap"), { scale: 1 }, { keyframes: [{ scale: 1.04, duration: 0.25, ease: "power1.inOut" }, { scale: 1, duration: 0.25, ease: "power1.inOut" }],
         immediateRender: false }, «END» - 0.2);
 """
@@ -157,7 +152,8 @@ def outro():
 
 # ============================================================================== captions (clean, white, no box)
 SHOW = {}
-HL_PHRASES = [["black", "friday"], ["70", "paginas"], ["30", "de", "noviembre"], ["lista", "prioritaria"], ["euro"]]   # in BF yellow
+HL_PHRASES = []   # no coloured words: clean white captions, as in UGC #2 (pages still never split these:)
+KEEP = [["black", "friday"], ["70", "paginas"], ["30", "de", "noviembre"], ["lista", "prioritaria"]]
 GLUE = {"y", "que", "con", "los", "las", "la", "el", "de", "del", "por", "en", "un", "una", "te", "tu", "cuando", "si", "a", "al", "lo", "ni"}
 CLITIC = {"te", "me", "se", "le", "les", "nos", "os", "lo"}      # a pronoun before its verb: never the last word of a page
 
@@ -181,10 +177,11 @@ def captions(window=None):
         return max(b for b in bounds if b <= t + 1e-6)
     # the highlighted phrases (word indices), which a page never splits
     nw = [norm(w["text"]) for w in WORDS]; hl, inside = set(), set()
-    for ph in HL_PHRASES:
+    for ph in HL_PHRASES + KEEP:
         for i in range(len(nw) - len(ph) + 1):
             if nw[i:i + len(ph)] == ph:
-                hl.update(range(i, i + len(ph))); inside.update(range(i, i + len(ph) - 1))
+                if ph in HL_PHRASES: hl.update(range(i, i + len(ph)))
+                inside.update(range(i, i + len(ph) - 1))
     # sections (no page straddles a cut), split into phrases at commas and full stops; each phrase is cut into pages by a
     # small search for the cheapest split: about 3 words / ≤ 17 characters a page, never inside a highlighted phrase, a
     # one-word page or a page ending on a word that belongs to what follows (y, que, con, de…) costs extra
@@ -313,8 +310,8 @@ HEAD = """<!doctype html>
     <script src="assets/vendor/gsap.min.js"></script>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #08070F; }
-      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #08070F; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #120081; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #120081; }
       .shot { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
       .zw { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; will-change: transform; }
       .zw video, .zw img { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }

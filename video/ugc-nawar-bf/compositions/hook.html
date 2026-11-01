@@ -72,27 +72,28 @@
     .h-acc { color: #4da3ff; }
     .h-w { display: inline-block; }
 
-    #h-prow { top: 190px; }
+    .h-bf { display: flex; align-items: center; gap: 14px; height: 78px; padding: 0 30px; border-radius: 18px; background: #0C0C1E;
+      color: #FFFFFF; white-space: nowrap; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.18), 0 18px 40px rgba(0,0,0,0.35);
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 34px; line-height: 1; letter-spacing: 0.12em; padding-top: 3px; box-sizing: border-box; }
+    .h-bf i { display: block; width: 12px; height: 12px; border-radius: 50%; background: #4da3ff; font-style: normal; }
+
+    #h-prow { top: 196px; }
     #h-pill { transform-origin: 50% 50%; }
-    #h-t1-wrap, #h-t2-wrap { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    #h-brow { top: 190px; }
 
   </style>
   <div id="root" data-composition-id="hook" data-width="1080" data-height="1920" data-duration="5.962">
     <div id="h-prow" class="h-row"><div id="h-pill" class="h-wpill"><span class="h-flag h-flagd"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>Países Bajos</span></div></div>
-    <div id="h-t1-wrap"><div id="h-t1" class="h-tape" style="left:-80px; top:118px; width:1240px; transform: rotate(-5deg);"><div id="h-t1-run" class="h-tape-run"><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i></div></div></div>
-    <div id="h-t2-wrap"><div id="h-t2" class="h-tape" style="left:-80px; top:312px; width:1240px; transform: rotate(3deg);"><div id="h-t2-run" class="h-tape-run"><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i></div></div></div>
+    <div id="h-brow" class="h-row"><div id="h-bf" class="h-bf"><i></i><span>BLACK FRIDAY</span><i></i></div></div>
   </div>
   <script>
     (function () {
       const tl = gsap.timeline({ paused: true });
       const q = (id) => document.getElementById("h-" + id);
 
-      tl.fromTo(q("pill"), { opacity: 0, y: 24, scale: 1.1 }, { opacity: 1, y: 0, scale: 1.4, duration: 0.3, ease: "back.out(1.7)" }, 0.566 - 0.05);
-      tl.to(q("pill"), { opacity: 0, y: -20, duration: 0.18, ease: "power2.in" }, 4.516 - 0.12);
-      tl.fromTo(q("t1-wrap"), { opacity: 0, x: -1200 }, { opacity: 1, x: 0, duration: 0.24, ease: "power4.out" }, 4.516);
-      tl.fromTo(q("t2-wrap"), { opacity: 0, x: 1200 }, { opacity: 1, x: 0, duration: 0.24, ease: "power4.out" }, 4.516 + 0.06);
-      tl.fromTo(q("t1-run"), { x: 0 }, { x: -420, duration: 5.962 - 4.516, ease: "none" }, 4.516);
-      tl.fromTo(q("t2-run"), { x: -420 }, { x: 0, duration: 5.962 - 4.516, ease: "none" }, 4.516);
+      tl.fromTo(q("pill"), { opacity: 0, y: 20, scale: 1.0 }, { opacity: 1, y: 0, scale: 1.2, duration: 0.3, ease: "back.out(1.6)" }, 0.566 - 0.05);
+      tl.to(q("pill"), { opacity: 0, y: -16, duration: 0.16, ease: "power2.in" }, 4.516 - 0.14);
+      tl.fromTo(q("bf"), { opacity: 0, scale: 0.6, y: 10 }, { opacity: 1, scale: 1.15, y: 0, duration: 0.3, ease: "back.out(2)" }, 4.516);
 
       window.__timelines["hook"] = tl;
     })();

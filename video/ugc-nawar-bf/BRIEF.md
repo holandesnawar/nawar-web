@@ -23,6 +23,7 @@ es la primera completa.
   «Antes de pedir una cita…» (8 s) y «Si vives en Países Bajos…» (15 s; la toma buena empieza en 17,6 s, la de 15 s está
   dicha flojito con el micro bajado).
 - .raw/pedido.mov «Estado de pedido» — el cuerpo, ya cortado por la creadora, con dos tomas de la primera frase.
+- «Animación Libro Interactivo» (4 s): la portada de «Holandés sin miedo» se abre y pasan las páginas.
 - Logo, tipografías y efectos del VSL; música: «musica v1» del cliente (la de UGC #2).
 
 ## Customizations
