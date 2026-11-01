@@ -1,8 +1,8 @@
-# Storyboard · UGC Black Friday v5.1 (40 s) — diseño del VSL / UGC #2, Black Friday con fondos de texto detrás de ella
+# Storyboard · UGC Black Friday v5.2 (40 s) — diseño del VSL / UGC #2, Black Friday con fondos de texto detrás de ella
 
 | Tiempo | Plano | Qué se oye | Qué se ve |
 |---|---|---|---|
-| 0,0–6,0 | Ella (gancho, take g) | «Si vives en Países Bajos y para cualquier trámite necesitas que alguien te acompañe, este Black Friday te interesa.» | Arranca abierto y entra con un zoom de 0,5 s a su cara (stop-scroll), con un whoosh. En «Black» (4,59) su habitación desaparece: flash blanco, golpe y ella recortada delante de filas gigantes que corren despacio, «BLACK» en blanco y «FRIDAY» en amarillo, sobre negro; el encuadre se abre y entra el groove. |
+| 0,0–6,0 | Ella (gancho, take g) | «Si vives en Países Bajos y para cualquier trámite necesitas que alguien te acompañe, este Black Friday te interesa.» | Stop-scroll como en el reel de referencia del cliente: los primeros fotogramas, muy cerca y desenfocados, se abren de golpe al plano en 0,16 s, con un whoosh. En «Black» (4,59) su habitación desaparece: flash blanco, golpe y ella recortada delante de filas gigantes que corren despacio, «BLACK» en blanco y «FRIDAY» en amarillo, sobre negro; el encuadre se abre y entra el groove. |
 | 6,0–6,8 | Ella (take p) | «Antes de pedir cita,» | Encuadre nuevo. |
 | 6,8–10,6 | ins-01 (papel) | «…miras quién puede ir contigo, y si ese día no puede nadie, la cambias.» | Titular «¿Quién puede / ir contigo?», tarjeta de cita (Huisarts, 14 nov, 10:30), tu burbuja azul, las respuestas de Ana y Carlos con ✕ y la fecha que salta del 14 al 25 con «Cita cambiada». |
 | 10,6–14,3 | Ella | «Algo que en tu país lo hacías solo y ni lo pensabas. Eso no se arregla con los años.» | Corte propio de la toma en «Eso» con encuadre nuevo; golpe de zoom en «años». |
