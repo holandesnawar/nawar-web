@@ -151,30 +151,29 @@
       const q = (id) => document.getElementById("i3-" + id);
 
       tl.fromTo(q("bar"), { opacity: 0, y: 330 + 60, scale: 1 }, { opacity: 1, y: 330, scale: 1.06, duration: 0.3, ease: "power3.out" }, 0);
-      tl.fromTo(q("bar"), { y: 330, scale: 1.06 }, { y: 0, scale: 1, duration: 0.26, ease: "power3.inOut", immediateRender: false }, 0.415);
+      tl.fromTo(q("bar"), { y: 330, scale: 1.06 }, { y: 0, scale: 1, duration: 0.26, ease: "power3.inOut", immediateRender: false }, 0.623);
 
       (() => {
         const el = q("typed"), full = "aprender neerlandés"; const typ = { n: 0 };
         el.textContent = "";
-        tl.fromTo(typ, { n: 0 }, { n: full.length, duration: 0.285, ease: "none", immediateRender: false,
+        tl.fromTo(typ, { n: 0 }, { n: full.length, duration: 0.493, ease: "none", immediateRender: false,
           onUpdate: () => { el.textContent = full.slice(0, Math.round(typ.n)); } }, 0.08);
       })();
 
       tl.set(q("caret"), { opacity: 1 }, 0);
-      tl.set(q("caret"), { opacity: 1 }, 0.615);
-      tl.set(q("caret"), { opacity: 0 }, 0.865);
-      tl.set(q("caret"), { opacity: 1 }, 1.115);
-      tl.set(q("caret"), { opacity: 0 }, 1.365);
-      tl.set(q("caret"), { opacity: 1 }, 1.615);
-      tl.set(q("caret"), { opacity: 0 }, 1.865);
-      tl.set(q("caret"), { opacity: 1 }, 2.115);
-      tl.set(q("caret"), { opacity: 0 }, 2.365);
+      tl.set(q("caret"), { opacity: 1 }, 0.823);
+      tl.set(q("caret"), { opacity: 0 }, 1.073);
+      tl.set(q("caret"), { opacity: 1 }, 1.323);
+      tl.set(q("caret"), { opacity: 0 }, 1.573);
+      tl.set(q("caret"), { opacity: 1 }, 1.823);
+      tl.set(q("caret"), { opacity: 0 }, 2.073);
+      tl.set(q("caret"), { opacity: 1 }, 2.323);
 
-      tl.fromTo(q("btn"), { scale: 1 }, { keyframes: [{ scale: 0.86, duration: 0.07, ease: "power2.out" }, { scale: 1, duration: 0.22, ease: "back.out(2.6)" }] }, 0.385);
-      tl.fromTo(q("r0"), { opacity: 0, y: -14, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, 0.585);
-      tl.fromTo(q("r1"), { opacity: 0, y: -14, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, 0.715);
-      tl.fromTo(q("r2"), { opacity: 0, y: -14, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, 0.845);
-      tl.fromTo(q("r3"), { opacity: 0, y: -14, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, 0.975);
+      tl.fromTo(q("btn"), { scale: 1 }, { keyframes: [{ scale: 0.86, duration: 0.07, ease: "power2.out" }, { scale: 1, duration: 0.22, ease: "back.out(2.6)" }] }, 0.593);
+      tl.fromTo(q("r0"), { opacity: 0, y: -14, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, 0.793);
+      tl.fromTo(q("r1"), { opacity: 0, y: -14, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, 0.923);
+      tl.fromTo(q("r2"), { opacity: 0, y: -14, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, 1.053);
+      tl.fromTo(q("r3"), { opacity: 0, y: -14, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, 1.183);
       // «en inglés»: every EN badge turns red with a pulse ring, then the tag slams onto the list
       tl.fromTo(q("e0"), { opacity: 0, scale: 1 }, { keyframes: [{ opacity: 1, scale: 1.2, duration: 0.07, ease: "power2.out" }, { scale: 1, duration: 0.18, ease: "power2.inOut" }] }, 1.744);
       tl.fromTo(q("b0"), { opacity: 1 }, { opacity: 0, duration: 0.01 }, 1.814);

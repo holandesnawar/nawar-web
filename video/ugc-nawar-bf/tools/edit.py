@@ -38,10 +38,10 @@ INSERTS = [
     ("ins-01", "dark", "miras quien puede", "algo que en"),
     ("ins-02", "dark", "cada vez que", "practicar por tu"),
     ("ins-03", "dark", "porque casi todo", "por eso hemos"),
-    ("ins-04", "dark", "este libro", "un entero por"),
+    ("ins-04", "dark", "este libro", "entero por un"),
 ]
 HOOK_BF = "black friday te"    # the «BLACK FRIDAY» sticker slams in on the hook
-OFFER = "un entero por"        # the price stickers over her, from here to the call to action
+OFFER = "entero por un"        # the price stickers over her, from here to the call to action
 OUTRO = "consigue el tuyo"     # the button under her face, from here to the end
 
 FIX = {}
@@ -53,7 +53,7 @@ SCRIPT = ("Si vives en Países Bajos y para cualquier trámite necesitas que alg
           "Practicar por tu cuenta tampoco es fácil, porque casi todo lo que encuentras está en inglés. "
           "Por eso hemos creado este libro: 70 páginas en español, para imprimir, con vocabulario, gramática, ejercicios prácticos, "
           "cómo pronunciar los sonidos por los que te cambian en inglés cuando abres la boca. "
-          "Un entero por un euro, solo hasta el 30 de noviembre. Esta es una de nuestras ofertas del Black Friday. "
+          "Entero por un euro, solo hasta el 30 de noviembre. Esta es una de nuestras ofertas del Black Friday. "
           "Consigue el tuyo en el enlace abajo, y al conseguirlo entras directamente en nuestra lista prioritaria del Black Friday.").split()
 
 

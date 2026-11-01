@@ -263,9 +263,9 @@ def build():
     js += """      tl.fromTo(q("c3"), { scale: 1 }, { keyframes: [{ scale: 1.22, duration: 0.14, ease: "power2.out" }, { scale: 1, duration: 0.22, ease: "power2.inOut" }],
         immediateRender: false }, «BOC» + 0.1);
 """
-    sfx = [(c["LIB"] - 0.06, "sparkle", 0.12), (c["SET"] - 0.08, "pop", 0.15), (c["EN1"] - 0.05, "pop", 0.14), (c["IMP"] - 0.1, "pop", 0.14),
+    sfx = [(c["LIB"] - 0.06, "sparkle", 0.12), (c["SET"] - 0.08, "pop", 0.15), (c["EN1"] - 0.05, "pop", 0.14), (c["IMP"] - 0.1, "pop", 0.35),
            (t2, "whoosh-short", 0.08)]
     sfx += [(t_row[k], "pop", 0.11) for k in range(4)]
     sfx += [(t_tick[k], "click-soft", 0.13) for k in range(3)] + [(t_tick[3], "ping", 0.08)]
-    sfx += [(t_snd[0], "sparkle", 0.09), (c["TE"] - 0.05, "notification", 0.12), (c["ING"] - 0.04, "error", 0.3)]
+    sfx += [(t_snd[0], "sparkle", 0.09), (c["TE"] - 0.05, "notification", 0.12), (c["ING"] - 0.04, "error", 0.6)]
     return comp(iid, d, P, css, body, js, c), sfx

@@ -99,7 +99,7 @@ def offer():
       tl.fromTo(q("t-run"), { x: 0 }, { x: -380, duration: «END» - «BF» + 0.05, ease: "none" }, «BF» - 0.05);
       tl.to([q("burst"), q("date"), q("tw")], { opacity: 0, scale: 0.9, duration: 0.16, ease: "power2.in" }, «END» - 0.16);
 """
-    sfx = [(c["EUR"] - 0.08, "sparkle", 0.16), (c["EUR"] - 0.02, "pop", 0.2), (c["TRE"] - 0.08, "pop", 0.16), (c["BF"] - 0.05, "whoosh", 0.18)]
+    sfx = [(c["EUR"] - 0.08, "sparkle", 0.16), (c["EUR"] - 0.02, "pop", 0.2), (c["TRE"] - 0.08, "pop", 0.4), (c["BF"] - 0.05, "whoosh", 0.18)]
     return comp("offer", d, P, css, body, js, c), t0, d, sfx
 
 
@@ -159,6 +159,7 @@ def outro():
 SHOW = {}
 HL_PHRASES = [["black", "friday"], ["70", "paginas"], ["30", "de", "noviembre"], ["lista", "prioritaria"], ["euro"]]   # in BF yellow
 GLUE = {"y", "que", "con", "los", "las", "la", "el", "de", "del", "por", "en", "un", "una", "te", "tu", "cuando", "si", "a", "al", "lo", "ni"}
+CLITIC = {"te", "me", "se", "le", "les", "nos", "os", "lo"}      # a pronoun before its verb: never the last word of a page
 
 
 def ground_at(t):
@@ -195,11 +196,11 @@ def captions(window=None):
             secs.append([i])
     def cost(pg, whole):
         chars = sum(len(WORDS[j]["text"]) + 1 for j in pg) - 1
-        if chars > 21 or (pg[-1] in inside and pg[-1] != whole[-1]):
+        if chars > 24 or (pg[-1] in inside and pg[-1] != whole[-1]):
             return 1e9
         c = abs(len(pg) - 3) * 1.0 + max(0, chars - 16) * 0.6
         if len(pg) == 1 and len(whole) > 1: c += 4
-        if nw[pg[-1]] in GLUE and pg[-1] != whole[-1]: c += 5
+        if nw[pg[-1]] in GLUE and pg[-1] != whole[-1]: c += 8 if nw[pg[-1]] in CLITIC else 5
         return c
     def split(ph):
         best = {0: (0.0, [])}

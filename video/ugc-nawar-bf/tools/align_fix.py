@@ -23,7 +23,18 @@ MANUAL = {"p": {("Antes", 0.74): 1.00, ("algo", 5.48): 5.70, ("algo", 12.74): 12
                # phrase starts after a short pause inside Whisper's previous word (its words touch, so the gap rule above
                # misses them), measured on the envelope and checked with forced alignment (QA of v1)
                ("la", 4.72): 5.01, ("cada", 16.94): 17.21, ("tú", 18.48): 18.69, ("porque", 21.74): 21.88,
-               ("este", 25.64): 25.85, ("para", 28.12): 28.41, ("con", 29.04): 29.27, ("y", 44.46): 44.83}}
+               ("este", 25.64): 25.85, ("para", 28.12): 28.41, ("con", 29.04): 29.27, ("y", 44.46): 44.83,
+               # words inside a phrase that Whisper starts in the previous word's final consonant or a short pause (QA of
+               # v2: silences, bursts and fricatives read off spectrograms)
+               ("puede", 2.40): 2.60, ("por", 18.02): 18.22, ("es", 21.18): 21.38, ("casi", 21.98): 22.12,
+               ("todo", 22.26): 22.48, ("está", 23.34): 23.52, ("creado", 25.08): 25.28, ("70", 26.58): 26.74,
+               ("páginas", 27.02): 27.24, ("prácticos", 31.34): 31.53, ("cómo", 32.00): 32.23, ("por", 33.60): 33.95,
+               ("que", 34.22): 34.36, ("cuando", 35.28): 35.54, ("por", 37.08): 37.28, ("un", 37.40): 37.58,
+               ("euro", 37.72): 37.87, ("solo", 38.10): 38.23, ("entras", 45.66): 45.88, ("prioritaria", 47.54): 47.71},
+          "g": {("te", 23.06): 23.24}}
+# words Whisper hears that she doesn't say: «un» before «entero» (the creator's own jump cut lands there; the voice
+# comes back straight on the «e» of «entero»)
+DROP = {"p": {("un", 36.64)}}
 SR, H = 16000, 160                                   # 10 ms frames
 
 
@@ -51,6 +62,8 @@ def fix_take(take):
     raw = json.load(open(os.path.join(ROOT, "tools", "align", f"raw_{take}.json")))
     words = []
     for a, b, t in raw:
+        if (t, round(a, 2)) in DROP.get(take, set()):
+            continue
         rep = FIX[take].get(t, t).split(" ")
         for k, r in enumerate(rep):                    # split words share the span
             words.append([a + (b - a) * k / len(rep), a + (b - a) * (k + 1) / len(rep), r])

@@ -222,11 +222,11 @@
       tl.fromTo(q("k2"), { scale: 1 }, { keyframes: [{ scale: 0.55, duration: 0.3, ease: "sine.inOut" }, { scale: 1, duration: 0.3, ease: "sine.inOut" }], immediateRender: false }, 2.25);
 
       // «70»: the book glides left, «70 páginas» pops (and counts up); «en español»; «para imprimir» (the sheets spread)
-      tl.fromTo(q("bkm"), { x: 0 }, { x: -214, duration: 0.44, ease: "power3.inOut" }, 0.746 - 0.17);
-      tl.fromTo(q("p0"), { opacity: 0, scale: 0.5, x: -30 }, { opacity: 1, scale: 1, x: 0, duration: 0.34, ease: "back.out(1.8)" }, 0.746 - 0.08);
+      tl.fromTo(q("bkm"), { x: 0 }, { x: -214, duration: 0.44, ease: "power3.inOut" }, 0.897 - 0.17);
+      tl.fromTo(q("p0"), { opacity: 0, scale: 0.5, x: -30 }, { opacity: 1, scale: 1, x: 0, duration: 0.34, ease: "back.out(1.8)" }, 0.897 - 0.08);
       (() => { const el = q("num"), o = { n: 0 };
         tl.fromTo(o, { n: 0 }, { n: 70, duration: 0.45, ease: "power2.out", immediateRender: false,
-          onUpdate: () => { el.textContent = String(Math.round(o.n)); } }, 0.746 - 0.06); })();
+          onUpdate: () => { el.textContent = String(Math.round(o.n)); } }, 0.897 - 0.06); })();
       tl.fromTo(q("p1"), { opacity: 0, scale: 0.5, x: -30 }, { opacity: 1, scale: 1, x: 0, duration: 0.34, ease: "back.out(1.8)" }, 1.765 - 0.05);
       tl.fromTo(q("p2"), { opacity: 0, scale: 0.5, x: -30 }, { opacity: 1, scale: 1, x: 0, duration: 0.34, ease: "back.out(1.8)" }, 2.576 - 0.1);
       tl.fromTo(q("s2"), { x: 0, y: 0 }, { x: 5, y: 4, duration: 0.34, ease: "back.out(2)" }, 2.576 - 0.02);
@@ -258,13 +258,13 @@
       tl.fromTo(q("hl"), { y: 96, scaleY: 1.0 }, { y: 192, scaleY: 1.0, duration: 0.26, ease: "power3.inOut", immediateRender: false }, 4.455);
       tl.fromTo(q("r2"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 4.515);
       tl.fromTo(q("t2"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 4.515);
-      tl.fromTo(q("c2"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 5.376);
-      tl.fromTo(q("progf"), { scaleX: 0.5 }, { scaleX: 0.75, duration: 0.3, ease: "power3.out", immediateRender: false }, 5.376);
-      tl.fromTo(q("pra"), { opacity: 0, y: 22, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, 5.236 - 0.06);
+      tl.fromTo(q("c2"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 5.556);
+      tl.fromTo(q("progf"), { scaleX: 0.5 }, { scaleX: 0.75, duration: 0.3, ease: "power3.out", immediateRender: false }, 5.556);
+      tl.fromTo(q("pra"), { opacity: 0, y: 22, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(2)" }, 5.416 - 0.06);
       // row 4 · «pronunciación»
-      tl.fromTo(q("hl"), { y: 192, scaleY: 1.0 }, { y: 288, scaleY: 2.2143, duration: 0.26, ease: "power3.inOut", immediateRender: false }, 5.749);
-      tl.fromTo(q("r3"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 5.809);
-      tl.fromTo(q("t3"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 5.809);
+      tl.fromTo(q("hl"), { y: 192, scaleY: 1.0 }, { y: 288, scaleY: 2.2143, duration: 0.26, ease: "power3.inOut", immediateRender: false }, 5.966);
+      tl.fromTo(q("r3"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 6.026);
+      tl.fromTo(q("t3"), { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.34, ease: "back.out(2.2)" }, 6.026);
       tl.fromTo(q("c3"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.28, ease: "back.out(2.4)" }, 6.417);
       tl.fromTo(q("progf"), { scaleX: 0.75 }, { scaleX: 1.0, duration: 0.3, ease: "power3.out", immediateRender: false }, 6.417);
       // «sonidos»: the hard Dutch sounds pop under «Pronunciación»
@@ -273,7 +273,7 @@
       tl.fromTo(q("n2"), { opacity: 0, scale: 0.4, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, 6.979);
       tl.fromTo(q("n3"), { opacity: 0, scale: 0.4, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(2.2)" }, 7.069);
       // «te cambian en inglés»: the English bubble pops and is struck out in red
-      tl.fromTo(q("bub"), { opacity: 0, scale: 0.6, y: 16 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "back.out(1.9)" }, 8.123 - 0.05);
+      tl.fromTo(q("bub"), { opacity: 0, scale: 0.6, y: 16 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "back.out(1.9)" }, 8.142 - 0.05);
       tl.fromTo(q("bubr"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out" }, 8.708 - 0.04);
       tl.fromTo(q("st0"), { scaleX: 0 }, { scaleX: 1, duration: 0.16, ease: "power2.out" }, 8.708 - 0.04);
       tl.fromTo(q("st1"), { scaleX: 0 }, { scaleX: 1, duration: 0.16, ease: "power2.out" }, 8.708 + 0.06);

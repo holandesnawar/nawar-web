@@ -1,4 +1,4 @@
-# Storyboard · UGC Black Friday v2 (45 s)
+# Storyboard · UGC Black Friday v3 (45 s)
 
 | Tiempo | Plano | Qué se oye | Qué se ve |
 |---|---|---|---|
@@ -11,7 +11,7 @@
 | 18,8–21,3 | ins-03 | «…porque casi todo lo que encuentras está en inglés.» | Búsqueda «aprender neerlandés», cuatro resultados en inglés con «EN» y la etiqueta «CASI TODO EN INGLÉS» (ella dice «casi todo»). |
 | 21,3–22,5 | Ella | «Por eso hemos creado» | — |
 | 22,5–32,8 | ins-04 | «…este libro: 70 páginas en español, para imprimir, con vocabulario, gramática, ejercicios prácticos, cómo pronunciar los sonidos…» | El cuaderno gira y entra. Píldoras amarillas «70 páginas», «En español» y «Para imprimir». Después, la lista «Qué incluye»: Vocabulario, Gramática, Ejercicios prácticos y Pronunciación (g · ui · ij · eu, «Sorry, do you speak English?» tachado). |
-| 32,8–38,5 | Ella | «…(un) entero por un euro, solo hasta el 30 de noviembre. Esta es una de nuestras ofertas del Black Friday.» | Estrella amarilla «SOLO 1 €» arriba a la derecha (sin taparle la cara), pastilla «Hasta el 30 de noviembre» y cinta «BLACK FRIDAY». |
+| 32,8–38,5 | Ella | «Entero por un euro, solo hasta el 30 de noviembre. Esta es una de nuestras ofertas del Black Friday.» | Estrella amarilla «SOLO 1 €» arriba a la derecha (sin taparle la cara), pastilla «Hasta el 30 de noviembre» y cinta «BLACK FRIDAY». |
 | 38,5–45,0 | Ella | «Consigue el tuyo en el enlace abajo, y al conseguirlo entras directamente en nuestra lista prioritaria del Black Friday.» | Botón amarillo «CONSÍGUELO POR 1 €» y flecha hacia abajo en «abajo». Después, «Lista prioritaria Black Friday». El anuncio acaba cuando ella termina de hablar. |
 
 Subtítulos blancos palabra a palabra, con la puntuación del guion, cortados por frases (nunca en mitad de «70 páginas» o «30 de noviembre»), con «Black Friday», «euro», «30 de noviembre», «70 páginas» y «lista prioritaria» en amarillo.

@@ -87,7 +87,7 @@
     #f-tw { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
 
   </style>
-  <div id="root" data-composition-id="offer" data-width="1080" data-height="1920" data-duration="5.892">
+  <div id="root" data-composition-id="offer" data-width="1080" data-height="1920" data-duration="5.835">
     <div id="f-burst"><svg viewBox="0 0 330 330"><polygon points="165.0,0.0 189.3,27.1 221.4,10.0 235.0,43.8 271.1,38.6 272.2,75.0 307.9,82.5 296.6,117.1 327.5,136.3 305.0,165.0 327.5,193.7 296.6,212.9 307.9,247.5 272.2,255.0 271.1,291.4 235.0,286.2 221.4,320.0 189.3,302.9 165.0,330.0 140.7,302.9 108.6,320.0 95.0,286.2 58.9,291.4 57.8,255.0 22.1,247.5 33.4,212.9 2.5,193.7 25.0,165.0 2.5,136.3 33.4,117.1 22.1,82.5 57.8,75.0 58.9,38.6 95.0,43.8 108.6,10.0 140.7,27.1" fill="#FFD60A"/></svg><div id="f-price"><div id="f-solo">SOLO</div><div id="f-eur">1 €</div></div></div>
     <div id="f-drow" class="f-row"><div id="f-date"><svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="33" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><path d="M6 19 H42 M16 5 V13 M32 5 V13" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span>Hasta el <b>30 de noviembre</b></span></div></div>
     <div id="f-tw"><div id="f-t" class="f-tape" style="left:-80px; top:150px; width:1240px; transform: rotate(-5deg);"><div id="f-t-run" class="f-tape-run"><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i><span>BLACK FRIDAY</span><i></i></div></div></div>
@@ -97,15 +97,15 @@
       const tl = gsap.timeline({ paused: true });
       const q = (id) => document.getElementById("f-" + id);
 
-      tl.fromTo(q("burst"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 9, duration: 0.42, ease: "back.out(2.2)" }, 1.076 - 0.08);
+      tl.fromTo(q("burst"), { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 9, duration: 0.42, ease: "back.out(2.2)" }, 1.161 - 0.08);
       tl.fromTo(q("burst"), { rotation: 9 }, { keyframes: [{ rotation: 5, duration: 0.6, ease: "sine.inOut" }, { rotation: 11, duration: 0.6, ease: "sine.inOut" },
         { rotation: 6, duration: 0.6, ease: "sine.inOut" }, { rotation: 10, duration: 0.6, ease: "sine.inOut" }, { rotation: 7, duration: 0.6, ease: "sine.inOut" },
         { rotation: 9, duration: 0.6, ease: "sine.inOut" }, { rotation: 6, duration: 0.6, ease: "sine.inOut" }, { rotation: 9, duration: 0.6, ease: "sine.inOut" }],
-        immediateRender: false }, 1.076 + 0.36);
-      tl.fromTo(q("date"), { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.8)" }, 2.038 - 0.08);
-      tl.fromTo(q("tw"), { opacity: 0, x: -1200 }, { opacity: 1, x: 0, duration: 0.26, ease: "power4.out" }, 4.854 - 0.05);
-      tl.fromTo(q("t-run"), { x: 0 }, { x: -380, duration: 5.892 - 4.854 + 0.05, ease: "none" }, 4.854 - 0.05);
-      tl.to([q("burst"), q("date"), q("tw")], { opacity: 0, scale: 0.9, duration: 0.16, ease: "power2.in" }, 5.892 - 0.16);
+        immediateRender: false }, 1.161 + 0.36);
+      tl.fromTo(q("date"), { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.8)" }, 1.981 - 0.08);
+      tl.fromTo(q("tw"), { opacity: 0, x: -1200 }, { opacity: 1, x: 0, duration: 0.26, ease: "power4.out" }, 4.797 - 0.05);
+      tl.fromTo(q("t-run"), { x: 0 }, { x: -380, duration: 5.835 - 4.797 + 0.05, ease: "none" }, 4.797 - 0.05);
+      tl.to([q("burst"), q("date"), q("tw")], { opacity: 0, scale: 0.9, duration: 0.16, ease: "power2.in" }, 5.835 - 0.16);
 
       window.__timelines["offer"] = tl;
     })();

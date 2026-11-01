@@ -31,4 +31,5 @@ es la primera completa.
   blancos), vestido de Black Friday: fondo negro con brillo azul Nawar, amarillo para la oferta, cinta «BLACK FRIDAY».
 - Las pegatinas de la oferta van sobre ella (1 €, hasta el 30 de noviembre, Black Friday) y el cierre es un botón
   amarillo «CONSÍGUELO POR 1 €» con «Lista prioritaria Black Friday».
+- La frase de la oferta es «Entero por un euro…»: el corte de la creadora cae justo antes de «entero» (no se dice «un»).
 - La portada del cuaderno es provisional (título neutro «Neerlandés para el día a día · Cuaderno práctico»): falta la real.
