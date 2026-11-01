@@ -74,7 +74,7 @@ def outro():
       background: linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0) 100%); }
     #o-label { position: absolute; left: 0; top: 0; width: 800px; height: 128px; display: flex; align-items: center; justify-content: center;
       font-weight: 900; font-size: 60px; line-height: 1; letter-spacing: -0.01em; color: #FFFFFF; white-space: nowrap; padding-top: 4px; box-sizing: border-box;
-      text-shadow: 0 0 18px rgba(255,255,255,0.45), 0 3px 0 rgba(0,30,120,0.35); }
+      }
     #o-arrow { position: absolute; left: 488px; top: 1296px; width: 104px; height: 104px; color: #FFFFFF; }
     #o-arrow svg { display: block; width: 104px; height: 104px; }
 """
@@ -267,10 +267,13 @@ def backdrops():
         sh = next(s for s in ED["shots"] if s["take"] == m["take"] and s["media_start"] - 0.02 <= m0 <= s["media_end"]
                   and s["start"] <= t_in < s["start"] + s["duration"] + 1e-3) if name != "eur" else sh7
         e0 = sh["start"] + (m0 - sh["media_start"]) / RATE            # edit time of the cutout's first frame
-        ms = round((t_in - e0) * RATE, 3)
+        flash = t_in
+        t_in = round(max(t_in, e0 + 0.001), 3)                       # eur: from the first frame after the take's own cut
+        ms = (round((t_in - e0) * RATE * 30) + 0.01) / 30             # on a whole source frame: the renderer floors it
+        ms = round(ms, 4)
         assert ms >= 0 and ms + (t_out - t_in) * RATE <= (m["f1"] - m["f0"] + 1) / 30 + 1e-3, (name, ms)
         out.append(dict(name=name, kind=kind, take=m["take"], t_in=t_in, t_out=round(t_out, 3), src=m["src"], ms=ms,
-                        out_flash=name != "bf1"))                     # bf1 leaves on a real cut
+                        flash=round(flash, 3), out_flash=name != "bf1"))   # bf1 leaves on a real cut; eur flashes on the shot cut
     return out
 
 
@@ -324,7 +327,7 @@ def bx_js(b, n):
         js += [f'      tl.fromTo("#bx-{w}-rows", {{ scale: 1.25 }}, {{ scale: 1, duration: 0.38, ease: "expo.out", immediateRender: false }}, {t0});',
                f'      tl.fromTo("#flash", {{ opacity: 0.75 }}, {{ opacity: 0, duration: 0.22, ease: "power2.out", immediateRender: false }}, {t0});']
     elif w == "eur":
-        js += [f'      tl.fromTo("#flash", {{ opacity: 0.4 }}, {{ opacity: 0, duration: 0.16, ease: "power2.out", immediateRender: false }}, {t0});']
+        js += [f'      tl.fromTo("#flash", {{ opacity: 0.6 }}, {{ opacity: 0, duration: 0.2, ease: "power2.out", immediateRender: false }}, {b["flash"]});']
     else:
         js += [f'      tl.fromTo("#bx-{w}-rows", {{ scale: 0.82 }}, {{ scale: 1, duration: 0.3, ease: "back.out(2)", immediateRender: false }}, {t0});',
                f'      tl.fromTo("#bx-{w}-rows", {{ x: 0 }}, {{ keyframes: [{{ x: -18, duration: 0.04 }}, {{ x: 14, duration: 0.05 }}, {{ x: -9, duration: 0.05 }}, '

@@ -73,16 +73,17 @@
     .i4-acc { color: #4da3ff; }
     .i4-w { display: inline-block; }
 
-    #i4-stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 298.2px 541.2px; }
-    #i4-vw { position: absolute; left: -292px; top: 112.2px; width: 1664px; height: 936px;
+    #i4-stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 316.8px 575px; }
+    #i4-vw { position: absolute; left: -228px; top: 179px; width: 1536px; height: 864px;
       -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 11%); mask-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 11%); }
-    #i4-vw video { position: absolute; left: 0; top: 0; width: 1664px; height: 936px; display: block; }
+    #i4-vw video { position: absolute; left: 0; top: 0; width: 1536px; height: 864px; display: block; }
     #i4-lrow { top: 168px; }
-    #i4-prow { top: 968px; gap: 16px; }
+    #i4-lab { background: #1D0084; border: 2px solid rgba(255,255,255,0.85); }   /* opaque: the turning pages pass behind it */
+    #i4-prow { top: 1000px; gap: 16px; }
     .i4-wpill { gap: 12px; height: 76px; padding: 0 30px 0 18px; font-size: 33px; }
     .i4-wpill svg { display: block; width: 40px; height: 40px; color: #1D0084; }
     .i4-wpill .i4-flag svg { width: 40px; height: 27px; }
-    #i4-crow { top: 1064px; gap: 10px; width: 1040px; left: 20px; }
+    #i4-crow { top: 1096px; gap: 10px; width: 1040px; left: 20px; }
     .i4-ck { display: flex; align-items: center; gap: 8px; height: 62px; padding: 0 22px 0 10px; border-radius: 999px;
       background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.30); color: #FFFFFF; white-space: nowrap;
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 27px; line-height: 1; }
@@ -105,7 +106,7 @@
 
       // a slow drift while the pages turn, then the push into «¡Hora de practicar!» on «ejercicios prácticos»
       tl.fromTo(q("stage"), { scale: 1.0 }, { scale: 1.03, duration: 4.453 - 0.1, ease: "none" }, 0);
-      tl.fromTo(q("stage"), { scale: 1.03 }, { scale: 1.1, duration: 6.047 - 4.453 + 0.1, ease: "power2.inOut", immediateRender: false }, 4.453 - 0.1);
+      tl.fromTo(q("stage"), { scale: 1.03 }, { scale: 1.08, duration: 6.047 - 4.453 + 0.1, ease: "power2.inOut", immediateRender: false }, 4.453 - 0.1);
       tl.fromTo(q("lab"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 1.0);
       tl.fromTo(q("p0"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 0.897 - 0.06);
       tl.fromTo(q("p1"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 1.859 - 0.06);
@@ -113,7 +114,7 @@
       tl.fromTo(q("c0"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 3.227 - 0.05);
       tl.fromTo(q("c1"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 3.962 - 0.05);
       tl.fromTo(q("c2"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 4.453 - 0.05);
-      tl.fromTo(q("c3"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 5.274 - -0.3);
+      tl.fromTo(q("c3"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 5.274 - 0.05);
 
       window.__timelines["ins-04"] = tl;
     })();

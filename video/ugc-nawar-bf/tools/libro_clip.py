@@ -51,13 +51,13 @@ def key(src, dst, W=1920, H=1080):
                            stdin=subprocess.PIPE)
     for f in fr:
         rgb = f.astype(np.float32); m = rgb.max(-1)
-        soft = np.clip((m - 8) / 28, 0, 1)                                   # distance from black (yuv black decodes to 0–3)
+        soft = np.clip((m - 30) / 30, 0, 1)                                  # distance from black (the faint contact shadow, m 25–32, goes)
         book = ndi.binary_fill_holes(ndi.binary_closing(m > 45, iterations=2))          # the book itself (its darkest edge is navy)
         lab, n = ndi.label(book)
         if n > 1:                                                            # specks of the faint reflection under it go
             sz = ndi.sum(np.ones(book.shape), lab, range(1, n + 1)); book = np.isin(lab, 1 + np.flatnonzero(sz >= 0.05 * sz.max()))
         solid = ndi.binary_erosion(book, iterations=2)
-        a = np.maximum(soft, solid.astype(np.float32)) * ndi.binary_dilation(book, iterations=3)   # nothing outside the book
+        a = np.maximum(soft, solid.astype(np.float32)) * ndi.binary_dilation(book, iterations=1)   # nothing outside the book
         a = ndi.gaussian_filter(a, 0.7)
         un = np.where(a[..., None] > 0.04, rgb / np.maximum(soft, 0.04)[..., None], 0)   # un-premultiply the black-blended edge
         rgb = np.where(solid[..., None], rgb, np.clip(un, 0, 255))

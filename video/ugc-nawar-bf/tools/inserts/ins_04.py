@@ -5,16 +5,16 @@ floating on Nawar blue (v6: no black, no frame, no shadow), with v4's labels bac
     the cover and each turn) while she lists what's inside; «¡Hora de practicar!» lies open as she says «ejercicios
     prácticos» and the camera pushes in on it until the cut back to her (on the second take, «cómo pronunciar…»);
   · under the book, white pills land on their words — «70 páginas», «En español» (ES flag), «Para imprimir» (printer) —
-    then a ticked row: Vocabulario, Gramática, Ejercicios, and Pronunciación as she finishes the list (she says «cómo
-    pronunciar» right after the cut); the «Ebook · Holandés sin miedo» label on top once the book is open.
+    then a ticked row: Vocabulario, Gramática, Ejercicios, and Pronunciación on «prácticos» as she finishes the list (she
+    says «cómo pronunciar» right after the cut); the «Ebook · Holandés sin miedo» label on top once the book is open.
 """
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from common import *  # noqa: F401,F403
 
-K = 1.3                        # display scale of the 1280×720 animation (the open spread, 766 px → ~1000 px)
+K = 1.2                        # display scale of the 1280×720 animation (the open spread, 766 px → ~920 px)
 BOOK_CX, BOOK_CY = 640, 367.5  # centre of the open book in the animation (1280×720 px)
-CY = 590                       # where the book's centre sits in the frame
+CY = 620                       # where the book's centre sits in the frame
 VW, VH = round(1280 * K, 1), round(720 * K, 1)
 VL, VT = round(540 - BOOK_CX * K, 1), round(CY - BOOK_CY * K, 1)
 PUSH = (454, 330)              # «¡Hora de practicar!» (left page), animation px
@@ -32,11 +32,12 @@ def build():
       -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 11%); mask-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 11%); }
     #i4-vw video { position: absolute; left: 0; top: 0; width: «VW»px; height: «VH»px; display: block; }
     #i4-lrow { top: 168px; }
-    #i4-prow { top: 968px; gap: 16px; }
+    #i4-lab { background: «INDIGO»; border: 2px solid rgba(255,255,255,0.85); }   /* opaque: the turning pages pass behind it */
+    #i4-prow { top: 1000px; gap: 16px; }
     .i4-wpill { gap: 12px; height: 76px; padding: 0 30px 0 18px; font-size: 33px; }
     .i4-wpill svg { display: block; width: 40px; height: 40px; color: «INDIGO»; }
     .i4-wpill .i4-flag svg { width: 40px; height: 27px; }
-    #i4-crow { top: 1064px; gap: 10px; width: 1040px; left: 20px; }
+    #i4-crow { top: 1096px; gap: 10px; width: 1040px; left: 20px; }
     .i4-ck { display: flex; align-items: center; gap: 8px; height: 62px; padding: 0 22px 0 10px; border-radius: 999px;
       background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.30); color: #FFFFFF; white-space: nowrap;
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 27px; line-height: 1; }
@@ -54,15 +55,15 @@ def build():
     js = """
       // a slow drift while the pages turn, then the push into «¡Hora de practicar!» on «ejercicios prácticos»
       tl.fromTo(q("stage"), { scale: 1.0 }, { scale: 1.03, duration: «EJE» - 0.1, ease: "none" }, 0);
-      tl.fromTo(q("stage"), { scale: 1.03 }, { scale: 1.1, duration: «D» - «EJE» + 0.1, ease: "power2.inOut", immediateRender: false }, «EJE» - 0.1);
+      tl.fromTo(q("stage"), { scale: 1.03 }, { scale: 1.08, duration: «D» - «EJE» + 0.1, ease: "power2.inOut", immediateRender: false }, «EJE» - 0.1);
       tl.fromTo(q("lab"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 1.0);
 """
     for (pid, _, _), key in zip(pills, ("SET", "ESP", "IMP")):
         js += f'      tl.fromTo(q("{pid}"), {{ opacity: 0, y: 24, scale: 0.9 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }}, «{key}» - 0.06);\n'
-    for k, (key, lead) in enumerate((("VOC", 0.05), ("GRA", 0.05), ("EJE", 0.05), ("PRA", -0.3))):
+    for k, (key, lead) in enumerate((("VOC", 0.05), ("GRA", 0.05), ("EJE", 0.05), ("PRA", 0.05))):
         js += f'      tl.fromTo(q("c{k}"), {{ opacity: 0, y: 18, scale: 0.9 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }}, «{key}» - {lead});\n'
     sp = 4.40 / (c["EJE"] - 0.10)                     # the animation's speed in the played part (tools/libro_clip.py)
     sfx = [(round(t / sp, 3), "page", v) for t, v in PAGES]
     sfx += [(c["SET"] - 0.06, "pop", 0.16), (c["ESP"] - 0.06, "pop", 0.16), (c["IMP"] - 0.06, "pop", 0.2)]
-    sfx += [(c[k] - 0.05, "click-soft", 0.18) for k in ("VOC", "GRA", "EJE")] + [(c["PRA"] + 0.3, "click-soft", 0.18)]
+    sfx += [(c[k] - 0.05, "click-soft", 0.18) for k in ("VOC", "GRA", "EJE", "PRA")]
     return comp(iid, d, P, css, body, js, c), sfx
