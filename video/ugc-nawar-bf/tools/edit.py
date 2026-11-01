@@ -21,8 +21,8 @@ SEGMENTS = [
     ("g", 17.60, 23.92),   # hook: «Si vives en Países Bajos y para cualquier trámite necesitas que alguien te acompañe, este Black
                            #        Friday te interesa.»
     ("p", 0.95, 5.62),     # «Antes de pedir cita, miras quién puede ir contigo, y si ese día no puede nadie, la cambias.»
-    ("p", 12.905, 44.68),  # «Algo que en tu país lo hacías solo y ni lo pensabas.» → «Consigue el tuyo en el enlace abajo.» (v5: the ad
-                           #  ends there, before the take's own cut at 44.7 — no «lista prioritaria»)
+    ("p", 12.905, 44.60),  # «Algo que en tu país lo hacías solo y ni lo pensabas.» → «Consigue el tuyo en el enlace abajo.» (v5: the ad
+                           #  ends there, eyes still open — she blinks from 44.61 — before the take's own cut at 44.7; no «lista prioritaria»)
 ]
 FACE = {"g": (570, 660), "p": (560, 720)}   # face centre in each take (zoom origin)
 # cuts already inside the takes (the creator's own edit), source second of the first new frame (frame-difference scan
@@ -36,10 +36,12 @@ JUMPS = {"g": [16.633], "p": [3.567, 7.567, 12.9, 15.6, 20.0, 24.5, 29.1, 32.2, 
 # silence becomes a cut of the edit there too (and inside a girl section, a jump cut with a new framing). PAUSE adds a
 # breath at one of those cuts — «…ejercicios prácticos.» | «cómo pronunciar…» is two takes glued with no air between
 # them (the voice jumps); the ebook covers the picture during the breath and the girl comes back on the second take.
-TIGHT, KEEP_TAIL, KEEP_HEAD, LOUD_DB = 0.18, 0.05, 0.04, -34.0
+TIGHT, KEEP_TAIL, KEEP_HEAD, LOUD_DB = 0.18, 0.05, 0.04, -30.0
 PAUSE = {("p", 32.2): 0.16}
-SPEECH_END = 44.62     # «…en el enlace abajo.» ends here in take p
-TAIL = 0.45            # her last frame held under the button (gen.py), the music fades on it
+NO_TIGHT = {"g"}       # the hook stays one continuous shot (its zoom-in, push and Black Friday snap)
+CUT_POST_AT = {("p", 36.7): -0.03}   # «Entero» starts 20 ms before the take's own cut: open on it (the flash hides that frame)
+SPEECH_END = 44.60     # «…en el enlace abajo.» ends here in take p
+TAIL = 0.30            # her last frame held under the button (gen.py), the music fades on it
 LEAD = 0.06            # an insert cuts in this long before its first word (source seconds)
 # (insert id, ground, first words, first words of what comes after) — full-screen graphics while she explains
 INSERTS = [
@@ -98,6 +100,8 @@ def tighten(tk, a, b):
     """(take, from, to) → pieces (take, from, to, pause before) with the long pauses cut out (see TIGHT); also returns the
     take's own cuts that became cuts of the edit."""
     import numpy as np
+    if tk in NO_TIGHT:
+        return [(tk, a, b, 0.0)], set()
     db = envelope(tk)
     W = [w for w in json.load(open(os.path.join(ROOT, "tools", "align", f"whisper_{tk}.json"))) if a - 0.05 <= w[0] < b]
     cuts, used = [], set()
@@ -111,7 +115,8 @@ def tighten(tk, a, b):
             continue
         e, s = tail + KEEP_TAIL, onset - KEEP_HEAD
         if js:
-            e, s = min(e, js[0] - CUT_PRE_AT.get((tk, js[0]), 0.02)), max(s, js[0] + CUT_POST); used.add((tk, js[0]))
+            e, s = min(e, js[0] - CUT_PRE_AT.get((tk, js[0]), 0.02)), max(s, js[0] + CUT_POST_AT.get((tk, js[0]), CUT_POST))
+            used.add((tk, js[0]))
         cuts.append((round(e, 3), round(s, 3), PAUSE.get((tk, js[0]), 0.0) if js else 0.0))
     pieces, x, pause = [], a, 0.0
     for e, s, p in cuts:

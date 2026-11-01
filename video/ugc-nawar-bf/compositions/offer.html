@@ -72,22 +72,22 @@
     .f-acc { color: #4da3ff; }
     .f-w { display: inline-block; }
 
-    #f-drow { top: 1130px; }
-    #f-date { gap: 14px; height: 84px; padding: 0 36px 0 22px; font-size: 38px; }
-    #f-date svg { display: block; width: 44px; height: 44px; color: #E02D3C; }
-    #f-date b { color: #E02D3C; font-weight: 800; }
+    #f-drow { top: 1120px; }
+    #f-date { gap: 14px; height: 92px; padding: 0 40px 0 26px; font-size: 40px; }
+    #f-date svg { display: block; width: 46px; height: 46px; color: #08070F; }
+    #f-date b { font-weight: 900; }
 
   </style>
-  <div id="root" data-composition-id="offer" data-width="1080" data-height="1920" data-duration="5.7">
-    <div id="f-drow" class="f-row"><div id="f-date" class="f-wpill"><svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="33" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><path d="M6 19 H42 M16 5 V13 M32 5 V13" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span>Hasta el <b>30 de noviembre</b></span></div></div>
+  <div id="root" data-composition-id="offer" data-width="1080" data-height="1920" data-duration="5.66">
+    <div id="f-drow" class="f-row"><div id="f-date" class="f-ypill"><svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="33" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><path d="M6 19 H42 M16 5 V13 M32 5 V13" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span>Hasta el <b>30 de noviembre</b></span></div></div>
   </div>
   <script>
     (function () {
       const tl = gsap.timeline({ paused: true });
       const q = (id) => document.getElementById("f-" + id);
 
-      tl.fromTo(q("date"), { opacity: 0, y: 26, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 1.977 - 0.08);
-      tl.to(q("date"), { opacity: 0, y: 16, duration: 0.18, ease: "power2.in" }, 4.663 - 0.24);
+      tl.fromTo(q("date"), { opacity: 0, y: 26, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 1.982 - 0.08);
+      tl.to(q("date"), { opacity: 0, y: 16, duration: 0.18, ease: "power2.in" }, 4.802 - 0.24);
 
       window.__timelines["offer"] = tl;
     })();

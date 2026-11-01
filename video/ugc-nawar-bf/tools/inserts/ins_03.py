@@ -65,6 +65,6 @@ def build():
     js += """      tl.fromTo(q("h"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «ING» - 0.06);
       tl.fromTo(q("chip"), { scale: 0.7 }, { scale: 1, duration: 0.3, ease: "back.out(1.8)" }, «ING» + 0.02);
 """
-    sfx = [(c["T0"], "typing", 0.12, round(c["T1"] - c["T0"], 3)), (c["T1"], "click-soft", 0.2)] + \
+    sfx = [(c["T0"], "typing", 0.25, round(c["T1"] - c["T0"], 3)), (c["T1"], "click-soft", 0.2)] + \
           [(t, "pop", 0.12) for t in starts] + [(c["ING"] - 0.06, "click-soft", 0.22)]
     return comp(iid, d, P, css, body, js, c), sfx

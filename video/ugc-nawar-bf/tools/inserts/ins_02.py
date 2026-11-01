@@ -21,7 +21,7 @@ def build():
     .i2-r .i2-col { align-items: flex-end; }
     .i2-lab { font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em;
       text-transform: uppercase; color: rgba(255,255,255,0.78); white-space: nowrap; padding: 0 8px; }
-    .i2-ava { position: relative; width: 88px; height: 88px; border-radius: 50%; flex: 0 0 88px; overflow: visible;
+    .i2-ava { display: none; position: relative; width: 88px; height: 88px; border-radius: 50%; flex: 0 0 88px; overflow: visible;
       box-shadow: 0 0 0 5px #FFFFFF, 0 14px 30px rgba(4,0,40,0.30); }
     .i2-face { position: absolute; left: 0; top: 0; width: 88px; height: 88px; border-radius: 50%; overflow: hidden; }
     .i2-face svg { display: block; width: 88px; height: 88px; }
@@ -44,7 +44,7 @@ def build():
     body = "\n".join([ground(P, "blue"), f"""    <div id="i2-top" class="i2-row"><div id="i2-pill" class="i2-pill"><span class="i2-flag">{FLAG_NL}</span><span>En la gemeente</span></div></div>
     <div id="i2-rec" class="i2-blk i2-l">
       <div id="i2-ra" class="i2-ava"><div class="i2-face">{person()}</div><span class="i2-flag">{FLAG_NL}</span></div>
-      <div class="i2-col"><div class="i2-lab">Recepción</div><div id="i2-rb" class="i2-bub i2-bub-w i2-bl" style="position: relative;">Wat is uw geboortedatum?</div></div>
+      <div class="i2-col"><div class="i2-lab" style="display: flex; align-items: center; gap: 12px;"><span class="i2-flag" style="width: 34px; height: 23px; flex: 0 0 34px;">{FLAG_NL}</span>Recepción</div><div id="i2-rb" class="i2-bub i2-bub-w i2-bl" style="position: relative;">Wat is uw geboortedatum?</div></div>
     </div>
     <div id="i2-cmp" class="i2-blk i2-r">
       <div id="i2-ca" class="i2-ava"><div class="i2-face">{person()}</div></div>

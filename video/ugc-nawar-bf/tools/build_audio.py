@@ -19,7 +19,7 @@ EQ = "highpass=f=110,lowshelf=f=150:g=-6,lowshelf=f=250:g=-6,equalizer=f=2500:t=
                                                      # which phone speakers drop: cut it so its keys and hats carry instead
 LEVEL_LUFS = -34.0     # from «este Black Friday» on (≈18 LU under the voice)
 INTRO_LUFS = -40.0     # the soft intro under the hook
-FADE = 1.2             # fade out under her last words (the ad ends when she stops talking)
+FADE = 0.5             # fade out after «abajo», across her held last frame
 SR = 48000
 
 

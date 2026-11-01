@@ -30,8 +30,10 @@ MANUAL = {"p": {("Antes", 0.74): 1.00, ("algo", 5.48): 5.70, ("algo", 12.74): 12
                ("todo", 22.26): 22.48, ("está", 23.34): 23.52, ("creado", 25.08): 25.28, ("70", 26.58): 26.74,
                ("páginas", 27.02): 27.24, ("prácticos", 31.34): 31.53, ("cómo", 32.00): 32.23, ("por", 33.60): 33.95,
                ("que", 34.22): 34.36, ("cuando", 35.28): 35.54, ("por", 37.08): 37.28, ("un", 37.40): 37.58,
-               ("euro", 37.72): 37.87, ("solo", 38.10): 38.23, ("entras", 45.66): 45.88, ("prioritaria", 47.54): 47.71},
-          "g": {("te", 23.06): 23.24}}
+               ("euro", 37.72): 37.87, ("solo", 38.10): 38.23, ("entras", 45.66): 45.88, ("prioritaria", 47.54): 47.71,
+               # QA of v5 (energy envelope + short transcriptions): the Black Friday hits land on these words
+               ("y", 3.48): 3.58, ("del", 41.52): 41.69, ("Black", 41.78): 41.97, ("Friday,", 42.10): 42.33},
+          "g": {("te", 23.06): 23.24, ("este", 22.16): 22.26, ("Black", 22.44): 22.55, ("Friday", 22.66): 22.78}}
 # words Whisper hears that she doesn't say: «un» before «entero» (the creator's own jump cut lands there; the voice
 # comes back straight on the «e» of «entero»)
 DROP = {"p": {("un", 36.64)}}

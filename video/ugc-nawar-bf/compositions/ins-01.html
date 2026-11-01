@@ -92,17 +92,17 @@
       display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 24px rgba(11,109,240,0.30); }
     #i1-ico svg { display: block; width: 72px; height: 72px; }
     #i1-me { right: 110px; top: 724px; transform-origin: 100% 100%; }
-    .i1-rep { position: absolute; left: 110px; display: flex; align-items: flex-end; gap: 18px; transform-origin: 0% 100%; }
-    .i1-ini { width: 84px; height: 84px; border-radius: 50%; flex: 0 0 84px; display: flex; align-items: center; justify-content: center;
-      color: #FFFFFF; font-weight: 800; font-size: 36px; line-height: 1; box-shadow: 0 0 0 5px #FFFFFF, 0 12px 26px rgba(18,0,129,0.16); }
+    .i1-rep { position: absolute; left: 110px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; transform-origin: 0% 100%; }
+    .i1-name { font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #5A6480; padding: 0 10px; }
     .i1-rb { position: relative; }
     .i1-x { position: absolute; right: -20px; top: -20px; width: 48px; height: 48px; }
     .i1-x svg { display: block; width: 48px; height: 48px; filter: drop-shadow(0 6px 12px rgba(18,0,129,0.20)); }
-    #i1-r0 { top: 918px; }
-    #i1-r1 { top: 1066px; }
+    #i1-r0 { top: 884px; }
+    #i1-r1 { top: 1050px; }
 
   </style>
-  <div id="root" data-composition-id="ins-01" data-width="1080" data-height="1920" data-duration="3.883">
+  <div id="root" data-composition-id="ins-01" data-width="1080" data-height="1920" data-duration="3.852">
     <div class="i1-full i1-paper"><div class="i1-paper-dots"></div><div class="i1-paper-light"></div></div>
     <div id="i1-h" class="i1-h1"><span id="i1-h0" class="i1-w">¿Quién puede</span><br/><span id="i1-chip" class="i1-chip">ir contigo?</span></div>
     <div id="i1-card" class="i1-card i1-on-paper">
@@ -113,9 +113,9 @@
       <div id="i1-ico"><svg viewBox="0 0 120 120"><g fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M34 18 V48 A23 23 0 0 0 80 48 V18"/><path d="M57 71 V84 A16 16 0 0 0 89 84 V77"/><circle cx="89" cy="64" r="12"/></g></svg></div>
     </div>
     <div id="i1-me" class="i1-bub i1-bub-b i1-br">¿Me acompañas al médico<br/>el día 14?</div>
-    <div id="i1-r0" class="i1-rep"><div class="i1-ini" style="background:#7C5CFF">A</div>
+    <div id="i1-r0" class="i1-rep"><div class="i1-name">Ana</div>
       <div class="i1-rb i1-bub i1-bub-w i1-bl" style="position: relative;">Ese día trabajo, lo siento<div id="i1-x0" class="i1-x"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#E02D3C"/><path d="M21 21 L43 43 M43 21 L21 43" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/></svg></div></div></div>
-    <div id="i1-r1" class="i1-rep"><div class="i1-ini" style="background:#15A3A3">C</div>
+    <div id="i1-r1" class="i1-rep"><div class="i1-name">Carlos</div>
       <div class="i1-rb i1-bub i1-bub-w i1-bl" style="position: relative;">Uf, no puedo…<div id="i1-x1" class="i1-x"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#E02D3C"/><path d="M21 21 L43 43 M43 21 L21 43" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/></svg></div></div></div>
   </div>
   <script>
@@ -129,14 +129,14 @@
       tl.set(q("n1"), { opacity: 0 }, 0);
       tl.set(q("chg"), { opacity: 0 }, 0);
       tl.fromTo(q("me"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, 0.057 + 0.42);
-      tl.fromTo(q("r0"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, 2.133 - 0.12);
-      tl.fromTo(q("r1"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, 2.454 - 0.02);
-      tl.fromTo(q("x0"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.24, ease: "back.out(2)" }, 2.133 + 0.12);
-      tl.fromTo(q("x1"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.24, ease: "back.out(2)" }, 2.454 + 0.2);
+      tl.fromTo(q("r0"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, 2.102 - 0.12);
+      tl.fromTo(q("r1"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, 2.423 - 0.02);
+      tl.fromTo(q("x0"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.24, ease: "back.out(2)" }, 2.102 + 0.12);
+      tl.fromTo(q("x1"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.24, ease: "back.out(2)" }, 2.423 + 0.2);
       // «la cambias»: the date flips 14 → 25, the red pill lands
-      tl.to(q("n0"), { opacity: 0, y: -36, duration: 0.2, ease: "power2.in" }, 3.095 - 0.06);
-      tl.fromTo(q("n1"), { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out", immediateRender: false }, 3.095 + 0.1);
-      tl.fromTo(q("chg"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.8)", immediateRender: false }, 3.095 + 0.18);
+      tl.to(q("n0"), { opacity: 0, y: -36, duration: 0.2, ease: "power2.in" }, 3.065 - 0.06);
+      tl.fromTo(q("n1"), { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out", immediateRender: false }, 3.065 + 0.1);
+      tl.fromTo(q("chg"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.8)", immediateRender: false }, 3.065 + 0.18);
 
       window.__timelines["ins-01"] = tl;
     })();

@@ -34,16 +34,16 @@ def build():
       display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 24px rgba(11,109,240,0.30); }
     #i1-ico svg { display: block; width: 72px; height: 72px; }
     #i1-me { right: 110px; top: 724px; transform-origin: 100% 100%; }
-    .i1-rep { position: absolute; left: 110px; display: flex; align-items: flex-end; gap: 18px; transform-origin: 0% 100%; }
-    .i1-ini { width: 84px; height: 84px; border-radius: 50%; flex: 0 0 84px; display: flex; align-items: center; justify-content: center;
-      color: #FFFFFF; font-weight: 800; font-size: 36px; line-height: 1; box-shadow: 0 0 0 5px #FFFFFF, 0 12px 26px rgba(18,0,129,0.16); }
+    .i1-rep { position: absolute; left: 110px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; transform-origin: 0% 100%; }
+    .i1-name { font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em;
+      text-transform: uppercase; color: «MUTED»; padding: 0 10px; }
     .i1-rb { position: relative; }
     .i1-x { position: absolute; right: -20px; top: -20px; width: 48px; height: 48px; }
     .i1-x svg { display: block; width: 48px; height: 48px; filter: drop-shadow(0 6px 12px rgba(18,0,129,0.20)); }
-    #i1-r0 { top: 918px; }
-    #i1-r1 { top: 1066px; }
+    #i1-r0 { top: 884px; }
+    #i1-r1 { top: 1050px; }
 """
-    reps = "\n".join(f"""    <div id="i1-r{k}" class="i1-rep"><div class="i1-ini" style="background:{col}">{name[0]}</div>
+    reps = "\n".join(f"""    <div id="i1-r{k}" class="i1-rep"><div class="i1-name">{name}</div>
       <div class="i1-rb i1-bub i1-bub-w i1-bl" style="position: relative;">{txt}<div id="i1-x{k}" class="i1-x">{icon('xr')}</div></div></div>"""
                      for k, (name, col, txt) in enumerate(REPLIES))
     body = "\n".join([ground(P, "paper"), f"""    <div id="i1-h" class="i1-h1"><span id="i1-h0" class="i1-w">¿Quién puede</span><br/><span id="i1-chip" class="i1-chip">ir contigo?</span></div>

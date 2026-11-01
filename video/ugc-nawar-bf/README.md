@@ -1,6 +1,6 @@
 # Anuncio UGC Black Friday · Holandés Nawar (Meta / TikTok Ads, 9:16) — proyecto HyperFrames
 
-Creativo UGC en vertical (1080×1920, 40,5 s) para el Black Friday: el ebook «Holandés sin miedo», de 70 páginas en
+Creativo UGC en vertical (1080×1920, 40 s) para el Black Friday: el ebook «Holandés sin miedo», de 70 páginas en
 español y para imprimir, por 1 € hasta el 30 de noviembre. Es el mismo sistema y el mismo diseño que el VSL y los UGC
 #1 y #2 (`../ugc-nawar`, `../ugc-nawar-2`):
 - Ella habla a cámara. Cuando explica algo, la imagen corta a un gráfico a pantalla completa (papel o azul Nawar) y
@@ -36,7 +36,7 @@ español y para imprimir, por 1 € hasta el 30 de noviembre. Es el mismo sistem
 ```bash
 bash tools/fetch_assets.sh            # tomas y música del Drive + medios de marca del VSL; genera todo
 npx hyperframes check
-npx hyperframes render . --quality high -o renders/nawar-ugc-bf-v5.mp4
+npx hyperframes render . --quality high -o renders/nawar-ugc-bf-v5-1.mp4
 ```
 
 Para cambiar cuándo entra o sale un gráfico, edita `INSERTS` en `tools/edit.py` y vuelve a ejecutar

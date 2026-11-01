@@ -39,17 +39,17 @@ def wcue_from(t0):
 
 
 def offer():
-    """«…solo hasta el 30 de noviembre.» over the girl, after the «1 €» backdrop: a white «Hasta el 30 de noviembre» pill
-    (calendar icon, the date in red) lands on «30» and leaves at the call to action."""
+    """«…solo hasta el 30 de noviembre.» over the girl, after the «1 €» backdrop: a Black Friday yellow «Hasta el 30 de
+    noviembre» pill (calendar icon) lands on «30» and leaves before «Black Friday»."""
     P = "f"; t0 = ED["offer"]; d = round(ED["outro"] - t0, 3); wcue = wcue_from(t0)
     c = dict(TRE=wcue("30"), BF=wcue("black"), END=d)
     css = """
-    #f-drow { top: 1130px; }
-    #f-date { gap: 14px; height: 84px; padding: 0 36px 0 22px; font-size: 38px; }
-    #f-date svg { display: block; width: 44px; height: 44px; color: «RED»; }
-    #f-date b { color: «RED»; font-weight: 800; }
+    #f-drow { top: 1120px; }
+    #f-date { gap: 14px; height: 92px; padding: 0 40px 0 26px; font-size: 40px; }
+    #f-date svg { display: block; width: 46px; height: 46px; color: «DARK»; }
+    #f-date b { font-weight: 900; }
 """
-    body = f"""    <div id="f-drow" class="f-row"><div id="f-date" class="f-wpill">{icon('cal')}<span>Hasta el <b>30 de noviembre</b></span></div></div>"""
+    body = f"""    <div id="f-drow" class="f-row"><div id="f-date" class="f-ypill">{icon('cal')}<span>Hasta el <b>30 de noviembre</b></span></div></div>"""
     js = """
       tl.fromTo(q("date"), { opacity: 0, y: 26, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, «TRE» - 0.08);
       tl.to(q("date"), { opacity: 0, y: 16, duration: 0.18, ease: "power2.in" }, «BF» - 0.24);
@@ -96,7 +96,7 @@ def outro():
       tl.fromTo(q("wrap"), { scale: 1 }, { keyframes: [{ scale: 1.04, duration: 0.25, ease: "power1.inOut" }, { scale: 1, duration: 0.25, ease: "power1.inOut" }],
         immediateRender: false }, «END» - 0.2);
 """
-    sfx = [(c["CON"] - 0.06, "pop", 0.2), (c["ABA"] - 0.1, "click-soft", 0.22)]
+    sfx = [(c["CON"] - 0.06, "pop", 0.2), (c["ABA"] - 0.1, "click-soft", 0.4)]
     return comp("outro", d, P, css, body, js, c), t0, d, sfx
 
 
@@ -220,25 +220,31 @@ def zooms():
     # intro (v5): opens wide and snaps in on her face (the stop-scroll), drifts in, and on «Black Friday» snaps back out as
     # her room gives way to the backdrop (see BACKDROPS)
     hb = ED["hook_bf"]; t_bf = round(hb - 0.08, 3)
-    Z.append((0.0, 0.42, "expo.out", {"scale": 1.3}, {"scale": 1.0}, "#zwg"))
-    push(0.42, t_bf, 1.3, 1.36, "#zwg")
+    Z.append((0.0, 0.5, "power3.out", {"scale": 1.25}, {"scale": 1.0}, "#zwg"))
+    push(0.5, t_bf, 1.25, 1.30, "#zwg")
     Z.append((t_bf, 0.34, "expo.out", {"scale": 1.12}, None, "#zwg")); push(t_bf + 0.34, ED["shots"][1]["start"], 1.12, 1.17, "#zwg")
     PUNCH = {"anos": 1.12, "facil": 1.1, "creado": 1.1, "black": 1.08, "abajo": 1.1}   # on the key word (not on «euro»: she leans in)
     LOOK = {"g": [1.04], "p": [1.0, 1.1, 1.02, 1.12, 1.04, 1.08, 1.0, 1.1]}   # start framings, cycling; neighbours differ
     used = {"g": 0, "p": 0}
+    def stretch(a, b, sh):                                   # one look, a slow push, a punch on the key word
+        tk = sh["take"]; s0 = LOOK[tk][used[tk] % len(LOOK[tk])]; used[tk] += 1
+        pw = [w for w in WORDS if a + 0.25 <= w["t"] < b - 0.3 and norm(w["text"]) in PUNCH]
+        if pw:
+            t = pw[0]["t"]; k = PUNCH[norm(pw[0]["text"])] - 1.0
+            push(a, t - 0.05, s0, s0 + 0.02, wrap(sh)); punch(t, s0 + k, wrap(sh)); push(t + 0.2, b, s0 + k, s0 + k + 0.02, wrap(sh))
+        else:
+            push(a, b, s0, s0 + 0.04, wrap(sh))
+    outs = sorted(b["t_out"] for b in backdrops() if b["out_flash"])     # a backdrop leaving inside a shot = a jump cut
     for g in G:
         for sh in shots:
-            a, b = max(g["start"], sh["start"]), min(g["end"], sh["start"] + sh["duration"])
-            if b - a <= 0.05 or sh["n"] == 1:                   # shot 1 = the hook, done above
+            a0, b0 = max(g["start"], sh["start"]), min(g["end"], sh["start"] + sh["duration"])
+            if b0 - a0 <= 0.05 or sh["n"] == 1:                 # shot 1 = the hook, done above
                 continue
-            tk = sh["take"]; s0 = LOOK[tk][used[tk] % len(LOOK[tk])]; used[tk] += 1
-            pw = [w for w in WORDS if a + 0.25 <= w["t"] < b - 0.3 and norm(w["text"]) in PUNCH]
-            if pw:
-                t = pw[0]["t"]; push(a, t - 0.05, s0, s0 + 0.02, wrap(sh)); punch(t, s0 + PUNCH[norm(pw[0]["text"])] - 1.0, wrap(sh))
-                push(t + 0.2, b, s0 + PUNCH[norm(pw[0]["text"])] - 1.0, s0 + PUNCH[norm(pw[0]["text"])] - 0.98, wrap(sh))
-            else:
-                push(a, b, s0, s0 + 0.04, wrap(sh))
+            cuts = [a0] + [x for x in outs if a0 + 0.3 < x < b0 - 0.3] + [b0]
+            for a, b in zip(cuts, cuts[1:]):
+                stretch(a, b, sh)
     return Z
+
 
 
 # ============================================================================== the Black Friday backdrops (v5)
@@ -262,52 +268,78 @@ def backdrops():
         e0 = sh["start"] + (m0 - sh["media_start"]) / RATE            # edit time of the cutout's first frame
         ms = round((t_in - e0) * RATE, 3)
         assert ms >= 0 and ms + (t_out - t_in) * RATE <= (m["f1"] - m["f0"] + 1) / 30 + 1e-3, (name, ms)
-        out.append(dict(name=name, kind=kind, take=m["take"], t_in=t_in, t_out=round(t_out, 3), src=m["src"], ms=ms))
+        out.append(dict(name=name, kind=kind, take=m["take"], t_in=t_in, t_out=round(t_out, 3), src=m["src"], ms=ms,
+                        out_flash=name != "bf1"))                     # bf1 leaves on a real cut
     return out
 
 
-BX_TEXT = {"bf": "BLACK FRIDAY", "eur": "1€"}
+# rows of one word each (frame px, outside the zoom so they never scale): (top, word, style); the captions' band
+# (y 1150–1460) stays clear. bf: near-black, «BLACK» white, «FRIDAY» BF yellow; eur: Nawar blue, «1€» yellow / white.
+BX_ROWS = {"bf": [(30, "BLACK", "s"), (370, "FRIDAY", "y"), (710, "BLACK", "o"), (1490, "FRIDAY", "oy"), (1830, "BLACK", "s")],
+           "eur": [(0, "1€", "y"), (380, "1€", "o"), (760, "1€", "y"), (1500, "1€", "o")]}
 BX_CSS = """
-      .bx { position: absolute; left: -100px; top: -100px; width: 1280px; height: 2120px; overflow: hidden; opacity: 0; }
-      .bx-bf { background: radial-gradient(circle at 50% 30%, #221c63 0%, #0a0822 52%, #020108 100%); }
-      .bx-eur { background: radial-gradient(circle at 50% 30%, #3a95ff 0%, #0b56e0 42%, #120081 100%); }
-      .bx-rows { position: absolute; left: 0; top: 0; width: 1280px; height: 2120px; transform-origin: 640px 760px; }
+      .bx { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; opacity: 0; }
+      .bx-bf { background: radial-gradient(ellipse 70% 50% at 50% 38%, #17152e 0%, #09080f 60%, #040308 100%); }
+      .bx-eur { background: radial-gradient(circle at 50% 32%, #3a95ff 0%, #0b56e0 42%, #120081 100%); }
+      .bx-rows { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 540px 700px; }
       .bx-row { position: absolute; left: 0; white-space: nowrap; font-family: "Poppins", sans-serif; font-weight: 900; line-height: 1;
-        letter-spacing: -0.02em; }
-      .bx-bf .bx-row { font-size: 226px; }
-      .bx-eur .bx-row { font-size: 330px; letter-spacing: -0.04em; }
+        letter-spacing: -0.035em; }
+      .bx-row span { display: inline-block; height: 1em; line-height: 1em; vertical-align: top; }
+      .bx-bf .bx-row { font-size: 300px; }
+      .bx-eur .bx-row { font-size: 380px; letter-spacing: -0.05em; }
       .bx-s { color: #FFFFFF; }
-      .bx-o { color: rgba(255,255,255,0.12); -webkit-text-stroke: 4px rgba(255,255,255,0.62); }
-      .bx-bf .bx-s { color: #F4F5FF; }
-      .bx-glow { position: absolute; left: 190px; top: 260px; width: 900px; height: 1100px; border-radius: 50%;
-        background: radial-gradient(ellipse at 50% 45%, rgba(120,170,255,0.30) 0%, rgba(120,170,255,0) 65%); }
-      .bx-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 42%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.45) 100%); }
+      .bx-y { color: #FFD60A; }
+      .bx-o { color: rgba(255,255,255,0.10); -webkit-text-stroke: 4px rgba(255,255,255,0.70); }
+      .bx-oy { color: rgba(255,214,10,0.10); -webkit-text-stroke: 4px rgba(255,214,10,0.75); }
+      .bx-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 42%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.40) 100%); }
       #flash { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: #FFFFFF; opacity: 0; pointer-events: none; }
 """
+BX_W = {("bf", "BLACK"): 1010, ("bf", "FRIDAY"): 1080, ("eur", "1€"): 560}   # word widths at their size (px, measured roughly)
+GAP = 120
 
 
 def bx_html(b):
-    word = BX_TEXT[b["kind"]]; sep = " · " if b["kind"] == "bf" else "  "
-    step, size, n = (250, 226, 9) if b["kind"] == "bf" else (330, 330, 7)
-    keep = [k for k in range(n) if not (-120 + k * step + size > 1150 and -120 + k * step < 1460)]   # the captions' band stays clear
-    rows = "\n".join(f'          <div id="bx-{b["name"]}-r{k}" class="bx-row {"bx-s" if k % 2 == 0 else "bx-o"}" style="top: {-20 + k * step}px;">'
-                     f'{(word + sep) * 5}</div>' for k in keep)
-    return (f'      <div id="bx-{b["name"]}" class="bx bx-{b["kind"]}"><div id="bx-{b["name"]}-rows" class="bx-rows">\n{rows}\n'
-            f'        </div><div class="bx-glow"></div><div class="bx-vig"></div></div>\n'
-            f'      <video id="cut-{b["name"]}" class="clip" src="{b["src"]}" data-start="{b["t_in"]}" data-duration="{round(b["t_out"] - b["t_in"], 3)}" '
-            f'data-media-start="{b["ms"]}" data-playback-rate="{RATE}" data-track-index="{60 + ["bf1", "eur", "bf2"].index(b["name"])}" muted playsinline></video>'), keep
+    rows = []
+    for k, (top, word, st) in enumerate(BX_ROWS[b["kind"]]):
+        rows.append(f'          <div id="bx-{b["name"]}-r{k}" class="bx-row bx-{st}" style="top: {top}px;">'
+                    + (f'<span style="margin-right: {GAP}px">{word}</span>' * 6) + '</div>')
+    return (f'      <div id="bx-{b["name"]}" class="bx bx-{b["kind"]}"><div id="bx-{b["name"]}-rows" class="bx-rows">\n' + "\n".join(rows)
+            + '\n        </div><div class="bx-vig"></div></div>'), len(rows)
 
 
-def bx_js(b, keep):
-    d = round(b["t_out"] - b["t_in"], 3); w = b["name"]; run = 520 if b["kind"] == "bf" else 380
-    js = [f'      tl.set("#bx-{w}", {{ opacity: 0 }}, 0);',
-          f'      tl.set("#bx-{w}", {{ opacity: 1 }}, {b["t_in"]});',
-          f'      tl.set("#bx-{w}", {{ opacity: 0 }}, {b["t_out"]});',
-          f'      tl.fromTo("#bx-{w}-rows", {{ scale: 1.22 }}, {{ scale: 1, duration: 0.36, ease: "expo.out", immediateRender: false }}, {b["t_in"]});',
-          f'      tl.fromTo("#flash", {{ opacity: 0.7 }}, {{ opacity: 0, duration: 0.2, ease: "power2.out", immediateRender: false }}, {b["t_in"]});']
-    for k in keep:
-        x0, x1 = (-200, -200 - run * (d + 0.1)) if k % 2 == 0 else (-200 - run * (d + 0.1) - 300, -500)
-        js.append(f'      tl.fromTo("#bx-{w}-r{k}", {{ x: {round(x0)} }}, {{ x: {round(x1)}, duration: {round(d + 0.1, 3)}, ease: "none", immediateRender: false }}, {b["t_in"]});')
+def cut_html(b):
+    return (f'      <video id="cut-{b["name"]}" class="clip" src="{b["src"]}" data-start="{b["t_in"]}" data-duration="{round(b["t_out"] - b["t_in"], 3)}" '
+            f'data-media-start="{b["ms"]}" data-playback-rate="{RATE}" data-track-index="{60 + ["bf1", "eur", "bf2"].index(b["name"])}" muted playsinline></video>')
+
+
+def bx_js(b, n):
+    """in: bf1 on a white flash, the rows landing from big; eur, the rows sliding in from both sides (lighter flash); bf2,
+    the rows punching in with a short shake. Rows drift slowly so a whole word reads beside her; out: a light flash
+    with her new framing (zooms() cuts there)."""
+    d = round(b["t_out"] - b["t_in"], 3); w = b["name"]; t0 = b["t_in"]; speed = 150
+    js = [f'      tl.set("#bx-{w}", {{ opacity: 0 }}, 0);', f'      tl.set("#bx-{w}", {{ opacity: 1 }}, {t0});',
+          f'      tl.set("#bx-{w}", {{ opacity: 0 }}, {b["t_out"]});']
+    if w == "bf1":
+        js += [f'      tl.fromTo("#bx-{w}-rows", {{ scale: 1.25 }}, {{ scale: 1, duration: 0.38, ease: "expo.out", immediateRender: false }}, {t0});',
+               f'      tl.fromTo("#flash", {{ opacity: 0.75 }}, {{ opacity: 0, duration: 0.22, ease: "power2.out", immediateRender: false }}, {t0});']
+    elif w == "eur":
+        js += [f'      tl.fromTo("#flash", {{ opacity: 0.4 }}, {{ opacity: 0, duration: 0.16, ease: "power2.out", immediateRender: false }}, {t0});']
+    else:
+        js += [f'      tl.fromTo("#bx-{w}-rows", {{ scale: 0.82 }}, {{ scale: 1, duration: 0.3, ease: "back.out(2)", immediateRender: false }}, {t0});',
+               f'      tl.fromTo("#bx-{w}-rows", {{ x: 0 }}, {{ keyframes: [{{ x: -18, duration: 0.04 }}, {{ x: 14, duration: 0.05 }}, {{ x: -9, duration: 0.05 }}, '
+               f'{{ x: 5, duration: 0.05 }}, {{ x: 0, duration: 0.05 }}], immediateRender: false }}, {t0});']
+    if b["out_flash"]:
+        js.append(f'      tl.fromTo("#flash", {{ opacity: 0.3 }}, {{ opacity: 0, duration: 0.14, ease: "power2.out", immediateRender: false }}, {b["t_out"]});')
+    for k, (top, word, st) in enumerate(BX_ROWS[b["kind"]]):
+        ww = BX_W[(b["kind"], word)] + GAP
+        centre = round((1080 - BX_W[(b["kind"], word)]) / 2 - ww * 2)          # the third copy centred in the frame
+        dirn = -1 if k % 2 == 0 else 1
+        x0, x1 = centre - dirn * speed * d / 2, centre + dirn * speed * d / 2
+        if w == "eur":                                                          # slide in from the sides first
+            js.append(f'      tl.fromTo("#bx-{w}-r{k}", {{ x: {round(x0 - dirn * 1300)} }}, {{ x: {round(x0)}, duration: 0.32, ease: "expo.out", immediateRender: false }}, {t0});')
+            js.append(f'      tl.fromTo("#bx-{w}-r{k}", {{ x: {round(x0)} }}, {{ x: {round(x1)}, duration: {round(d - 0.32, 3)}, ease: "none", immediateRender: false }}, {round(t0 + 0.32, 3)});')
+        else:
+            js.append(f'      tl.fromTo("#bx-{w}-r{k}", {{ x: {round(x0)} }}, {{ x: {round(x1)}, duration: {d}, ease: "none", immediateRender: false }}, {t0});')
     return js
 
 
@@ -361,8 +393,9 @@ def index(sfx_all, overlays):
         auds.append(f'    <audio id="sfx{k}" src="{src}" data-start="{max(0.0, round(t, 3))}" data-duration="{dd}" data-media-start="{head}" data-track-index="{30 + k}" data-volume="{vol}"></audio>')
     js = lambda dct: "{ " + ", ".join(f"{k}: {v}" for k, v in dct.items())
     ztl = []
+    with_cut = {"#zw" + b["take"] for b in backdrops()}
     for (t, du, ease, to, frm, sel) in sorted(zooms(), key=lambda z: z[0]):
-        du = max(0.01, round(du, 3))
+        du = max(0.01, round(du, 3)); sel = f"{sel}, {sel}c" if sel in with_cut else sel
         if frm is not None:
             ztl.append(f'      tl.fromTo("{sel}", {js(frm)} }}, {js(to)}, duration: {du}, ease: "{ease}", immediateRender: false }}, {round(t, 3)});')
         else:
@@ -372,26 +405,38 @@ def index(sfx_all, overlays):
     key = lambda sh: sh["take"]
     vids, face = {}, {}
     shots = ED["shots"]
+    eur_t = next(b["t_in"] for b in backdrops() if b["name"] == "eur")
+    nw = [norm(w["text"]) for w in WORDS]
+    dip = next(i for i in range(len(nw)) if nw[i:i + 4] == ["por", "eso", "hemos", "creado"])
+    dip = (WORDS[dip]["t"] - 0.03, WORDS[dip + 4]["t"] - 0.04)               # «Por eso hemos creado» comes out 6 LU hot
     for n, sh in enumerate(shots):
         dd = sh["duration"]; last = n == len(shots) - 1
-        out = 0.12 if last else (0.03 if shots[n + 1]["take"] != sh["take"] else 0.012)
-        auto = json.dumps({"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1},
-                          {"t": round(dd - out, 3), "v": 1}, {"t": dd, "v": 0}]}]})
+        gap = (not last) and shots[n + 1]["start"] - (sh["start"] + dd) > 0.05
+        out = 0.05 if last else 0.045 if gap else (0.03 if shots[n + 1]["take"] != sh["take"] else 0.012)
+        lv = 1.25 if sh["start"] - 1e-3 <= eur_t < sh["start"] + dd else 1.0    # «Entero por un euro»: the quietest line, +2 dB
+        pts = [(0, 0), (0.012, lv)]
+        if sh["start"] < dip[0] and dip[1] < sh["start"] + dd:
+            a, b = dip[0] - sh["start"], dip[1] - sh["start"]
+            pts += [(a, lv), (a + 0.03, 0.7), (b - 0.03, 0.7), (b, lv)]
+        pts += [(dd - out, lv), (dd, 0)]
+        auto = json.dumps({"version": 1, "lanes": [{"target": "volume", "points": [{"t": round(t, 3), "v": v} for t, v in pts]}]})
         src = f"assets/video/take-{sh['take']}.mp4"
         vids.setdefault(key(sh), []).append(f'      <video id="v{sh["n"]}" class="clip" src="{src}" data-start="{sh["start"]}" data-duration="{dd}" data-media-start="{sh["media_start"]}" data-playback-rate="{RATE}" data-track-index="{sh["n"] - 1}" playsinline data-has-audio="true" data-automation=\'{auto}\'></video>')
         face.setdefault(key(sh), sh["face"])
     hold, lk = ED["hold"], key(shots[-1])                                        # her last frame, held in the last shot's wrapper
     if hold["duration"] > 0:                                                     # (only if edit.py asks for a hold)
         png = os.path.join(ROOT, "assets", "img", f"take-{shots[-1]['take']}-last.png")
-        last = shots[-1]["media_end"] - 1 / 30
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{last:.3f}", "-i", os.path.join(ROOT, f"assets/video/take-{shots[-1]['take']}.mp4"),
-                        "-frames:v", "1", png], check=True)
+        nlast = int(round(shots[-1]["media_end"] * 30)) - 1                 # exactly the last frame shown (no jump)
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", os.path.join(ROOT, f"assets/video/take-{shots[-1]['take']}.mp4"),
+                        "-vf", f"select=eq(n\\,{nlast})", "-frames:v", "1", png], check=True)
         vids[lk].append(f'      <img id="hold" class="clip" src="assets/img/take-{shots[-1]["take"]}-last.png" alt="" data-start="{hold["start"]}" data-duration="{hold["duration"]}" data-track-index="{len(shots)}" />')
-    bxs = backdrops(); bxjs = []
-    for b in bxs:                                                                # the backdrops + cutouts, in their take's wrapper
-        h, n = bx_html(b); vids[b["take"]].append(h); bxjs += bx_js(b, n)
-    takes = "".join(f'    <div class="shot"><div id="zw{k}" class="zw" data-layout-allow-overflow style="transform-origin: {face[k][0]}px {face[k][1]}px;">\n'
-                    + "\n".join(v) + "\n    </div></div>\n" for k, v in vids.items())   # one wrapper per take, in order of appearance
+    bxs = backdrops(); bxjs, bxh, cuts = [], [], {}
+    for b in bxs:          # the backdrops over both takes (not zoomed), then her cutouts in a twin of her take's wrapper
+        h, n = bx_html(b); bxh.append(h); bxjs += bx_js(b, n); cuts.setdefault(b["take"], []).append(cut_html(b))
+    wrap = lambda k, v, suf="": (f'    <div class="shot"><div id="zw{k}{suf}" class="zw" data-layout-allow-overflow style="transform-origin: {face[k][0]}px {face[k][1]}px;">\n'
+                                 + "\n".join(v) + "\n    </div></div>\n")
+    takes = "".join(wrap(k, v) for k, v in vids.items())                     # one wrapper per take, in order of appearance
+    takes += '    <div class="shot">\n' + "\n".join(bxh) + '\n    </div>\n' + "".join(wrap(k, v, "c") for k, v in cuts.items())
     takes += '    <div id="flash"></div>\n'
     html = page_head() + f"""  <body>
     <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="{TOTAL}">
@@ -456,12 +501,16 @@ def main():
         open(os.path.join(ROOT, "compositions", f"{iid}.html"), "w").write(html)
         sfx_all.append((INS[iid]["start"] - 0.06, "whoosh-short", 0.1))   # its peak lands on the cut
         if iid == "ins-04":                                                   # back to her on the second take, a soft one
-            sfx_all.append((INS[iid]["start"] + INS[iid]["duration"] - 0.08, "whoosh-short", 0.07))
+            sfx_all.append((INS[iid]["start"] + INS[iid]["duration"] - 0.08, "whoosh-short", 0.10))
         for t, name, vol, *rest in sfx:
             sfx_all.append((INS[iid]["start"] + t, name, vol, *rest))
     overlays = []
-    for b in backdrops():                                               # the hit under each backdrop
-        sfx_all += [(b["t_in"] - 0.06, "whoosh-short", 0.12), (b["t_in"], "impact", 0.5)]
+    sfx_all.append((0.0, "whoosh-short", 0.12))                        # the stop-scroll zoom-in
+    for b in backdrops():                  # the hit under each backdrop; on «Entero» it lands in the breath before the word
+        sfx_all += [(b["t_in"] - 0.06, "whoosh-short", 0.2),
+                    (b["t_in"] - 0.09, "impact", 0.3) if b["name"] == "eur" else (b["t_in"], "impact", 0.4)]
+        if b["out_flash"]:
+            sfx_all.append((b["t_out"] - 0.06, "whoosh-short", 0.1))
     for cid, fn in (("offer", offer), ("outro", outro)):
         html, t0, d, osfx = fn()
         open(os.path.join(ROOT, "compositions", f"{cid}.html"), "w").write(html)

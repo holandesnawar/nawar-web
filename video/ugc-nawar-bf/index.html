@@ -19,164 +19,178 @@
     @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
     @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
 
-      .bx { position: absolute; left: -100px; top: -100px; width: 1280px; height: 2120px; overflow: hidden; opacity: 0; }
-      .bx-bf { background: radial-gradient(circle at 50% 30%, #221c63 0%, #0a0822 52%, #020108 100%); }
-      .bx-eur { background: radial-gradient(circle at 50% 30%, #3a95ff 0%, #0b56e0 42%, #120081 100%); }
-      .bx-rows { position: absolute; left: 0; top: 0; width: 1280px; height: 2120px; transform-origin: 640px 760px; }
+      .bx { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; opacity: 0; }
+      .bx-bf { background: radial-gradient(ellipse 70% 50% at 50% 38%, #17152e 0%, #09080f 60%, #040308 100%); }
+      .bx-eur { background: radial-gradient(circle at 50% 32%, #3a95ff 0%, #0b56e0 42%, #120081 100%); }
+      .bx-rows { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 540px 700px; }
       .bx-row { position: absolute; left: 0; white-space: nowrap; font-family: "Poppins", sans-serif; font-weight: 900; line-height: 1;
-        letter-spacing: -0.02em; }
-      .bx-bf .bx-row { font-size: 226px; }
-      .bx-eur .bx-row { font-size: 330px; letter-spacing: -0.04em; }
+        letter-spacing: -0.035em; }
+      .bx-row span { display: inline-block; height: 1em; line-height: 1em; vertical-align: top; }
+      .bx-bf .bx-row { font-size: 300px; }
+      .bx-eur .bx-row { font-size: 380px; letter-spacing: -0.05em; }
       .bx-s { color: #FFFFFF; }
-      .bx-o { color: rgba(255,255,255,0.12); -webkit-text-stroke: 4px rgba(255,255,255,0.62); }
-      .bx-bf .bx-s { color: #F4F5FF; }
-      .bx-glow { position: absolute; left: 190px; top: 260px; width: 900px; height: 1100px; border-radius: 50%;
-        background: radial-gradient(ellipse at 50% 45%, rgba(120,170,255,0.30) 0%, rgba(120,170,255,0) 65%); }
-      .bx-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 42%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.45) 100%); }
+      .bx-y { color: #FFD60A; }
+      .bx-o { color: rgba(255,255,255,0.10); -webkit-text-stroke: 4px rgba(255,255,255,0.70); }
+      .bx-oy { color: rgba(255,214,10,0.10); -webkit-text-stroke: 4px rgba(255,214,10,0.75); }
+      .bx-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 42%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.40) 100%); }
       #flash { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: #FFFFFF; opacity: 0; pointer-events: none; }
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="40.519">
+    <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="40.014">
     <div class="shot"><div id="zwg" class="zw" data-layout-allow-overflow style="transform-origin: 570px 660px;">
-      <video id="v1" class="clip" src="assets/video/take-g.mp4" data-start="0.0" data-duration="5.962" data-media-start="17.6" data-playback-rate="1.06" data-track-index="0" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1}, {"t": 5.932, "v": 1}, {"t": 5.962, "v": 0}]}]}'></video>
-      <div id="bx-bf1" class="bx bx-bf"><div id="bx-bf1-rows" class="bx-rows">
-          <div id="bx-bf1-r0" class="bx-row bx-s" style="top: -20px;">BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · </div>
-          <div id="bx-bf1-r1" class="bx-row bx-o" style="top: 230px;">BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · </div>
-          <div id="bx-bf1-r2" class="bx-row bx-s" style="top: 480px;">BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · </div>
-          <div id="bx-bf1-r3" class="bx-row bx-o" style="top: 730px;">BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · </div>
-          <div id="bx-bf1-r4" class="bx-row bx-s" style="top: 980px;">BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · </div>
-          <div id="bx-bf1-r7" class="bx-row bx-o" style="top: 1730px;">BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · </div>
-          <div id="bx-bf1-r8" class="bx-row bx-s" style="top: 1980px;">BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · </div>
-        </div><div class="bx-glow"></div><div class="bx-vig"></div></div>
-      <video id="cut-bf1" class="clip" src="assets/video/cut-bf1.webm" data-start="4.486" data-duration="1.476" data-media-start="0.222" data-playback-rate="1.06" data-track-index="60" muted playsinline></video>
+      <video id="v1" class="clip" src="assets/video/take-g.mp4" data-start="0.0" data-duration="5.962" data-media-start="17.6" data-playback-rate="1.06" data-track-index="0" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1.0}, {"t": 5.932, "v": 1.0}, {"t": 5.962, "v": 0}]}]}'></video>
     </div></div>
     <div class="shot"><div id="zwp" class="zw" data-layout-allow-overflow style="transform-origin: 560px 720px;">
-      <video id="v2" class="clip" src="assets/video/take-p.mp4" data-start="5.962" data-duration="4.406" data-media-start="0.95" data-playback-rate="1.06" data-track-index="1" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1}, {"t": 4.394, "v": 1}, {"t": 4.406, "v": 0}]}]}'></video>
-      <video id="v3" class="clip" src="assets/video/take-p.mp4" data-start="10.368" data-duration="2.524" data-media-start="12.905" data-playback-rate="1.06" data-track-index="2" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1}, {"t": 2.512, "v": 1}, {"t": 2.524, "v": 0}]}]}'></video>
-      <video id="v4" class="clip" src="assets/video/take-p.mp4" data-start="12.892" data-duration="12.67" data-media-start="15.65" data-playback-rate="1.06" data-track-index="3" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1}, {"t": 12.658, "v": 1}, {"t": 12.67, "v": 0}]}]}'></video>
-      <video id="v5" class="clip" src="assets/video/take-p.mp4" data-start="25.562" data-duration="2.783" data-media-start="29.23" data-playback-rate="1.06" data-track-index="4" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1}, {"t": 2.771, "v": 1}, {"t": 2.783, "v": 0}]}]}'></video>
-      <video id="v6" class="clip" src="assets/video/take-p.mp4" data-start="28.505" data-duration="4.222" data-media-start="32.205" data-playback-rate="1.06" data-track-index="5" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1}, {"t": 4.21, "v": 1}, {"t": 4.222, "v": 0}]}]}'></video>
-      <video id="v7" class="clip" src="assets/video/take-p.mp4" data-start="32.727" data-duration="2.87" data-media-start="36.705" data-playback-rate="1.06" data-track-index="6" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1}, {"t": 2.858, "v": 1}, {"t": 2.87, "v": 0}]}]}'></video>
-      <video id="v8" class="clip" src="assets/video/take-p.mp4" data-start="35.597" data-duration="4.472" data-media-start="39.94" data-playback-rate="1.06" data-track-index="7" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1}, {"t": 4.352, "v": 1}, {"t": 4.472, "v": 0}]}]}'></video>
-      <img id="hold" class="clip" src="assets/img/take-p-last.png" alt="" data-start="40.069" data-duration="0.45" data-track-index="8" />
+      <video id="v2" class="clip" src="assets/video/take-p.mp4" data-start="5.962" data-duration="2.443" data-media-start="0.95" data-playback-rate="1.06" data-track-index="1" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1.0}, {"t": 2.431, "v": 1.0}, {"t": 2.443, "v": 0}]}]}'></video>
+      <video id="v3" class="clip" src="assets/video/take-p.mp4" data-start="8.405" data-duration="1.932" data-media-start="3.572" data-playback-rate="1.06" data-track-index="2" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1.0}, {"t": 1.92, "v": 1.0}, {"t": 1.932, "v": 0}]}]}'></video>
+      <video id="v4" class="clip" src="assets/video/take-p.mp4" data-start="10.337" data-duration="2.524" data-media-start="12.905" data-playback-rate="1.06" data-track-index="3" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1.0}, {"t": 2.512, "v": 1.0}, {"t": 2.524, "v": 0}]}]}'></video>
+      <video id="v5" class="clip" src="assets/video/take-p.mp4" data-start="12.861" data-duration="8.085" data-media-start="15.65" data-playback-rate="1.06" data-track-index="4" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1.0}, {"t": 8.073, "v": 1.0}, {"t": 8.085, "v": 0}]}]}'></video>
+      <video id="v6" class="clip" src="assets/video/take-p.mp4" data-start="20.946" data-duration="4.396" data-media-start="24.42" data-playback-rate="1.06" data-track-index="5" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1.0}, {"t": 0.008, "v": 1.0}, {"t": 0.038, "v": 0.7}, {"t": 1.279, "v": 0.7}, {"t": 1.309, "v": 1.0}, {"t": 4.384, "v": 1.0}, {"t": 4.396, "v": 0}]}]}'></video>
+      <video id="v7" class="clip" src="assets/video/take-p.mp4" data-start="25.342" data-duration="2.783" data-media-start="29.23" data-playback-rate="1.06" data-track-index="6" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1.0}, {"t": 2.738, "v": 1.0}, {"t": 2.783, "v": 0}]}]}'></video>
+      <video id="v8" class="clip" src="assets/video/take-p.mp4" data-start="28.285" data-duration="4.175" data-media-start="32.205" data-playback-rate="1.06" data-track-index="7" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1.0}, {"t": 4.163, "v": 1.0}, {"t": 4.175, "v": 0}]}]}'></video>
+      <video id="v9" class="clip" src="assets/video/take-p.mp4" data-start="32.46" data-duration="2.858" data-media-start="36.67" data-playback-rate="1.06" data-track-index="8" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1.25}, {"t": 2.846, "v": 1.25}, {"t": 2.858, "v": 0}]}]}'></video>
+      <video id="v10" class="clip" src="assets/video/take-p.mp4" data-start="35.318" data-duration="4.396" data-media-start="39.94" data-playback-rate="1.06" data-track-index="9" playsinline data-has-audio="true" data-automation='{"version": 1, "lanes": [{"target": "volume", "points": [{"t": 0, "v": 0}, {"t": 0.012, "v": 1.0}, {"t": 4.346, "v": 1.0}, {"t": 4.396, "v": 0}]}]}'></video>
+      <img id="hold" class="clip" src="assets/img/take-p-last.png" alt="" data-start="39.714" data-duration="0.3" data-track-index="10" />
+    </div></div>
+    <div class="shot">
+      <div id="bx-bf1" class="bx bx-bf"><div id="bx-bf1-rows" class="bx-rows">
+          <div id="bx-bf1-r0" class="bx-row bx-s" style="top: 30px;"><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span></div>
+          <div id="bx-bf1-r1" class="bx-row bx-y" style="top: 370px;"><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span></div>
+          <div id="bx-bf1-r2" class="bx-row bx-o" style="top: 710px;"><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span></div>
+          <div id="bx-bf1-r3" class="bx-row bx-oy" style="top: 1490px;"><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span></div>
+          <div id="bx-bf1-r4" class="bx-row bx-s" style="top: 1830px;"><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span></div>
+        </div><div class="bx-vig"></div></div>
       <div id="bx-eur" class="bx bx-eur"><div id="bx-eur-rows" class="bx-rows">
-          <div id="bx-eur-r0" class="bx-row bx-s" style="top: -20px;">1€  1€  1€  1€  1€  </div>
-          <div id="bx-eur-r1" class="bx-row bx-o" style="top: 310px;">1€  1€  1€  1€  1€  </div>
-          <div id="bx-eur-r2" class="bx-row bx-s" style="top: 640px;">1€  1€  1€  1€  1€  </div>
-          <div id="bx-eur-r5" class="bx-row bx-o" style="top: 1630px;">1€  1€  1€  1€  1€  </div>
-          <div id="bx-eur-r6" class="bx-row bx-s" style="top: 1960px;">1€  1€  1€  1€  1€  </div>
-        </div><div class="bx-glow"></div><div class="bx-vig"></div></div>
-      <video id="cut-eur" class="clip" src="assets/video/cut-eur.webm" data-start="32.727" data-duration="1.379" data-media-start="0.005" data-playback-rate="1.06" data-track-index="61" muted playsinline></video>
+          <div id="bx-eur-r0" class="bx-row bx-y" style="top: 0px;"><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span></div>
+          <div id="bx-eur-r1" class="bx-row bx-o" style="top: 380px;"><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span></div>
+          <div id="bx-eur-r2" class="bx-row bx-y" style="top: 760px;"><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span></div>
+          <div id="bx-eur-r3" class="bx-row bx-o" style="top: 1500px;"><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span><span style="margin-right: 120px">1€</span></div>
+        </div><div class="bx-vig"></div></div>
       <div id="bx-bf2" class="bx bx-bf"><div id="bx-bf2-rows" class="bx-rows">
-          <div id="bx-bf2-r0" class="bx-row bx-s" style="top: -20px;">BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · </div>
-          <div id="bx-bf2-r1" class="bx-row bx-o" style="top: 230px;">BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · </div>
-          <div id="bx-bf2-r2" class="bx-row bx-s" style="top: 480px;">BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · </div>
-          <div id="bx-bf2-r3" class="bx-row bx-o" style="top: 730px;">BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · </div>
-          <div id="bx-bf2-r4" class="bx-row bx-s" style="top: 980px;">BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · </div>
-          <div id="bx-bf2-r7" class="bx-row bx-o" style="top: 1730px;">BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · </div>
-          <div id="bx-bf2-r8" class="bx-row bx-s" style="top: 1980px;">BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · BLACK FRIDAY · </div>
-        </div><div class="bx-glow"></div><div class="bx-vig"></div></div>
-      <video id="cut-bf2" class="clip" src="assets/video/cut-bf2.webm" data-start="37.253" data-duration="1.054" data-media-start="0.095" data-playback-rate="1.06" data-track-index="62" muted playsinline></video>
+          <div id="bx-bf2-r0" class="bx-row bx-s" style="top: 30px;"><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span></div>
+          <div id="bx-bf2-r1" class="bx-row bx-y" style="top: 370px;"><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span></div>
+          <div id="bx-bf2-r2" class="bx-row bx-o" style="top: 710px;"><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span></div>
+          <div id="bx-bf2-r3" class="bx-row bx-oy" style="top: 1490px;"><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span><span style="margin-right: 120px">FRIDAY</span></div>
+          <div id="bx-bf2-r4" class="bx-row bx-s" style="top: 1830px;"><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span><span style="margin-right: 120px">BLACK</span></div>
+        </div><div class="bx-vig"></div></div>
+    </div>
+    <div class="shot"><div id="zwgc" class="zw" data-layout-allow-overflow style="transform-origin: 570px 660px;">
+      <video id="cut-bf1" class="clip" src="assets/video/cut-bf1.webm" data-start="4.59" data-duration="1.372" data-media-start="0.332" data-playback-rate="1.06" data-track-index="60" muted playsinline></video>
+    </div></div>
+    <div class="shot"><div id="zwpc" class="zw" data-layout-allow-overflow style="transform-origin: 560px 720px;">
+      <video id="cut-eur" class="clip" src="assets/video/cut-eur.webm" data-start="32.46" data-duration="1.412" data-media-start="0.003" data-playback-rate="1.06" data-track-index="61" muted playsinline></video>
+      <video id="cut-bf2" class="clip" src="assets/video/cut-bf2.webm" data-start="37.153" data-duration="0.875" data-media-start="0.285" data-playback-rate="1.06" data-track-index="62" muted playsinline></video>
     </div></div>
     <div id="flash"></div>
-    <div id="ins-01" data-composition-id="ins-01" data-composition-src="compositions/ins-01.html" data-start="6.763" data-duration="3.883" data-track-index="10" data-width="1080" data-height="1920"></div>
-    <div id="ins-02" data-composition-id="ins-02" data-composition-src="compositions/ins-02.html" data-start="14.307" data-duration="2.722" data-track-index="11" data-width="1080" data-height="1920"></div>
-    <div id="ins-03" data-composition-id="ins-03" data-composition-src="compositions/ins-03.html" data-start="18.712" data-duration="2.562" data-track-index="12" data-width="1080" data-height="1920"></div>
-    <div id="ins-04" data-composition-id="ins-04" data-composition-src="compositions/ins-04.html" data-start="22.458" data-duration="6.047" data-track-index="13" data-width="1080" data-height="1920"></div>
-    <div id="offer" data-composition-id="offer" data-composition-src="compositions/offer.html" data-start="32.67" data-duration="5.7" data-track-index="17" data-width="1080" data-height="1920"></div>
-    <div id="outro" data-composition-id="outro" data-composition-src="compositions/outro.html" data-start="38.37" data-duration="2.149" data-track-index="18" data-width="1080" data-height="1920"></div>
-    <div id="captions" data-track-kind="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="40.519" data-track-index="21" data-width="1080" data-height="1920"></div>
-    <audio id="music" src="assets/audio/music-bed.wav" data-start="0" data-duration="40.519" data-track-index="22" data-volume="1"></audio>
-    <audio id="sfx0" src="assets/sfx/whoosh-short.mp3" data-start="4.426" data-duration="0.509" data-media-start="0.066" data-track-index="30" data-volume="0.12"></audio>
-    <audio id="sfx1" src="assets/sfx/impact.mp3" data-start="4.486" data-duration="0.936" data-media-start="0.0" data-track-index="31" data-volume="0.5"></audio>
-    <audio id="sfx2" src="assets/sfx/whoosh-short.mp3" data-start="6.703" data-duration="0.509" data-media-start="0.066" data-track-index="32" data-volume="0.1"></audio>
-    <audio id="sfx3" src="assets/sfx/pop.mp3" data-start="7.24" data-duration="0.614" data-media-start="0.106" data-track-index="33" data-volume="0.16"></audio>
-    <audio id="sfx4" src="assets/sfx/notification.mp3" data-start="8.776" data-duration="2.379" data-media-start="0.076" data-track-index="34" data-volume="0.14"></audio>
-    <audio id="sfx5" src="assets/sfx/notification.mp3" data-start="9.197" data-duration="2.379" data-media-start="0.076" data-track-index="35" data-volume="0.14"></audio>
-    <audio id="sfx6" src="assets/sfx/click-soft.mp3" data-start="9.958" data-duration="0.328" data-media-start="0.038" data-track-index="36" data-volume="0.22"></audio>
-    <audio id="sfx7" src="assets/sfx/whoosh-short.mp3" data-start="14.247" data-duration="0.509" data-media-start="0.066" data-track-index="37" data-volume="0.1"></audio>
-    <audio id="sfx8" src="assets/sfx/notification.mp3" data-start="14.324" data-duration="2.379" data-media-start="0.076" data-track-index="38" data-volume="0.14"></audio>
-    <audio id="sfx9" src="assets/sfx/notification.mp3" data-start="14.808" data-duration="2.379" data-media-start="0.076" data-track-index="39" data-volume="0.14"></audio>
-    <audio id="sfx10" src="assets/sfx/pop.mp3" data-start="15.7" data-duration="0.614" data-media-start="0.106" data-track-index="40" data-volume="0.16"></audio>
-    <audio id="sfx11" src="assets/sfx/click-soft.mp3" data-start="16.087" data-duration="0.328" data-media-start="0.038" data-track-index="41" data-volume="0.24"></audio>
-    <audio id="sfx12" src="assets/sfx/whoosh-short.mp3" data-start="18.652" data-duration="0.509" data-media-start="0.066" data-track-index="42" data-volume="0.1"></audio>
-    <audio id="sfx13" src="assets/sfx/typing.mp3" data-start="18.789" data-duration="0.506" data-media-start="0.427" data-track-index="43" data-volume="0.12"></audio>
-    <audio id="sfx14" src="assets/sfx/click-soft.mp3" data-start="19.295" data-duration="0.328" data-media-start="0.038" data-track-index="44" data-volume="0.2"></audio>
-    <audio id="sfx15" src="assets/sfx/pop.mp3" data-start="19.335" data-duration="0.614" data-media-start="0.106" data-track-index="45" data-volume="0.12"></audio>
-    <audio id="sfx16" src="assets/sfx/pop.mp3" data-start="19.574" data-duration="0.614" data-media-start="0.106" data-track-index="46" data-volume="0.12"></audio>
-    <audio id="sfx17" src="assets/sfx/pop.mp3" data-start="19.834" data-duration="0.614" data-media-start="0.106" data-track-index="47" data-volume="0.12"></audio>
-    <audio id="sfx18" src="assets/sfx/click-soft.mp3" data-start="20.615" data-duration="0.328" data-media-start="0.038" data-track-index="48" data-volume="0.22"></audio>
-    <audio id="sfx19" src="assets/sfx/whoosh-short.mp3" data-start="22.398" data-duration="0.509" data-media-start="0.066" data-track-index="49" data-volume="0.1"></audio>
-    <audio id="sfx20" src="assets/sfx/whoosh-short.mp3" data-start="28.425" data-duration="0.509" data-media-start="0.066" data-track-index="50" data-volume="0.07"></audio>
-    <audio id="sfx21" src="assets/sfx/whoosh-short.mp3" data-start="32.667" data-duration="0.509" data-media-start="0.066" data-track-index="51" data-volume="0.12"></audio>
-    <audio id="sfx22" src="assets/sfx/impact.mp3" data-start="32.727" data-duration="0.936" data-media-start="0.0" data-track-index="52" data-volume="0.5"></audio>
-    <audio id="sfx23" src="assets/sfx/pop.mp3" data-start="34.567" data-duration="0.614" data-media-start="0.106" data-track-index="53" data-volume="0.3"></audio>
-    <audio id="sfx24" src="assets/sfx/whoosh-short.mp3" data-start="37.193" data-duration="0.509" data-media-start="0.066" data-track-index="54" data-volume="0.12"></audio>
-    <audio id="sfx25" src="assets/sfx/impact.mp3" data-start="37.253" data-duration="0.936" data-media-start="0.0" data-track-index="55" data-volume="0.5"></audio>
-    <audio id="sfx26" src="assets/sfx/pop.mp3" data-start="38.367" data-duration="0.614" data-media-start="0.106" data-track-index="56" data-volume="0.2"></audio>
-    <audio id="sfx27" src="assets/sfx/click-soft.mp3" data-start="39.422" data-duration="0.328" data-media-start="0.038" data-track-index="57" data-volume="0.22"></audio>
+    <div id="ins-01" data-composition-id="ins-01" data-composition-src="compositions/ins-01.html" data-start="6.763" data-duration="3.852" data-track-index="10" data-width="1080" data-height="1920"></div>
+    <div id="ins-02" data-composition-id="ins-02" data-composition-src="compositions/ins-02.html" data-start="14.276" data-duration="2.722" data-track-index="11" data-width="1080" data-height="1920"></div>
+    <div id="ins-03" data-composition-id="ins-03" data-composition-src="compositions/ins-03.html" data-start="18.681" data-duration="2.373" data-track-index="12" data-width="1080" data-height="1920"></div>
+    <div id="ins-04" data-composition-id="ins-04" data-composition-src="compositions/ins-04.html" data-start="22.238" data-duration="6.047" data-track-index="13" data-width="1080" data-height="1920"></div>
+    <div id="offer" data-composition-id="offer" data-composition-src="compositions/offer.html" data-start="32.431" data-duration="5.66" data-track-index="17" data-width="1080" data-height="1920"></div>
+    <div id="outro" data-composition-id="outro" data-composition-src="compositions/outro.html" data-start="38.091" data-duration="1.923" data-track-index="18" data-width="1080" data-height="1920"></div>
+    <div id="captions" data-track-kind="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="40.014" data-track-index="21" data-width="1080" data-height="1920"></div>
+    <audio id="music" src="assets/audio/music-bed.wav" data-start="0" data-duration="40.014" data-track-index="22" data-volume="1"></audio>
+    <audio id="sfx0" src="assets/sfx/whoosh-short.mp3" data-start="0.0" data-duration="0.509" data-media-start="0.066" data-track-index="30" data-volume="0.12"></audio>
+    <audio id="sfx1" src="assets/sfx/whoosh-short.mp3" data-start="4.53" data-duration="0.509" data-media-start="0.066" data-track-index="31" data-volume="0.2"></audio>
+    <audio id="sfx2" src="assets/sfx/impact.mp3" data-start="4.59" data-duration="0.936" data-media-start="0.0" data-track-index="32" data-volume="0.4"></audio>
+    <audio id="sfx3" src="assets/sfx/whoosh-short.mp3" data-start="6.703" data-duration="0.509" data-media-start="0.066" data-track-index="33" data-volume="0.1"></audio>
+    <audio id="sfx4" src="assets/sfx/pop.mp3" data-start="7.24" data-duration="0.614" data-media-start="0.106" data-track-index="34" data-volume="0.16"></audio>
+    <audio id="sfx5" src="assets/sfx/notification.mp3" data-start="8.745" data-duration="2.379" data-media-start="0.076" data-track-index="35" data-volume="0.14"></audio>
+    <audio id="sfx6" src="assets/sfx/notification.mp3" data-start="9.166" data-duration="2.379" data-media-start="0.076" data-track-index="36" data-volume="0.14"></audio>
+    <audio id="sfx7" src="assets/sfx/click-soft.mp3" data-start="9.928" data-duration="0.328" data-media-start="0.038" data-track-index="37" data-volume="0.22"></audio>
+    <audio id="sfx8" src="assets/sfx/whoosh-short.mp3" data-start="14.216" data-duration="0.509" data-media-start="0.066" data-track-index="38" data-volume="0.1"></audio>
+    <audio id="sfx9" src="assets/sfx/notification.mp3" data-start="14.293" data-duration="2.379" data-media-start="0.076" data-track-index="39" data-volume="0.14"></audio>
+    <audio id="sfx10" src="assets/sfx/notification.mp3" data-start="14.777" data-duration="2.379" data-media-start="0.076" data-track-index="40" data-volume="0.14"></audio>
+    <audio id="sfx11" src="assets/sfx/pop.mp3" data-start="15.669" data-duration="0.614" data-media-start="0.106" data-track-index="41" data-volume="0.16"></audio>
+    <audio id="sfx12" src="assets/sfx/click-soft.mp3" data-start="16.056" data-duration="0.328" data-media-start="0.038" data-track-index="42" data-volume="0.24"></audio>
+    <audio id="sfx13" src="assets/sfx/whoosh-short.mp3" data-start="18.621" data-duration="0.509" data-media-start="0.066" data-track-index="43" data-volume="0.1"></audio>
+    <audio id="sfx14" src="assets/sfx/typing.mp3" data-start="18.758" data-duration="0.506" data-media-start="0.427" data-track-index="44" data-volume="0.25"></audio>
+    <audio id="sfx15" src="assets/sfx/click-soft.mp3" data-start="19.264" data-duration="0.328" data-media-start="0.038" data-track-index="45" data-volume="0.2"></audio>
+    <audio id="sfx16" src="assets/sfx/pop.mp3" data-start="19.304" data-duration="0.614" data-media-start="0.106" data-track-index="46" data-volume="0.12"></audio>
+    <audio id="sfx17" src="assets/sfx/pop.mp3" data-start="19.543" data-duration="0.614" data-media-start="0.106" data-track-index="47" data-volume="0.12"></audio>
+    <audio id="sfx18" src="assets/sfx/pop.mp3" data-start="19.803" data-duration="0.614" data-media-start="0.106" data-track-index="48" data-volume="0.12"></audio>
+    <audio id="sfx19" src="assets/sfx/click-soft.mp3" data-start="20.584" data-duration="0.328" data-media-start="0.038" data-track-index="49" data-volume="0.22"></audio>
+    <audio id="sfx20" src="assets/sfx/whoosh-short.mp3" data-start="22.178" data-duration="0.509" data-media-start="0.066" data-track-index="50" data-volume="0.1"></audio>
+    <audio id="sfx21" src="assets/sfx/page.mp3" data-start="22.733" data-duration="0.36" data-media-start="0.0" data-track-index="51" data-volume="0.2"></audio>
+    <audio id="sfx22" src="assets/sfx/page.mp3" data-start="23.969" data-duration="0.36" data-media-start="0.0" data-track-index="52" data-volume="0.14"></audio>
+    <audio id="sfx23" src="assets/sfx/page.mp3" data-start="24.959" data-duration="0.36" data-media-start="0.0" data-track-index="53" data-volume="0.14"></audio>
+    <audio id="sfx24" src="assets/sfx/page.mp3" data-start="25.948" data-duration="0.36" data-media-start="0.0" data-track-index="54" data-volume="0.14"></audio>
+    <audio id="sfx25" src="assets/sfx/whoosh-short.mp3" data-start="28.205" data-duration="0.509" data-media-start="0.066" data-track-index="55" data-volume="0.1"></audio>
+    <audio id="sfx26" src="assets/sfx/impact.mp3" data-start="32.37" data-duration="0.936" data-media-start="0.0" data-track-index="56" data-volume="0.3"></audio>
+    <audio id="sfx27" src="assets/sfx/whoosh-short.mp3" data-start="32.4" data-duration="0.509" data-media-start="0.066" data-track-index="57" data-volume="0.2"></audio>
+    <audio id="sfx28" src="assets/sfx/whoosh-short.mp3" data-start="33.812" data-duration="0.509" data-media-start="0.066" data-track-index="58" data-volume="0.1"></audio>
+    <audio id="sfx29" src="assets/sfx/pop.mp3" data-start="34.333" data-duration="0.614" data-media-start="0.106" data-track-index="59" data-volume="0.3"></audio>
+    <audio id="sfx30" src="assets/sfx/whoosh-short.mp3" data-start="37.093" data-duration="0.509" data-media-start="0.066" data-track-index="60" data-volume="0.2"></audio>
+    <audio id="sfx31" src="assets/sfx/impact.mp3" data-start="37.153" data-duration="0.936" data-media-start="0.0" data-track-index="61" data-volume="0.4"></audio>
+    <audio id="sfx32" src="assets/sfx/whoosh-short.mp3" data-start="37.968" data-duration="0.509" data-media-start="0.066" data-track-index="62" data-volume="0.1"></audio>
+    <audio id="sfx33" src="assets/sfx/pop.mp3" data-start="38.088" data-duration="0.614" data-media-start="0.106" data-track-index="63" data-volume="0.2"></audio>
+    <audio id="sfx34" src="assets/sfx/click-soft.mp3" data-start="39.143" data-duration="0.328" data-media-start="0.038" data-track-index="64" data-volume="0.4"></audio>
     </div>
     <script>
       const tl = gsap.timeline({ paused: true });
       // framing on the girl: opens tight and zooms out, punches on «Black Friday»; then one look per stretch, a slow push and a
       // punch on the key word (origin = her face); the ad ends when she stops talking, under the button
-      tl.fromTo("#zwg", { scale: 1.0 }, { scale: 1.3, duration: 0.42, ease: "expo.out", immediateRender: false }, 0.0);
-      tl.fromTo("#zwg", { scale: 1.3 }, { scale: 1.36, duration: 4.062, ease: "none", immediateRender: false }, 0.42);
-      tl.to("#zwg", { scale: 1.12, duration: 0.34, ease: "expo.out" }, 4.486);
-      tl.fromTo("#zwg", { scale: 1.12 }, { scale: 1.17, duration: 1.132, ease: "none", immediateRender: false }, 4.826);
-      tl.fromTo("#zwp", { scale: 1.0 }, { scale: 1.04, duration: 0.797, ease: "none", immediateRender: false }, 5.962);
-      tl.fromTo("#zwp", { scale: 1.1 }, { scale: 1.14, duration: 2.242, ease: "none", immediateRender: false }, 10.646);
-      tl.fromTo("#zwp", { scale: 1.02 }, { scale: 1.04, duration: 0.918, ease: "none", immediateRender: false }, 12.892);
-      tl.to("#zwp", { scale: 1.1400000000000001, duration: 0.22, ease: "power3.out" }, 13.814);
-      tl.fromTo("#zwp", { scale: 1.14 }, { scale: 1.16, duration: 0.239, ease: "none", immediateRender: false }, 14.064);
-      tl.fromTo("#zwp", { scale: 1.12 }, { scale: 1.14, duration: 1.328, ease: "none", immediateRender: false }, 17.029);
-      tl.to("#zwp", { scale: 1.2200000000000002, duration: 0.22, ease: "power3.out" }, 18.361);
-      tl.fromTo("#zwp", { scale: 1.22 }, { scale: 1.24, duration: 0.097, ease: "none", immediateRender: false }, 18.611);
-      tl.fromTo("#zwp", { scale: 1.04 }, { scale: 1.06, duration: 0.649, ease: "none", immediateRender: false }, 21.274);
-      tl.to("#zwp", { scale: 1.1400000000000001, duration: 0.22, ease: "power3.out" }, 21.927);
-      tl.fromTo("#zwp", { scale: 1.14 }, { scale: 1.16, duration: 0.277, ease: "none", immediateRender: false }, 22.177);
-      tl.fromTo("#zwp", { scale: 1.08 }, { scale: 1.12, duration: 4.218, ease: "none", immediateRender: false }, 28.505);
-      tl.fromTo("#zwp", { scale: 1.0 }, { scale: 1.04, duration: 2.866, ease: "none", immediateRender: false }, 32.727);
-      tl.fromTo("#zwp", { scale: 1.1 }, { scale: 1.12, duration: 1.682, ease: "none", immediateRender: false }, 35.597);
-      tl.to("#zwp", { scale: 1.1800000000000002, duration: 0.22, ease: "power3.out" }, 37.283);
-      tl.fromTo("#zwp", { scale: 1.18 }, { scale: 1.2, duration: 2.532, ease: "none", immediateRender: false }, 37.533);
+      tl.fromTo("#zwg, #zwgc", { scale: 1.0 }, { scale: 1.25, duration: 0.5, ease: "power3.out", immediateRender: false }, 0.0);
+      tl.fromTo("#zwg, #zwgc", { scale: 1.25 }, { scale: 1.3, duration: 4.086, ease: "none", immediateRender: false }, 0.5);
+      tl.to("#zwg, #zwgc", { scale: 1.12, duration: 0.34, ease: "expo.out" }, 4.59);
+      tl.fromTo("#zwg, #zwgc", { scale: 1.12 }, { scale: 1.17, duration: 1.028, ease: "none", immediateRender: false }, 4.93);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.0 }, { scale: 1.04, duration: 0.797, ease: "none", immediateRender: false }, 5.962);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.1 }, { scale: 1.14, duration: 2.242, ease: "none", immediateRender: false }, 10.615);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.02 }, { scale: 1.04, duration: 0.918, ease: "none", immediateRender: false }, 12.861);
+      tl.to("#zwp, #zwpc", { scale: 1.1400000000000001, duration: 0.22, ease: "power3.out" }, 13.783);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.14 }, { scale: 1.16, duration: 0.239, ease: "none", immediateRender: false }, 14.033);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.12 }, { scale: 1.14, duration: 1.328, ease: "none", immediateRender: false }, 16.998);
+      tl.to("#zwp, #zwpc", { scale: 1.2200000000000002, duration: 0.22, ease: "power3.out" }, 18.33);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.22 }, { scale: 1.24, duration: 0.097, ease: "none", immediateRender: false }, 18.58);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.04 }, { scale: 1.06, duration: 0.649, ease: "none", immediateRender: false }, 21.054);
+      tl.to("#zwp, #zwpc", { scale: 1.1400000000000001, duration: 0.22, ease: "power3.out" }, 21.707);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.14 }, { scale: 1.16, duration: 0.277, ease: "none", immediateRender: false }, 21.957);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.08 }, { scale: 1.12, duration: 4.171, ease: "none", immediateRender: false }, 28.285);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.0 }, { scale: 1.04, duration: 1.408, ease: "none", immediateRender: false }, 32.46);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.1 }, { scale: 1.14, duration: 1.442, ease: "none", immediateRender: false }, 33.872);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.0 }, { scale: 1.02, duration: 1.861, ease: "none", immediateRender: false }, 35.318);
+      tl.to("#zwp, #zwpc", { scale: 1.08, duration: 0.22, ease: "power3.out" }, 37.183);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.08 }, { scale: 1.1, duration: 0.591, ease: "none", immediateRender: false }, 37.433);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.1 }, { scale: 1.12, duration: 1.161, ease: "none", immediateRender: false }, 38.028);
+      tl.to("#zwp, #zwpc", { scale: 1.2000000000000002, duration: 0.22, ease: "power3.out" }, 39.193);
+      tl.fromTo("#zwp, #zwpc", { scale: 1.2 }, { scale: 1.22, duration: 0.267, ease: "none", immediateRender: false }, 39.443);
       // the Black Friday backdrops: in on a white flash, rows running both ways, out at the cut / on the next words
       tl.set("#flash", { opacity: 0 }, 0);
       tl.set("#bx-bf1", { opacity: 0 }, 0);
-      tl.set("#bx-bf1", { opacity: 1 }, 4.486);
+      tl.set("#bx-bf1", { opacity: 1 }, 4.59);
       tl.set("#bx-bf1", { opacity: 0 }, 5.962);
-      tl.fromTo("#bx-bf1-rows", { scale: 1.22 }, { scale: 1, duration: 0.36, ease: "expo.out", immediateRender: false }, 4.486);
-      tl.fromTo("#flash", { opacity: 0.7 }, { opacity: 0, duration: 0.2, ease: "power2.out", immediateRender: false }, 4.486);
-      tl.fromTo("#bx-bf1-r0", { x: -200 }, { x: -1020, duration: 1.576, ease: "none", immediateRender: false }, 4.486);
-      tl.fromTo("#bx-bf1-r1", { x: -1320 }, { x: -500, duration: 1.576, ease: "none", immediateRender: false }, 4.486);
-      tl.fromTo("#bx-bf1-r2", { x: -200 }, { x: -1020, duration: 1.576, ease: "none", immediateRender: false }, 4.486);
-      tl.fromTo("#bx-bf1-r3", { x: -1320 }, { x: -500, duration: 1.576, ease: "none", immediateRender: false }, 4.486);
-      tl.fromTo("#bx-bf1-r4", { x: -200 }, { x: -1020, duration: 1.576, ease: "none", immediateRender: false }, 4.486);
-      tl.fromTo("#bx-bf1-r7", { x: -1320 }, { x: -500, duration: 1.576, ease: "none", immediateRender: false }, 4.486);
-      tl.fromTo("#bx-bf1-r8", { x: -200 }, { x: -1020, duration: 1.576, ease: "none", immediateRender: false }, 4.486);
+      tl.fromTo("#bx-bf1-rows", { scale: 1.25 }, { scale: 1, duration: 0.38, ease: "expo.out", immediateRender: false }, 4.59);
+      tl.fromTo("#flash", { opacity: 0.75 }, { opacity: 0, duration: 0.22, ease: "power2.out", immediateRender: false }, 4.59);
+      tl.fromTo("#bx-bf1-r0", { x: -2122 }, { x: -2328, duration: 1.372, ease: "none", immediateRender: false }, 4.59);
+      tl.fromTo("#bx-bf1-r1", { x: -2503 }, { x: -2297, duration: 1.372, ease: "none", immediateRender: false }, 4.59);
+      tl.fromTo("#bx-bf1-r2", { x: -2122 }, { x: -2328, duration: 1.372, ease: "none", immediateRender: false }, 4.59);
+      tl.fromTo("#bx-bf1-r3", { x: -2503 }, { x: -2297, duration: 1.372, ease: "none", immediateRender: false }, 4.59);
+      tl.fromTo("#bx-bf1-r4", { x: -2122 }, { x: -2328, duration: 1.372, ease: "none", immediateRender: false }, 4.59);
       tl.set("#bx-eur", { opacity: 0 }, 0);
-      tl.set("#bx-eur", { opacity: 1 }, 32.727);
-      tl.set("#bx-eur", { opacity: 0 }, 34.106);
-      tl.fromTo("#bx-eur-rows", { scale: 1.22 }, { scale: 1, duration: 0.36, ease: "expo.out", immediateRender: false }, 32.727);
-      tl.fromTo("#flash", { opacity: 0.7 }, { opacity: 0, duration: 0.2, ease: "power2.out", immediateRender: false }, 32.727);
-      tl.fromTo("#bx-eur-r0", { x: -200 }, { x: -762, duration: 1.479, ease: "none", immediateRender: false }, 32.727);
-      tl.fromTo("#bx-eur-r1", { x: -1062 }, { x: -500, duration: 1.479, ease: "none", immediateRender: false }, 32.727);
-      tl.fromTo("#bx-eur-r2", { x: -200 }, { x: -762, duration: 1.479, ease: "none", immediateRender: false }, 32.727);
-      tl.fromTo("#bx-eur-r5", { x: -1062 }, { x: -500, duration: 1.479, ease: "none", immediateRender: false }, 32.727);
-      tl.fromTo("#bx-eur-r6", { x: -200 }, { x: -762, duration: 1.479, ease: "none", immediateRender: false }, 32.727);
+      tl.set("#bx-eur", { opacity: 1 }, 32.46);
+      tl.set("#bx-eur", { opacity: 0 }, 33.872);
+      tl.fromTo("#flash", { opacity: 0.4 }, { opacity: 0, duration: 0.16, ease: "power2.out", immediateRender: false }, 32.46);
+      tl.fromTo("#flash", { opacity: 0.3 }, { opacity: 0, duration: 0.14, ease: "power2.out", immediateRender: false }, 33.872);
+      tl.fromTo("#bx-eur-r0", { x: 306 }, { x: -994, duration: 0.32, ease: "expo.out", immediateRender: false }, 32.46);
+      tl.fromTo("#bx-eur-r0", { x: -994 }, { x: -1206, duration: 1.092, ease: "none", immediateRender: false }, 32.78);
+      tl.fromTo("#bx-eur-r1", { x: -2506 }, { x: -1206, duration: 0.32, ease: "expo.out", immediateRender: false }, 32.46);
+      tl.fromTo("#bx-eur-r1", { x: -1206 }, { x: -994, duration: 1.092, ease: "none", immediateRender: false }, 32.78);
+      tl.fromTo("#bx-eur-r2", { x: 306 }, { x: -994, duration: 0.32, ease: "expo.out", immediateRender: false }, 32.46);
+      tl.fromTo("#bx-eur-r2", { x: -994 }, { x: -1206, duration: 1.092, ease: "none", immediateRender: false }, 32.78);
+      tl.fromTo("#bx-eur-r3", { x: -2506 }, { x: -1206, duration: 0.32, ease: "expo.out", immediateRender: false }, 32.46);
+      tl.fromTo("#bx-eur-r3", { x: -1206 }, { x: -994, duration: 1.092, ease: "none", immediateRender: false }, 32.78);
       tl.set("#bx-bf2", { opacity: 0 }, 0);
-      tl.set("#bx-bf2", { opacity: 1 }, 37.253);
-      tl.set("#bx-bf2", { opacity: 0 }, 38.307);
-      tl.fromTo("#bx-bf2-rows", { scale: 1.22 }, { scale: 1, duration: 0.36, ease: "expo.out", immediateRender: false }, 37.253);
-      tl.fromTo("#flash", { opacity: 0.7 }, { opacity: 0, duration: 0.2, ease: "power2.out", immediateRender: false }, 37.253);
-      tl.fromTo("#bx-bf2-r0", { x: -200 }, { x: -800, duration: 1.154, ease: "none", immediateRender: false }, 37.253);
-      tl.fromTo("#bx-bf2-r1", { x: -1100 }, { x: -500, duration: 1.154, ease: "none", immediateRender: false }, 37.253);
-      tl.fromTo("#bx-bf2-r2", { x: -200 }, { x: -800, duration: 1.154, ease: "none", immediateRender: false }, 37.253);
-      tl.fromTo("#bx-bf2-r3", { x: -1100 }, { x: -500, duration: 1.154, ease: "none", immediateRender: false }, 37.253);
-      tl.fromTo("#bx-bf2-r4", { x: -200 }, { x: -800, duration: 1.154, ease: "none", immediateRender: false }, 37.253);
-      tl.fromTo("#bx-bf2-r7", { x: -1100 }, { x: -500, duration: 1.154, ease: "none", immediateRender: false }, 37.253);
-      tl.fromTo("#bx-bf2-r8", { x: -200 }, { x: -800, duration: 1.154, ease: "none", immediateRender: false }, 37.253);
+      tl.set("#bx-bf2", { opacity: 1 }, 37.153);
+      tl.set("#bx-bf2", { opacity: 0 }, 38.028);
+      tl.fromTo("#bx-bf2-rows", { scale: 0.82 }, { scale: 1, duration: 0.3, ease: "back.out(2)", immediateRender: false }, 37.153);
+      tl.fromTo("#bx-bf2-rows", { x: 0 }, { keyframes: [{ x: -18, duration: 0.04 }, { x: 14, duration: 0.05 }, { x: -9, duration: 0.05 }, { x: 5, duration: 0.05 }, { x: 0, duration: 0.05 }], immediateRender: false }, 37.153);
+      tl.fromTo("#flash", { opacity: 0.3 }, { opacity: 0, duration: 0.14, ease: "power2.out", immediateRender: false }, 38.028);
+      tl.fromTo("#bx-bf2-r0", { x: -2159 }, { x: -2291, duration: 0.875, ease: "none", immediateRender: false }, 37.153);
+      tl.fromTo("#bx-bf2-r1", { x: -2466 }, { x: -2334, duration: 0.875, ease: "none", immediateRender: false }, 37.153);
+      tl.fromTo("#bx-bf2-r2", { x: -2159 }, { x: -2291, duration: 0.875, ease: "none", immediateRender: false }, 37.153);
+      tl.fromTo("#bx-bf2-r3", { x: -2466 }, { x: -2334, duration: 0.875, ease: "none", immediateRender: false }, 37.153);
+      tl.fromTo("#bx-bf2-r4", { x: -2159 }, { x: -2291, duration: 0.875, ease: "none", immediateRender: false }, 37.153);
       window.__timelines["main"] = tl;
     </script>
   </body>

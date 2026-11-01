@@ -26,11 +26,11 @@ cp "$VSL"/assets/img/logo-nawar.png assets/img/
 cp "$VSL"/assets/fonts/poppins-latin-{600,700,800,900}-normal.woff2 "$VSL"/assets/fonts/inter-latin-{500,600,700}-normal.woff2 assets/fonts/
 cp "$VSL/assets/vendor/gsap.min.js" assets/vendor/
 cp "$VSL"/assets/sfx/{whoosh,whoosh-short,glitch-1-short,pop,click,click-soft,chime,error,notification,ping,sparkle,typing,key-press}.mp3 assets/sfx/
-python3 tools/sfx_impact.py
+python3 tools/sfx_impact.py      # the Black Friday hit and the page turn (synthesised)
 
 echo "word times, edit, soundtrack, compositions"
 python3 tools/align_fix.py && python3 tools/edit.py && python3 tools/libro_clip.py && python3 tools/build_audio.py
 echo "the girl cut out for the Black Friday backdrops (a few minutes on CPU)"
 python3 tools/mattes.py
 python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc-bf-v5.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc-bf-v5-1.mp4"
