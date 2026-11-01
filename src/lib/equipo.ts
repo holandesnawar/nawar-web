@@ -49,4 +49,13 @@ export const EQUIPO: MiembroEquipo[] = [
     foto: '/img/equipo/luna.webp',
     bio: '**Nativa** y profesora en la escuela. Da la **clase semanal** y la **masterclass**, y se encarga también de los **módulos**.',
   },
+  {
+    // 01/11: nombre y papel, del usuario («equipo de admisiones»). La foto
+    // venía en círculo con esquinas negras: recortado y puesto sobre el mismo
+    // fondo azul que las demás. La bio solo cuenta qué hace admisiones.
+    nombre: 'Diego Sosa',
+    rol: 'Equipo de admisiones',
+    foto: '/img/equipo/diego.webp',
+    bio: 'Del **equipo de admisiones**. Te atiende en tu **llamada de admisión** y resuelve todas tus dudas.',
+  },
 ]

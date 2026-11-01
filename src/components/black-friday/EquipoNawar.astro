@@ -174,6 +174,17 @@ const conNegrita = (t: string) => escapar(t).replace(/\*\*(.+?)\*\*/g, '<strong>
   .eq-fila li { flex: 0 0 calc((100% - 60px) / 4); min-width: 220px; scroll-snap-align: start; }
   /* Con más de cuatro, se desliza: que empiece por la izquierda. */
   .eq-fila[data-n='5'], .eq-fila[data-n='6'], .eq-fila[data-n='7'], .eq-fila[data-n='8'] { justify-content: flex-start; }
+  /* Cinco (01/11, entra Diego): en el ordenador, los cinco en una fila. Con
+     cuatro por pantalla el quinto quedaba escondido a la derecha y, sin
+     flechas en el ordenador, no se sabía que estaba. */
+  @media (min-width: 1024px) {
+    .eq-marco:has(.eq-fila[data-n='5']) { max-width: 1152px; }
+    .eq-fila[data-n='5'] { justify-content: center; gap: 18px; overflow-x: visible; }
+    .eq-fila[data-n='5'] li { flex: 0 0 calc((100% - 72px) / 5); min-width: 0; }
+    .eq-fila[data-n='5'] .eq-nombre strong { font-size: 17px; }
+    .eq-fila[data-n='5'] .eq-nombre span { font-size: 13px; }
+    .eq-fila[data-n='5'] .eq-bio { padding: 18px 16px; font-size: 14px; line-height: 1.5; }
+  }
 
   .eq-card {
     position: relative; display: block; width: 100%; aspect-ratio: 3 / 4; padding: 0; border: 0; border-radius: 20px; overflow: hidden;
