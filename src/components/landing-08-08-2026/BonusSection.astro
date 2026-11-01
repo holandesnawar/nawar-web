@@ -12,7 +12,11 @@ const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_N
 // dibujo. Peor que la foto, pero nunca un agujero.
 // Vaciar una constante deja directamente la maqueta dibujada.
 const CLASES_IMG   = 'https://docs.holandesnawar.com/img/Landing/bonus.clases.png'
-const COMUNIDAD_IMG = 'https://docs.holandesnawar.com/img/Landing/bonus.comun.png'
+// La de la comunidad se puede cambiar desde la página: /oferta (Black
+// Friday) lleva otra (`comunidadImg`); sin la prop, la de siempre.
+interface Props { comunidadImg?: string }
+const { comunidadImg } = Astro.props
+const COMUNIDAD_IMG = comunidadImg ?? 'https://docs.holandesnawar.com/img/Landing/bonus.comun.png'
 const SOPORTE_IMG  = 'https://docs.holandesnawar.com/img/Landing/bonus.soporte.png'
 
 // Bonus 03: tres capturas en abanico, una encima de otra. El PRIMER
