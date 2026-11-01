@@ -52,10 +52,30 @@ def offer():
     body = f"""    <div id="f-drow" class="f-row"><div id="f-date" class="f-ypill">{icon('cal')}<span>Hasta el <b>30 de noviembre</b></span></div></div>"""
     js = """
       tl.fromTo(q("date"), { opacity: 0, y: 26, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, «TRE» - 0.08);
-      tl.to(q("date"), { opacity: 0, y: 16, duration: 0.18, ease: "power2.in" }, «BF» - 0.24);
+      tl.to(q("date"), { opacity: 0, y: 16, duration: 0.16, ease: "power2.in" }, «BF» - 0.32);   // gone before the backdrop
 """
     sfx = [(c["TRE"] - 0.08, "pop", 0.3)]
     return comp("offer", d, P, css, body, js, c), t0, d, sfx
+
+
+def pron():
+    """«cómo pronunciar los sonidos…» on her face, right after the ebook: the list's last item, «✓ Pronunciación», as a
+    white pill (the same place as the deadline pill), from «cómo» to just after «sonidos»."""
+    P = "n"; t_c = next(w["t"] for w in WORDS if norm(w["text"]) == "como")
+    t_s = next(w for w in WORDS if norm(w["text"]) == "sonidos")
+    t0 = round(t_c - 0.08, 3); d = round(t_s["end"] + 0.5 - t0, 3)
+    c = dict(END=d)
+    css = """
+    #n-row { top: 1120px; }
+    #n-pill { gap: 14px; height: 88px; padding: 0 38px 0 22px; font-size: 38px; }
+    #n-pill svg { display: block; width: 48px; height: 48px; }
+"""
+    body = f"""    <div id="n-row" class="n-row"><div id="n-pill" class="n-wpill">{icon('check')}<span>Pronunciación</span></div></div>"""
+    js = """
+      tl.fromTo(q("pill"), { opacity: 0, y: 24, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 0.02);
+      tl.to(q("pill"), { opacity: 0, y: 14, duration: 0.18, ease: "power2.in" }, «END» - 0.2);
+"""
+    return comp("pron", d, P, css, body, js, c), t0, d, [(0.02, "pop", 0.2)]
 
 
 def outro():
@@ -100,6 +120,7 @@ def outro():
 SHOW = {}
 HL_PHRASES = []   # no coloured words: clean white captions, as in UGC #2 (pages still never split these:)
 KEEP = [["black", "friday"], ["70", "paginas"], ["30", "de", "noviembre"], ["lista", "prioritaria"]]
+HIDE = [("ins-02", ["sin", "practicar"])]   # v6.3: «sin practicar» was on screen twice, headline over caption (0:16)
 GLUE = {"y", "que", "con", "los", "las", "la", "el", "de", "del", "por", "en", "un", "una", "te", "tu", "cuando", "si", "a", "al", "lo", "ni"}
 CLITIC = {"te", "me", "se", "le", "les", "nos", "os", "lo"}      # a pronoun before its verb: never the last word of a page
 
@@ -163,6 +184,10 @@ def captions(window=None):
         if ph: pages += split(ph)
     pages = [[dict(WORDS[i], show=SHOW.get(nw[i], WORDS[i]["text"]) + (WORDS[i].get("punct") or "").replace(":", "").replace(";", ""),
                    hl=i in hl) for i in pg] for pg in pages]
+    for iid, words in HIDE:                                # a caption the graphic's headline already says, right above it
+        ins = INS[iid]
+        pages = [pg for pg in pages if not ([norm(w["text"]) for w in pg] == words
+                                            and ins["start"] <= pg[0]["t"] < ins["start"] + ins["duration"])]
     off, total = 0.0, TOTAL
     if window:
         off, total = window[0], window[1] - window[0]
@@ -521,7 +546,7 @@ def main():
                     (b["t_in"] - 0.09, "impact", 0.3) if b["name"] == "eur" else (b["t_in"], "impact", 0.4)]
         if b["out_flash"]:
             sfx_all.append((b["t_out"] - 0.06, "whoosh-short", 0.1))
-    for cid, fn in (("offer", offer), ("outro", outro)):
+    for cid, fn in (("pron", pron), ("offer", offer), ("outro", outro)):
         html, t0, d, osfx = fn()
         open(os.path.join(ROOT, "compositions", f"{cid}.html"), "w").write(html)
         sfx_all += [(t0 + t, name, vol) for t, name, vol in osfx]

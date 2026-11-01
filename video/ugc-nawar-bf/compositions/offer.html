@@ -88,7 +88,7 @@
       const q = (id) => document.getElementById("f-" + id);
 
       tl.fromTo(q("date"), { opacity: 0, y: 26, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 1.982 - 0.08);
-      tl.to(q("date"), { opacity: 0, y: 16, duration: 0.18, ease: "power2.in" }, 4.802 - 0.24);
+      tl.to(q("date"), { opacity: 0, y: 16, duration: 0.16, ease: "power2.in" }, 4.802 - 0.32);   // gone before the backdrop
 
       window.__timelines["offer"] = tl;
     })();

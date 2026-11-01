@@ -17,9 +17,14 @@ hair, at 20–60 %). refine() never touches what RVM is sure of (alpha ≥ 0.9) 
 a plate of the room (per pixel, the median of the take over ±6 s over the frames where RVM says that pixel is room) is
 compared with each frame, and wherever she is see-through, a pixel that matches the plate fades out (smoothly, never a
 hard notch; averaged over 3 frames where the picture is still, so it cannot flicker nor carry onto a moving hand); and
-where the furniture sits (FURNITURE), whatever is faint, still and apart from her solid outline goes.
-Inside her, nothing is ever touched — no colour rules (v6.1: the old colour rules bit her hands and hair). Crumbs
-left beside her go; by the vase her soft edge takes her own colour, not the flowers' (devase()).
+where the furniture sits (FURNITURE), whatever is faint, still and apart from her solid outline goes. Away from the
+furniture the room test only acts where she is mostly see-through, judged over a patch (never strand by strand: the
+gaps between hair strands would shimmer). In the gaps between her arms and her body (take p) the red leather chair goes
+by its colour, however sure RVM is (leather(): no skin, nail or jeans colour is that red), and her arm blurred over it
+stays solid. By the vase, a petal RVM counts as her goes when it is pure petal colour and still or in its place
+(flower_map()); petal colour in her hair becomes her hair's, and her soft edge there takes her own colour (devase()).
+Inside her, nothing else is touched — no colour rules on her (v6.1: the old ones bit her hands and hair). Crumbs left
+beside her go.
 Writes assets/video/mattes.json. The model (.raw/rvm_resnet50_fp32.onnx, ~100 MB) is downloaded once from the RVM
 releases. `python3 tools/mattes.py --clean [names]` re-runs refine() on the saved raw mattes (.matte/<name>-raw.webm).
 """
@@ -37,7 +42,9 @@ DIFF = (10, 30)                   # max-channel difference to the room plate: be
 # the beige sofa by her left shoulder, the vase of flowers by her right one. There, RVM's faint leftovers (see refine())
 # go: see-through (alpha < 0.75), still (the picture there doesn't change from the frames around) and more than 5 px
 # from her solid outline — her hair against her and her moving hands never qualify.
-FURNITURE = [(0, 345, 740, 1000), (0, 220, 960, 1250), (800, 1080, 840, 1250)]
+FURNITURE = {k: {"chair": (0, 345, 740, 1000), "sofa": (0, 220, 960, 1250), "vase": (800, 1080, 840, 1250)} for k in "gp"}
+FURNITURE["p"].update(leather_l=(0, 330, 1550, 1920), leather_r=(840, 1010, 1760, 1920))   # the red leather chair in the
+                                  # gaps between her arms and her body (take p)
 
 
 def take_frames(take, a, b, fps=None):
@@ -109,13 +116,48 @@ def plate(sess, take, f0, f1):
     return pl
 
 
-def refine(orig, al, pl):
+def flowers(c, loose=False):
+    """the vase's red and yellow petals (her skin: R/G ≈ 1.3–1.4, B/G ≈ 0.8, never this; her hair is dark and grey).
+    loose: also the petals' darker mixes with her hair."""
+    c = c.astype(np.float32); r, g, b = c[..., 0], c[..., 1], c[..., 2]
+    if loose:
+        return ((r > 1.6 * g) & (r > 1.5 * b) & (r > 35)) | ((b < 0.5 * g) & (g > 60) & (r > 0.8 * g))
+    return ((r > 1.8 * g) & (r > 1.6 * b) & (r > 90)) | ((r > 150) & (g > 120) & (b < 0.55 * g))
+
+
+def leather(c):
+    """the dark red leather chair seen between her arms and her body (take p): R/G ≥ 2.3 down to its deepest shadow; her
+    skin is R/G ≈ 1.3–1.4 and ≤ 1.95 in shadow, her red nail art is bright — never this. blurred: also its dark brown
+    where her moving arm smears over it (R < 75, R/B ≥ 2.2) — her brown hair and her bracelet's dark glints are that
+    colour too, so only where RVM is unsure (see refine())."""
+    c = c.astype(np.float32); r, g, b = c[..., 0], c[..., 1], c[..., 2]
+    red = (r > 2.2 * g) & (r > 2.2 * b) & (r > 12) & (r < 170)
+    return red, red | ((r > 1.5 * g) & (r > 2.2 * b) & (r > 12) & (r < 75))
+
+
+def flower_map(orig, al, pl, take):
+    """where the vase's petals are in this clip (the camera never moves): the plate's petals, and petal colour that stays
+    put over 3+ frames where she is not solid — her hands and her nail art move; grown by 10 px, inside the vase box."""
+    from scipy import ndimage as ndi
+    x0, x1, y0, y1 = FURNITURE[take]["vase"]
+    box = np.zeros((H, W), bool); box[y0:y1, x0:x1] = True
+    seen = sum((flowers(o, True) & (a < 0.97)).astype(np.int16) for o, a in zip(orig, al))
+    pf = flowers(np.nan_to_num(pl).astype(np.uint8)) & ~np.isnan(pl[..., 0])
+    return box & ndi.binary_dilation((seen >= 3) | pf, iterations=10)
+
+
+def refine(orig, al, pl, take, fmap):
     """orig: the take's own frames (what the room test compares with the plate — not RVM's foreground estimate)."""
     from scipy import ndimage as ndi
-    n = len(al); fac = np.ones_like(al)
-    box = np.zeros((H, W), bool)
-    for x0, x1, y0, y1 in FURNITURE:
-        box[y0:y1, x0:x1] = True
+    n = len(al); fac = np.ones_like(al); force = np.ones_like(al); lift = np.zeros_like(al)
+    F = FURNITURE[take]
+    def mask(*names):
+        m = np.zeros((H, W), bool)
+        for k in names:
+            if k in F:
+                x0, x1, y0, y1 = F[k]; m[y0:y1, x0:x1] = True
+        return m
+    box, vase, lea, lea_l = mask("chair", "sofa", "vase"), mask("vase"), mask("leather_l", "leather_r"), mask("leather_l")
     luma = [(0.299 * f[..., 0] + 0.587 * f[..., 1] + 0.114 * f[..., 2]).astype(np.float32) for f in orig]
     stills = []
     for k in range(n):
@@ -126,19 +168,35 @@ def refine(orig, al, pl):
         faint = box & (a < 0.75) & still
         g = np.clip((away - 5) / 7, 0, 1)                      # 5 px from her: kept … 12 px: gone
         fur = np.where(faint, 1 - g, 1.0)
-        cand = a < 0.9                                         # only where RVM itself is unsure
         with np.errstate(invalid="ignore"):
             diff = np.max(np.abs(orig[k].astype(np.float32) - pl), axis=-1)          # NaN where there is no plate
         t = np.clip((diff - DIFF[0]) / (DIFF[1] - DIFF[0]), 0, 1); t = t * t * (3 - 2 * t)   # smoothstep
-        t = np.where(np.isnan(diff), 1.0, t)
+        t = ndi.gaussian_filter(np.where(np.isnan(diff), 1.0, t), 2.5)   # judged over a patch, not strand by strand
+        cand = np.where(box, a < 0.9, a < 0.5)                 # by the furniture: wherever RVM is unsure; elsewhere only
+        cand &= ~vase | still                                  # where she is mostly see-through; by the vase only if still
         fac[k] = np.where(a >= 0.9, 1.0, np.where(cand, t, 1.0) * fur)   # what RVM is sure of is never touched
+        if lea.any():                                          # the gaps between her arms and her body: the red leather chair
+            red, brown = leather(orig[k])                     # (the blurred brown: only by her left arm, where RVM is unsure)
+            hide = ndi.binary_closing(ndi.binary_opening(red | (brown & lea_l & (a < 0.95)), np.ones((3, 3))), np.ones((7, 7))) & lea
+            lab, m = ndi.label(hide)                           # (its pale cracks too) goes, however sure RVM is — the patches of
+            if m:                                              # it, not a thin reddish shadow along her arm; small holes in it
+                sz = ndi.sum(hide, lab, range(1, m + 1)); hide &= ~np.isin(lab, 1 + np.flatnonzero(sz < 300))   # filled
+            holes, m = ndi.label(ndi.binary_fill_holes(hide) & ~hide)
+            if m:
+                sz = ndi.sum(holes > 0, holes, range(1, m + 1)); hide |= np.isin(holes, 1 + np.flatnonzero(sz < 600))
+            hide = ndi.gaussian_filter(hide.astype(np.float32), 1.5)   # RVM is; what isn't leather there is her arm, top or jeans,
+            force[k] = 1 - hide                                # blurred by the movement: never see-through
+            lift[k] = np.where(lea, ndi.gaussian_filter(np.clip((a - 0.4) / 0.25, 0, 1), 1.0) * (1 - hide), 0)
+        petal = fmap & flowers(orig[k]) & (still | (diff < 25))   # a petal itself (pure petal colour, still or in its place)
+        petal = ndi.binary_opening(petal, np.ones((3, 3)))     # RVM counts as her goes; a strand of hair over it is a mix, not
+        force[k] *= 1 - ndi.gaussian_filter(petal.astype(np.float32), 1.0)   # pure petal colour, and stays
     mean3 = (np.concatenate([fac[:1], fac[:-1]]) + fac + np.concatenate([fac[1:], fac[-1:]])) / 3   # over 3 frames: no
     fac = np.where(np.stack(stills), mean3, fac)               # flicker — only where the picture is still (never onto a moving hand)
     fac = np.where(al >= 0.9, 1.0, fac)
     out = []
     for k in range(n):
         f = ndi.gaussian_filter(fac[k], 1.5)
-        a = np.where(al[k] >= 0.9, al[k], ndi.gaussian_filter(al[k] * f, 0.5))
+        a = np.maximum(np.where(al[k] >= 0.9, al[k], ndi.gaussian_filter(al[k] * f, 0.5)), lift[k]) * force[k]
         lab, m = ndi.label(a > 0.16)                           # crumbs beside her go
         if m > 1:
             sz = ndi.sum(np.ones_like(a), lab, range(1, m + 1))
@@ -147,18 +205,31 @@ def refine(orig, al, pl):
     return out
 
 
-def devase(rgb, al):
-    """by the flower vase, her soft edge takes the colour of her nearest solid pixel (RVM's foreground estimate there
-    picks up the red and yellow of the flowers behind)."""
+def devase(rgb, al, orig, take, fmap):
+    """by the flower vase, her soft edge takes the colour of her nearest pixel that is not petal-coloured (her own strands
+    of hair are soft there: they are their own source); and where the petals are (flower_map()), petal colour in her
+    hair becomes her hair's — a smooth blend of the dark pixels around it, never a patchwork of copied ones. Only the
+    colour changes, never the shape."""
     from scipy import ndimage as ndi
-    x0, x1, y0, y1 = FURNITURE[2]
+    x0, x1, y0, y1 = FURNITURE[take]["vase"]
     box = np.zeros((H, W), bool); box[y0:y1, x0:x1] = True
     out = rgb.copy()
     for k, a in enumerate(al):
-        soft = box & (a < 0.97) & (a > 0.01)
-        if soft.any() and (a >= 0.97).any():
-            _, (iy, ix) = ndi.distance_transform_edt(a < 0.97, return_indices=True)
-            out[k][soft] = rgb[k][iy[soft], ix[soft]]
+        tint = flowers(rgb[k], True) | flowers(orig[k], True)
+        src = (a >= 0.5) & ~tint
+        fix = box & (a > 0.01) & (a < 0.97) & ~tint
+        if fix.any() and src.any():
+            _, (iy, ix) = ndi.distance_transform_edt(~src, return_indices=True)
+            out[k][fix] = rgb[k][iy[fix], ix[fix]]
+        dye = box & (a > 0.01) & tint & (fmap | (a < 0.97))
+        if dye.any() and src.any():
+            c = rgb[k].astype(np.float32)
+            w = src * (1 - c.mean(-1) / 255) ** 2              # her hair (dark) leads the blend
+            num = np.stack([ndi.gaussian_filter(c[..., j] * w, 8) for j in range(3)], -1)
+            den = ndi.gaussian_filter(w, 8)[..., None]
+            _, (iy, ix) = ndi.distance_transform_edt(~src, return_indices=True)
+            fill = np.where(den > 1e-3, num / np.maximum(den, 1e-6), c[iy, ix])
+            out[k][dye] = fill[dye].clip(0, 255).astype(np.uint8)
     return out
 
 
@@ -192,8 +263,15 @@ def main(only=None, clean_only=False):
             rgb, al = decode(rawf); note = "re-refined"
         else:
             rgb, al, s = rvm(sess, tk, f0, f1); encode(rgb, al, rawf); note = f"RVM from frame {s}"
-        ref = refine(take_frames(tk, f0, f1), al, plate(sess, tk, f0, f1))
-        encode(devase(rgb, ref), ref, dst)
+        orig = take_frames(tk, f0, f1)
+        plf = os.path.join(tmp, f"{name}-plate.npy")
+        if clean_only and os.path.exists(plf):
+            pl = np.load(plf)
+        else:
+            pl = plate(sess, tk, f0, f1); np.save(plf, pl)
+        fmap = flower_map(orig, al, pl, tk)
+        ref = refine(orig, al, pl, tk, fmap)
+        encode(devase(rgb, ref, orig, tk, fmap), ref, dst)
         print(f"  {name}: take {tk} frames {f0}–{f1} ({note}) → {dst}", flush=True)
     json.dump(out, open(os.path.join(ROOT, "assets", "video", "mattes.json"), "w"), indent=1)
 
