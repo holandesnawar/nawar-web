@@ -21,8 +21,10 @@ where the furniture sits (FURNITURE), whatever is faint, still and apart from he
 furniture the room test only acts where she is mostly see-through, judged over a patch (never strand by strand: the
 gaps between hair strands would shimmer). In the gaps between her arms and her body (take p) the red leather chair goes
 by its colour, however sure RVM is (leather(): no skin, nail or jeans colour is that red; its near-black shadow only by
-her left arm, as her black hair falls by her right one), and her arm blurred over it stays solid. By the vase, a petal RVM counts as her goes when it is pure petal colour and still or in its place
-(flower_map()); petal colour in her hair becomes her hair's, and her soft edge there takes her own colour (devase()).
+her left arm, as her black hair falls by her right one), and her arm blurred over it stays solid; the carved chair's
+wood fades where she is see-through over it (wood()). By the vase, a petal RVM counts as her goes when it is pure
+petal colour and still or in its place (flower_map()); petal colour in her hair becomes her hair's, and her soft edge
+there takes her own colour (devase()).
 Inside her, nothing else is touched — no colour rules on her (v6.1: the old ones bit her hands and hair). Crumbs left
 beside her go.
 Writes assets/video/mattes.json. The model (.raw/rvm_resnet50_fp32.onnx, ~100 MB) is downloaded once from the RVM
@@ -132,9 +134,18 @@ def leather(c):
     colour too, so only where RVM is unsure (see refine()). deep: its near-black shadow, down to (4, 0, 1) — her black
     hair is that colour too (7, 2, 2), so only by her left arm, where her hair never reaches."""
     c = c.astype(np.float32); r, g, b = c[..., 0], c[..., 1], c[..., 2]
-    red = (r > 2.2 * g) & (r > 2.2 * b) & (r > 12) & (r < 170)
+    red = (r > 2.2 * g) & (r > 2.2 * b) & (r > 12) & (r < 90)    # (lit, it stays under R 55; her bangle's copper face is 110–140)
     deep = (r > 2.2 * g) & (r > 2.2 * b) & (r - np.maximum(g, b) >= 3) & (r <= 12)
     return red, red | ((r > 1.5 * g) & (r > 2.2 * b) & (r > 12) & (r < 75)), deep
+
+
+def wood(c):
+    """how much a pixel is the carved chair's orange-brown wood (R/G 1.6–2.1, B/G ≈ 0.45–0.55, R 60–130), 0–1; her skin
+    is R/G ≈ 1.35, B/G ≈ 0.8 (0), her hair darker than R 45 (0). (Not by her right arm: her tanned forearm in shadow
+    comes close to it there.)"""
+    c = c.astype(np.float32); r, g, b = c[..., 0], c[..., 1], np.maximum(c[..., 2], 0)
+    g1 = np.maximum(g, 1)
+    return (np.clip((r / g1 - 1.4) / 0.3, 0, 1) * np.clip((0.7 - b / g1) / 0.15, 0, 1) * (r > 45) * (r < 160)).astype(np.float32)
 
 
 def flower_map(orig, al, pl, take):
@@ -160,6 +171,7 @@ def refine(orig, al, pl, take, fmap):
                 x0, x1, y0, y1 = F[k]; m[y0:y1, x0:x1] = True
         return m
     box, vase, lea, lea_l = mask("chair", "sofa", "vase"), mask("vase"), mask("leather_l", "leather_r"), mask("leather_l")
+    chair = mask("chair")
     luma = [(0.299 * f[..., 0] + 0.587 * f[..., 1] + 0.114 * f[..., 2]).astype(np.float32) for f in orig]
     stills = []
     for k in range(n):
@@ -191,6 +203,9 @@ def refine(orig, al, pl, take, fmap):
             hide = ndi.gaussian_filter(hide.astype(np.float32), 1.5)   # RVM is; what isn't leather there is her arm, top or jeans,
             force[k] = 1 - hide                                # blurred by the movement: never see-through
             lift[k] = np.where(lea, ndi.gaussian_filter(np.clip((a - 0.4) / 0.25, 0, 1), 1.0) * (1 - hide), 0)
+        wd = ndi.gaussian_filter(wood(orig[k]), 3.0)           # the carved chair's wood by her left shoulder, where she is
+        force[k] *= np.where(chair & (a < 0.9), 1 - wd, 1.0)   # see-through over it (her hand sweeping past): faded by how
+                                                               # much of the patch around is wood — smooth, never a notch
         petal = fmap & flowers(orig[k]) & (still | (diff < 25))   # a petal itself (pure petal colour, still or in its place)
         petal = ndi.binary_opening(petal, np.ones((3, 3)))     # RVM counts as her goes; a strand of hair over it is a mix, not
         force[k] *= 1 - ndi.gaussian_filter(petal.astype(np.float32), 1.0)   # pure petal colour, and stays
@@ -225,7 +240,8 @@ def devase(rgb, al, orig, take, fmap):
         if fix.any() and src.any():
             _, (iy, ix) = ndi.distance_transform_edt(~src, return_indices=True)
             out[k][fix] = rgb[k][iy[fix], ix[fix]]
-        dye = box & (a > 0.01) & tint & (fmap | (a < 0.97))
+        luma = rgb[k].astype(np.float32) @ np.array([0.299, 0.587, 0.114], np.float32)
+        dye = box & (a > 0.01) & tint & (fmap | (a < 0.97)) & (luma < 110)   # (her reddish skin is brighter: never dyed)
         if dye.any() and src.any():
             c = rgb[k].astype(np.float32)
             w = src * (1 - c.mean(-1) / 255) ** 2              # her hair (dark) leads the blend
