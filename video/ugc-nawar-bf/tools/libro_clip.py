@@ -49,13 +49,21 @@ def key(src, dst, W=1920, H=1080):
     enc = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}", "-r", "30", "-i", "-",
                             "-c:v", "libvpx-vp9", "-pix_fmt", "yuva420p", "-b:v", "0", "-crf", "16", "-auto-alt-ref", "0", "-row-mt", "1", dst],
                            stdin=subprocess.PIPE)
-    for f in fr:
-        rgb = f.astype(np.float32); m = rgb.max(-1)
-        soft = np.clip((m - 30) / 30, 0, 1)                                  # distance from black (the faint contact shadow, m 25–32, goes)
+    def silhouette(f):
+        m = f.max(-1)
         book = ndi.binary_fill_holes(ndi.binary_closing(m > 45, iterations=2))          # the book itself (its darkest edge is navy)
         lab, n = ndi.label(book)
         if n > 1:                                                            # specks of the faint reflection under it go
             sz = ndi.sum(np.ones(book.shape), lab, range(1, n + 1)); book = np.isin(lab, 1 + np.flatnonzero(sz >= 0.05 * sz.max()))
+        return book
+    books = [silhouette(f) for f in fr]
+    for k, f in enumerate(fr):
+        rgb = f.astype(np.float32); m = rgb.max(-1)
+        soft = np.clip((m - 30) / 30, 0, 1)                                  # distance from black (the faint contact shadow, m 25–32, goes)
+        nb = [books[j] for j in (k - 1, k + 1) if 0 <= j < len(books)]       # where the book is in the frames on both sides — and it
+        both = nb[0] & nb[-1]                                                # holds still there — it is here too: on the first frame the
+        still = both.sum() > 0.98 * (nb[0] | nb[-1]).sum()                   # cover's dark canal water touches its bottom edge and
+        book = books[k] | both if still else books[k]                        # would read as a bite out of it (never while a page flips)
         solid = ndi.binary_erosion(book, iterations=2)
         a = np.maximum(soft, solid.astype(np.float32)) * ndi.binary_dilation(book, iterations=1)   # nothing outside the book
         a = ndi.gaussian_filter(a, 0.7)

@@ -63,7 +63,8 @@ def pron():
     white pill (the same place as the deadline pill), from «cómo» to just after «sonidos»."""
     P = "n"; t_c = next(w["t"] for w in WORDS if norm(w["text"]) == "como")
     t_s = next(w for w in WORDS if norm(w["text"]) == "sonidos")
-    t0 = round(t_c - 0.08, 3); d = round(t_s["end"] + 0.5 - t0, 3)
+    end4 = INS["ins-04"]["start"] + INS["ins-04"]["duration"]
+    t0 = round(max(t_c - 0.08, end4), 3); d = round(t_s["end"] + 0.5 - t0, 3)   # never over the ebook's last frame
     c = dict(END=d)
     css = """
     #n-row { top: 1120px; }
@@ -120,7 +121,11 @@ def outro():
 SHOW = {}
 HL_PHRASES = []   # no coloured words: clean white captions, as in UGC #2 (pages still never split these:)
 KEEP = [["black", "friday"], ["70", "paginas"], ["30", "de", "noviembre"], ["lista", "prioritaria"]]
-HIDE = [("ins-02", ["sin", "practicar"])]   # v6.3: «sin practicar» was on screen twice, headline over caption (0:16)
+# caption pages a graphic on screen already says (v6.3: words twice, one over the other, look cheap): the ins-02
+# headline «Te quedas ✕ sin practicar» (0:16), the date pill «Hasta el 30 de noviembre», and the closing button
+# «CONSÍGUELO POR 1 €» with its arrow (every page from the outro on: None)
+HIDE = [("ins-02", ["tu", "te", "quedas"]), ("ins-02", ["sin", "practicar"]), ("offer", ["el", "30", "de", "noviembre"]),
+        ("outro", None)]
 GLUE = {"y", "que", "con", "los", "las", "la", "el", "de", "del", "por", "en", "un", "una", "te", "tu", "cuando", "si", "a", "al", "lo", "ni"}
 CLITIC = {"te", "me", "se", "le", "les", "nos", "os", "lo"}      # a pronoun before its verb: never the last word of a page
 
@@ -184,10 +189,13 @@ def captions(window=None):
         if ph: pages += split(ph)
     pages = [[dict(WORDS[i], show=SHOW.get(nw[i], WORDS[i]["text"]) + (WORDS[i].get("punct") or "").replace(":", "").replace(";", ""),
                    hl=i in hl) for i in pg] for pg in pages]
-    for iid, words in HIDE:                                # a caption the graphic's headline already says, right above it
-        ins = INS[iid]
-        pages = [pg for pg in pages if not ([norm(w["text"]) for w in pg] == words
-                                            and ins["start"] <= pg[0]["t"] < ins["start"] + ins["duration"])]
+    def hidden(pg):                                        # a caption the graphic on screen already says (HIDE): not shown,
+        for key, words in HIDE:                            # but still timed, so the page before it leaves on time
+            a, b = (INS[key]["start"], INS[key]["start"] + INS[key]["duration"]) if key in INS else \
+                   (ED[key], ED["outro"] if key == "offer" else TOTAL)
+            if (words is None or [norm(w["text"]) for w in pg] == words) and a - 1e-3 <= pg[0]["t"] < b:
+                return True
+        return False
     off, total = 0.0, TOTAL
     if window:
         off, total = window[0], window[1] - window[0]
@@ -195,6 +203,8 @@ def captions(window=None):
     body, js = [], []
     end_all = round(ED["speech_end"] + 0.12, 3)
     for k, pg in enumerate(pages):
+        if hidden(pg):
+            continue
         r0 = region(pg[0]["t"])                                            # the section the page belongs to
         t0 = 0.0 if (k == 0 and not window) else max(0.0, pg[0]["t"] - 0.03 - off, r0 - off)
         t1 = (pages[k + 1][0]["t"] - 0.03 - off) if k + 1 < len(pages) else min(end_all - off, total)
@@ -221,7 +231,7 @@ def captions(window=None):
     .cap-g .cap-y { color: «YEL»; }
     .cap-gr-paper .cap-w { color: «INK»; }
 """
-    return comp("captions", total, P, css, "\n".join(body), "\n".join(js) + "\n"), len(pages)
+    return comp("captions", total, P, css, "\n".join(body), "\n".join(js) + "\n"), len(body)
 
 
 # ============================================================================== the girl's framing
@@ -296,6 +306,9 @@ def backdrops():
         t_in = round(max(t_in, e0 + 0.001), 3)                       # eur: from the first frame after the take's own cut
         ms = (round((t_in - e0) * RATE * 30) + 0.01) / 30             # on a whole source frame: the renderer floors it
         ms = round(ms, 4)
+        if name == "eur":                                             # «Entero» starts 30 ms before the take's own cut (a
+            t_in, ms = flash, 0.0003                                  # frame of the pose before it): the backdrop is there from
+                                                                      # the shot's first frame, the cutout one frame early
         assert ms >= 0 and ms + (t_out - t_in) * RATE <= (m["f1"] - m["f0"] + 1) / 30 + 1e-3, (name, ms)
         out.append(dict(name=name, kind=kind, take=m["take"], t_in=t_in, t_out=round(t_out, 3), src=m["src"], ms=ms,
                         flash=round(flash, 3), out_flash=name != "bf1"))   # bf1 leaves on a real cut; eur flashes on the shot cut
@@ -543,7 +556,7 @@ def main():
     sfx_all.append((0.0, "whoosh-short", 0.2))                         # the opening snap-zoom
     for b in backdrops():                  # the hit under each backdrop; on «Entero» it lands in the breath before the word
         sfx_all += [(b["t_in"] - 0.06, "whoosh-short", 0.2),
-                    (b["t_in"] - 0.09, "impact", 0.3) if b["name"] == "eur" else (b["t_in"], "impact", 0.4)]
+                    (b["t_in"] - 0.06, "impact", 0.3) if b["name"] == "eur" else (b["t_in"], "impact", 0.4)]   # eur: just before «Entero»
         if b["out_flash"]:
             sfx_all.append((b["t_out"] - 0.06, "whoosh-short", 0.1))
     for cid, fn in (("pron", pron), ("offer", offer), ("outro", outro)):

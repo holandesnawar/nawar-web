@@ -131,7 +131,7 @@ def leather(c):
     where her moving arm smears over it (R < 75, R/B ≥ 2.2) — her brown hair and her bracelet's dark glints are that
     colour too, so only where RVM is unsure (see refine())."""
     c = c.astype(np.float32); r, g, b = c[..., 0], c[..., 1], c[..., 2]
-    red = (r > 2.2 * g) & (r > 2.2 * b) & (r > 12) & (r < 170)
+    red = (r > 2.2 * g) & (r > 2.2 * b) & (r - np.maximum(g, b) >= 3) & (r < 170)   # (its deepest shadow is (4, 0, 1))
     return red, red | ((r > 1.5 * g) & (r > 2.2 * b) & (r > 12) & (r < 75))
 
 
