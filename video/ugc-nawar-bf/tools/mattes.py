@@ -13,13 +13,13 @@ where she is solid, RVM's foreground colour on the soft edge, so no room colour 
 the take's own timeline (same start, rate and framing).
 
 RVM can keep faint bits of her room at her edge (the carved chair, the beige sofa, the flowers, a band of wall by her
-hair, at 20–60 %). refine() takes out only what IS the empty room: a plate of the room (per-pixel median of the take
-over ±6 s; where RVM still finds a person in that plate, there is no plate) is compared with each frame, and near her
-outline or wherever she is see-through, a pixel that matches the plate fades out (smoothly, never a hard notch;
-averaged over 3 frames so it cannot flicker); and where the furniture sits (FURNITURE), whatever is faint, still and
-apart from her solid outline goes (beside her she sits there most of the time, so the plate there is her, not the room).
+hair, at 20–60 %). refine() never touches what RVM is sure of (alpha ≥ 0.9) and takes out only what IS the empty room:
+a plate of the room (per pixel, the median of the take over ±6 s over the frames where RVM says that pixel is room) is
+compared with each frame, and wherever she is see-through, a pixel that matches the plate fades out (smoothly, never a
+hard notch; averaged over 3 frames where the picture is still, so it cannot flicker nor carry onto a moving hand); and
+where the furniture sits (FURNITURE), whatever is faint, still and apart from her solid outline goes.
 Inside her, nothing is ever touched — no colour rules (v6.1: the old colour rules bit her hands and hair). Crumbs
-left beside her go.
+left beside her go; by the vase her soft edge takes her own colour, not the flowers' (devase()).
 Writes assets/video/mattes.json. The model (.raw/rvm_resnet50_fp32.onnx, ~100 MB) is downloaded once from the RVM
 releases. `python3 tools/mattes.py --clean [names]` re-runs refine() on the saved raw mattes (.matte/<name>-raw.webm).
 """
@@ -93,12 +93,19 @@ def rvm(sess, take, f0, f1):
 
 
 def plate(sess, take, f0, f1):
-    """the empty room around this clip: per-pixel median of the take over ±6 s (4 fps); where RVM still sees a person in
-    that median (she sits there most of the time), it is no plate (NaN)."""
+    """the empty room around this clip: per pixel, the median of the take over ±6 s (4 fps) taken only over the frames
+    where RVM says that pixel is room (alpha < 0.05) — so the vase and the chair have a plate even though she is next
+    to them most of the time; fewer than 4 such frames: no plate (NaN)."""
     a, b = max(0.0, f0 / 30 - 6), f1 / 30 + 6
-    med = np.median(take_frames(take, a, b, fps=4), axis=0).astype(np.uint8)
-    al, _, _ = run(sess, [med] * 6)                            # a few passes on the same picture to settle its memory
-    pl = med.astype(np.float32); pl[al[-1] > 0.15] = np.nan
+    fr = take_frames(take, a, b, fps=4)
+    _, _, rec = run(sess, [fr[0]] * 4)                         # settle its memory on the first picture
+    al, _, _ = run(sess, fr, rec)
+    st = fr.astype(np.float32)
+    room = np.stack(al) < 0.05
+    st[~room] = np.nan
+    with np.errstate(invalid="ignore"):
+        pl = np.nanmedian(st, axis=0)
+    pl[room.sum(0) < 4] = np.nan
     return pl
 
 
@@ -110,30 +117,48 @@ def refine(orig, al, pl):
     for x0, x1, y0, y1 in FURNITURE:
         box[y0:y1, x0:x1] = True
     luma = [(0.299 * f[..., 0] + 0.587 * f[..., 1] + 0.114 * f[..., 2]).astype(np.float32) for f in orig]
+    stills = []
     for k in range(n):
         a = al[k]
         still = np.maximum(np.abs(luma[k] - luma[max(0, k - 2)]), np.abs(luma[k] - luma[min(n - 1, k + 2)]))
-        still = ndi.uniform_filter(still, 7) < 6
+        still = ndi.uniform_filter(still, 7) < 6; stills.append(still)
         away = ndi.distance_transform_edt(a < 0.9)             # px from her solid core
         faint = box & (a < 0.75) & still
         g = np.clip((away - 5) / 7, 0, 1)                      # 5 px from her: kept … 12 px: gone
         fur = np.where(faint, 1 - g, 1.0)
-        dist = ndi.distance_transform_edt(a > 0.5)             # px inside her outline
-        cand = (a < 0.95) | (dist < EDGE)
+        cand = a < 0.9                                         # only where RVM itself is unsure
         with np.errstate(invalid="ignore"):
             diff = np.max(np.abs(orig[k].astype(np.float32) - pl), axis=-1)          # NaN where there is no plate
         t = np.clip((diff - DIFF[0]) / (DIFF[1] - DIFF[0]), 0, 1); t = t * t * (3 - 2 * t)   # smoothstep
         t = np.where(np.isnan(diff), 1.0, t)
-        fac[k] = np.where(cand, t, 1.0) * fur
-    fac = (np.concatenate([fac[:1], fac[:-1]]) + fac + np.concatenate([fac[1:], fac[-1:]])) / 3   # over 3 frames: no flicker
+        fac[k] = np.where(a >= 0.9, 1.0, np.where(cand, t, 1.0) * fur)   # what RVM is sure of is never touched
+    mean3 = (np.concatenate([fac[:1], fac[:-1]]) + fac + np.concatenate([fac[1:], fac[-1:]])) / 3   # over 3 frames: no
+    fac = np.where(np.stack(stills), mean3, fac)               # flicker — only where the picture is still (never onto a moving hand)
+    fac = np.where(al >= 0.9, 1.0, fac)
     out = []
     for k in range(n):
-        a = ndi.gaussian_filter(al[k] * ndi.gaussian_filter(fac[k], 1.5), 0.5)
+        f = ndi.gaussian_filter(fac[k], 1.5)
+        a = np.where(al[k] >= 0.9, al[k], ndi.gaussian_filter(al[k] * f, 0.5))
         lab, m = ndi.label(a > 0.16)                           # crumbs beside her go
         if m > 1:
             sz = ndi.sum(np.ones_like(a), lab, range(1, m + 1))
             a[np.isin(lab, 1 + np.flatnonzero(sz < 0.02 * sz.max()))] = 0
         out.append(a)
+    return out
+
+
+def devase(rgb, al):
+    """by the flower vase, her soft edge takes the colour of her nearest solid pixel (RVM's foreground estimate there
+    picks up the red and yellow of the flowers behind)."""
+    from scipy import ndimage as ndi
+    x0, x1, y0, y1 = FURNITURE[2]
+    box = np.zeros((H, W), bool); box[y0:y1, x0:x1] = True
+    out = rgb.copy()
+    for k, a in enumerate(al):
+        soft = box & (a < 0.97) & (a > 0.01)
+        if soft.any() and (a >= 0.97).any():
+            _, (iy, ix) = ndi.distance_transform_edt(a < 0.97, return_indices=True)
+            out[k][soft] = rgb[k][iy[soft], ix[soft]]
     return out
 
 
@@ -167,7 +192,8 @@ def main(only=None, clean_only=False):
             rgb, al = decode(rawf); note = "re-refined"
         else:
             rgb, al, s = rvm(sess, tk, f0, f1); encode(rgb, al, rawf); note = f"RVM from frame {s}"
-        encode(rgb, refine(take_frames(tk, f0, f1), al, plate(sess, tk, f0, f1)), dst)
+        ref = refine(take_frames(tk, f0, f1), al, plate(sess, tk, f0, f1))
+        encode(devase(rgb, ref), ref, dst)
         print(f"  {name}: take {tk} frames {f0}–{f1} ({note}) → {dst}", flush=True)
     json.dump(out, open(os.path.join(ROOT, "assets", "video", "mattes.json"), "w"), indent=1)
 

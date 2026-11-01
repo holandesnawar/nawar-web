@@ -56,7 +56,7 @@ def build():
       // a slow drift while the pages turn, then the push into «¡Hora de practicar!» on «ejercicios prácticos»
       tl.fromTo(q("stage"), { scale: 1.0 }, { scale: 1.03, duration: «EJE» - 0.1, ease: "none" }, 0);
       tl.fromTo(q("stage"), { scale: 1.03 }, { scale: 1.08, duration: «D» - «EJE» + 0.1, ease: "power2.inOut", immediateRender: false }, «EJE» - 0.1);
-      tl.fromTo(q("lab"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 1.0);
+      tl.fromTo(q("lab"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.4);   // before the cover lifts behind it
 """
     for (pid, _, _), key in zip(pills, ("SET", "ESP", "IMP")):
         js += f'      tl.fromTo(q("{pid}"), {{ opacity: 0, y: 24, scale: 0.9 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }}, «{key}» - 0.06);\n'

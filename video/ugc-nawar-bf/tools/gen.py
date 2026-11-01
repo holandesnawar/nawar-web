@@ -192,7 +192,7 @@ def captions(window=None):
     .cap-up { top: 984px; }
     .cap-w { display: inline-block; font-weight: 800; font-size: 66px; line-height: 76px; letter-spacing: -0.015em; white-space: nowrap; }
     .cap-gr-girl .cap-w { color: #FFFFFF; text-shadow: 0 3px 14px rgba(0,0,0,0.65), 0 1px 3px rgba(0,0,0,0.55); }
-    .cap-gr-blue .cap-w, .cap-gr-dark .cap-w { color: #FFFFFF; text-shadow: 0 3px 16px rgba(0,0,0,0.55); }
+    .cap-gr-blue .cap-w, .cap-gr-dark .cap-w { color: #FFFFFF; text-shadow: none; }
     .cap-g .cap-y { color: «YEL»; }
     .cap-gr-paper .cap-w { color: «INK»; }
 """
@@ -433,6 +433,8 @@ def index(sfx_all, overlays):
         nlast = int(round(shots[-1]["media_end"] * 30)) - 1                 # exactly the last frame shown (no jump)
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", os.path.join(ROOT, f"assets/video/take-{shots[-1]['take']}.mp4"),
                         "-vf", f"select=eq(n\\,{nlast})", "-frames:v", "1", png], check=True)
+        from PIL import Image                                                   # no colour chunks: Chrome would tone-map it
+        Image.open(png).convert("RGB").save(png)                                # darker than the video frame before it
         vids[lk].append(f'      <img id="hold" class="clip" src="assets/img/take-{shots[-1]["take"]}-last.png" alt="" data-start="{hold["start"]}" data-duration="{hold["duration"]}" data-track-index="{len(shots)}" />')
     bxs = backdrops(); bxjs, bxh, cuts = [], [], {}
     for b in bxs:          # the backdrops over both takes (not zoomed), then her cutouts in a twin of her take's wrapper
