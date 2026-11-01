@@ -27,6 +27,12 @@
  * lo exige y lo comprueba) y va a su ficha al pagar. Quien solo se apunta y
  * no compra ya no deja teléfono, así que no sale para llamar.
  *
+ * 01/11 ("no me gusta el formulario, blanco muy básico"): el formulario es un
+ * PASE de la lista prioritaria: cabecera azul con la línea roja y azul del
+ * logo, «Lista prioritaria · Black Friday 2026», un corte de entrada con dos
+ * muescas (las coloca el script al alto de la línea de puntos) y los campos con
+ * su icono; debajo del botón, «Gratis · Sin spam · Baja cuando quieras».
+ *
  * 30/10: sin las etiquetas con punto rojo (encima del titular y del
  * formulario: "queda muy ChatGPT"), el botón sin sombra por fuera y la
  * entradilla en 500 (en 400 "se veía muy simple").
@@ -129,27 +135,54 @@ const OFERTA = bfRuta('/oferta')
           </li>
         </ul>
 
-        <form class="dl-form bf-solo-activa" id="dl-form" novalidate>
-          <div class="dl-hp" aria-hidden="true"><label>No rellenar <input type="text" id="dl-hp" tabindex="-1" autocomplete="off" /></label></div>
+        <!-- 01/11 (usuario: "no me gusta el formulario, blanco muy básico"): el
+             formulario es un PASE de la lista prioritaria. Arriba, la cabecera en
+             azul con la línea roja y azul del logo; un corte de entrada con dos
+             muescas; y debajo, los campos con su icono. -->
+        <div class="dl-form-wrap bf-solo-activa">
+          <form class="dl-form" id="dl-form" novalidate>
+            <div class="dl-hp" aria-hidden="true"><label>No rellenar <input type="text" id="dl-hp" tabindex="-1" autocomplete="off" /></label></div>
 
-          <h2 class="dl-form-tit">Reserva tu acceso anticipado</h2>
-          <p class="dl-form-sub">Es gratis. Desbloqueas la oferta al momento, antes de que llegue el Black Friday.</p>
+            <div class="dl-pase" id="dl-pase">
+              <div class="dl-pase-top">
+                <span class="dl-pase-eti"><Fragment set:html={icono('candado', 14, 2.2)} />Lista prioritaria</span>
+                <span class="dl-pase-fecha">Black Friday 2026</span>
+              </div>
+              <h2 class="dl-form-tit">Reserva tu acceso anticipado</h2>
+              <p class="dl-form-sub">Es gratis. Tu oferta se desbloquea al momento, antes de que llegue el Black&nbsp;Friday.</p>
+            </div>
+            <div class="dl-corte" aria-hidden="true"></div>
 
-          <label class="dl-label" for="dl-nombre">Nombre</label>
-          <input id="dl-nombre" type="text" class="dl-input" placeholder="Tu nombre" autocomplete="given-name" required />
+            <div class="dl-cuerpo">
+              <label class="dl-label" for="dl-nombre">Nombre</label>
+              <div class="dl-campo">
+                <span class="dl-campo-ico" set:html={icono('usuario', 19, 1.9)} />
+                <input id="dl-nombre" type="text" class="dl-input" placeholder="Tu nombre" autocomplete="given-name" required />
+              </div>
 
-          <label class="dl-label" for="dl-email">Correo electrónico</label>
-          <input id="dl-email" type="email" class="dl-input" placeholder="Tu mejor correo" autocomplete="email" required />
+              <label class="dl-label" for="dl-email">Correo electrónico</label>
+              <div class="dl-campo">
+                <span class="dl-campo-ico" set:html={icono('carta', 19, 1.9)} />
+                <input id="dl-email" type="email" class="dl-input" placeholder="Tu mejor correo" autocomplete="email" required />
+              </div>
 
-          <p class="dl-err" id="dl-err" role="alert">Revisa el nombre y el correo.</p>
-          <button type="submit" class="bf-btn bf-brillo dl-btn" id="dl-btn">
-            Apuntarme a la lista prioritaria
-          </button>
-          <p class="dl-legal">
-            Al apuntarte aceptas la <a href={`${WWW}/politica-de-privacidad`} target="_blank" rel="noopener">política de privacidad</a> y
-            recibir nuestros correos sobre la oferta. Te das de baja cuando quieras.
-          </p>
-        </form>
+              <p class="dl-err" id="dl-err" role="alert">Revisa el nombre y el correo.</p>
+              <button type="submit" class="bf-btn bf-brillo dl-btn" id="dl-btn">
+                Apuntarme a la lista prioritaria <Fragment set:html={icono('flecha', 18, 2.4)} />
+              </button>
+
+              <ul class="dl-garantias">
+                <li><Fragment set:html={icono('check', 15, 2.6)} />Gratis</li>
+                <li><Fragment set:html={icono('check', 15, 2.6)} />Sin spam</li>
+                <li><Fragment set:html={icono('check', 15, 2.6)} />Baja cuando quieras</li>
+              </ul>
+              <p class="dl-legal">
+                Al apuntarte aceptas la <a href={`${WWW}/politica-de-privacidad`} target="_blank" rel="noopener">política de privacidad</a> y
+                recibir nuestros correos sobre la oferta.
+              </p>
+            </div>
+          </form>
+        </div>
 
         <div class="dl-fin bf-fin">
           <p><strong>La oferta de Black Friday ha terminado.</strong> Gracias por tu interés.</p>
@@ -214,6 +247,14 @@ const OFERTA = bfRuta('/oferta')
   } catch {}
 
   const mal = (t: string) => { err.textContent = t; err.classList.add('visible') }
+
+  // Las muescas del pase van a la altura del corte (la línea de puntos, ya en
+  // lo blanco): cambia con el ancho, porque el título puede ir en una o dos líneas.
+  const corte = form.querySelector('.dl-corte') as HTMLElement
+  const pase = document.getElementById('dl-pase') as HTMLElement
+  const colocarCorte = () => form.style.setProperty('--c', `${corte.offsetTop + 1}px`)
+  colocarCorte()
+  try { new ResizeObserver(colocarCorte).observe(pase) } catch { addEventListener('resize', colocarCorte) }
 
   /** Apunta a la persona en la escuela. Sin teléfono también vale. */
   async function apuntar(nombre: string, email: string, telefono: string) {
@@ -330,7 +371,7 @@ const OFERTA = bfRuta('/oferta')
   }
   .dl-texto { grid-area: texto; align-self: end; }
   .dl-ventajas { grid-area: ventajas; align-self: start; }
-  .dl-form { grid-area: form; align-self: center; }
+  .dl-form-wrap { grid-area: form; }
   .dl-in > .dl-fin { grid-area: fin; }
 
 
@@ -354,28 +395,73 @@ const OFERTA = bfRuta('/oferta')
   .dl-ventajas strong { display: block; font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 2px; }
   .dl-ventajas div span { display: block; font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.86); }
 
-  /* El formulario, en una tarjeta blanca y ancha (como la caja de pago de la escuela). */
+  /* El formulario: un pase de la lista prioritaria (01/11). La sombra va en
+     el envoltorio (filter) porque la tarjeta lleva máscara para las muescas y
+     una máscara se come cualquier box-shadow. */
+  .dl-form-wrap { grid-area: form; align-self: center; filter: drop-shadow(0 26px 40px rgba(4, 0, 46, 0.5)); }
   .dl-form {
-    position: relative; width: 100%; text-align: left; padding: 38px 40px 30px; border-radius: 22px; background: #fff;
-    box-shadow: 0 40px 80px -36px rgba(0,0,0,0.55);
+    --c: 200px;     /* alto de la cabecera: lo pone el script al medirla */
+    position: relative; width: 100%; text-align: left; border-radius: 22px; overflow: hidden; background: #fff;
+    -webkit-mask:
+      radial-gradient(circle 13px at 0 var(--c), #0000 96%, #000 100%) left / 51% 100% no-repeat,
+      radial-gradient(circle 13px at 100% var(--c), #0000 96%, #000 100%) right / 51% 100% no-repeat;
+    mask:
+      radial-gradient(circle 13px at 0 var(--c), #0000 96%, #000 100%) left / 51% 100% no-repeat,
+      radial-gradient(circle 13px at 100% var(--c), #0000 96%, #000 100%) right / 51% 100% no-repeat;
   }
   .dl-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-  .dl-form-tit { margin: 0 0 8px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(24px, 2.2vw, 30px); font-weight: 700; line-height: 1.15; letter-spacing: -0.025em; color: #1D0084; }
-  .dl-form-sub { margin: 0 0 24px; font-size: 15px; line-height: 1.55; color: #171a2e; }
+
+  /* La cabecera del pase: azul de la marca, con su luz y sus puntos, y la
+     línea roja y azul del logo arriba (la misma que la barra de /oferta). */
+  .dl-pase {
+    position: relative; padding: 32px 40px 30px; color: #fff; isolation: isolate;
+    background:
+      radial-gradient(circle 420px at 92% -10%, rgba(77, 163, 255, 0.5), transparent 70%),
+      linear-gradient(160deg, #2a17b8 0%, #1D0084 58%, #15006c 100%);
+  }
+  .dl-pase::before {
+    content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px); background-size: 22px 22px;
+  }
+  .dl-pase::after {
+    content: ''; position: absolute; left: 0; right: 0; top: 0; height: 4px;
+    background: linear-gradient(90deg, #E8283B 0 30%, #4da3ff 30% 100%);
+  }
+  .dl-pase-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+  .dl-pase-eti {
+    display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #9fd0ff;
+  }
+  .dl-pase-fecha { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.72); white-space: nowrap; }
+  .dl-form-tit { margin: 0 0 8px; font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(25px, 2.3vw, 31px); font-weight: 700; line-height: 1.12; letter-spacing: -0.025em; color: #fff; }
+  .dl-form-sub { margin: 0; font-size: 15px; line-height: 1.55; font-weight: 500; color: rgba(255, 255, 255, 0.9); }
+
+  /* El corte de la entrada: una línea de puntos entre las dos muescas. */
+  .dl-corte { height: 0; margin: 20px 26px 0; border-top: 2px dashed #D5DEF0; }
+
+  .dl-cuerpo { padding: 22px 40px 28px; }
   .dl-label { display: block; margin: 0 0 7px; font-size: 13px; font-weight: 600; letter-spacing: 0.01em; color: #0a1656; }
   .dl-label:not(:first-of-type) { margin-top: 16px; }
+  .dl-campo { position: relative; }
+  .dl-campo-ico { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); display: inline-flex; color: rgba(29, 0, 132, 0.45); pointer-events: none; transition: color .15s; }
+  .dl-campo:focus-within .dl-campo-ico { color: #025dc7; }
   .dl-input {
-    width: 100%; height: 52px; padding: 0 16px; border-radius: 12px; border: 1px solid transparent; background: #F0F5FF;
+    width: 100%; height: 54px; padding: 0 16px 0 46px; border-radius: 12px; border: 1px solid #E3EAF7; background: #F5F8FF;
     color: #1D0084; font-family: inherit; font-size: 16px; outline: none; transition: border-color .15s, box-shadow .15s, background .15s;
   }
-  .dl-input::placeholder { color: rgba(29,0,132,0.45); }
-  .dl-input:focus { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,0.22); }
+  .dl-input::placeholder { color: rgba(29, 0, 132, 0.45); }
+  .dl-input:focus { background: #fff; border-color: #4da3ff; box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.22); }
   .dl-err { display: none; margin: 14px 0 0; padding: 10px 13px; border-radius: 11px; background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; font-size: 13.5px; line-height: 1.5; }
   .dl-err:global(.visible) { display: block; }
   /* Sin la sombra de fuera (30/10, usuario): solo el brillo de dentro. */
   .dl-btn { width: 100%; margin-top: 24px; font-size: 17px; }
-  .dl-btn.bf-brillo { box-shadow: inset 0 1px 0 rgba(255,255,255,0.45); }
-  .dl-legal { margin: 14px 0 0; font-size: 12.5px; line-height: 1.55; color: #171a2e; }
+  .dl-btn.bf-brillo { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45); }
+  .dl-btn :global(svg) { flex-shrink: 0; transition: transform .15s; }
+  .dl-btn:hover :global(svg) { transform: translateX(3px); }
+  .dl-garantias { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; }
+  .dl-garantias li { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; color: #171a2e; }
+  .dl-garantias :global(svg) { color: #025dc7; flex-shrink: 0; }
+  .dl-legal { margin: 12px 0 0; font-size: 12px; line-height: 1.55; color: #171a2e; text-align: center; text-wrap: balance; }
   .dl-legal a { color: #025dc7; text-decoration: underline; }
 
   .dl-fin p { margin: 0 0 16px; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.93); }
@@ -413,7 +499,15 @@ const OFERTA = bfRuta('/oferta')
     .dl-h1 { font-size: clamp(34px, 8.6vw, 50px); line-height: 1.12; margin: 0 0 18px; }
   }
   @media (max-width: 640px) {
-    .dl-form { padding: 26px 20px 20px; border-radius: 18px; }
+    .dl-form { border-radius: 18px; }
+    .dl-pase { padding: 26px 22px 24px; }
+    .dl-pase-top { margin-bottom: 14px; }
+    .dl-pase-eti, .dl-pase-fecha { font-size: 11px; }
+    .dl-corte { margin: 18px 20px 0; }
+    .dl-cuerpo { padding: 18px 20px 22px; }
+    .dl-garantias { gap: 4px 10px; }
+    .dl-garantias li { gap: 4px; font-size: 12.5px; }
+    .dl-garantias :global(svg) { width: 13px; height: 13px; }
     .dl-btn { font-size: 15.5px; padding: 17px 14px; }
     .dl-pie { flex-direction: column; align-items: flex-start; }
   }

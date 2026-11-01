@@ -33,6 +33,7 @@ const ICONOS: Record<string, string> = {
   flecha: '<path d="M5 12h14M13 6l6 6-6 6"/>',
   alerta: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
   mas: '<path d="M12 5v14M5 12h14"/>',
+  usuario: '<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>',
 }
 
 export const icono = (n: string, tam = 22, trazo = 1.8) =>
