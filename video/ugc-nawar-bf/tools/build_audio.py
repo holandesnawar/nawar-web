@@ -17,8 +17,8 @@ MUSIC = os.path.join(ROOT, ".raw", "music.mp3")
 BAR, BAR0, GROOVE_BAR = 4 * 60 / 107.7, 0.023, 8   # bar length, first downbeat, the bar where the groove comes in
 EQ = "highpass=f=110,lowshelf=f=150:g=-6,lowshelf=f=250:g=-6,equalizer=f=2500:t=q:w=0.9:g=-3"   # the track is mostly low end,
                                                      # which phone speakers drop: cut it so its keys and hats carry instead
-LEVEL_LUFS = -34.0     # from «este Black Friday» on (≈18 LU under the voice)
-INTRO_LUFS = -40.0     # the soft intro under the hook
+LEVEL_LUFS = -36.5     # from «este Black Friday» on (≈20 LU under the voice; v6.4: 2.5 dB lower)
+INTRO_LUFS = -42.5     # the soft intro under the hook
 FADE = 0.5             # fade out after «abajo», across her held last frame
 SR = 48000
 

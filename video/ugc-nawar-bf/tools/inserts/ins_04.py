@@ -3,7 +3,8 @@ THE PRODUCT, the client's own ebook animation («Animación Libro», tools/libro
 floating on Nawar blue (v6: no black, no frame, no shadow), with v4's labels back:
   · the cover of «Holandés sin miedo» opens on «70 páginas»; the pages turn at their own speed (a soft page sound on
     the cover and each turn) while she lists what's inside; «¡Hora de practicar!» lies open as she says «ejercicios
-    prácticos» and the camera pushes in on it until the cut back to her (on the second take, «cómo pronunciar…»);
+    prácticos» and the book stays still there, open, until the cut back to her (on «cómo pronunciar…»; v6.4: no
+    push-in);
   · under the book, white pills land on their words — «70 páginas», «En español» (ES flag), «Para imprimir» (printer) —
     then a ticked row: Vocabulario, Gramática, Ejercicios, and Pronunciación on «prácticos» as she finishes the list (she
     says «cómo pronunciar» right after the cut); the «Ebook · Holandés sin miedo» label on top once the book is open.
@@ -53,9 +54,7 @@ def build():
     <div id="i4-prow" class="i4-row">{"".join(f'<div id="i4-{pid}" class="i4-wpill">{ic}<span>{t}</span></div>' for pid, ic, t in pills)}</div>
     <div id="i4-crow" class="i4-row">{"".join(f'<div id="i4-c{k}" class="i4-ck">{icon("check")}<span>{t}</span></div>' for k, t in enumerate(checks))}</div>"""])
     js = """
-      // a slow drift while the pages turn, then the push into «¡Hora de practicar!» on «ejercicios prácticos»
-      tl.fromTo(q("stage"), { scale: 1.0 }, { scale: 1.03, duration: «EJE» - 0.1, ease: "none" }, 0);
-      tl.fromTo(q("stage"), { scale: 1.03 }, { scale: 1.08, duration: «D» - «EJE» + 0.1, ease: "power2.inOut", immediateRender: false }, «EJE» - 0.1);
+      // v6.4: the book stays put (no drift, no push-in): it freezes open on «¡Hora de practicar!» (tools/libro_clip.py)
       tl.fromTo(q("lab"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.4);   // before the cover lifts behind it
 """
     for (pid, _, _), key in zip(pills, ("SET", "ESP", "IMP")):

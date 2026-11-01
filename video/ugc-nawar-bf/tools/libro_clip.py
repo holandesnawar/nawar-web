@@ -7,8 +7,8 @@ assets/video/libro-ins04.webm (1920×1080, VP9 with alpha, silent, lanczos-upsca
 as ins-04, the book lifted off its black (v6: the book floats on Nawar blue, no black box):
   · from the start of the insert («este libro…») to just before «ejercicios», the animation at its own speed (source
     0–4.40 s, retimed by ~1 %), so the book opens on «70 páginas» and the pages turn while she lists what's inside;
-  · «¡Hora de practicar!» is fully open as she says «ejercicios prácticos», and stays (its rest frame, still) until the
-    cut back to her — ins-04 pushes in on it.
+  · «¡Hora de practicar!» lands fully open as she says «ejercicios prácticos» and the clip freezes right there (v6.4:
+    no next page starting to lift, no push-in) until the cut back to her.
 The key: the animation's background is pure black, so alpha = how far a pixel is from black, made solid inside the
 book's outline (holes filled: its dark print stays opaque) and zero outside it (the faint dark reflection under the book
 goes), and the edge colours are un-premultiplied (they were blended with black), so no dark rim shows on the blue.
@@ -18,7 +18,8 @@ import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, ".raw", "libro2.mp4")
-A_END, HOLD = 4.40, 4.45          # source seconds: end of the played part; the rest frame of «¡Hora de practicar!»
+A_END = HOLD = 4.40               # source seconds: «¡Hora de practicar!» has just landed flat (frame 132) — the clip stops
+                                  # there and holds that frame (from 4.45 the next page starts to lift: never shown)
 
 
 def main():

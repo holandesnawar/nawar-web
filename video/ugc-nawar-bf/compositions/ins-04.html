@@ -90,10 +90,10 @@
     .i4-ck svg { display: block; width: 36px; height: 36px; }
 
   </style>
-  <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="6.047">
+  <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="5.887">
     <div class="i4-full i4-blue"><div class="i4-blue-dots"></div><div class="i4-blue-amb"></div><div class="i4-blue-vig"></div></div>
     <div id="i4-stage">
-      <div id="i4-vw"><video id="i4-v" class="clip" src="assets/video/libro-ins04.webm" muted playsinline data-start="0" data-duration="6.047" data-track-index="1"></video></div>
+      <div id="i4-vw"><video id="i4-v" class="clip" src="assets/video/libro-ins04.webm" muted playsinline data-start="0" data-duration="5.887" data-track-index="1"></video></div>
     </div>
     <div id="i4-lrow" class="i4-row"><div id="i4-lab" class="i4-pill"><svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="#FFFFFF" stroke-width="4.2"/></svg><span>Ebook · Holandés sin miedo</span></div></div>
     <div id="i4-prow" class="i4-row"><div id="i4-p0" class="i4-wpill"><svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="currentColor" stroke-width="4.2"/></svg><span>70 páginas</span></div><div id="i4-p1" class="i4-wpill"><span class="i4-flag i4-flagd"><svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#AA151B" /><rect y="7" width="40" height="13" fill="#F1BF00" /></svg></span><span>En español</span></div><div id="i4-p2" class="i4-wpill"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"><path d="M14 18 V6 H34 V18"/><rect x="5" y="18" width="38" height="16" rx="5"/><path d="M14 28 H34 V42 H14 Z"/></g></svg><span>Para imprimir</span></div></div>
@@ -104,9 +104,7 @@
       const tl = gsap.timeline({ paused: true });
       const q = (id) => document.getElementById("i4-" + id);
 
-      // a slow drift while the pages turn, then the push into «¡Hora de practicar!» on «ejercicios prácticos»
-      tl.fromTo(q("stage"), { scale: 1.0 }, { scale: 1.03, duration: 4.453 - 0.1, ease: "none" }, 0);
-      tl.fromTo(q("stage"), { scale: 1.03 }, { scale: 1.08, duration: 6.047 - 4.453 + 0.1, ease: "power2.inOut", immediateRender: false }, 4.453 - 0.1);
+      // v6.4: the book stays put (no drift, no push-in): it freezes open on «¡Hora de practicar!» (tools/libro_clip.py)
       tl.fromTo(q("lab"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.4);   // before the cover lifts behind it
       tl.fromTo(q("p0"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 0.897 - 0.06);
       tl.fromTo(q("p1"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 1.859 - 0.06);

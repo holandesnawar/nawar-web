@@ -37,7 +37,7 @@ español y para imprimir, por 1 € hasta el 30 de noviembre. Es el mismo sistem
 ```bash
 bash tools/fetch_assets.sh            # tomas y música del Drive + medios de marca del VSL; genera todo
 npx hyperframes check
-npx hyperframes render . --quality high -o renders/nawar-ugc-bf-v6-3.mp4
+npx hyperframes render . --quality high -o renders/nawar-ugc-bf-v6-4.mp4
 ```
 
 Para cambiar cuándo entra o sale un gráfico, edita `INSERTS` en `tools/edit.py` y vuelve a ejecutar

@@ -14,8 +14,9 @@ def build():
     iid, P = "ins-01", "i1"; d = INS[iid]["duration"]
     c = dict(MIR=cue(iid, "miras"), CON=cue(iid, "contigo"), NO=cue(iid, "no"), NAD=cue(iid, "nadie"), CAM=cue(iid, "cambias"))
     css = """
-    #i1-h { top: 180px; color: «INDIGO»; font-size: 80px; line-height: 1.34; }
-    #i1-chip { background: «INDIGO»; color: #FFFFFF; }
+    #i1-h { top: 178px; color: «INDIGO»; font-size: 80px; line-height: 1.05; }
+    #i1-h1 { margin-top: 18px; line-height: 1; }        /* v6.4: «ir contigo?» smaller, with air under the first line */
+    #i1-chip { background: «INDIGO»; color: #FFFFFF; font-size: 60px; padding: 4px 22px 10px; border-radius: 16px; }
     #i1-card { left: 110px; top: 430px; width: 860px; height: 236px; }
     #i1-day { position: absolute; left: 28px; top: 28px; width: 156px; height: 180px; border-radius: 22px; overflow: hidden;
       background: #FFFFFF; box-shadow: 0 0 0 3px «LINE»; }
@@ -46,7 +47,7 @@ def build():
     reps = "\n".join(f"""    <div id="i1-r{k}" class="i1-rep"><div class="i1-name">{name}</div>
       <div class="i1-rb i1-bub i1-bub-w i1-bl" style="position: relative;">{txt}<div id="i1-x{k}" class="i1-x">{icon('xr')}</div></div></div>"""
                      for k, (name, col, txt) in enumerate(REPLIES))
-    body = "\n".join([ground(P, "paper"), f"""    <div id="i1-h" class="i1-h1"><span id="i1-h0" class="i1-w">¿Quién puede</span><br/><span id="i1-chip" class="i1-chip">ir contigo?</span></div>
+    body = "\n".join([ground(P, "paper"), f"""    <div id="i1-h" class="i1-h1"><div id="i1-h0" class="i1-w">¿Quién puede</div><div id="i1-h1"><span id="i1-chip" class="i1-chip">ir contigo?</span></div></div>
     <div id="i1-card" class="i1-card i1-on-paper">
       <div id="i1-day"><div id="i1-dayh">NOV</div><div id="i1-n0" class="i1-num">14</div><div id="i1-n1" class="i1-num">25</div></div>
       <div id="i1-hdr">Huisarts</div>

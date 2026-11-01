@@ -1,5 +1,5 @@
 """ins-02 · «Cada vez que alguien habla por ti, tú te quedas sin practicar.» — on Nawar blue, at the counter: the
-«En la gemeente» label; on «cada vez» the receptionist's white bubble («Wat is uw geboortedatum?»); on «alguien habla
+«En el gemeente» label; on «cada vez» the receptionist's white bubble («Wat is uw geboortedatum?»); on «alguien habla
 por ti» your companion answers for you («12 maart 1990.»); on «tú» your own bubble comes in with three dots that
 never turn into words, and fades on «te quedas»; on «sin practicar» a white «Sin practicar» pill with a red ✕ lands
 under it. Same family as UGC #2 ins-01 (blue ground, white bubbles, small uppercase labels)."""
@@ -41,7 +41,7 @@ def build():
     #i2-sin { display: inline-flex; align-items: center; gap: 14px; padding: 4px 26px 10px 18px; margin-left: 18px; }
     #i2-sin svg { display: block; width: 62px; height: 62px; margin-top: 6px; }
 """
-    body = "\n".join([ground(P, "blue"), f"""    <div id="i2-top" class="i2-row"><div id="i2-pill" class="i2-pill"><span class="i2-flag">{FLAG_NL}</span><span>En la gemeente</span></div></div>
+    body = "\n".join([ground(P, "blue"), f"""    <div id="i2-top" class="i2-row"><div id="i2-pill" class="i2-pill"><span class="i2-flag">{FLAG_NL}</span><span>En el gemeente</span></div></div>
     <div id="i2-rec" class="i2-blk i2-l">
       <div id="i2-ra" class="i2-ava"><div class="i2-face">{person()}</div><span class="i2-flag">{FLAG_NL}</span></div>
       <div class="i2-col"><div class="i2-lab" style="display: flex; align-items: center; gap: 12px;"><span class="i2-flag" style="width: 34px; height: 23px; flex: 0 0 34px;">{FLAG_NL}</span>Recepción</div><div id="i2-rb" class="i2-bub i2-bub-w i2-bl" style="position: relative;">Wat is uw geboortedatum?</div></div>

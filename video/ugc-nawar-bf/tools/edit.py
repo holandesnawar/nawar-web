@@ -34,10 +34,10 @@ JUMPS = {"g": [16.633], "p": [3.567, 7.567, 12.9, 15.6, 20.0, 24.5, 29.1, 32.2, 
 # v5, tighter: every pause between two words longer than TIGHT (her voice under LOUD_DB, measured on the take's own
 # sound) is cut down to KEEP_TAIL after the last word + KEEP_HEAD before the next; a take's own cut that sits in such a
 # silence becomes a cut of the edit there too (and inside a girl section, a jump cut with a new framing). PAUSE adds a
-# breath at one of those cuts — «…ejercicios prácticos.» | «cómo pronunciar…» is two takes glued with no air between
-# them (the voice jumps); the ebook covers the picture during the breath and the girl comes back on the second take.
+# breath at one of those cuts (v6.4: none — «…ejercicios prácticos.» | «cómo pronunciar…», two takes glued with no air
+# between them, now follow each other tight, the girl coming back on «cómo»: a half-second gap read as her going quiet).
 TIGHT, KEEP_TAIL, KEEP_HEAD, LOUD_DB = 0.18, 0.05, 0.04, -30.0
-PAUSE = {("p", 32.2): 0.16}
+PAUSE = {}
 NO_TIGHT = {"g"}       # the hook stays one continuous shot (its zoom-in, push and Black Friday snap)
 CUT_POST_AT = {("p", 36.7): -0.03}   # «Entero» starts 20 ms before the take's own cut: open on it (the flash hides that frame)
 SPEECH_END = 44.60     # «…en el enlace abajo.» ends here in take p

@@ -34,6 +34,10 @@ es la primera completa.
 - Las pegatinas de la oferta van sobre ella (1 €, hasta el 30 de noviembre, Black Friday) y el cierre es un botón
   amarillo «CONSÍGUELO POR 1 €» con «Lista prioritaria Black Friday».
 - La frase de la oferta es «Entero por un euro…»: el corte de la creadora cae justo antes de «entero» (no se dice «un»).
+- v6.4 (comentarios a la v6.3): «el gemeente» (no «la»); el ebook se congela abierto en cuanto se posa la última página,
+  sin zoom; sin la pausa antes de «cómo pronunciar»; golpes Black Friday y música algo más bajos; el zoom de entrada
+  es un zoom rápido hacia su cara desde su plano normal (no un plano que ya empieza cerca); «ir contigo?» más pequeño y
+  separado de «¿Quién puede».
 - v6: recorte que no se rompa (Robust Video Matting); vuelven las etiquetas del ebook (y «Pronunciación») y el libro va
   sobre azul, sin el negro; objetos sin sombras exteriores; «sin practicar» (0:16) menos pegado a los subtítulos.
 - v5.2: el zoom de entrada es el «snap» rápido del reel de referencia («ScreenRecording_11-01-2026…» en el Drive): arranca

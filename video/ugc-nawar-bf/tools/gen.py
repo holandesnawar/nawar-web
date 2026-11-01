@@ -5,8 +5,8 @@ her framing, the three Black Friday backdrops with her cutout in front, audio), 
 30 de noviembre»; compositions/outro.html: the button of the ending) and the captions (compositions/captions.html).
 
 Same language as the VSL and UGC #1/#2 (tools/common.py): while she talks to camera only captions and stickers cover
-her; when she explains, the picture cuts to a full-screen graphic and back. v5: the ad opens wide and snaps in on her
-face; on each Black Friday beat her room gives way to giant running type and she stays in front of it (backdrops()).
+her; when she explains, the picture cuts to a full-screen graphic and back. v6.4: the ad opens on her plain shot and
+zooms in fast on her face; on each Black Friday beat her room gives way to giant running type and she stays in front of it (backdrops()).
 
     python3 tools/edit.py && python3 tools/build_audio.py && python3 tools/gen.py
     python3 tools/gen.py --solo ins-03 --out /tmp/x   # one insert alone at t=0 (+ its captions), to snapshot it
@@ -235,13 +235,15 @@ def captions(window=None):
 
 
 # ============================================================================== the girl's framing
-SNAP, SNAP_HOLD = 0.16, 0.1   # the opening snap-zoom: ~3 frames close (1.3) and blurred, then snapped to the shot in 2
+ZOOM_IN = (0.0, 0.3, 1.0, 1.18)   # v6.4, the opening hook: from her plain shot (frame 0, sharp) a fast zoom-in on her face
+                                  # (t0, duration, scale from, scale to; most of it in the first ~0.12 s)
 
 
 def zooms():
     """coordinate-target-zoom on the girl (origin = her face in each take): tweens (time, duration, ease, to, from|None,
-    wrapper). v5: the ad opens wide and snaps in on her face (the stop-scroll), a slow push to «este Black Friday», where
-    the framing snaps back out as the backdrop comes in. After that every stretch of a take inside a girl section starts at its own framing (the cuts
+    wrapper). v6.4: the ad opens on her plain shot and zooms in fast on her face (the stop-scroll), a slow push to «este
+    Black Friday», where the framing snaps back out as the backdrop comes in. After that every stretch of a take inside a
+    girl section starts at its own framing (the cuts
     hide the change) with a slow push, and a punch on a key word; a jump cut inside a section (the take's own cuts, see
     edit.py JUMPS) changes framing too. #zwg = take g (the hook), #zwp = take p (the body)."""
     G = ED["girl"]; Z = []
@@ -251,13 +253,13 @@ def zooms():
         Z.append((round(t - 0.05, 3), d, ease, {"scale": s}, None, sel))
     wrap = lambda sh: "#zw" + sh["take"]
     shots = ED["shots"]
-    # intro (v5.2, the client's reference reel): the first frames are pushed in close and motion-blurred and SNAP out to
-    # the shot in ~0.15 s (the blur is in index(), SNAP); a slow push to «este Black Friday», where it snaps out again as
-    # her room gives way to the backdrop (see BACKDROPS)
+    # intro (v6.4): the ad opens on her plain shot and zooms in fast on her face in the first fraction of a second
+    # (ZOOM_IN, a light motion blur at its fastest in index()), the stop-scroll; then a slow push to «este Black Friday»,
+    # where it snaps out as her room gives way to the backdrop (see BACKDROPS)
     hb = ED["hook_bf"]; t_bf = round(hb - 0.08, 3)
-    Z.append((0.0, SNAP_HOLD, "none", {"scale": 1.25}, {"scale": 1.3}, "#zwg"))          # held close and blurred…
-    Z.append((SNAP_HOLD, SNAP - SNAP_HOLD, "power2.out", {"scale": 1.1}, None, "#zwg"))  # …then the snap out, sharp
-    push(SNAP, t_bf, 1.1, 1.2, "#zwg")
+    z0, zd, zs0, zs1 = ZOOM_IN
+    Z.append((z0, zd, "power3.out", {"scale": zs1}, {"scale": zs0}, "#zwg"))
+    push(z0 + zd, t_bf, zs1, zs1 + 0.04, "#zwg")
     Z.append((t_bf, 0.34, "expo.out", {"scale": 1.04}, None, "#zwg")); push(t_bf + 0.34, ED["shots"][1]["start"], 1.04, 1.09, "#zwg")
     PUNCH = {"anos": 1.12, "facil": 1.1, "creado": 1.1, "black": 1.08, "abajo": 1.1}   # on the key word (not on «euro»: she leans in)
     LOOK = {"g": [1.04], "p": [1.0, 1.1, 1.02, 1.12, 1.04, 1.08, 1.0, 1.1]}   # start framings, cycling; neighbours differ
@@ -493,10 +495,10 @@ def index(sfx_all, overlays):
       // framing on the girl: opens tight and zooms out, punches on «Black Friday»; then one look per stretch, a slow push and a
       // punch on the key word (origin = her face); the ad ends when she stops talking, under the button
 {chr(10).join(ztl)}
-      // the opening snap: her first frames motion-blurred, sharp as the zoom lands
-      tl.fromTo("#zwg", {{ filter: "blur(16px)" }}, {{ filter: "blur(12px)", duration: {SNAP_HOLD}, ease: "none" }}, 0);
-      tl.to("#zwg", {{ filter: "blur(0px)", duration: {round(SNAP - SNAP_HOLD, 3)}, ease: "power2.out" }}, {SNAP_HOLD});
-      tl.set("#zwg", {{ filter: "none" }}, {SNAP + 0.01});
+      // the opening zoom-in: frame 0 sharp, a light motion blur while it moves fastest, sharp again as it lands
+      tl.fromTo("#zwg", {{ filter: "blur(0px)" }}, {{ filter: "blur(4px)", duration: 0.05, ease: "power1.out" }}, 0.0);
+      tl.to("#zwg", {{ filter: "blur(0px)", duration: 0.16, ease: "power2.out" }}, 0.05);
+      tl.set("#zwg", {{ filter: "none" }}, 0.22);
       // the Black Friday backdrops: in on a white flash, rows running both ways, out at the cut / on the next words
       tl.set("#flash", {{ opacity: 0 }}, 0);
 {chr(10).join(bxjs)}
@@ -554,10 +556,10 @@ def main():
         for t, name, vol, *rest in sfx:
             sfx_all.append((INS[iid]["start"] + t, name, vol, *rest))
     overlays = []
-    sfx_all.append((0.0, "whoosh-short", 0.2))                         # the opening snap-zoom
+    sfx_all.append((0.0, "whoosh-short", 0.2))                         # the opening zoom-in
     for b in backdrops():                  # the hit under each backdrop; on «Entero» it lands in the breath before the word
-        sfx_all += [(b["t_in"] - 0.06, "whoosh-short", 0.2),
-                    (b["t_in"] - 0.06, "impact", 0.3) if b["name"] == "eur" else (b["t_in"], "impact", 0.4)]   # eur: just before «Entero»
+        sfx_all += [(b["t_in"] - 0.06, "whoosh-short", 0.14),          # v6.4: the hits ~3 dB lower
+                    (b["t_in"] - 0.06, "impact", 0.21) if b["name"] == "eur" else (b["t_in"], "impact", 0.28)]   # eur: just before «Entero»
         if b["out_flash"]:
             sfx_all.append((b["t_out"] - 0.06, "whoosh-short", 0.1))
     for cid, fn in (("pron", pron), ("offer", offer), ("outro", outro)):
