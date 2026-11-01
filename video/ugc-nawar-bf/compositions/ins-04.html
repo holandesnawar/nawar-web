@@ -72,64 +72,40 @@
     .i4-acc { color: #4da3ff; }
     .i4-w { display: inline-block; }
 
-    #i4-lrow { top: 206px; }
-    #i4-frame { position: absolute; left: 40px; top: 296px; width: 1000px; height: 562.5px; border-radius: 30px; overflow: hidden;
-      background: #F1ECE4; box-shadow: 0 0 0 6px rgba(255,255,255,0.9), 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
-    .i4-z { position: absolute; left: 0; top: 0; width: 1000px; height: 562.5px; }
-    .i4-z video, .i4-z img { position: absolute; left: 0; top: 0; width: 1000px; height: 562.5px; object-fit: cover; display: block; }
-    #i4-zc { transform-origin: 50% 50%; }
-    #i4-zn { transform-origin: 634.4px 212.5px; }
-    #i4-zk { transform-origin: 640.6px 293px; }
-    #i4-prow { top: 926px; gap: 16px; }
-    .i4-wpill { gap: 12px; height: 76px; padding: 0 30px 0 18px; font-size: 33px; }
-    .i4-wpill svg { display: block; width: 40px; height: 40px; color: #1D0084; }
-    .i4-wpill .i4-flag svg { width: 40px; height: 27px; }
-    #i4-crow { top: 1040px; gap: 14px; flex-wrap: wrap; width: 960px; left: 60px; row-gap: 14px; }
-    .i4-ck { display: flex; align-items: center; gap: 10px; height: 64px; padding: 0 26px 0 12px; border-radius: 999px;
-      background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.30); color: #FFFFFF; white-space: nowrap;
-      font-family: "Inter", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; }
-    .i4-ck svg { display: block; width: 40px; height: 40px; }
+    #i4-bg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: #000000; }
+    #i4-stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 287.4px 709px; }
+    #i4-vw { position: absolute; left: -329.1px; top: 260.9px; width: 1738.2px; height: 977.8px;
+      -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 10%); mask-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 10%); }
+    #i4-vw video, #i4-rw video { position: absolute; left: 0; top: 0; width: 1738.2px; height: 977.8px; display: block; }
+    #i4-rw { position: absolute; left: -329.1px; top: 1108.3px; width: 1738.2px; height: 300px; overflow: hidden; opacity: 0.22;
+      -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0) 70%); mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0) 70%); }
+    #i4-rw video { top: -130.4px; transform: scaleY(-1); }
+    #i4-lab { position: absolute; left: 0; top: 176px; width: 1080px; text-align: center; font-family: "Inter", sans-serif; font-weight: 700;
+      font-size: 24px; line-height: 1; letter-spacing: 0.32em; color: rgba(255,255,255,0.55); text-transform: uppercase; }
+    #i4-tit { position: absolute; left: 0; top: 218px; width: 1080px; text-align: center; font-weight: 800; font-size: 70px; line-height: 1;
+      letter-spacing: -0.025em; color: #FFFFFF; white-space: nowrap; }
 
   </style>
-  <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="10.326">
-    <div class="i4-full i4-blue"><div class="i4-blue-dots"></div><div class="i4-blue-amb"></div><div class="i4-blue-vig"></div></div>
-    <div id="i4-lrow" class="i4-row"><div id="i4-lab" class="i4-pill"><svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="#FFFFFF" stroke-width="4.2"/></svg><span>Ebook · Holandés sin miedo</span></div></div>
-    <div id="i4-frame">
-      <div id="i4-zc" class="i4-z"><video id="i4-v" class="clip" src="assets/video/libro-ins04.mp4" muted playsinline data-start="0" data-duration="4.194" data-track-index="1"></video></div>
-      <div id="i4-zn" class="i4-z"><img src="assets/img/libro-nummers.png" alt="" /></div>
-      <div id="i4-zk" class="i4-z"><img src="assets/img/libro-klanken.png" alt="" /></div>
+  <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="6.047">
+    <div id="i4-bg"></div>
+    <div id="i4-stage">
+      <div id="i4-rw"><video id="i4-vr" class="clip" src="assets/video/libro-ins04.mp4" muted playsinline data-start="0" data-duration="6.014" data-track-index="2"></video></div>
+      <div id="i4-vw"><video id="i4-v" class="clip" src="assets/video/libro-ins04.mp4" muted playsinline data-start="0" data-duration="6.047" data-track-index="1"></video></div>
     </div>
-    <div id="i4-prow" class="i4-row"><div id="i4-p0" class="i4-wpill"><svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="currentColor" stroke-width="4.2"/></svg><span>70 páginas</span></div><div id="i4-p1" class="i4-wpill"><span class="i4-flag i4-flagd"><svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#AA151B" /><rect y="7" width="40" height="13" fill="#F1BF00" /></svg></span><span>En español</span></div><div id="i4-p2" class="i4-wpill"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"><path d="M14 18 V6 H34 V18"/><rect x="5" y="18" width="38" height="16" rx="5"/><path d="M14 28 H34 V42 H14 Z"/></g></svg><span>Para imprimir</span></div></div>
-    <div id="i4-crow" class="i4-row"><div id="i4-c0" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Vocabulario</span></div><div id="i4-c1" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Gramática</span></div><div id="i4-c2" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ejercicios</span></div><div id="i4-c3" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Pronunciación</span></div></div>
+    <div id="i4-lab">Ebook</div>
+    <div id="i4-tit">Holandés sin miedo</div>
   </div>
   <script>
     (function () {
       const tl = gsap.timeline({ paused: true });
       const q = (id) => document.getElementById("i4-" + id);
 
-      tl.fromTo(q("lab"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);
-      tl.fromTo(q("frame"), { opacity: 0, y: 90, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out" }, 0);
-      // the cover drifts in while she names it, the book opens and turns its pages (the clip)
-      tl.fromTo(q("zc"), { scale: 1.3 }, { scale: 1.45, duration: 2.576 - 0.06, ease: "power1.inOut" }, 0);
-      tl.fromTo(q("zc"), { scale: 1.45 }, { scale: 1.0, duration: 0.55, ease: "power2.inOut", immediateRender: false }, 2.576 - 0.05);
-      // «gramática»: the spread holds (still), the camera pushes in on the table; «ejercicios»: over to the review box
-      tl.set(q("zn"), { opacity: 0 }, 0);
-      tl.set(q("zn"), { opacity: 1 }, 4.154);
-      tl.fromTo(q("zn"), { scale: 1, x: 0, y: 0 }, { scale: 1.45, x: 500 - 634.4, y: 281 - 212.5, duration: 0.6, ease: "power2.inOut", immediateRender: false }, 4.154);
-      tl.fromTo(q("zn"), { x: 500 - 634.4, y: 281 - 212.5 }, { x: 500 - 634.4 - (638.3 - 634.4) * 1.45, y: 281 - 212.5 - (376.6 - 212.5) * 1.45, duration: 0.55,
-        ease: "power2.inOut", immediateRender: false }, 4.595 - 0.08);
-      // «cómo pronunciar los sonidos»: the «Klanken (Sonidos)» page, pushing in to the end
-      tl.set(q("zk"), { opacity: 0 }, 0);
-      tl.set(q("zk"), { opacity: 1 }, 5.976);
-      tl.fromTo(q("zk"), { scale: 1.4, x: 500 - 640.6, y: 281 - 293 }, { scale: 1.6, x: 500 - 640.6, y: 281 - 293, duration: 10.326 - 5.976, ease: "power1.out",
-        immediateRender: false }, 5.976);
-      tl.fromTo(q("p0"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 0.897 - 0.06);
-      tl.fromTo(q("p1"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 1.859 - 0.06);
-      tl.fromTo(q("p2"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 2.576 - 0.06);
-      tl.fromTo(q("c0"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 3.368 - 0.05);
-      tl.fromTo(q("c1"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 4.104 - 0.05);
-      tl.fromTo(q("c2"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 4.595 - 0.05);
-      tl.fromTo(q("c3"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 6.076 - 0.05);
+      // a slow drift while the pages turn, then the push into «¡Hora de practicar!» on «ejercicios prácticos»
+      tl.fromTo(q("stage"), { scale: 1.0 }, { scale: 1.035, duration: 4.453 - 0.1, ease: "none" }, 0);
+      tl.fromTo(q("stage"), { scale: 1.035 }, { scale: 1.2, duration: 6.047 - 4.453 + 0.1, ease: "power2.inOut", immediateRender: false }, 4.453 - 0.1);
+      tl.fromTo(q("lab"), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0.1);
+      tl.fromTo(q("tit"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.16);
+      tl.to([q("lab"), q("tit")], { opacity: 0, y: -14, duration: 0.3, ease: "power2.in" }, 4.453 - 0.12);
 
       window.__timelines["ins-04"] = tl;
     })();

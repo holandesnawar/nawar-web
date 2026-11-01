@@ -72,25 +72,13 @@
     .f-acc { color: #4da3ff; }
     .f-w { display: inline-block; }
 
-    .f-bf { display: flex; align-items: center; gap: 14px; height: 78px; padding: 0 30px; border-radius: 18px; background: #0C0C1E;
-      color: #FFFFFF; white-space: nowrap; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.18), 0 18px 40px rgba(0,0,0,0.35);
-      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 34px; line-height: 1; letter-spacing: 0.12em; padding-top: 3px; box-sizing: border-box; }
-    .f-bf i { display: block; width: 12px; height: 12px; border-radius: 50%; background: #4da3ff; font-style: normal; }
-
-    #f-card { left: 742px; top: 222px; width: 290px; height: 250px; transform: rotate(4deg); transform-origin: 50% 50%;
-      box-shadow: 0 30px 70px rgba(0,0,0,0.35), 0 6px 16px rgba(0,0,0,0.18); }
-    #f-lab { position: absolute; left: 22px; top: 20px; height: 44px; padding: 0 16px; border-radius: 12px; font-size: 20px; gap: 9px; }
-    #f-lab i { width: 8px; height: 8px; }
-    #f-eur { position: absolute; left: 0; top: 96px; width: 290px; height: 130px; text-align: center; font-weight: 900; font-size: 120px; line-height: 130px;
-      letter-spacing: -0.04em; color: #1D0084; }
     #f-drow { top: 1130px; }
-    #f-date { gap: 14px; height: 80px; padding: 0 34px 0 22px; font-size: 36px; }
-    #f-date svg { display: block; width: 42px; height: 42px; color: #E02D3C; }
+    #f-date { gap: 14px; height: 84px; padding: 0 36px 0 22px; font-size: 38px; }
+    #f-date svg { display: block; width: 44px; height: 44px; color: #E02D3C; }
     #f-date b { color: #E02D3C; font-weight: 800; }
 
   </style>
-  <div id="root" data-composition-id="offer" data-width="1080" data-height="1920" data-duration="5.835">
-    <div id="f-card" class="f-card"><div id="f-lab" class="f-bf"><i></i><span>BLACK FRIDAY</span></div><div id="f-eur">1 €</div></div>
+  <div id="root" data-composition-id="offer" data-width="1080" data-height="1920" data-duration="5.7">
     <div id="f-drow" class="f-row"><div id="f-date" class="f-wpill"><svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="33" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><path d="M6 19 H42 M16 5 V13 M32 5 V13" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span>Hasta el <b>30 de noviembre</b></span></div></div>
   </div>
   <script>
@@ -98,10 +86,8 @@
       const tl = gsap.timeline({ paused: true });
       const q = (id) => document.getElementById("f-" + id);
 
-      tl.fromTo(q("card"), { opacity: 0, scale: 0.6, rotation: -8 }, { opacity: 1, scale: 1, rotation: 4, duration: 0.38, ease: "back.out(1.8)" }, 1.161 - 0.08);
-      tl.fromTo(q("date"), { opacity: 0, y: 26, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 1.981 - 0.08);
-      tl.to(q("lab"), { keyframes: [{ scale: 1.12, duration: 0.14, ease: "power2.out" }, { scale: 1, duration: 0.22, ease: "power2.inOut" }] }, 4.797 - 0.04);
-      tl.to([q("card"), q("date")], { opacity: 0, scale: 0.92, duration: 0.16, ease: "power2.in" }, 5.835 - 0.16);
+      tl.fromTo(q("date"), { opacity: 0, y: 26, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 1.977 - 0.08);
+      tl.to(q("date"), { opacity: 0, y: 16, duration: 0.18, ease: "power2.in" }, 4.663 - 0.24);
 
       window.__timelines["offer"] = tl;
     })();

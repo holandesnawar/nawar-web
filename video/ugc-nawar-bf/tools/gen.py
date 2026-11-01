@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """Generate the UGC Black Friday ad from edit.json: index.html (the girl — take g, the hook, and take p, the body —,
-her framing, audio), one full-screen insert per explanation (compositions/ins-NN.html, built by
-tools/inserts/ins_NN.py), the stickers over her (compositions/hook.html: «Países Bajos» and the «BLACK FRIDAY» tape;
-compositions/offer.html: the 1 € burst, «hasta el 30 de noviembre», the tape again), the button of the ending
-(compositions/outro.html) and the captions (compositions/captions.html).
+her framing, the three Black Friday backdrops with her cutout in front, audio), one full-screen insert per explanation
+(compositions/ins-NN.html, built by tools/inserts/ins_NN.py), what goes over her (compositions/offer.html: «Hasta el
+30 de noviembre»; compositions/outro.html: the button of the ending) and the captions (compositions/captions.html).
 
-Same language as UGC #1/#2 (tools/common.py), in its Black Friday dress: while she talks to camera only captions and
-stickers cover her; when she explains, the picture cuts to a full-screen dark graphic and back. The ad opens tight on
-her face and zooms out; «este Black Friday» slams the tape in with a punch.
+Same language as the VSL and UGC #1/#2 (tools/common.py): while she talks to camera only captions and stickers cover
+her; when she explains, the picture cuts to a full-screen graphic and back. v5: the ad opens wide and snaps in on her
+face; on each Black Friday beat her room gives way to giant running type and she stays in front of it (backdrops()).
 
     python3 tools/edit.py && python3 tools/build_audio.py && python3 tools/gen.py
     python3 tools/gen.py --solo ins-03 --out /tmp/x   # one insert alone at t=0 (+ its captions), to snapshot it
@@ -39,73 +38,31 @@ def wcue_from(t0):
     return wcue
 
 
-BF_CSS = """
-    .«P»-bf { display: flex; align-items: center; gap: 14px; height: 78px; padding: 0 30px; border-radius: 18px; background: #0C0C1E;
-      color: #FFFFFF; white-space: nowrap; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.18), 0 18px 40px rgba(0,0,0,0.35);
-      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 34px; line-height: 1; letter-spacing: 0.12em; padding-top: 3px; box-sizing: border-box; }
-    .«P»-bf i { display: block; width: 12px; height: 12px; border-radius: 50%; background: «SKY»; font-style: normal; }
-"""
-
-
-def hook():
-    """«Si vives en Países Bajos…»: a white «Países Bajos» pill (NL flag) on «Países»; on «este Black Friday» a black
-    «BLACK FRIDAY» label lands at the top (with the punch on her); both leave at the cut to take p."""
-    P = "h"; d = ED["shots"][1]["start"]; wcue = wcue_from(0.0)
-    c = dict(PAI=wcue("paises"), BF=round(ED["hook_bf"] - 0.05, 3), END=d)
-    css = BF_CSS + """
-    #h-prow { top: 196px; }
-    #h-pill { transform-origin: 50% 50%; }
-    #h-brow { top: 190px; }
-"""
-    body = f"""    <div id="h-prow" class="h-row"><div id="h-pill" class="h-wpill"><span class="h-flag h-flagd">{FLAG_NL}</span><span>Países Bajos</span></div></div>
-    <div id="h-brow" class="h-row"><div id="h-bf" class="h-bf"><i></i><span>BLACK FRIDAY</span><i></i></div></div>"""
-    js = """
-      tl.fromTo(q("pill"), { opacity: 0, y: 20, scale: 1.0 }, { opacity: 1, y: 0, scale: 1.2, duration: 0.3, ease: "back.out(1.6)" }, «PAI» - 0.05);
-      tl.to(q("pill"), { opacity: 0, y: -16, duration: 0.16, ease: "power2.in" }, «BF» - 0.14);
-      tl.fromTo(q("bf"), { opacity: 0, scale: 0.6, y: 10 }, { opacity: 1, scale: 1.15, y: 0, duration: 0.3, ease: "back.out(2)" }, «BF»);
-"""
-    sfx = [(c["PAI"] - 0.05, "pop", 0.16), (c["BF"], "whoosh-short", 0.16), (c["BF"] + 0.02, "pop", 0.22)]
-    return comp("hook", d, P, css, body, js, c), 0.0, d, sfx
-
-
 def offer():
-    """«Entero por un euro, solo hasta el 30 de noviembre. Esta es una de nuestras ofertas del Black Friday.» over the
-    girl: on «euro» a white price card lands in the top-right corner, clear of her face («BLACK FRIDAY» label, «1 €»);
-    a white «Hasta el 30 de noviembre» pill on «30»; on «Black Friday» the label gives a small pulse; all leave at the
-    call to action."""
+    """«…solo hasta el 30 de noviembre.» over the girl, after the «1 €» backdrop: a white «Hasta el 30 de noviembre» pill
+    (calendar icon, the date in red) lands on «30» and leaves at the call to action."""
     P = "f"; t0 = ED["offer"]; d = round(ED["outro"] - t0, 3); wcue = wcue_from(t0)
-    c = dict(EUR=wcue("euro"), TRE=wcue("30"), BF=wcue("black"), END=d)
-    css = BF_CSS + """
-    #f-card { left: 742px; top: 222px; width: 290px; height: 250px; transform: rotate(4deg); transform-origin: 50% 50%;
-      box-shadow: 0 30px 70px rgba(0,0,0,0.35), 0 6px 16px rgba(0,0,0,0.18); }
-    #f-lab { position: absolute; left: 22px; top: 20px; height: 44px; padding: 0 16px; border-radius: 12px; font-size: 20px; gap: 9px; }
-    #f-lab i { width: 8px; height: 8px; }
-    #f-eur { position: absolute; left: 0; top: 96px; width: 290px; height: 130px; text-align: center; font-weight: 900; font-size: 120px; line-height: 130px;
-      letter-spacing: -0.04em; color: «INDIGO»; }
+    c = dict(TRE=wcue("30"), BF=wcue("black"), END=d)
+    css = """
     #f-drow { top: 1130px; }
-    #f-date { gap: 14px; height: 80px; padding: 0 34px 0 22px; font-size: 36px; }
-    #f-date svg { display: block; width: 42px; height: 42px; color: «RED»; }
+    #f-date { gap: 14px; height: 84px; padding: 0 36px 0 22px; font-size: 38px; }
+    #f-date svg { display: block; width: 44px; height: 44px; color: «RED»; }
     #f-date b { color: «RED»; font-weight: 800; }
 """
-    body = f"""    <div id="f-card" class="f-card"><div id="f-lab" class="f-bf"><i></i><span>BLACK FRIDAY</span></div><div id="f-eur">1 €</div></div>
-    <div id="f-drow" class="f-row"><div id="f-date" class="f-wpill">{icon('cal')}<span>Hasta el <b>30 de noviembre</b></span></div></div>"""
+    body = f"""    <div id="f-drow" class="f-row"><div id="f-date" class="f-wpill">{icon('cal')}<span>Hasta el <b>30 de noviembre</b></span></div></div>"""
     js = """
-      tl.fromTo(q("card"), { opacity: 0, scale: 0.6, rotation: -8 }, { opacity: 1, scale: 1, rotation: 4, duration: 0.38, ease: "back.out(1.8)" }, «EUR» - 0.08);
       tl.fromTo(q("date"), { opacity: 0, y: 26, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, «TRE» - 0.08);
-      tl.to(q("lab"), { keyframes: [{ scale: 1.12, duration: 0.14, ease: "power2.out" }, { scale: 1, duration: 0.22, ease: "power2.inOut" }] }, «BF» - 0.04);
-      tl.to([q("card"), q("date")], { opacity: 0, scale: 0.92, duration: 0.16, ease: "power2.in" }, «END» - 0.16);
+      tl.to(q("date"), { opacity: 0, y: 16, duration: 0.18, ease: "power2.in" }, «BF» - 0.24);
 """
-    sfx = [(c["EUR"] - 0.08, "pop", 0.24), (c["TRE"] - 0.08, "pop", 0.3)]
+    sfx = [(c["TRE"] - 0.08, "pop", 0.3)]
     return comp("offer", d, P, css, body, js, c), t0, d, sfx
 
 
 def outro():
-    """«Consigue el tuyo en el enlace abajo, y al conseguirlo entras directamente en nuestra lista prioritaria del Black
-    Friday.» — the glossy blue button of UGC #2 («CONSÍGUELO POR 1 €») pops under her face on «consigue»; an arrow
-    bounces under it on «abajo»; on «lista prioritaria» the arrow gives way to a white «Lista prioritaria Black Friday»
-    pill with a green tick."""
+    """«Consigue el tuyo en el enlace abajo.» — the glossy blue button of UGC #2 («CONSÍGUELO POR 1 €») pops under her
+    face on «consigue»; an arrow bounces under it on «abajo»; the button breathes once on her last frame (held, TAIL)."""
     P = "o"; t0 = ED["outro"]; d = round(TOTAL - t0, 3); wcue = wcue_from(t0)
-    c = dict(CON=wcue("consigue"), ABA=wcue("abajo"), LIS=wcue("lista"), END=round(ED["speech_end"] - t0, 3))
+    c = dict(CON=wcue("consigue"), ABA=wcue("abajo"), END=round(ED["speech_end"] - t0, 3))
     css = """
     #o-wrap { position: absolute; left: 140px; top: 1150px; width: 800px; height: 128px; }
     #o-glow { position: absolute; left: -40px; top: -30px; width: 880px; height: 188px; border-radius: 94px;
@@ -122,17 +79,12 @@ def outro():
       text-shadow: 0 0 18px rgba(255,255,255,0.45), 0 3px 0 rgba(0,30,120,0.35); }
     #o-arrow { position: absolute; left: 488px; top: 1296px; width: 104px; height: 104px; color: #FFFFFF; }
     #o-arrow svg { display: block; width: 104px; height: 104px; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.45)); }
-    #o-lrow { top: 1312px; }
-    #o-list { gap: 14px; height: 80px; padding: 0 34px 0 18px; font-size: 34px; }
-    #o-list svg { display: block; width: 48px; height: 48px; }
-    #o-list b { color: «BLUE»; font-weight: 800; }
 """
     body = f"""    <div id="o-wrap">
       <div id="o-glow"></div>
       <div id="o-btn"><div id="o-gloss"></div><div id="o-shine"></div><div id="o-label">CONSÍGUELO POR 1 €</div></div>
     </div>
-    <div id="o-arrow">{icon('down')}</div>
-    <div id="o-lrow" class="o-row"><div id="o-list" class="o-wpill">{icon('check')}<span>Lista prioritaria <b>Black Friday</b></span></div></div>"""
+    <div id="o-arrow">{icon('down')}</div>"""
     js = """
       tl.fromTo(q("wrap"), { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.36, ease: "back.out(1.8)" }, «CON» - 0.06);
       tl.fromTo(q("glow"), { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, «CON»);
@@ -140,13 +92,11 @@ def outro():
       tl.fromTo(q("arrow"), { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, «ABA» - 0.1);
       tl.fromTo(q("arrow"), { y: 0 }, { keyframes: [{ y: 20, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" },
         { y: 20, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" }], immediateRender: false }, «ABA» + 0.14);
-      tl.to(q("arrow"), { opacity: 0, duration: 0.16, ease: "power2.in" }, «LIS» - 0.2);
-      tl.fromTo(q("list"), { opacity: 0, scale: 0.7, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.8)" }, «LIS» - 0.06);
-      tl.fromTo(q("shine"), { x: 0 }, { x: 1240, duration: 0.7, ease: "power2.inOut", immediateRender: false }, «LIS» + 0.2);
+      tl.fromTo(q("shine"), { x: 0 }, { x: 1240, duration: 0.7, ease: "power2.inOut", immediateRender: false }, «END» - 0.1);
       tl.fromTo(q("wrap"), { scale: 1 }, { keyframes: [{ scale: 1.04, duration: 0.25, ease: "power1.inOut" }, { scale: 1, duration: 0.25, ease: "power1.inOut" }],
         immediateRender: false }, «END» - 0.2);
 """
-    sfx = [(c["CON"] - 0.06, "pop", 0.2), (c["ABA"] - 0.1, "click-soft", 0.22), (c["LIS"] - 0.06, "chime", 0.2)]
+    sfx = [(c["CON"] - 0.06, "pop", 0.2), (c["ABA"] - 0.1, "click-soft", 0.22)]
     return comp("outro", d, P, css, body, js, c), t0, d, sfx
 
 
@@ -256,8 +206,8 @@ def captions(window=None):
 # ============================================================================== the girl's framing
 def zooms():
     """coordinate-target-zoom on the girl (origin = her face in each take): tweens (time, duration, ease, to, from|None,
-    wrapper). The ad opens tight on her face and zooms out fast; a slow push to «este Black Friday», which lands on a
-    punch (with the tape). After that every stretch of a take inside a girl section starts at its own framing (the cuts
+    wrapper). v5: the ad opens wide and snaps in on her face (the stop-scroll), a slow push to «este Black Friday», where
+    the framing snaps back out as the backdrop comes in. After that every stretch of a take inside a girl section starts at its own framing (the cuts
     hide the change) with a slow push, and a punch on a key word; a jump cut inside a section (the take's own cuts, see
     edit.py JUMPS) changes framing too. #zwg = take g (the hook), #zwp = take p (the body)."""
     G = ED["girl"]; Z = []
@@ -267,11 +217,13 @@ def zooms():
         Z.append((round(t - 0.05, 3), d, ease, {"scale": s}, None, sel))
     wrap = lambda sh: "#zw" + sh["take"]
     shots = ED["shots"]
-    # intro: tight on her face → zoom out, push, punch on «Black Friday» (the hook's shot)
-    hb = ED["hook_bf"]
-    Z.append((0.0, 0.7, "power3.out", {"scale": 1.03}, {"scale": 1.34}, "#zwg"))
-    push(0.7, hb - 0.05, 1.03, 1.08, "#zwg"); punch(hb, 1.18, "#zwg", d=0.2, ease="power4.out")
-    PUNCH = {"anos": 1.12, "facil": 1.1, "creado": 1.1, "abajo": 1.1}   # on the key word (not on «euro»: she leans in)
+    # intro (v5): opens wide and snaps in on her face (the stop-scroll), drifts in, and on «Black Friday» snaps back out as
+    # her room gives way to the backdrop (see BACKDROPS)
+    hb = ED["hook_bf"]; t_bf = round(hb - 0.08, 3)
+    Z.append((0.0, 0.42, "expo.out", {"scale": 1.3}, {"scale": 1.0}, "#zwg"))
+    push(0.42, t_bf, 1.3, 1.36, "#zwg")
+    Z.append((t_bf, 0.34, "expo.out", {"scale": 1.12}, None, "#zwg")); push(t_bf + 0.34, ED["shots"][1]["start"], 1.12, 1.17, "#zwg")
+    PUNCH = {"anos": 1.12, "facil": 1.1, "creado": 1.1, "black": 1.08, "abajo": 1.1}   # on the key word (not on «euro»: she leans in)
     LOOK = {"g": [1.04], "p": [1.0, 1.1, 1.02, 1.12, 1.04, 1.08, 1.0, 1.1]}   # start framings, cycling; neighbours differ
     used = {"g": 0, "p": 0}
     for g in G:
@@ -287,6 +239,76 @@ def zooms():
             else:
                 push(a, b, s0, s0 + 0.04, wrap(sh))
     return Z
+
+
+# ============================================================================== the Black Friday backdrops (v5)
+# Three times her room gives way to giant running type and she stays in front of it (her cutout, tools/mattes.py):
+# «…este BLACK FRIDAY te interesa» (black, «BLACK FRIDAY» rows), «Entero por un euro» (Nawar blue, «1 €» rows, her raised
+# finger in front) and «…ofertas del BLACK FRIDAY» (black again). Each one comes in on a white flash and a hit, rows
+# solid and outlined, running in opposite directions; it lives inside her take's zoom wrapper, between the take and the
+# cutout, so it takes the same framing.
+def backdrops():
+    mats = json.load(open(os.path.join(ROOT, "assets", "video", "mattes.json")))
+    blacks = [w["t"] for w in WORDS if norm(w["text"]) == "black"]
+    sh7 = next(s for s in ED["shots"] if s["take"] == "p" and s["media_start"] - 0.02 <= mats["eur"]["f0"] / 30 <= s["media_end"])
+    win = [("bf1", "bf", round(ED["hook_bf"] - 0.08, 3), ED["shots"][1]["start"]),
+           ("eur", "eur", sh7["start"], round(next(w["t"] for w in WORDS if w["t"] > sh7["start"] and norm(w["text"]) == "solo") - 0.06, 3)),
+           ("bf2", "bf", round(blacks[1] - 0.08, 3), round(at("consigue") - 0.12, 3))]
+    out = []
+    for name, kind, t_in, t_out in win:
+        m = mats[name]; m0 = m["f0"] / 30
+        sh = next(s for s in ED["shots"] if s["take"] == m["take"] and s["media_start"] - 0.02 <= m0 <= s["media_end"]
+                  and s["start"] <= t_in < s["start"] + s["duration"] + 1e-3) if name != "eur" else sh7
+        e0 = sh["start"] + (m0 - sh["media_start"]) / RATE            # edit time of the cutout's first frame
+        ms = round((t_in - e0) * RATE, 3)
+        assert ms >= 0 and ms + (t_out - t_in) * RATE <= (m["f1"] - m["f0"] + 1) / 30 + 1e-3, (name, ms)
+        out.append(dict(name=name, kind=kind, take=m["take"], t_in=t_in, t_out=round(t_out, 3), src=m["src"], ms=ms))
+    return out
+
+
+BX_TEXT = {"bf": "BLACK FRIDAY", "eur": "1€"}
+BX_CSS = """
+      .bx { position: absolute; left: -100px; top: -100px; width: 1280px; height: 2120px; overflow: hidden; opacity: 0; }
+      .bx-bf { background: radial-gradient(circle at 50% 30%, #221c63 0%, #0a0822 52%, #020108 100%); }
+      .bx-eur { background: radial-gradient(circle at 50% 30%, #3a95ff 0%, #0b56e0 42%, #120081 100%); }
+      .bx-rows { position: absolute; left: 0; top: 0; width: 1280px; height: 2120px; transform-origin: 640px 760px; }
+      .bx-row { position: absolute; left: 0; white-space: nowrap; font-family: "Poppins", sans-serif; font-weight: 900; line-height: 1;
+        letter-spacing: -0.02em; }
+      .bx-bf .bx-row { font-size: 226px; }
+      .bx-eur .bx-row { font-size: 330px; letter-spacing: -0.04em; }
+      .bx-s { color: #FFFFFF; }
+      .bx-o { color: rgba(255,255,255,0.12); -webkit-text-stroke: 4px rgba(255,255,255,0.62); }
+      .bx-bf .bx-s { color: #F4F5FF; }
+      .bx-glow { position: absolute; left: 190px; top: 260px; width: 900px; height: 1100px; border-radius: 50%;
+        background: radial-gradient(ellipse at 50% 45%, rgba(120,170,255,0.30) 0%, rgba(120,170,255,0) 65%); }
+      .bx-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 42%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.45) 100%); }
+      #flash { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: #FFFFFF; opacity: 0; pointer-events: none; }
+"""
+
+
+def bx_html(b):
+    word = BX_TEXT[b["kind"]]; sep = " · " if b["kind"] == "bf" else "  "
+    step, size, n = (250, 226, 9) if b["kind"] == "bf" else (330, 330, 7)
+    keep = [k for k in range(n) if not (-120 + k * step + size > 1150 and -120 + k * step < 1460)]   # the captions' band stays clear
+    rows = "\n".join(f'          <div id="bx-{b["name"]}-r{k}" class="bx-row {"bx-s" if k % 2 == 0 else "bx-o"}" style="top: {-20 + k * step}px;">'
+                     f'{(word + sep) * 5}</div>' for k in keep)
+    return (f'      <div id="bx-{b["name"]}" class="bx bx-{b["kind"]}"><div id="bx-{b["name"]}-rows" class="bx-rows">\n{rows}\n'
+            f'        </div><div class="bx-glow"></div><div class="bx-vig"></div></div>\n'
+            f'      <video id="cut-{b["name"]}" class="clip" src="{b["src"]}" data-start="{b["t_in"]}" data-duration="{round(b["t_out"] - b["t_in"], 3)}" '
+            f'data-media-start="{b["ms"]}" data-playback-rate="{RATE}" data-track-index="{60 + ["bf1", "eur", "bf2"].index(b["name"])}" muted playsinline></video>'), keep
+
+
+def bx_js(b, keep):
+    d = round(b["t_out"] - b["t_in"], 3); w = b["name"]; run = 520 if b["kind"] == "bf" else 380
+    js = [f'      tl.set("#bx-{w}", {{ opacity: 0 }}, 0);',
+          f'      tl.set("#bx-{w}", {{ opacity: 1 }}, {b["t_in"]});',
+          f'      tl.set("#bx-{w}", {{ opacity: 0 }}, {b["t_out"]});',
+          f'      tl.fromTo("#bx-{w}-rows", {{ scale: 1.22 }}, {{ scale: 1, duration: 0.36, ease: "expo.out", immediateRender: false }}, {b["t_in"]});',
+          f'      tl.fromTo("#flash", {{ opacity: 0.7 }}, {{ opacity: 0, duration: 0.2, ease: "power2.out", immediateRender: false }}, {b["t_in"]});']
+    for k in keep:
+        x0, x1 = (-200, -200 - run * (d + 0.1)) if k % 2 == 0 else (-200 - run * (d + 0.1) - 300, -500)
+        js.append(f'      tl.fromTo("#bx-{w}-r{k}", {{ x: {round(x0)} }}, {{ x: {round(x1)}, duration: {round(d + 0.1, 3)}, ease: "none", immediateRender: false }}, {b["t_in"]});')
+    return js
 
 
 def lead_silence(path):
@@ -315,9 +337,13 @@ HEAD = """<!doctype html>
       .shot { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
       .zw { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; will-change: transform; }
       .zw video, .zw img { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
-    </style>
+«FONTS»«BX_CSS»    </style>
   </head>
 """
+
+
+def page_head():
+    return HEAD.replace("«FONTS»", FONTS + "\n").replace("«BX_CSS»", BX_CSS)
 
 
 def index(sfx_all, overlays):
@@ -356,10 +382,18 @@ def index(sfx_all, overlays):
         face.setdefault(key(sh), sh["face"])
     hold, lk = ED["hold"], key(shots[-1])                                        # her last frame, held in the last shot's wrapper
     if hold["duration"] > 0:                                                     # (only if edit.py asks for a hold)
+        png = os.path.join(ROOT, "assets", "img", f"take-{shots[-1]['take']}-last.png")
+        last = shots[-1]["media_end"] - 1 / 30
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{last:.3f}", "-i", os.path.join(ROOT, f"assets/video/take-{shots[-1]['take']}.mp4"),
+                        "-frames:v", "1", png], check=True)
         vids[lk].append(f'      <img id="hold" class="clip" src="assets/img/take-{shots[-1]["take"]}-last.png" alt="" data-start="{hold["start"]}" data-duration="{hold["duration"]}" data-track-index="{len(shots)}" />')
+    bxs = backdrops(); bxjs = []
+    for b in bxs:                                                                # the backdrops + cutouts, in their take's wrapper
+        h, n = bx_html(b); vids[b["take"]].append(h); bxjs += bx_js(b, n)
     takes = "".join(f'    <div class="shot"><div id="zw{k}" class="zw" data-layout-allow-overflow style="transform-origin: {face[k][0]}px {face[k][1]}px;">\n'
                     + "\n".join(v) + "\n    </div></div>\n" for k, v in vids.items())   # one wrapper per take, in order of appearance
-    html = HEAD + f"""  <body>
+    takes += '    <div id="flash"></div>\n'
+    html = page_head() + f"""  <body>
     <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="{TOTAL}">
 {takes}{chr(10).join(hosts)}
 {chr(10).join(auds)}
@@ -369,6 +403,9 @@ def index(sfx_all, overlays):
       // framing on the girl: opens tight and zooms out, punches on «Black Friday»; then one look per stretch, a slow push and a
       // punch on the key word (origin = her face); the ad ends when she stops talking, under the button
 {chr(10).join(ztl)}
+      // the Black Friday backdrops: in on a white flash, rows running both ways, out at the cut / on the next words
+      tl.set("#flash", {{ opacity: 0 }}, 0);
+{chr(10).join(bxjs)}
       window.__timelines["main"] = tl;
     </script>
   </body>
@@ -390,7 +427,7 @@ def solo(iid, out):
     caps, _ = captions(window=(ins["start"], ins["start"] + ins["duration"]))
     open(os.path.join(out, "compositions", "captions.html"), "w").write(caps)
     d = ins["duration"]
-    open(os.path.join(out, "index.html"), "w").write(HEAD + f"""  <body>
+    open(os.path.join(out, "index.html"), "w").write(page_head() + f"""  <body>
     <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="{d}">
     <div id="{iid}" data-composition-id="{iid}" data-composition-src="compositions/{iid}.html" data-start="0" data-duration="{d}" data-track-index="1" data-width="1080" data-height="1920"></div>
     <div id="captions" data-track-kind="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="{d}" data-track-index="2" data-width="1080" data-height="1920"></div>
@@ -418,10 +455,14 @@ def main():
     for iid, html, sfx in build_inserts():
         open(os.path.join(ROOT, "compositions", f"{iid}.html"), "w").write(html)
         sfx_all.append((INS[iid]["start"] - 0.06, "whoosh-short", 0.1))   # its peak lands on the cut
+        if iid == "ins-04":                                                   # back to her on the second take, a soft one
+            sfx_all.append((INS[iid]["start"] + INS[iid]["duration"] - 0.08, "whoosh-short", 0.07))
         for t, name, vol, *rest in sfx:
             sfx_all.append((INS[iid]["start"] + t, name, vol, *rest))
     overlays = []
-    for cid, fn in (("hook", hook), ("offer", offer), ("outro", outro)):
+    for b in backdrops():                                               # the hit under each backdrop
+        sfx_all += [(b["t_in"] - 0.06, "whoosh-short", 0.12), (b["t_in"], "impact", 0.5)]
+    for cid, fn in (("offer", offer), ("outro", outro)):
         html, t0, d, osfx = fn()
         open(os.path.join(ROOT, "compositions", f"{cid}.html"), "w").write(html)
         sfx_all += [(t0 + t, name, vol) for t, name, vol in osfx]
@@ -429,7 +470,7 @@ def main():
     caps, npages = captions()
     open(os.path.join(ROOT, "compositions", "captions.html"), "w").write(caps)
     index(sorted(sfx_all, key=lambda x: x[0]), overlays)
-    print(f"index.html + {len(ED['inserts'])} inserts + hook/offer/outro stickers + captions ({npages} pages) · total {TOTAL}s · {len(sfx_all)} sfx")
+    print(f"index.html + {len(ED['inserts'])} inserts + 3 backdrops + offer/outro stickers + captions ({npages} pages) · total {TOTAL}s · {len(sfx_all)} sfx")
 
 
 if __name__ == "__main__":

@@ -2,12 +2,12 @@
 workflow: general-video
 flow: automation
 storyboard: no
-message: "Black Friday: el cuaderno de 70 páginas en español para imprimir (vocabulario, gramática, ejercicios y pronunciación) por 1 € hasta el 30 de noviembre; consíguelo en el enlace y entras en la lista prioritaria del Black Friday."
+message: "Black Friday: el ebook de 70 páginas en español para imprimir (vocabulario, gramática, ejercicios y pronunciación) por 1 € hasta el 30 de noviembre; consíguelo en el enlace."
 destination: meta-tiktok-ads
 aspect: 1080x1920
 language: es
 audience: hispanohablantes que viven en Países Bajos y aún necesitan que alguien les acompañe a los trámites
-length: 45s
+length: 40s
 angle: ugc-ad
 ---
 
@@ -23,7 +23,8 @@ es la primera completa.
   «Antes de pedir una cita…» (8 s) y «Si vives en Países Bajos…» (15 s; la toma buena empieza en 17,6 s, la de 15 s está
   dicha flojito con el micro bajado).
 - .raw/pedido.mov «Estado de pedido» — el cuerpo, ya cortado por la creadora, con dos tomas de la primera frase.
-- «Animación Libro Interactivo» (4 s): la portada de «Holandés sin miedo» se abre y pasan las páginas.
+- «Animación Libro» (7 s, fondo negro; v5): la portada de «Holandés sin miedo» se abre, pasan las páginas y se cierra.
+  (La v4 usaba «Animación Libro Interactivo», 4 s.)
 - Logo, tipografías y efectos del VSL; música: «musica v1» del cliente (la de UGC #2).
 
 ## Customizations
@@ -33,4 +34,6 @@ es la primera completa.
 - Las pegatinas de la oferta van sobre ella (1 €, hasta el 30 de noviembre, Black Friday) y el cierre es un botón
   amarillo «CONSÍGUELO POR 1 €» con «Lista prioritaria Black Friday».
 - La frase de la oferta es «Entero por un euro…»: el corte de la creadora cae justo antes de «entero» (no se dice «un»).
-- La portada del cuaderno es provisional (título neutro «Neerlandés para el día a día · Cuaderno práctico»): falta la real.
+- v5 (comentarios a la v4): zoom de entrada para el gancho (stop-scroll); el vídeo nuevo del ebook sin fondo detrás y solo
+  hasta «ejercicios prácticos», con la vuelta a su cara en el corte de voz; acabar antes, sin «lista prioritaria»; más
+  cortes, sin huecos; algo más «wow» en Black Friday; que se vea menos hecho con IA.

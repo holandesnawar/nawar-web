@@ -14,10 +14,9 @@ def build():
     iid, P = "ins-01", "i1"; d = INS[iid]["duration"]
     c = dict(MIR=cue(iid, "miras"), CON=cue(iid, "contigo"), NO=cue(iid, "no"), NAD=cue(iid, "nadie"), CAM=cue(iid, "cambias"))
     css = """
-    #i1-lrow { top: 214px; }
-    #i1-lab { position: relative; }
-    #i1-lab svg { display: block; width: 28px; height: 28px; color: #FFFFFF; }
-    #i1-card { left: 110px; top: 300px; width: 860px; height: 236px; }
+    #i1-h { top: 180px; color: «INDIGO»; font-size: 80px; line-height: 1.34; }
+    #i1-chip { background: «INDIGO»; color: #FFFFFF; }
+    #i1-card { left: 110px; top: 430px; width: 860px; height: 236px; }
     #i1-day { position: absolute; left: 28px; top: 28px; width: 156px; height: 180px; border-radius: 22px; overflow: hidden;
       background: #FFFFFF; box-shadow: 0 0 0 3px «LINE»; }
     #i1-dayh { position: absolute; left: 0; top: 0; width: 156px; height: 50px; background: «RED»; color: #FFFFFF; text-align: center;
@@ -31,30 +30,35 @@ def build():
       border-radius: 999px; background: «RED»; color: #FFFFFF; white-space: nowrap;
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; line-height: 1; letter-spacing: 0.08em; text-transform: uppercase; }
     #i1-chg svg { display: block; width: 30px; height: 30px; }
-    #i1-me { right: 110px; top: 610px; transform-origin: 100% 100%; }
+    #i1-ico { position: absolute; right: 40px; top: 58px; width: 120px; height: 120px; border-radius: 50%; background: «BLUE»;
+      display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 24px rgba(11,109,240,0.30); }
+    #i1-ico svg { display: block; width: 72px; height: 72px; }
+    #i1-me { right: 110px; top: 724px; transform-origin: 100% 100%; }
     .i1-rep { position: absolute; left: 110px; display: flex; align-items: flex-end; gap: 18px; transform-origin: 0% 100%; }
     .i1-ini { width: 84px; height: 84px; border-radius: 50%; flex: 0 0 84px; display: flex; align-items: center; justify-content: center;
       color: #FFFFFF; font-weight: 800; font-size: 36px; line-height: 1; box-shadow: 0 0 0 5px #FFFFFF, 0 12px 26px rgba(18,0,129,0.16); }
     .i1-rb { position: relative; }
     .i1-x { position: absolute; right: -20px; top: -20px; width: 48px; height: 48px; }
     .i1-x svg { display: block; width: 48px; height: 48px; filter: drop-shadow(0 6px 12px rgba(18,0,129,0.20)); }
-    #i1-r0 { top: 822px; }
-    #i1-r1 { top: 984px; }
+    #i1-r0 { top: 918px; }
+    #i1-r1 { top: 1066px; }
 """
     reps = "\n".join(f"""    <div id="i1-r{k}" class="i1-rep"><div class="i1-ini" style="background:{col}">{name[0]}</div>
       <div class="i1-rb i1-bub i1-bub-w i1-bl" style="position: relative;">{txt}<div id="i1-x{k}" class="i1-x">{icon('xr')}</div></div></div>"""
                      for k, (name, col, txt) in enumerate(REPLIES))
-    body = "\n".join([ground(P, "paper"), f"""    <div id="i1-lrow" class="i1-row"><div id="i1-lab" class="i1-ipill" style="position: relative;">{icon('cal')}<span>PEDIR CITA</span></div></div>
+    body = "\n".join([ground(P, "paper"), f"""    <div id="i1-h" class="i1-h1"><span id="i1-h0" class="i1-w">¿Quién puede</span><br/><span id="i1-chip" class="i1-chip">ir contigo?</span></div>
     <div id="i1-card" class="i1-card i1-on-paper">
       <div id="i1-day"><div id="i1-dayh">NOV</div><div id="i1-n0" class="i1-num">14</div><div id="i1-n1" class="i1-num">25</div></div>
       <div id="i1-hdr">Huisarts</div>
       <div id="i1-sub">Cita médica · 10:30</div>
       <div id="i1-chg">{icon('redo')}<span>Cita cambiada</span></div>
+      <div id="i1-ico">{icon('steth')}</div>
     </div>
     <div id="i1-me" class="i1-bub i1-bub-b i1-br">¿Me acompañas al médico<br/>el día 14?</div>
 {reps}"""])
     js = """
-      tl.fromTo(q("lab"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);
+      tl.fromTo(q("h0"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «MIR» + 0.2);
+      tl.fromTo(q("chip"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, «CON» - 0.06);
       tl.fromTo(q("card"), { opacity: 0, y: 70, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out" }, 0.04);
       tl.set(q("n1"), { opacity: 0 }, 0);
       tl.set(q("chg"), { opacity: 0 }, 0);

@@ -21,7 +21,8 @@ SEGMENTS = [
     ("g", 17.60, 23.92),   # hook: «Si vives en Países Bajos y para cualquier trámite necesitas que alguien te acompañe, este Black
                            #        Friday te interesa.»
     ("p", 0.95, 5.62),     # «Antes de pedir cita, miras quién puede ir contigo, y si ese día no puede nadie, la cambias.»
-    ("p", 12.905, 49.80),  # «Algo que en tu país lo hacías solo y ni lo pensabas.» → «…nuestra lista prioritaria del Black Friday.»
+    ("p", 12.905, 44.68),  # «Algo que en tu país lo hacías solo y ni lo pensabas.» → «Consigue el tuyo en el enlace abajo.» (v5: the ad
+                           #  ends there, before the take's own cut at 44.7 — no «lista prioritaria»)
 ]
 FACE = {"g": (570, 660), "p": (560, 720)}   # face centre in each take (zoom origin)
 # cuts already inside the takes (the creator's own edit), source second of the first new frame (frame-difference scan
@@ -29,16 +30,23 @@ FACE = {"g": (570, 660), "p": (560, 720)}   # face centre in each take (zoom ori
 # boundary with a reframe in gen.py, so it reads as a jump cut.
 CUT_PRE, CUT_POST = 0.05, 0.005
 CUT_PRE_AT = {("p", 15.6): 0.02}   # «pensabas»: its /s/ fades right up to the take's own cut — stop closer to it
-JUMPS = {"g": [16.633], "p": [3.567, 7.567, 12.9, 15.6, 20.0, 24.5, 36.7, 39.767, 44.7]}
-SPEECH_END = 49.74     # «…del Black Friday.» ends here in take p; the ad ends a breath later
-TAIL = 0.0
+JUMPS = {"g": [16.633], "p": [3.567, 7.567, 12.9, 15.6, 20.0, 24.5, 29.1, 32.2, 36.7, 39.767, 44.7]}
+# v5, tighter: every pause between two words longer than TIGHT (her voice under LOUD_DB, measured on the take's own
+# sound) is cut down to KEEP_TAIL after the last word + KEEP_HEAD before the next; a take's own cut that sits in such a
+# silence becomes a cut of the edit there too (and inside a girl section, a jump cut with a new framing). PAUSE adds a
+# breath at one of those cuts — «…ejercicios prácticos.» | «cómo pronunciar…» is two takes glued with no air between
+# them (the voice jumps); the ebook covers the picture during the breath and the girl comes back on the second take.
+TIGHT, KEEP_TAIL, KEEP_HEAD, LOUD_DB = 0.18, 0.05, 0.04, -34.0
+PAUSE = {("p", 32.2): 0.16}
+SPEECH_END = 44.62     # «…en el enlace abajo.» ends here in take p
+TAIL = 0.45            # her last frame held under the button (gen.py), the music fades on it
 LEAD = 0.06            # an insert cuts in this long before its first word (source seconds)
 # (insert id, ground, first words, first words of what comes after) — full-screen graphics while she explains
 INSERTS = [
-    ("ins-01", "paper", "miras quien puede", "algo que en"),
+    ("ins-01", "paper", "miras quien puede", "tu pais lo"),   # holds «Cita cambiada»; back to her on «tu país»
     ("ins-02", "blue", "cada vez que", "practicar por tu"),
     ("ins-03", "paper", "porque casi todo", "por eso hemos"),
-    ("ins-04", "blue", "este libro", "entero por un"),
+    ("ins-04", "dark", "este libro", "como pronunciar"),   # v5: the ebook full screen until «…ejercicios prácticos»
 ]
 HOOK_BF = "black friday te"    # the «BLACK FRIDAY» sticker slams in on the hook
 OFFER = "entero por un"        # the price stickers over her, from here to the call to action
@@ -54,7 +62,7 @@ SCRIPT = ("Si vives en Países Bajos y para cualquier trámite necesitas que alg
           "Por eso hemos creado este libro: 70 páginas en español, para imprimir, con vocabulario, gramática, ejercicios prácticos, "
           "cómo pronunciar los sonidos por los que te cambian en inglés cuando abres la boca. "
           "Entero por un euro, solo hasta el 30 de noviembre. Esta es una de nuestras ofertas del Black Friday. "
-          "Consigue el tuyo en el enlace abajo, y al conseguirlo entras directamente en nuestra lista prioritaria del Black Friday.").split()
+          "Consigue el tuyo en el enlace abajo.").split()
 
 
 def norm(t):
@@ -75,10 +83,48 @@ def words_of(take):
     return out
 
 
+def envelope(tk, _cache={}):
+    """loudness of take tk's sound every 10 ms (dB RMS)."""
+    if tk not in _cache:
+        import subprocess, numpy as np
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-i", os.path.join(ROOT, "assets", "video", f"take-{tk}.mp4"), "-ac", "1",
+                              "-ar", "16000", "-f", "f32le", "-"], capture_output=True, check=True).stdout
+        x = np.frombuffer(raw, np.float32); n = len(x) // 160
+        _cache[tk] = 20 * np.log10(np.sqrt(np.mean(x[:n * 160].reshape(n, 160) ** 2, 1)) + 1e-9)
+    return _cache[tk]
+
+
+def tighten(tk, a, b):
+    """(take, from, to) → pieces (take, from, to, pause before) with the long pauses cut out (see TIGHT); also returns the
+    take's own cuts that became cuts of the edit."""
+    import numpy as np
+    db = envelope(tk)
+    W = [w for w in json.load(open(os.path.join(ROOT, "tools", "align", f"whisper_{tk}.json"))) if a - 0.05 <= w[0] < b]
+    cuts, used = [], set()
+    for w0, w1 in zip(W, W[1:]):
+        i0, i1 = int(w0[0] * 100), int(w1[0] * 100)
+        loud = np.flatnonzero(db[i0:i1] > LOUD_DB)
+        tail = (i0 + loud[-1] + 1) / 100 if len(loud) else w0[0]
+        onset = w1[0]
+        js = [j for j in JUMPS.get(tk, []) if tail - 0.02 <= j <= onset]
+        if onset - tail < TIGHT and not js:
+            continue
+        e, s = tail + KEEP_TAIL, onset - KEEP_HEAD
+        if js:
+            e, s = min(e, js[0] - CUT_PRE_AT.get((tk, js[0]), 0.02)), max(s, js[0] + CUT_POST); used.add((tk, js[0]))
+        cuts.append((round(e, 3), round(s, 3), PAUSE.get((tk, js[0]), 0.0) if js else 0.0))
+    pieces, x, pause = [], a, 0.0
+    for e, s, p in cuts:
+        pieces.append((tk, round(x, 3), e, pause)); x, pause = s, p
+    pieces.append((tk, round(x, 3), b, pause))
+    return pieces, used
+
+
 def layout(AL, segs):
-    """shots and timed words for a list of (take, from, to) pieces played back to back."""
+    """shots and timed words for a list of (take, from, to[, pause before]) pieces played back to back."""
     shots, words, t, taken = [], [], 0.0, set()
-    for k, (tk, a, b) in enumerate(segs):
+    for k, seg in enumerate(segs):
+        tk, a, b = seg[:3]; t = round(t + (seg[3] if len(seg) > 3 else 0.0), 3)
         W = AL[tk]; a = round(a, 3); b = round(b, 3); dur = round((b - a) / RATE, 3)
         shots.append({"n": k + 1, "take": tk, "start": round(t, 3), "duration": dur, "media_start": a, "media_end": b,
                       "face": FACE[tk]})
@@ -142,9 +188,13 @@ def girl_of(inserts, total):
 
 def main():
     AL = {t: words_of(t) for t in {sg[0] for sg in SEGMENTS}}
+    # the long pauses out; the takes' own cuts that sit in a pause become cuts of the edit
+    segs0, cut_at = [], set()
+    for tk, a, b in SEGMENTS:
+        pieces, used = tighten(tk, a, b); segs0 += pieces; cut_at |= used
     # pass 1, the takes as cut: where do the takes' own cuts fall?
-    shots, words, t = layout(AL, SEGMENTS)
-    jumps = [(tk, j) for tk, a, b in SEGMENTS for j in JUMPS.get(tk, []) if a + 0.1 < j < b - 0.1]
+    shots, words, t = layout(AL, segs0)
+    jumps = [(tk, j) for tk, a, b in SEGMENTS for j in JUMPS.get(tk, []) if a + 0.1 < j < b - 0.1 and (tk, j) not in cut_at]
     at = {jk: edit_time(shots, *jk) for jk in jumps}
     inserts, _ = place_inserts(shots, words, round(t + TAIL, 3), [at[jk] for jk in jumps])
     girl = girl_of(inserts, round(t + TAIL, 3))
@@ -153,11 +203,11 @@ def main():
     # so this keeps the new picture and its new framing on the same frame (those cuts sit in pauses: nothing is lost)
     split = {jk for jk in jumps if any(g["start"] + 0.3 < at[jk] < g["end"] - 0.3 for g in girl)}
     segs = []
-    for tk, a, b in SEGMENTS:
+    for tk, a, b, pause in segs0:
         cuts = sorted(j for (k, j) in split if k == tk and a < j < b)
         froms = [a] + [j + CUT_POST for j in cuts]
         tos = [j - CUT_PRE_AT.get((tk, j), CUT_PRE) for j in cuts] + [b]
-        segs += list(zip([tk] * len(froms), froms, tos))
+        segs += [(tk, f, e, pause if n == 0 else 0.0) for n, (f, e) in enumerate(zip(froms, tos))]
     # pass 2, the final pieces
     shots, words, t = layout(AL, segs)
     if len(SCRIPT) != len(words):

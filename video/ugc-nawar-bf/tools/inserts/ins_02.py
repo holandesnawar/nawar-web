@@ -37,9 +37,9 @@ def build():
       background: rgba(255,255,255,0.16); box-shadow: inset 0 0 0 2px rgba(255,255,255,0.32);
       display: flex; align-items: center; justify-content: center; gap: 16px; }
     .i2-dot { display: block; width: 18px; height: 18px; border-radius: 50%; background: #FFFFFF; }
-    #i2-srow { top: 1050px; }
-    #i2-sin { gap: 16px; height: 96px; padding: 0 42px 0 20px; font-size: 46px; color: «INK»; }
-    #i2-sin svg { display: block; width: 60px; height: 60px; }
+    #i2-h { top: 1040px; font-size: 70px; }
+    #i2-sin { display: inline-flex; align-items: center; gap: 14px; padding: 4px 26px 10px 18px; }
+    #i2-sin svg { display: block; width: 62px; height: 62px; margin-top: 6px; }
 """
     body = "\n".join([ground(P, "blue"), f"""    <div id="i2-top" class="i2-row"><div id="i2-pill" class="i2-pill"><span class="i2-flag">{FLAG_NL}</span><span>En la gemeente</span></div></div>
     <div id="i2-rec" class="i2-blk i2-l">
@@ -54,7 +54,7 @@ def build():
       <div id="i2-ya" class="i2-ava"><div class="i2-face">{person()}</div></div>
       <div class="i2-col"><div id="i2-yl" class="i2-lab">Tú</div><div id="i2-yb"><i id="i2-d0" class="i2-dot"></i><i id="i2-d1" class="i2-dot"></i><i id="i2-d2" class="i2-dot"></i></div></div>
     </div>
-    <div id="i2-srow" class="i2-row"><div id="i2-sin" class="i2-wpill">{icon('xr')}<span>Sin practicar</span></div></div>"""])
+    <div id="i2-h" class="i2-h1"><span id="i2-h0" class="i2-w">Te quedas</span> <span id="i2-sin" class="i2-chip">{icon('xr')}<span>sin practicar</span></span></div>"""])
     js = """
       tl.fromTo(q("pill"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);
       tl.fromTo(q("rec"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, «CADA» - 0.04);
@@ -65,7 +65,8 @@ def build():
       });
       // «te quedas»: nothing comes, your side fades
       tl.fromTo(q("you"), { opacity: 1 }, { opacity: 0.45, duration: 0.3, ease: "power2.out", immediateRender: false }, «QUE» - 0.04);
-      tl.fromTo(q("sin"), { opacity: 0, scale: 0.7, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "back.out(1.8)" }, «SIN» - 0.06);
+      tl.fromTo(q("h0"), { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, «QUE» - 0.08);
+      tl.fromTo(q("sin"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.32, ease: "back.out(1.8)" }, «SIN» - 0.06);
 """
     sfx = [(c["CADA"] - 0.04, "notification", 0.14), (c["ALG"] + 0.02, "notification", 0.14), (c["TU"] - 0.06, "pop", 0.16),
            (c["SIN"] - 0.06, "click-soft", 0.24)]
