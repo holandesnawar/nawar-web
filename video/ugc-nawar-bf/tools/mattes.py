@@ -20,8 +20,8 @@ hard notch; averaged over 3 frames where the picture is still, so it cannot flic
 where the furniture sits (FURNITURE), whatever is faint, still and apart from her solid outline goes. Away from the
 furniture the room test only acts where she is mostly see-through, judged over a patch (never strand by strand: the
 gaps between hair strands would shimmer). In the gaps between her arms and her body (take p) the red leather chair goes
-by its colour, however sure RVM is (leather(): no skin, nail or jeans colour is that red), and her arm blurred over it
-stays solid. By the vase, a petal RVM counts as her goes when it is pure petal colour and still or in its place
+by its colour, however sure RVM is (leather(): no skin, nail or jeans colour is that red; its near-black shadow only by
+her left arm, as her black hair falls by her right one), and her arm blurred over it stays solid. By the vase, a petal RVM counts as her goes when it is pure petal colour and still or in its place
 (flower_map()); petal colour in her hair becomes her hair's, and her soft edge there takes her own colour (devase()).
 Inside her, nothing else is touched — no colour rules on her (v6.1: the old ones bit her hands and hair). Crumbs left
 beside her go.
@@ -129,10 +129,12 @@ def leather(c):
     """the dark red leather chair seen between her arms and her body (take p): R/G ≥ 2.3 down to its deepest shadow; her
     skin is R/G ≈ 1.3–1.4 and ≤ 1.95 in shadow, her red nail art is bright — never this. blurred: also its dark brown
     where her moving arm smears over it (R < 75, R/B ≥ 2.2) — her brown hair and her bracelet's dark glints are that
-    colour too, so only where RVM is unsure (see refine())."""
+    colour too, so only where RVM is unsure (see refine()). deep: its near-black shadow, down to (4, 0, 1) — her black
+    hair is that colour too (7, 2, 2), so only by her left arm, where her hair never reaches."""
     c = c.astype(np.float32); r, g, b = c[..., 0], c[..., 1], c[..., 2]
-    red = (r > 2.2 * g) & (r > 2.2 * b) & (r - np.maximum(g, b) >= 3) & (r < 170)   # (its deepest shadow is (4, 0, 1))
-    return red, red | ((r > 1.5 * g) & (r > 2.2 * b) & (r > 12) & (r < 75))
+    red = (r > 2.2 * g) & (r > 2.2 * b) & (r > 12) & (r < 170)
+    deep = (r > 2.2 * g) & (r > 2.2 * b) & (r - np.maximum(g, b) >= 3) & (r <= 12)
+    return red, red | ((r > 1.5 * g) & (r > 2.2 * b) & (r > 12) & (r < 75)), deep
 
 
 def flower_map(orig, al, pl, take):
@@ -176,8 +178,10 @@ def refine(orig, al, pl, take, fmap):
         cand &= ~vase | still                                  # where she is mostly see-through; by the vase only if still
         fac[k] = np.where(a >= 0.9, 1.0, np.where(cand, t, 1.0) * fur)   # what RVM is sure of is never touched
         if lea.any():                                          # the gaps between her arms and her body: the red leather chair
-            red, brown = leather(orig[k])                     # (the blurred brown: only by her left arm, where RVM is unsure)
-            hide = ndi.binary_closing(ndi.binary_opening(red | (brown & lea_l & (a < 0.95)), np.ones((3, 3))), np.ones((7, 7))) & lea
+            red, brown, deep = leather(orig[k])               # (the blurred brown where RVM is unsure, and the near-black
+            left = ((brown & (a < 0.95)) | deep) & lea_l       # shadow: only by her left arm, where her hair never reaches;
+            red &= lea_l | (orig[k][..., 0] > 30)              # by her right arm, where her dark red-brown hair falls, only
+            hide = ndi.binary_closing(ndi.binary_opening(red | left, np.ones((3, 3))), np.ones((7, 7))) & lea   # the lit leather)
             lab, m = ndi.label(hide)                           # (its pale cracks too) goes, however sure RVM is — the patches of
             if m:                                              # it, not a thin reddish shadow along her arm; small holes in it
                 sz = ndi.sum(hide, lab, range(1, m + 1)); hide &= ~np.isin(lab, 1 + np.flatnonzero(sz < 300))   # filled

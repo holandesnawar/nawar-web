@@ -317,7 +317,8 @@ def backdrops():
 
 # rows of one word each (frame px, outside the zoom so they never scale): (top, word, style); the captions' band
 # (y 1150–1460) stays clear. bf: near-black, «BLACK» white, «FRIDAY» BF yellow; eur: Nawar blue, «1€» yellow / white.
-BX_ROWS = {"bf": [(10, "BLACK", "s"), (380, "FRIDAY", "y"), (750, "BLACK", "o"), (1500, "FRIDAY", "oy"), (1870, "BLACK", "s")],
+BX_ROWS = {"bf": [(10, "BLACK", "s"), (380, "FRIDAY", "y"), (750, "BLACK", "o"), (1500, "FRIDAY", "oy")],   # (no row at the
+           # very bottom: only its top showed, as white blobs through the gaps between her arms and her body)
            "eur": [(0, "1€", "y"), (380, "1€", "o"), (760, "1€", "y"), (1500, "1€", "o")]}
 BX_CSS = """
       .bx { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; opacity: 0; }
