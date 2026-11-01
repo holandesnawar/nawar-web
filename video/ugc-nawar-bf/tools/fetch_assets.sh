@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Rebuild every heavy asset of the UGC Black Friday ad, so the repo only carries sources. Run from the project root:
 #   bash tools/fetch_assets.sh
-# Needs: curl, ffmpeg, python3 (numpy, soundfile). Brand media come from the sibling VSL project
+# Needs: curl, ffmpeg, python3 (numpy, scipy, soundfile, onnxruntime). Brand media come from the sibling VSL project
 # (../vsl-formacion-nawar, after its own `bash tools/fetch_assets.sh`); the music is the client's own track (Drive).
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -33,4 +33,4 @@ python3 tools/align_fix.py && python3 tools/edit.py && python3 tools/libro_clip.
 echo "the girl cut out for the Black Friday backdrops (a few minutes on CPU)"
 python3 tools/mattes.py
 python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc-bf-v5-2.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc-bf-v6.mp4"

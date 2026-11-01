@@ -34,6 +34,8 @@ es la primera completa.
 - Las pegatinas de la oferta van sobre ella (1 €, hasta el 30 de noviembre, Black Friday) y el cierre es un botón
   amarillo «CONSÍGUELO POR 1 €» con «Lista prioritaria Black Friday».
 - La frase de la oferta es «Entero por un euro…»: el corte de la creadora cae justo antes de «entero» (no se dice «un»).
+- v6: recorte que no se rompa (Robust Video Matting); vuelven las etiquetas del ebook (y «Pronunciación») y el libro va
+  sobre azul, sin el negro; objetos sin sombras exteriores; «sin practicar» (0:16) menos pegado a los subtítulos.
 - v5.2: el zoom de entrada es el «snap» rápido del reel de referencia («ScreenRecording_11-01-2026…» en el Drive): arranca
   muy cerca y desenfocado y se abre de golpe al plano en unos 5 fotogramas.
 - v5 (comentarios a la v4): zoom de entrada para el gancho (stop-scroll); el vídeo nuevo del ebook sin fondo detrás y solo

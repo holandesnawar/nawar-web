@@ -74,42 +74,43 @@ BASE = """
     .«P»-dark-amb { position: absolute; left: 40px; top: 220px; width: 1000px; height: 980px; border-radius: 50%;
       background: radial-gradient(ellipse at 50% 50%, rgba(11,109,240,0.22) 0%, rgba(11,109,240,0.07) 45%, rgba(11,109,240,0) 70%); }
     .«P»-dark-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%); }
-    .«P»-on-dark { box-shadow: 0 40px 110px rgba(0,0,0,0.60), 0 8px 24px rgba(0,0,0,0.40); }
+    .«P»-on-dark { box-shadow: none; }
     /* Black Friday pieces: the tape (a yellow strip with «BLACK FRIDAY» running on it), the yellow pill and the burst */
-    .«P»-tape { position: absolute; height: 92px; background: «YEL»; overflow: hidden; box-shadow: 0 18px 40px rgba(0,0,0,0.45); }
+    .«P»-tape { position: absolute; height: 92px; background: «YEL»; overflow: hidden; }
     .«P»-tape-run { position: absolute; left: 0; top: 0; height: 92px; display: flex; align-items: center; gap: 34px; white-space: nowrap;
       font-weight: 900; font-size: 52px; line-height: 1; letter-spacing: 0.02em; color: «DARK»; padding-top: 4px; box-sizing: border-box; }
     .«P»-tape-run i { display: block; width: 16px; height: 16px; border-radius: 50%; background: «DARK»; font-style: normal; }
     .«P»-ypill { display: flex; align-items: center; gap: 14px; height: 72px; padding: 0 32px 0 22px; border-radius: 999px; background: «YEL»;
-      color: «DARK»; white-space: nowrap; box-shadow: 0 16px 40px rgba(0,0,0,0.40);
+      color: «DARK»; white-space: nowrap;
       font-family: "Poppins", sans-serif; font-weight: 800; font-size: 31px; line-height: 1; letter-spacing: -0.005em; }
     .«P»-ypill svg { display: block; width: 38px; height: 38px; }
     .«P»-acc-y { color: «YEL»; }
     .«P»-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
-    .«P»-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
-    .«P»-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    /* v6: no outer shadows anywhere (flat objects); on paper a white card keeps its edge with a hairline */
+    .«P»-on-paper { box-shadow: inset 0 0 0 2px «LINE»; }
+    .«P»-on-blue { box-shadow: none; }
     .«P»-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
     .«P»-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
       background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
     .«P»-pill svg { display: block; width: 28px; height: 28px; }
     .«P»-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
-      background: #FFFFFF; color: «INDIGO»; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      background: #FFFFFF; color: «INDIGO»; white-space: nowrap;
       font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
     .«P»-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
-      background: «INDIGO»; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      background: «INDIGO»; color: #FFFFFF; white-space: nowrap; box-shadow: 0 0 0 5px #FFFFFF;
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
     .«P»-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
     .«P»-flag svg { display: block; width: 40px; height: 27px; }
     .«P»-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
     .«P»-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
-      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+      box-shadow: 0 0 0 6px #FFFFFF; }
     .«P»-av svg { display: block; width: 96px; height: 96px; }
     .«P»-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
       font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
-    .«P»-bub-w { background: #FFFFFF; color: «INK»; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .«P»-bub-w { background: #FFFFFF; color: «INK»; box-shadow: inset 0 0 0 2px «LINE»; }
     .«P»-bub-g { background: #E8ECF7; color: «INK2»; }
-    .«P»-bub-b { background: «BLUE»; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .«P»-bub-b { background: «BLUE»; color: #FFFFFF; }
     .«P»-bl { border-bottom-left-radius: 10px; }
     .«P»-br { border-bottom-right-radius: 10px; }
     .«P»-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
@@ -123,7 +124,7 @@ BASE = """
 WIN_CSS = """
     .«P»-win { --u: calc(var(--sw) / 1120); position: absolute; width: calc(var(--u) * 1120); height: calc(var(--u) * 700);
       border-radius: calc(var(--u) * 14); overflow: hidden; background: #FFFFFF;
-      box-shadow: 0 0 0 calc(var(--u) * 1) rgba(10,10,30,0.28), 0 calc(var(--u) * 34) calc(var(--u) * 90) rgba(4,0,40,0.50), 0 calc(var(--u) * 10) calc(var(--u) * 26) rgba(4,0,40,0.30); }
+      box-shadow: 0 0 0 calc(var(--u) * 1) rgba(10,10,30,0.28); }
     .«P»-win-edge { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: calc(var(--u) * 14); box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(255,255,255,0.45); }
     .«P»-chrome { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 70); font-family: "Inter", sans-serif; }
     .«P»-tabs { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--u) * 36); background: #DEE1E6; }

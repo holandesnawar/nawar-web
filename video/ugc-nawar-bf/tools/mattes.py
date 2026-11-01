@@ -4,15 +4,19 @@ giant running type and she stays in front of it:
   bf1 — the hook, «…este Black Friday te interesa» (take g)
   eur — «Entero por un euro» (take p, the shot after the take's own cut at 36.7, her raised finger)
   bf2 — «…ofertas del Black Friday» (take p)
-Each one is a range of source frames of the graded take (assets/video/take-X.mp4, 30 fps), cut out with
-`hyperframes remove-background` (local u2net_human_seg) into assets/video/cut-<name>.webm (VP9 with alpha), frame for
-frame the same pictures as the take; gen.py places it on the take's own timeline (same start, rate and framing).
-The model keeps bits of her room that touch her outline — the carved arm of the chair and the beige sofa behind her
+Each one is a range of source frames of the graded take (assets/video/take-X.mp4, 30 fps), cut out with Robust Video
+Matting (RVM, ResNet-50, ONNX on CPU; v6 — it carries its memory from frame to frame, so the edge does not flicker or
+break the way a frame-by-frame model does; it starts 2 s before the range to settle) into
+assets/video/cut-<name>.webm (VP9 with alpha), frame for frame the same pictures as the take (its own colours where
+she is solid, RVM's foreground colour on the soft edge, so no room colour fringes her hair); gen.py places it on the
+take's own timeline (same start, rate and framing).
+A matte can keep bits of her room that touch her outline — the carved arm of the chair and the beige sofa behind her
 left shoulder, the vase of flowers behind her right one — and leaves the pink mic half transparent; clean() fixes it on
 every frame: inside the furniture's boxes, wood, sofa and flower colours come out of the matte where the picture is the
 room as usual (her skin, hair and dress are other colours, and her hand passing over moves); in front of her chest,
 the mic's pale pink and black fur next to her hand are her; the gap between her arm and her body stays open; crumbs go and
-the edge is pulled in 1 px and softened. Writes assets/video/mattes.json. Takes ~0.6 s a frame on CPU.
+the edge is softened. Writes assets/video/mattes.json. The model (.raw/rvm_resnet50_fp32.onnx, ~100 MB) is downloaded
+once from the RVM releases.
 """
 import json, os, subprocess, sys
 import numpy as np
@@ -22,6 +26,36 @@ MATTES = {"bf1": ("g", 664, 718), "eur": ("p", 1100, 1152), "bf2": ("p", 1248, 1
 
 
 W, H = 1080, 1920
+RVM_URL = "https://github.com/PeterL1n/RobustVideoMatting/releases/download/v1.0.0/rvm_resnet50_fp32.onnx"
+WARM = 60                         # frames run before the range so the model's memory has settled
+
+
+def rvm(take, f0, f1, dst):
+    """RVM over source frames f0−WARM … f1 of the take; writes frames f0 … f1 as RGBA VP9 (dst)."""
+    import onnxruntime as ort
+    model = os.path.join(ROOT, ".raw", "rvm_resnet50_fp32.onnx")
+    if not os.path.exists(model):
+        subprocess.run(["curl", "-sS", "-L", "--fail", "-o", model, RVM_URL], check=True)
+    sess = ort.InferenceSession(model, providers=["CPUExecutionProvider"])
+    a = max(0, f0 - WARM)
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", os.path.join(ROOT, "assets", "video", f"take-{take}.mp4"), "-an",
+                          "-vf", f"select=between(n\\,{a}\\,{f1})", "-vsync", "0", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
+                         capture_output=True, check=True).stdout
+    frames = np.frombuffer(raw, np.uint8).reshape(-1, H, W, 3)
+    assert len(frames) == f1 - a + 1, (len(frames), f1 - a + 1)
+    rec = [np.zeros((1, 1, 1, 1), np.float32)] * 4; dr = np.array([0.25], np.float32)
+    enc = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}", "-r", "30", "-i", "-",
+                            "-c:v", "libvpx-vp9", "-pix_fmt", "yuva420p", "-b:v", "0", "-crf", "18", "-auto-alt-ref", "0", "-row-mt", "1", dst],
+                           stdin=subprocess.PIPE)
+    for k, fr in enumerate(frames):
+        src = (fr.astype(np.float32) / 255).transpose(2, 0, 1)[None]
+        fgr, pha, *rec = sess.run(None, {"src": src, "r1i": rec[0], "r2i": rec[1], "r3i": rec[2], "r4i": rec[3], "downsample_ratio": dr})
+        if a + k < f0:
+            continue
+        al = pha[0, 0]; fg = (fgr[0].transpose(1, 2, 0) * 255).clip(0, 255)
+        rgb = np.where(al[..., None] > 0.97, fr.astype(np.float32), fg)
+        enc.stdin.write(np.dstack([rgb, al * 255]).clip(0, 255).astype(np.uint8).tobytes())
+    enc.stdin.close(); enc.wait(); assert enc.returncode == 0
 # where her room's furniture sits beside her, per take (source px: x0, x1, y0, y1) — the camera never moves
 CHAIR = {"g": (0, 300, 760, 990), "p": (0, 345, 760, 990)}         # the carved chair arm, above her left shoulder (left of her hair)
 SOFA = {"g": (0, 200, 960, 1140), "p": (0, 200, 960, 1140)}         # the beige sofa back, beside her left shoulder
@@ -93,7 +127,7 @@ def clean(webm, take, f0, f1, name):
         if n > 1:                                                                                        # only big pieces stay
             sizes = ndi.sum(np.ones_like(a), lab, range(1, n + 1))
             a[np.isin(lab, 1 + np.flatnonzero(sizes < 0.02 * sizes.max()))] = 0
-        a = ndi.gaussian_filter(ndi.grey_erosion(a, size=3), 1.0)                                        # a softer, cleaner edge
+        a = ndi.gaussian_filter(a, 0.6)                                                                  # RVM's edge, barely softened
         f[..., 3] = np.clip(a, 0, 255).astype(np.uint8)
     tmp = webm + ".clean.webm"
     p = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}", "-r", "30", "-i", "-",
@@ -116,12 +150,7 @@ def main(only=None, clean_only=False):
                     subprocess.run(["cp", dst, raw], check=True)
                 subprocess.run(["cp", raw, dst], check=True); clean(dst, tk, f0, f1, name); print(f"  {name}: cleaned", flush=True)
             continue
-        src = os.path.join(tmp, f"{name}-src.mp4")
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", os.path.join(ROOT, "assets", "video", f"take-{tk}.mp4"), "-an",
-                        "-vf", f"select=between(n\\,{f0}\\,{f1}),setpts=N/30/TB", "-r", "30", "-c:v", "libx264", "-crf", "12",
-                        "-pix_fmt", "yuv420p", src], check=True)
-        subprocess.run(["npx", "--yes", "hyperframes@0.8.139", "remove-background", src, "-o", dst, "--quality", "best"],
-                       check=True, cwd="/tmp", stdout=subprocess.DEVNULL)
+        rvm(tk, f0, f1, dst)
         subprocess.run(["cp", dst, os.path.join(tmp, f"{name}-raw.webm")], check=True); clean(dst, tk, f0, f1, name)
         print(f"  {name}: take {tk} frames {f0}–{f1} → {dst}", flush=True)
     json.dump(out, open(os.path.join(ROOT, "assets", "video", "mattes.json"), "w"), indent=1)

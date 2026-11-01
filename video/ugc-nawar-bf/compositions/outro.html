@@ -28,42 +28,43 @@
     .o-dark-amb { position: absolute; left: 40px; top: 220px; width: 1000px; height: 980px; border-radius: 50%;
       background: radial-gradient(ellipse at 50% 50%, rgba(11,109,240,0.22) 0%, rgba(11,109,240,0.07) 45%, rgba(11,109,240,0) 70%); }
     .o-dark-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%); }
-    .o-on-dark { box-shadow: 0 40px 110px rgba(0,0,0,0.60), 0 8px 24px rgba(0,0,0,0.40); }
+    .o-on-dark { box-shadow: none; }
     /* Black Friday pieces: the tape (a yellow strip with «BLACK FRIDAY» running on it), the yellow pill and the burst */
-    .o-tape { position: absolute; height: 92px; background: #FFD60A; overflow: hidden; box-shadow: 0 18px 40px rgba(0,0,0,0.45); }
+    .o-tape { position: absolute; height: 92px; background: #FFD60A; overflow: hidden; }
     .o-tape-run { position: absolute; left: 0; top: 0; height: 92px; display: flex; align-items: center; gap: 34px; white-space: nowrap;
       font-weight: 900; font-size: 52px; line-height: 1; letter-spacing: 0.02em; color: #08070F; padding-top: 4px; box-sizing: border-box; }
     .o-tape-run i { display: block; width: 16px; height: 16px; border-radius: 50%; background: #08070F; font-style: normal; }
     .o-ypill { display: flex; align-items: center; gap: 14px; height: 72px; padding: 0 32px 0 22px; border-radius: 999px; background: #FFD60A;
-      color: #08070F; white-space: nowrap; box-shadow: 0 16px 40px rgba(0,0,0,0.40);
+      color: #08070F; white-space: nowrap;
       font-family: "Poppins", sans-serif; font-weight: 800; font-size: 31px; line-height: 1; letter-spacing: -0.005em; }
     .o-ypill svg { display: block; width: 38px; height: 38px; }
     .o-acc-y { color: #FFD60A; }
     .o-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
-    .o-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
-    .o-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    /* v6: no outer shadows anywhere (flat objects); on paper a white card keeps its edge with a hairline */
+    .o-on-paper { box-shadow: inset 0 0 0 2px #DDE6F5; }
+    .o-on-blue { box-shadow: none; }
     .o-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
     .o-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
       background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
     .o-pill svg { display: block; width: 28px; height: 28px; }
     .o-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
-      background: #FFFFFF; color: #1D0084; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      background: #FFFFFF; color: #1D0084; white-space: nowrap;
       font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
     .o-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
-      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 0 0 5px #FFFFFF;
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
     .o-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
     .o-flag svg { display: block; width: 40px; height: 27px; }
     .o-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
     .o-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
-      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+      box-shadow: 0 0 0 6px #FFFFFF; }
     .o-av svg { display: block; width: 96px; height: 96px; }
     .o-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
       font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
-    .o-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .o-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: inset 0 0 0 2px #DDE6F5; }
     .o-bub-g { background: #E8ECF7; color: #374151; }
-    .o-bub-b { background: #0b6df0; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .o-bub-b { background: #0b6df0; color: #FFFFFF; }
     .o-bl { border-bottom-left-radius: 10px; }
     .o-br { border-bottom-right-radius: 10px; }
     .o-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
@@ -73,11 +74,9 @@
     .o-w { display: inline-block; }
 
     #o-wrap { position: absolute; left: 140px; top: 1150px; width: 800px; height: 128px; }
-    #o-glow { position: absolute; left: -40px; top: -30px; width: 880px; height: 188px; border-radius: 94px;
-      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.55) 0%, rgba(77,163,255,0) 70%); }
     #o-btn { position: absolute; left: 0; top: 0; width: 800px; height: 128px; border-radius: 64px; overflow: hidden;
       background: linear-gradient(90deg, #0a52d4 0%, #1b74f2 55%, #4a98fb 100%);
-      box-shadow: inset 0 0 0 3px rgba(255,255,255,0.55), inset 0 -10px 24px rgba(4,0,80,0.25), 0 20px 50px rgba(11,109,240,0.5); }
+      box-shadow: inset 0 0 0 3px rgba(255,255,255,0.55), inset 0 -10px 24px rgba(4,0,80,0.25); }
     #o-gloss { position: absolute; left: 22px; top: 8px; width: 756px; height: 50px; border-radius: 30px;
       background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 100%); }
     #o-shine { position: absolute; left: -240px; top: 0; width: 180px; height: 128px;
@@ -86,12 +85,11 @@
       font-weight: 900; font-size: 60px; line-height: 1; letter-spacing: -0.01em; color: #FFFFFF; white-space: nowrap; padding-top: 4px; box-sizing: border-box;
       text-shadow: 0 0 18px rgba(255,255,255,0.45), 0 3px 0 rgba(0,30,120,0.35); }
     #o-arrow { position: absolute; left: 488px; top: 1296px; width: 104px; height: 104px; color: #FFFFFF; }
-    #o-arrow svg { display: block; width: 104px; height: 104px; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.45)); }
+    #o-arrow svg { display: block; width: 104px; height: 104px; }
 
   </style>
   <div id="root" data-composition-id="outro" data-width="1080" data-height="1920" data-duration="1.923">
     <div id="o-wrap">
-      <div id="o-glow"></div>
       <div id="o-btn"><div id="o-gloss"></div><div id="o-shine"></div><div id="o-label">CONSÍGUELO POR 1 €</div></div>
     </div>
     <div id="o-arrow"><svg viewBox="0 0 48 48"><path d="M24 8 V38 M12 27 L24 39 L36 27" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -102,7 +100,6 @@
       const q = (id) => document.getElementById("o-" + id);
 
       tl.fromTo(q("wrap"), { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.36, ease: "back.out(1.8)" }, 0.057 - 0.06);
-      tl.fromTo(q("glow"), { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 0.057);
       tl.fromTo(q("shine"), { x: 0 }, { x: 1240, duration: 0.7, ease: "power2.inOut" }, 0.057 + 0.3);
       tl.fromTo(q("arrow"), { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 1.152 - 0.1);
       tl.fromTo(q("arrow"), { y: 0 }, { keyframes: [{ y: 20, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" },

@@ -65,11 +65,9 @@ def outro():
     c = dict(CON=wcue("consigue"), ABA=wcue("abajo"), END=round(ED["speech_end"] - t0, 3))
     css = """
     #o-wrap { position: absolute; left: 140px; top: 1150px; width: 800px; height: 128px; }
-    #o-glow { position: absolute; left: -40px; top: -30px; width: 880px; height: 188px; border-radius: 94px;
-      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.55) 0%, rgba(77,163,255,0) 70%); }
     #o-btn { position: absolute; left: 0; top: 0; width: 800px; height: 128px; border-radius: 64px; overflow: hidden;
       background: linear-gradient(90deg, #0a52d4 0%, #1b74f2 55%, #4a98fb 100%);
-      box-shadow: inset 0 0 0 3px rgba(255,255,255,0.55), inset 0 -10px 24px rgba(4,0,80,0.25), 0 20px 50px rgba(11,109,240,0.5); }
+      box-shadow: inset 0 0 0 3px rgba(255,255,255,0.55), inset 0 -10px 24px rgba(4,0,80,0.25); }
     #o-gloss { position: absolute; left: 22px; top: 8px; width: 756px; height: 50px; border-radius: 30px;
       background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 100%); }
     #o-shine { position: absolute; left: -240px; top: 0; width: 180px; height: 128px;
@@ -78,16 +76,14 @@ def outro():
       font-weight: 900; font-size: 60px; line-height: 1; letter-spacing: -0.01em; color: #FFFFFF; white-space: nowrap; padding-top: 4px; box-sizing: border-box;
       text-shadow: 0 0 18px rgba(255,255,255,0.45), 0 3px 0 rgba(0,30,120,0.35); }
     #o-arrow { position: absolute; left: 488px; top: 1296px; width: 104px; height: 104px; color: #FFFFFF; }
-    #o-arrow svg { display: block; width: 104px; height: 104px; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.45)); }
+    #o-arrow svg { display: block; width: 104px; height: 104px; }
 """
     body = f"""    <div id="o-wrap">
-      <div id="o-glow"></div>
       <div id="o-btn"><div id="o-gloss"></div><div id="o-shine"></div><div id="o-label">CONSÍGUELO POR 1 €</div></div>
     </div>
     <div id="o-arrow">{icon('down')}</div>"""
     js = """
       tl.fromTo(q("wrap"), { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.36, ease: "back.out(1.8)" }, «CON» - 0.06);
-      tl.fromTo(q("glow"), { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, «CON»);
       tl.fromTo(q("shine"), { x: 0 }, { x: 1240, duration: 0.7, ease: "power2.inOut" }, «CON» + 0.3);
       tl.fromTo(q("arrow"), { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, «ABA» - 0.1);
       tl.fromTo(q("arrow"), { y: 0 }, { keyframes: [{ y: 20, duration: 0.22, ease: "power1.inOut" }, { y: 0, duration: 0.22, ease: "power1.inOut" },
@@ -280,7 +276,7 @@ def backdrops():
 
 # rows of one word each (frame px, outside the zoom so they never scale): (top, word, style); the captions' band
 # (y 1150–1460) stays clear. bf: near-black, «BLACK» white, «FRIDAY» BF yellow; eur: Nawar blue, «1€» yellow / white.
-BX_ROWS = {"bf": [(30, "BLACK", "s"), (370, "FRIDAY", "y"), (710, "BLACK", "o"), (1490, "FRIDAY", "oy"), (1830, "BLACK", "s")],
+BX_ROWS = {"bf": [(10, "BLACK", "s"), (380, "FRIDAY", "y"), (750, "BLACK", "o"), (1500, "FRIDAY", "oy"), (1870, "BLACK", "s")],
            "eur": [(0, "1€", "y"), (380, "1€", "o"), (760, "1€", "y"), (1500, "1€", "o")]}
 BX_CSS = """
       .bx { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; opacity: 0; }

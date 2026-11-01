@@ -12,7 +12,7 @@ def build():
     iid, P = "ins-02", "i2"; d = INS[iid]["duration"]
     c = dict(CADA=cue(iid, "cada"), ALG=cue(iid, "alguien"), TU=cue(iid, "tu"), QUE=cue(iid, "quedas"), SIN=cue(iid, "sin"))
     css = """
-    #i2-top { top: 214px; }
+    #i2-top { top: 190px; }
     .i2-blk { position: absolute; display: flex; align-items: flex-end; gap: 18px; }
     .i2-l { left: 100px; transform-origin: 0% 100%; }
     .i2-r { right: 100px; flex-direction: row-reverse; transform-origin: 100% 100%; }
@@ -22,22 +22,22 @@ def build():
     .i2-lab { font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em;
       text-transform: uppercase; color: rgba(255,255,255,0.78); white-space: nowrap; padding: 0 8px; }
     .i2-ava { display: none; position: relative; width: 88px; height: 88px; border-radius: 50%; flex: 0 0 88px; overflow: visible;
-      box-shadow: 0 0 0 5px #FFFFFF, 0 14px 30px rgba(4,0,40,0.30); }
+      box-shadow: 0 0 0 5px #FFFFFF; }
     .i2-face { position: absolute; left: 0; top: 0; width: 88px; height: 88px; border-radius: 50%; overflow: hidden; }
     .i2-face svg { display: block; width: 88px; height: 88px; }
     .i2-ava .i2-flag { position: absolute; right: -10px; bottom: -4px; }
-    #i2-rec { top: 330px; }
+    #i2-rec { top: 290px; }
     #i2-ra { background: #4B5575; }
-    #i2-cmp { top: 560px; }
+    #i2-cmp { top: 486px; }
     #i2-ca { background: #7C5CFF; }
     #i2-cb { background: #E9E5FF; color: «INDIGO»; }
-    #i2-you { top: 790px; }
+    #i2-you { top: 682px; }
     #i2-ya { background: «BLUE»; }
     #i2-yb { width: 200px; height: 98px; box-sizing: border-box; padding: 0; border-radius: 34px; border-bottom-right-radius: 10px;
       background: rgba(255,255,255,0.16); box-shadow: inset 0 0 0 2px rgba(255,255,255,0.32);
       display: flex; align-items: center; justify-content: center; gap: 16px; }
     .i2-dot { display: block; width: 18px; height: 18px; border-radius: 50%; background: #FFFFFF; }
-    #i2-h { top: 1040px; font-size: 70px; }
+    #i2-h { top: 898px; font-size: 70px; }
     #i2-sin { display: inline-flex; align-items: center; gap: 14px; padding: 4px 26px 10px 18px; }
     #i2-sin svg { display: block; width: 62px; height: 62px; margin-top: 6px; }
 """

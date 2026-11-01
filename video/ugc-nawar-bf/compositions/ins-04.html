@@ -28,42 +28,43 @@
     .i4-dark-amb { position: absolute; left: 40px; top: 220px; width: 1000px; height: 980px; border-radius: 50%;
       background: radial-gradient(ellipse at 50% 50%, rgba(11,109,240,0.22) 0%, rgba(11,109,240,0.07) 45%, rgba(11,109,240,0) 70%); }
     .i4-dark-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%); }
-    .i4-on-dark { box-shadow: 0 40px 110px rgba(0,0,0,0.60), 0 8px 24px rgba(0,0,0,0.40); }
+    .i4-on-dark { box-shadow: none; }
     /* Black Friday pieces: the tape (a yellow strip with «BLACK FRIDAY» running on it), the yellow pill and the burst */
-    .i4-tape { position: absolute; height: 92px; background: #FFD60A; overflow: hidden; box-shadow: 0 18px 40px rgba(0,0,0,0.45); }
+    .i4-tape { position: absolute; height: 92px; background: #FFD60A; overflow: hidden; }
     .i4-tape-run { position: absolute; left: 0; top: 0; height: 92px; display: flex; align-items: center; gap: 34px; white-space: nowrap;
       font-weight: 900; font-size: 52px; line-height: 1; letter-spacing: 0.02em; color: #08070F; padding-top: 4px; box-sizing: border-box; }
     .i4-tape-run i { display: block; width: 16px; height: 16px; border-radius: 50%; background: #08070F; font-style: normal; }
     .i4-ypill { display: flex; align-items: center; gap: 14px; height: 72px; padding: 0 32px 0 22px; border-radius: 999px; background: #FFD60A;
-      color: #08070F; white-space: nowrap; box-shadow: 0 16px 40px rgba(0,0,0,0.40);
+      color: #08070F; white-space: nowrap;
       font-family: "Poppins", sans-serif; font-weight: 800; font-size: 31px; line-height: 1; letter-spacing: -0.005em; }
     .i4-ypill svg { display: block; width: 38px; height: 38px; }
     .i4-acc-y { color: #FFD60A; }
     .i4-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
-    .i4-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
-    .i4-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    /* v6: no outer shadows anywhere (flat objects); on paper a white card keeps its edge with a hairline */
+    .i4-on-paper { box-shadow: inset 0 0 0 2px #DDE6F5; }
+    .i4-on-blue { box-shadow: none; }
     .i4-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
     .i4-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
       background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
     .i4-pill svg { display: block; width: 28px; height: 28px; }
     .i4-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
-      background: #FFFFFF; color: #1D0084; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      background: #FFFFFF; color: #1D0084; white-space: nowrap;
       font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
     .i4-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
-      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 0 0 5px #FFFFFF;
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
     .i4-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
     .i4-flag svg { display: block; width: 40px; height: 27px; }
     .i4-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
     .i4-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
-      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+      box-shadow: 0 0 0 6px #FFFFFF; }
     .i4-av svg { display: block; width: 96px; height: 96px; }
     .i4-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
       font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
-    .i4-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .i4-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: inset 0 0 0 2px #DDE6F5; }
     .i4-bub-g { background: #E8ECF7; color: #374151; }
-    .i4-bub-b { background: #0b6df0; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .i4-bub-b { background: #0b6df0; color: #FFFFFF; }
     .i4-bl { border-bottom-left-radius: 10px; }
     .i4-br { border-bottom-right-radius: 10px; }
     .i4-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
@@ -72,24 +73,30 @@
     .i4-acc { color: #4da3ff; }
     .i4-w { display: inline-block; }
 
-    #i4-bg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: #000000; }
-    #i4-stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 275.9px 746.7px; }
-    #i4-vw { position: absolute; left: -368.8px; top: 278.1px; width: 1817.6px; height: 1022.4px;
-      -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 10%); mask-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 10%); }
-    #i4-vw video { position: absolute; left: 0; top: 0; width: 1817.6px; height: 1022.4px; display: block; }
-    #i4-lab { position: absolute; left: 0; top: 190px; width: 1080px; text-align: center; font-family: "Inter", sans-serif; font-weight: 700;
-      font-size: 24px; line-height: 1; letter-spacing: 0.32em; color: rgba(255,255,255,0.55); text-transform: uppercase; }
-    #i4-tit { position: absolute; left: 0; top: 232px; width: 1080px; text-align: center; font-weight: 800; font-size: 70px; line-height: 1;
-      letter-spacing: -0.025em; color: #FFFFFF; white-space: nowrap; }
+    #i4-stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 298.2px 541.2px; }
+    #i4-vw { position: absolute; left: -292px; top: 112.2px; width: 1664px; height: 936px;
+      -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 11%); mask-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 11%); }
+    #i4-vw video { position: absolute; left: 0; top: 0; width: 1664px; height: 936px; display: block; }
+    #i4-lrow { top: 168px; }
+    #i4-prow { top: 968px; gap: 16px; }
+    .i4-wpill { gap: 12px; height: 76px; padding: 0 30px 0 18px; font-size: 33px; }
+    .i4-wpill svg { display: block; width: 40px; height: 40px; color: #1D0084; }
+    .i4-wpill .i4-flag svg { width: 40px; height: 27px; }
+    #i4-crow { top: 1064px; gap: 10px; width: 1040px; left: 20px; }
+    .i4-ck { display: flex; align-items: center; gap: 8px; height: 62px; padding: 0 22px 0 10px; border-radius: 999px;
+      background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.30); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 27px; line-height: 1; }
+    .i4-ck svg { display: block; width: 36px; height: 36px; }
 
   </style>
   <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="6.047">
-    <div id="i4-bg"></div>
+    <div class="i4-full i4-blue"><div class="i4-blue-dots"></div><div class="i4-blue-amb"></div><div class="i4-blue-vig"></div></div>
     <div id="i4-stage">
-      <div id="i4-vw"><video id="i4-v" class="clip" src="assets/video/libro-ins04.mp4" muted playsinline data-start="0" data-duration="6.047" data-track-index="1"></video></div>
+      <div id="i4-vw"><video id="i4-v" class="clip" src="assets/video/libro-ins04.webm" muted playsinline data-start="0" data-duration="6.047" data-track-index="1"></video></div>
     </div>
-    <div id="i4-lab">Ebook</div>
-    <div id="i4-tit">Holandés sin miedo</div>
+    <div id="i4-lrow" class="i4-row"><div id="i4-lab" class="i4-pill"><svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="#FFFFFF" stroke-width="4.2"/></svg><span>Ebook · Holandés sin miedo</span></div></div>
+    <div id="i4-prow" class="i4-row"><div id="i4-p0" class="i4-wpill"><svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="currentColor" stroke-width="4.2"/></svg><span>70 páginas</span></div><div id="i4-p1" class="i4-wpill"><span class="i4-flag i4-flagd"><svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#AA151B" /><rect y="7" width="40" height="13" fill="#F1BF00" /></svg></span><span>En español</span></div><div id="i4-p2" class="i4-wpill"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"><path d="M14 18 V6 H34 V18"/><rect x="5" y="18" width="38" height="16" rx="5"/><path d="M14 28 H34 V42 H14 Z"/></g></svg><span>Para imprimir</span></div></div>
+    <div id="i4-crow" class="i4-row"><div id="i4-c0" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Vocabulario</span></div><div id="i4-c1" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Gramática</span></div><div id="i4-c2" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ejercicios</span></div><div id="i4-c3" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Pronunciación</span></div></div>
   </div>
   <script>
     (function () {
@@ -97,11 +104,16 @@
       const q = (id) => document.getElementById("i4-" + id);
 
       // a slow drift while the pages turn, then the push into «¡Hora de practicar!» on «ejercicios prácticos»
-      tl.fromTo(q("stage"), { scale: 1.0 }, { scale: 1.035, duration: 4.453 - 0.1, ease: "none" }, 0);
-      tl.fromTo(q("stage"), { scale: 1.035 }, { scale: 1.2, duration: 6.047 - 4.453 + 0.1, ease: "power2.inOut", immediateRender: false }, 4.453 - 0.1);
-      tl.fromTo(q("lab"), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0.1);
-      tl.fromTo(q("tit"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.16);
-      tl.to([q("lab"), q("tit")], { opacity: 0, y: -14, duration: 0.3, ease: "power2.in" }, 4.453 - 0.12);
+      tl.fromTo(q("stage"), { scale: 1.0 }, { scale: 1.03, duration: 4.453 - 0.1, ease: "none" }, 0);
+      tl.fromTo(q("stage"), { scale: 1.03 }, { scale: 1.1, duration: 6.047 - 4.453 + 0.1, ease: "power2.inOut", immediateRender: false }, 4.453 - 0.1);
+      tl.fromTo(q("lab"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 1.0);
+      tl.fromTo(q("p0"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 0.897 - 0.06);
+      tl.fromTo(q("p1"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 1.859 - 0.06);
+      tl.fromTo(q("p2"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 2.576 - 0.06);
+      tl.fromTo(q("c0"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 3.227 - 0.05);
+      tl.fromTo(q("c1"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 3.962 - 0.05);
+      tl.fromTo(q("c2"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 4.453 - 0.05);
+      tl.fromTo(q("c3"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 5.274 - -0.3);
 
       window.__timelines["ins-04"] = tl;
     })();

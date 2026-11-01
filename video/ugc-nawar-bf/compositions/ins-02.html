@@ -28,42 +28,43 @@
     .i2-dark-amb { position: absolute; left: 40px; top: 220px; width: 1000px; height: 980px; border-radius: 50%;
       background: radial-gradient(ellipse at 50% 50%, rgba(11,109,240,0.22) 0%, rgba(11,109,240,0.07) 45%, rgba(11,109,240,0) 70%); }
     .i2-dark-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%); }
-    .i2-on-dark { box-shadow: 0 40px 110px rgba(0,0,0,0.60), 0 8px 24px rgba(0,0,0,0.40); }
+    .i2-on-dark { box-shadow: none; }
     /* Black Friday pieces: the tape (a yellow strip with «BLACK FRIDAY» running on it), the yellow pill and the burst */
-    .i2-tape { position: absolute; height: 92px; background: #FFD60A; overflow: hidden; box-shadow: 0 18px 40px rgba(0,0,0,0.45); }
+    .i2-tape { position: absolute; height: 92px; background: #FFD60A; overflow: hidden; }
     .i2-tape-run { position: absolute; left: 0; top: 0; height: 92px; display: flex; align-items: center; gap: 34px; white-space: nowrap;
       font-weight: 900; font-size: 52px; line-height: 1; letter-spacing: 0.02em; color: #08070F; padding-top: 4px; box-sizing: border-box; }
     .i2-tape-run i { display: block; width: 16px; height: 16px; border-radius: 50%; background: #08070F; font-style: normal; }
     .i2-ypill { display: flex; align-items: center; gap: 14px; height: 72px; padding: 0 32px 0 22px; border-radius: 999px; background: #FFD60A;
-      color: #08070F; white-space: nowrap; box-shadow: 0 16px 40px rgba(0,0,0,0.40);
+      color: #08070F; white-space: nowrap;
       font-family: "Poppins", sans-serif; font-weight: 800; font-size: 31px; line-height: 1; letter-spacing: -0.005em; }
     .i2-ypill svg { display: block; width: 38px; height: 38px; }
     .i2-acc-y { color: #FFD60A; }
     .i2-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
-    .i2-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
-    .i2-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    /* v6: no outer shadows anywhere (flat objects); on paper a white card keeps its edge with a hairline */
+    .i2-on-paper { box-shadow: inset 0 0 0 2px #DDE6F5; }
+    .i2-on-blue { box-shadow: none; }
     .i2-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
     .i2-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
       background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
     .i2-pill svg { display: block; width: 28px; height: 28px; }
     .i2-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
-      background: #FFFFFF; color: #1D0084; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      background: #FFFFFF; color: #1D0084; white-space: nowrap;
       font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
     .i2-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
-      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 0 0 5px #FFFFFF;
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
     .i2-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
     .i2-flag svg { display: block; width: 40px; height: 27px; }
     .i2-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
     .i2-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
-      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+      box-shadow: 0 0 0 6px #FFFFFF; }
     .i2-av svg { display: block; width: 96px; height: 96px; }
     .i2-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
       font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
-    .i2-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .i2-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: inset 0 0 0 2px #DDE6F5; }
     .i2-bub-g { background: #E8ECF7; color: #374151; }
-    .i2-bub-b { background: #0b6df0; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .i2-bub-b { background: #0b6df0; color: #FFFFFF; }
     .i2-bl { border-bottom-left-radius: 10px; }
     .i2-br { border-bottom-right-radius: 10px; }
     .i2-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
@@ -72,7 +73,7 @@
     .i2-acc { color: #4da3ff; }
     .i2-w { display: inline-block; }
 
-    #i2-top { top: 214px; }
+    #i2-top { top: 190px; }
     .i2-blk { position: absolute; display: flex; align-items: flex-end; gap: 18px; }
     .i2-l { left: 100px; transform-origin: 0% 100%; }
     .i2-r { right: 100px; flex-direction: row-reverse; transform-origin: 100% 100%; }
@@ -82,22 +83,22 @@
     .i2-lab { font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em;
       text-transform: uppercase; color: rgba(255,255,255,0.78); white-space: nowrap; padding: 0 8px; }
     .i2-ava { display: none; position: relative; width: 88px; height: 88px; border-radius: 50%; flex: 0 0 88px; overflow: visible;
-      box-shadow: 0 0 0 5px #FFFFFF, 0 14px 30px rgba(4,0,40,0.30); }
+      box-shadow: 0 0 0 5px #FFFFFF; }
     .i2-face { position: absolute; left: 0; top: 0; width: 88px; height: 88px; border-radius: 50%; overflow: hidden; }
     .i2-face svg { display: block; width: 88px; height: 88px; }
     .i2-ava .i2-flag { position: absolute; right: -10px; bottom: -4px; }
-    #i2-rec { top: 330px; }
+    #i2-rec { top: 290px; }
     #i2-ra { background: #4B5575; }
-    #i2-cmp { top: 560px; }
+    #i2-cmp { top: 486px; }
     #i2-ca { background: #7C5CFF; }
     #i2-cb { background: #E9E5FF; color: #1D0084; }
-    #i2-you { top: 790px; }
+    #i2-you { top: 682px; }
     #i2-ya { background: #0b6df0; }
     #i2-yb { width: 200px; height: 98px; box-sizing: border-box; padding: 0; border-radius: 34px; border-bottom-right-radius: 10px;
       background: rgba(255,255,255,0.16); box-shadow: inset 0 0 0 2px rgba(255,255,255,0.32);
       display: flex; align-items: center; justify-content: center; gap: 16px; }
     .i2-dot { display: block; width: 18px; height: 18px; border-radius: 50%; background: #FFFFFF; }
-    #i2-h { top: 1040px; font-size: 70px; }
+    #i2-h { top: 898px; font-size: 70px; }
     #i2-sin { display: inline-flex; align-items: center; gap: 14px; padding: 4px 26px 10px 18px; }
     #i2-sin svg { display: block; width: 62px; height: 62px; margin-top: 6px; }
 

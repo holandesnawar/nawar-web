@@ -48,7 +48,7 @@ INSERTS = [
     ("ins-01", "paper", "miras quien puede", "tu pais lo"),   # holds «Cita cambiada»; back to her on «tu país»
     ("ins-02", "blue", "cada vez que", "practicar por tu"),
     ("ins-03", "paper", "porque casi todo", "por eso hemos"),
-    ("ins-04", "dark", "este libro", "como pronunciar"),   # v5: the ebook full screen until «…ejercicios prácticos»
+    ("ins-04", "blue", "este libro", "como pronunciar"),   # the ebook (v6: on Nawar blue) until «…ejercicios prácticos»
 ]
 HOOK_BF = "black friday te"    # the «BLACK FRIDAY» sticker slams in on the hook
 OFFER = "entero por un"        # the price stickers over her, from here to the call to action

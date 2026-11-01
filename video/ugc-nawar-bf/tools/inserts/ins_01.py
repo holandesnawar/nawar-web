@@ -31,7 +31,7 @@ def build():
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; line-height: 1; letter-spacing: 0.08em; text-transform: uppercase; }
     #i1-chg svg { display: block; width: 30px; height: 30px; }
     #i1-ico { position: absolute; right: 40px; top: 58px; width: 120px; height: 120px; border-radius: 50%; background: «BLUE»;
-      display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 24px rgba(11,109,240,0.30); }
+      display: flex; align-items: center; justify-content: center; }
     #i1-ico svg { display: block; width: 72px; height: 72px; }
     #i1-me { right: 110px; top: 724px; transform-origin: 100% 100%; }
     .i1-rep { position: absolute; left: 110px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; transform-origin: 0% 100%; }
@@ -39,7 +39,7 @@ def build():
       text-transform: uppercase; color: «MUTED»; padding: 0 10px; }
     .i1-rb { position: relative; }
     .i1-x { position: absolute; right: -20px; top: -20px; width: 48px; height: 48px; }
-    .i1-x svg { display: block; width: 48px; height: 48px; filter: drop-shadow(0 6px 12px rgba(18,0,129,0.20)); }
+    .i1-x svg { display: block; width: 48px; height: 48px; }
     #i1-r0 { top: 884px; }
     #i1-r1 { top: 1050px; }
 """
