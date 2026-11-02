@@ -51,10 +51,13 @@ export const BF_HASTA_TEXTO = 'lunes 30 de noviembre'
  *  ponía «Neerlandés sin miedo»). En la escuela, NOMBRE_EBOOK de
  *  services/ebook/ebook.py: cambiar los dos a la vez. */
 export const EBOOK_NOMBRE = 'Holandés sin miedo'
-/** "70 páginas", no "7 lecciones" (usuario, 29/10: se entiende mejor lo que
- *  te llevas). Es el mismo PDF. */
+/** Las páginas, no "7 lecciones" (usuario, 29/10: se entiende mejor lo que
+ *  te llevas). Es el mismo PDF. Y son MÁS de 70 (usuario, 02/11: "no es 70
+ *  páginas, sino más de 70"): en una frase, «más de 70 páginas»
+ *  (`EBOOK_PAGINAS_TXT`); en una etiqueta corta, «+70 páginas». */
 export const EBOOK_PAGINAS = 70
-export const EBOOK_SUB = `${EBOOK_PAGINAS} páginas para arrancar desde cero (nivel A0-A1)`
+export const EBOOK_PAGINAS_TXT = `más de ${EBOOK_PAGINAS}`
+export const EBOOK_SUB = `${EBOOK_PAGINAS_TXT} páginas para arrancar desde cero (nivel A0-A1)`
 export const EBOOK_PRECIO = 1
 /**
  * El precio de siempre del ebook: el de su página (/ebook-a0-a1), que cobra
@@ -79,21 +82,34 @@ export const EBOOK_LECTORES = 40
  * `.eb-libro-video`). Antes fue beige (el original) y luego azul grisáceo
  * (≈ #D1DAED, 30/10), en un bloque que se veía como una caja.
  *
- * Cómo se hizo (por si hay que repetirlo con otro color): el recorte guardado
- * de cada fotograma (rembg) dice qué es fondo, PERO solo se acepta donde el
- * color es el del fondo (beige cálido o sombra gris lisa) y se le suma el
- * beige liso unido al borde del fotograma. Así las hojas que pasan (blancas o
- * frías) no quedan medio transparentes, que es lo que "rompía" la versión
- * transparente del 30/10. NO es transparente de verdad: es el mismo azul que
- * hay detrás. Un vídeo transparente de verdad pide exportarlo ya sin fondo
- * (o sobre verde liso) desde la herramienta con la que se hizo.
+ * Cómo se hizo (02/11, segunda vuelta; usuario: "sin fondo se rompe al pasar
+ * páginas"). La del 31/10 decidía cada píxel «libro o fondo», todo o nada: la
+ * hoja que pasa, que en el vídeo va movida, dejaba un borde blanco y dentado
+ * sobre el azul. Ahora el recorte es SUAVE:
+ *  - una foto limpia del fondo (la mediana de cada píxel en los fotogramas en
+ *    que es fondo; dos, con el libro abierto y con el libro cerrado, porque la
+ *    sombra cambia);
+ *  - cada píxel es libro según lo que se aparta de esa foto en TONO (la página
+ *    blanca o en sombra, la franja azul); lo que solo se oscurece (sombra
+ *    sobre el beige) no cuenta. El borde movido de la hoja sale con su
+ *    transparencia de verdad;
+ *  - al color del borde se le quita el beige y se le pone el azul;
+ *  - el canto de papel claro que asoma por encima de la franja azul (sobre el
+ *    beige no se nota; sobre el azul era el «borde roto») se pela 4 px, y el
+ *    contorno se alisa (sin dientes de menos de ~3 px);
+ *  - la portada cerrada (fotogramas 1-13 y 107-120) es un cuadrilátero con el
+ *    canto suavizado: su papel blanco roto es del color del fondo.
+ * Los programas están en el scratchpad de esa sesión (bf17/py: plate4.py y
+ * suave.py), no en el repo. NO es transparente de verdad: es el mismo azul
+ * que hay detrás. Transparente de verdad = exportarlo ya sin fondo (o sobre
+ * verde liso) desde la herramienta con la que se hizo.
  *
- * Los nombres llevan «-azul» para que ningún navegador ni la CDN sirvan el
- * vídeo viejo con el mismo nombre. El póster es su primer fotograma, igual
- * que el último: el bucle no salta.
+ * Cada versión lleva otro nombre (antes «-azul», ahora «-libro») para que
+ * ningún navegador ni la CDN sirvan la vieja. El póster es su primer
+ * fotograma, igual que el último: el bucle no salta.
  */
-export const VIDEO_LIBRO = '/video/holandes-sin-miedo-azul.mp4'
-export const POSTER_LIBRO = '/video/holandes-sin-miedo-azul.webp'
+export const VIDEO_LIBRO = '/video/holandes-sin-miedo-libro.mp4'
+export const POSTER_LIBRO = '/video/holandes-sin-miedo-libro.webp'
 
 /** Las fotos del ebook, las de la página de siempre (/ebook-a0-a1). */
 export const EBOOK_MOCKUP = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/6733be7eb79b8_MOCKUP10.png'
