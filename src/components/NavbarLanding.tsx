@@ -11,6 +11,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 // lista de espera sin que nadie se diera cuenta.
 import { CTA_PRINCIPAL } from '../lib/cta'
 import { ESCUELA_URL } from '../lib/escuela'
+import { bfRuta, bfTerminado } from '../lib/blackFriday'
 
 // «Acceso a alumnos» va DIRECTO a la entrada de la escuela (14/10/2026). Antes
 // llevaba a /acceso, un formulario de entrar que solo era diseño: contestaba
@@ -27,13 +28,30 @@ const NAV_LINKS = [
 
 type NavTheme = 'dark' | 'light'
 
+/** La barra de Black Friday de arriba (02/11, como la de YouTalk): lleva a
+ *  la lista prioritaria (blackfriday.holandesnawar.com) con sus utm, para
+ *  saber desde qué página de la web llegó. `utm_medium=barra`, nunca de pago:
+ *  la portada mandaría a /ebook-ads y la ficha diría «Ads». Desaparece sola
+ *  pasado el 30/11 (`bfTerminado`). */
+const enlaceBarraBF = (desde: string) =>
+  `${bfRuta('/')}?utm_source=web&utm_medium=barra&utm_campaign=black-friday&utm_content=barra-${encodeURIComponent(desde)}`
+
 /** `ctaHref`: a dónde lleva «Matricularme» en esta página. Por defecto, el de
  *  toda la web (CTA_PRINCIPAL); /formacion lo usa para bajar a su propio
- *  formulario (09/10). */
-export default function NavbarLanding({ ctaHref = CTA_PRINCIPAL }: { ctaHref?: string } = {}) {
+ *  formulario (09/10).
+ *  `barraBF`: enseña la barra de Black Friday encima del menú; el valor dice
+ *  qué página es (va en `utm_content`). Sin él, no sale (guías, legales,
+ *  /formacion: ahí distraería). */
+export default function NavbarLanding({ ctaHref = CTA_PRINCIPAL, barraBF = '' }: { ctaHref?: string; barraBF?: string } = {}) {
   const [menuOpen,    setMenuOpen]    = useState(false)
   const [menuClosing, setMenuClosing] = useState(false)
+  const [conBarra,    setConBarra]    = useState(() => !!barraBF && !bfTerminado())
   const headerRef = useRef<HTMLElement>(null)
+  const barraRef  = useRef<HTMLAnchorElement>(null)
+
+  useEffect(() => {
+    if (barraBF && bfTerminado()) setConBarra(false)
+  }, [barraBF])
 
   const r = (href: string) => {
     if (!href.startsWith('#')) return href
@@ -57,8 +75,10 @@ export default function NavbarLanding({ ctaHref = CTA_PRINCIPAL }: { ctaHref?: s
       return null
     }
 
-    const themeBottom = readTheme(document.elementFromPoint(window.innerWidth / 2, 72))
-    const themeTop    = readTheme(document.elementFromPoint(window.innerWidth / 2, 4))
+    // Con la barra de Black Friday, el menú empieza más abajo.
+    const alto = barraRef.current?.offsetHeight ?? 0
+    const themeBottom = readTheme(document.elementFromPoint(window.innerWidth / 2, 72 + alto))
+    const themeTop    = readTheme(document.elementFromPoint(window.innerWidth / 2, 4 + alto))
 
     if (themeBottom === 'light') {
       header.style.transition = 'background-color 0.55s ease'
@@ -103,11 +123,35 @@ export default function NavbarLanding({ ctaHref = CTA_PRINCIPAL }: { ctaHref?: s
 
   return (
     <>
+      {/* El hueco de la barra en la página: así la cabecera de cada página
+          empieza debajo, como si la barra no estuviera. */}
+      {conBarra && <div aria-hidden className="h-11 lg:h-12" style={{ background: '#08081a' }} />}
       <header
         ref={headerRef}
         className="fixed top-0 inset-x-0 z-50"
         style={{ backgroundColor: 'rgba(29,0,132,0)' }}
       >
+        {conBarra && (
+          <a
+            ref={barraRef}
+            href={enlaceBarraBF(barraBF)}
+            className="group relative flex h-11 lg:h-12 items-center justify-center gap-3 px-4 text-white"
+            style={{ background: '#08081a' }}
+          >
+            <span className="text-[13.5px] sm:text-[15px] font-semibold tracking-[-0.01em] whitespace-nowrap" style={{ fontFamily: 'var(--font-poppins), system-ui, sans-serif' }}>
+              Adelántate al <span className="font-extrabold text-[#4da3ff]">BLACK FRIDAY</span><span className="hidden sm:inline"> de Holandés Nawar</span>
+            </span>
+            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-[#4da3ff] px-3 py-1.5 text-[12.5px] sm:text-[13px] font-bold text-[#0a1656] transition-colors group-hover:bg-[#5eb4ff]">
+              <span className="sm:hidden">Apúntate</span>
+              <span className="hidden sm:inline">Accede a la lista prioritaria</span>
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2.75} viewBox="0 0 24 24" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </span>
+            {/* La línea roja y azul del logo, como la barra de /oferta. */}
+            <span aria-hidden className="absolute inset-x-0 bottom-0 h-[2px]" style={{ background: 'linear-gradient(90deg, #AE1C28 0 30%, #21468C 30% 100%)' }} />
+          </a>
+        )}
         <div className="max-w-6xl mx-auto px-6">
           <div className="h-[72px] flex items-center justify-between gap-8">
 
