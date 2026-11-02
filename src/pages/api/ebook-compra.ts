@@ -11,7 +11,7 @@ export const prerender = false
  * Stripe (?compra=cs_…) para enseñar "tu ebook va de camino" con su nombre.
  * Lo contesta la escuela, que lo comprueba con Stripe.
  *
- * Si está pagado, manda además el «Purchase» a Meta desde el servidor (API de
+ * Si está pagado, manda además el «CompraEbook» (antes «Purchase») a Meta desde el servidor (API de
  * conversiones) con el id de la sesión de pago como `event_id`: el píxel de la
  * página manda el mismo, así que Meta lo cuenta una vez aunque recargue. Sin
  * token de Meta, no manda nada.
@@ -41,7 +41,7 @@ export const GET: APIRoute = async (ctx) => {
     const pagina = urlDelEvento((url.searchParams.get('pagina') || '').toString(), request)
     await hashUsuario(email, '', nombre).then((usuario) =>
       enviarEventoServidor({
-        nombre: 'Purchase',
+        nombre: 'CompraEbook',
         eventId: cs,
         url: pagina,
         usuario,

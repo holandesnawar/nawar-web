@@ -88,7 +88,7 @@ export const EBOOK_MOCKUP_ABIERTO = 'https://d1yei2z3i6k35z.cloudfront.net/95338
 export const META_EBOOK = 'Ebook Black Friday'
 export const META_BF = 'Black Friday'
 
-/** Lo que se recuerda de la compra en esta visita (el Purchase, una vez). */
+/** Lo que se recuerda de la compra en esta visita (el CompraEbook, una vez). */
 export const CLAVE_COMPRA = 'nawar.bf.compra'
 
 /**

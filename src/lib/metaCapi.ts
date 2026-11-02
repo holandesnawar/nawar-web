@@ -17,9 +17,19 @@
  *    correo y el teléfono (los cifra aquí antes de mandarlos);
  *  - VSLVisto y VSL50: de /api/embudo; el navegador manda los datos YA
  *    cifrados, así que esa ruta nunca ve un correo en claro;
- *  - Purchase (el ebook de Black Friday, 29/10): de /api/ebook-compra, solo
+ *  - CompraEbook (el ebook de Black Friday): de /api/ebook-compra, solo
  *    cuando la escuela confirma con Stripe que está pagado; el id es el de la
- *    sesión de pago (cs_…), el mismo que usa el píxel de la página.
+ *    sesión de pago (cs_…), el mismo que usa el píxel de la página. Del 29/10
+ *    al 02/11 se llamó «Purchase»;
+ *  - LeadBF (apuntarse a la lista prioritaria de Black Friday): de
+ *    /api/embudo, con los datos ya cifrados en el navegador.
+ *
+ * ⚠️ Black Friday NO usa «Lead» ni «Purchase» (02/11, a petición de quien
+ * lleva los anuncios): «Lead» lo mandan las guías y el embudo del anuncio de
+ * la formación, y «Purchase» se guarda para la venta de la formación. Con un
+ * ebook de 1 € dentro, las campañas que miran esos eventos aprenderían de
+ * otra gente y el valor de las compras se iría a pique. En Meta, para
+ * optimizar por estos dos, se crea una conversión personalizada con cada uno.
  *
  * ⚠️ Datos de la persona: SOLO cifrados. `cuerpoEvento` tira cualquier valor
  * de em/ph/fn que no sea una huella SHA-256, venga de donde venga.
@@ -41,7 +51,7 @@ import { leerEnv } from './systeme'
 /** La versión actual de la Graph API (v26.0 salió el 29/07/2026). */
 const VERSION_API = 'v26.0'
 
-export type NombreEvento = 'Lead' | 'Schedule' | 'VSLVisto' | 'VSL50' | 'Purchase'
+export type NombreEvento = 'Lead' | 'Schedule' | 'VSLVisto' | 'VSL50' | 'Purchase' | 'LeadBF' | 'CompraEbook'
 
 export type EventoServidor = {
   nombre: NombreEvento
@@ -57,7 +67,7 @@ export type EventoServidor = {
   fbp?: string
   /** `content_name`, el mismo que lleva el evento del navegador. */
   contenido?: string
-  /** Solo en las compras (Purchase, el ebook de Black Friday): el importe y
+  /** Solo en las compras (CompraEbook, el ebook de Black Friday): el importe y
    *  la moneda, que Meta pide para ese evento. */
   valor?: number
   moneda?: string

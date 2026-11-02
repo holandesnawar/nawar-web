@@ -5,7 +5,8 @@ export const prerender = false
 
 /**
  * Los eventos del vídeo del embudo del anuncio (VSLVisto y VSL50), mandados
- * también desde el servidor a Meta (ver src/lib/metaCapi.ts). 08/10.
+ * también desde el servidor a Meta (ver src/lib/metaCapi.ts). 08/10. Desde el
+ * 02/11, también LeadBF (apuntarse a la lista prioritaria de Black Friday).
  *
  * El navegador manda el nombre del evento, el MISMO `event_id` que acaba de
  * dar al píxel (así Meta deduplica) y, si los tiene, el correo, el teléfono y
@@ -14,16 +15,17 @@ export const prerender = false
  * (_fbp, _fbc), la IP y el navegador se leen aquí.
  *
  * Lead y Schedule NO entran por aquí: van con /api/cualificacion, que ya
- * recibe los datos de la persona. Solo estos dos nombres, para que nadie
+ * recibe los datos de la persona. Solo estos nombres, para que nadie
  * pueda usar la ruta para colar otros eventos en el píxel.
  *
  * Se llama /api/embudo (y no "pixel", "track"…) a propósito: los bloqueadores
  * de anuncios cortan esas direcciones, y esto existe justo para llegar cuando
  * el píxel no llega.
  */
-const PERMITIDOS = new Set<NombreEvento>(['VSLVisto', 'VSL50'])
-/** El `content_name` de cada embudo: el del anuncio y el de la web (09/10). */
-const CONTENIDOS = new Set(['Formación Nawar FB', 'Formación Nawar web'])
+const PERMITIDOS = new Set<NombreEvento>(['VSLVisto', 'VSL50', 'LeadBF'])
+/** El `content_name` de cada embudo: el del anuncio y el de la web (09/10),
+ *  y el de Black Friday (02/11, para LeadBF). */
+const CONTENIDOS = new Set(['Formación Nawar FB', 'Formación Nawar web', 'Black Friday'])
 
 export const POST: APIRoute = async (ctx) => {
   const { request, cookies } = ctx
