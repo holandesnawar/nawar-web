@@ -31,7 +31,12 @@
  * PASE de la lista prioritaria: cabecera azul con la línea roja y azul del
  * logo, «Lista prioritaria · Black Friday 2026», un corte de entrada con dos
  * muescas (las coloca el script al alto de la línea de puntos) y los campos con
- * su icono; debajo del botón, «Gratis · Sin spam · Baja cuando quieras».
+ * su icono.
+ *
+ * 02/11, noche ("eso no pega y empeora la conversión"): fuera, debajo del
+ * botón, «Gratis · Sin spam · Baja cuando quieras» y el «…y recibir nuestros
+ * correos sobre la oferta» de la línea legal. Queda solo la política de
+ * privacidad.
  *
  * 30/10: sin las etiquetas con punto rojo (encima del titular y del
  * formulario: "queda muy ChatGPT"), el botón sin sombra por fuera y la
@@ -171,14 +176,8 @@ const OFERTA = bfRuta('/oferta')
                 Apuntarme a la lista prioritaria <Fragment set:html={icono('flecha', 18, 2.4)} />
               </button>
 
-              <ul class="dl-garantias">
-                <li><Fragment set:html={icono('check', 15, 2.6)} />Gratis</li>
-                <li><Fragment set:html={icono('check', 15, 2.6)} />Sin spam</li>
-                <li><Fragment set:html={icono('check', 15, 2.6)} />Baja cuando quieras</li>
-              </ul>
               <p class="dl-legal">
-                Al apuntarte aceptas la <a href={`${WWW}/politica-de-privacidad`} target="_blank" rel="noopener">política de privacidad</a> y
-                recibir nuestros correos sobre la oferta.
+                Al apuntarte aceptas la <a href={`${WWW}/politica-de-privacidad`} target="_blank" rel="noopener">política de privacidad</a>.
               </p>
             </div>
           </form>
@@ -458,10 +457,7 @@ const OFERTA = bfRuta('/oferta')
   .dl-btn.bf-brillo { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45); }
   .dl-btn :global(svg) { flex-shrink: 0; transition: transform .15s; }
   .dl-btn:hover :global(svg) { transform: translateX(3px); }
-  .dl-garantias { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; }
-  .dl-garantias li { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; color: #171a2e; }
-  .dl-garantias :global(svg) { color: #025dc7; flex-shrink: 0; }
-  .dl-legal { margin: 12px 0 0; font-size: 12px; line-height: 1.55; color: #171a2e; text-align: center; text-wrap: balance; }
+  .dl-legal { margin: 14px 0 0; font-size: 12px; line-height: 1.55; color: #171a2e; text-align: center; text-wrap: balance; }
   .dl-legal a { color: #025dc7; text-decoration: underline; }
 
   .dl-fin p { margin: 0 0 16px; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.93); }
@@ -505,9 +501,6 @@ const OFERTA = bfRuta('/oferta')
     .dl-pase-eti, .dl-pase-fecha { font-size: 11px; }
     .dl-corte { margin: 18px 20px 0; }
     .dl-cuerpo { padding: 18px 20px 22px; }
-    .dl-garantias { gap: 4px 10px; }
-    .dl-garantias li { gap: 4px; font-size: 12.5px; }
-    .dl-garantias :global(svg) { width: 13px; height: 13px; }
     .dl-btn { font-size: 15.5px; padding: 17px 14px; }
     .dl-pie { flex-direction: column; align-items: flex-start; }
   }
