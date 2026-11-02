@@ -236,6 +236,7 @@ def captions(window=None):
 
 
 # ============================================================================== the girl's framing
+OPEN_STILLS = 4                   # her first 4 frames are stills (see index())
 ZOOM_IN = (0.0, 0.3, 1.0, 1.18)   # v6.4, the opening hook: from her plain shot (frame 0, sharp) a fast zoom-in on her face
                                   # (t0, duration, scale from, scale to; most of it in the first ~0.12 s)
 
@@ -469,6 +470,17 @@ def index(sfx_all, overlays):
         src = f"assets/video/take-{sh['take']}.mp4"
         vids.setdefault(key(sh), []).append(f'      <video id="v{sh["n"]}" class="clip" src="{src}" data-start="{sh["start"]}" data-duration="{dd}" data-media-start="{sh["media_start"]}" data-playback-rate="{RATE}" data-track-index="{sh["n"] - 1}" playsinline data-has-audio="true" data-automation=\'{auto}\'></video>')
         face.setdefault(key(sh), sh["face"])
+    # v6.5: her first frames as stills over the first video, so the render never shows a frame of the take before its
+    # video has seeked (twice the first 1–2 frames came out as the wrong picture); the zoom-in and blur apply as usual
+    sh0 = shots[0]
+    for k in range(OPEN_STILLS):
+        png = os.path.join(ROOT, "assets", "img", f"open-{k}.png")
+        nsrc = int((sh0["media_start"] + k / 30 * RATE) * 30 + 1e-6)              # the source frame the video shows there
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", os.path.join(ROOT, f"assets/video/take-{sh0['take']}.mp4"),
+                        "-vf", f"select=eq(n\\,{nsrc})", "-frames:v", "1", png], check=True)
+        from PIL import Image
+        Image.open(png).convert("RGB").save(png)
+        vids[key(sh0)].append(f'      <img id="open{k}" class="clip" src="assets/img/open-{k}.png" alt="" data-start="{max(0.0, round(k / 30 - 0.002, 4))}" data-duration="0.0333" data-track-index="{40 + k}" />')
     hold, lk = ED["hold"], key(shots[-1])                                        # her last frame, held in the last shot's wrapper
     if hold["duration"] > 0:                                                     # (only if edit.py asks for a hold)
         png = os.path.join(ROOT, "assets", "img", f"take-{shots[-1]['take']}-last.png")
