@@ -19,6 +19,7 @@ EQ = "highpass=f=110,lowshelf=f=150:g=-6,lowshelf=f=250:g=-6,equalizer=f=2500:t=
                                                      # which phone speakers drop: cut it so its keys and hats carry instead
 LEVEL_LUFS = -36.5     # from «este Black Friday» on (≈20 LU under the voice; v6.4: 2.5 dB lower)
 INTRO_LUFS = -42.5     # the soft intro under the hook
+PAUSE_LIFT_DB = 8.0    # the music comes up this much while she pauses on purpose (v6.5: after «…en inglés.»)
 FADE = 0.5             # fade out after «abajo», across her held last frame
 SR = 48000
 
@@ -48,6 +49,13 @@ def main():
     gdb = np.where(tt < turn, INTRO_LUFS - l_intro, LEVEL_LUFS - l_groove)
     j = int(turn * sr); ramp = int(0.3 * sr)          # the groove comes in on the beat (short smoothing)
     gdb[j - ramp // 2:j + ramp // 2] = np.linspace(gdb[j - ramp // 2 - 1], gdb[j + ramp // 2 + 1], ramp)
+    for s1, s2 in zip(ed["shots"], ed["shots"][1:]):   # v6.5: where she pauses on purpose (a gap between two shots, PAUSE in
+        g0, g1 = s1["start"] + s1["duration"], s2["start"]  # edit.py) the music comes up so it carries the moment, not dead air
+        if g1 - g0 > 0.4:
+            i0, i1, r = int((g0 + 0.02) * sr), int((g1 - 0.06) * sr), int(0.18 * sr)
+            lift = np.zeros(n, np.float32); lift[i0:i1] = PAUSE_LIFT_DB
+            lift[i0:i0 + r] = np.linspace(0, PAUSE_LIFT_DB, r); lift[i1 - r:i1] = np.linspace(PAUSE_LIFT_DB, 0, r)
+            gdb = gdb + lift
     mus *= (10 ** (gdb / 20)).astype(np.float32)[:, None]
     fi = int(0.8 * sr); mus[a:a + fi] *= np.linspace(0, 1, fi)[:, None]
     fo = int(FADE * sr); mus[n - fo:] *= (np.cos(np.linspace(0, np.pi / 2, fo)) ** 2)[:, None]
