@@ -125,7 +125,7 @@ export default function NavbarLanding({ ctaHref = CTA_PRINCIPAL, barraBF = '' }:
     <>
       {/* El hueco de la barra en la página: así la cabecera de cada página
           empieza debajo, como si la barra no estuviera. */}
-      {conBarra && <div aria-hidden className="h-11 lg:h-12" style={{ background: '#08081a' }} />}
+      {conBarra && <div aria-hidden className="h-11 lg:h-12" style={{ background: '#1D0084' }} />}
       <header
         ref={headerRef}
         className="fixed top-0 inset-x-0 z-50"
@@ -136,7 +136,7 @@ export default function NavbarLanding({ ctaHref = CTA_PRINCIPAL, barraBF = '' }:
             ref={barraRef}
             href={enlaceBarraBF(barraBF)}
             className="group relative flex h-11 lg:h-12 items-center justify-center gap-3 px-4 text-white"
-            style={{ background: '#08081a' }}
+            style={{ background: '#1D0084' }}
           >
             <span className="text-[13.5px] sm:text-[15px] font-semibold tracking-[-0.01em] whitespace-nowrap" style={{ fontFamily: 'var(--font-poppins), system-ui, sans-serif' }}>
               Adelántate al <span className="font-extrabold text-[#4da3ff]">BLACK FRIDAY</span><span className="hidden sm:inline"> de Holandés Nawar</span>
@@ -148,7 +148,9 @@ export default function NavbarLanding({ ctaHref = CTA_PRINCIPAL, barraBF = '' }:
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </span>
-            {/* La línea roja y azul del logo, como la barra de /oferta. */}
+            {/* En el azul de la marca, no en negro (02/11, usuario: "con fondo
+                negro queda feo"), con la línea roja y azul del logo debajo,
+                como la barra de /oferta. */}
             <span aria-hidden className="absolute inset-x-0 bottom-0 h-[2px]" style={{ background: 'linear-gradient(90deg, #AE1C28 0 30%, #21468C 30% 100%)' }} />
           </a>
         )}

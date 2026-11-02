@@ -382,9 +382,12 @@ const euros = (n: number) => `${n.toLocaleString('es-ES', { minimumFractionDigit
      de las portadas) y el formulario en una tarjeta BLANCA más ancha (540 px).
      El titular sigue en una sola frase. */
   .dl-hero { position: relative; min-height: 100vh; padding: 0 24px; display: flex; flex-direction: column; }
-  .dl-nav { width: 100%; max-width: 1240px; }
+  /* El ancho de la home (02/11, usuario: "tiene que tener el ancho del home,
+     lo normal"): su caja es max-w-6xl (1152) con 24 px de margen, o sea 1104
+     de contenido. Antes eran 1240 y la portada llegaba casi a los bordes. */
+  .dl-nav { width: 100%; max-width: 1104px; }
   .dl-in {
-    position: relative; z-index: 1; flex: 1; width: 100%; max-width: 1240px; margin: 0 auto; padding: 24px 0 88px;
+    position: relative; z-index: 1; flex: 1; width: 100%; max-width: 1104px; margin: 0 auto; padding: 24px 0 88px;
     display: grid; grid-template-columns: minmax(0, 1fr) 540px; column-gap: 64px; row-gap: 36px; align-content: center;
     grid-template-areas: "texto form" "ventajas form" "fin fin";
   }
@@ -509,7 +512,7 @@ const euros = (n: number) => `${n.toLocaleString('es-ES', { minimumFractionDigit
 
   .dl-hero .bf-horizonte { position: relative; display: block; margin-top: auto; }
   .dl-pie {
-    position: relative; z-index: 1; width: 100%; max-width: 1240px; margin: 0 auto; padding: 22px 0 28px;
+    position: relative; z-index: 1; width: 100%; max-width: 1104px; margin: 0 auto; padding: 22px 0 28px;
     display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 22px;
   }
   .dl-pie nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
