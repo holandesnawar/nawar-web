@@ -68,7 +68,7 @@
  */
 import Layout from '../../layouts/Layout.astro'
 import { icono } from '../../components/black-friday/iconos'
-import { bfRuta } from '../../lib/blackFriday'
+import { EBOOK_NOMBRE, EBOOK_PAGINAS, EBOOK_PRECIO, EBOOK_PRECIO_NORMAL, bfRuta } from '../../lib/blackFriday'
 import '../../styles/fuentes-locales.css'
 import '../../styles/black-friday.css'
 
@@ -77,6 +77,7 @@ export const prerender = true
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
 const WWW = 'https://www.holandesnawar.com'
 const OFERTA = bfRuta('/oferta')
+const euros = (n: number) => `${n.toLocaleString('es-ES', { minimumFractionDigits: Number.isInteger(n) ? 0 : 2 })} €`
 ---
 
 <Layout
@@ -120,12 +121,13 @@ const OFERTA = bfRuta('/oferta')
                ChatGPT"): el titular ya dice Black Friday. -->
           <h1 class="dl-h1">Únete a la <span class="dl-marca">lista prioritaria</span> del Black&nbsp;Friday</h1>
           <p class="dl-sub">
-            Apúntate gratis y accede antes que nadie a <strong>la mejor oferta del año</strong> de
-            Holandés Nawar para <strong>aprender neerlandés</strong> de una vez por todas.
+            Apúntate gratis y accede antes que nadie a <strong>la mejor oferta del año</strong> para
+            <strong>transformar tu neerlandés</strong> de una vez por todas.
           </p>
         </div>
 
-        <ul class="dl-ventajas bf-solo-activa">
+        <div class="dl-col bf-solo-activa">
+        <ul class="dl-ventajas">
           <li>
             <span class="dl-ico" set:html={icono('candado', 22, 1.9)} />
             <div><strong>Acceso anticipado</strong><span>Conoces la oferta antes de que sea pública.</span></div>
@@ -139,6 +141,23 @@ const OFERTA = bfRuta('/oferta')
             <div><strong>Hasta el lunes 30 de noviembre</strong><span>Después, la oferta se cierra.</span></div>
           </li>
         </ul>
+
+        <!-- 02/11, noche (usuario, con la de YouTalk delante: "debajo de «hasta
+             el lunes» un cuadro de: por registrarte obtienes nuestra primera
+             oferta, libro de 70 páginas por 1 euro"). La portada del libro es
+             la de verdad, la misma de la animación de la página del ebook. -->
+        <div class="dl-regalo">
+          <img src="/img/black-friday/libro/cover.webp" alt={`Portada del libro «${EBOOK_NOMBRE}»`} class="dl-regalo-libro" width="64" height="91" loading="lazy" />
+          <div>
+            <p class="dl-regalo-eti"><span set:html={icono('regalo', 15, 2.1)} />Solo por apuntarte</p>
+            <p class="dl-regalo-txt">Obtienes nuestra primera oferta:</p>
+            <p class="dl-regalo-tit">
+              El libro «{EBOOK_NOMBRE}», de {EBOOK_PAGINAS} páginas,
+              <span class="dl-regalo-precio">por <strong>{euros(EBOOK_PRECIO)}</strong> <s>{euros(EBOOK_PRECIO_NORMAL)}</s></span>
+            </p>
+          </div>
+        </div>
+        </div>
 
         <!-- 01/11 (usuario: "no me gusta el formulario, blanco muy básico"): el
              formulario es un PASE de la lista prioritaria. Arriba, la cabecera en
@@ -369,7 +388,7 @@ const OFERTA = bfRuta('/oferta')
     grid-template-areas: "texto form" "ventajas form" "fin fin";
   }
   .dl-texto { grid-area: texto; align-self: end; }
-  .dl-ventajas { grid-area: ventajas; align-self: start; }
+  .dl-col { grid-area: ventajas; align-self: start; max-width: 600px; }
   .dl-form-wrap { grid-area: form; }
   .dl-in > .dl-fin { grid-area: fin; }
 
@@ -393,6 +412,30 @@ const OFERTA = bfRuta('/oferta')
   .dl-ico { display: inline-flex; color: #4da3ff; margin-top: 1px; flex-shrink: 0; }
   .dl-ventajas strong { display: block; font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 2px; }
   .dl-ventajas div span { display: block; font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.86); }
+
+  /* El recuadro del libro a 1 € (02/11, noche), como el «Solo por
+     registrarte» de YouTalk, sobre el azul: cristal fino, sin sombra. */
+  .dl-regalo {
+    display: flex; gap: 16px; align-items: center; margin-top: 26px; padding: 16px 20px 16px 16px;
+    border-radius: 16px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.16);
+  }
+  .dl-regalo-libro { width: 64px; height: auto; flex-shrink: 0; border-radius: 4px; border: 1px solid rgba(255,255,255,0.35); display: block; }
+  .dl-regalo p { margin: 0; }
+  .dl-regalo-eti {
+    display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.09em; text-transform: uppercase; color: #8fc4ff;
+  }
+  .dl-regalo-eti :global(svg) { color: #4da3ff; flex-shrink: 0; }
+  .dl-regalo-txt { margin-top: 7px !important; font-size: 14.5px; line-height: 1.45; color: rgba(255,255,255,0.86); }
+  .dl-regalo-tit { margin-top: 2px !important; font-size: 16.5px; line-height: 1.45; font-weight: 600; color: #fff; }
+  .dl-regalo-tit strong { font-weight: 800; color: #fff; }
+  .dl-regalo-tit s { margin-left: 4px; font-weight: 500; color: rgba(255,255,255,0.6); }
+  /* «por 1 € 12,50 €» siempre junto: si no cabe, baja entero a la línea de abajo. */
+  .dl-regalo-precio { white-space: nowrap; }
+
+  /* El logo, un punto más grande que en las otras páginas (02/11, noche). */
+  .dl-nav .bf-logo { height: 46px; }
+  .dl-nav :global(.bf-logo-txt) { font-size: 24px; }
 
   /* El formulario: un pase de la lista prioritaria (01/11). La sombra va en
      el envoltorio (filter) porque la tarjeta lleva máscara para las muescas y
@@ -503,5 +546,9 @@ const OFERTA = bfRuta('/oferta')
     .dl-cuerpo { padding: 18px 20px 22px; }
     .dl-btn { font-size: 15.5px; padding: 17px 14px; }
     .dl-pie { flex-direction: column; align-items: flex-start; }
+    .dl-nav .bf-logo { height: 40px; }
+    .dl-regalo { gap: 14px; padding: 14px 16px 14px 14px; }
+    .dl-regalo-libro { width: 56px; }
+    .dl-regalo-tit { font-size: 15.5px; }
   }
 </style>
