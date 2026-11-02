@@ -1,13 +1,13 @@
 {
  "rate": 1.06,
- "clip_end": 39.554,
- "total": 39.854,
- "speech_end": 39.554,
- "outro": 37.931,
+ "clip_end": 40.554,
+ "total": 40.854,
+ "speech_end": 40.554,
+ "outro": 38.931,
  "hook_bf": 4.67,
- "offer": 32.271,
+ "offer": 33.271,
  "hold": {
-  "start": 39.554,
+  "start": 40.554,
   "duration": 0.3
  },
  "shots": [
@@ -74,7 +74,7 @@
   {
    "n": 6,
    "take": "p",
-   "start": 20.946,
+   "start": 21.946,
    "duration": 4.396,
    "media_start": 24.42,
    "media_end": 29.08,
@@ -86,7 +86,7 @@
   {
    "n": 7,
    "take": "p",
-   "start": 25.342,
+   "start": 26.342,
    "duration": 2.783,
    "media_start": 29.23,
    "media_end": 32.18,
@@ -98,7 +98,7 @@
   {
    "n": 8,
    "take": "p",
-   "start": 28.125,
+   "start": 29.125,
    "duration": 4.175,
    "media_start": 32.205,
    "media_end": 36.63,
@@ -110,7 +110,7 @@
   {
    "n": 9,
    "take": "p",
-   "start": 32.3,
+   "start": 33.3,
    "duration": 2.858,
    "media_start": 36.67,
    "media_end": 39.7,
@@ -122,7 +122,7 @@
   {
    "n": 10,
    "take": "p",
-   "start": 35.158,
+   "start": 36.158,
    "duration": 4.396,
    "media_start": 39.94,
    "media_end": 44.6,
@@ -149,12 +149,12 @@
    "id": "ins-03",
    "ground": "paper",
    "start": 18.681,
-   "duration": 2.373
+   "duration": 3.373
   },
   {
    "id": "ins-04",
    "ground": "blue",
-   "start": 22.238,
+   "start": 23.238,
    "duration": 5.887
   }
  ],
@@ -172,12 +172,12 @@
    "end": 18.681
   },
   {
-   "start": 21.054,
-   "end": 22.238
+   "start": 22.054,
+   "end": 23.238
   },
   {
-   "start": 28.125,
-   "end": 39.854
+   "start": 29.125,
+   "end": 40.854
   }
  ],
  "words": [
@@ -773,407 +773,407 @@
    "shot": 6,
    "text": "Por",
    "punct": "",
-   "t": 20.984,
-   "end": 21.135
+   "t": 21.984,
+   "end": 22.135
   },
   {
    "shot": 6,
    "text": "eso",
    "punct": "",
-   "t": 21.135,
-   "end": 21.304
+   "t": 22.135,
+   "end": 22.304
   },
   {
    "shot": 6,
    "text": "hemos",
    "punct": "",
-   "t": 21.304,
-   "end": 21.757
+   "t": 22.304,
+   "end": 22.757
   },
   {
    "shot": 6,
    "text": "creado",
    "punct": "",
-   "t": 21.757,
-   "end": 22.295
+   "t": 22.757,
+   "end": 23.295
   },
   {
    "shot": 6,
    "text": "este",
    "punct": "",
-   "t": 22.295,
-   "end": 22.55
+   "t": 23.295,
+   "end": 23.55
   },
   {
    "shot": 6,
    "text": "libro",
    "punct": ":",
-   "t": 22.55,
-   "end": 23.135
+   "t": 23.55,
+   "end": 24.135
   },
   {
    "shot": 6,
    "text": "70",
    "punct": "",
-   "t": 23.135,
-   "end": 23.606
+   "t": 24.135,
+   "end": 24.606
   },
   {
    "shot": 6,
    "text": "páginas",
    "punct": "",
-   "t": 23.606,
-   "end": 24.003
+   "t": 24.606,
+   "end": 25.003
   },
   {
    "shot": 6,
    "text": "en",
    "punct": "",
-   "t": 24.003,
-   "end": 24.097
+   "t": 25.003,
+   "end": 25.097
   },
   {
    "shot": 6,
    "text": "español",
    "punct": ",",
-   "t": 24.097,
-   "end": 24.71
+   "t": 25.097,
+   "end": 25.71
   },
   {
    "shot": 6,
    "text": "para",
    "punct": "",
-   "t": 24.71,
-   "end": 24.814
+   "t": 25.71,
+   "end": 25.814
   },
   {
    "shot": 6,
    "text": "imprimir",
    "punct": ",",
-   "t": 24.814,
-   "end": 25.342
+   "t": 25.814,
+   "end": 26.342
   },
   {
    "shot": 7,
    "text": "con",
    "punct": "",
-   "t": 25.38,
-   "end": 25.465
+   "t": 26.38,
+   "end": 26.465
   },
   {
    "shot": 7,
    "text": "vocabulario",
    "punct": ",",
-   "t": 25.465,
-   "end": 26.2
+   "t": 26.465,
+   "end": 27.2
   },
   {
    "shot": 7,
    "text": "gramática",
    "punct": ",",
-   "t": 26.2,
-   "end": 26.691
+   "t": 27.2,
+   "end": 27.691
   },
   {
    "shot": 7,
    "text": "ejercicios",
    "punct": "",
-   "t": 26.691,
-   "end": 27.512
+   "t": 27.691,
+   "end": 28.512
   },
   {
    "shot": 7,
    "text": "prácticos",
    "punct": ",",
-   "t": 27.512,
-   "end": 28.125
+   "t": 28.512,
+   "end": 29.125
   },
   {
    "shot": 8,
    "text": "cómo",
    "punct": "",
-   "t": 28.149,
-   "end": 28.29
+   "t": 29.149,
+   "end": 29.29
   },
   {
    "shot": 8,
    "text": "pronunciar",
    "punct": "",
-   "t": 28.29,
-   "end": 28.818
+   "t": 29.29,
+   "end": 29.818
   },
   {
    "shot": 8,
    "text": "los",
    "punct": "",
-   "t": 28.818,
-   "end": 28.932
+   "t": 29.818,
+   "end": 29.932
   },
   {
    "shot": 8,
    "text": "sonidos",
    "punct": "",
-   "t": 28.932,
-   "end": 29.771
+   "t": 29.932,
+   "end": 30.771
   },
   {
    "shot": 8,
    "text": "por",
    "punct": "",
-   "t": 29.771,
-   "end": 29.875
+   "t": 30.771,
+   "end": 30.875
   },
   {
    "shot": 8,
    "text": "los",
    "punct": "",
-   "t": 29.875,
-   "end": 30.158
+   "t": 30.875,
+   "end": 31.158
   },
   {
    "shot": 8,
    "text": "que",
    "punct": "",
-   "t": 30.158,
-   "end": 30.215
+   "t": 31.158,
+   "end": 31.215
   },
   {
    "shot": 8,
    "text": "te",
    "punct": "",
-   "t": 30.215,
-   "end": 30.328
+   "t": 31.215,
+   "end": 31.328
   },
   {
    "shot": 8,
    "text": "cambian",
    "punct": "",
-   "t": 30.328,
-   "end": 30.667
+   "t": 31.328,
+   "end": 31.667
   },
   {
    "shot": 8,
    "text": "en",
    "punct": "",
-   "t": 30.667,
-   "end": 30.781
+   "t": 31.667,
+   "end": 31.781
   },
   {
    "shot": 8,
    "text": "inglés",
    "punct": "",
-   "t": 30.781,
-   "end": 31.271
+   "t": 31.781,
+   "end": 32.271
   },
   {
    "shot": 8,
    "text": "cuando",
    "punct": "",
-   "t": 31.271,
-   "end": 31.366
+   "t": 32.271,
+   "end": 32.366
   },
   {
    "shot": 8,
    "text": "abres",
    "punct": "",
-   "t": 31.366,
-   "end": 31.743
+   "t": 32.366,
+   "end": 32.743
   },
   {
    "shot": 8,
    "text": "la",
    "punct": "",
-   "t": 31.743,
-   "end": 31.875
+   "t": 32.743,
+   "end": 32.875
   },
   {
    "shot": 8,
    "text": "boca",
    "punct": ".",
-   "t": 31.875,
-   "end": 32.3
+   "t": 32.875,
+   "end": 33.3
   },
   {
    "shot": 9,
    "text": "Entero",
    "punct": "",
-   "t": 32.328,
-   "end": 32.875
+   "t": 33.328,
+   "end": 33.875
   },
   {
    "shot": 9,
    "text": "por",
    "punct": "",
-   "t": 32.875,
-   "end": 33.158
+   "t": 33.875,
+   "end": 34.158
   },
   {
    "shot": 9,
    "text": "un",
    "punct": "",
-   "t": 33.158,
-   "end": 33.432
+   "t": 34.158,
+   "end": 34.432
   },
   {
    "shot": 9,
    "text": "euro",
    "punct": ",",
-   "t": 33.432,
-   "end": 33.772
+   "t": 34.432,
+   "end": 34.772
   },
   {
    "shot": 9,
    "text": "solo",
    "punct": "",
-   "t": 33.772,
-   "end": 33.989
+   "t": 34.772,
+   "end": 34.989
   },
   {
    "shot": 9,
    "text": "hasta",
    "punct": "",
-   "t": 33.989,
-   "end": 34.177
+   "t": 34.989,
+   "end": 35.177
   },
   {
    "shot": 9,
    "text": "el",
    "punct": "",
-   "t": 34.177,
-   "end": 34.253
+   "t": 35.177,
+   "end": 35.253
   },
   {
    "shot": 9,
    "text": "30",
    "punct": "",
-   "t": 34.253,
-   "end": 34.46
+   "t": 35.253,
+   "end": 35.46
   },
   {
    "shot": 9,
    "text": "de",
    "punct": "",
-   "t": 34.46,
-   "end": 34.649
+   "t": 35.46,
+   "end": 35.649
   },
   {
    "shot": 9,
    "text": "noviembre",
    "punct": ".",
-   "t": 34.649,
-   "end": 35.158
+   "t": 35.649,
+   "end": 36.158
   },
   {
    "shot": 10,
    "text": "Esta",
    "punct": "",
-   "t": 35.196,
-   "end": 35.479
+   "t": 36.196,
+   "end": 36.479
   },
   {
    "shot": 10,
    "text": "es",
    "punct": "",
-   "t": 35.479,
-   "end": 35.705
+   "t": 36.479,
+   "end": 36.705
   },
   {
    "shot": 10,
    "text": "una",
    "punct": "",
-   "t": 35.705,
-   "end": 35.856
+   "t": 36.705,
+   "end": 36.856
   },
   {
    "shot": 10,
    "text": "de",
    "punct": "",
-   "t": 35.856,
-   "end": 35.913
+   "t": 36.856,
+   "end": 36.913
   },
   {
    "shot": 10,
    "text": "nuestras",
    "punct": "",
-   "t": 35.913,
-   "end": 36.101
+   "t": 36.913,
+   "end": 37.101
   },
   {
    "shot": 10,
    "text": "ofertas",
    "punct": "",
-   "t": 36.101,
-   "end": 36.809
+   "t": 37.101,
+   "end": 37.809
   },
   {
    "shot": 10,
    "text": "del",
    "punct": "",
-   "t": 36.809,
-   "end": 37.073
+   "t": 37.809,
+   "end": 38.073
   },
   {
    "shot": 10,
    "text": "Black",
    "punct": "",
-   "t": 37.073,
-   "end": 37.413
+   "t": 38.073,
+   "end": 38.413
   },
   {
    "shot": 10,
    "text": "Friday",
    "punct": ".",
-   "t": 37.413,
-   "end": 37.988
+   "t": 38.413,
+   "end": 38.988
   },
   {
    "shot": 10,
    "text": "Consigue",
    "punct": "",
-   "t": 37.988,
-   "end": 38.29
+   "t": 38.988,
+   "end": 39.29
   },
   {
    "shot": 10,
    "text": "el",
    "punct": "",
-   "t": 38.29,
-   "end": 38.384
+   "t": 39.29,
+   "end": 39.384
   },
   {
    "shot": 10,
    "text": "tuyo",
    "punct": "",
-   "t": 38.384,
-   "end": 38.592
+   "t": 39.384,
+   "end": 39.592
   },
   {
    "shot": 10,
    "text": "en",
    "punct": "",
-   "t": 38.592,
-   "end": 38.686
+   "t": 39.592,
+   "end": 39.686
   },
   {
    "shot": 10,
    "text": "el",
    "punct": "",
-   "t": 38.686,
-   "end": 38.818
+   "t": 39.686,
+   "end": 39.818
   },
   {
    "shot": 10,
    "text": "enlace",
    "punct": "",
-   "t": 38.818,
-   "end": 39.083
+   "t": 39.818,
+   "end": 40.083
   },
   {
    "shot": 10,
    "text": "abajo",
    "punct": ".",
-   "t": 39.083,
-   "end": 39.554
+   "t": 40.083,
+   "end": 40.554
   }
  ]
 }

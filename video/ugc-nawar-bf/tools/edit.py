@@ -34,10 +34,11 @@ JUMPS = {"g": [16.633], "p": [3.567, 7.567, 12.9, 15.6, 20.0, 24.5, 29.1, 32.2, 
 # v5, tighter: every pause between two words longer than TIGHT (her voice under LOUD_DB, measured on the take's own
 # sound) is cut down to KEEP_TAIL after the last word + KEEP_HEAD before the next; a take's own cut that sits in such a
 # silence becomes a cut of the edit there too (and inside a girl section, a jump cut with a new framing). PAUSE adds a
-# breath at one of those cuts (v6.4: none — «…ejercicios prácticos.» | «cómo pronunciar…», two takes glued with no air
+# breath at one of those cuts (keyed by the take's cut, or by the start of the word before it) (v6.4: none — «…ejercicios prácticos.» | «cómo pronunciar…», two takes glued with no air
 # between them, now follow each other tight, the girl coming back on «cómo»: a half-second gap read as her going quiet).
 TIGHT, KEEP_TAIL, KEEP_HEAD, LOUD_DB = 0.18, 0.05, 0.04, -30.0
-PAUSE = {}
+PAUSE = {("p", 23.9): 1.0}   # v6.5: after «…está en inglés.» (the word starting at 23.9 in take p) she pauses 1 s, the music
+                             # goes on and ins-03 «Casi todo, en inglés» stays up a second longer to be read
 NO_TIGHT = {"g"}       # the hook stays one continuous shot (its zoom-in, push and Black Friday snap)
 CUT_POST_AT = {("p", 36.7): -0.03}   # «Entero» starts 20 ms before the take's own cut: open on it (the flash hides that frame)
 SPEECH_END = 44.60     # «…en el enlace abajo.» ends here in take p
@@ -117,7 +118,8 @@ def tighten(tk, a, b):
         if js:
             e, s = min(e, js[0] - CUT_PRE_AT.get((tk, js[0]), 0.02)), max(s, js[0] + CUT_POST_AT.get((tk, js[0]), CUT_POST))
             used.add((tk, js[0]))
-        cuts.append((round(e, 3), round(s, 3), PAUSE.get((tk, js[0]), 0.0) if js else 0.0))
+        pause = (PAUSE.get((tk, js[0]), 0.0) if js else 0.0) or PAUSE.get((tk, round(w0[0], 3)), 0.0)   # at a take's cut, or
+        cuts.append((round(e, 3), round(s, 3), pause))                                               # after a given word
     pieces, x, pause = [], a, 0.0
     for e, s, p in cuts:
         pieces.append((tk, round(x, 3), e, pause)); x, pause = s, p

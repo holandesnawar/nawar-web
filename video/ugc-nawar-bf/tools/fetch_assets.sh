@@ -33,4 +33,4 @@ python3 tools/align_fix.py && python3 tools/edit.py && python3 tools/libro_clip.
 echo "the girl cut out for the Black Friday backdrops (a few minutes on CPU)"
 python3 tools/mattes.py
 python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc-bf-v6-4.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc-bf-v6-5.mp4"

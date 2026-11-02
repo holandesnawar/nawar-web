@@ -60,11 +60,11 @@ def build():
 {reps}"""])
     js = """
       tl.fromTo(q("h0"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «MIR» + 0.2);
-      tl.fromTo(q("chip"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, «CON» - 0.06);
+      tl.fromTo(q("chip"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, «MIR» + 0.36);   // v6.5: right after the first line, not on «contigo»
       tl.fromTo(q("card"), { opacity: 0.35, y: 44, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power3.out" }, 0);   // there from the cut (no empty paper)
       tl.set(q("n1"), { opacity: 0 }, 0);
       tl.set(q("chg"), { opacity: 0 }, 0);
-      tl.fromTo(q("me"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, «MIR» + 0.42);
+      tl.fromTo(q("me"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, «CON» - 0.06);
       tl.fromTo(q("r0"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, «NO» - 0.12);
       tl.fromTo(q("r1"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, «NAD» - 0.02);
       tl.fromTo(q("x0"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.24, ease: "back.out(2)" }, «NO» + 0.12);
@@ -74,6 +74,6 @@ def build():
       tl.fromTo(q("n1"), { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out", immediateRender: false }, «CAM» + 0.1);
       tl.fromTo(q("chg"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.8)", immediateRender: false }, «CAM» + 0.18);
 """
-    sfx = [(c["MIR"] + 0.42, "pop", 0.16), (c["NO"] - 0.12, "notification", 0.14), (c["NAD"] - 0.02, "notification", 0.14),
+    sfx = [(c["CON"] - 0.06, "pop", 0.16), (c["NO"] - 0.12, "notification", 0.14), (c["NAD"] - 0.02, "notification", 0.14),
            (c["CAM"] + 0.1, "click-soft", 0.22)]
     return comp(iid, d, P, css, body, js, c), sfx

@@ -122,10 +122,10 @@ SHOW = {}
 HL_PHRASES = []   # no coloured words: clean white captions, as in UGC #2 (pages still never split these:)
 KEEP = [["black", "friday"], ["70", "paginas"], ["30", "de", "noviembre"], ["lista", "prioritaria"]]
 # caption pages a graphic on screen already says (v6.3: words twice, one over the other, look cheap): the ins-02
-# headline «Te quedas ✕ sin practicar» (0:16), the date pill «Hasta el 30 de noviembre», and the closing button
+# headline «Te quedas ✕ sin practicar» (0:16), the ins-03 headline «Casi todo, en inglés» (0:20), the date pill «Hasta el 30 de noviembre», and the closing button
 # «CONSÍGUELO POR 1 €» with its arrow (every page from the outro on: None)
-HIDE = [("ins-02", ["tu", "te", "quedas"]), ("ins-02", ["sin", "practicar"]), ("offer", ["el", "30", "de", "noviembre"]),
-        ("outro", None)]
+HIDE = [("ins-02", ["tu", "te", "quedas"]), ("ins-02", ["sin", "practicar"]), ("ins-03", ["esta", "en", "ingles"]),
+        ("offer", ["el", "30", "de", "noviembre"]), ("outro", None)]
 GLUE = {"y", "que", "con", "los", "las", "la", "el", "de", "del", "por", "en", "un", "una", "te", "tu", "cuando", "si", "a", "al", "lo", "ni"}
 CLITIC = {"te", "me", "se", "le", "les", "nos", "os", "lo"}      # a pronoun before its verb: never the last word of a page
 
@@ -558,8 +558,10 @@ def main():
     overlays = []
     sfx_all.append((0.0, "whoosh-short", 0.2))                         # the opening zoom-in
     for b in backdrops():                  # the hit under each backdrop; on «Entero» it lands in the breath before the word
-        sfx_all += [(b["t_in"] - 0.06, "whoosh-short", 0.14),          # v6.4: the hits ~3 dB lower
-                    (b["t_in"] - 0.06, "impact", 0.21) if b["name"] == "eur" else (b["t_in"], "impact", 0.28)]   # eur: just before «Entero»
+        if b["name"] == "eur":             # «Entero por un euro»: its own surprise, a bright sparkle (v6.5: not the BF hit again)
+            sfx_all += [(b["t_in"] - 0.06, "whoosh-short", 0.1), (b["t_in"] - 0.05, "sparkle", 0.18)]
+        else:                              # the two «Black Friday» moments: whoosh + hit (v6.4: ~3 dB lower)
+            sfx_all += [(b["t_in"] - 0.06, "whoosh-short", 0.14), (b["t_in"], "impact", 0.28)]
         if b["out_flash"]:
             sfx_all.append((b["t_out"] - 0.06, "whoosh-short", 0.1))
     for cid, fn in (("pron", pron), ("offer", offer), ("outro", outro)):

@@ -34,6 +34,9 @@ es la primera completa.
 - Las pegatinas de la oferta van sobre ella (1 €, hasta el 30 de noviembre, Black Friday) y el cierre es un botón
   amarillo «CONSÍGUELO POR 1 €» con «Lista prioritaria Black Friday».
 - La frase de la oferta es «Entero por un euro…»: el corte de la creadora cae justo antes de «entero» (no se dice «un»).
+- v6.5 (comentarios a la v6.4): en 0:20 «Casi todo, en inglés» se queda 1 s más (ella hace una pausa, la música sigue);
+  «ir contigo?» entra justo después de «¿Quién puede», no tarde; «Entero por un euro» lleva otro sonido de sorpresa,
+  distinto del de «Black Friday».
 - v6.4 (comentarios a la v6.3): «el gemeente» (no «la»); el ebook se congela abierto en cuanto se posa la última página,
   sin zoom; sin la pausa antes de «cómo pronunciar»; golpes Black Friday y música algo más bajos; el zoom de entrada
   es un zoom rápido hacia su cara desde su plano normal (no un plano que ya empieza cerca); «ir contigo?» más pequeño y

@@ -127,11 +127,11 @@
       const q = (id) => document.getElementById("i1-" + id);
 
       tl.fromTo(q("h0"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.057 + 0.2);
-      tl.fromTo(q("chip"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, 1.095 - 0.06);
+      tl.fromTo(q("chip"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, 0.057 + 0.36);   // v6.5: right after the first line, not on «contigo»
       tl.fromTo(q("card"), { opacity: 0.35, y: 44, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power3.out" }, 0);   // there from the cut (no empty paper)
       tl.set(q("n1"), { opacity: 0 }, 0);
       tl.set(q("chg"), { opacity: 0 }, 0);
-      tl.fromTo(q("me"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, 0.057 + 0.42);
+      tl.fromTo(q("me"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, 1.095 - 0.06);
       tl.fromTo(q("r0"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, 2.102 - 0.12);
       tl.fromTo(q("r1"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, 2.423 - 0.02);
       tl.fromTo(q("x0"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.24, ease: "back.out(2)" }, 2.102 + 0.12);
