@@ -1,4 +1,4 @@
-# Storyboard · UGC Black Friday v6.5 (40,9 s) — diseño del VSL / UGC #2, Black Friday con fondos de texto detrás de ella
+# Storyboard · UGC Black Friday v6.6 (40,4 s) — diseño del VSL / UGC #2, Black Friday con fondos de texto detrás de ella
 
 | Tiempo | Plano | Qué se oye | Qué se ve |
 |---|---|---|---|
@@ -8,7 +8,7 @@
 | 10,6–14,3 | Ella | «Algo que en tu país lo hacías solo y ni lo pensabas. Eso no se arregla con los años.» | Corte propio de la toma en «Eso» con encuadre nuevo; golpe de zoom en «años». |
 | 14,3–17,0 | ins-02 (azul) | «Cada vez que alguien habla por ti, tú te quedas sin practicar.» | «EN EL GEMEENTE»: la recepción pregunta en neerlandés, responde tu acompañante, tu burbuja se queda en «…» y el titular «Te quedas ✕ sin practicar», justo debajo de la conversación y lejos de los subtítulos; los subtítulos «tú te quedas / sin practicar» no salen (ya lo dice el titular). |
 | 17,0–18,7 | Ella | «Practicar por tu cuenta tampoco es fácil,» | Golpe en «fácil». |
-| 18,7–22,1 | ins-03 (papel) | «…porque casi todo lo que encuentras está en inglés.» | Búsqueda «aprender neerlandés», tres resultados en inglés con «EN» que se vuelven rojos y el titular «Casi todo, en inglés». Tras «inglés» ella hace una pausa de 1 s (la música sube 8 dB mientras tanto) para que dé tiempo a leer el titular; el subtítulo «está en inglés» no sale (lo dice el titular). |
+| 18,7–22,1 | ins-03 (papel) | «…porque casi todo lo que encuentras está en inglés.» | Búsqueda «aprender neerlandés», tres resultados en inglés con «EN» que se vuelven rojos y el titular «Casi todo, en inglés». Tras «inglés» ella hace una pausa de medio segundo (la música sube 8 dB mientras tanto) para que dé tiempo a leer el titular; el subtítulo «está en inglés» no sale (lo dice el titular). |
 | 22,1–23,2 | Ella | «Por eso hemos creado» | — (la frase baja 3 dB: venía 6 LU por encima) |
 | 23,2–29,1 | ins-04 (azul) | «…este libro: 70 páginas en español, para imprimir, con vocabulario, gramática, ejercicios prácticos.» | La animación nueva del ebook, recortada de su negro, flotando sobre el azul Nawar (sin caja ni sombra): la portada se abre en «70 páginas» y pasan las páginas a su velocidad, con sonido de papel; en «ejercicios prácticos» se posa abierta «¡Hora de practicar!» y el libro se queda quieto ahí, sin acercarse, hasta volver a ella. Arriba, «Ebook · Holandés sin miedo»; debajo, las pastillas «70 páginas», «En español», «Para imprimir» en su palabra y la fila con ✓ Vocabulario, Gramática, Ejercicios y Pronunciación. |
 | 29,1–33,3 | Ella | «Cómo pronunciar los sonidos por los que te cambian en inglés cuando abres la boca.» | Vuelve a ella justo en el corte de voz entre las dos tomas, sin pausa: «cómo» va pegado a «prácticos». Pastilla blanca «✓ Pronunciación» encima de los subtítulos mientras lo dice. |

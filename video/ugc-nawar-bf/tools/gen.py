@@ -573,8 +573,10 @@ def main():
     for b in backdrops():                  # the hit under each backdrop; on «Entero» it lands in the breath before the word
         if b["name"] == "eur":             # «Entero por un euro»: its own surprise, a bright sparkle (v6.5: not the BF hit again)
             sfx_all += [(b["t_in"] - 0.06, "whoosh-short", 0.1), (b["t_in"] - 0.05, "sparkle", 0.18)]
-        else:                              # the two «Black Friday» moments: whoosh + hit (v6.4: ~3 dB lower)
+        elif b["name"] == "bf1":           # «este Black Friday»: whoosh + hit (v6.4: ~3 dB lower)
             sfx_all += [(b["t_in"] - 0.06, "whoosh-short", 0.14), (b["t_in"], "impact", 0.28)]
+        else:                              # «…del Black Friday»: the hit lands on «Black» itself, over her voice — ~4 dB lower (v6.6)
+            sfx_all += [(b["t_in"] - 0.06, "whoosh-short", 0.1), (b["t_in"], "impact", 0.18)]
         if b["out_flash"]:
             sfx_all.append((b["t_out"] - 0.06, "whoosh-short", 0.1))
     for cid, fn in (("pron", pron), ("offer", offer), ("outro", outro)):

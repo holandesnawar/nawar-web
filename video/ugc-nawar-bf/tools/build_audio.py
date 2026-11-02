@@ -51,7 +51,7 @@ def main():
     gdb[j - ramp // 2:j + ramp // 2] = np.linspace(gdb[j - ramp // 2 - 1], gdb[j + ramp // 2 + 1], ramp)
     for s1, s2 in zip(ed["shots"], ed["shots"][1:]):   # v6.5: where she pauses on purpose (a gap between two shots, PAUSE in
         g0, g1 = s1["start"] + s1["duration"], s2["start"]  # edit.py) the music comes up so it carries the moment, not dead air
-        if g1 - g0 > 0.4:
+        if g1 - g0 > 0.3:
             i0, i1, r = int((g0 + 0.02) * sr), int((g1 - 0.06) * sr), int(0.18 * sr)
             lift = np.zeros(n, np.float32); lift[i0:i1] = PAUSE_LIFT_DB
             lift[i0:i0 + r] = np.linspace(0, PAUSE_LIFT_DB, r); lift[i1 - r:i1] = np.linspace(PAUSE_LIFT_DB, 0, r)
