@@ -39,8 +39,8 @@
  *
  * MÁS VIDA Y LA OFERTA CLARA (29/10, usuario: "que sea estúpido no comprarlo
  * por un euro… tiene que tener más vida, está sosa"):
- *  - «Más de 70 páginas», no «7 lecciones» (`EBOOK_PAGINAS`; 02/11: son MÁS
- *    de 70, no 70 justas).
+ *  - «70 páginas», no «7 lecciones» (`EBOOK_PAGINAS`; 02/11 noche: «70 páginas» a
+ *    secas, sin «más de» ni «+»).
  *  - El precio de siempre tachado: 12,50 €, el que cobra systeme.io en
  *    /ebook-a0-a1 (`EBOOK_PRECIO_NORMAL`). Solo se tacha un precio de verdad.
  *  - «Más de 40 personas ya lo tienen» (`EBOOK_LECTORES`, la etiqueta «Mi
@@ -85,7 +85,7 @@ const PRECIO_NORMAL = euros(EBOOK_PRECIO_NORMAL)
 const DESCUENTO = Math.round((1 - EBOOK_PRECIO / EBOOK_PRECIO_NORMAL) * 100)
 
 const BULLETS = [
-  `Más de ${EBOOK_PAGINAS} páginas en PDF, explicadas en español`,
+  `${EBOOK_PAGINAS} páginas en PDF, explicadas en español`,
   'Ejercicios en cada tema, con todas las respuestas',
   'Te llega al correo en un minuto y es tuyo para siempre',
 ]
@@ -108,7 +108,7 @@ const CARAS = [
  * único precio es el del ebook (el de su página); lo demás va «incluido».
  */
 const PILA = [
-  { ico: '📘', t: `El ebook «${EBOOK_NOMBRE}»`, d: `Más de ${EBOOK_PAGINAS} páginas en PDF para arrancar desde cero, nivel A0-A1.`, v: PRECIO_NORMAL },
+  { ico: '📘', t: `El ebook «${EBOOK_NOMBRE}»`, d: `${EBOOK_PAGINAS} páginas en PDF para arrancar desde cero, nivel A0-A1.`, v: PRECIO_NORMAL },
   { ico: '✍️', t: 'Ejercicios con todas las respuestas', d: 'En cada tema, para practicar y corregirte por tu cuenta.', v: 'Incluido' },
   { ico: '💬', t: 'Frases y vocabulario del día a día', d: 'Lo básico para empezar a defenderte, traducido y explicado.', v: 'Incluido' },
   { ico: '♾️', t: 'Tuyo para siempre', d: 'En el móvil, la tablet, el ordenador o impreso.', v: 'Incluido' },
@@ -117,7 +117,7 @@ const PILA = [
 
 /** La cinta que pasa bajo la cabecera. */
 const CINTA = [
-  `+${EBOOK_PAGINAS} páginas`,
+  `${EBOOK_PAGINAS} páginas`,
   'Explicado en español',
   'Ejercicios con respuestas',
   'Tuyo para siempre',
@@ -132,7 +132,7 @@ const paraTi = [
 ]
 
 const incluye = [
-  `Más de ${EBOOK_PAGINAS} páginas con los temas básicos de la gramática neerlandesa`,
+  `${EBOOK_PAGINAS} páginas con los temas básicos de la gramática neerlandesa`,
   'Vocabulario esencial incluido en cada lección',
   'Ejercicios prácticos al final de cada lección',
   'Explicaciones y traducciones completas al español',
@@ -161,7 +161,7 @@ const faqEbook = {
   title: 'Preguntas frecuentes',
   items: [
     { question: '¿Me sirve si empiezo desde cero?', answer: 'Sí. Está pensado para el nivel A0-A1: empieza por lo más básico (cómo suenan las letras, los artículos, los números) y todo está explicado en español, sin pasar por el inglés.' },
-    { question: '¿Qué temas trae?', answer: `Más de ${EBOOK_PAGINAS} páginas en 7 lecciones con la gramática básica, el vocabulario esencial y frases del día a día. Cada lección acaba con ejercicios, y al final del libro tienes todas las respuestas para corregirte por tu cuenta.` },
+    { question: '¿Qué temas trae?', answer: `${EBOOK_PAGINAS} páginas en 7 lecciones con la gramática básica, el vocabulario esencial y frases del día a día. Cada lección acaba con ejercicios, y al final del libro tienes todas las respuestas para corregirte por tu cuenta.` },
     { question: '¿Me sirve si ya sé algo de neerlandés?', answer: 'Sí, como repaso de la base: si hay reglas que no se te quedan, aquí las tienes explicadas de forma clara y con ejercicios para fijarlas.' },
     { question: '¿Me prepara para el examen de inburgering?', answer: 'Te da la base del idioma (A0-A1) que necesitas antes de ponerte con el examen. No es un curso de examen: es el primer paso.' },
     { question: '¿Cómo lo recibo?', answer: `En cuanto pagas, te llega un correo con el enlace para descargar «${EBOOK_NOMBRE}» en PDF. Si no lo ves en unos minutos, mira en spam o en promociones.` },
@@ -305,7 +305,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
             <div class="float-badge fb-top">
               <span class="eb-fb-ico" set:html={icono('libro', 18, 2)} />
               <div>
-                <p>+{EBOOK_PAGINAS} páginas</p>
+                <p>{EBOOK_PAGINAS} páginas</p>
                 <p>en PDF, para siempre</p>
               </div>
             </div>
@@ -531,7 +531,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
           <img class="eb-resumen-foto" src={EBOOK_MOCKUP} alt="" aria-hidden="true" onerror="this.remove()" />
           <div class="eb-resumen-txt">
             <b>{EBOOK_NOMBRE}</b>
-            <span>eBook A0-A1 en PDF · +{EBOOK_PAGINAS} páginas</span>
+            <span>eBook A0-A1 en PDF · {EBOOK_PAGINAS} páginas</span>
           </div>
           <span class="eb-resumen-precios"><b class="eb-resumen-precio">{PRECIO}</b><s>{PRECIO_NORMAL}</s></span>
         </div>
@@ -991,7 +991,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   @keyframes eb-flota { 0%, 100% { transform: rotate(var(--rot, -2deg)) translateY(0); } 50% { transform: rotate(var(--rot, -2deg)) translateY(-14px); } }
   /* El sello del precio (31/10: "se ve algo barato"): ya no es el círculo
      rojo, sino una tarjeta blanca como las otras dos que flotan junto al libro
-     («+70 páginas», «100% en español»): «Black Friday» en rojo, pequeño y en
+     («70 páginas», «100% en español»): «Black Friday» en rojo, pequeño y en
      mayúsculas, y debajo el 1 € con el precio de siempre tachado. Sin sombra
      y sin giro. */
   .eb-sello {
@@ -1008,7 +1008,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
      LibroAnimado (la animación de Claude Design, dibujada por el navegador)
      es transparente: el libro va directamente sobre la cabecera. Ya no hay
      vídeo, ni máscara, ni halo azul alrededor. */
-  /* El aire de arriba deja el sello y «+70 páginas» por encima del libro: el
+  /* El aire de arriba deja el sello y «70 páginas» por encima del libro: el
      libro abierto ocupa casi todo el ancho y, sin él, tapaban las esquinas de
      las páginas. */
   .eb-libro { position: relative; width: 100%; max-width: 540px; padding-top: 48px; }

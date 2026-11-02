@@ -52,11 +52,11 @@ export const BF_HASTA_TEXTO = 'lunes 30 de noviembre'
  *  services/ebook/ebook.py: cambiar los dos a la vez. */
 export const EBOOK_NOMBRE = 'Holandés sin miedo'
 /** Las páginas, no "7 lecciones" (usuario, 29/10: se entiende mejor lo que
- *  te llevas). Es el mismo PDF. Y son MÁS de 70 (usuario, 02/11: "no es 70
- *  páginas, sino más de 70"): en una frase, «más de 70 páginas»
- *  (`EBOOK_PAGINAS_TXT`); en una etiqueta corta, «+70 páginas». */
+ *  te llevas). Es el mismo PDF. «70 páginas», a secas, en todos lados
+ *  (usuario, 02/11 por la noche: "no son +70 páginas, pon 70 páginas y
+ *  listo"; esa mañana se había puesto «más de 70» y «+70»). */
 export const EBOOK_PAGINAS = 70
-export const EBOOK_PAGINAS_TXT = `más de ${EBOOK_PAGINAS}`
+export const EBOOK_PAGINAS_TXT = `${EBOOK_PAGINAS}`
 export const EBOOK_SUB = `${EBOOK_PAGINAS_TXT} páginas para arrancar desde cero (nivel A0-A1)`
 export const EBOOK_PRECIO = 1
 /**
