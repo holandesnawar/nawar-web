@@ -79,6 +79,9 @@ const { canal } = Astro.props
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
 const WWW = 'https://www.holandesnawar.com'
 const PRECIO = `${EBOOK_PRECIO} €`
+/** «30 de noviembre», sin el día de la semana: la pastilla de «Oferta
+ *  desbloqueada» va en UNA línea (02/11, noche). */
+const HASTA_CORTO = BF_HASTA_TEXTO.replace(/^[a-záéíóú]+\s+(?=\d)/i, '')
 const euros = (n: number) => `${n.toLocaleString('es-ES', { minimumFractionDigits: Number.isInteger(n) ? 0 : 2 })} €`
 const PRECIO_NORMAL = euros(EBOOK_PRECIO_NORMAL)
 /** −92 %: lo que se ahorra sobre el precio de siempre. */
@@ -151,9 +154,12 @@ const DENTRO = [
 ]
 
 const ebookTestimonials = [
-  { name: 'Daniel Jiménez', stars: 5, title: 'Claro y bien organizado', text: 'Una herramienta clara y bien organizada para quienes empiezan a estudiar neerlandés. Con explicaciones sencillas y ejemplos prácticos. ¡Muchas gracias!' },
-  { name: 'Manuel Gutiérrez', stars: 5, title: 'Aplicable desde el primer día', text: 'Me gustó especialmente que incluye ejemplos útiles para el día a día: puedes aplicar lo aprendido casi de inmediato. También hay ejercicios que te obligan a practicar, algo que se agradece mucho cuando estás empezando.' },
-  { name: 'Lorena Gómez', stars: 5, title: 'Para empezar sin frustrarse', text: 'Lo ideal para alguien que recién comienza en el idioma: las claves para poder empezar y progresar sin frustrarse.' },
+  // 02/11, noche (usuario: "quita los dos puntos y que suene más cotidiano,
+  // nada de «me gustó especialmente que incluye», suena a chatbot"): lo mismo
+  // que dijo cada uno, dicho como se habla.
+  { name: 'Daniel Jiménez', stars: 5, title: 'Claro y bien organizado', text: 'Muy claro y bien organizado si estás empezando con el neerlandés. Lo explica fácil y con ejemplos que se entienden a la primera. ¡Gracias!' },
+  { name: 'Manuel Gutiérrez', stars: 5, title: 'Lo usas desde el primer día', text: 'Trae ejemplos del día a día y lo que aprendes lo puedes usar casi enseguida. Y los ejercicios te obligan a practicar, que cuando empiezas se agradece un montón.' },
+  { name: 'Lorena Gómez', stars: 5, title: 'Para empezar sin frustrarse', text: 'Ideal si estás empezando con el idioma. Te da lo justo para arrancar y seguir avanzando sin frustrarte.' },
 ]
 
 const faqEbook = {
@@ -163,7 +169,6 @@ const faqEbook = {
     { question: '¿Me sirve si empiezo desde cero?', answer: 'Sí. Está pensado para el nivel A0-A1: empieza por lo más básico (cómo suenan las letras, los artículos, los números) y todo está explicado en español, sin pasar por el inglés.' },
     { question: '¿Qué temas trae?', answer: `${EBOOK_PAGINAS} páginas en 7 lecciones con la gramática básica, el vocabulario esencial y frases del día a día. Cada lección acaba con ejercicios, y al final del libro tienes todas las respuestas para corregirte por tu cuenta.` },
     { question: '¿Me sirve si ya sé algo de neerlandés?', answer: 'Sí, como repaso de la base: si hay reglas que no se te quedan, aquí las tienes explicadas de forma clara y con ejercicios para fijarlas.' },
-    { question: '¿Me prepara para el examen de inburgering?', answer: 'Te da la base del idioma (A0-A1) que necesitas antes de ponerte con el examen. No es un curso de examen: es el primer paso.' },
     { question: '¿Cómo lo recibo?', answer: `En cuanto pagas, te llega un correo con el enlace para descargar «${EBOOK_NOMBRE}» en PDF. Si no lo ves en unos minutos, mira en spam o en promociones.` },
     { question: '¿Por qué cuesta solo 1 €?', answer: `Es nuestra oferta de Black Friday (su precio de siempre es ${PRECIO_NORMAL}): queremos que pruebes cómo enseñamos en Nawar sin que te cueste casi nada. Solo hasta el ${BF_HASTA_TEXTO}.` },
     { question: '¿Cómo puedo pagar?', answer: 'Con tarjeta, iDEAL o Bancontact, en una caja de pago segura sin salir de esta página. Al pagar te llega el recibo por correo.' },
@@ -224,7 +229,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
             <span class="eb-desbloq-ico" set:html={icono('check', 13, 3)} />
             <!-- En el móvil, solo «Oferta desbloqueada, Ana.» en una línea (30/10,
                  usuario): la fecha ya sale debajo del precio. -->
-            <span class="eb-desbloq-txt"><strong id="eb-desbloq-t">Oferta desbloqueada.</strong><span class="eb-desbloq-hasta"> Es tuya hasta el {BF_HASTA_TEXTO}.</span></span>
+            <span class="eb-desbloq-txt"><strong id="eb-desbloq-t">Oferta desbloqueada.</strong><span class="eb-desbloq-hasta"> Es tuya hasta el {HASTA_CORTO}.</span></span>
           </p>
           <span class="badge-dark h-anim" style="--hd:0.08s">
             <span class="eb-punto" aria-hidden="true"></span>
@@ -459,7 +464,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
     </section>
 
     <!-- ════ QUÉ INCLUYE + comprar ════ -->
-    <section id="que-incluye" class="section-dark py-section" data-navbar="dark" style="position:relative;overflow:hidden;padding-top:32px;">
+    <section id="que-incluye" class="section-dark py-section" data-navbar="dark" style="position:relative;overflow:hidden;">
       <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:1000px;height:700px;background:radial-gradient(ellipse at center,rgba(11,109,240,0.30) 0%,transparent 65%);pointer-events:none;" aria-hidden="true"></div>
       <div class="inner" style="position:relative;z-index:1;">
         <div class="ebook-incluye-grid">
@@ -558,8 +563,9 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
             <button type="button" class="eb-cambiar" id="eb-cambiar">Cambiar</button>
           </div>
           <!-- 29/10: el WhatsApp ya no se pide en la portada; lo pide aquí la
-               caja de Stripe, con el nombre de «Teléfono». -->
-          <p class="eb-whatsapp">En <b>Teléfono</b>, pon el número con el que usas WhatsApp: por ahí te escribimos.</p>
+               caja de Stripe, con el nombre de «Teléfono». El aviso que había
+               encima («En Teléfono, pon el número con el que usas
+               WhatsApp…») se quitó el 02/11 por la noche: "queda feo". -->
           <div class="eb-stripe" id="eb-stripe"><p class="eb-cargando">Cargando el pago seguro…</p></div>
         </div>
       </div>
@@ -744,15 +750,24 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
 
 <style>
   /* ════ Oferta desbloqueada (viene de la portada de Black Friday) ════ */
+  /* En UNA línea (02/11, noche: "en un párrafo, no en dos"): sin partir y,
+     si el nombre es muy largo, se corta con «…» antes que pasar a dos. */
   .eb-desbloq {
-    display: none; align-items: flex-start; gap: 10px; max-width: 470px; margin: 0 0 18px; padding: 11px 15px; border-radius: 12px;
+    display: none; align-items: center; gap: 10px; max-width: 100%; margin: 0 0 20px; padding: 10px 16px 10px 11px; border-radius: 12px;
     background: rgba(34,197,94,0.13); border: 1px solid rgba(134,239,172,0.38); color: rgba(255,255,255,0.93); font-size: 14.5px; line-height: 1.5;
+    white-space: nowrap;
+  }
+  .eb-desbloq-txt { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  /* Con la pastilla, la cabecera sube (02/11, noche: "mucho margen arriba y
+     abajo nada"): menos aire bajo la barra y el botón deja de tocar el borde
+     de la pantalla. */
+  @media (min-width: 901px) {
+    :global(html.bf-desbloqueada) .ebook-hero-wrap { padding-top: 92px; padding-bottom: 56px; }
   }
   .eb-desbloq strong { color: #fff; font-weight: 600; }
   :global(html.bf-desbloqueada) .eb-desbloq { display: flex; }
   @media (max-width: 640px) {
-    .eb-desbloq { align-items: center; max-width: 100%; padding: 9px 14px 9px 10px; white-space: nowrap; }
-    .eb-desbloq-txt { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+    .eb-desbloq { padding: 9px 14px 9px 10px; }
     .eb-desbloq-hasta { display: none; }
   }
   .eb-desbloq-ico {
@@ -937,8 +952,6 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   .eb-legal a { color: #025dc7; text-decoration: underline; }
   .eb-pagando { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 16px 0 14px; padding: 11px 14px; border-radius: 12px; border: 1px solid #DDE6F5; font-size: 13.5px; color: #171a2e; }
   .eb-pagando b { color: #1D0084; font-weight: 600; word-break: break-all; }
-  .eb-whatsapp { margin: -4px 0 14px; font-size: 13.5px; line-height: 1.5; color: #171a2e; }
-  .eb-whatsapp b { color: #1D0084; font-weight: 600; }
   .eb-cambiar { flex-shrink: 0; border: 0; background: none; color: #025dc7; font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; padding: 0; }
   .eb-stripe { min-height: 320px; }
   .eb-cargando { margin: 0; padding: 60px 0; text-align: center; font-size: 14.5px; color: #171a2e; }
@@ -1015,7 +1028,8 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   /* El sello, en la esquina de arriba a la izquierda. */
   .eb-libro .eb-sello { top: -8px; left: -22px; }
   .eb-libro .float-badge { z-index: 2; box-shadow: none; border: 1px solid #DDE6F5; }
-  .eb-libro .fb-top { top: -30px; right: -18px; }
+  /* Un poco más abajo (02/11, noche). */
+  .eb-libro .fb-top { top: 2px; right: -18px; }
   /* Debajo del bloque, sin tocar el libro (30/10: "un poco más abajo para
      que no toque el libro"). */
   .eb-libro .fb-bot { bottom: -52px; left: 6%; }
