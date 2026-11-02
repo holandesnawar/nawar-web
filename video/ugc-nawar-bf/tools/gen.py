@@ -121,10 +121,11 @@ def outro():
 SHOW = {}
 HL_PHRASES = []   # no coloured words: clean white captions, as in UGC #2 (pages still never split these:)
 KEEP = [["black", "friday"], ["70", "paginas"], ["30", "de", "noviembre"], ["lista", "prioritaria"]]
-# caption pages a graphic on screen already says (v6.3: words twice, one over the other, look cheap): the ins-02
+# caption pages a graphic on screen already says (v6.3: words twice, one over the other, look cheap): the ins-01
+# headline «¿Quién puede ir contigo?» (0:07), the ins-02
 # headline «Te quedas ✕ sin practicar» (0:16), the ins-03 headline «Casi todo, en inglés» (0:20), the date pill «Hasta el 30 de noviembre», and the closing button
 # «CONSÍGUELO POR 1 €» with its arrow (every page from the outro on: None)
-HIDE = [("ins-02", ["tu", "te", "quedas"]), ("ins-02", ["sin", "practicar"]), ("ins-03", ["esta", "en", "ingles"]),
+HIDE = [("ins-01", ["puede", "ir", "contigo"]), ("ins-02", ["tu", "te", "quedas"]), ("ins-02", ["sin", "practicar"]), ("ins-03", ["esta", "en", "ingles"]),
         ("offer", ["el", "30", "de", "noviembre"]), ("outro", None)]
 GLUE = {"y", "que", "con", "los", "las", "la", "el", "de", "del", "por", "en", "un", "una", "te", "tu", "cuando", "si", "a", "al", "lo", "ni"}
 CLITIC = {"te", "me", "se", "le", "les", "nos", "os", "lo"}      # a pronoun before its verb: never the last word of a page

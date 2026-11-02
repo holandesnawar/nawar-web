@@ -37,8 +37,9 @@ JUMPS = {"g": [16.633], "p": [3.567, 7.567, 12.9, 15.6, 20.0, 24.5, 29.1, 32.2, 
 # breath at one of those cuts (keyed by the take's cut, or by the start of the word before it) (v6.4: none — «…ejercicios prácticos.» | «cómo pronunciar…», two takes glued with no air
 # between them, now follow each other tight, the girl coming back on «cómo»: a half-second gap read as her going quiet).
 TIGHT, KEEP_TAIL, KEEP_HEAD, LOUD_DB = 0.18, 0.05, 0.04, -30.0
-PAUSE = {("p", 23.9): 1.0}   # v6.5: after «…está en inglés.» (the word starting at 23.9 in take p) she pauses 1 s, the music
-                             # goes on and ins-03 «Casi todo, en inglés» stays up a second longer to be read
+PAUSE = {("p", 23.9): 0.85}  # v6.5: after «…está en inglés.» (the word starting at 23.9 in take p) she pauses, the music goes
+                             # on and ins-03 «Casi todo, en inglés» stays up a second longer to be read (with TAIL_AT: +1.04 s)
+TAIL_AT = {("p", 23.9): 24.42}   # «inglés.»: its final /s/ comes 60 ms after the vowel (24.24–24.40) — keep it whole
 NO_TIGHT = {"g"}       # the hook stays one continuous shot (its zoom-in, push and Black Friday snap)
 CUT_POST_AT = {("p", 36.7): -0.03}   # «Entero» starts 20 ms before the take's own cut: open on it (the flash hides that frame)
 SPEECH_END = 44.60     # «…en el enlace abajo.» ends here in take p
@@ -115,6 +116,7 @@ def tighten(tk, a, b):
         if onset - tail < TIGHT and not js:
             continue
         e, s = tail + KEEP_TAIL, onset - KEEP_HEAD
+        e = min(max(e, TAIL_AT.get((tk, round(w0[0], 3)), 0.0)), s)
         if js:
             e, s = min(e, js[0] - CUT_PRE_AT.get((tk, js[0]), 0.02)), max(s, js[0] + CUT_POST_AT.get((tk, js[0]), CUT_POST))
             used.add((tk, js[0]))
