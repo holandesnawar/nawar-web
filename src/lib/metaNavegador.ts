@@ -38,3 +38,25 @@ export function eventoDelVideo(evento: 'VSLVisto' | 'VSL50', contenido = 'Formac
     } catch {}
   })()
 }
+
+/**
+ * LeadBF (02/11): apuntarse a la lista prioritaria de Black Friday. Al píxel
+ * como evento propio (NO «Lead»: ver src/lib/metaCapi.ts) y, con el mismo id,
+ * al servidor por /api/embudo. Los datos van cifrados desde aquí.
+ */
+export function leadBlackFriday(datos: { email: string; telefono?: string; nombre?: string }, contenido = 'Black Friday') {
+  const eventId = nuevoEventId('bf')
+  try { (window as any).fbq?.('trackCustom', 'LeadBF', { content_name: contenido }, { eventID: eventId }) } catch {}
+  void (async () => {
+    let usuario = {}
+    try { usuario = await hashUsuario(datos.email, datos.telefono || '', datos.nombre || '') } catch {}
+    try {
+      await fetch('/api/embudo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify({ evento: 'LeadBF', event_id: eventId, pagina: location.href, usuario, contenido }),
+      })
+    } catch {}
+  })()
+}

@@ -19,7 +19,7 @@
  * Quien llega aquí al volver de pagar el ebook (?compra=cs_…, una sesión de
  * pago abierta con la vuelta vieja) va directo a /oferta.
  *
- * Píxel: `Lead` (content_name «Black Friday»), una vez por visita.
+ * Píxel: `LeadBF` (content_name «Black Friday»), una vez por visita, también por el servidor (/api/embudo). NO `Lead` (02/11).
  *
  * 29/10, noche ("¿no sería mejor no pedir el teléfono en el formulario sino en
  * la compra del ebook?… igual hasta lo ponen mejor"): la portada pide solo
@@ -233,7 +233,7 @@ const euros = (n: number) => `${n.toLocaleString('es-ES', { minimumFractionDigit
   import { contextoDelLead } from '../../lib/recorrido'
   import { CLAVE_DATOS, type DatosAdmision } from '../../lib/admision'
   import { CLAVE_COMPRADOR, CLAVE_DESBLOQUEADA, META_BF, arrancarCuentaAtras, bfRuta, conLaEntradaBF, esDePago } from '../../lib/blackFriday'
-  import { nuevoEventId } from '../../lib/metaNavegador'
+  import { leadBlackFriday } from '../../lib/metaNavegador'
   import { ESCUELA_URL } from '../../lib/escuela'
   guardarUTM()
   // Sin cuenta atrás: solo marca `bf-terminado` pasado el lunes 30.
@@ -307,11 +307,12 @@ const euros = (n: number) => `${n.toLocaleString('es-ES', { minimumFractionDigit
       localStorage.setItem(CLAVE_DESBLOQUEADA, '1')
       if (r.compro) localStorage.setItem(CLAVE_COMPRADOR, '1')
     } catch {}
-    // «Lead», una vez por visita.
+    // «LeadBF», una vez por visita: al píxel y, con el mismo id, al servidor.
+    // NO «Lead» (02/11): ese lo mandan las guías y el anuncio de la formación.
     try {
       if (lead && !sessionStorage.getItem('nawar.bf.lead')) {
         sessionStorage.setItem('nawar.bf.lead', '1')
-        ;(window as any).fbq?.('track', 'Lead', { content_name: META_BF }, { eventID: nuevoEventId('bf') })
+        leadBlackFriday({ email, telefono, nombre }, META_BF)
       }
     } catch {}
     // Si ya tiene el ebook, a la oferta de la formación.

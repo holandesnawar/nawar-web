@@ -96,7 +96,7 @@
  * (`bf-sigue`). Todo quieto con «reducir movimiento».
  *
  * Al volver de pagar el ebook, se pregunta a la escuela si está pagado
- * (/api/ebook-compra) y, si lo está: "te llega a tu correo", el «Purchase» del
+ * (/api/ebook-compra) y, si lo está: "te llega a tu correo", el «CompraEbook» del
  * píxel (con el id de la sesión de pago, el mismo que manda el servidor) y sus
  * datos guardados para el formulario.
  *
@@ -570,13 +570,14 @@ const DUDAS = [
       localStorage.setItem(CLAVE_DATOS, JSON.stringify({ first_name: nombre, email, phone: mismo ? antes?.phone || '' : '', pais: mismo ? antes?.pais || '' : '' }))
     } catch {}
 
-    // «Purchase», una vez por visita y con el id de la sesión de pago: el
-    // servidor (/api/ebook-compra) manda el mismo y Meta lo cuenta una vez.
+    // «CompraEbook» (no «Purchase»: ver src/lib/metaCapi.ts), una vez por
+    // visita y con el id de la sesión de pago: el servidor (/api/ebook-compra)
+    // manda el mismo y Meta lo cuenta una vez.
     try {
       const k = `${CLAVE_COMPRA}.${cs}`
       if (!sessionStorage.getItem(k)) {
         sessionStorage.setItem(k, '1')
-        ;(window as any).fbq?.('track', 'Purchase', { value: (d.importe_cents || 0) / 100, currency: 'EUR', content_name: META_EBOOK }, { eventID: cs })
+        ;(window as any).fbq?.('trackCustom', 'CompraEbook', { value: (d.importe_cents || 0) / 100, currency: 'EUR', content_name: META_EBOOK }, { eventID: cs })
       }
     } catch {}
 
