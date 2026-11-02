@@ -1,0 +1,263 @@
+---
+/**
+ * El libro «Holandés sin miedo» que se abre, pasa cuatro hojas y se cierra,
+ * en bucle (7 s), sobre fondo TRANSPARENTE (02/11/2026).
+ *
+ * Sustituye al vídeo de la cabecera de la página del ebook. El vídeo estaba
+ * grabado sobre beige y, al quitarle el fondo, la hoja que pasa salía cortada
+ * sobre el azul (usuario: "es como que se corta"). Esto no es un vídeo: es la
+ * animación de Claude Design que pasó el usuario («Animación libro
+ * interactivo.html»), la misma que se grabó, dibujada por el navegador con
+ * las páginas de verdad. Así no hay fondo que recortar.
+ *
+ * Es una traducción a JavaScript normal del componente `LibroEmbed` de ese
+ * archivo, que venía con React y Babel (3,8 MB): misma cámara, mismas
+ * curvas, mismos tiempos. Las 11 páginas, en WebP de 640 px
+ * (public/img/black-friday/libro/, 614 KB en total).
+ *
+ * - El escenario mide 1920 × 1080 y se ve su ventana central de 1240 × 900,
+ *   escalada al ancho de la caja (como el original).
+ * - Cada hoja se dobla en 10 tiras (`bend`): es lo que la curva al pasar.
+ * - Solo se mueve cuando se ve (IntersectionObserver). Con «reducir
+ *   movimiento», se queda quieto con el libro abierto.
+ * - Sale cuando ya han llegado la portada y las primeras páginas: no se ve
+ *   a medio cargar.
+ */
+interface Props {
+  etiqueta?: string
+}
+const { etiqueta = 'El libro «Holandés sin miedo» por dentro' } = Astro.props
+---
+
+<div class="libro-anim" data-libro-anim role="img" aria-label={etiqueta}></div>
+
+<style>
+  .libro-anim {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1240 / 900;
+    overflow: visible;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .libro-anim:global(.listo) { opacity: 1; }
+</style>
+
+<script>
+  const RUTA = '/img/black-friday/libro/'
+  const NOMBRES = ['cover', 'p06', 'p08', 'p15', 'p16', 'p19', 'p26', 'p33', 'p39', 'p42', 'p46'] as const
+  type Nombre = (typeof NOMBRES)[number]
+  const src = (n: Nombre) => `${RUTA}${n}.webp`
+
+  // ── Las cuentas del original (LibroEmbed, Claude Design) ──
+  const SCENES = [{ name: 'Open', dur: 1.3 }, { name: 'Flip', dur: 4.2 }, { name: 'Close', dur: 1.5 }]
+  const CUES: Record<string, number> = {}
+  let acc = 0
+  for (const sc of SCENES) { CUES[sc.name] = acc; acc += sc.dur }
+  const TOTAL = acc
+  const SW = 1920, SH = 1080
+  const H = 760, W = Math.round(H / 1.4142)
+  const SX = SW / 2, TOP = (SH - H) / 2
+  const CX = SW / 2, CY = SH / 2
+  const N = 10, DS = W / N
+  const BW = W + 12, BH = H + 18
+  const BOARD = '#0d2a9a', PAPER = '#f7f4ee'
+  const RAD = Math.PI / 180
+  const VB_W = 1240, VB_H = 900
+  const TILT = 14, CURL = 38
+  const GUTTER = 'linear-gradient(to right, rgba(20,20,40,.22), rgba(20,20,40,0))'
+  const EDGES = '1px 1px 0 #ddd5c6, 2px 1.5px 0 #f4f0e7, 3px 2px 0 #d8d0c0, 4px 3px 0 #f1ece2, 5px 3.5px 0 #cfc6b5'
+  const LEAVES: [Nombre, Nombre][] = [['p08', 'p16'], ['p19', 'p26'], ['p33', 'p39'], ['p46', 'p42']]
+
+  const easeInOutSine = (t: number) => -(Math.cos(Math.PI * t) - 1) / 2
+  const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
+  const animate = (start: number, end: number, ease: (t: number) => number) => (T: number) => {
+    const p = Math.min(1, Math.max(0, (T - start) / (end - start)))
+    return 180 * ease(p)
+  }
+  const turn = (s: number, e: number) => animate(s, e, easeInOutSine)
+  const hard = (s: number, e: number) => animate(s, e, easeInOutCubic)
+  const drift = (T: number) => 1 + 0.018 * Math.sin((2 * Math.PI * T) / TOTAL)
+  const place = (x: number, y: number, z: number, ry: number) =>
+    `translate3d(${CX}px,${CY}px,0) rotateX(${TILT}deg) translate3d(${x - CX}px,${y - CY}px,${z}px) rotateY(${-ry}deg)`
+  const zOf = (i: number, a: number) => (a > 0.5 && a < 179.5 ? 900 : 500) + (a < 90 ? -i : i) * 10
+
+  function bend(phi: number, k: number) {
+    const out: { x: number; z: number; th: number }[] = []
+    let x = 0, z = 0
+    for (let i = 0; i < N; i++) {
+      const s = (i + 0.5) * DS
+      const th = Math.min(180, Math.max(0, phi + k * Math.sin(2 * phi * RAD) * Math.pow(s / W, 1.5)))
+      out.push({ x, z, th })
+      x += Math.cos(th * RAD) * DS
+      z += Math.sin(th * RAD) * DS
+    }
+    return out
+  }
+
+  // ── Construir las piezas (una vez) ──
+  const div = (css: Partial<CSSStyleDeclaration>, padre?: HTMLElement) => {
+    const d = document.createElement('div')
+    Object.assign(d.style, css)
+    if (padre) padre.appendChild(d)
+    return d
+  }
+  const img = (n: Nombre, css: Partial<CSSStyleDeclaration>, padre: HTMLElement) => {
+    const i = document.createElement('img')
+    i.src = src(n)
+    i.alt = ''
+    i.draggable = false
+    i.decoding = 'async'
+    Object.assign(i.style, { position: 'absolute', maxWidth: 'none', ...css })
+    padre.appendChild(i)
+    return i
+  }
+  const abs = (w: number, h: number, z: number): Partial<CSSStyleDeclaration> => ({
+    position: 'absolute', left: '0', top: '0', width: `${w}px`, height: `${h}px`, zIndex: String(z), transformOrigin: '0 0',
+  })
+
+  function montar(raiz: HTMLElement) {
+    const escena = div({ position: 'absolute', left: '0', top: '0', width: `${SW}px`, height: `${SH}px`, transformOrigin: '0 0', visibility: 'hidden' }, raiz)
+    const pieza = div({ position: 'absolute', inset: '0', overflow: 'hidden', background: 'transparent' }, escena)
+    const camara = div({ position: 'absolute', inset: '0', perspective: '3000px', perspectiveOrigin: '50% 45%' }, pieza)
+
+    const sombra = div({ ...abs(BW, BH, 1), borderRadius: '8px', boxShadow: '0 50px 80px -24px rgba(15,25,70,.45), 0 16px 30px -10px rgba(15,25,70,.3)' }, camara)
+    const tapaAtras = div({ ...abs(BW, BH, 2), background: BOARD, borderRadius: '0 6px 6px 0' }, camara)
+    const base = div({ ...abs(W, H, 100), background: PAPER, borderRadius: '0 4px 4px 0', boxShadow: EDGES, overflow: 'hidden' }, camara)
+    img('p15', { inset: '0', width: '100%', height: '100%' }, base)
+    div({ position: 'absolute', inset: '0', background: 'linear-gradient(to right, rgba(20,20,40,.22), rgba(20,20,40,0) 7%)' }, base)
+    const bloque = div({ ...abs(W, H, 0), background: PAPER, borderRadius: '0 4px 4px 0', boxShadow: EDGES }, camara)
+    const sombraD = div({ ...abs(W, H, 800), background: 'linear-gradient(to right, rgba(10,15,45,.5), rgba(10,15,45,0) 75%)' }, camara)
+    const sombraI = div({ ...abs(W, H, 800), background: 'linear-gradient(to left, rgba(10,15,45,.5), rgba(10,15,45,0) 75%)' }, camara)
+
+    // La tapa: la portada por fuera, la página 6 por dentro.
+    const tapa = div({ ...abs(BW, BH, 0), borderRadius: '0 6px 6px 0', overflow: 'hidden', background: BOARD }, camara)
+    const tapaGiro = div({ position: 'absolute', inset: '0' }, tapa)
+    const portada = img('cover', { inset: '0', width: '100%', height: '100%', objectFit: 'cover' }, tapaGiro)
+    const dentro = div({ position: 'absolute', top: '9px', bottom: '9px', left: '12px', right: '0', overflow: 'hidden', borderRadius: '4px 0 0 4px' }, tapaGiro)
+    img('p06', { inset: '0', width: '100%', height: '100%' }, dentro)
+    const tapaLuz = div({ position: 'absolute', inset: '0' }, tapa)
+    const tapaOscura = div({ position: 'absolute', inset: '0', background: '#0a1230' }, tapa)
+
+    // Las cuatro hojas, en 10 tiras cada una.
+    const hojas = LEAVES.map(([fr, bk]) =>
+      Array.from({ length: N }, (_, i) => {
+        const s0 = i * DS
+        const tira = div({
+          ...abs(i === N - 1 ? DS : DS + 2, H, 0), backfaceVisibility: 'visible', willChange: 'transform', overflow: 'hidden',
+          borderRadius: i === N - 1 ? '0 4px 4px 0' : '0',
+        }, camara)
+        const delante = img(fr, { top: '0', height: `${H}px`, width: `${W}px`, left: `${-s0}px` }, tira)
+        const espejo = div({ position: 'absolute', inset: '0', overflow: 'hidden', transform: 'scaleX(-1)' }, tira)
+        const detras = img(bk, { top: '0', height: `${H}px`, width: `${W}px`, left: `${-(W - s0 - DS)}px` }, espejo)
+        if (i === 0) div({ position: 'absolute', inset: '0', background: GUTTER }, tira)
+        return { tira, delante, detras }
+      }),
+    )
+
+    function pintar(T: number) {
+      const f = CUES.Flip, c = CUES.Close
+      const close = hard(c + 0.05, c + 1.0)(T)
+      const r0 = hard(0.12, f - 0.05)(T)
+      const STEP = (c - f - 1.15) / (LEAVES.length - 1)
+      const r = LEAVES.map((_, i) => turn(f + i * STEP, f + i * STEP + 1.15)(T))
+      const a0 = Math.max(0, r0 - close)
+      const as = r.map((v) => Math.max(0, v - close))
+      const open = (1 - Math.cos(a0 * RAD)) / 2
+      const bx = SX - (BW / 2) * (1 - open)
+      const k = close > 0 ? 0 : CURL
+      const blockA = Math.max(0, 180 - close)
+      const blockO = close > 0 ? 1 : Math.min(1, Math.max(0, (r[0] - 150) / 30))
+      const castR = Math.max(...as.map((a) => (a > 0 && a < 90 ? Math.sin(a * RAD) : 0)), a0 > 0 && a0 < 90 && close > 0 ? Math.sin(a0 * RAD) : 0)
+      const castL = close > 0 ? 0 : Math.max(...as.map((a) => (a >= 90 && a < 180 ? Math.sin(a * RAD) : 0)))
+
+      camara.style.transform = `scale(${drift(T)})`
+      const cosA = Math.min(0, Math.cos(a0 * RAD))
+      sombra.style.width = `${BW * (1 - cosA)}px`
+      sombra.style.transform = place(bx + BW * cosA, TOP - 9, 0, 0)
+      tapaAtras.style.transform = place(bx, TOP - 9, 0, 0)
+      base.style.transform = place(bx, TOP, 0, 0)
+
+      bloque.style.zIndex = String(zOf(0.5, blockA))
+      bloque.style.opacity = String(blockO)
+      bloque.style.display = blockO > 0 && blockA >= 90 ? 'block' : 'none'
+      bloque.style.transform = place(bx, TOP, 0, blockA)
+      sombraD.style.display = castR > 0 ? 'block' : 'none'
+      sombraD.style.opacity = String(0.55 * castR)
+      sombraD.style.transform = place(bx, TOP, 0, 0)
+      sombraI.style.display = castL > 0 ? 'block' : 'none'
+      sombraI.style.opacity = String(0.55 * castL)
+      sombraI.style.transform = place(bx - W, TOP, 0, 0)
+
+      const fuera = a0 < 90
+      tapa.style.zIndex = String(zOf(0, a0))
+      tapa.style.transform = place(bx, TOP - 9, 0, a0)
+      tapaGiro.style.transform = fuera ? 'none' : 'scaleX(-1)'
+      portada.style.opacity = fuera ? '1' : '0'
+      dentro.style.opacity = fuera ? '0' : '1'
+      tapaLuz.style.background = fuera
+        ? 'linear-gradient(to right, rgba(0,0,0,.28), rgba(255,255,255,.12) 1.2%, rgba(0,0,0,0) 3%)'
+        : 'linear-gradient(to left, rgba(20,20,40,.22), rgba(20,20,40,0) 8%)'
+      tapaOscura.style.opacity = String(0.4 * Math.sin(a0 * RAD))
+
+      hojas.forEach((tiras, h) => {
+        const a = as[h]
+        const z = String(zOf(h + 1, a))
+        const plana = a <= 0.01 || a >= 179.99
+        bend(a, plana ? 0 : k).forEach((st, i) => {
+          const { tira, delante, detras } = tiras[i]
+          const deFrente = st.th < 90
+          const shade = plana ? 0 : 0.42 * Math.pow(Math.sin(st.th * RAD), 1.3)
+          tira.style.zIndex = z
+          tira.style.transform = place(bx + st.x, TOP, st.z, st.th)
+          tira.style.background = `rgb(${247 - 237 * shade},${244 - 226 * shade},${238 - 190 * shade})`
+          delante.style.opacity = String(deFrente ? 1 - shade : 0)
+          detras.style.opacity = String(deFrente ? 0 : 1 - shade)
+        })
+      })
+    }
+
+    const escalar = () => {
+      const k = raiz.clientWidth / VB_W
+      escena.style.transform = `scale(${k}) translate(${-(SW - VB_W) / 2}px,${-(SH - VB_H) / 2}px)`
+      escena.style.visibility = k ? 'visible' : 'hidden'
+    }
+    escalar()
+    new ResizeObserver(escalar).observe(raiz)
+    return pintar
+  }
+
+  function arrancar(raiz: HTMLElement) {
+    const pintar = montar(raiz)
+    const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    // Con «reducir movimiento»: el libro abierto, quieto (portada por dentro y
+    // la primera página).
+    pintar(quieto ? CUES.Flip : 0)
+
+    // Sale cuando han llegado la portada y lo que se ve al abrir.
+    const primeras: Nombre[] = ['cover', 'p06', 'p15', 'p08']
+    const cargar = (n: Nombre) => {
+      const i = new Image()
+      i.src = src(n)
+      return i.decode().catch(() => undefined)
+    }
+    NOMBRES.forEach((n) => { if (!primeras.includes(n)) cargar(n) })
+    Promise.all(primeras.map(cargar)).then(() => {
+      raiz.classList.add('listo')
+      if (quieto) return
+      let visible = false, raf = 0, t = 0, antes = 0
+      const tick = (ahora: number) => {
+        if (antes) t = (t + Math.min(0.1, (ahora - antes) / 1000)) % TOTAL
+        antes = ahora
+        pintar(t)
+        raf = requestAnimationFrame(tick)
+      }
+      new IntersectionObserver(([e]) => {
+        if (e.isIntersecting && !visible) { visible = true; antes = 0; raf = requestAnimationFrame(tick) }
+        else if (!e.isIntersecting && visible) { visible = false; cancelAnimationFrame(raf) }
+      }).observe(raiz)
+    })
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-libro-anim]').forEach(arrancar)
+</script>

@@ -71,45 +71,14 @@ export const EBOOK_PRECIO_NORMAL = 12.5
 export const EBOOK_LECTORES = 40
 
 /**
- * El libro en vídeo (portada → páginas → portada, 4 s, en bucle) para la
- * cabecera de la página del ebook. Sale del vídeo que pasó el usuario el 30/10
- * (docs.holandesnawar.com/img/Animación Libro Interactivo.mp4), recortado a
- * 4:3 (800 × 600), sin sonido y con `-movflags +faststart`.
- *
- * ⚠️ El fondo es el AZUL DE LA CABECERA (#1D0084), liso (31/10, usuario: "no
- * me gusta el fondo de atrás… que se vea solo el ebook"): sobre la cabecera
- * solo se ve el libro, y los bordes del vídeo se funden con una máscara (ver
- * `.eb-libro-video`). Antes fue beige (el original) y luego azul grisáceo
- * (≈ #D1DAED, 30/10), en un bloque que se veía como una caja.
- *
- * Cómo se hizo (02/11, segunda vuelta; usuario: "sin fondo se rompe al pasar
- * páginas"). La del 31/10 decidía cada píxel «libro o fondo», todo o nada: la
- * hoja que pasa, que en el vídeo va movida, dejaba un borde blanco y dentado
- * sobre el azul. Ahora el recorte es SUAVE:
- *  - una foto limpia del fondo (la mediana de cada píxel en los fotogramas en
- *    que es fondo; dos, con el libro abierto y con el libro cerrado, porque la
- *    sombra cambia);
- *  - cada píxel es libro según lo que se aparta de esa foto en TONO (la página
- *    blanca o en sombra, la franja azul); lo que solo se oscurece (sombra
- *    sobre el beige) no cuenta. El borde movido de la hoja sale con su
- *    transparencia de verdad;
- *  - al color del borde se le quita el beige y se le pone el azul;
- *  - el canto de papel claro que asoma por encima de la franja azul (sobre el
- *    beige no se nota; sobre el azul era el «borde roto») se pela 4 px, y el
- *    contorno se alisa (sin dientes de menos de ~3 px);
- *  - la portada cerrada (fotogramas 1-13 y 107-120) es un cuadrilátero con el
- *    canto suavizado: su papel blanco roto es del color del fondo.
- * Los programas están en el scratchpad de esa sesión (bf17/py: plate4.py y
- * suave.py), no en el repo. NO es transparente de verdad: es el mismo azul
- * que hay detrás. Transparente de verdad = exportarlo ya sin fondo (o sobre
- * verde liso) desde la herramienta con la que se hizo.
- *
- * Cada versión lleva otro nombre (antes «-azul», ahora «-libro») para que
- * ningún navegador ni la CDN sirvan la vieja. El póster es su primer
- * fotograma, igual que el último: el bucle no salta.
+ * El libro de la cabecera de la página del ebook ya NO es un vídeo (02/11):
+ * es la animación de Claude Design que pasó el usuario, dibujada por el
+ * navegador sobre fondo transparente (components/black-friday/LibroAnimado.astro,
+ * páginas en public/img/black-friday/libro/). El vídeo estaba grabado sobre
+ * beige y, al quitarle el fondo, la hoja que pasa salía cortada sobre el azul:
+ * lo intentamos tres veces (bloque beige, azul grisáceo, recorte suave) y
+ * ninguna quedaba limpia. No volver al vídeo.
  */
-export const VIDEO_LIBRO = '/video/holandes-sin-miedo-libro.mp4'
-export const POSTER_LIBRO = '/video/holandes-sin-miedo-libro.webp'
 
 /** Las fotos del ebook, las de la página de siempre (/ebook-a0-a1). */
 export const EBOOK_MOCKUP = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/6733be7eb79b8_MOCKUP10.png'
