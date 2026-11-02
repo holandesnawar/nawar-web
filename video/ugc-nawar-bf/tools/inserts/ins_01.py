@@ -16,7 +16,8 @@ def build():
     css = """
     #i1-h { top: 178px; color: «INDIGO»; font-size: 80px; line-height: 1.05; }
     #i1-h1 { margin-top: 18px; line-height: 1; }        /* v6.4: «ir contigo?» smaller, with air under the first line */
-    #i1-chip { background: «INDIGO»; color: #FFFFFF; font-size: 60px; padding: 4px 22px 10px; border-radius: 16px; }
+    #i1-chip { background: «INDIGO»; color: #FFFFFF; font-size: 60px; padding: 6px 24px 12px; border-radius: 16px;
+      letter-spacing: -0.005em; word-spacing: 0.12em; }   /* «ir contigo?» never reads as one word */
     #i1-card { left: 110px; top: 430px; width: 860px; height: 236px; }
     #i1-day { position: absolute; left: 28px; top: 28px; width: 156px; height: 180px; border-radius: 22px; overflow: hidden;
       background: #FFFFFF; box-shadow: 0 0 0 3px «LINE»; }
@@ -60,7 +61,7 @@ def build():
     js = """
       tl.fromTo(q("h0"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «MIR» + 0.2);
       tl.fromTo(q("chip"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, «CON» - 0.06);
-      tl.fromTo(q("card"), { opacity: 0, y: 70, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out" }, 0.04);
+      tl.fromTo(q("card"), { opacity: 0.35, y: 44, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power3.out" }, 0);   // there from the cut (no empty paper)
       tl.set(q("n1"), { opacity: 0 }, 0);
       tl.set(q("chg"), { opacity: 0 }, 0);
       tl.fromTo(q("me"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, «MIR» + 0.42);

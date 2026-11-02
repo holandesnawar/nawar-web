@@ -78,7 +78,7 @@
     </div></div>
     <div class="shot"><div id="zwpc" class="zw" data-layout-allow-overflow style="transform-origin: 560px 720px;">
       <video id="cut-eur" class="clip" src="assets/video/cut-eur.webm" data-start="32.3" data-duration="1.412" data-media-start="0.0003" data-playback-rate="1.06" data-track-index="61" muted playsinline></video>
-      <video id="cut-bf2" class="clip" src="assets/video/cut-bf2.webm" data-start="36.993" data-duration="0.875" data-media-start="0.3003" data-playback-rate="1.06" data-track-index="62" muted playsinline></video>
+      <video id="cut-bf2" class="clip" src="assets/video/cut-bf2.webm" data-start="37.073" data-duration="0.795" data-media-start="0.367" data-playback-rate="1.06" data-track-index="62" muted playsinline></video>
     </div></div>
     <div id="flash"></div>
     <div id="ins-01" data-composition-id="ins-01" data-composition-src="compositions/ins-01.html" data-start="6.763" data-duration="3.852" data-track-index="10" data-width="1080" data-height="1920"></div>
@@ -128,8 +128,8 @@
     <audio id="sfx35" src="assets/sfx/impact.mp3" data-start="32.24" data-duration="0.936" data-media-start="0.0" data-track-index="65" data-volume="0.21"></audio>
     <audio id="sfx36" src="assets/sfx/whoosh-short.mp3" data-start="33.652" data-duration="0.509" data-media-start="0.066" data-track-index="66" data-volume="0.1"></audio>
     <audio id="sfx37" src="assets/sfx/pop.mp3" data-start="34.173" data-duration="0.614" data-media-start="0.106" data-track-index="67" data-volume="0.3"></audio>
-    <audio id="sfx38" src="assets/sfx/whoosh-short.mp3" data-start="36.933" data-duration="0.509" data-media-start="0.066" data-track-index="68" data-volume="0.14"></audio>
-    <audio id="sfx39" src="assets/sfx/impact.mp3" data-start="36.993" data-duration="0.936" data-media-start="0.0" data-track-index="69" data-volume="0.28"></audio>
+    <audio id="sfx38" src="assets/sfx/whoosh-short.mp3" data-start="37.013" data-duration="0.509" data-media-start="0.066" data-track-index="68" data-volume="0.14"></audio>
+    <audio id="sfx39" src="assets/sfx/impact.mp3" data-start="37.073" data-duration="0.936" data-media-start="0.0" data-track-index="69" data-volume="0.28"></audio>
     <audio id="sfx40" src="assets/sfx/whoosh-short.mp3" data-start="37.808" data-duration="0.509" data-media-start="0.066" data-track-index="70" data-volume="0.1"></audio>
     <audio id="sfx41" src="assets/sfx/pop.mp3" data-start="37.928" data-duration="0.614" data-media-start="0.106" data-track-index="71" data-volume="0.2"></audio>
     <audio id="sfx42" src="assets/sfx/click-soft.mp3" data-start="38.983" data-duration="0.328" data-media-start="0.038" data-track-index="72" data-volume="0.4"></audio>
@@ -163,7 +163,7 @@
       tl.to("#zwp, #zwpc", { scale: 1.2000000000000002, duration: 0.22, ease: "power3.out" }, 39.033);
       tl.fromTo("#zwp, #zwpc", { scale: 1.2 }, { scale: 1.22, duration: 0.267, ease: "none", immediateRender: false }, 39.283);
       // the opening zoom-in: frame 0 sharp, a light motion blur while it moves fastest, sharp again as it lands
-      tl.fromTo("#zwg", { filter: "blur(0px)" }, { filter: "blur(4px)", duration: 0.05, ease: "power1.out" }, 0.0);
+      tl.fromTo("#zwg", { filter: "blur(0px)" }, { filter: "blur(2.5px)", duration: 0.05, ease: "power1.out" }, 0.0);
       tl.to("#zwg", { filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, 0.05);
       tl.set("#zwg", { filter: "none" }, 0.22);
       // the Black Friday backdrops: in on a white flash, rows running both ways, out at the cut / on the next words
@@ -191,15 +191,15 @@
       tl.fromTo("#bx-eur-r3", { x: -2506 }, { x: -1206, duration: 0.32, ease: "expo.out", immediateRender: false }, 32.3);
       tl.fromTo("#bx-eur-r3", { x: -1206 }, { x: -994, duration: 1.092, ease: "none", immediateRender: false }, 32.62);
       tl.set("#bx-bf2", { opacity: 0 }, 0);
-      tl.set("#bx-bf2", { opacity: 1 }, 36.993);
+      tl.set("#bx-bf2", { opacity: 1 }, 37.073);
       tl.set("#bx-bf2", { opacity: 0 }, 37.868);
-      tl.fromTo("#bx-bf2-rows", { scale: 0.82 }, { scale: 1, duration: 0.3, ease: "back.out(2)", immediateRender: false }, 36.993);
-      tl.fromTo("#bx-bf2-rows", { x: 0 }, { keyframes: [{ x: -18, duration: 0.04 }, { x: 14, duration: 0.05 }, { x: -9, duration: 0.05 }, { x: 5, duration: 0.05 }, { x: 0, duration: 0.05 }], immediateRender: false }, 36.993);
+      tl.fromTo("#bx-bf2-rows", { scale: 0.82 }, { scale: 1, duration: 0.3, ease: "back.out(2)", immediateRender: false }, 37.073);
+      tl.fromTo("#bx-bf2-rows", { x: 0 }, { keyframes: [{ x: -18, duration: 0.04 }, { x: 14, duration: 0.05 }, { x: -9, duration: 0.05 }, { x: 5, duration: 0.05 }, { x: 0, duration: 0.05 }], immediateRender: false }, 37.073);
       tl.fromTo("#flash", { opacity: 0.3 }, { opacity: 0, duration: 0.14, ease: "power2.out", immediateRender: false }, 37.868);
-      tl.fromTo("#bx-bf2-r0", { x: -2159 }, { x: -2291, duration: 0.875, ease: "none", immediateRender: false }, 36.993);
-      tl.fromTo("#bx-bf2-r1", { x: -2466 }, { x: -2334, duration: 0.875, ease: "none", immediateRender: false }, 36.993);
-      tl.fromTo("#bx-bf2-r2", { x: -2159 }, { x: -2291, duration: 0.875, ease: "none", immediateRender: false }, 36.993);
-      tl.fromTo("#bx-bf2-r3", { x: -2466 }, { x: -2334, duration: 0.875, ease: "none", immediateRender: false }, 36.993);
+      tl.fromTo("#bx-bf2-r0", { x: -2165 }, { x: -2285, duration: 0.795, ease: "none", immediateRender: false }, 37.073);
+      tl.fromTo("#bx-bf2-r1", { x: -2460 }, { x: -2340, duration: 0.795, ease: "none", immediateRender: false }, 37.073);
+      tl.fromTo("#bx-bf2-r2", { x: -2165 }, { x: -2285, duration: 0.795, ease: "none", immediateRender: false }, 37.073);
+      tl.fromTo("#bx-bf2-r3", { x: -2460 }, { x: -2340, duration: 0.795, ease: "none", immediateRender: false }, 37.073);
       window.__timelines["main"] = tl;
     </script>
   </body>

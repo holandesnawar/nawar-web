@@ -297,7 +297,7 @@ def backdrops():
     sh7 = next(s for s in ED["shots"] if s["take"] == "p" and s["media_start"] - 0.02 <= mats["eur"]["f0"] / 30 <= s["media_end"])
     win = [("bf1", "bf", round(ED["hook_bf"] - 0.08, 3), ED["shots"][1]["start"]),
            ("eur", "eur", sh7["start"], round(next(w["t"] for w in WORDS if w["t"] > sh7["start"] and norm(w["text"]) == "solo") - 0.06, 3)),
-           ("bf2", "bf", round(blacks[1] - 0.08, 3), round(at("consigue") - 0.12, 3))]
+           ("bf2", "bf", round(blacks[1], 3), round(at("consigue") - 0.12, 3))]   # on «Black» itself: her eyes open (v6.4)
     out = []
     for name, kind, t_in, t_out in win:
         m = mats[name]; m0 = m["f0"] / 30
@@ -496,7 +496,7 @@ def index(sfx_all, overlays):
       // punch on the key word (origin = her face); the ad ends when she stops talking, under the button
 {chr(10).join(ztl)}
       // the opening zoom-in: frame 0 sharp, a light motion blur while it moves fastest, sharp again as it lands
-      tl.fromTo("#zwg", {{ filter: "blur(0px)" }}, {{ filter: "blur(4px)", duration: 0.05, ease: "power1.out" }}, 0.0);
+      tl.fromTo("#zwg", {{ filter: "blur(0px)" }}, {{ filter: "blur(2.5px)", duration: 0.05, ease: "power1.out" }}, 0.0);
       tl.to("#zwg", {{ filter: "blur(0px)", duration: 0.16, ease: "power2.out" }}, 0.05);
       tl.set("#zwg", {{ filter: "none" }}, 0.22);
       // the Black Friday backdrops: in on a white flash, rows running both ways, out at the cut / on the next words
