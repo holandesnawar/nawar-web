@@ -297,7 +297,7 @@ def backdrops():
     sh7 = next(s for s in ED["shots"] if s["take"] == "p" and s["media_start"] - 0.02 <= mats["eur"]["f0"] / 30 <= s["media_end"])
     win = [("bf1", "bf", round(ED["hook_bf"] - 0.08, 3), ED["shots"][1]["start"]),
            ("eur", "eur", sh7["start"], round(next(w["t"] for w in WORDS if w["t"] > sh7["start"] and norm(w["text"]) == "solo") - 0.06, 3)),
-           ("bf2", "bf", round(blacks[1], 3), round(at("consigue") - 0.12, 3))]   # on «Black» itself: her eyes open (v6.4)
+           ("bf2", "bf", round(blacks[1], 3), ED["outro"])]   # on «Black» itself (her eyes open), out on the cut to the button
     out = []
     for name, kind, t_in, t_out in win:
         m = mats[name]; m0 = m["f0"] / 30

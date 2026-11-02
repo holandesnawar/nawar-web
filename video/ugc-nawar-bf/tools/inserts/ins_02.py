@@ -37,7 +37,8 @@ def build():
       background: rgba(255,255,255,0.16); box-shadow: inset 0 0 0 2px rgba(255,255,255,0.32);
       display: flex; align-items: center; justify-content: center; gap: 16px; }
     .i2-dot { display: block; width: 18px; height: 18px; border-radius: 50%; background: #FFFFFF; }
-    #i2-h { top: 960px; font-size: 66px; }
+    #i2-h { top: 960px; font-size: 66px; display: flex; justify-content: center; align-items: center; }   /* the chip's icon set
+      its baseline: «Te quedas» sat 13 px low — centred on each other instead */
     #i2-sin { display: inline-flex; align-items: center; gap: 14px; padding: 4px 26px 10px 18px; margin-left: 18px; }
     #i2-sin svg { display: block; width: 62px; height: 62px; margin-top: 6px; }
 """

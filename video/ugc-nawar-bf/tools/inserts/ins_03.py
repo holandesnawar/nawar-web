@@ -52,7 +52,7 @@ def build():
 {rows}
     <div id="i3-h" class="i3-h1"><span class="i3-w">Casi todo,</span> <span id="i3-chip" class="i3-chip">en inglés</span></div>"""])
     js = """
-      tl.fromTo(q("bar"), { opacity: 0, y: 40, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power3.out" }, 0);
+      tl.fromTo(q("bar"), { opacity: 0.35, y: 28, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power3.out" }, 0);   // there from the cut
 """ + typing_js("q", "aprender neerlandés", c["T0"], c["T1"]) + """
       tl.to(q("go"), { keyframes: [{ scale: 0.88, duration: 0.06 }, { scale: 1, duration: 0.16, ease: "back.out(2)" }] }, «T1»);
 """
