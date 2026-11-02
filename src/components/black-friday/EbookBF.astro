@@ -39,7 +39,8 @@
  *
  * MÁS VIDA Y LA OFERTA CLARA (29/10, usuario: "que sea estúpido no comprarlo
  * por un euro… tiene que tener más vida, está sosa"):
- *  - «70 páginas», no «7 lecciones» (`EBOOK_PAGINAS`).
+ *  - «Más de 70 páginas», no «7 lecciones» (`EBOOK_PAGINAS`; 02/11: son MÁS
+ *    de 70, no 70 justas).
  *  - El precio de siempre tachado: 12,50 €, el que cobra systeme.io en
  *    /ebook-a0-a1 (`EBOOK_PRECIO_NORMAL`). Solo se tacha un precio de verdad.
  *  - «Más de 40 personas ya lo tienen» (`EBOOK_LECTORES`, la etiqueta «Mi
@@ -62,7 +63,7 @@ import FAQNuevo from '../FAQNuevo.astro'
 import { icono } from './iconos'
 import PieLegal from './PieLegal.astro'
 import {
-  BF_HASTA_TEXTO, EBOOK_LECTORES, EBOOK_MOCKUP, EBOOK_MOCKUP_ABIERTO, EBOOK_NOMBRE, EBOOK_PAGINAS, EBOOK_PRECIO, EBOOK_PRECIO_NORMAL, EBOOK_SUB,
+  BF_HASTA_TEXTO, EBOOK_LECTORES, EBOOK_MOCKUP, EBOOK_MOCKUP_ABIERTO, EBOOK_NOMBRE, EBOOK_PAGINAS, EBOOK_PAGINAS_TXT, EBOOK_PRECIO, EBOOK_PRECIO_NORMAL, EBOOK_SUB,
   POSTER_LIBRO, VIDEO_LIBRO,
 } from '../../lib/blackFriday'
 import '../../styles/nawar-sections.css'
@@ -83,7 +84,7 @@ const PRECIO_NORMAL = euros(EBOOK_PRECIO_NORMAL)
 const DESCUENTO = Math.round((1 - EBOOK_PRECIO / EBOOK_PRECIO_NORMAL) * 100)
 
 const BULLETS = [
-  `${EBOOK_PAGINAS} páginas en PDF, explicadas en español`,
+  `Más de ${EBOOK_PAGINAS} páginas en PDF, explicadas en español`,
   'Ejercicios en cada tema, con todas las respuestas',
   'Te llega al correo en un minuto y es tuyo para siempre',
 ]
@@ -106,7 +107,7 @@ const CARAS = [
  * único precio es el del ebook (el de su página); lo demás va «incluido».
  */
 const PILA = [
-  { ico: '📘', t: `El ebook «${EBOOK_NOMBRE}»`, d: `${EBOOK_PAGINAS} páginas en PDF para arrancar desde cero, nivel A0-A1.`, v: PRECIO_NORMAL },
+  { ico: '📘', t: `El ebook «${EBOOK_NOMBRE}»`, d: `Más de ${EBOOK_PAGINAS} páginas en PDF para arrancar desde cero, nivel A0-A1.`, v: PRECIO_NORMAL },
   { ico: '✍️', t: 'Ejercicios con todas las respuestas', d: 'En cada tema, para practicar y corregirte por tu cuenta.', v: 'Incluido' },
   { ico: '💬', t: 'Frases y vocabulario del día a día', d: 'Lo básico para empezar a defenderte, traducido y explicado.', v: 'Incluido' },
   { ico: '♾️', t: 'Tuyo para siempre', d: 'En el móvil, la tablet, el ordenador o impreso.', v: 'Incluido' },
@@ -115,7 +116,7 @@ const PILA = [
 
 /** La cinta que pasa bajo la cabecera. */
 const CINTA = [
-  `${EBOOK_PAGINAS} páginas`,
+  `+${EBOOK_PAGINAS} páginas`,
   'Explicado en español',
   'Ejercicios con respuestas',
   'Tuyo para siempre',
@@ -130,7 +131,7 @@ const paraTi = [
 ]
 
 const incluye = [
-  `${EBOOK_PAGINAS} páginas con los temas básicos de la gramática neerlandesa`,
+  `Más de ${EBOOK_PAGINAS} páginas con los temas básicos de la gramática neerlandesa`,
   'Vocabulario esencial incluido en cada lección',
   'Ejercicios prácticos al final de cada lección',
   'Explicaciones y traducciones completas al español',
@@ -145,7 +146,7 @@ const incluye = [
 const DENTRO = [
   { img: '/img/black-friday/por-dentro-1.webp', alt: 'Páginas «Cómo usar este libro» y «Klanken (Sonidos)»', t: 'Los sonidos (Klanken)', d: 'Cómo se pronuncian las combinaciones de letras, con ejemplos: kaas → queso, lezen → leer.' },
   { img: '/img/black-friday/por-dentro-2.webp', alt: 'Páginas «De familie (La familia)» y «Onbepaalde lidwoorden»', t: 'La familia y el artículo «een»', d: 'El vocabulario de la familia en un árbol y cuándo se usa «een», con su nota importante.' },
-  { img: '/img/black-friday/por-dentro-3.webp', alt: 'Páginas «De nummers (Los números)» y «Hebben en zijn»', t: 'Los números y hebben / zijn', d: 'Del 1 al 20, la conjugación en una tabla y los ejercicios de «¡Repasemos lo aprendido!».' },
+  { img: '/img/black-friday/por-dentro-3.webp', alt: 'Páginas «De nummers (Los números)» y «Hebben en zijn»', t: 'Los números y hebben / zijn', d: 'Los números, la conjugación en una tabla y los ejercicios de «¡Repasemos lo aprendido!».' },
 ]
 
 const ebookTestimonials = [
@@ -159,7 +160,7 @@ const faqEbook = {
   title: 'Preguntas frecuentes',
   items: [
     { question: '¿Me sirve si empiezo desde cero?', answer: 'Sí. Está pensado para el nivel A0-A1: empieza por lo más básico (cómo suenan las letras, los artículos, los números) y todo está explicado en español, sin pasar por el inglés.' },
-    { question: '¿Qué temas trae?', answer: `${EBOOK_PAGINAS} páginas en 7 lecciones con la gramática básica, el vocabulario esencial y frases del día a día. Cada lección acaba con ejercicios, y al final del libro tienes todas las respuestas para corregirte por tu cuenta.` },
+    { question: '¿Qué temas trae?', answer: `Más de ${EBOOK_PAGINAS} páginas en 7 lecciones con la gramática básica, el vocabulario esencial y frases del día a día. Cada lección acaba con ejercicios, y al final del libro tienes todas las respuestas para corregirte por tu cuenta.` },
     { question: '¿Me sirve si ya sé algo de neerlandés?', answer: 'Sí, como repaso de la base: si hay reglas que no se te quedan, aquí las tienes explicadas de forma clara y con ejercicios para fijarlas.' },
     { question: '¿Me prepara para el examen de inburgering?', answer: 'Te da la base del idioma (A0-A1) que necesitas antes de ponerte con el examen. No es un curso de examen: es el primer paso.' },
     { question: '¿Cómo lo recibo?', answer: `En cuanto pagas, te llega un correo con el enlace para descargar «${EBOOK_NOMBRE}» en PDF. Si no lo ves en unos minutos, mira en spam o en promociones.` },
@@ -235,7 +236,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
           </h1>
 
           <p class="hero-sub h-anim" style="--hd:0.28s">
-            «{EBOOK_NOMBRE}»: {EBOOK_PAGINAS} páginas para arrancar desde cero, con la gramática, el vocabulario y los
+            «{EBOOK_NOMBRE}»: {EBOOK_PAGINAS_TXT} páginas para arrancar desde cero, con la gramática, el vocabulario y los
             ejercicios explicados en español.
           </p>
 
@@ -401,7 +402,13 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
                 Lo quiero por {PRECIO}
                 <Fragment set:html={flecha} />
               </button>
-              <p class="eb-pila-nota"><Fragment set:html={icono('candado', 14, 2)} /> Pago seguro con tarjeta, iDEAL o Bancontact · Descarga al momento</p>
+              <!-- Dos líneas centradas, el candado dentro de la primera (02/11:
+                   "que esté recto y en dos párrafos… el candado a la izquierda
+                   queda raro"). -->
+              <p class="eb-pila-nota">
+                <span class="eb-pila-nota-1"><Fragment set:html={icono('candado', 14, 2)} />Pago seguro con tarjeta, iDEAL o Bancontact</span>
+                <span>Descarga al momento</span>
+              </p>
             </div>
           </div>
         </div>
@@ -441,7 +448,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
       <div class="inner">
         <div class="eb-pila-cab">
           <span class="badge-light">Un vistazo por dentro</span>
-          <h2 class="title" style="color:#1D0084;margin:0;">Así son las páginas de «{EBOOK_NOMBRE}»</h2>
+          <h2 class="title eb-dentro-titulo" style="color:#1D0084;margin:0;">Así son las páginas de <span class="eb-nowrap">«{EBOOK_NOMBRE}»</span></h2>
           <p class="eb-dentro-sub">Explicaciones claras, ejemplos traducidos y ejercicios para repasar lo aprendido. Todo en español.</p>
         </div>
         <div class="eb-dentro">
@@ -505,7 +512,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
           <span class="text-gradient-white">Empieza hoy,</span>
           <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;white-space:nowrap;">por {PRECIO}</span>
         </h2>
-        <p class="eb-cierre-sub">«{EBOOK_NOMBRE}», {EBOOK_PAGINAS} páginas que llegan a tu correo en un minuto. <span class="bf-solo-activa">Antes <s>{PRECIO_NORMAL}</s>, hoy {PRECIO}, solo hasta el {BF_HASTA_TEXTO}.</span></p>
+        <p class="eb-cierre-sub">«{EBOOK_NOMBRE}», {EBOOK_PAGINAS_TXT} páginas que llegan a tu correo en un minuto. <span class="bf-solo-activa">Antes <s>{PRECIO_NORMAL}</s>, hoy {PRECIO}, solo hasta el {BF_HASTA_TEXTO}.</span></p>
         <div class="bf-solo-activa">
           <button type="button" class="ebook-cta-primary ebook-cta-big" data-bf-comprar>
             Consíguelo por {PRECIO}
@@ -534,7 +541,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
           <img class="eb-resumen-foto" src={EBOOK_MOCKUP} alt="" aria-hidden="true" onerror="this.remove()" />
           <div class="eb-resumen-txt">
             <b>{EBOOK_NOMBRE}</b>
-            <span>eBook A0-A1 en PDF · {EBOOK_PAGINAS} páginas</span>
+            <span>eBook A0-A1 en PDF · +{EBOOK_PAGINAS} páginas</span>
           </div>
           <span class="eb-resumen-precios"><b class="eb-resumen-precio">{PRECIO}</b><s>{PRECIO_NORMAL}</s></span>
         </div>
@@ -586,33 +593,15 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   const fbq = (...a: unknown[]) => { try { (window as any).fbq?.(...a) } catch {} }
   fbq('track', 'ViewContent', { content_name: META_EBOOK, value: EBOOK_PRECIO, currency: 'EUR' })
 
-  // ── La barra de arriba: transparente sobre la cabecera, azul al bajar
-  //    (la de /ebook-a0-a1).
+  // ── La barra de arriba: transparente arriba del todo y azul en cuanto se
+  //    baja un poco, sobre cualquier sección. (02/11: antes se volvía
+  //    transparente sobre las secciones oscuras y el texto de la cabecera
+  //    pasaba por debajo del logo y del botón.)
   const nav = document.getElementById('ebook-nav') as HTMLElement | null
   if (nav) {
-    const tema = (el: Element | null): 'dark' | 'light' | null => {
-      for (let n = el; n; n = n.parentElement) {
-        const t = n.getAttribute('data-navbar')
-        if (t === 'light' || t === 'dark') return t
-      }
-      return null
-    }
     const pintar = () => {
-      const sy = window.scrollY
-      const vh = window.innerHeight
-      const abajo = tema(document.elementFromPoint(window.innerWidth / 2, 72))
-      const arriba = tema(document.elementFromPoint(window.innerWidth / 2, 4))
-      if (abajo === 'light') {
-        nav.style.transition = 'background-color 0.55s ease'
-        nav.style.backgroundColor = 'rgba(29,0,132,1)'
-      } else if (arriba === 'dark' && sy > vh * 0.9) {
-        nav.style.transition = 'background-color 0.55s ease'
-        nav.style.backgroundColor = 'rgba(29,0,132,0)'
-      } else {
-        const op = Math.min(1, Math.max(0, (sy - vh * 0.38) / (vh * 0.46)))
-        nav.style.transition = 'none'
-        nav.style.backgroundColor = `rgba(29,0,132,${op.toFixed(3)})`
-      }
+      const op = Math.min(1, Math.max(0, window.scrollY / 40))
+      nav.style.backgroundColor = `rgba(29,0,132,${op.toFixed(3)})`
     }
     pintar()
     window.addEventListener('scroll', pintar, { passive: true })
@@ -792,8 +781,12 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
     font-family: inherit; cursor: pointer; transition: background 0.2s; white-space: nowrap;
   }
   .ebook-nav-cta:hover { background: #3391f0; }
+  /* En el móvil, la barra con el mismo aire arriba y abajo del botón y la
+     cabecera justo debajo (02/11: "arriba apenas hay margen y abajo sobra"):
+     barra de 76 px (20 por arriba y por abajo) y el texto a 16 px de ella
+     (`.ebook-hero-wrap`, padding-top 92). */
   @media (max-width: 600px) {
-    .ebook-nav-inner { height: 64px; padding: 0 24px; }
+    .ebook-nav-inner { height: 76px; padding: 0 24px; }
     .ebook-nav-logo img { height: 36px; }
     .ebook-nav-cta { padding: 10px 14px; font-size: 13px; gap: 6px; }
     .ebook-nav-cta :global(svg) { width: 12px; height: 12px; }
@@ -878,7 +871,15 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   }
   .ebook-incluye-check :global(svg) { width: 12px; height: 12px; stroke-width: 2.6; }
   .ebook-incluye-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
-  .ebook-incluye-note { font-size: 13px; color: rgba(255,255,255,0.65); }
+  .ebook-incluye-note { font-size: 13px; color: rgba(255,255,255,0.78); }
+  /* En una columna, el botón a lo ancho y la nota centrada (02/11: "los
+     botones en móvil no están centrados, están más a la izquierda": este
+     medía lo que la nota de debajo). */
+  @media (max-width: 1023px) {
+    .ebook-incluye-cta { width: 100%; align-items: stretch; }
+    .ebook-incluye-cta .ebook-cta-primary { justify-content: center; }
+    .ebook-incluye-note { text-align: center; }
+  }
 
   .ebook-testimonials { padding: 96px 0 64px; position: relative; overflow: hidden; }
   .ebook-test-header { text-align: center; max-width: 920px; margin: 0 auto 48px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
@@ -1057,7 +1058,10 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   @keyframes eb-cinta { to { transform: translateX(-50%); } }
 
   /* Así es por dentro. */
-  .eb-dentro-sec { position: relative; padding: 24px 0 96px; }
+  /* Va después de «Para ti si…» (oscura): necesita su aire arriba, como las
+     demás (02/11: en el móvil la etiqueta casi tocaba la sección de arriba). */
+  .eb-dentro-sec { position: relative; padding: 96px 0; }
+  .eb-nowrap { white-space: nowrap; }
   .eb-dentro-sub { margin: 0; font-size: 16.5px; line-height: 1.6; color: #171a2e; max-width: 560px; }
   .eb-dentro { display: grid; grid-template-columns: 1fr; gap: 22px; max-width: 1060px; margin: 0 auto; }
   @media (min-width: 900px) { .eb-dentro { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -1069,7 +1073,10 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   .eb-dentro-item figcaption span { font-size: 14.5px; line-height: 1.55; color: #171a2e; }
   .eb-dentro-cta { display: flex; justify-content: center; margin-top: 40px; }
   @media (max-width: 767px) {
-    .eb-dentro-sec { padding: 8px 0 60px; }
+    .eb-dentro-sec { padding: 64px 0; }
+    /* El título no cabe en una línea (antes se salía por los dos lados): en
+       dos, «Así son las páginas de» / «Holandés sin miedo». */
+    .eb-pila-cab .eb-dentro-titulo { white-space: normal !important; font-size: min(28px, calc((100vw - 48px) / 11.6)) !important; line-height: 1.18; }
     .eb-dentro-cta, .eb-dentro-cta .ebook-cta-primary { width: 100%; justify-content: center; }
   }
 
@@ -1100,7 +1107,8 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   .eb-pila-hoy { font-weight: 700; color: #1D0084; }
   .eb-pila-hoy b { font-family: 'Poppins', system-ui, sans-serif; font-size: 52px; line-height: 1; letter-spacing: -0.04em; color: #1D0084; }
   .eb-pila-cta { margin-top: 16px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-  .eb-pila-nota { display: inline-flex; align-items: center; gap: 7px; margin: 0; font-size: 13px; color: #171a2e; }
+  .eb-pila-nota { display: flex; flex-direction: column; align-items: center; gap: 3px; margin: 0; font-size: 13px; line-height: 1.45; color: #171a2e; text-align: center; }
+  .eb-pila-nota-1 { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
   .eb-pila-nota :global(svg) { color: #15803d; flex-shrink: 0; }
   .eb-cierre-sub s { color: rgba(255,255,255,0.75); }
 
@@ -1112,6 +1120,11 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   @media (max-width: 900px) {
     .ebook-hero { min-height: auto; }
     .ebook-hero-wrap { grid-template-columns: 1fr; padding: 110px 24px 56px; gap: 32px; }
+  }
+  @media (max-width: 600px) {
+    .ebook-hero-wrap { padding-top: 92px; }
+  }
+  @media (max-width: 900px) {
     .ebook-hero-text { order: 1; }
     .ebook-hero-visual { order: 2; margin-top: 4px; }
     .ebook-mockup-wrap { max-width: 320px; margin: 0 auto; }
