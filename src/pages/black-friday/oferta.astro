@@ -166,15 +166,36 @@ const ETAPAS = [
   { n: '04', c: '#f2cd6b', nombre: 'Consolidación', semanas: 'Semanas 14-16', objetivo: 'Juntas todo lo aprendido y lo usas con soltura en tu día a día. Aquí el nivel se asienta.', hito: 'Cierras el nivel A1 y recibes tu certificado.' },
 ]
 
+/**
+ * Las dudas (03/11, usuario: "mira las preguntas y respuestas de YouTalk, son
+ * muy buenas"): se cogieron sus preguntas y su tono directo, con las
+ * respuestas de Nawar y SOLO datos que ya están en la web o en las
+ * condiciones (6 meses de acceso, 15 días de garantía, consultas en menos de
+ * 24 h, 20-30 min al día). Lo que no se sabe no se contesta (qué pasa al
+ * acabar los 6 meses, reseñas). La fecha del final solo va aquí, en las dudas.
+ */
 const DUDAS = [
   { q: '¿En qué consiste la oferta de Black Friday?', a: `Son condiciones especiales para entrar en la Formación Nawar A0-A1 durante el Black Friday, solo hasta el ${BF_HASTA_TEXTO}. Te las contamos en la llamada de admisión, donde además vemos si la formación encaja contigo.` },
-  { q: '¿La llamada cuesta algo?', a: 'No. Es una llamada gratuita de media hora con el equipo, sin compromiso. Puedes hacernos todas las preguntas que tengas.' },
-  { q: '¿Necesito saber algo de neerlandés?', a: 'No. La formación empieza desde cero y todo está explicado en español.' },
+  { q: '¿La llamada cuesta algo?', a: 'No. Es una llamada gratuita de media hora con el equipo, sin compromiso. Puedes hacernos todas las preguntas que tengas, y si vemos que ahora no es para ti, te lo decimos.' },
+  { q: '¿Es para mí si no sé nada de neerlandés?', a: 'Sí. Empiezas desde cero absoluto y todo está explicado en español. De hecho, muchas veces es mejor: no traes errores aprendidos que luego cuesta quitar.' },
+  { q: '¿Y si ya he estudiado neerlandés y sigo bloqueado?', a: 'Es lo más habitual. Casi nunca es que no hayas aprendido: es que te lo explicaron en inglés, con tecnicismos o sin un orden claro. Aquí cada lección empieza por la frase que vas a usar, y la regla viene después, explicada en español.' },
+  { q: '¿De verdad puedo, si siempre se me han dado mal los idiomas?', a: 'Sí. «Se me dan mal los idiomas» casi siempre es culpa del método, no tuya. De adulto se aprende de otra manera, no peor: entendiendo por qué se dice así y apoyándote en el español que ya sabes.' },
   { q: '¿Cuánto tiempo tengo que dedicarle?', a: 'Con 20-30 minutos al día mantienes el ritmo. Te pedimos al menos dos horas a la semana: con menos, no es para ti ahora.' },
+  { q: '¿Cuándo voy a notar los primeros resultados?', a: 'En las primeras semanas. El primer módulo es presentarte y hablar de ti, así que desde el principio aprendes frases que puedes usar ese mismo día.' },
+  { q: '¿Y si me cuesta ser constante?', a: 'Sin constancia ningún método funciona, tampoco este, y no te lo vamos a ocultar. Lo que sí hacemos es ponértelo fácil: cada semana sabes qué toca, ves tu progreso en la escuela y tienes la masterclass y los grupos de conversación para no ir solo.' },
+  { q: '¿Durante cuánto tiempo tengo acceso?', a: 'Tienes 6 meses de acceso desde el día que entras. El programa son 16 semanas, así que al terminarlo te quedan un par de meses para repasar lo que quieras.' },
+  { q: '¿Puedo hacerlo desde el móvil?', a: 'Sí. Desde el móvil, la tablet o el ordenador, y sigues donde lo dejaste. Incluso puedes añadir la escuela a la pantalla de inicio del móvil, como una app.' },
+  { q: '¿Se centra en la gramática?', a: 'No. La gramática aparece, pero como herramienta, cuando la necesitas. Aquí aprendes a usar el neerlandés, no a memorizar reglas que luego no sabes aplicar.' },
+  { q: '¿Me ayudará a entender a los neerlandeses?', a: 'Es uno de los objetivos. Cada lección tiene su parte de escucha con diálogos de situaciones del día a día, y en los grupos de conversación escuchas y hablas en directo.' },
+  { q: '¿Tendré a quién preguntar si me surge una duda?', a: 'Sí. Abres una consulta y te respondemos en menos de 24 horas. También puedes preguntar en la comunidad y en la masterclass en directo.' },
   { q: '¿Y si no puedo ir a la masterclass en directo?', a: 'Queda grabada, y la ves cuando quieras.' },
+  { q: '¿Qué diferencia a Nawar de otros cursos?', a: 'Que está hecho para hispanohablantes desde el principio, no traducido de un curso en inglés: todo explicado desde el español, en un orden claro de 16 semanas, con práctica en la propia escuela y personas de verdad para tus dudas.' },
+  { q: '¿Voy a hablar neerlandés perfecto al terminar?', a: 'Perfecto, no: eso no existe ni en tu propio idioma. Al terminar tienes el nivel A1: te presentas, hablas de tu vida y te defiendes en situaciones del día a día sin que nadie hable por ti. Es la base sobre la que se construye todo lo demás.' },
   { q: '¿Cuándo empiezo?', a: 'En cuanto te matriculas entras en la escuela, y los módulos se van abriendo a medida que avanzas.' },
   { q: '¿Hay garantía?', a: 'Sí. Tienes 15 días de garantía de devolución total y sin preguntas.' },
+  { q: '¿Se puede pagar a plazos?', a: 'Sí. En la llamada te contamos las opciones para pagarlo en varios pagos.' },
   { q: `¿Y el ebook «${EBOOK_NOMBRE}»?`, a: 'Es tuyo: te llega por correo para descargarlo en PDF. Si no lo encuentras, mira en spam o en promociones, o escríbenos a info@holandesnawar.com.' },
+  { q: '¿Es mejor esperar o empezar ahora?', a: `El tiempo va a pasar igual. Dentro de unos meses puedes seguir pidiendo a otros que hablen por ti, o haber empezado a hacerlo tú. Y las condiciones de Black Friday solo valen hasta el ${BF_HASTA_TEXTO}.` },
 ]
 ---
 
@@ -216,9 +237,10 @@ const DUDAS = [
          blanco ("¿por qué hay fondo blanco para el logo? debería ser como la
          sección"). El logo es «Nawar» con su borde negro, servido desde la web. -->
     <header class="lp-cab">
-      <a href={`${WWW}/`} class="lp-cab-a" aria-label="Holandés Nawar">
+      <!-- Sin enlace a la home (03/11, usuario): no se sale del embudo por el logo. -->
+      <span class="lp-cab-a">
         <img src="/img/black-friday/logo-nawar.webp" alt="Holandés Nawar" class="lp-cab-logo" width="360" height="131" fetchpriority="high" />
-      </a>
+      </span>
     </header>
     <div class="lp-cab-linea" aria-hidden="true"></div>
 

@@ -204,9 +204,10 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
     <!-- ════ NAVBAR: logo + comprar ════ -->
     <header class="ebook-nav" id="ebook-nav">
       <div class="ebook-nav-inner">
-        <a href={`${WWW}/`} class="ebook-nav-logo" aria-label="Ir al inicio de Holandés Nawar">
+        <!-- Sin enlace a la home (03/11, usuario): no se sale del embudo por el logo. -->
+        <span class="ebook-nav-logo">
           <img src={LOGO} alt="Holandés Nawar" />
-        </a>
+        </span>
         <button type="button" class="ebook-nav-cta bf-solo-activa" data-bf-comprar>
           Consíguelo por {PRECIO}
           <Fragment set:html={flecha} />
