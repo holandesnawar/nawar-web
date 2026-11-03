@@ -79,9 +79,6 @@ const { canal } = Astro.props
 const LOGO = 'https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png'
 const WWW = 'https://www.holandesnawar.com'
 const PRECIO = `${EBOOK_PRECIO} €`
-/** «30 de noviembre», sin el día de la semana: la pastilla de «Oferta
- *  desbloqueada» va en UNA línea (02/11, noche). */
-const HASTA_CORTO = BF_HASTA_TEXTO.replace(/^[a-záéíóú]+\s+(?=\d)/i, '')
 const euros = (n: number) => `${n.toLocaleString('es-ES', { minimumFractionDigits: Number.isInteger(n) ? 0 : 2 })} €`
 const PRECIO_NORMAL = euros(EBOOK_PRECIO_NORMAL)
 /** −92 %: lo que se ahorra sobre el precio de siempre. */
@@ -227,9 +224,9 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
         <div class="ebook-hero-text">
           <p class="eb-desbloq h-anim" style="--hd:0.04s">
             <span class="eb-desbloq-ico" set:html={icono('check', 13, 3)} />
-            <!-- En el móvil, solo «Oferta desbloqueada, Ana.» en una línea (30/10,
-                 usuario): la fecha ya sale debajo del precio. -->
-            <span class="eb-desbloq-txt"><strong id="eb-desbloq-t">Oferta desbloqueada.</strong><span class="eb-desbloq-hasta"> Es tuya hasta el {HASTA_CORTO}.</span></span>
+            <!-- Sin la fecha (03/11, usuario: una fecha lejana da «ya volveré»;
+                 solo va en las dudas). -->
+            <span class="eb-desbloq-txt"><strong id="eb-desbloq-t">Oferta desbloqueada.</strong></span>
           </p>
           <span class="badge-dark h-anim" style="--hd:0.08s">
             <span class="eb-punto" aria-hidden="true"></span>
@@ -253,7 +250,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
               <span class="eb-precio-antes"><s>{PRECIO_NORMAL}</s><small>precio normal</small></span>
               <span class="eb-precio-dto">−{DESCUENTO}&nbsp;%</span>
             </div>
-            <p class="eb-precio-hasta">Precio de Black Friday · solo hasta el {BF_HASTA_TEXTO}</p>
+            <p class="eb-precio-hasta">Precio especial de Black Friday</p>
           </div>
 
           <ul class="hero-bullets h-anim" style="--hd:0.4s">
@@ -507,7 +504,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
           <span class="text-gradient-white">Empieza hoy,</span>
           <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;white-space:nowrap;">por {PRECIO}</span>
         </h2>
-        <p class="eb-cierre-sub">«{EBOOK_NOMBRE}», {EBOOK_PAGINAS_TXT} páginas que llegan a tu correo en un minuto. <span class="bf-solo-activa">Antes <s>{PRECIO_NORMAL}</s>, hoy {PRECIO}, solo hasta el {BF_HASTA_TEXTO}.</span></p>
+        <p class="eb-cierre-sub">«{EBOOK_NOMBRE}», {EBOOK_PAGINAS_TXT} páginas que llegan a tu correo en un minuto. <span class="bf-solo-activa">Antes <s>{PRECIO_NORMAL}</s>, hoy {PRECIO}.</span></p>
         <div class="bf-solo-activa">
           <button type="button" class="ebook-cta-primary ebook-cta-big" data-bf-comprar>
             Consíguelo por {PRECIO}
@@ -768,7 +765,6 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   :global(html.bf-desbloqueada) .eb-desbloq { display: flex; }
   @media (max-width: 640px) {
     .eb-desbloq { padding: 9px 14px 9px 10px; }
-    .eb-desbloq-hasta { display: none; }
   }
   .eb-desbloq-ico {
     flex-shrink: 0; width: 22px; height: 22px; margin-top: 0; border-radius: 50%; background: #22c55e; color: #fff;

@@ -136,11 +136,10 @@ const euros = (n: number) => `${n.toLocaleString('es-ES', { minimumFractionDigit
             <span class="dl-ico" set:html={icono('regalo', 22, 1.9)} />
             <div><strong>Tu oferta, al momento</strong><span>Se desbloquea en cuanto te apuntas.</span></div>
           </li>
-          <li>
-            <span class="dl-ico" set:html={icono('calendario', 22, 1.9)} />
-            <div><strong>Hasta el lunes 30 de noviembre</strong><span>Después, la oferta se cierra.</span></div>
-          </li>
         </ul>
+        <!-- 03/11: fuera «Hasta el lunes 30 de noviembre» (usuario: una fecha
+             lejana da «ya volveré»; la fecha solo en las dudas y en los
+             correos del final). -->
 
         <!-- 02/11, noche (usuario, con la de YouTalk delante: "debajo de «hasta
              el lunes» un cuadro de: por registrarte obtienes nuestra primera

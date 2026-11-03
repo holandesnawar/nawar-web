@@ -130,8 +130,6 @@ const DESPUES = `${WWW}/proceso-de-admision`
 const flecha = icono('flecha', 16, 2.5)
 /** El botón de las secciones de la landing. */
 const QUIERO = 'Quiero mi oferta de Black Friday'
-/** «30 de noviembre», para la etiqueta de Black Friday de la cabecera. */
-const BF_HASTA_CORTO = BF_HASTA_TEXTO.replace(/^lunes\s+/, '')
 
 /**
  * «Tu camino», el dibujo de «El Método Holandés Nawar» (30/10; antes, la
@@ -290,7 +288,7 @@ const DUDAS = [
             <img src="/img/black-friday/escuela-todo.webp" alt="" class="lp-todo" width="1400" height="861" fetchpriority="high" decoding="async" />
             <div class="float-badge hero-fb-top">
               <span class="lp-fb-ico" set:html={icono('calendario', 17, 2)} />
-              <div><p>Black Friday</p><p>condiciones solo hasta el {BF_HASTA_CORTO}</p></div>
+              <div><p>Black Friday</p><p>solo para la lista</p></div>
             </div>
           </div>
         </div>
