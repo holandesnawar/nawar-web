@@ -38,16 +38,19 @@ export const EQUIPO: MiembroEquipo[] = [
     bio: '**Director académico** de la escuela. Se encarga de los **módulos de la formación**: qué aprendes en cada uno y en qué orden.',
   },
   {
+    // 03/11: «también profesor nativo» (usuario).
     nombre: 'Bas Wanders',
-    rol: 'Profesor',
+    rol: 'Profesor nativo',
     foto: '/img/equipo/bas.webp',
-    bio: 'Profesor en la escuela y parte del **equipo docente**. Se encarga también de los **módulos** de la formación.',
+    bio: '**Nativo** y profesor en la escuela, parte del **equipo docente**. Se encarga también de los **módulos** de la formación.',
   },
   {
+    // 03/11: «nativa, profesora de canto flamenco y profesora de la escuela»
+    // (usuario). Lo de la clase y los módulos es del 30/10.
     nombre: 'Luna Zegers',
     rol: 'Profesora nativa',
     foto: '/img/equipo/luna.webp',
-    bio: '**Nativa** y profesora en la escuela. Da la **clase semanal** y la **masterclass**, y se encarga también de los **módulos**.',
+    bio: '**Nativa**, profesora de **canto flamenco** y profesora en la escuela. Da la **clase semanal** y la **masterclass**, y se encarga también de los **módulos**.',
   },
   {
     // 01/11: nombre y papel, del usuario («equipo de admisiones»). La foto

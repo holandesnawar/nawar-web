@@ -138,8 +138,11 @@ export default function NavbarLanding({ ctaHref = CTA_PRINCIPAL, barraBF = '' }:
             className="group relative flex h-11 lg:h-12 items-center justify-center gap-3 px-4 text-white"
             style={{ background: '#1D0084' }}
           >
-            <span className="text-[13.5px] sm:text-[15px] font-semibold tracking-[-0.01em] whitespace-nowrap" style={{ fontFamily: 'var(--font-poppins), system-ui, sans-serif' }}>
-              Adelántate al <span className="font-extrabold text-[#4da3ff]">BLACK FRIDAY</span><span className="hidden sm:inline"> de Holandés Nawar</span>
+            {/* En Inter, la letra del menú y los botones de al lado (03/11,
+                usuario: "la misma letra que usamos en home"). Antes iba en
+                Poppins y desentonaba con el menú. */}
+            <span className="text-[13.5px] sm:text-[15px] font-semibold tracking-[-0.01em] whitespace-nowrap">
+              Adelántate al <span className="font-bold text-[#4da3ff]">BLACK FRIDAY</span><span className="hidden sm:inline"> de Holandés Nawar</span>
             </span>
             <span className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-[#4da3ff] px-3 py-1.5 text-[12.5px] sm:text-[13px] font-bold text-[#0a1656] transition-colors group-hover:bg-[#5eb4ff]">
               <span className="sm:hidden">Apúntate</span>
