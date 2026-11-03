@@ -38,6 +38,12 @@
  * correos sobre la oferta» de la línea legal. Queda solo la política de
  * privacidad.
  *
+ * 03/11: el titular en DOS líneas, «Únete a la lista prioritaria» en blanco
+ * y «del Black Friday» en el azul claro (usuario: "en dos líneas, como
+ * siempre, queda más clean"); la letra se ajusta al ancho de la columna para
+ * que cada línea quepa entera. El recuadro «Solo por apuntarte», en cristal
+ * azul en vez del blanco translúcido que sobre el azul oscuro salía morado.
+ *
  * 30/10: sin las etiquetas con punto rojo (encima del titular y del
  * formulario: "queda muy ChatGPT"), el botón sin sombra por fuera y la
  * entradilla en 500 (en 400 "se veía muy simple").
@@ -110,16 +116,18 @@ const euros = (n: number) => `${n.toLocaleString('es-ES', { minimumFractionDigit
       <div class="bf-foco" aria-hidden="true"></div>
 
       <nav class="bf-nav dl-nav">
-        <a href={`${WWW}/`} aria-label="Holandés Nawar">
+        <!-- El logo NO lleva a la home (03/11, usuario: "el logo no debe ir a
+             home"): quien está en el embudo de Black Friday no se va por ahí. -->
+        <span class="dl-logo">
           <img src={LOGO} alt="Holandés Nawar" class="bf-logo" width="150" height="38" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'bf-logo-txt',textContent:'Holandés Nawar'}))" />
-        </a>
+        </span>
       </nav>
 
       <div class="dl-in">
         <div class="dl-texto">
           <!-- Sin etiqueta encima (30/10, usuario: "con el punto rojo… queda muy
                ChatGPT"): el titular ya dice Black Friday. -->
-          <h1 class="dl-h1">Únete a la <span class="dl-marca">lista prioritaria</span> del Black&nbsp;Friday</h1>
+          <h1 class="dl-h1"><span class="dl-l1">Únete a la lista prioritaria</span> <span class="dl-l2">del Black Friday</span></h1>
           <p class="dl-sub">
             Apúntate gratis y accede antes que nadie a <strong>la mejor oferta del año</strong> para
             <strong>transformar tu neerlandés</strong> de una vez por todas.
@@ -396,13 +404,19 @@ const euros = (n: number) => `${n.toLocaleString('es-ES', { minimumFractionDigit
   .dl-in > .dl-fin { grid-area: fin; }
 
 
-  /* El titular: una sola frase en blanco, «lista prioritaria» en el azul de
-     los botones (en una pieza que no parte de línea). */
+  /* El titular en dos líneas (03/11): «Únete a la lista prioritaria» en
+     blanco y «del Black Friday» en el azul de los botones. Cada línea entera,
+     sin partir: la letra sale del ancho de la columna (la primera línea mide
+     12,02 veces el cuerpo en Poppins 700 con este apretado, medido en el
+     navegador; 8,2cqw × 12,02 ≈ 98 % del ancho) y nunca pasa de 50 px. Si se
+     cambia el texto, volver a medir. */
+  .dl-texto { container-type: inline-size; }
   .dl-h1 {
-    font-family: 'Poppins', system-ui, sans-serif; font-size: clamp(40px, 3.9vw, 50px); font-weight: 700;
-    line-height: 1.1; letter-spacing: -0.035em; color: #fff; margin: 0 0 22px; text-wrap: balance;
+    font-family: 'Poppins', system-ui, sans-serif; font-size: min(50px, 8.2cqw); font-weight: 700;
+    line-height: 1.12; letter-spacing: -0.035em; color: #fff; margin: 0 0 22px;
   }
-  .dl-marca { white-space: nowrap; color: #4da3ff; }
+  .dl-l1, .dl-l2 { display: block; white-space: nowrap; }
+  .dl-l2 { color: #4da3ff; }
   /* La entradilla con un punto más de cuerpo (30/10, usuario: "se ve muy
      simple… parece fea"): en 400 y blanco sobre azul se veía deslavazada. A
      500, como el resto de textos sobre azul de la web, y lo resaltado en 700. */
@@ -417,10 +431,19 @@ const euros = (n: number) => `${n.toLocaleString('es-ES', { minimumFractionDigit
   .dl-ventajas div span { display: block; font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.86); }
 
   /* El recuadro del libro a 1 € (02/11, noche), como el «Solo por
-     registrarte» de YouTalk, sobre el azul: cristal fino, sin sombra. */
+     registrarte» de YouTalk, sobre el azul, sin sombra. En CRISTAL AZUL
+     (03/11, usuario: "más cristal y no morado"): el blanco translúcido sobre
+     #1D0084 sale lila, así que el velo va en azul cian (el verde que lleva
+     cancela el violeta, como en el formulario de /formacion-nawar-fb), con un
+     brillo arriba y el desenfoque de lo que hay detrás. */
   .dl-regalo {
     display: flex; gap: 16px; align-items: center; margin-top: 26px; padding: 16px 20px 16px 16px;
-    border-radius: 16px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(0,220,255,0.18) 0%, rgba(0,180,255,0.07) 70%);
+    border: 1px solid rgba(120,220,255,0.40);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.22);
+    /* Sin «saturate»: avivaba el morado del fondo que se ve a través. */
+    -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
   }
   .dl-regalo-libro { width: 64px; height: auto; flex-shrink: 0; border-radius: 4px; border: 1px solid rgba(255,255,255,0.35); display: block; }
   .dl-regalo p { margin: 0; }
@@ -538,7 +561,7 @@ const euros = (n: number) => `${n.toLocaleString('es-ES', { minimumFractionDigit
   @media (max-width: 1023px) {
     /* En la tableta y el móvil: titular, formulario y lo que se lleva, uno debajo de otro. */
     .dl-in { grid-template-columns: minmax(0, 1fr); grid-template-areas: "texto" "form" "ventajas" "fin"; row-gap: 32px; max-width: 640px; padding: 8px 0 56px; }
-    .dl-h1 { font-size: clamp(34px, 8.6vw, 50px); line-height: 1.12; margin: 0 0 18px; }
+    .dl-h1 { margin: 0 0 18px; }
   }
   @media (max-width: 640px) {
     .dl-form { border-radius: 18px; }
