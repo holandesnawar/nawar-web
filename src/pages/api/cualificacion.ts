@@ -1,3 +1,4 @@
+import { direccionAgenda } from '../../lib/agenda'
 import type { APIRoute } from 'astro'
 import { normalizarTelefono } from '../../lib/telefono'
 import { MAX_TEXTO, PREGUNTAS, puntuar } from '../../lib/cualificacion'
@@ -328,7 +329,7 @@ export const POST: APIRoute = async (ctx) => {
 
   // A dónde agendar: Calendly/Cal.com si está puesto; si no, WhatsApp con el
   // mensaje ya escrito. Así la página funciona desde hoy.
-  const agenda = leerEnv('PUBLIC_AGENDA_URL') || 'https://calendly.com/holandesnawar/llamada-de-consultoria'
+  const agenda = direccionAgenda(leerEnv('PUBLIC_AGENDA_URL'))
   const nombre = encodeURIComponent(`${firstName} ${lastName}`.trim())
   const agendaUrl = agenda
     ? `${agenda}${agenda.includes('?') ? '&' : '?'}name=${nombre}&email=${encodeURIComponent(email)}`
