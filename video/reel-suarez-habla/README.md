@@ -24,6 +24,7 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 - **Gancho (v6):** los 3 primeros segundos, arriba y sobre el pelo, con el aspecto del texto de Instagram (blanco, en
   negrita, con una sombra suave y emojis): «Hablando neerlandés / 📚 sin miedo como 🇳🇱 / Luis Suárez». Es también la
   portada. Los emojis son imágenes de Noto Color Emoji (`assets/img/emoji-*.png`, que crea `tools/gen.py`).
+  Al publicar, en la cuadrícula del perfil (3:4) hay que subir el recorte hasta arriba para que no corte la primera línea.
 - **Subtítulos:** por frases, sincronizados palabra a palabra (ElevenLabs Scribe, comprobado con una segunda pasada):
   - el holandés va grande, en mayúsculas, todo al mismo tamaño, con la palabra que se dice en amarillo;
   - el español va debajo, en una pastilla gris, en una línea siempre que cabe (si no, cortada a mano con «|»);

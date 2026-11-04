@@ -96,3 +96,17 @@ llamativo. Ya está en la carpeta MARIO.»
 - **Estilo «no tan llamativo»:** el azul y las pastillas del anuncio de Black Friday, sin las filas gigantes ni los
   golpes; la música de ese anuncio, muy de fondo. En el cierre no sale Suárez (no parece que él anuncie el ebook).
 - La oferta y la fecha («1 €», «hasta el 30 de noviembre») son las del anuncio de Black Friday.
+
+### Revisión de la v6
+
+Revisores independientes (gancho y portada, imagen del cierre, sonido y sincronía, regresiones de la entrevista), cada
+fallo comprobado por otro agente:
+- **Corregido:** el ebook cerrado se quedaba completamente quieto unos 3 s (43,0–46,2 s) mientras sigue la voz. Ahora
+  entra un poco más pequeño y crece despacio hasta su tamaño justo cuando se abre (sin cambiar el libro abierto).
+- **Al publicar:** la cuadrícula del perfil de Instagram recorta el reel a 3:4 centrado (y 240–1680) y cortaría la
+  primera línea del gancho. En «Editar portada → Cuadrícula del perfil», sube el recorte hasta arriba (unos 70 px; por
+  ejemplo, y 170–1610).
+- Comprobado sin fallos: el gancho no toca ojos ni cejas en ningún fotograma; los emojis salen bien; la entrevista es
+  idéntica a la v5; el paso a azul no tiene fotogramas negros; el libro no se corta en ningún fotograma ni tiene halo; el
+  volumen de la entrevista (−14,6 LUFS) y del cierre (−15,2 LUFS) casan, con el pico real a −2,2 dBTP; la voz se entiende
+  entera; cada texto del cierre entra en su palabra.

@@ -44,7 +44,8 @@ def outro_html(words):
         return hits[k]["end"]
     BW, BH = lib["width"], lib["height"]
     BOOK_TOP = 572
-    c = dict(BL=540 - BW // 2, BT=BOOK_TOP, BW=BW, BH=BH, BS=lib["start"], BD=round(lib["end"] - lib["start"], 3), D=O.END)
+    c = dict(BL=540 - BW // 2, BT=BOOK_TOP, BW=BW, BH=BH, BS=lib["start"], BD=round(lib["end"] - lib["start"], 3), D=O.END,
+             GROW0=round(lib["start"] + 0.6, 3), GROW=round(lib["play"] - lib["start"] - 0.6, 3))
     t = dict(L1=at("habla") - 0.05, L2=at("sin") - 0.06, PRICE=at("black") - 0.08, EURO=at("euro") - 0.04, DATE=end("euro") + 0.05,
              CTA=at("comenta") - 0.06, TYPE0=at("oferta") - 0.02, TYPE1=end("oferta") - 0.10, SEND=end("oferta") + 0.05,
              CAP=at("y") - 0.04, PULSE=O.END - 1.0)
@@ -99,7 +100,9 @@ def outro_html(words):
 """
     js = """
       tl.fromTo("#o-ground", { opacity: 0 }, { opacity: 1, duration: 0.30, ease: "power2.out" }, 0);
-      tl.fromTo("#o-book", { opacity: 0, y: 40, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" }, «BS»);
+      tl.fromTo("#o-book", { opacity: 0, y: 40, scale: 0.93 }, { opacity: 1, y: 0, scale: 0.97, duration: 0.6, ease: "power3.out" }, «BS»);
+      // (closed, it is not still: it grows slowly to its size, reached just as it opens)
+      tl.to("#o-book", { scale: 1, duration: «GROW», ease: "sine.inOut" }, «GROW0»);
       tl.fromTo("#o-l1", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, «L1»);
       tl.fromTo("#o-l2 .o-chip", { opacity: 0, scale: 0.88 }, { opacity: 1, scale: 1, duration: 0.42, ease: "back.out(1.5)" }, «L2»);
       tl.fromTo("#o-price", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.40, ease: "power3.out" }, «PRICE»);
