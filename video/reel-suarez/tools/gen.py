@@ -12,38 +12,40 @@ import html, json, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 YEL = "#FFE11B"
-NL_TOP, NL_W, NL_CX = 1110, 830, 495   # the Dutch block (frame px): clear of Instagram's button rail (x > 930, with a
+NL_TOP, NL_W, NL_CX = 1110, 830, 490   # the Dutch block (frame px): clear of Instagram's button rail (x > 930, with a
 NL_SIZE = 76                      # margin for the pop-in) and of its caption band at the bottom; one size for every
                                   # phrase, which wraps onto two lines at most (tools/subs.py keeps them that short)
 TITLE_TOP = 918                   # the title card over the chest for the first seconds, under the assistant's mouth (his
-TITLE_DY = 34                     # lips reach y ≈ 890): the cover stays clear; the subtitles that open under it sit 34 px lower
+TITLE_DY = 50                     # lips reach y ≈ 890): the cover stays clear; the subtitles that open under it sit 50 px lower
 TAG_AT = 3.0                      # the big title (the hook and the cover) lifts away here…
-TAG_IN = 3.9                      # …and the small pill settles at the top once the assistant's head has come down
-TAG_OFF = [(7.96, 9.60), (15.76, 24.20), (26.04, 27.80)]  # the close-ups (Suárez's, and the assistant's from 15.76 to the
-                                  # wide shot ending at 24.20): their eyes are at the top, so the tag steps out
+TAG_IN = 5.10                     # …and the small pill settles at the top once the assistant's head is down (5.04)
+TAG_OFF = [(7.96, 9.60), (15.76, 24.20), (26.04, 30.28)]  # the close-ups (Suárez's, and the assistant's from 15.76 to the
+                                  # wide shot ending at 24.20) and Suárez's wide tilt-up (29.24–30.28): eyes at the top
 UP = [(7.96, 9.60), (16.64, 20.52), (26.04, 27.80)]       # Suárez's extreme close-ups: the subtitles sit higher, on his
 UP_DY = -300                      # nose, so his lips stay in sight (eyes ≤ 620, lips ≥ 1000; the block moves on the cuts only,
-                                  # and the bottom shade moves with it)
+                                  # and the bottom shade is off there: it would darken his lips)
 MIN_ON = 0.6                      # a one-word phrase opens a little early (after the last word before it) to be read
-ON_AT = {22: 32.40, 23: 33.08}    # «Kaartje?» opens on the cut to the card and holds 0.68 s (then «Nee, nee…»)
+ON_AT = {11: 16.64, 18: 26.04,    # these open on the cut into Suárez's close-up (the phrase before closes there: no
+         22: 32.40, 23: 33.08}    # block over his lips for a frame, no jump mid-shot); «Kaartje?» on the cut to the card
+OFF_AT = {18: 27.80}              # …and this one closes on the cut out of it (the dip to black)
 
 FLAG = ('<svg viewBox="0 0 48 48" aria-hidden="true"><defs><clipPath id="{id}"><circle cx="24" cy="24" r="24"/></clipPath></defs>'
         '<g clip-path="url(#{id})"><rect width="48" height="16" fill="#AE1C28"/><rect y="16" width="48" height="16" fill="#FFFFFF"/>'
-        '<rect y="32" width="48" height="16" fill="#21468B"/></g><circle cx="24" cy="24" r="23.25" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/></svg>')
+        '<rect y="32" width="48" height="16" fill="#21468B"/></g><circle cx="24" cy="24" r="23" fill="none" stroke="rgba(0,0,0,0.22)" stroke-width="2"/></svg>')
 # the labels (v4): frosted white, like iOS — the same as the second reel (../reel-suarez-habla)
 LABEL_CSS = """
       .glass { background: rgba(255,255,255,0.80); -webkit-backdrop-filter: blur(28px) saturate(180%); backdrop-filter: blur(28px) saturate(180%);
         box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 18px 50px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.10); color: #1D1D1F;
         font-family: "Inter", sans-serif; }
       .row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; }
-      #card { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 24px 50px 28px; border-radius: 40px; white-space: nowrap; }
-      #card .kick { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 27px; letter-spacing: 0.16em;
-        color: #1D0084; text-transform: uppercase; line-height: 1; }
-      #card .kick svg { width: 36px; height: 36px; display: block; }
-      #card .big { font-weight: 700; font-size: 72px; letter-spacing: -0.03em; line-height: 1.02; }
-      #tag { display: flex; align-items: center; gap: 14px; padding: 12px 30px 12px 14px; border-radius: 999px; white-space: nowrap; opacity: 0;
-        font-weight: 600; font-size: 34px; letter-spacing: -0.01em; line-height: 1; }
-      #tag svg { width: 44px; height: 44px; display: block; }
+      #card { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 22px 48px 26px; border-radius: 44px; white-space: nowrap; }
+      #card .kick { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 44px; letter-spacing: -0.015em;
+        color: #1D0084; line-height: 1.1; }
+      #card .kick svg { width: 46px; height: 46px; display: block; }
+      #card .big { font-weight: 700; font-size: 80px; letter-spacing: -0.03em; line-height: 1.02; }
+      #tag { display: flex; align-items: center; gap: 12px; padding: 10px 28px 10px 12px; border-radius: 999px; white-space: nowrap; opacity: 0;
+        font-weight: 600; font-size: 32px; letter-spacing: -0.01em; line-height: 1; }
+      #tag svg { width: 40px; height: 40px; display: block; }
 """
 
 
@@ -81,11 +83,11 @@ def main():
     for k, p in enumerate(subs):
         words = p["words"]
         on = ons[k]
-        off = min(ons[k + 1], words[-1]["end"] + 0.7) if k + 1 < len(subs) else D
+        off = OFF_AT.get(k, min(ons[k + 1], words[-1]["end"] + 0.7) if k + 1 < len(subs) else D)
         spans = " ".join(('<span class="br"></span> ' if i in p.get("breaks", []) else "") +
                          f'<span id="w{k}-{i}" class="w">{html.escape(w["text"])}</span>' for i, w in enumerate(words))
         body.append(f'      <div id="p{k}" class="ph"><div class="nl">{spans}</div>'
-                    f'<div class="es"><span>{html.escape(p["es"])}</span></div></div>')
+                    f'<div class="es"><span>{html.escape(p["es"]).replace("|", "<br>")}</span></div></div>')
         for a, b, dy in segments(on, off):
             js.append(f'      tl.set("#p{k}", {{ y: {dy} }}, {a:.3f});')
         js.append(f'      tl.set("#p{k}", {{ opacity: 1 }}, {on:.3f});')
@@ -122,7 +124,7 @@ def main():
         transform-origin: 50% 60%; }}
       .w {{ display: inline-block; color: #FFFFFF; }}
       .br {{ flex-basis: 100%; height: 0; }}
-      .es span {{ display: inline-block; max-width: {NL_W}px; padding: 10px 26px 12px; border-radius: 18px; text-align: center;
+      .es span {{ display: inline-block; max-width: {NL_W}px; padding: 10px 22px 12px; border-radius: 18px; text-align: center;
         background: rgba(78,78,84,0.78); color: #FFFFFF; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 46px;
         line-height: 1.2; letter-spacing: -0.005em; text-wrap: balance; }}
     </style>
@@ -132,7 +134,7 @@ def main():
       <video id="v" class="clip" src="assets/video/suarez-916.mp4" data-start="0" data-duration="{D}" data-track-index="0" playsinline data-has-audio="true"></video>
       <div id="shade-top" class="shade"></div>
       <div id="shade-bot" class="shade"></div>
-      <div class="row" style="top: {TITLE_TOP}px"><div id="card" class="glass"><div class="kick">{FLAG.format(id="fc")}<span>Aprendiendo neerlandés</span></div><div class="big">con Luis Suárez</div></div></div>
+      <div class="row" style="top: {TITLE_TOP}px; left: {NL_CX - 540}px"><div id="card" class="glass"><div class="kick">{FLAG.format(id="fc")}<span>Aprendiendo neerlandés</span></div><div class="big">con Luis Suárez</div></div></div>
       <div class="row" style="top: 206px"><div id="tag" class="glass">{FLAG.format(id="ft")}<span>Neerlandés con Luis Suárez</span></div></div>
 {chr(10).join(body)}
     </div>
@@ -140,11 +142,11 @@ def main():
       window.__timelines = window.__timelines || {{}};
       const tl = gsap.timeline({{ paused: true }});
       // the title card from the first frame (the cover); at {TAG_AT} s it lifts away and the small pill settles at the top
-      tl.to("#card", {{ y: -60, scale: 0.86, opacity: 0, duration: 0.34, ease: "power2.in" }}, {TAG_AT});
+      tl.to("#card", {{ y: -20, scale: 0.94, opacity: 0, duration: 0.32, ease: "power2.inOut" }}, {TAG_AT});
       tl.fromTo("#tag", {{ opacity: 0, y: 18, scale: 0.94 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out", immediateRender: false }}, {TAG_IN});
-{chr(10).join(f'      tl.to("#tag", {{ opacity: 0, duration: 0.12, ease: "none" }}, {a - 0.12:.2f});{chr(10)}      tl.to("#tag", {{ opacity: 1, duration: 0.16, ease: "none" }}, {b:.2f});' for a, b in TAG_OFF)}
+{chr(10).join(f'      tl.to("#tag", {{ opacity: 0, duration: 0.12, ease: "none" }}, {a - 0.12:.2f});{chr(10)}      tl.to("#tag", {{ opacity: 1, duration: 0.24, ease: "power2.out" }}, {b:.2f});' for a, b in TAG_OFF)}
       tl.to("#shade-top", {{ opacity: 0.55, duration: 0.4, ease: "none" }}, {TAG_AT});
-{chr(10).join(f'      tl.set("#shade-bot", {{ y: {UP_DY} }}, {a:.2f});{chr(10)}      tl.set("#shade-bot", {{ y: 0 }}, {b:.2f});' for a, b in UP)}
+{chr(10).join(f'      tl.set("#shade-bot", {{ opacity: 0 }}, {a:.2f});{chr(10)}      tl.set("#shade-bot", {{ opacity: 1 }}, {b:.2f});' for a, b in UP)}
 {chr(10).join(js)}
       window.__timelines["main"] = tl;
     </script>

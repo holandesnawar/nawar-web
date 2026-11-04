@@ -21,7 +21,7 @@ MIN_ON = 0.6                           # a one-word phrase opens a little early 
 
 FLAG = ('<svg viewBox="0 0 48 48" aria-hidden="true"><defs><clipPath id="{id}"><circle cx="24" cy="24" r="24"/></clipPath></defs>'
         '<g clip-path="url(#{id})"><rect width="48" height="16" fill="#AE1C28"/><rect y="16" width="48" height="16" fill="#FFFFFF"/>'
-        '<rect y="32" width="48" height="16" fill="#21468B"/></g><circle cx="24" cy="24" r="23.25" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/></svg>')
+        '<rect y="32" width="48" height="16" fill="#21468B"/></g><circle cx="24" cy="24" r="23" fill="none" stroke="rgba(0,0,0,0.22)" stroke-width="2"/></svg>')
 MIC = ('<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="2.5" width="7" height="12" rx="3.5" fill="currentColor"/>'
        '<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5M8.5 21.5h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>')
 
@@ -32,15 +32,15 @@ LABEL_CSS = """
         font-family: "Inter", sans-serif; }}
       .row {{ position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; }}
       #card {{ display: flex; flex-direction: column;
-        align-items: center; gap: 10px; padding: 30px 56px 36px; border-radius: 44px; white-space: nowrap; }}
-      #card .kick {{ display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 30px; letter-spacing: 0.16em;
-        color: #1D0084; text-transform: uppercase; line-height: 1; }}
-      #card .kick svg {{ width: 40px; height: 40px; display: block; }}
+        align-items: center; gap: 2px; padding: 22px 48px 26px; border-radius: 44px; white-space: nowrap; }}
+      #card .kick {{ display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 44px; letter-spacing: -0.015em;
+        color: #1D0084; line-height: 1.1; }}
+      #card .kick svg {{ width: 46px; height: 46px; display: block; }}
       #card .big {{ font-weight: 700; font-size: 80px; letter-spacing: -0.03em; line-height: 1.02; }}
-      #tag {{ display: flex; align-items: center; gap: 14px;
-        padding: 12px 30px 12px 14px; border-radius: 999px; white-space: nowrap; opacity: 0; font-weight: 600; font-size: 34px;
+      #tag {{ display: flex; align-items: center; gap: 12px;
+        padding: 10px 28px 10px 12px; border-radius: 999px; white-space: nowrap; opacity: 0; font-weight: 600; font-size: 32px;
         letter-spacing: -0.01em; line-height: 1; }}
-      #tag svg {{ width: 44px; height: 44px; display: block; }}
+      #tag svg {{ width: 40px; height: 40px; display: block; }}
       .who {{ position: absolute; left: 50%; top: -64px; transform: translateX(-50%); display: flex; align-items: center; gap: 8px;
         padding: 9px 20px 9px 13px; border-radius: 999px; font-weight: 700; font-size: 26px; letter-spacing: 0.12em; text-transform: uppercase;
         line-height: 1; white-space: nowrap; color: #1D0084; }}
@@ -68,7 +68,7 @@ def main():
                          f'<span id="w{k}-{i}" class="w">{html.escape(w["text"])}</span>' for i, w in enumerate(words))
         who = f'<div class="who glass">{MIC}<span>Periodista</span></div>' if p["who"] == "r" else ""
         body.append(f'      <div id="p{k}" class="ph">{who}<div class="nl">{spans}</div>'
-                    f'<div class="es"><span>{html.escape(p["es"])}</span></div></div>')
+                    f'<div class="es"><span>{html.escape(p["es"]).replace("|", "<br>")}</span></div></div>')
         js.append(f'      tl.set("#p{k}", {{ opacity: 1 }}, {on:.3f});')
         js.append(f'      tl.fromTo("#p{k} .nl", {{ scale: 0.86 }}, {{ scale: 1, duration: 0.16, ease: "back.out(1.6)", immediateRender: false }}, {on:.3f});')
         js.append(f'      tl.set("#p{k}", {{ opacity: 0 }}, {off:.3f});')
@@ -103,7 +103,7 @@ def main():
         transform-origin: 50% 60%; }}
       .w {{ display: inline-block; color: #FFFFFF; }}
       .br {{ flex-basis: 100%; height: 0; }}
-      .es span {{ display: inline-block; max-width: {NL_W}px; padding: 10px 26px 12px; border-radius: 18px; text-align: center;
+      .es span {{ display: inline-block; max-width: {NL_W}px; padding: 10px 22px 12px; border-radius: 18px; text-align: center;
         background: rgba(78,78,84,0.78); color: #FFFFFF; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 46px;
         line-height: 1.2; letter-spacing: -0.005em; text-wrap: balance; }}
     </style>
@@ -120,7 +120,7 @@ def main():
       window.__timelines = window.__timelines || {{}};
       const tl = gsap.timeline({{ paused: true }});
       // the title card from the first frame (the cover); at {TAG_AT} s it lifts away and the small pill settles at the top
-      tl.to("#card", {{ y: -60, scale: 0.86, opacity: 0, duration: 0.34, ease: "power2.in" }}, {TAG_AT});
+      tl.to("#card", {{ y: -20, scale: 0.94, opacity: 0, duration: 0.32, ease: "power2.inOut" }}, {TAG_AT});
       tl.fromTo("#tag", {{ opacity: 0, y: 18, scale: 0.94 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out", immediateRender: false }}, {TAG_AT + 0.24});
 {chr(10).join(js)}
       window.__timelines["main"] = tl;

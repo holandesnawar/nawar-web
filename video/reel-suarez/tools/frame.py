@@ -36,8 +36,9 @@ SHOTS = {      # (set from a face detector run on every 3rd frame, checked by ey
     830: [(830, 165), (865, 175)],              # after a dip to black: his hand with the earplugs
     866: [(866, 185), (891, 215)],              # wide on Suárez: «Nou, veel succes ermee»
     892: [(892, 298), (927, 300)],              # the assistant: «En mocht u nog een fluitje horen…» (4 px clear of the «D»)
-    928: [(928, 120), (931, 124), (936, 160), (944, 232)],   # Suárez: held left of the shop window's swirl decal until
-                                                # his shoulder covers it (932), then after him as the camera pans
+    928: [(928, 111), (931, 113), (936, 160), (944, 232)],   # Suárez: held left of the shop window's orange swirl decal
+                                                # (his nose ≥ 9 px from the edge), then after him as the camera pans; the
+                                                # bit beside his jaw at 932–937 stays: erasing it marks his cheek
     945: [(945, 282)],                          # the assistant holds up a red business card: «Kaartje?»
     960: [(960, 180), (978, 155), (993, 180)],  # Suárez: «Nee, nee, ik heb kaartjes genoeg»
 }
@@ -95,8 +96,8 @@ def erase(img, kind, rect):
         near = ndi.binary_dilation(hb, iterations=12) & ~ndi.binary_dilation(skin, iterations=3)   # (+ the light
         face |= near & ~hand & ((f.min(-1) > 185) | ((r > 1.25 * g) & (luma > cl + 8)))   # strip of print on its edge:
         plain = (lab == k) & card & (luma <= cl + 6)     # white or pink, not the grey wall; never his face's skin)
-        num = np.stack([ndi.gaussian_filter(f[..., c] * plain, 14) for c in range(3)], -1)
-        den = ndi.gaussian_filter(plain.astype(np.float32), 14)[..., None]   # from its own unprinted red (its shading kept;
+        num = np.stack([ndi.gaussian_filter(f[..., c] * plain, 22) for c in range(3)], -1)
+        den = ndi.gaussian_filter(plain.astype(np.float32), 22)[..., None]   # from its own unprinted red (its shading kept;
         fill = np.where(den > 0.05, num / np.maximum(den, 1e-3), np.median(f[plain], 0))   # far from any: its median red)
         a = ndi.gaussian_filter(face.astype(np.float32), 2.5)
         a *= np.clip(np.arange(a.shape[1])[::-1] / 16.0, 0, 1)[None, :]   # fades out before the rect's right edge
