@@ -147,3 +147,22 @@ regresiones de la entrevista), cada fallo comprobado por otro agente. Corregido 
 - Comprobado sin fallos: el contorno y los iconos frente a la maqueta, la entrevista idéntica a la v6, el resto del
   cierre (todo entra antes de 43 s salvo la llamada, la cinta sin saltos, sin solapes, dentro de las zonas seguras), la
   voz de Yair entera y clara, y el volumen (−14,7 LUFS en total, −15,1 el cierre, pico real −2,2 dBTP).
+
+## Petición de la v7.1 y la v7.2 (cliente, 4 nov 2026)
+
+«El icono de libro tiene que ir un poquito más abajo para que no toque la H de "Hablando".» (v7.1: los libros, 13 px más
+abajo que la bandera; ya no tocan la «H».)
+
+«No me gusta la voz del final, parece barata: usa la de Eleven v4, que es la buena, y con alguna entonación al inicio,
+porque si no aburre. Quita lo de "+40 personas lo tienen" y echa un poco abajo la línea azul que va pasando, y así
+separamos un poco, que está tan apretado en medio; así bajamos un poco y no toca el título. Que la voz diga "libro", no
+"ebook".»
+
+- **Voz (v7.2):** la misma voz (Yair) con el modelo eleven_v4, y «libro». Para la entonación del principio, la primera
+  frase va con `[excited]` y signos de exclamación, y el resto con `[warmly]`. De varias tomas, la elegida sube en la
+  primera frase (tono medio ≈ 240 Hz) y vuelve al tono normal de Yair en el resto (≈ 156 Hz, como en la v7). Comprobada
+  con Scribe: se transcribe igual que el texto.
+- **Sin «Más de 40 personas ya lo tienen».**
+- **Más aire:** el ebook va al 92 % y 52 px más abajo, el sello 34 px más abajo (el «−92 %» queda a unos 45 px del
+  título) y la cinta azul 18 px más abajo y algo más fina, con unos 40 px de aire bajo el libro. La llamada a comentar
+  sigue dentro de la zona segura (termina en y ≈ 1496).

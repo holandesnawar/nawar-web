@@ -10,7 +10,7 @@
 - the closing ad (compositions/outro.html, from tools/outro.py's voice-over, book, cues and sound), in the design of the
   Black Friday page (blackfriday.holandesnawar.com/ebook): everything at once — the «Black Friday · eBook nivel A0–A1»
   badge, «Habla neerlandés / sin miedo.», the ebook opening and turning its pages under the white «Black Friday 1 €
-  12,50 €» seal with «−92 %», the light-blue ticker, «Más de 40 personas ya lo tienen» — and, last, the call to action:
+  12,50 €» seal with «−92 %», the light-blue ticker — and, last, the call to action:
   an Instagram comment field typing «OFERTA», «Publicar», and «Te enviamos los detalles por mensaje».
   python3 tools/gen.py      → index.html, compositions/outro.html
 """
@@ -35,7 +35,8 @@ HOOK_OUTLINE = 6                       # stay under it, also when he raises them
 HOOK_OUT = 3.30                        # …and it leaves here (it is the cover too: on screen from the first frame)
 HOOK = ["Hablando neerlandés", "sin miedo como", "Luis Suárez"]
 ICONS = {"books": 108, "nl": 88}       # display height (px): about the proportions of the mock-up, clear of the other lines
-ICON_DY = 9                            # centred on the middle line's letters (its x-height), not on its line box
+ICON_DY = {"books": 22, "nl": 9}       # below the middle line's centre (px): the flag on its letters' x-height, the books
+                                       # a little lower still, well clear of the «H» of «Hablando» above them
 ICON_GAP = 18                          # between the middle line's outline and each icon
 OUT_LEAD = 0.30                        # the closing ad comes in over the interview's last 0.3 s
 
@@ -58,7 +59,7 @@ def outro_html():
     lib = json.load(open(os.path.join(ROOT, "assets", "video", "libro.json")))
     c = O.cues()
     BW, BH = lib["width"], lib["height"]
-    v = dict(c, BL=540 - BW // 2, BT=520, BW=BW, BH=BH, BS=lib["start"], BD=round(lib["end"] - lib["start"], 3),
+    v = dict(c, BL=540 - BW // 2, BT=572, BW=BW, BH=BH, BS=lib["start"], BD=round(lib["end"] - lib["start"], 3),
              D=O.END, TYPEDUR=round(c["TYPE1"] - c["TYPE0"], 3), INDIGO=INDIGO, SKY=SKY, RED=RED)
     css = """
     #o-root { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", sans-serif; color: #FFFFFF; }
@@ -88,7 +89,7 @@ def outro_html():
     /* the book, and the page's white seal over its corner */
     #o-book { position: absolute; left: «BL»px; top: «BT»px; width: «BW»px; height: «BH»px; }
     #o-book video { position: absolute; left: 0; top: 0; width: «BW»px; height: «BH»px; display: block; }
-    #o-seal { position: absolute; left: 88px; top: 506px; transform-origin: 30% 50%; }   /* (at 0.78: over the book's corner
+    #o-seal { position: absolute; left: 120px; top: 540px; transform-origin: 30% 50%; }   /* (at 0.78: over the book's corner
                                                      and its blue band only, never over the page headings) */
     .o-seal { position: relative; padding: 20px 30px 22px; border-radius: 28px; background: #FFFFFF; overflow: hidden; }
     .o-seal .k { font-weight: 700; font-size: 25px; letter-spacing: 0.14em; color: «RED»; line-height: 1; }
@@ -103,20 +104,12 @@ def outro_html():
     .o-off { padding: 12px 22px; border-radius: 999px; background: #E02D3C; color: #FFFFFF; font-family: "Poppins", sans-serif;
       font-weight: 700; font-size: 38px; line-height: 1; white-space: nowrap; }
     /* the page's light-blue ticker */
-    #o-band { position: absolute; left: -10px; top: 1222px; width: 1100px; height: 72px; background: «SKY»; overflow: hidden; }
-    #o-track { position: absolute; left: 0; top: 0; height: 72px; display: flex; align-items: center; white-space: nowrap; }
+    #o-band { position: absolute; left: -10px; top: 1240px; width: 1100px; height: 64px; background: «SKY»; overflow: hidden; }
+    #o-track { position: absolute; left: 0; top: 0; height: 64px; display: flex; align-items: center; white-space: nowrap; }
     #o-track span { display: flex; align-items: center; gap: 16px; padding: 0 26px; color: «INDIGO»; font-weight: 700; font-size: 30px; line-height: 1; }
     #o-track b { font-size: 26px; }
-    /* the social proof (until the call to action takes its place) */
-    #o-proof { top: 1330px; gap: 22px; }
-    .o-avs { display: flex; }
-    .o-avs span { display: flex; align-items: center; justify-content: center; width: 62px; height: 62px; margin-left: -16px; border-radius: 50%;
-      border: 4px solid «INDIGO»; color: «INDIGO»; font-weight: 800; font-size: 26px; }
-    .o-avs span:first-child { margin-left: 0; }
-    .o-stars { color: #FBBF24; font-size: 30px; letter-spacing: 4px; line-height: 1; }
-    .o-ptxt { font-weight: 700; font-size: 31px; line-height: 1.15; white-space: nowrap; }
     /* the call to action: an Instagram comment field */
-    #o-cta { top: 1318px; }
+    #o-cta { top: 1326px; }
     .o-field { position: relative; display: flex; align-items: center; gap: 18px; width: 744px; height: 96px; padding: 0 30px 0 18px;
       border-radius: 999px; background: #FFFFFF; white-space: nowrap; }
     .o-av { display: block; width: 62px; height: 62px; flex: 0 0 62px; }
@@ -127,7 +120,7 @@ def outro_html():
     #o-post { position: relative; font-weight: 700; font-size: 32px; color: #0095F6; }
     #o-ripple { position: absolute; left: 50%; top: 50%; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%;
       background: rgba(0,149,246,0.30); opacity: 0; }
-    #o-ok { top: 1432px; }
+    #o-ok { top: 1436px; }
     .o-ok { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 26px 0 14px; border-radius: 16px;
       background: rgba(34,197,94,0.18); border: 2px solid rgba(34,197,94,0.55); font-weight: 700; font-size: 29px; white-space: nowrap; }
     .o-ok svg { display: block; width: 36px; height: 36px; }
@@ -139,7 +132,6 @@ def outro_html():
           '<path d="M11 52 C14 41 22 37 31 37 C40 37 48 41 51 52 A30 30 0 0 1 11 52 Z" fill="#A9AFBE"/></svg>')
     ok = ('<svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#22C55E"/><path d="M10 18.5 L15.5 24 L26 12.5" fill="none" '
           'stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>')
-    avs = "".join(f'<span style="background: {bg}">{t}</span>' for t, bg in (("D", SKY), ("M", "#5EEAD4"), ("L", "#A5B4FC"), ("+", "#1D4ED8")))
     body = f"""
     <div id="o-ground" class="o-full"><div class="o-luz1"></div><div class="o-luz2"></div><div class="o-dots"></div></div>
     <div id="o-badge" class="o-row"><div class="o-badge"><i></i><span>Black Friday · eBook nivel A0 – A1</span></div></div>
@@ -149,7 +141,6 @@ def outro_html():
     <div id="o-seal"><div class="o-seal"><div class="k">BLACK FRIDAY</div><div class="p"><span id="o-eur">1&nbsp;€</span><s>12,50&nbsp;€</s></div><div id="o-shine"></div></div>
       <div id="o-off"><div class="o-off">−92&nbsp;%</div></div></div>
     <div id="o-band"><div id="o-track">{track}</div></div>
-    <div id="o-proof" class="o-row"><div class="o-avs">{avs}</div><div><div class="o-stars">★★★★★</div><div class="o-ptxt">Más de 40 personas ya lo tienen</div></div></div>
     <div id="o-cta" class="o-row"><div class="o-field">{av}<span id="o-ph">Añade un comentario…</span><span id="o-typed"></span><span id="o-caret"></span><span class="o-fill"></span><span id="o-post">Publicar<i id="o-ripple"></i></span></div></div>
     <div id="o-ok" class="o-row"><div class="o-ok">{ok}<span>Te enviamos los detalles por mensaje</span></div></div>
 """
@@ -164,9 +155,7 @@ def outro_html():
       tl.fromTo("#o-track", { xPercent: 0 }, { xPercent: -25, duration: «D», ease: "none" }, 0);
       tl.fromTo("#o-seal", { opacity: 0, scale: 0.45, rotation: -14 }, { opacity: 1, scale: 0.78, rotation: 0, duration: 0.50, ease: "back.out(1.8)" }, «SEAL»);
       tl.fromTo("#o-off", { opacity: 0, scale: 0.2, rotation: 30 }, { opacity: 1, scale: 1, rotation: 8, duration: 0.40, ease: "back.out(2.2)" }, «OFF»);
-      tl.fromTo("#o-proof", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.40, ease: "power3.out" }, «PROOF»);
       tl.fromTo("#o-eur", { scale: 1 }, { scale: 1.14, duration: 0.16, ease: "power2.out", yoyo: true, repeat: 1 }, «EURO»);
-      tl.to("#o-proof", { opacity: 0, y: 22, duration: 0.22, ease: "power2.in" }, «PROOF_OUT»);
       tl.fromTo("#o-cta", { opacity: 0, y: 46, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.5)" }, «CTA»);
       tl.set("#o-ph", { opacity: 0 }, «TYPE0»);
       tl.fromTo("#o-post", { opacity: 0.4 }, { opacity: 1, duration: 0.15 }, «TYPE0»);
@@ -285,8 +274,8 @@ def main():
       #hook .hl {{ white-space: nowrap; }}
       #hook .mid {{ position: relative; display: inline-block; }}
       #hook .em {{ position: absolute; top: 50%; display: block; }}
-      #hook .em-books {{ height: {ICONS["books"]}px; top: calc(50% + {ICON_DY}px); right: calc(100% + {ICON_GAP + HOOK_OUTLINE}px); transform: translateY(-50%); }}
-      #hook .em-nl {{ height: {ICONS["nl"]}px; top: calc(50% + {ICON_DY}px); left: calc(100% + {ICON_GAP + HOOK_OUTLINE}px); transform: translateY(-50%); }}
+      #hook .em-books {{ height: {ICONS["books"]}px; top: calc(50% + {ICON_DY["books"]}px); right: calc(100% + {ICON_GAP + HOOK_OUTLINE}px); transform: translateY(-50%); }}
+      #hook .em-nl {{ height: {ICONS["nl"]}px; top: calc(50% + {ICON_DY["nl"]}px); left: calc(100% + {ICON_GAP + HOOK_OUTLINE}px); transform: translateY(-50%); }}
       .ph {{ position: absolute; left: {NL_CX - 505}px; bottom: {1920 - SUB_BOTTOM}px; width: 1010px; display: flex; flex-direction: column;
         align-items: center; gap: 6px; opacity: 0; }}
       .nl {{ width: {NL_W}px; font-size: {NL_SIZE}px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 0.26em; row-gap: 0;

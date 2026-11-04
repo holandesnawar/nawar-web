@@ -11,11 +11,12 @@ import base64, json, os, subprocess, sys, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, ".raw", "outro")
-TEXT = ("Habla neerlandés sin miedo, como Luis Suárez. Nuestro ebook, Holandés sin miedo, este Black Friday por solo un "
-        "euro. Comenta OFERTA y te enviamos los detalles.")
+TEXT = ("[excited] ¡Habla neerlandés sin miedo, como Luis Suárez! [warmly] Nuestro libro, Holandés sin miedo, este Black "
+        "Friday por solo un euro. Comenta OFERTA y te enviamos los detalles.")   # (v7.2: «libro», not «ebook»; the tags
+                                                     # give the first sentence its lift, then the rest settles)
 VOICE = "LP0ZBLgGaLqbDU1l9PDX"         # «Yair - Narration Spanish» (v7; v6 used «Nawar Def»)
-MODEL = "eleven_multilingual_v2"
-SETTINGS = {"stability": 0.5, "similarity_boost": 0.8, "style": 0.0, "speed": 1.0}
+MODEL = "eleven_v4"                    # (v7.2; eleven_multilingual_v2 before: it sounded flat)
+SETTINGS = {"stability": 0.5, "similarity_boost": 0.8}
 
 
 def api(path, body):
@@ -39,15 +40,21 @@ def words_of(al):
         else:
             cur["text"] += c; cur["end"] = e
     if cur: out.append(cur)
+    out = [w for w in out if not (w["text"].startswith("[") and w["text"].endswith("]"))]     # the audio tags are not said
     return [{"text": w["text"], "t": round(w["t"], 3), "end": round(w["end"], 3)} for w in out]
 
 
-def voz():
+def voz(take=None):
+    """a new take (or, with a saved take's .mp3 + .json alignment, that one) → .raw/outro/voz.mp3 + outro.json."""
     os.makedirs(RAW, exist_ok=True)
-    j = api(f"/text-to-speech/{VOICE}/with-timestamps?output_format=mp3_44100_192",
-            {"text": TEXT, "model_id": MODEL, "voice_settings": SETTINGS})
-    open(os.path.join(RAW, "voz.mp3"), "wb").write(base64.b64decode(j["audio_base64"]))
-    al = j.get("alignment") or j["normalized_alignment"]
+    if take:
+        import shutil
+        shutil.copyfile(take + ".mp3", os.path.join(RAW, "voz.mp3")); al = json.load(open(take + ".json"))
+    else:
+        j = api(f"/text-to-speech/{VOICE}/with-timestamps?output_format=mp3_44100_192",
+                {"text": TEXT, "model_id": MODEL, "voice_settings": SETTINGS})
+        open(os.path.join(RAW, "voz.mp3"), "wb").write(base64.b64decode(j["audio_base64"]))
+        al = j.get("alignment") or j["normalized_alignment"]
     ws = words_of(al)
     json.dump({"text": TEXT, "voice": VOICE, "model": MODEL, "settings": SETTINGS, "words": ws},
               open(os.path.join(ROOT, "outro.json"), "w"), ensure_ascii=False, indent=1)
@@ -60,7 +67,7 @@ CLOCK = "const tick = (now) => { setT(((now - t0) / 1000) % TOTAL); raf = reques
 SEEK = "const tick = () => { setT(window.__T || 0); raf = requestAnimationFrame(tick); };"
 SHADOW = "boxShadow: '0 50px 80px -24px rgba(15,25,70,.45), 0 16px 30px -10px rgba(15,25,70,.3)'"   # the book's drop shadow:
                                                                                                    # off (flat, as in the BF ad)
-DISPLAY_W = 846                        # the book's box in the reel (px wide)
+DISPLAY_W = 778                        # the book's box in the reel (px wide; v7.2: 0.92 of v7's, more air around it)
 SHOT_JS = r"""
 const { chromium } = require('playwright');
 (async () => {
@@ -159,12 +166,11 @@ def cues():
     (audio()) read the same ones."""
     ws = words()
     def at(text, k=0, end=False):
-        hits = [w for w in ws if w["text"].strip(".,").lower() == text.lower()]
+        hits = [w for w in ws if w["text"].strip(".,¡!¿?\"«»").lower() == text.lower()]
         return hits[k]["end" if end else "t"]
-    c = dict(GROUND=0.0, BADGE=0.20, L1=0.28, L2=0.38, BOOK=BOOK_START, BAND=0.42, SEAL=0.52, OFF=0.66, PROOF=0.62,
+    c = dict(GROUND=0.0, BADGE=0.20, L1=0.28, L2=0.38, BOOK=BOOK_START, BAND=0.42, SEAL=0.52, OFF=0.66,
              EURO=at("euro") - 0.04, CTA=at("comenta") - 0.12, TYPE0=at("oferta") - 0.02, TYPE1=at("oferta", end=True) - 0.08,
              CONFIRM=at("y") - 0.03, SHINE=END - 1.1)
-    c["PROOF_OUT"] = c["CTA"] - 0.16
     c["TAP"] = round(c["TYPE1"] + 0.10, 3)
     c["CONFIRM"] = max(c["CONFIRM"], c["TAP"] + 0.18)          # (a beat after the tap)
     return {k: round(v, 3) for k, v in c.items()}
@@ -219,4 +225,4 @@ def audio():
 
 
 if __name__ == "__main__":
-    {"voz": voz, "libro": libro, "audio": audio}[sys.argv[1]]()
+    {"voz": lambda: voz(sys.argv[2] if len(sys.argv) > 2 else None), "libro": libro, "audio": audio}[sys.argv[1]]()
