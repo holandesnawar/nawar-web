@@ -15,9 +15,10 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
   - el texto de la pared («De hoorspecialist») queda fuera de cada encuadre: los planos que lo rozan tienen el borde
     derecho un poco a su izquierda, sin borrar nada (así no se toca la oreja del dependiente);
   - la tarjeta roja se repinta entera de rojo liso, sin tocar los dedos, y a la blanca se le quita la estrella (`LOGOS`).
-- **Título:** «📚 Aprendiendo neerlandés con Luis Suárez 🇳🇱», grande sobre el pecho desde el primer fotograma (gancho y
-  portada). A los 3 s pasa a una etiqueta pequeña arriba («Neerlandés con Luis Suárez»), que se aparta en los primeros
-  planos para no tapar los ojos.
+- **Título (v4, estilo Apple):** una tarjeta blanca esmerilada sobre el pecho desde el primer fotograma (gancho y
+  portada), con la bandera redonda de Países Bajos: «APRENDIENDO NEERLANDÉS» y, en grande, «con Luis Suárez». A los 3 s
+  se aparta y queda una pastilla pequeña arriba («Neerlandés con Luis Suárez»), que se aparta en los primeros planos
+  para no tapar los ojos. Es el mismo diseño del segundo reel (`../reel-suarez-habla`).
 - **Subtítulos:** por frases cortas, sincronizados palabra a palabra (ElevenLabs Scribe):
   - el holandés grande y en mayúsculas, todo al mismo tamaño y en dos líneas como mucho, con la palabra que se está
     diciendo en amarillo;
@@ -40,7 +41,6 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
 | `tools/subs.py` | Las frases en holandés y en español (`PHRASES`), alineadas con la transcripción de Scribe |
 | `tools/frame.py` | El corte, el encuadre 9:16 de cada plano, el borrado de la marca y el sonido (−14 LUFS) → `assets/video/suarez-916.mp4` |
 | `tools/upscale.py` | El reescalado ×4 del tramo usado → `.raw/up.mp4` |
-| `tools/emoji.py` | Dibuja 📚 y 🇳🇱 (Noto Color Emoji) en PNG |
 | `tools/esrgan_onnx.py` | Convierte el modelo de Real-ESRGAN a ONNX sin PyTorch (lee los pesos sin ejecutar el pickle) |
 | `tools/fetch_assets.sh` | Lo reconstruye todo desde el Drive |
 

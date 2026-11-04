@@ -11,7 +11,7 @@ echo "the ad and the client's transcript (Drive folder «Luis Suárez»)"
 dl 1SLndkTv7Ni7RvtWoi0uySaJxutWtQc6E suarez.mp4     # «Comercial Geestige Suarez Ajax» (45 s, 512×288, 25 fps)
 dl 1sI6ZgY5Zonoyex9jRRADVY2bkliTFrHE suarez.txt     # its transcript, by speaker
 echo "brand fonts and gsap from the UGC Black Friday project"
-cp ../ugc-nawar-bf/assets/fonts/poppins-latin-{700,800,900}-normal.woff2 ../ugc-nawar-bf/assets/fonts/inter-latin-700-normal.woff2 assets/fonts/
+cp ../ugc-nawar-bf/assets/fonts/poppins-latin-{700,900}-normal.woff2 ../ugc-nawar-bf/assets/fonts/inter-latin-{600,700}-normal.woff2 assets/fonts/
 cp ../ugc-nawar-bf/assets/vendor/gsap.min.js assets/vendor/
 echo "the transcript with word times (ElevenLabs Scribe)"
 ffmpeg -v error -y -i "$RAW/suarez.mp4" -vn -ac 1 -ar 16000 "$RAW/suarez16k.wav"
@@ -23,6 +23,5 @@ python3 tools/esrgan_onnx.py "$RAW/realesr-general-x4v3.pth" "$RAW/esrgan-x4v3.o
 python3 tools/upscale.py 123 993
 python3 tools/frame.py
 python3 tools/subs.py
-python3 tools/emoji.py
 python3 tools/gen.py
 echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v3.mp4"

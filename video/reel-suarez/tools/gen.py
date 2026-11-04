@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """index.html: the reel «Aprendiendo neerlandés con Luis Suárez» (9:16, 25 fps) in the look of the Mario Casas reel
 (Drive: «Estrategia de contenido para reels»): the ad full frame (assets/video/suarez-916.mp4, tools/frame.py), the
-title big over the chest for the first 3 s (the hook and the cover), then a one-line tag at the top (📚 … 🇳🇱 — Noto
-Color Emoji, drawn to PNG by tools/emoji.py —) that steps out of the close-ups, and under the faces the subtitles: the
+title as a frosted white card over the chest for the first 3 s (the hook and the cover: «APRENDIENDO NEERLANDÉS · con
+Luis Suárez», a round Dutch flag), then a small frosted pill at the top that steps out of the close-ups (v4: the
+labels of the second reel, ../reel-suarez-habla), and under the faces the subtitles: the
 Dutch phrase big, in capitals, one size for all, white with the word being said in yellow, and the Spanish under it,
 in a grey pill (a little higher in Suárez's close-ups, so his lips show).
   python3 tools/gen.py
@@ -14,13 +15,32 @@ YEL = "#FFE11B"
 NL_TOP, NL_W, NL_CX = 1110, 830, 495   # the Dutch block (frame px): clear of Instagram's button rail (x > 930, with a
 NL_SIZE = 76                      # margin for the pop-in) and of its caption band at the bottom; one size for every
                                   # phrase, which wraps onto two lines at most (tools/subs.py keeps them that short)
-TITLE_TOP = 830                   # the big title over the chest for the first seconds: the faces (and the cover) stay clear
+TITLE_TOP = 830                   # the title card over the chest for the first seconds: the faces (and the cover) stay clear
 TAG_AT = 3.0                      # the big title (the hook and the cover) becomes a one-line tag at the top here
 TAG_OFF = [(7.96, 9.60), (15.76, 21.44), (26.04, 27.80)]  # the close-ups (Suárez's, and the assistant's from 15.76 until
                                   # his head drops at 21.44): their eyes are at the top, so the tag steps out
 UP = [(7.96, 9.60), (16.64, 20.52), (26.04, 27.80)]       # Suárez's extreme close-ups: the subtitles sit higher, between
 UP_DY = -130                      # his nose and his mouth, so his lips stay in sight (the block moves on the cuts only)
 MIN_ON = 0.6                      # a one-word phrase opens a little early (after the last word before it) to be read
+
+FLAG = ('<svg viewBox="0 0 48 48" aria-hidden="true"><defs><clipPath id="{id}"><circle cx="24" cy="24" r="24"/></clipPath></defs>'
+        '<g clip-path="url(#{id})"><rect width="48" height="16" fill="#AE1C28"/><rect y="16" width="48" height="16" fill="#FFFFFF"/>'
+        '<rect y="32" width="48" height="16" fill="#21468B"/></g><circle cx="24" cy="24" r="23.25" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/></svg>')
+# the labels (v4): frosted white, like iOS — the same as the second reel (../reel-suarez-habla)
+LABEL_CSS = """
+      .glass { background: rgba(255,255,255,0.80); -webkit-backdrop-filter: blur(28px) saturate(180%); backdrop-filter: blur(28px) saturate(180%);
+        box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 18px 50px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.10); color: #1D1D1F;
+        font-family: "Inter", sans-serif; }
+      .row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; }
+      #card { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 30px 56px 36px; border-radius: 44px; white-space: nowrap; }
+      #card .kick { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 30px; letter-spacing: 0.16em;
+        color: #1D0084; text-transform: uppercase; line-height: 1; }
+      #card .kick svg { width: 40px; height: 40px; display: block; }
+      #card .big { font-weight: 700; font-size: 80px; letter-spacing: -0.03em; line-height: 1.02; }
+      #tag { display: flex; align-items: center; gap: 14px; padding: 12px 30px 12px 14px; border-radius: 999px; white-space: nowrap; opacity: 0;
+        font-weight: 600; font-size: 34px; letter-spacing: -0.01em; line-height: 1; }
+      #tag svg { width: 44px; height: 44px; display: block; }
+"""
 
 
 def segments(on, off):
@@ -71,7 +91,7 @@ def main():
             if i + 1 < len(words):
                 js.append(f'      tl.set("#w{k}-{i}", {{ color: "#FFFFFF" }}, {t1:.3f});')
     fonts = "\n".join(f'      @font-face {{ font-family: "{f}"; font-weight: {w}; src: url("assets/fonts/{f.lower()}-latin-{w}-normal.woff2") format("woff2"); }}'
-                      for f, w in (("Poppins", 700), ("Poppins", 800), ("Poppins", 900), ("Inter", 700)))
+                      for f, w in (("Poppins", 700), ("Poppins", 900), ("Inter", 600), ("Inter", 700)))
     page = f"""<!doctype html>
 <html lang="es">
   <head>
@@ -87,19 +107,7 @@ def main():
       .shade {{ position: absolute; left: 0; width: 1080px; pointer-events: none; }}
       #shade-top {{ top: 0; height: 700px; background: linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.18) 55%, rgba(0,0,0,0) 100%); }}
       #shade-bot {{ top: 1020px; height: 560px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.30) 45%, rgba(0,0,0,0.30) 75%, rgba(0,0,0,0) 100%); }}
-      #title {{ position: absolute; left: 0; top: {TITLE_TOP}px; width: 1080px; text-align: center; color: #FFFFFF; transform-origin: 50% 0%;
-        font-family: "Poppins", sans-serif; font-weight: 800; font-size: 72px; line-height: 1.06; letter-spacing: -0.01em;
-        -webkit-text-stroke: 9px #000; paint-order: stroke fill; text-shadow: 0 6px 18px rgba(0,0,0,0.45); }}
-      #title .emo {{ position: absolute; width: 96px; height: auto; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35)); }}
-      #emo-book {{ left: 172px; top: 24px; }}
-      #emo-flag {{ right: 172px; top: 86px; }}   /* clear of Instagram's button rail (x > 912 at the like count) */
-      #tag {{ position: absolute; left: 0; top: 214px; width: 1080px; display: flex; justify-content: center; opacity: 0; }}
-      #tag div {{ display: flex; align-items: center; gap: 16px; padding: 10px 26px 12px; border-radius: 999px;
-        background: rgba(0,0,0,0.42); color: #FFFFFF; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 42px;
-        line-height: 1; letter-spacing: -0.005em; white-space: nowrap; }}
-      #tag i {{ display: block; height: 46px; background-size: contain; background-repeat: no-repeat; background-position: center; }}
-      #tag-book {{ width: 47px; background-image: url("assets/img/emoji-book.png"); }}
-      #tag-nl {{ width: 62px; background-image: url("assets/img/emoji-nl.png"); }}
+{LABEL_CSS}
       .ph {{ position: absolute; left: {NL_CX - 505}px; top: {NL_TOP}px; width: 1010px; display: flex; flex-direction: column; align-items: center;
         gap: 20px; opacity: 0; }}
       .nl {{ width: {NL_W}px; font-size: {NL_SIZE}px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 0.26em; row-gap: 0;
@@ -117,16 +125,16 @@ def main():
       <video id="v" class="clip" src="assets/video/suarez-916.mp4" data-start="0" data-duration="{D}" data-track-index="0" playsinline data-has-audio="true"></video>
       <div id="shade-top" class="shade"></div>
       <div id="shade-bot" class="shade"></div>
-      <div id="title"><img id="emo-book" class="emo" src="assets/img/emoji-book.png" alt="" />Aprendiendo<br/>neerlandés<br/>con Luis Suárez<img id="emo-flag" class="emo" src="assets/img/emoji-nl.png" alt="" /></div>
-      <div id="tag"><div><i id="tag-book"></i><span>Neerlandés con Luis Suárez</span><i id="tag-nl"></i></div></div>
+      <div class="row" style="top: {TITLE_TOP}px"><div id="card" class="glass"><div class="kick">{FLAG.format(id="fc")}<span>Aprendiendo neerlandés</span></div><div class="big">con Luis Suárez</div></div></div>
+      <div class="row" style="top: 206px"><div id="tag" class="glass">{FLAG.format(id="ft")}<span>Neerlandés con Luis Suárez</span></div></div>
 {chr(10).join(body)}
     </div>
     <script>
       window.__timelines = window.__timelines || {{}};
       const tl = gsap.timeline({{ paused: true }});
-      // the big title from the first frame (the cover), then a one-line tag that keeps clear of the faces
-      tl.to("#title", {{ opacity: 0, scale: 0.9, duration: 0.28, ease: "power2.in" }}, {TAG_AT});
-      tl.fromTo("#tag", {{ opacity: 0, y: 24 }}, {{ opacity: 1, y: 0, duration: 0.32, ease: "power3.out", immediateRender: false }}, {TAG_AT + 0.32});
+      // the title card from the first frame (the cover); at {TAG_AT} s it lifts away and the small pill settles at the top
+      tl.to("#card", {{ y: -60, scale: 0.86, opacity: 0, duration: 0.34, ease: "power2.in" }}, {TAG_AT});
+      tl.fromTo("#tag", {{ opacity: 0, y: 18, scale: 0.94 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out", immediateRender: false }}, {TAG_AT + 0.24});
 {chr(10).join(f'      tl.to("#tag", {{ opacity: 0, duration: 0.12, ease: "none" }}, {a - 0.12:.2f});{chr(10)}      tl.to("#tag", {{ opacity: 1, duration: 0.16, ease: "none" }}, {b:.2f});' for a, b in TAG_OFF)}
       tl.to("#shade-top", {{ opacity: 0.55, duration: 0.4, ease: "none" }}, {TAG_AT});
 {chr(10).join(js)}

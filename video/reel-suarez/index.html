@@ -6,8 +6,8 @@
     <script src="assets/vendor/gsap.min.js"></script>
     <style>
       @font-face { font-family: "Poppins"; font-weight: 700; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
-      @font-face { font-family: "Poppins"; font-weight: 800; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
       @font-face { font-family: "Poppins"; font-weight: 900; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 600; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
       @font-face { font-family: "Inter"; font-weight: 700; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
@@ -16,19 +16,20 @@
       .shade { position: absolute; left: 0; width: 1080px; pointer-events: none; }
       #shade-top { top: 0; height: 700px; background: linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.18) 55%, rgba(0,0,0,0) 100%); }
       #shade-bot { top: 1020px; height: 560px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.30) 45%, rgba(0,0,0,0.30) 75%, rgba(0,0,0,0) 100%); }
-      #title { position: absolute; left: 0; top: 830px; width: 1080px; text-align: center; color: #FFFFFF; transform-origin: 50% 0%;
-        font-family: "Poppins", sans-serif; font-weight: 800; font-size: 72px; line-height: 1.06; letter-spacing: -0.01em;
-        -webkit-text-stroke: 9px #000; paint-order: stroke fill; text-shadow: 0 6px 18px rgba(0,0,0,0.45); }
-      #title .emo { position: absolute; width: 96px; height: auto; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35)); }
-      #emo-book { left: 172px; top: 24px; }
-      #emo-flag { right: 172px; top: 86px; }   /* clear of Instagram's button rail (x > 912 at the like count) */
-      #tag { position: absolute; left: 0; top: 214px; width: 1080px; display: flex; justify-content: center; opacity: 0; }
-      #tag div { display: flex; align-items: center; gap: 16px; padding: 10px 26px 12px; border-radius: 999px;
-        background: rgba(0,0,0,0.42); color: #FFFFFF; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 42px;
-        line-height: 1; letter-spacing: -0.005em; white-space: nowrap; }
-      #tag i { display: block; height: 46px; background-size: contain; background-repeat: no-repeat; background-position: center; }
-      #tag-book { width: 47px; background-image: url("assets/img/emoji-book.png"); }
-      #tag-nl { width: 62px; background-image: url("assets/img/emoji-nl.png"); }
+
+      .glass { background: rgba(255,255,255,0.80); -webkit-backdrop-filter: blur(28px) saturate(180%); backdrop-filter: blur(28px) saturate(180%);
+        box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 18px 50px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.10); color: #1D1D1F;
+        font-family: "Inter", sans-serif; }
+      .row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; }
+      #card { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 30px 56px 36px; border-radius: 44px; white-space: nowrap; }
+      #card .kick { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 30px; letter-spacing: 0.16em;
+        color: #1D0084; text-transform: uppercase; line-height: 1; }
+      #card .kick svg { width: 40px; height: 40px; display: block; }
+      #card .big { font-weight: 700; font-size: 80px; letter-spacing: -0.03em; line-height: 1.02; }
+      #tag { display: flex; align-items: center; gap: 14px; padding: 12px 30px 12px 14px; border-radius: 999px; white-space: nowrap; opacity: 0;
+        font-weight: 600; font-size: 34px; letter-spacing: -0.01em; line-height: 1; }
+      #tag svg { width: 44px; height: 44px; display: block; }
+
       .ph { position: absolute; left: -10px; top: 1110px; width: 1010px; display: flex; flex-direction: column; align-items: center;
         gap: 20px; opacity: 0; }
       .nl { width: 830px; font-size: 76px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 0.26em; row-gap: 0;
@@ -46,8 +47,8 @@
       <video id="v" class="clip" src="assets/video/suarez-916.mp4" data-start="0" data-duration="34.68" data-track-index="0" playsinline data-has-audio="true"></video>
       <div id="shade-top" class="shade"></div>
       <div id="shade-bot" class="shade"></div>
-      <div id="title"><img id="emo-book" class="emo" src="assets/img/emoji-book.png" alt="" />Aprendiendo<br/>neerlandés<br/>con Luis Suárez<img id="emo-flag" class="emo" src="assets/img/emoji-nl.png" alt="" /></div>
-      <div id="tag"><div><i id="tag-book"></i><span>Neerlandés con Luis Suárez</span><i id="tag-nl"></i></div></div>
+      <div class="row" style="top: 830px"><div id="card" class="glass"><div class="kick"><svg viewBox="0 0 48 48" aria-hidden="true"><defs><clipPath id="fc"><circle cx="24" cy="24" r="24"/></clipPath></defs><g clip-path="url(#fc)"><rect width="48" height="16" fill="#AE1C28"/><rect y="16" width="48" height="16" fill="#FFFFFF"/><rect y="32" width="48" height="16" fill="#21468B"/></g><circle cx="24" cy="24" r="23.25" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/></svg><span>Aprendiendo neerlandés</span></div><div class="big">con Luis Suárez</div></div></div>
+      <div class="row" style="top: 206px"><div id="tag" class="glass"><svg viewBox="0 0 48 48" aria-hidden="true"><defs><clipPath id="ft"><circle cx="24" cy="24" r="24"/></clipPath></defs><g clip-path="url(#ft)"><rect width="48" height="16" fill="#AE1C28"/><rect y="16" width="48" height="16" fill="#FFFFFF"/><rect y="32" width="48" height="16" fill="#21468B"/></g><circle cx="24" cy="24" r="23.25" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/></svg><span>Neerlandés con Luis Suárez</span></div></div>
       <div id="p0" class="ph"><div class="nl"><span id="w0-0" class="w">Ah,</span> <span id="w0-1" class="w">een</span> <span id="w0-2" class="w">sportman</span></div><div class="es"><span>Ah, un deportista</span></div></div>
       <div id="p1" class="ph"><div class="nl"><span id="w1-0" class="w">van</span> <span id="w1-1" class="w">Ajax.</span></div><div class="es"><span>del Ajax.</span></div></div>
       <div id="p2" class="ph"><div class="nl"><span id="w2-0" class="w">Ja,</span> <span id="w2-1" class="w">beroemde</span> <span id="w2-2" class="w">club.</span></div><div class="es"><span>Sí, un club famoso.</span></div></div>
@@ -76,9 +77,9 @@
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      // the big title from the first frame (the cover), then a one-line tag that keeps clear of the faces
-      tl.to("#title", { opacity: 0, scale: 0.9, duration: 0.28, ease: "power2.in" }, 3.0);
-      tl.fromTo("#tag", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out", immediateRender: false }, 3.32);
+      // the title card from the first frame (the cover); at 3.0 s it lifts away and the small pill settles at the top
+      tl.to("#card", { y: -60, scale: 0.86, opacity: 0, duration: 0.34, ease: "power2.in" }, 3.0);
+      tl.fromTo("#tag", { opacity: 0, y: 18, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out", immediateRender: false }, 3.24);
       tl.to("#tag", { opacity: 0, duration: 0.12, ease: "none" }, 7.84);
       tl.to("#tag", { opacity: 1, duration: 0.16, ease: "none" }, 9.60);
       tl.to("#tag", { opacity: 0, duration: 0.12, ease: "none" }, 15.64);
