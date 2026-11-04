@@ -88,7 +88,7 @@
   },
   {
    "who": "m",
-   "es": "¿Qué le puedo solucionar?",
+   "es": "¿En qué le puedo ayudar?",
    "words": [
     {
      "text": "Wat",
@@ -223,7 +223,7 @@
   },
   {
    "who": "m",
-   "es": "Evita que oiga pitidos molestos.",
+   "es": "Evita que oiga",
    "words": [
     {
      "text": "Voorkomt",
@@ -239,7 +239,13 @@
      "text": "u",
      "t": 15.14,
      "end": 15.2
-    },
+    }
+   ]
+  },
+  {
+   "who": "m",
+   "es": "pitidos molestos.",
+   "words": [
     {
      "text": "irritante",
      "t": 15.26,

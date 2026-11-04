@@ -1,10 +1,13 @@
-# Storyboard · Reel «Aprendiendo neerlandés con Luis Suárez» v2 (34,7 s)
+# Storyboard · Reel «Aprendiendo neerlandés con Luis Suárez» v3 (34,7 s)
 
 - **Título:** durante los 3 primeros segundos va grande, «📚 Aprendiendo neerlandés con Luis Suárez 🇳🇱», sobre el pecho,
-  para que la cara se vea limpia en la portada. Después queda una etiqueta pequeña arriba, «📚 Neerlandés con Luis
-  Suárez 🇳🇱», que se aparta en los primeros planos de Suárez para no taparle los ojos.
-- **Subtítulos:** el holandés va en mayúsculas, con la palabra que se dice en amarillo; el español, debajo, en una
-  pastilla gris. Todo queda fuera de la columna de botones de Instagram.
+  para que la cara se vea limpia en la portada. Los dos emojis quedan fuera de la columna de botones de Instagram.
+  Después queda una etiqueta pequeña arriba, «📚 Neerlandés con Luis Suárez 🇳🇱», que se aparta en los primeros planos
+  (los de Suárez y los del dependiente) para no tapar los ojos.
+- **Subtítulos:** el holandés va en mayúsculas, todo al mismo tamaño y en dos líneas como mucho, con la palabra que
+  se dice en amarillo; el español, debajo, en una pastilla gris. Todo queda fuera de la columna de botones de
+  Instagram. En los primeros planos de Suárez el bloque sube un poco (entre la nariz y la boca) para que se le vean
+  los labios; solo cambia de altura en los cortes.
 
 **Planos (encuadre 9:16 sobre quien habla):**
 1. Suárez entra.
@@ -24,7 +27,7 @@
 15. Suárez.
 16. El dependiente.
 17. Suárez.
-18. El dependiente con la tarjeta roja, sin el logo.
+18. El dependiente con la tarjeta roja, roja lisa (sin nada impreso).
 19. Suárez, mientras la tarjeta blanca sale del encuadre sin la estrella. Su último fotograma aguanta 0,3 s.
 
 | Tiempo | Quién | Holandés | Español |
@@ -33,12 +36,13 @@
 | 1,6–2,5 | Dependiente | van Ajax. | del Ajax. |
 | 2,7–3,6 | Dependiente | Ja, beroemde club. | Sí, un club famoso. |
 | 3,8–5,3 | Dependiente | Cruijff, Keizer, Abe Lenstra. | Cruijff, Keizer, Abe Lenstra. |
-| 5,8–6,7 | Dependiente | Wat kan ik voor u oplossen? | ¿Qué le puedo solucionar? |
+| 5,8–6,7 | Dependiente | Wat kan ik voor u oplossen? | ¿En qué le puedo ayudar? |
 | 7,0–8,9 | Suárez | Ja, ik hoorde iets over | Sí, oí algo sobre |
 | 9,2–10,5 | Suárez | één antifluitregeling. | un control antipitidos. |
 | 10,6–12,4 | Dependiente | Ah, u bedoelt ons hoortoestel | Ah, se refiere a nuestro audífono |
 | 12,4–14,6 | Dependiente | met geavanceerde antifluitregeling. | con control antipitidos avanzado. |
-| 14,7–16,6 | Dependiente | Voorkomt dat u irritante fluittonen hoort. | Evita que oiga pitidos molestos. |
+| 14,7–15,2 | Dependiente | Voorkomt dat u | Evita que oiga |
+| 15,3–16,6 | Dependiente | irritante fluittonen hoort. | pitidos molestos. |
 | 16,7–17,8 | Suárez | Ja, heel irritant. | Sí, muy molesto. |
 | 18,4–19,1 | Suárez | Zij fluiten | Ellos pitan |
 | 19,6–20,8 | Suárez | veel te vaak tegen mij. | demasiadas veces en mi contra. |

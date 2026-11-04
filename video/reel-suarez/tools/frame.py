@@ -19,36 +19,34 @@ CUTS = [123, 148, 172, 193, 302, 334, 375, 471, 495, 551, 648, 690, 740, 772, 78
 # shot (first frame) → [(source frame, window centre x in source px)]; one smooth monotone curve through the keys
 SHOTS = {      # (set from a face detector run on every 3rd frame, checked by eye on native-scale frames, re-keyed after QA)
     123: [(135, 272), (147, 212)],              # Suárez walks in (the reel opens here) — followed as he walks
-    148: [(148, 330), (160, 318), (171, 300)],  # over his shoulder: the assistant, «een sportman van Ajax»
+    148: [(148, 324), (153, 316), (160, 312), (171, 300)],   # over his shoulder: the assistant, «een sportman van Ajax»
     172: [(172, 238)],                          # the Ajax badge, whole
-    193: [(193, 245), (210, 296), (222, 308), (301, 308)],   # the assistant: «Ja, beroemde club. Cruijff…»
+    193: [(193, 245), (210, 296), (222, 303), (301, 303)],   # the assistant: «Ja, beroemde club. Cruijff…»
     302: [(302, 168), (333, 198)],              # Suárez, wide: «Ja, ik hoorde iets…»
     334: [(334, 215), (356, 205), (374, 255)],  # Suárez close: «…antifluitregeling» (on his mouth)
     375: [(375, 280), (400, 305), (412, 265), (424, 235), (437, 285), (470, 305)],   # the assistant bends for the hearing aid
     471: [(471, 250)],                          # the hearing aid and the thumb holding it
     495: [(495, 320), (507, 302), (550, 302)],  # the assistant close: «…fluittonen hoort»
     551: [(551, 205), (600, 290), (612, 335), (628, 340), (636, 290), (647, 245)],   # Suárez close, his head turn
-    648: [(648, 290), (670, 315), (680, 230), (689, 160)],   # the assistant close, bending forward: «Oh, maar dan…»
+    648: [(648, 290), (670, 315), (680, 230), (684, 185), (689, 148)],   # the assistant close, bending: «Oh, maar dan…»
     690: [(690, 395), (710, 372), (739, 372)],  # wide, on the assistant as he talks: «…oordopjesgamma»
     740: [(740, 350), (771, 290)],              # the sofa and his gesturing hand: «…op de bank plaats»
     772: [(772, 212), (785, 200)],              # Suárez: «Hè?»
     786: [(786, 245), (800, 205), (812, 250), (820, 280), (829, 298)],   # Suárez close: «Suárez nooit zitten…»
     830: [(830, 165), (865, 175)],              # after a dip to black: his hand with the earplugs
     866: [(866, 185), (891, 215)],              # wide on Suárez: «Nou, veel succes ermee»
-    892: [(892, 305), (927, 309)],              # the assistant: «En mocht u nog een fluitje horen…»
-    928: [(928, 158), (944, 232)],              # Suárez
+    892: [(892, 300), (927, 302)],              # the assistant: «En mocht u nog een fluitje horen…»
+    928: [(928, 142), (944, 232)],              # Suárez (from the left of the shop window's swirl decal)
     945: [(945, 282)],                          # the assistant holds up a red business card: «Kaartje?»
     960: [(960, 180), (978, 155), (993, 180)],  # Suárez: «Nee, nee, ik heb kaartjes genoeg»
 }
 # brand marks inside the windows: (first frame, last frame, kind, source rect x0, y0, x1, y1)
-LOGOS = [(945, 959, "red_card", 150, 20, 240, 140),     # the assistant's red business card (the shop's logo printed light)
-         (960, 974, "white_card", 215, 35, 300, 110),    # the white card with the shop's red star (out of the window from 975:
+LOGOS = [(945, 959, "red_card", 150, 20, 275, 140),     # the assistant's red business card (the shop's logo printed light)
+         (960, 974, "white_card", 215, 35, 300, 110)]    # the white card with the shop's red star (out of the window from 975:
                                                          # after that the rect holds only his red shoulder — never touched)
-         (148, 171, "wall", 385, 40, 512, 140),          # «De hoorspecialist» on the orange wall, where a window reaches it
-         (193, 301, "wall", 385, 40, 512, 140),
-         (375, 470, "wall", 385, 40, 512, 140),
-         (892, 927, "wall", 385, 40, 512, 140),
-         (945, 959, "wall", 385, 40, 512, 140)]
+# The shop's slogan on the orange wall («De hoorspecialist», source x ≥ 387–400 where the assistant stands in front of
+# it) is never erased: the windows of shots 148, 193 and 892 keep their right edge a few px to the left of its first
+# letter (an eraser there cut into his ear).
 
 
 def centre(n):
@@ -64,85 +62,68 @@ def centre(n):
     return min(max(c, WIN / 2), 512 - WIN / 2)
 
 
-def wall(img, rect):
-    """the shop's slogan in light letters on the out-of-focus orange wall. The letters are found at the source's own
-    scale (the rect shrunk ×4: there they are thin strokes, lighter than the wall around them) and painted over, in the
-    upscale, with the wall around them (a masked blur), plus the frame's grain."""
-    from scipy import ndimage as ndi
-    x0, y0, x1, y1 = [v * S for v in rect]
-    sub = img[y0:y1, x0:x1].astype(np.float32)
-    h, w = sub.shape[0] // S, sub.shape[1] // S
-    sm = sub[:h * S, :w * S].reshape(h, S, w, S, 3).mean((1, 3))
-    r, g, b = sm[..., 0], sm[..., 1], sm[..., 2]
-    luma = 0.299 * r + 0.587 * g + 0.114 * b
-    wallish = ndi.gaussian_filter(((r > 140) & (r > 1.25 * g) & (g > 1.2 * b)).astype(np.float32), 4) > 0.45
-    text = wallish & (luma - ndi.median_filter(luma, 15) > 9)
-    text = ndi.binary_opening(text, iterations=1)
-    rows, cols = np.flatnonzero(text.sum(1) >= 2), np.flatnonzero(text.sum(0) >= 1)
-    if not len(rows):
-        return img
-    band = np.zeros_like(text)                          # the whole line of lettering: its rows (± 3 px), from its first
-    band[max(0, rows.min() - 3):rows.max() + 4, max(0, cols.min() - 3):] = True   # letter on, wherever there is wall
-    text = band & ndi.binary_dilation(wallish, iterations=1)
-    big = np.zeros(sub.shape[:2], bool); big[:h * S, :w * S] = np.kron(text, np.ones((S, S), bool))
-    big = ndi.binary_dilation(big, iterations=5)
-    keep = np.zeros(sub.shape[:2], bool); keep[:h * S, :w * S] = np.kron(wallish, np.ones((S, S), bool))
-    keep &= ~big
-    kf = keep.astype(np.float32)
-    if kf.sum() < 500:
-        return img
-    def mblur(sig):
-        num = np.stack([ndi.gaussian_filter(sub[..., c] * kf, sig) for c in range(3)], -1)
-        den = ndi.gaussian_filter(kf, sig)[..., None]
-        return num / np.maximum(den, 1e-6), den
-    fill, den = mblur(26)
-    wide, den2 = mblur(90)                              # far from any wall pixel: a wider look, then the wall's median
-    fill = np.where(den > 0.05, fill, np.where(den2 > 0.02, wide, np.median(sub[keep], axis=0)))
-    a = ndi.gaussian_filter(big.astype(np.float32), 4)[..., None]
-    out = img.copy()
-    out[y0:y1, x0:x1] = (sub * (1 - a) + fill * a).clip(0, 255).astype(np.uint8)
-    return out
-
-
 def erase(img, kind, rect):
     """takes the shop's print off a business card: the card is found by colour inside rect (upscaled px) and whatever
     of another colour sits inside its outline is painted with the card's own colour, softly."""
     from scipy import ndimage as ndi
-    if kind == "wall":
-        return wall(img, rect)
     import cv2
     x0, y0, x1, y1 = [v * S for v in rect]
     sub = img[y0:y1, x0:x1].copy()
     f = sub.astype(np.float32); r, g, b = f[..., 0], f[..., 1], f[..., 2]
     if kind == "red_card":                 # a red card with the logo printed light on it, often reaching its edge
         card = (r > 120) & (r > 1.7 * g) & (r > 1.7 * b)
-        lab, n = ndi.label(ndi.binary_opening(card, iterations=2))
+        pale = (r > 150) & (r > 1.42 * g) & (r - g > 65) & (r > 1.5 * b)  # its print, pink where it blurs into the red
+        lab, n = ndi.label(ndi.binary_opening(card | pale, iterations=2))  # (his skin is never that red: r ≈ 1.2–1.3 g)
         if not n:
             return img
         sizes = ndi.sum(card, lab, range(1, n + 1)); k = 1 + int(np.argmax(sizes))
-        if sizes[k - 1] < 600:
+        if sizes[k - 1] < 400:
             return img
         pts = np.argwhere(lab == k)[:, ::-1].astype(np.int32)
         hull = np.zeros(card.shape, np.uint8); cv2.fillConvexPoly(hull, cv2.convexHull(pts), 1)
         luma = 0.299 * r + 0.587 * g + 0.114 * b
-        cl = np.median(luma[lab == k])
-        skin = (b < 0.85 * g) & (g > 0.62 * r)                              # his fingers on the card (the print: g ≈ 0.52 r)
-        face = ndi.binary_erosion(hull.astype(bool), iterations=2) & ~skin   # the whole card face is repainted plain red,
-        near = ndi.binary_dilation(hull.astype(bool), iterations=12)          # (+ the light strip of print on its edge:
-        face |= near & ~skin & ((f.min(-1) > 185) | ((r > 1.25 * g) & (luma > cl + 8)))   # white or pink, not the grey wall)
-        plain = (lab == k) & (luma <= cl + 6)                                # from its own unprinted red (its shading kept)
-        fill = np.stack([ndi.gaussian_filter(f[..., c] * plain, 14) for c in range(3)], -1) / np.maximum(ndi.gaussian_filter(plain.astype(np.float32), 14), 1e-3)[..., None]
+        cl = np.median(luma[(lab == k) & card])
+        hb = hull.astype(bool)
+        skin = (g > 0.76 * r) & (g < 0.91 * r) & (r > 140) & (b > 0.7 * g)   # skin (g ≈ 0.83 r) — not the beige wall
+        sl, _ = ndi.label(skin)                      # (g ≈ 0.95 r) nor the card's pale print (g ≈ 0.65–0.72 r): his hand
+        out_ = ~ndi.binary_dilation(hb, iterations=6)                       # is the skin that reaches out past the card
+        ids = np.unique(sl[skin & out_]); hand = np.isin(sl, ids[ids > 0])
+        hand = ndi.binary_dilation(hand, iterations=7) & ~card              # (+ his fingertips' rim and nails)
+        face = ndi.binary_erosion(hb, iterations=2) & ~hand                 # the whole card face is repainted plain red,
+        near = ndi.binary_dilation(hb, iterations=12) & ~ndi.binary_dilation(skin, iterations=3)   # (+ the light
+        face |= near & ~hand & ((f.min(-1) > 185) | ((r > 1.25 * g) & (luma > cl + 8)))   # strip of print on its edge:
+        plain = (lab == k) & card & (luma <= cl + 6)     # white or pink, not the grey wall; never his face's skin)
+        num = np.stack([ndi.gaussian_filter(f[..., c] * plain, 14) for c in range(3)], -1)
+        den = ndi.gaussian_filter(plain.astype(np.float32), 14)[..., None]   # from its own unprinted red (its shading kept;
+        fill = np.where(den > 0.05, num / np.maximum(den, 1e-3), np.median(f[plain], 0))   # far from any: its median red)
         a = ndi.gaussian_filter(face.astype(np.float32), 2.5)[..., None]
         out = img.copy()
         out[y0:y1, x0:x1] = (f * (1 - a) + fill * a).clip(0, 255).astype(np.uint8)
         return out
-    else:                                  # a white card with the logo's red star
-        mark = (r > 90) & (r > 1.6 * g) & (r > 1.6 * b)      # in its rect only the star is that red (his skin is not)
-    mark = ndi.binary_dilation(mark, iterations=6)
+    # a white card with the shop's red star: the star is the red that sits on the card (its ring is the card's light
+    # grey, not skin — the shading of his fingers under the card is that red too); painted with the card around it
+    red = (r > 90) & (r > 1.6 * g) & (r > 1.6 * b)
+    luma = 0.299 * r + 0.587 * g + 0.114 * b
+    cardish = (f.max(-1) - f.min(-1) < 45) & (luma > 140)
+    lab, n = ndi.label(ndi.binary_closing(red, iterations=2))
+    mark = np.zeros(red.shape, bool)
+    for k in range(1, n + 1):
+        comp = lab == k
+        if comp.sum() < 30:
+            continue
+        ring = ndi.binary_dilation(comp, iterations=8) & ~comp
+        if cardish[ring].mean() > 0.4:
+            mark |= comp
     if mark.sum() < 30:
         return img
+    mark = ndi.binary_dilation(ndi.binary_fill_holes(ndi.binary_closing(mark, iterations=6)), iterations=8)
+    plain = (cardish & (luma > 165) & ~mark).astype(np.float32)
+    num = np.stack([ndi.gaussian_filter(f[..., c] * plain, 10) for c in range(3)], -1)
+    den = ndi.gaussian_filter(plain, 10)[..., None]
+    fill = np.where(den > 0.05, num / np.maximum(den, 1e-3), np.median(f[plain > 0], 0))
+    a = ndi.gaussian_filter(mark.astype(np.float32), 2.5)[..., None]
     out = img.copy()
-    out[y0:y1, x0:x1] = cv2.inpaint(sub, mark.astype(np.uint8) * 255, 7, cv2.INPAINT_TELEA)
+    out[y0:y1, x0:x1] = (f * (1 - a) + fill * a).clip(0, 255).astype(np.uint8)
     return out
 
 

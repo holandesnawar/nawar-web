@@ -14,17 +14,19 @@ T0 = 135 / 25            # the reel starts at source frame 135 (Suárez walking 
 END = 40.08              # …and ends before the brand voice-over («Alleen bij …», 40.20)
 
 # (who, Dutch, Spanish): m = the shop assistant, s = Suárez
-PHRASES = [      # v2 (after QA): whole clauses where a half would flash by, no article cut from its noun; «we» as said
+PHRASES = [      # v3 (after QA): whole clauses where a half would flash by, no article cut from its noun; «we» as said;
+                 # every phrase fits two lines at the one subtitle size
     ("m", "Ah, een sportman", "Ah, un deportista"),
     ("m", "van Ajax.", "del Ajax."),
     ("m", "Ja, beroemde club.", "Sí, un club famoso."),
     ("m", "Cruijff, Keizer, Abe Lenstra.", "Cruijff, Keizer, Abe Lenstra."),
-    ("m", "Wat kan ik voor u oplossen?", "¿Qué le puedo solucionar?"),
+    ("m", "Wat kan ik voor u oplossen?", "¿En qué le puedo ayudar?"),
     ("s", "Ja, ik hoorde iets over", "Sí, oí algo sobre"),
     ("s", "één antifluitregeling.", "un control antipitidos."),
     ("m", "Ah, u bedoelt ons hoortoestel", "Ah, se refiere a nuestro audífono"),
     ("m", "met geavanceerde antifluitregeling.", "con control antipitidos avanzado."),
-    ("m", "Voorkomt dat u irritante fluittonen hoort.", "Evita que oiga pitidos molestos."),
+    ("m", "Voorkomt dat u", "Evita que oiga"),
+    ("m", "irritante fluittonen hoort.", "pitidos molestos."),
     ("s", "Ja, heel irritant.", "Sí, muy molesto."),
     ("s", "Zij fluiten", "Ellos pitan"),
     ("s", "veel te vaak tegen mij.", "demasiadas veces en mi contra."),
@@ -42,7 +44,7 @@ PHRASES = [      # v2 (after QA): whole clauses where a half would flash by, no 
 
 
 # (phrase, word) → (start, end) in source seconds: «hè?» after «langskomen» (37.68–37.82 by its waveform; not in Scribe)
-OVERRIDE = {(20, 3): (37.68, 37.84)}
+OVERRIDE = {(21, 3): (37.68, 37.84)}
 
 
 def norm(w):

@@ -12,12 +12,18 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
   antes de recortar, con un grano fino para que no quede con aspecto de cera y un poco más de contraste y color que el original.
 - **Sin marca:**
   - no aparece el rótulo de la tienda;
-  - el texto de la pared («De hoorspecialist») queda fuera de cada encuadre;
-  - se borra lo impreso en las dos tarjetas de visita (`LOGOS`).
-- **Título:** «📚 Aprendiendo neerlandés con Luis Suárez 🇳🇱», grande desde el primer fotograma (gancho y portada). A los 3 s pasa a una etiqueta pequeña arriba («Neerlandés con Luis Suárez»), para no tapar las caras en los primeros planos.
+  - el texto de la pared («De hoorspecialist») queda fuera de cada encuadre: los planos que lo rozan tienen el borde
+    derecho un poco a su izquierda, sin borrar nada (así no se toca la oreja del dependiente);
+  - la tarjeta roja se repinta entera de rojo liso, sin tocar los dedos, y a la blanca se le quita la estrella (`LOGOS`).
+- **Título:** «📚 Aprendiendo neerlandés con Luis Suárez 🇳🇱», grande sobre el pecho desde el primer fotograma (gancho y
+  portada). A los 3 s pasa a una etiqueta pequeña arriba («Neerlandés con Luis Suárez»), que se aparta en los primeros
+  planos para no tapar los ojos.
 - **Subtítulos:** por frases cortas, sincronizados palabra a palabra (ElevenLabs Scribe):
-  - el holandés grande y en mayúsculas, con la palabra que se está diciendo en amarillo;
-  - el español debajo, en una pastilla gris.
+  - el holandés grande y en mayúsculas, todo al mismo tamaño y en dos líneas como mucho, con la palabra que se está
+    diciendo en amarillo;
+  - el español debajo, en una pastilla gris;
+  - en los primeros planos de Suárez el bloque sube un poco para que se le vean los labios (cambia de altura solo en
+    los cortes).
 
   El español conserva los juegos de palabras del anuncio:
   - «fluiten» → pitar: los árbitros le pitan;
@@ -43,7 +49,7 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v2.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v3.mp4
 ```
 
 Para cambiar una traducción o cortar una frase de otra manera, edita `PHRASES` en `tools/subs.py` y ejecuta
