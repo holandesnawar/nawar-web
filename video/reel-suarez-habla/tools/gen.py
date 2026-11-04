@@ -12,9 +12,10 @@ import html, json, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 YEL = "#FFE11B"
-NL_TOP, NL_W, NL_CX = 372, 830, 495    # the Dutch block (frame px), high: his face fills the frame, so the subtitles sit
-NL_SIZE = 76                           # on his hair and his eyes and mouth stay in sight; clear of Instagram's header
-                                       # and button rail (x > 912); one size, two lines at most
+NL_TOP, NL_W, NL_CX = 372, 940, 540    # the Dutch block (frame px), high: his face fills the frame, so the subtitles sit
+NL_SIZE = 76                           # on his hair and his eyes and mouth stay in sight; under Instagram's header and
+                                       # above its button rail (x > 912 from y ≈ 814), so the block can be wider than in
+                                       # the first reel; one size, two lines at most («|» in tools/subs.py breaks them)
 TAG_AT = 3.0                           # the title card (the hook and the cover) becomes the small pill at the top here
 MIN_ON = 0.6                           # a one-word phrase opens a little early (after the last word before it)
 
@@ -63,12 +64,13 @@ def main():
         words = p["words"]
         on = ons[k]
         off = min(ons[k + 1], words[-1]["end"] + 0.7) if k + 1 < len(subs) else D
-        spans = " ".join(f'<span id="w{k}-{i}" class="w">{html.escape(w["text"])}</span>' for i, w in enumerate(words))
+        spans = " ".join(('<span class="br"></span> ' if i in p.get("breaks", []) else "") +
+                         f'<span id="w{k}-{i}" class="w">{html.escape(w["text"])}</span>' for i, w in enumerate(words))
         who = f'<div class="who glass">{MIC}<span>Periodista</span></div>' if p["who"] == "r" else ""
         body.append(f'      <div id="p{k}" class="ph">{who}<div class="nl">{spans}</div>'
                     f'<div class="es"><span>{html.escape(p["es"])}</span></div></div>')
         js.append(f'      tl.set("#p{k}", {{ opacity: 1 }}, {on:.3f});')
-        js.append(f'      tl.fromTo("#p{k} .nl", {{ scale: 0.86 }}, {{ scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }}, {on:.3f});')
+        js.append(f'      tl.fromTo("#p{k} .nl", {{ scale: 0.86 }}, {{ scale: 1, duration: 0.16, ease: "back.out(1.6)", immediateRender: false }}, {on:.3f});')
         js.append(f'      tl.set("#p{k}", {{ opacity: 0 }}, {off:.3f});')
         for i, w in enumerate(words):
             t1 = words[i + 1]["t"] - 0.03 if i + 1 < len(words) else off
@@ -100,9 +102,10 @@ def main():
         color: #FFFFFF; -webkit-text-stroke: 10px #000; paint-order: stroke fill; text-shadow: 0 6px 16px rgba(0,0,0,0.5);
         transform-origin: 50% 60%; }}
       .w {{ display: inline-block; color: #FFFFFF; }}
+      .br {{ flex-basis: 100%; height: 0; }}
       .es span {{ display: inline-block; max-width: {NL_W}px; padding: 10px 26px 12px; border-radius: 18px; text-align: center;
         background: rgba(78,78,84,0.78); color: #FFFFFF; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 46px;
-        line-height: 1.2; letter-spacing: -0.005em; }}
+        line-height: 1.2; letter-spacing: -0.005em; text-wrap: balance; }}
     </style>
   </head>
   <body>

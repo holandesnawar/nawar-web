@@ -15,27 +15,29 @@ from frame import SEGMENTS, FPS  # noqa: E402
 PHRASES = [
     ("r", "Het was spannend.", "Fue emocionante."),
     ("s", "Wie?", "¿Quién?"),
-    ("r", "De wedstrijd was spannend, denk ik.", "El partido fue emocionante, creo."),
+    ("r", "De wedstrijd was|spannend, denk ik.", "El partido fue emocionante, creo."),
     ("s", "Ja, klein beetje.", "Sí, un poquito."),
     ("r", "Feestje gevierd?", "¿Hubo fiestecita?"),
     ("s", "Sorry?", "¿Perdón?"),
-    ("r", "Feest. Feestje gevierd?", "Fiesta. ¿Hubo fiestecita?"),
-    ("s", "Ah, nee, nee, nee, nee.", "Ah, no, no, no, no."),
-    ("s", "Wij echt blij. Echt tevreden.", "Nosotros muy contentos. Muy satisfechos."),
+    ("r", "Feest.|Feestje gevierd?", "Fiesta. ¿Hubo fiestecita?"),
+    ("s", "Ah, nee, nee,|nee, nee.", "Ah, no, no, no, no."),
+    ("s", "Wij echt blij.|Echt tevreden.", "Nosotros muy contentos. Muy satisfechos."),
     ("s", "Maar nu is klaar", "Pero ya se acabó"),
-    ("s", "omdat wij hebben volgende wedstrijd", "porque tenemos el próximo partido"),
-    ("s", "in, in vier… negen en veertig uur.", "en, en cuatro… cuarenta y nueve horas."),
-    ("r", "Ben je blij dat je in de spits staat?", "¿Estás contento de jugar de delantero?"),
-    ("s", "Ja, voor mij maakt niet uit.", "Sí, a mí me da igual."),
-    ("s", "Ik wil spelen links, rechts,", "Quiero jugar por la izquierda, por la derecha,"),
-    ("s", "in de spits, op tien ook.", "de delantero, de diez también."),
-    ("s", "Voor mij maakt niet uit.", "A mí me da igual."),
-    ("s", "Ik wil spelen. Trainer weet.", "Quiero jugar. El entrenador sabe."),
-    ("r", "Je hebt geen liefste positie?", "¿No tienes una posición favorita?"),
-    ("r", "De positie waar je het graagst op speelt.", "La posición en la que más te gusta jugar."),
+    ("s", "omdat wij hebben|volgende wedstrijd", "porque tenemos el próximo partido"),
+    ("s", "in, in vier…|negen en veertig uur.", "en, en cuatro… cuarenta y nueve horas."),
+    ("r", "Ben je blij dat je|in de spits staat?", "¿Estás contento de jugar de delantero?"),
+    ("s", "Ja, voor mij|maakt niet uit.", "Sí, a mí me da igual."),
+    ("s", "Ik wil spelen|links, rechts,", "Quiero jugar por la izquierda, por la derecha,"),
+    ("s", "in de spits,|op tien ook.", "de delantero, de diez también."),
+    ("s", "Voor mij|maakt niet uit.", "A mí me da igual."),
+    ("s", "Ik wil spelen.|Trainer weet.", "Quiero jugar. El entrenador sabe."),
+    ("r", "Je hebt geen|liefste positie?", "¿No tienes una posición favorita?"),
+    ("r", "De positie waar je", "La posición en la que"),
+    ("r", "het graagst|op speelt.", "más te gusta jugar."),
     ("s", "Nee, nee, nee, nee.", "No, no, no, no."),
-    ("s", "Voor mij geen probleem. Geen probleem.", "Para mí no hay problema. Ningún problema."),
-    ("s", "Ik wil alleen maar spelen.", "Yo solo quiero jugar."),
+    ("s", "Voor mij|geen probleem.", "Para mí no hay problema."),
+    ("s", "Geen probleem.", "Ningún problema."),
+    ("s", "Ik wil alleen|maar spelen.", "Yo solo quiero jugar."),
 ]
 SKIP = {"uh"}
 
@@ -65,7 +67,7 @@ def main():
             continue
         for part in re.split(r"(?<=\w)-(?=\w)", w["text"]):          # «Ik-ik» → «Ik» «ik» (stutters)
             sc.append({"text": part, "start": t0, "end": t1})
-    A = [(p, w) for p, (_, nl, _) in enumerate(PHRASES) for w in nl.split()]
+    A = [(p, w) for p, (_, nl, _) in enumerate(PHRASES) for w in nl.replace("|", " ").split()]
     a, b = [norm(w) for _, w in A], [norm(w["text"]) for w in sc]
     times = [None] * len(A)
     for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, a, b, autojunk=False).get_opcodes():
@@ -96,7 +98,9 @@ def main():
     out = []
     for p, (who, nl, es) in enumerate(PHRASES):
         ws = [(w, times[k]) for k, (pp, w) in enumerate(A) if pp == p]
-        out.append({"who": who, "es": es, "words": [{"text": w, "t": round(t[0], 3), "end": round(t[1], 3)} for w, t in ws]})
+        brk = [len(part.split()) for part in nl.split("|")[:-1]]          # «|»: the Dutch line breaks before word i
+        brk = [sum(brk[:i + 1]) for i in range(len(brk))]
+        out.append({"who": who, "es": es, "breaks": brk, "words": [{"text": w, "t": round(t[0], 3), "end": round(t[1], 3)} for w, t in ws]})
     json.dump({"phrases": out}, open(os.path.join(ROOT, "subs.json"), "w"), ensure_ascii=False, indent=1)
     print(f"subs.json: {len(out)} phrases, {len(A)} words; timed from neighbours: {missing}")
 
