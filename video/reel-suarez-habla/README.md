@@ -17,21 +17,25 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
   con Real-ESRGAN («realesr-general-x4v3», en ONNX y en CPU), se mezcla con un 40 % de ampliación normal y lleva un grano
   fino, para que la piel no quede de cera.
 - **Sin marca:** el texto «SPORTWEEK» del micrófono se pinta con el rojo del propio micrófono (`mic()`), en todos los
-  fotogramas, también cuando el borde del encuadre corta el micrófono. Se comprueba fotograma a fotograma antes de ampliar.
+  fotogramas, también cuando el borde del encuadre corta el micrófono (hasta el borde mismo). Se comprueba fotograma a
+  fotograma antes de ampliar. El primer fotograma (la portada) es una copia del segundo: en el original pasa el micrófono.
 - **Título:** tarjeta blanca esmerilada (estilo Apple), «Aprendiendo neerlandés» y, debajo y en grande, «con Luis
-  Suárez», con la bandera redonda de Países Bajos, durante los 3 primeros segundos (gancho y portada), bajo su boca.
+  Suárez», con la bandera redonda de Países Bajos, durante los 3 primeros segundos (gancho y portada), sobre la barbilla,
+  sin tapar los labios (más compacta que en el primer reel).
   Después queda una pastilla pequeña arriba, «Neerlandés con Luis Suárez».
 - **Subtítulos:** por frases, sincronizados palabra a palabra (ElevenLabs Scribe, comprobado con una segunda pasada):
   - el holandés va grande, en mayúsculas, todo al mismo tamaño, con la palabra que se dice en amarillo;
   - el español va debajo, en una pastilla gris, en una línea siempre que cabe (si no, cortada a mano con «|»);
   - van arriba, sobre el pelo, porque su cara llena el plano: así se le ven los ojos y la boca (las de Suárez, un poco
-    más arriba que las del periodista, para no rozarle las cejas);
+    más arriba que las del periodista, y las de dos líneas más aún, para no rozarle las cejas);
   - las frases del periodista, que no sale en el plano, llevan una pastilla «Periodista»;
   - el holandés roto de Suárez se deja tal cual («Wij echt blij», «Trainer weet»); solo se quitan los «uh» y las
-    repeticiones.
-- **Sonido:** el de la entrevista, con un filtro de graves a 90 Hz (el viento y los golpes del micrófono de mano), la
-  voz del periodista 6 dB más baja (está pegado al micrófono y sonaba mucho más fuerte que Suárez), a −14 LUFS y con
-  fundidos cortos en cada corte.
+    repeticiones;
+  - una frase no pasa nunca de un momento al siguiente, y entre dos frases seguidas no queda ningún fotograma vacío.
+- **Sonido:** el de la entrevista, con un filtro de graves a 90 Hz (el viento y los golpes del micrófono de mano) y
+  fundidos cortos en cada corte. La voz del periodista va más baja, porque está pegado al micrófono y sonaba mucho más
+  fuerte que Suárez: 6 dB, 10 dB en el segundo momento y 8 dB en el último, que sube 3 dB porque Suárez habla ahí más
+  bajo (`REPORTER_DB`, `SEG_DB`). Todo a −14 LUFS, con el pico real por debajo de −2,5 dBTP.
 
 ## Estructura
 
@@ -50,7 +54,7 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v2.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v3.mp4
 ```
 
 Para cambiar una traducción, edita `PHRASES` en `tools/subs.py` y ejecuta `python3 tools/subs.py && python3 tools/gen.py`.

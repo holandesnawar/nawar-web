@@ -82,7 +82,7 @@ def smooth(det):
     return np.clip(x, C_MIN, C_MAX)
 
 
-FACE_M = 18                                # source px of margin between his face and the window's edges
+FACE_M = 24                                # source px of margin between his face and the window's edges
 
 
 def mic(win):
@@ -122,14 +122,17 @@ def mic(win):
     ext = core.copy()
     le, be = body[:, :3].any(1), body[-3:, :].any(0)
     L, B = le.sum() > 8, be.sum() > 8
+    i_l, i_b = np.flatnonzero(le), np.flatnonzero(be)
+    Q = 15
+    bp = np.pad(body, Q, mode="constant", constant_values=False)
     if L:                                                      # where the frame's edge cuts the mic, the cut is part
-        i0 = np.flatnonzero(le)                                # of its outline (to the corner, if both edges are cut)
-        pad[i0.min() + P:(None if B else i0.max() + 1 + P), :P] = True
-        ext[i0.min():(None if B else i0.max() + 1), 0] = True
+        pad[i_l.min() + P:(None if B else i_l.max() + 1 + P), :P] = True   # of its outline (to the corner, if both
+        bp[i_l.min() + Q:(None if B else i_l.max() + 1 + Q), :Q] = True    # edges are cut), and the mic goes on
+        ext[i_l.min():(None if B else i_l.max() + 1), 0] = True            # past it
     if B:
-        i0 = np.flatnonzero(be)
-        pad[-P:, (0 if L else i0.min() + P):i0.max() + 1 + P] = True
-        ext[-1, (0 if L else i0.min()):i0.max() + 1] = True
+        pad[-P:, (0 if L else i_b.min() + P):i_b.max() + 1 + P] = True
+        bp[-Q:, (0 if L else i_b.min() + Q):i_b.max() + 1 + Q] = True
+        ext[-1, (0 if L else i_b.min()):i_b.max() + 1] = True
     hull = np.zeros(body.shape, np.uint8)
     cv2.fillPoly(hull, [cv2.convexHull(np.argwhere(ext)[:, ::-1].astype(np.int32))], 1)
     hull = ndi.binary_dilation(hull.astype(bool), iterations=2)
@@ -137,7 +140,7 @@ def mic(win):
     region &= hull
     light = ((f.min(-1) > 120) | ((r > 170) & (g > 0.62 * r))) & ndi.binary_dilation(body, iterations=6) & region
     inside = (region & ~body) | light
-    redfrac = ndi.uniform_filter(body.astype(np.float32), 31, mode="nearest")
+    redfrac = ndi.uniform_filter(bp.astype(np.float32), 31, mode="constant")[Q:-Q, Q:-Q]
     inside &= redfrac > 0.3                                    # on the mic: never the shirt or the stands next to it
     if inside.sum() < 30:
         return win
@@ -204,6 +207,8 @@ def picture():
         cs = tr[str(a)]["centre"]
         assert len(cs) >= b - a + 1, "re-run --track: the segments changed"
         for k, f in enumerate(stream(a, b)):
+            if (a, k) == (SEGMENTS[0][0], 0):                      # the very first frame (the cover) catches the
+                continue                                           # reporter's mic swinging out: frame 1 stands in
             left = cs[k] - WIN / 2                                 # the window's left edge, sub-pixel
             x0 = int(np.floor(left))
             fx = f.copy()
@@ -217,69 +222,83 @@ def picture():
             lz = np.asarray(Image.fromarray(crop).resize((1080, 1920), Image.LANCZOS, box=(left - c0, 0, left - c0 + WIN, H)), np.float32)
             img = es * (1 - LANCZOS_MIX) + lz * LANCZOS_MIX
             img += rng.normal(0, 2.0, img.shape[:2])[..., None]   # a fine grain: no waxy upscale look
-            enc.stdin.write(img.clip(0, 255).astype(np.uint8).tobytes())
-            done += 1
+            for _ in range(2 if (a, k) == (SEGMENTS[0][0], 1) else 1):
+                enc.stdin.write(img.clip(0, 255).astype(np.uint8).tobytes())
+                done += 1
             if done % 50 == 0:
                 print(f"  {done}/{total}  {time.time() - t0:.0f}s", flush=True)
     enc.stdin.close(); enc.wait(); assert enc.returncode == 0
 
 
-REPORTER_DB = -6                           # the reporter is off screen and close to the mic: 5–8 LU louder than Suárez
-FADE_OUT = [0.025, 0.06, 0.025, 0.025]     # each moment's sound fades out over this (the 2nd ends on a voiced «m»)
+REPORTER_DB = [-6, -10, -6, -8]            # the reporter's lines, per moment: he is off screen and close to the mic (5–8 LU
+                                           # louder than Suárez; in the 2nd moment closer still; the 4th has SEG_DB +3)
+REPORTER_EXTRA = [(33.32, 34.99, -3), (35.88, 36.58, 3)]   # (reel s) «Je hebt geen liefste positie?» louder again;
+                                           # «…het graagst op speelt» trails off
+SEG_DB = [0, 0, 0, 3]                      # each moment's own gain: the last one is quieter (his answers 3–5 LU under the middle)
+FADE_OUT = [(0.025, 0), (0.025, 0.01), (0.025, 0), (0.025, 0)]   # each moment's sound fades out over this, then this much
+                                           # silence (the 2nd ends on the voiced «m» of a dropped «Maar»: faded before it)
+PAD, RAMP = 0.06, 0.06                     # the reporter's words ± PAD, ramped over RAMP (inside the pause, by his voice)
 
 
 def sound():
     """the interview's own sound under each moment, joined with short fades; a high-pass at 90 Hz (the handheld mic's
-    wind and handling rumble, and the low thump of the reporter's «p»s); the reporter's lines 6 dB down (Scribe's
-    speaker_1, ramped over 80 ms); −14 LUFS in two passes (linear), true peak under −2 dBTP → .raw/sound.wav."""
-    import wave
+    wind and handling rumble, and the low thump of the reporter's «p»s); the reporter's lines down (Scribe's speaker_1,
+    REPORTER_DB per moment), each moment's gain (SEG_DB); then −14 LUFS in two passes, true peak under −2.5 dBTP →
+    .raw/sound.wav. (The intermediates are 32-bit float: the high-pass lifts the source's −2.5 dBFS peaks over 0 dBFS.
+    loudnorm's 2nd pass runs in its dynamic mode, a slow gain and a limiter, since a linear +4.7 dB would break the
+    true-peak target: it evens the moments out; the mode is printed.)"""
     parts, filt = [], []
     for i, (a, b) in enumerate(SEGMENTS):
         d = (b - a + 1) / FPS
         parts += ["-ss", f"{a / FPS:.3f}", "-t", f"{d:.3f}", "-i", SRC]
-        fo = FADE_OUT[i]
-        filt.append(f"[{i}:a]aresample=48000,atrim=0:{d:.3f},asetpts=PTS-STARTPTS,afade=t=in:d=0.025,afade=t=out:st={d - fo:.3f}:d={fo}[a{i}]")
+        fo, gap = FADE_OUT[i]
+        filt.append(f"[{i}:a]aresample=48000,atrim=0:{d:.3f},asetpts=PTS-STARTPTS,afade=t=in:d=0.025,"
+                    f"afade=t=out:st={d - fo - gap:.3f}:d={fo}[a{i}]")
     n = len(SEGMENTS)
     filt.append("".join(f"[a{i}]" for i in range(n)) + f"concat=n={n}:v=0:a=1,highpass=f=90:poles=2[out]")
-    pre = os.path.join(ROOT, ".raw", "sound_pre.wav")
-    subprocess.run(["ffmpeg", "-v", "error", "-y", *parts, "-filter_complex", ";".join(filt), "-map", "[out]", "-ar", "48000", "-ac", "2",
-                    "-c:a", "pcm_s16le", pre], check=True)
+    sr = 48000
+    pre = os.path.join(ROOT, ".raw", "sound_pre.f32")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", *parts, "-filter_complex", ";".join(filt), "-map", "[out]", "-ar", str(sr), "-ac", "2",
+                    "-f", "f32le", pre], check=True)
+    x = np.fromfile(pre, "<f4").reshape(-1, 2).astype(np.float64)
+    tt = np.arange(len(x)) / sr
     # the reporter's words (reel seconds), merged where they are less than 0.3 s apart
     words = [w for w in json.load(open(os.path.join(ROOT, ".raw", "scribe.json")))["words"]
              if w.get("type") == "word" and w.get("speaker_id") == "speaker_1"]
-    win, t = [], 0.0
-    for a, b in SEGMENTS:
+    win, t, starts = [], 0.0, []
+    for i, (a, b) in enumerate(SEGMENTS):
         s0, s1 = a / FPS, (b + 1) / FPS
+        starts.append(t)
         for w in words:
             if s0 <= w["start"] < s1:
-                win.append([t + w["start"] - s0 - 0.12, t + min(w["end"], s1) - s0 + 0.12])
+                win.append([t + w["start"] - s0 - PAD, t + min(w["end"], s1) - s0 + PAD, REPORTER_DB[i]])
         t += (b - a + 1) / FPS
     win.sort(); merged = []
-    for a, b in win:
+    for a, b, db in win:
         if merged and a - merged[-1][1] < 0.3:
             merged[-1][1] = max(merged[-1][1], b)
         else:
-            merged.append([a, b])
-    with wave.open(pre) as wf:
-        sr, nch = wf.getframerate(), wf.getnchannels()
-        x = np.frombuffer(wf.readframes(wf.getnframes()), np.int16).reshape(-1, nch).astype(np.float32)
-    tt = np.arange(len(x)) / sr
-    duck = np.zeros(len(x), np.float32); R = 0.08
-    for a, b in merged:
-        duck = np.maximum(duck, np.clip((tt - a + R) / R, 0, 1) * np.clip((b + R - tt) / R, 0, 1))
-    x *= (1 - (1 - 10 ** (REPORTER_DB / 20)) * duck)[:, None]
-    ducked = os.path.join(ROOT, ".raw", "sound_duck.wav")
-    with wave.open(ducked, "wb") as wf:
-        wf.setnchannels(nch); wf.setsampwidth(2); wf.setframerate(sr)
-        wf.writeframes(x.clip(-32768, 32767).astype(np.int16).tobytes())
-    m = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", ducked, "-af", "loudnorm=I=-14:TP=-2:LRA=11:print_format=json",
+            merged.append([a, b, db])
+    gdb = np.zeros(len(x))
+    for i, t0 in enumerate(starts):
+        gdb[tt >= t0] = SEG_DB[i]
+    for a, b, db in merged + REPORTER_EXTRA:
+        gdb += db * np.clip((tt - a + RAMP) / RAMP, 0, 1) * np.clip((b + RAMP - tt) / RAMP, 0, 1)
+    x *= (10 ** (gdb / 20))[:, None]
+    ducked = os.path.join(ROOT, ".raw", "sound_duck.f32")
+    x.astype("<f4").tofile(ducked)
+    src = ["-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", ducked]
+    m = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", *src, "-af", "loudnorm=I=-14:TP=-2.5:LRA=11:print_format=json",
                         "-f", "null", "-"], capture_output=True, text=True).stderr
     m = json.loads(m[m.rindex("{"):m.rindex("}") + 1])
-    ln = (f"loudnorm=I=-14:TP=-2:LRA=11:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
-          f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true")
+    ln = (f"loudnorm=I=-14:TP=-2.5:LRA=11:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
+          f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true:print_format=json")
     snd = os.path.join(ROOT, ".raw", "sound.wav")
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", ducked, "-af", ln, "-ar", "48000", "-ac", "2", snd], check=True)
-    print(f"sound: {len(merged)} reporter lines ducked {REPORTER_DB} dB; measured {m['input_i']} LUFS → −14")
+    r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-y", *src, "-af", ln, "-ar", str(sr), "-ac", "2", snd],
+                       capture_output=True, text=True, check=True).stderr
+    r = json.loads(r[r.rindex("{"):r.rindex("}") + 1])
+    print(f"sound: {len(merged)} reporter lines down {REPORTER_DB} dB; measured {m['input_i']} LUFS, {m['input_tp']} dBTP "
+          f"→ {r['output_i']} LUFS, {r['output_tp']} dBTP ({r['normalization_type']})")
     return snd
 
 

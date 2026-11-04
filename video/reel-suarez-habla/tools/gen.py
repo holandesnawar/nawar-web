@@ -20,6 +20,9 @@ TAG_AT = 3.0                           # the title card (the hook and the cover)
 MIN_ON = 0.6                           # a phrase on screen for less than this opens a little early (after the last word
                                        # before it); one that stays long enough after its word (up to 0.7 s) does not
 S_LIFT = 36                            # Suárez's lines (no «Periodista» pill over them) sit this much higher: clear of his brows
+S_LIFT2 = 60                           # (his two-line blocks, taller, higher still)
+LIFT = {11: 15}                        # and these a little more («in vier… in achtenveertig»: he raises his brows)
+BRIDGE = 0.25                          # a gap shorter than this between two phrases is closed (no one-frame blink)
 
 FLAG = ('<svg viewBox="0 0 48 48" aria-hidden="true"><defs><clipPath id="{id}"><circle cx="24" cy="24" r="24"/></clipPath></defs>'
         '<g clip-path="url(#{id})"><rect width="48" height="16" fill="#AE1C28"/><rect y="16" width="48" height="16" fill="#FFFFFF"/>'
@@ -33,12 +36,14 @@ LABEL_CSS = """
         box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 18px 50px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.10); color: #1D1D1F;
         font-family: "Inter", sans-serif; }}
       .row {{ position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; }}
+      /* (the title card more compact than in the first reel: it sits on his chin, between his lips and the caption band) */
       #card {{ display: flex; flex-direction: column;
-        align-items: center; gap: 2px; padding: 22px 48px 26px; border-radius: 44px; white-space: nowrap; }}
-      #card .kick {{ display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 44px; letter-spacing: -0.015em;
+        align-items: center; gap: 0; padding: 10px 34px 12px; border-radius: 30px; white-space: nowrap;
+        box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 10px 30px rgba(0,0,0,0.22), 0 2px 6px rgba(0,0,0,0.10); }}
+      #card .kick {{ display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 32px; letter-spacing: -0.015em;
         color: #1D0084; line-height: 1.1; }}
-      #card .kick svg {{ width: 46px; height: 46px; display: block; }}
-      #card .big {{ font-weight: 700; font-size: 80px; letter-spacing: -0.03em; line-height: 1.02; }}
+      #card .kick svg {{ width: 34px; height: 34px; display: block; }}
+      #card .big {{ font-weight: 700; font-size: 54px; letter-spacing: -0.03em; line-height: 1.02; }}
       #tag {{ display: flex; align-items: center; gap: 12px;
         padding: 10px 28px 10px 12px; border-radius: 999px; white-space: nowrap; opacity: 0; font-weight: 600; font-size: 32px;
         letter-spacing: -0.01em; line-height: 1; }}
@@ -55,6 +60,7 @@ def main():
     D = meta["duration"]
     subs = json.load(open(os.path.join(ROOT, "subs.json")))["phrases"]
     body, js = [], []
+    cuts = [s["reel"] for s in meta["segments"][1:]]          # the hard cuts between the moments: no phrase crosses one
     ons = []
     for k, p in enumerate(subs):
         words = p["words"]
@@ -62,15 +68,19 @@ def main():
         nxt = subs[k + 1]["words"][0]["t"] - 0.05 if k + 1 < len(subs) else D
         if min(nxt, words[-1]["end"] + 0.7) - on < MIN_ON and k:
             on = max(subs[k - 1]["words"][-1]["end"] + 0.03, min(on, words[-1]["end"] - MIN_ON))
+        on = max([on] + [c for c in cuts if c <= words[0]["t"]])
         ons.append(on)
     for k, p in enumerate(subs):
         words = p["words"]
         on = ons[k]
         off = min(ons[k + 1], words[-1]["end"] + 0.7) if k + 1 < len(subs) else D
+        if k + 1 < len(subs) and ons[k + 1] - off < BRIDGE:
+            off = ons[k + 1]
+        off = min([off] + [c for c in cuts if c > on])
         spans = " ".join(('<span class="br"></span> ' if i in p.get("breaks", []) else "") +
                          f'<span id="w{k}-{i}" class="w">{html.escape(w["text"])}</span>' for i, w in enumerate(words))
         who = f'<div class="who glass">{MIC}<span>Periodista</span></div>' if p["who"] == "r" else ""
-        top = NL_TOP - (S_LIFT if p["who"] == "s" else 0)
+        top = NL_TOP - ((S_LIFT2 if p.get("breaks") else S_LIFT) if p["who"] == "s" else 0) - LIFT.get(k, 0)
         body.append(f'      <div id="p{k}" class="ph" style="top: {top}px">{who}<div class="nl">{spans}</div>'
                     f'<div class="es"><span>{html.escape(p["es"]).replace("|", "<br>")}</span></div></div>')
         js.append(f'      tl.set("#p{k}", {{ opacity: 1 }}, {on:.3f});')
@@ -100,7 +110,7 @@ def main():
       #shade-top {{ top: 0; height: 760px; background: linear-gradient(180deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.10) 55%, rgba(0,0,0,0) 100%); }}
 {LABEL_CSS}
       .ph {{ position: absolute; left: {NL_CX - 505}px; top: {NL_TOP}px; width: 1010px; display: flex; flex-direction: column; align-items: center;
-        gap: 12px; opacity: 0; }}
+        gap: 6px; opacity: 0; }}
       .nl {{ width: {NL_W}px; font-size: {NL_SIZE}px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 0.26em; row-gap: 0;
         font-family: "Poppins", sans-serif; font-weight: 900; line-height: 1.02; text-transform: uppercase; letter-spacing: -0.01em;
         color: #FFFFFF; -webkit-text-stroke: 10px #000; paint-order: stroke fill; text-shadow: 0 6px 16px rgba(0,0,0,0.5);
@@ -108,7 +118,7 @@ def main():
       .w {{ display: inline-block; color: #FFFFFF; }}
       .br {{ flex-basis: 100%; height: 0; }}
       .es span {{ display: inline-block; white-space: nowrap; padding: 8px 24px 10px; border-radius: 18px; text-align: center;
-        background: rgba(78,78,84,0.78); color: #FFFFFF; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 44px;
+        background: rgba(78,78,84,0.78); color: #FFFFFF; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 42px;
         line-height: 1.2; letter-spacing: -0.005em; }}
     </style>
   </head>
@@ -124,7 +134,7 @@ def main():
       window.__timelines = window.__timelines || {{}};
       const tl = gsap.timeline({{ paused: true }});
       // the title card from the first frame (the cover); at {TAG_AT} s it lifts away and the small pill settles at the top
-      tl.to("#card", {{ y: -20, scale: 0.94, opacity: 0, duration: 0.32, ease: "power2.inOut" }}, {TAG_AT});
+      tl.to("#card", {{ scale: 0.92, opacity: 0, duration: 0.32, ease: "power2.inOut" }}, {TAG_AT});
       tl.fromTo("#tag", {{ opacity: 0, y: 18, scale: 0.94 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out", immediateRender: false }}, {TAG_AT + 0.24});
 {chr(10).join(js)}
       window.__timelines["main"] = tl;
@@ -136,7 +146,8 @@ def main():
     print(f"index.html: {D}s, {len(subs)} subtitle phrases")
 
 
-CARD_TOP = 1310                        # the title card under his mouth, over his chin and collar (above the caption band)
+CARD_TOP = 1400                        # the title card on his chin, under his lower lip (≈1390 when he smiles), and only
+                                       # a few px into the caption band
 
 
 if __name__ == "__main__":

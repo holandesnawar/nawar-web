@@ -32,3 +32,16 @@ más estilo Apple, bonito.»
 - **Etiquetas nuevas, estilo Apple** (blanco esmerilado, Inter, bandera redonda), también en el primer reel (v4).
 - **Subtítulos** como en el primer reel. Aquí su cara llena el plano, así que van arriba, sobre el pelo, y se le ven los
   ojos y la boca. Las frases del periodista llevan una pastilla «Periodista».
+
+## Correcciones de la v3 (revisión de la v2)
+
+- **Micrófono:** ya no quedan puntas blancas de letras donde el borde del encuadre corta el micrófono (a los 1,3 s,
+  4 s, 10,5 s y 37 s).
+- **Portada:** el primer fotograma ya no lleva la mancha roja del micrófono que salía del plano (es una copia del segundo).
+- **Título:** la tarjeta, más compacta, va sobre la barbilla y ya no le tapa el labio de abajo.
+- **Subtítulos:** las frases de Suárez en dos líneas suben un poco más (ya no tocan las cejas); ninguna frase pasa al
+  momento siguiente ni parpadea; «in vier… in achtenveertig uur» sin la repetición; «op» se marca con el primer «op»;
+  «Por mí, no hay problema».
+- **Encuadre:** más margen a los lados de la cara (24 px del original en vez de 18).
+- **Sonido:** el periodista del segundo momento, más bajo (ya no salta entre «Feestje gevierd?» y «Sorry?»), y el
+  último momento, más alto (las respuestas de Suárez ya no se quedan 4–5 LU por debajo).

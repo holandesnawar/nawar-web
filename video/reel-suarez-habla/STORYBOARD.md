@@ -1,6 +1,6 @@
-# Storyboard · Reel «Suárez habla neerlandés» v2 (42,4 s)
+# Storyboard · Reel «Suárez habla neerlandés» v3 (42,4 s)
 
-- **Título (0–3 s, portada):** tarjeta blanca esmerilada bajo su boca, con la bandera redonda de Países Bajos:
+- **Título (0–3 s, portada):** tarjeta blanca esmerilada sobre la barbilla, bajo los labios, con la bandera redonda de Países Bajos:
   «Aprendiendo neerlandés» y, debajo y en grande, «con Luis Suárez». A los 3 s se aparta y queda una pastilla pequeña
   arriba, «Neerlandés con Luis Suárez».
 - **Subtítulos:** el holandés en mayúsculas, todo al mismo tamaño, con la palabra que se dice en amarillo; el español
@@ -28,7 +28,7 @@
 | 12,3–14,2 | Suárez | Wij echt blij. Echt tevreden. | Muy contentos. Muy satisfechos. |
 | 14,3–16,0 | Suárez | Maar nu is klaar | Pero ya se acabó |
 | 16,0–18,3 | Suárez | omdat wij hebben volgende wedstrijd | porque tenemos el próximo partido |
-| 18,4–20,9 | Suárez | in, in vier… in achtenveertig uur. | en cuatro… en cuarenta y ocho horas. |
+| 18,4–20,9 | Suárez | in vier… in achtenveertig uur. | en cuatro… en cuarenta y ocho horas. |
 | 21,3–22,8 | Periodista | Ben je blij dat je in de spits staat? | ¿Contento de jugar de delantero? |
 | 24,1–25,3 | Suárez | Ja, voor mij maakt niet uit. | Sí, a mí me da igual. |
 | 25,4–27,0 | Suárez | Ik wil spelen links, rechts, | Quiero jugar por la izquierda, por la derecha, |
@@ -39,6 +39,6 @@
 | 35,0–35,9 | Periodista | De positie waar je… | La posición en la que… |
 | 35,9–36,6 | Periodista | …het graagst op speelt. | …más te gusta jugar. |
 | 36,9–37,5 | Suárez | Nee, nee, nee, nee. | No, no, no, no. |
-| 37,8–39,3 | Suárez | Voor mij geen probleem. | Para mí no hay problema. |
+| 37,8–39,3 | Suárez | Voor mij geen probleem. | Por mí, no hay problema. |
 | 39,6–40,2 | Suárez | Geen probleem. | Ningún problema. |
 | 40,3–42,0 | Suárez | Ik wil alleen maar spelen. | Yo solo quiero jugar. |

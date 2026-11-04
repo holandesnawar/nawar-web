@@ -2,7 +2,7 @@
 """The subtitles: what is said, phrase by phrase (Dutch as said, Spanish under it), timed word by word from ElevenLabs
 Scribe's transcript of the interview (.raw/scribe.json; checked against a second pass, .raw/scribe_v1.json). Suárez's
 broken Dutch is kept as he says it («Wij echt blij», «Voor mij maakt niet uit», «Trainer weet»); only the «uh»s and
-the stutters («Ik-ik», «is-is», «Ben je, ben je») are left out. «r» is the reporter (off screen: a small label says so).
+the stutters («Ik-ik», «is-is», «in, in vier», «op, op tien», «Ben je, ben je») are left out. «r» is the reporter (off screen: a small label says so).
   python3 tools/subs.py      → subs.json (reel times)
 """
 import difflib, json, os, re, sys, unicodedata
@@ -24,7 +24,7 @@ PHRASES = [
     ("s", "Wij echt blij.|Echt tevreden.", "Muy contentos. Muy satisfechos."),
     ("s", "Maar nu is klaar", "Pero ya se acabó"),
     ("s", "omdat wij hebben|volgende wedstrijd", "porque tenemos el próximo partido"),
-    ("s", "in, in vier… in|achtenveertig uur.", "en cuatro… en cuarenta y ocho horas."),
+    ("s", "in vier… in|achtenveertig uur.", "en cuatro… en cuarenta y ocho horas."),
     ("r", "Ben je blij dat je|in de spits staat?", "¿Contento de jugar de delantero?"),
     ("s", "Ja, voor mij|maakt niet uit.", "Sí, a mí me da igual."),
     ("s", "Ik wil spelen|links, rechts,", "Quiero jugar por la izquierda,|por la derecha,"),
@@ -35,7 +35,7 @@ PHRASES = [
     ("r", "De positie waar je…", "La posición en la que…"),
     ("r", "…het graagst|op speelt.", "…más te gusta jugar."),
     ("s", "Nee, nee, nee, nee.", "No, no, no, no."),
-    ("s", "Voor mij|geen probleem.", "Para mí no hay problema."),
+    ("s", "Voor mij|geen probleem.", "Por mí, no hay problema."),
     ("s", "Geen probleem.", "Ningún problema."),
     ("s", "Ik wil alleen|maar spelen.", "Yo solo quiero jugar."),
 ]
@@ -43,8 +43,9 @@ SKIP = {"uh"}
 # times set by ear and by the waveform where Scribe is off (reel seconds): (phrase, word, the word, start, end)
 FIX = [(5, 0, "Sorry?", 7.48, 8.02),                                       # (the drawn-out «Sss…» is heard from 7.48)
        (7, 1, "nee,", 10.56, 10.86), (7, 2, "nee,", 11.20, 11.66), (7, 3, "nee,", 11.72, 11.90), (7, 4, "nee.", 11.96, 12.22),
-       (11, 3, "in", 19.57, 19.70), (11, 4, "achtenveertig", 19.72, 20.58),   # Scribe: «negen en veertig»; he says
+       (11, 2, "in", 19.57, 19.70), (11, 3, "achtenveertig", 19.72, 20.58),   # Scribe: «negen en veertig»; he says
                                                                            # «in achtenveertig» (48: [a], [x], 2 syllables)
+       (15, 3, "op", 28.21, 28.46),                                         # «op, op tien»: the first «op» counts
        (17, 0, "Ik", 30.58, 30.84),                                         # «Ik, ik wil spelen» (Scribe: «Ik-ik» at 30.94)
        (19, 2, "waar", 35.46, 35.56), (19, 3, "je…", 35.58, 35.86)]       # «waar je het, waar je het graagst»
 
