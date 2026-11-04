@@ -74,3 +74,25 @@ principio, solo molesta.»
   botones. «en cuatro… / en cuarenta y ocho horas» va en dos líneas.
 - **Sin «Periodista».**
 - Las dos versiones siguen: con la tarjeta grande arriba y solo subtítulos.
+
+## Petición de la v6 (cliente, 4 nov 2026)
+
+«Quería algo así para los primeros segundos arriba, sin que tape la cara de él [una captura con el texto de Instagram:
+"Hablando neerlandés sin miedo como Luis Suárez" con 📚 y 🇳🇱]. Para el final, me gustaría algo con la voz de ElevenLabs
+presentando nuestro ebook: "habla sin miedo también como Luis Suárez, nuestro ebook para Black Friday por 1 euro, comenta
+OFERTA y te enviamos los detalles". Así se apuntan a la lista y ya pueden comprar el ebook: genera alcance y venta a la
+vez. Tenemos un vídeo chulo para presentarlo, te lo dejo en la carpeta, y usamos nuestro estilo como siempre, pero no tan
+llamativo. Ya está en la carpeta MARIO.»
+
+- **Gancho:** el texto de la captura, en tres líneas equilibradas con los emojis a los lados de la del medio, como en
+  ella; los 3,3 primeros segundos, sobre el pelo (y 204–420), sin tocarle las cejas. Sustituye a la tarjeta: la v6 es una
+  sola versión.
+- **El vídeo del ebook:** en «MARIO» está «Animación libro interactivo.html» (la misma animación que «Animación Libro»
+  del anuncio de Black Friday, pero en HTML, con fondo transparente y nítida). Se convierte en vídeo transparente
+  fotograma a fotograma, sin la sombra (como en el anuncio de Black Friday).
+- **La voz:** «Nawar Def» (la voz en español peninsular de la cuenta), con el texto del cliente ordenado: «Habla
+  neerlandés sin miedo, como Luis Suárez. Nuestro ebook, Holandés sin miedo, este Black Friday por solo un euro. Comenta
+  OFERTA y te enviamos los detalles.» Comprobada con Scribe: se transcribe igual.
+- **Estilo «no tan llamativo»:** el azul y las pastillas del anuncio de Black Friday, sin las filas gigantes ni los
+  golpes; la música de ese anuncio, muy de fondo. En el cierre no sale Suárez (no parece que él anuncie el ebook).
+- La oferta y la fecha («1 €», «hasta el 30 de noviembre») son las del anuncio de Black Friday.

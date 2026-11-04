@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 # Rebuilds the reel «Suárez habla neerlandés» from the client's Drive folder, so the repo only carries sources.
 # Run from the project root:  bash tools/fetch_assets.sh
-# Needs: curl, ffmpeg, python3 (numpy, scipy, pillow, opencv-python-headless<5, onnx, onnxruntime); the ElevenLabs key as
-# a network secret (api.elevenlabs.io, header xi-api-key) for the transcript; ../reel-suarez for the upscaler converter.
+# Needs: curl, ffmpeg (with libvpx), node + playwright, python3 (numpy, scipy, pillow, soundfile, opencv-python-headless<5, onnx,
+# onnxruntime); the ElevenLabs key as
+# a network secret (api.elevenlabs.io, header xi-api-key) for the transcript and the voice-over; ../reel-suarez for the
+# upscaler converter; ../ugc-nawar-bf for the fonts, gsap and the whoosh.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 RAW=.raw && mkdir -p "$RAW" assets/video assets/fonts assets/vendor
 echo "the interview (Drive folder «Luis Suárez»: «Luis Suarez habla Nederlands», 4:17, 1280×720, 25 fps)"
 curl -sS -L --fail --retry 3 -o "$RAW/habla.mp4" "https://drive.usercontent.google.com/download?id=1Mqy1DWnBXp7L960UrXfz6x4-fSxtaUnp&export=download&confirm=t"
 echo "brand fonts and gsap from the UGC Black Friday project"
-cp ../ugc-nawar-bf/assets/fonts/poppins-latin-{700,900}-normal.woff2 ../ugc-nawar-bf/assets/fonts/inter-latin-{600,700}-normal.woff2 assets/fonts/
+cp ../ugc-nawar-bf/assets/fonts/poppins-latin-{700,800,900}-normal.woff2 ../ugc-nawar-bf/assets/fonts/inter-latin-{600,700}-normal.woff2 assets/fonts/
 cp ../ugc-nawar-bf/assets/vendor/gsap.min.js assets/vendor/
 echo "the transcript with word times (ElevenLabs Scribe, and a second pass to check it)"
 ffmpeg -v error -y -i "$RAW/habla.mp4" -vn -ac 1 -ar 16000 "$RAW/habla16k.wav"
@@ -25,6 +27,15 @@ curl -sS -L --fail -o "$RAW/yunet.onnx" https://media.githubusercontent.com/medi
 python3 tools/frame.py --track
 python3 tools/frame.py          # ~1.5 h on CPU
 python3 tools/subs.py
+echo "the closing ad: the ebook animation («Animación libro interactivo.html», folder «MARIO»), the BF ad's music and whoosh, the voice-over"
+mkdir -p "$RAW/outro"
+curl -sS -L --fail --retry 3 -o "$RAW/outro/libro.html" "https://drive.usercontent.google.com/download?id=1Hl0djiY93k8BA3-BdPS8rPrn6SbmbSL8&export=download&confirm=t"
+curl -sS -L --fail --retry 3 -o "$RAW/outro/music.mp3" "https://drive.usercontent.google.com/download?id=1iMcSFRAOoly8OG6jDt3ENBwSntuhA8FL&export=download&confirm=t"
+cp ../ugc-nawar-bf/assets/sfx/whoosh-short.mp3 "$RAW/outro/whoosh.mp3"
+# the voice-over is not versioned (only its words and times, outro.json): a new take is generated if it is missing,
+# and outro.json is rewritten with its times
+[ -f "$RAW/outro/voz.mp3" ] || python3 tools/outro.py voz
+python3 tools/outro.py libro
+python3 tools/outro.py audio
 python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v5-tarjeta.mp4"
-echo "(the version without the card: python3 tools/gen.py --sin-tarjeta, then render to renders/reel-suarez-habla-v5-solo-subtitulos.mp4)"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v6.mp4"

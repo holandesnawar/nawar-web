@@ -21,11 +21,9 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 - **Sin marca:** el texto «SPORTWEEK» del micrófono se pinta con el rojo del propio micrófono (`mic()`), en todos los
   fotogramas, también cuando el borde del encuadre corta el micrófono (hasta el borde mismo). Se comprueba fotograma a
   fotograma antes de ampliar. El primer fotograma (la portada) es una copia del segundo: en el original pasa el micrófono.
-- **Dos versiones (v5)**, para elegir:
-  - **con tarjeta** (`python3 tools/gen.py`): arriba, todo el reel, una tarjeta blanca esmerilada grande (estilo Apple),
-    «Aprendiendo neerlandés» y, debajo y en grande, «con Luis Suárez», con la bandera redonda de Países Bajos; es también
-    la portada;
-  - **solo subtítulos** (`python3 tools/gen.py --sin-tarjeta`): sin tarjeta.
+- **Gancho (v6):** los 3 primeros segundos, arriba y sobre el pelo, con el aspecto del texto de Instagram (blanco, en
+  negrita, con una sombra suave y emojis): «Hablando neerlandés / 📚 sin miedo como 🇳🇱 / Luis Suárez». Es también la
+  portada. Los emojis son imágenes de Noto Color Emoji (`assets/img/emoji-*.png`, que crea `tools/gen.py`).
 - **Subtítulos:** por frases, sincronizados palabra a palabra (ElevenLabs Scribe, comprobado con una segunda pasada):
   - el holandés va grande, en mayúsculas, todo al mismo tamaño, con la palabra que se dice en amarillo;
   - el español va debajo, en una pastilla gris, en una línea siempre que cabe (si no, cortada a mano con «|»);
@@ -39,6 +37,22 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
   fuerte que Suárez: 6 dB, 10 dB en el segundo momento y 8 dB en el último, que sube 3 dB porque Suárez habla ahí más
   bajo (`REPORTER_DB`, `SEG_DB`). Todo a −14 LUFS, con el pico real por debajo de −2,5 dBTP.
 
+- **Cierre (v6, `tools/outro.py` → `compositions/outro.html`, 12,3 s):** al acabar la entrevista, la imagen pasa a azul
+  Nawar (el fondo del anuncio de Black Friday) y una voz presenta el ebook:
+  «Habla neerlandés sin miedo, como Luis Suárez. Nuestro ebook, Holandés sin miedo, este Black Friday por solo un euro.
+  Comenta OFERTA y te enviamos los detalles.» (ElevenLabs, la voz «Nawar Def»; `outro.json` guarda sus palabras y tiempos).
+  - arriba, «Habla neerlandés» y la pastilla blanca «sin miedo», cada una con su palabra;
+  - en el centro, el ebook: la animación del cliente («Animación libro interactivo.html», carpeta «MARIO») convertida en
+    vídeo transparente fotograma a fotograma (su reloj se sustituye por uno que se fija desde fuera) y sin sombra. Sale
+    cerrado, se abre en «ebook», pasa tres páginas y se cierra otra vez en la portada;
+  - en «Black Friday», la pastilla amarilla «Black Friday · por solo 1 €» (el «1 €» late en «euro») y «hasta el 30 de
+    noviembre»;
+  - en «Comenta», un campo de comentario blanco donde se escribe «OFERTA» letra a letra, con su botón de enviar, y debajo
+    «y te enviamos los detalles»;
+  - el sonido: la voz a −15 LUFS (pico real por debajo de −2,5 dBTP), la música «musica v1» del anuncio de Black Friday
+    muy de fondo (20 LU por debajo) y un whoosh suave en el paso a azul;
+  - todo dentro de las zonas seguras de Instagram; en el cierre no sale Suárez.
+
 ## Estructura
 
 | Ruta | Qué es |
@@ -48,7 +62,9 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 | `subs.json` | Subtítulos con el tiempo de cada palabra (lo genera `tools/subs.py`) |
 | `tools/subs.py` | Las frases en holandés y en español (`PHRASES`), alineadas con la transcripción de Scribe |
 | `tools/frame.py` | El corte, el seguimiento de la cara, el borrado del micrófono, la ampliación y el sonido → `assets/video/habla-916.mp4` |
-| `tools/gen.py` | La composición: la tarjeta (o `--sin-tarjeta`) y los subtítulos |
+| `tools/gen.py` | La composición: el gancho, los subtítulos y el cierre (`compositions/outro.html`) |
+| `tools/outro.py` | El cierre: la voz (ElevenLabs), el ebook en vídeo transparente y su sonido |
+| `outro.json` | La voz del cierre: el texto, la voz y el tiempo de cada palabra |
 | `tools/fetch_assets.sh` | Lo reconstruye todo desde el Drive |
 
 ## Reconstruir y renderizar
@@ -56,10 +72,7 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v5-tarjeta.mp4
-python3 tools/gen.py --sin-tarjeta
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v5-solo-subtitulos.mp4
-python3 tools/gen.py
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v6.mp4
 ```
 
 Para cambiar una traducción, edita `PHRASES` en `tools/subs.py` y ejecuta `python3 tools/subs.py && python3 tools/gen.py`.
