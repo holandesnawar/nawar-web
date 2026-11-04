@@ -19,15 +19,16 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 - **Sin marca:** el texto «SPORTWEEK» del micrófono se pinta con el rojo del propio micrófono (`mic()`), en todos los
   fotogramas, también cuando el borde del encuadre corta el micrófono (hasta el borde mismo). Se comprueba fotograma a
   fotograma antes de ampliar. El primer fotograma (la portada) es una copia del segundo: en el original pasa el micrófono.
-- **Título:** tarjeta blanca esmerilada (estilo Apple), «Aprendiendo neerlandés» y, debajo y en grande, «con Luis
-  Suárez», con la bandera redonda de Países Bajos, durante los 3 primeros segundos (gancho y portada), sobre la barbilla,
-  sin tapar los labios (más compacta que en el primer reel).
-  Después queda una pastilla pequeña arriba, «Neerlandés con Luis Suárez».
+- **Dos versiones (v4)**, para elegir:
+  - **con tarjeta** (`python3 tools/gen.py`): arriba, todo el reel, una tarjeta blanca esmerilada grande (estilo Apple),
+    «Aprendiendo neerlandés» y, debajo y en grande, «con Luis Suárez», con la bandera redonda de Países Bajos; es también
+    la portada;
+  - **solo subtítulos** (`python3 tools/gen.py --sin-tarjeta`): sin tarjeta.
 - **Subtítulos:** por frases, sincronizados palabra a palabra (ElevenLabs Scribe, comprobado con una segunda pasada):
   - el holandés va grande, en mayúsculas, todo al mismo tamaño, con la palabra que se dice en amarillo;
   - el español va debajo, en una pastilla gris, en una línea siempre que cabe (si no, cortada a mano con «|»);
-  - van arriba, sobre el pelo, porque su cara llena el plano: así se le ven los ojos y la boca (las de Suárez, un poco
-    más arriba que las del periodista, y las de dos líneas más aún, para no rozarle las cejas);
+  - van abajo, sobre la barbilla: por encima de la franja del texto de Instagram (y ≤ 1500) y a la izquierda de su
+    columna de botones (x < 912), con una sombra suave debajo;
   - las frases del periodista, que no sale en el plano, llevan una pastilla «Periodista»;
   - el holandés roto de Suárez se deja tal cual («Wij echt blij», «Trainer weet»); solo se quitan los «uh» y las
     repeticiones;
@@ -46,7 +47,7 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 | `subs.json` | Subtítulos con el tiempo de cada palabra (lo genera `tools/subs.py`) |
 | `tools/subs.py` | Las frases en holandés y en español (`PHRASES`), alineadas con la transcripción de Scribe |
 | `tools/frame.py` | El corte, el seguimiento de la cara, el borrado del micrófono, la ampliación y el sonido → `assets/video/habla-916.mp4` |
-| `tools/gen.py` | La composición: título, etiqueta y subtítulos |
+| `tools/gen.py` | La composición: la tarjeta (o `--sin-tarjeta`) y los subtítulos |
 | `tools/fetch_assets.sh` | Lo reconstruye todo desde el Drive |
 
 ## Reconstruir y renderizar
@@ -54,7 +55,10 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v3.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v4-tarjeta.mp4
+python3 tools/gen.py --sin-tarjeta
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v4-solo-subtitulos.mp4
+python3 tools/gen.py
 ```
 
 Para cambiar una traducción, edita `PHRASES` en `tools/subs.py` y ejecuta `python3 tools/subs.py && python3 tools/gen.py`.

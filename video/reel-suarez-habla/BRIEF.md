@@ -45,3 +45,16 @@ más estilo Apple, bonito.»
 - **Encuadre:** más margen a los lados de la cara (24 px del original en vez de 18).
 - **Sonido:** el periodista del segundo momento, más bajo (ya no salta entre «Feestje gevierd?» y «Sorry?»), y el
   último momento, más alto (las respuestas de Suárez ya no se quedan 4–5 LU por debajo).
+
+## Petición de la v4 (cliente, 4 nov 2026)
+
+«Subtítulos arriba no, mejor abajo. Arriba la tarjeta esa de aprendiendo neerlandés con Luis Suárez, pero tiene que ser
+algo más grande; ahora se ve pequeña. O mejor quita eso y deja solo subtítulos y su traducción abajo. Dame dos versiones
+para así elegir mejor.»
+
+- **Las dos versiones** llevan los subtítulos abajo, sobre la barbilla (el bloque se apoya en y = 1500, por encima de la
+  franja del texto de Instagram, y a la izquierda de su columna de botones). El holandés pasa de 76 a 66 px y el español
+  de 42 a 40 px, para que el bloque tape lo menos posible de la boca. La sombra de arriba pasa abajo.
+- **Con tarjeta:** la tarjeta del título, más grande (817 × 200 px en vez de la pastilla pequeña), arriba todo el reel.
+- **Solo subtítulos:** sin tarjeta ni pastilla.
+- La imagen y el sonido no cambian (los de la v3).

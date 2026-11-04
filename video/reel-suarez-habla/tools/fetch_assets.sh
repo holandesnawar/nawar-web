@@ -26,4 +26,5 @@ python3 tools/frame.py --track
 python3 tools/frame.py          # ~1.5 h on CPU
 python3 tools/subs.py
 python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v3.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v4-tarjeta.mp4"
+echo "(the version without the card: python3 tools/gen.py --sin-tarjeta, then render to renders/reel-suarez-habla-v4-solo-subtitulos.mp4)"
