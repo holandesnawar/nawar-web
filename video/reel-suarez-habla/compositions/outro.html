@@ -3,85 +3,131 @@
   <style>
     @font-face { font-family: "Poppins"; font-weight: 700; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
     @font-face { font-family: "Poppins"; font-weight: 800; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
-    @font-face { font-family: "Poppins"; font-weight: 900; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
-    @font-face { font-family: "Inter"; font-weight: 600; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
-    @font-face { font-family: "Inter"; font-weight: 700; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 100 900; src: url("assets/fonts/inter-var-latin.woff2") format("woff2"); }
 
-    #o-root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+    #o-root { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", sans-serif; color: #FFFFFF; }
     .o-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
-    .o-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
-    .o-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
-    .o-amb { position: absolute; left: 40px; top: 380px; width: 1000px; height: 980px; border-radius: 50%;
-      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.22) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
-    .o-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    /* the page's hero: indigo, two soft blue lights and a faint dot grid */
+    #o-ground { background: #1D0084; }
+    .o-luz1 { position: absolute; top: -280px; right: -320px; width: 1300px; height: 1300px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(11,109,240,0.42) 0%, rgba(11,109,240,0) 65%); }
+    .o-luz2 { position: absolute; bottom: -260px; left: -280px; width: 1150px; height: 1150px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(11,109,240,0.20) 0%, rgba(11,109,240,0) 65%); }
+    .o-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 2px, transparent 2.2px);
+      background-size: 52px 52px; }
     .o-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
-    #o-l1 { top: 222px; font-weight: 800; font-size: 86px; line-height: 1.04; letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
-    #o-l2 { top: 322px; }
-    .o-chip { display: inline-block; padding: 2px 26px 10px; border-radius: 22px; background: #FFFFFF; color: #1D0084;
-      font-weight: 800; font-size: 86px; line-height: 1.04; letter-spacing: -0.03em; white-space: nowrap; }
-    #o-book { position: absolute; left: 117px; top: 572px; width: 846px; height: 684px; }
+    /* the badge: «● BLACK FRIDAY · EBOOK NIVEL A0 – A1» */
+    #o-badge { top: 212px; }
+    .o-badge { display: flex; align-items: center; gap: 16px; height: 64px; padding: 0 32px 0 26px; border-radius: 999px;
+      background: #025DC7; color: #E0F2FF; font-weight: 700; font-size: 25px; letter-spacing: 0.14em; text-transform: uppercase;
+      white-space: nowrap; line-height: 1; }
+    .o-badge i { display: block; width: 14px; height: 14px; border-radius: 50%; background: #22C55E; box-shadow: 0 0 0 5px rgba(34,197,94,0.22); }
+    /* the headline, as the page's title: Poppins 700, the first line in a white gradient, the second in sky blue */
+    .o-h { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 96px; line-height: 1.08; letter-spacing: -0.03em;
+      white-space: nowrap; }
+    #o-l1 { top: 296px; }
+    #o-l1 span { background: linear-gradient(180deg, #FFFFFF 10%, rgba(255,255,255,0.55) 100%); -webkit-background-clip: text;
+      background-clip: text; -webkit-text-fill-color: transparent; color: transparent; padding: 0 6px; }
+    #o-l2 { top: 400px; color: #4DA3FF; }
+    /* the book, and the page's white seal over its corner */
+    #o-book { position: absolute; left: 117px; top: 520px; width: 846px; height: 684px; }
     #o-book video { position: absolute; left: 0; top: 0; width: 846px; height: 684px; display: block; }
-    #o-price { top: 446px; }
-    .o-ypill { display: flex; align-items: center; gap: 18px; height: 80px; padding: 0 36px; border-radius: 999px; background: #FFD60A;
-      color: #08070F; white-space: nowrap; font-weight: 800; font-size: 40px; line-height: 1; letter-spacing: -0.005em; }
-    .o-ypill i { display: block; width: 10px; height: 10px; border-radius: 50%; background: #08070F; }
-    #o-eur { display: inline-block; font-weight: 800; transform-origin: 50% 55%; }
-    #o-date { top: 534px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 29px; line-height: 1; color: rgba(255,255,255,0.88);
-      letter-spacing: 0.005em; }
-    #o-cta { top: 1290px; }
-    .o-field { display: flex; align-items: center; gap: 18px; width: 720px; height: 92px; padding: 0 22px 0 26px; border-radius: 999px;
-      background: #FFFFFF; white-space: nowrap; }
-    .o-field .o-ic { display: block; width: 46px; height: 46px; flex: 0 0 46px; }
-    .o-field .o-lab { font-family: "Inter", sans-serif; font-weight: 600; font-size: 34px; color: #5A6480; line-height: 1; }
-    #o-typed { font-weight: 800; font-size: 40px; color: #1D0084; line-height: 1; letter-spacing: 0.01em; }
-    #o-caret { display: block; width: 4px; height: 44px; border-radius: 2px; background: #0b6df0; margin-left: -12px; }
-    .o-field .o-fill { flex: 1 1 auto; }
-    #o-send { display: block; width: 58px; height: 58px; flex: 0 0 58px; transform-origin: 50% 50%; }
-    #o-cap { top: 1404px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 33px; line-height: 1; color: #FFFFFF; }
+    #o-seal { position: absolute; left: 58px; top: 566px; transform-origin: 30% 50%; }
+    .o-seal { position: relative; padding: 20px 30px 22px; border-radius: 28px; background: #FFFFFF; overflow: hidden; }
+    .o-seal .k { font-weight: 700; font-size: 25px; letter-spacing: 0.14em; color: #DC2626; line-height: 1; }
+    .o-seal .p { display: flex; align-items: flex-end; gap: 18px; margin-top: 28px; }   /* (the 112 px price keeps its own line box clear of the label) */
+    #o-eur { display: inline-block; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 112px; line-height: 1;
+      letter-spacing: -0.04em; color: #1D0084; transform-origin: 40% 60%; }
+    .o-seal s { font-family: "Poppins", sans-serif; font-weight: 600; font-size: 40px; color: #5B6380; line-height: 1; padding-bottom: 15px;
+      text-decoration-color: #DC2626; text-decoration-thickness: 4px; }
+    #o-shine { position: absolute; top: -40px; left: -160px; width: 110px; height: 320px; transform: rotate(18deg);
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 100%); opacity: 0.7; }
+    #o-off { position: absolute; left: 316px; top: -30px; transform-origin: 50% 50%; }
+    .o-off { padding: 12px 22px; border-radius: 999px; background: #E02D3C; color: #FFFFFF; font-family: "Poppins", sans-serif;
+      font-weight: 700; font-size: 38px; line-height: 1; white-space: nowrap; }
+    /* the page's light-blue ticker */
+    #o-band { position: absolute; left: -10px; top: 1222px; width: 1100px; height: 72px; background: #4DA3FF; overflow: hidden; }
+    #o-track { position: absolute; left: 0; top: 0; height: 72px; display: flex; align-items: center; white-space: nowrap; }
+    #o-track span { display: flex; align-items: center; gap: 16px; padding: 0 26px; color: #1D0084; font-weight: 700; font-size: 30px; line-height: 1; }
+    #o-track b { font-size: 26px; }
+    /* the social proof (until the call to action takes its place) */
+    #o-proof { top: 1330px; gap: 22px; }
+    .o-avs { display: flex; }
+    .o-avs span { display: flex; align-items: center; justify-content: center; width: 62px; height: 62px; margin-left: -16px; border-radius: 50%;
+      border: 4px solid #1D0084; color: #1D0084; font-weight: 800; font-size: 26px; }
+    .o-avs span:first-child { margin-left: 0; }
+    .o-stars { color: #FBBF24; font-size: 30px; letter-spacing: 4px; line-height: 1; }
+    .o-ptxt { font-weight: 700; font-size: 31px; line-height: 1.15; white-space: nowrap; }
+    /* the call to action: an Instagram comment field */
+    #o-cta { top: 1318px; }
+    .o-field { position: relative; display: flex; align-items: center; gap: 18px; width: 744px; height: 96px; padding: 0 30px 0 18px;
+      border-radius: 999px; background: #FFFFFF; white-space: nowrap; }
+    .o-av { display: block; width: 62px; height: 62px; flex: 0 0 62px; }
+    #o-ph { position: absolute; left: 98px; font-weight: 500; font-size: 32px; color: #8E8E8E; }
+    #o-typed { font-family: "Poppins", sans-serif; font-weight: 800; font-size: 40px; color: #0C0C1E; line-height: 1; letter-spacing: 0.02em; }
+    #o-caret { display: block; width: 4px; height: 46px; border-radius: 2px; background: #0095F6; margin-left: -14px; }
+    .o-fill { flex: 1 1 auto; }
+    #o-post { position: relative; font-weight: 700; font-size: 32px; color: #0095F6; }
+    #o-ripple { position: absolute; left: 50%; top: 50%; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%;
+      background: rgba(0,149,246,0.30); opacity: 0; }
+    #o-ok { top: 1432px; }
+    .o-ok { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 26px 0 14px; border-radius: 16px;
+      background: rgba(34,197,94,0.18); border: 2px solid rgba(34,197,94,0.55); font-weight: 700; font-size: 29px; white-space: nowrap; }
+    .o-ok svg { display: block; width: 36px; height: 36px; }
 
   </style>
-  <div id="o-root" data-composition-id="outro" data-width="1080" data-height="1920" data-duration="12.3">
+  <div id="o-root" data-composition-id="outro" data-width="1080" data-height="1920" data-duration="12.66">
 
-    <div id="o-ground" class="o-full o-blue"><div class="o-dots"></div><div class="o-amb"></div><div class="o-vig"></div></div>
-    <div id="o-book"><video id="o-v" class="clip" src="assets/video/libro.webm" muted playsinline data-start="0.3" data-duration="12.0" data-track-index="1"></video></div>
-    <div id="o-l1" class="o-row">Habla neerlandés</div>
-    <div id="o-l2" class="o-row"><span class="o-chip">sin miedo</span></div>
-    <div id="o-price" class="o-row"><div class="o-ypill"><span>Black Friday</span><i></i><span>por solo <span id="o-eur">1&nbsp;€</span></span></div></div>
-    <div id="o-date" class="o-row">hasta el 30 de noviembre</div>
-    <div id="o-cta" class="o-row"><div class="o-field"><svg class="o-ic" viewBox="0 0 48 48"><path d="M24 7 C13.5 7 6 13.9 6 22.3 c0 4.5 2.2 8.6 5.8 11.4 L10 41 l8.3 -4.2 c1.8 0.5 3.7 0.8 5.7 0.8 c10.5 0 18 -6.9 18 -15.3 S34.5 7 24 7 z" fill="none" stroke="#1D0084" stroke-width="4" stroke-linejoin="round"/></svg><span class="o-lab">Comenta</span><span id="o-typed"></span><span id="o-caret"></span><span class="o-fill"></span><svg id="o-send" viewBox="0 0 58 58"><circle cx="29" cy="29" r="29" fill="#0b6df0"/><path d="M17 28.5 L41 18 L33.5 41 L28.6 31.2 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2.4" stroke-linejoin="round"/><path d="M28.6 31.2 L41 18" stroke="#0b6df0" stroke-width="2.4" stroke-linecap="round"/></svg></div></div>
-    <div id="o-cap" class="o-row">y te enviamos los detalles</div>
+    <div id="o-ground" class="o-full"><div class="o-luz1"></div><div class="o-luz2"></div><div class="o-dots"></div></div>
+    <div id="o-badge" class="o-row"><div class="o-badge"><i></i><span>Black Friday · eBook nivel A0 – A1</span></div></div>
+    <div id="o-l1" class="o-row o-h"><span>Habla neerlandés</span></div>
+    <div id="o-l2" class="o-row o-h">sin miedo.</div>
+    <div id="o-book"><video id="o-v" class="clip" src="assets/video/libro.webm" muted playsinline data-start="0.3" data-duration="12.36" data-track-index="1"></video></div>
+    <div id="o-seal"><div class="o-seal"><div class="k">BLACK FRIDAY</div><div class="p"><span id="o-eur">1€</span><s>12,50&nbsp;€</s></div><div id="o-shine"></div></div>
+      <div id="o-off"><div class="o-off">−92&nbsp;%</div></div></div>
+    <div id="o-band"><div id="o-track"><span><b>✦</b>70 páginas</span><span><b>✦</b>Explicado en español</span><span><b>✦</b>Ejercicios con respuestas</span><span><b>✦</b>Tuyo para siempre</span><span><b>✦</b>Black Friday: −92 %</span><span><b>✦</b>Descarga al momento</span><span><b>✦</b>70 páginas</span><span><b>✦</b>Explicado en español</span><span><b>✦</b>Ejercicios con respuestas</span><span><b>✦</b>Tuyo para siempre</span><span><b>✦</b>Black Friday: −92 %</span><span><b>✦</b>Descarga al momento</span><span><b>✦</b>70 páginas</span><span><b>✦</b>Explicado en español</span><span><b>✦</b>Ejercicios con respuestas</span><span><b>✦</b>Tuyo para siempre</span><span><b>✦</b>Black Friday: −92 %</span><span><b>✦</b>Descarga al momento</span><span><b>✦</b>70 páginas</span><span><b>✦</b>Explicado en español</span><span><b>✦</b>Ejercicios con respuestas</span><span><b>✦</b>Tuyo para siempre</span><span><b>✦</b>Black Friday: −92 %</span><span><b>✦</b>Descarga al momento</span></div></div>
+    <div id="o-proof" class="o-row"><div class="o-avs"><span style="background: #4DA3FF">D</span><span style="background: #5EEAD4">M</span><span style="background: #A5B4FC">L</span><span style="background: #1D4ED8">+</span></div><div><div class="o-stars">★★★★★</div><div class="o-ptxt">Más de 40 personas ya lo tienen</div></div></div>
+    <div id="o-cta" class="o-row"><div class="o-field"><svg class="o-av" viewBox="0 0 62 62"><circle cx="31" cy="31" r="31" fill="#E6E8EF"/><circle cx="31" cy="25" r="11" fill="#A9AFBE"/><path d="M11 52 C14 41 22 37 31 37 C40 37 48 41 51 52 A30 30 0 0 1 11 52 Z" fill="#A9AFBE"/></svg><span id="o-ph">Añade un comentario…</span><span id="o-typed"></span><span id="o-caret"></span><span class="o-fill"></span><span id="o-post">Publicar<i id="o-ripple"></i></span></div></div>
+    <div id="o-ok" class="o-row"><div class="o-ok"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#22C55E"/><path d="M10 18.5 L15.5 24 L26 12.5" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Te enviamos los detalles por mensaje</span></div></div>
 
   </div>
   <script>
     (function () {
       const tl = gsap.timeline({ paused: true });
 
-      tl.fromTo("#o-ground", { opacity: 0 }, { opacity: 1, duration: 0.30, ease: "power2.out" }, 0);
-      tl.fromTo("#o-book", { opacity: 0, y: 40, scale: 0.93 }, { opacity: 1, y: 0, scale: 0.97, duration: 0.6, ease: "power3.out" }, 0.3);
-      // (closed, it is not still: it grows slowly to its size, reached just as it opens)
-      tl.to("#o-book", { scale: 1, duration: 3.2, ease: "sine.inOut" }, 0.9);
-      tl.fromTo("#o-l1", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.55);
-      tl.fromTo("#o-l2 .o-chip", { opacity: 0, scale: 0.88 }, { opacity: 1, scale: 1, duration: 0.42, ease: "back.out(1.5)" }, 1.446);
-      tl.fromTo("#o-price", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.40, ease: "power3.out" }, 6.058);
-      tl.fromTo("#o-eur", { scale: 1 }, { scale: 1.16, duration: 0.16, ease: "power2.out", yoyo: true, repeat: 1 }, 7.213);
-      tl.fromTo("#o-date", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 7.72);
-      tl.fromTo("#o-cta", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 7.936);
-      tl.fromTo("#o-cap", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 9.384);
-      tl.fromTo("#o-send", { scale: 1 }, { scale: 1.18, duration: 0.14, ease: "power2.out", yoyo: true, repeat: 1 }, 9.23);
-      tl.fromTo("#o-cta .o-field", { scale: 1 }, { scale: 1.04, duration: 0.22, ease: "sine.inOut", yoyo: true, repeat: 1 }, 11.3);
+      // everything comes in at once (0.2–0.8 s), the call to action last
+      tl.fromTo("#o-ground", { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.28, ease: "power2.out" }, 0.0);
+      tl.fromTo("#o-badge", { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.40, ease: "power3.out" }, 0.2);
+      tl.fromTo("#o-l1", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.28);
+      tl.fromTo("#o-l2", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.38);
+      tl.fromTo("#o-book", { opacity: 0, y: 70, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "power3.out" }, 0.3);
+      tl.fromTo("#o-band", { x: -1120 }, { x: 0, duration: 0.50, ease: "power3.out" }, 0.42);
+      tl.fromTo("#o-track", { xPercent: 0 }, { xPercent: -25, duration: 12.66, ease: "none" }, 0);
+      tl.fromTo("#o-seal", { opacity: 0, scale: 0.45, rotation: -14 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.50, ease: "back.out(1.8)" }, 0.52);
+      tl.fromTo("#o-off", { opacity: 0, scale: 0.2, rotation: 30 }, { opacity: 1, scale: 1, rotation: 8, duration: 0.40, ease: "back.out(2.2)" }, 0.66);
+      tl.fromTo("#o-proof", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.40, ease: "power3.out" }, 0.62);
+      tl.fromTo("#o-eur", { scale: 1 }, { scale: 1.14, duration: 0.16, ease: "power2.out", yoyo: true, repeat: 1 }, 7.558);
+      tl.to("#o-proof", { opacity: 0, y: 22, duration: 0.22, ease: "power2.in" }, 7.957);
+      tl.fromTo("#o-cta", { opacity: 0, y: 46, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.5)" }, 8.117);
+      tl.set("#o-ph", { opacity: 0 }, 8.902);
+      tl.fromTo("#o-post", { opacity: 0.4 }, { opacity: 1, duration: 0.15 }, 8.902);
+      tl.fromTo("#o-ripple", { opacity: 0.9, scale: 0.2 }, { opacity: 0, scale: 1.5, duration: 0.45, ease: "power2.out", immediateRender: false }, 9.58);
+      tl.fromTo("#o-cta .o-field", { scale: 1 }, { scale: 0.97, duration: 0.09, ease: "power2.out", yoyo: true, repeat: 1 }, 9.58);
+      tl.fromTo("#o-ok", { opacity: 0, y: 22, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "back.out(1.6)" }, 9.76);
+      tl.fromTo("#o-shine", { x: 0 }, { x: 620, duration: 0.75, ease: "power2.inOut" }, 11.56);
       (() => {                                               // «OFERTA» typed letter by letter (one state per letter: seek-safe)
         const el = document.getElementById("o-typed"), full = "OFERTA", typ = { n: 0 };
         el.textContent = "";
-        tl.fromTo(typ, { n: 0 }, { n: full.length, duration: 0.501, ease: "none", immediateRender: false,
-          onUpdate: () => { el.textContent = full.slice(0, Math.round(typ.n)); } }, 8.579);
+        tl.fromTo(typ, { n: 0 }, { n: full.length, duration: 0.578, ease: "none", immediateRender: false,
+          onUpdate: () => { el.textContent = full.slice(0, Math.round(typ.n)); } }, 8.902);
       })();
 
-      tl.set("#o-caret", { opacity: 1 }, 7.936);
-      tl.set("#o-caret", { opacity: 0 }, 8.186);
-      tl.set("#o-caret", { opacity: 1 }, 8.436);
-      tl.set("#o-caret", { opacity: 1 }, 8.579);
-      tl.set("#o-caret", { opacity: 0 }, 9.230);
+      tl.set("#o-caret", { opacity: 1 }, 8.117);
+      tl.set("#o-caret", { opacity: 0 }, 8.367);
+      tl.set("#o-caret", { opacity: 1 }, 8.617);
+      tl.set("#o-caret", { opacity: 0 }, 8.867);
+      tl.set("#o-caret", { opacity: 1 }, 8.902);
+      tl.set("#o-caret", { opacity: 0 }, 9.580);
       window.__timelines["outro"] = tl;
     })();
   </script>

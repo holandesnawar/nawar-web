@@ -110,3 +110,26 @@ fallo comprobado por otro agente:
   idéntica a la v5; el paso a azul no tiene fotogramas negros; el libro no se corta en ningún fotograma ni tiene halo; el
   volumen de la entrevista (−14,6 LUFS) y del cierre (−15,2 LUFS) casan, con el pico real a −2,2 dBTP; la voz se entiende
   entera; cada texto del cierre entra en su palabra.
+
+## Petición de la v7, la versión final (cliente, 4 nov 2026)
+
+«Me gustaría que saliese todo de una. Voz Yair Narration Spanish. Coge el diseño del título y lo que necesites en esta
+página propia del Black Friday del ebook: https://blackfriday.holandesnawar.com/ebook, y que salga casi todo de una para
+que la gente no se vaya; el final de "comenta OFERTA y te envío los detalles" sí está bien que aparezca el último. Algo
+más guay para el final. El principio, lo de "aprende neerlandés", sigue sin gustarme, muy Android: coge literalmente
+estos iconos, 📚 y 🇳🇱, letra Inter extra negrita, efecto contorno negro, tamaño 53 más o menos, algo así como en la
+foto [su maqueta: el título en tres líneas con contorno negro y los iconos de Apple a los lados], pero con los iconos
+mejor centrados. Tómate tu tiempo para esta versión final.»
+
+- **Gancho:** su maqueta, medida: Inter 800 (la de la propia página, variable), blanco, contorno negro de ≈ 7,5 % del
+  tamaño con esquinas redondeadas (sombras en dos anillos: el contorno de CSS deja picos en las tildes), tres líneas.
+  Los iconos son los de su maqueta, recortados de ella (el fondo blanco puro que toca el borde se quita; el blanco de las
+  páginas y de la franja de la bandera se queda), a ambos lados de la línea del medio y centrados en ella.
+- **Cierre:** el sistema de la página (índigo #1D0084 con luces azules y puntos; la pastilla de la cabecera; el título en
+  Poppins 700 con degradado blanco y la segunda línea en #4DA3FF; el sello blanco «BLACK FRIDAY 1€ 12,50 €»; «−92 %»;
+  la cinta azul claro con ✦; las estrellas y «Más de 40 personas ya lo tienen»). Todo entra en menos de un segundo; el
+  libro se abre enseguida. La llamada a comentar es lo último: un campo de comentario de Instagram que escribe «OFERTA»,
+  toca «Publicar» y confirma «Te enviamos los detalles por mensaje».
+- **Voz:** «Yair - Narration Spanish», el mismo texto. Comprobada con Scribe (lee «Hablan neerlandés» por la unión de
+  «habla» con «neerlandés», que es como suena al hablar).
+- Los datos de la oferta («1 €», «12,50 €», «−92 %», «Más de 40 personas ya lo tienen») son los de la página.

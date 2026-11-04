@@ -13,7 +13,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, ".raw", "outro")
 TEXT = ("Habla neerlandés sin miedo, como Luis Suárez. Nuestro ebook, Holandés sin miedo, este Black Friday por solo un "
         "euro. Comenta OFERTA y te enviamos los detalles.")
-VOICE = "6mAi1CJ7479mdT2HGuMI"         # «Nawar Def» (the account's Spanish voice, peninsular)
+VOICE = "LP0ZBLgGaLqbDU1l9PDX"         # «Yair - Narration Spanish» (v7; v6 used «Nawar Def»)
 MODEL = "eleven_multilingual_v2"
 SETTINGS = {"stability": 0.5, "similarity_boost": 0.8, "style": 0.0, "speed": 1.0}
 
@@ -54,7 +54,7 @@ def voz():
     print(f"voz.mp3: {len(ws)} words, {ws[0]['t']:.2f}–{ws[-1]['end']:.2f} s")
 
 
-BOOK_START, BOOK_PLAY, BOOK_END = 0.30, 4.10, 12.30   # outro s: the closed book shows; it opens (on «ebook»); last frame
+BOOK_START, BOOK_PLAY = 0.30, 0.55   # outro s: the book shows, and opens right away (v7: everything is there at once)
 FPS = 25
 CLOCK = "const tick = (now) => { setT(((now - t0) / 1000) % TOTAL); raf = requestAnimationFrame(tick); };"
 SEEK = "const tick = () => { setT(window.__T || 0); raf = requestAnimationFrame(tick); };"
@@ -131,13 +131,42 @@ def libro():
           f"capture box {box}, the closed book at {closed}")
 
 
-VO_AT = 0.60                           # outro s: the voice-over starts (the blue is fully in at 0.30)
-END = 12.30                            # the outro's length (the cover and the call to action hold after the last word)
+VO_AT = 0.40                           # outro s: the voice-over starts (the ground is in at 0.25)
+TAIL = 1.30                            # the end card holds this long after the last word
+END = None                             # the outro's length: set from outro.json below (last word + TAIL)
 VO_LUFS, BED_LUFS = -15.0, -35.0       # the voice a touch under the interview (−14.5), the bed 20 LU under the voice
 BED_FROM = 0.023 + 8 * 4 * 60 / 107.7  # «musica v1» (the BF ad's track): from bar 8, where its light groove comes in
 BED_AT, BED_IN, BED_OUT = 0.25, 0.6, 1.2
 EQ = "highpass=f=110,lowshelf=f=150:g=-6,lowshelf=f=250:g=-6,equalizer=f=2500:t=q:w=0.9:g=-3"   # (as in the BF ad: room for the voice)
 SR = 48000
+SFX = {"whoosh": ("whoosh.mp3", -9), "pop": ("pop.mp3", -15), "click": ("click.mp3", -14), "ping": ("ping.mp3", -15)}
+
+
+def words():
+    """the voice-over's words in outro time (s)."""
+    vo = json.load(open(os.path.join(ROOT, "outro.json")))
+    return [{"text": w["text"], "t": round(w["t"] + VO_AT, 3), "end": round(w["end"] + VO_AT, 3)} for w in vo["words"]]
+
+
+if os.path.exists(os.path.join(ROOT, "outro.json")):
+    END = round(words()[-1]["end"] + TAIL, 2)
+BOOK_END = END
+
+
+def cues():
+    """every timed moment of the outro (s), from the voice-over: the picture (tools/gen.py) and the sound effects
+    (audio()) read the same ones."""
+    ws = words()
+    def at(text, k=0, end=False):
+        hits = [w for w in ws if w["text"].strip(".,").lower() == text.lower()]
+        return hits[k]["end" if end else "t"]
+    c = dict(GROUND=0.0, BADGE=0.20, L1=0.28, L2=0.38, BOOK=BOOK_START, BAND=0.42, SEAL=0.52, OFF=0.66, PROOF=0.62,
+             EURO=at("euro") - 0.04, CTA=at("comenta") - 0.12, TYPE0=at("oferta") - 0.02, TYPE1=at("oferta", end=True) - 0.08,
+             CONFIRM=at("y") - 0.03, SHINE=END - 1.1)
+    c["PROOF_OUT"] = c["CTA"] - 0.16
+    c["TAP"] = round(c["TYPE1"] + 0.10, 3)
+    c["CONFIRM"] = max(c["CONFIRM"], c["TAP"] + 0.18)          # (a beat after the tap)
+    return {k: round(v, 3) for k, v in c.items()}
 
 
 def lufs(path):
@@ -175,8 +204,11 @@ def audio():
     t = np.arange(len(bed)) / SR
     bed *= np.clip(t / BED_IN, 0, 1)[:, None] * np.clip((END - BED_AT - t) / BED_OUT, 0, 1)[:, None]
     a = int(BED_AT * SR); mix[a:a + len(bed)] += bed
-    wh = load(os.path.join(RAW, "whoosh.mp3")) * 10 ** (-9 / 20)    # soft: under the bed's first bar
-    mix[:len(wh)] += wh[:n]
+    c = cues()                                                      # soft effects, under the voice: the whoosh on the cut
+    for name, at in (("whoosh", 0.0), ("pop", c["SEAL"]), ("click", c["TAP"]), ("ping", c["CONFIRM"])):   # to the ground,
+        f, db = SFX[name]                                           # the price seal landing, the tap on «Publicar», the
+        fx = load(os.path.join(RAW, f)) * 10 ** (db / 20)           # message sent
+        a = int(round(at * SR)); m = min(len(fx), n - a); mix[a:a + m] += fx[:m]
     sf.write(tmp, mix, SR)
     peak = np.abs(mix).max()
     os.makedirs(os.path.join(ROOT, "assets", "audio"), exist_ok=True)

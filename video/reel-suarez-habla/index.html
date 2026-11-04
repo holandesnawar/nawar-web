@@ -9,21 +9,23 @@
       @font-face { font-family: "Poppins"; font-weight: 900; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
       @font-face { font-family: "Inter"; font-weight: 600; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
       @font-face { font-family: "Inter"; font-weight: 700; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+      @font-face { font-family: "InterV"; font-weight: 100 900; src: url("assets/fonts/inter-var-latin.woff2") format("woff2"); }
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
       #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
       #v { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
       .shade { position: absolute; left: 0; width: 1080px; pointer-events: none; }
-      /* soft shades: at the bottom under the subtitles; at the top under the hook (it goes with it) */
+      /* a soft shade at the bottom, under the subtitles */
       #shade-bot { top: 1180px; height: 740px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.26) 45%, rgba(0,0,0,0.34) 100%); }
-      #shade-top { top: 0; height: 560px; background: linear-gradient(180deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.16) 55%, rgba(0,0,0,0) 100%); }
-      /* the hook: Instagram's own text look (bold sans, white, a soft shadow, colour emoji) */
-      #hook { position: absolute; left: 0; top: 204px; width: 1080px; text-align: center; color: #FFFFFF;
-        font-family: "Inter", sans-serif; font-weight: 700; font-size: 70px; line-height: 1.12;
-        letter-spacing: -0.012em; text-shadow: 0 2px 3px rgba(0,0,0,0.45), 0 4px 22px rgba(0,0,0,0.35); }
-      #hook .em { display: inline-block; vertical-align: -0.14em; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.35)); }
-      #hook .em-books { height: 1.0em; }
-      #hook .em-nl { height: 0.80em; vertical-align: -0.06em; }
+      /* the hook: the client's design — Inter ExtraBold, white, a thick round black outline, the icons on the middle line */
+      #hook { position: absolute; left: 0; top: 180px; width: 1080px; text-align: center; color: #FFFFFF;
+        font-family: "InterV", sans-serif; font-weight: 800; font-size: 77px; line-height: 1.06; letter-spacing: -0.012em;
+        text-shadow: 6.00px 0.00px 0 #000, 5.88px 1.17px 0 #000, 5.54px 2.30px 0 #000, 4.99px 3.33px 0 #000, 4.24px 4.24px 0 #000, 3.33px 4.99px 0 #000, 2.30px 5.54px 0 #000, 1.17px 5.88px 0 #000, 0.00px 6.00px 0 #000, -1.17px 5.88px 0 #000, -2.30px 5.54px 0 #000, -3.33px 4.99px 0 #000, -4.24px 4.24px 0 #000, -4.99px 3.33px 0 #000, -5.54px 2.30px 0 #000, -5.88px 1.17px 0 #000, -6.00px 0.00px 0 #000, -5.88px -1.17px 0 #000, -5.54px -2.30px 0 #000, -4.99px -3.33px 0 #000, -4.24px -4.24px 0 #000, -3.33px -4.99px 0 #000, -2.30px -5.54px 0 #000, -1.17px -5.88px 0 #000, -0.00px -6.00px 0 #000, 1.17px -5.88px 0 #000, 2.30px -5.54px 0 #000, 3.33px -4.99px 0 #000, 4.24px -4.24px 0 #000, 4.99px -3.33px 0 #000, 5.54px -2.30px 0 #000, 5.88px -1.17px 0 #000, 3.30px 0.00px 0 #000, 3.05px 1.26px 0 #000, 2.33px 2.33px 0 #000, 1.26px 3.05px 0 #000, 0.00px 3.30px 0 #000, -1.26px 3.05px 0 #000, -2.33px 2.33px 0 #000, -3.05px 1.26px 0 #000, -3.30px 0.00px 0 #000, -3.05px -1.26px 0 #000, -2.33px -2.33px 0 #000, -1.26px -3.05px 0 #000, -0.00px -3.30px 0 #000, 1.26px -3.05px 0 #000, 2.33px -2.33px 0 #000, 3.05px -1.26px 0 #000; transform-origin: 50% 40%; }
+      #hook .hl { white-space: nowrap; }
+      #hook .mid { position: relative; display: inline-block; }
+      #hook .em { position: absolute; top: 50%; display: block; }
+      #hook .em-books { height: 118px; right: calc(100% + 24px); transform: translateY(-50%); }
+      #hook .em-nl { height: 96px; left: calc(100% + 24px); transform: translateY(-50%); }
       .ph { position: absolute; left: 35px; bottom: 420px; width: 1010px; display: flex; flex-direction: column;
         align-items: center; gap: 6px; opacity: 0; }
       .nl { width: 744px; font-size: 62px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 0.26em; row-gap: 0;
@@ -38,11 +40,10 @@
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="54.36" data-fps="25">
+    <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="54.72" data-fps="25">
       <video id="v" class="clip" src="assets/video/habla-916.mp4" data-start="0" data-duration="42.36" data-track-index="0" playsinline data-has-audio="true"></video>
       <div id="shade-bot" class="shade"></div>
-      <div id="shade-top" class="shade"></div>
-      <div id="hook"><div class="hl">Hablando neerlandés</div><div class="hl"><img class="em em-books" src="assets/img/emoji-books.png" alt=""> sin miedo como <img class="em em-nl" src="assets/img/emoji-nl.png" alt=""></div><div class="hl">Luis Suárez</div></div>
+      <div id="hook"><div class="hl"><span>Hablando neerlandés</span></div><div class="hl"><span class="mid"><img class="em em-books" src="assets/img/emoji-books.png" alt="">sin miedo como<img class="em em-nl" src="assets/img/emoji-nl.png" alt=""></span></div><div class="hl"><span>Luis Suárez</span></div></div>
       <div id="p0" class="ph"><div class="nl"><span id="w0-0" class="w">Het</span> <span id="w0-1" class="w">was</span> <span id="w0-2" class="w">spannend.</span></div><div class="es"><span>Fue emocionante.</span></div></div>
       <div id="p1" class="ph"><div class="nl"><span id="w1-0" class="w">Wie?</span></div><div class="es"><span>¿Quién?</span></div></div>
       <div id="p2" class="ph"><div class="nl"><span id="w2-0" class="w">De</span> <span id="w2-1" class="w">wedstrijd</span> <span id="w2-2" class="w">was</span> <span class="br"></span> <span id="w2-3" class="w">spannend,</span> <span id="w2-4" class="w">denk</span> <span id="w2-5" class="w">ik.</span></div><div class="es"><span>El partido fue emocionante, creo.</span></div></div>
@@ -68,14 +69,14 @@
       <div id="p22" class="ph"><div class="nl"><span id="w22-0" class="w">Voor</span> <span id="w22-1" class="w">mij</span> <span class="br"></span> <span id="w22-2" class="w">geen</span> <span id="w22-3" class="w">probleem.</span></div><div class="es"><span>Por mí, no hay problema.</span></div></div>
       <div id="p23" class="ph"><div class="nl"><span id="w23-0" class="w">Geen</span> <span id="w23-1" class="w">probleem.</span></div><div class="es"><span>Ningún problema.</span></div></div>
       <div id="p24" class="ph"><div class="nl"><span id="w24-0" class="w">Ik</span> <span id="w24-1" class="w">wil</span> <span id="w24-2" class="w">alleen</span> <span class="br"></span> <span id="w24-3" class="w">maar</span> <span id="w24-4" class="w">spelen.</span></div><div class="es"><span>Yo solo quiero jugar.</span></div></div>
-      <div id="outro" data-composition-id="outro" data-composition-src="compositions/outro.html" data-start="42.06" data-duration="12.3" data-track-index="2" data-width="1080" data-height="1920"></div>
-      <audio id="a-outro" src="assets/audio/outro.wav" data-start="42.06" data-duration="12.3" data-track-index="3"></audio>
+      <div id="outro" data-composition-id="outro" data-composition-src="compositions/outro.html" data-start="42.06" data-duration="12.66" data-track-index="2" data-width="1080" data-height="1920"></div>
+      <audio id="a-outro" src="assets/audio/outro.wav" data-start="42.06" data-duration="12.66" data-track-index="3"></audio>
     </div>
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      // the hook: on screen from the first frame (it is the cover), it leaves at 3.3 s with its shade
-      tl.to(["#hook", "#shade-top"], { opacity: 0, y: -10, duration: 0.35, ease: "power2.in" }, 3.3);
+      // the hook: on screen from the first frame (it is the cover), it leaves at 3.3 s
+      tl.to("#hook", { opacity: 0, scale: 0.96, duration: 0.30, ease: "power2.in" }, 3.3);
       tl.set("#p0", { opacity: 1 }, 0.130);
       tl.fromTo("#p0 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(1.6)", immediateRender: false }, 0.130);
       tl.set("#p0", { opacity: 0 }, 1.650);

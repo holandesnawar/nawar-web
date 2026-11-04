@@ -27,15 +27,18 @@ curl -sS -L --fail -o "$RAW/yunet.onnx" https://media.githubusercontent.com/medi
 python3 tools/frame.py --track
 python3 tools/frame.py          # ~1.5 h on CPU
 python3 tools/subs.py
-echo "the closing ad: the ebook animation («Animación libro interactivo.html», folder «MARIO»), the BF ad's music and whoosh, the voice-over"
+echo "the closing ad: the ebook animation («Animación libro interactivo.html», folder «MARIO»), the BF ad's music and effects, the voice-over"
 mkdir -p "$RAW/outro"
 curl -sS -L --fail --retry 3 -o "$RAW/outro/libro.html" "https://drive.usercontent.google.com/download?id=1Hl0djiY93k8BA3-BdPS8rPrn6SbmbSL8&export=download&confirm=t"
 curl -sS -L --fail --retry 3 -o "$RAW/outro/music.mp3" "https://drive.usercontent.google.com/download?id=1iMcSFRAOoly8OG6jDt3ENBwSntuhA8FL&export=download&confirm=t"
 cp ../ugc-nawar-bf/assets/sfx/whoosh-short.mp3 "$RAW/outro/whoosh.mp3"
+for f in pop click ping; do cp "../ugc-nawar-bf/assets/sfx/$f.mp3" "$RAW/outro/$f.mp3"; done
+echo "Inter (variable, for the hook's ExtraBold and the ad) from the Black Friday page itself"
+curl -sS -L --fail --retry 3 -o assets/fonts/inter-var-latin.woff2 "https://blackfriday.holandesnawar.com/fonts/inter-latin.woff2"
 # the voice-over is not versioned (only its words and times, outro.json): a new take is generated if it is missing,
 # and outro.json is rewritten with its times
 [ -f "$RAW/outro/voz.mp3" ] || python3 tools/outro.py voz
 python3 tools/outro.py libro
 python3 tools/outro.py audio
 python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v6.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v7.mp4"

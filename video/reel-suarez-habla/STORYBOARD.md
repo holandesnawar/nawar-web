@@ -1,7 +1,7 @@
-# Storyboard · Reel «Suárez habla neerlandés» v6 (54,4 s)
+# Storyboard · Reel «Suárez habla neerlandés» v7 (54,7 s)
 
-- **Gancho (0–3,3 s, portada):** arriba, sobre el pelo, con el aspecto del texto de Instagram: «Hablando neerlandés /
-  📚 sin miedo como 🇳🇱 / Luis Suárez».
+- **Gancho (0–3,3 s, portada):** arriba, sobre el pelo, el diseño del cliente: «Hablando neerlandés / sin miedo como /
+  Luis Suárez» en Inter ExtraBold blanco con contorno negro grueso, con 📚 y 🇳🇱 a los lados de la línea del medio.
 - **Subtítulos:** abajo y centrados, por encima de la franja del texto de Instagram y a la izquierda de su
   columna de botones. El holandés en mayúsculas, todo al mismo tamaño, con la palabra que se dice en amarillo; el español
   debajo, en una pastilla gris. Una sombra suave abajo los separa de la imagen.
@@ -9,7 +9,7 @@
   va centrada.
 - **Imagen:** un solo plano, su cara, que el encuadre sigue con suavidad. Los tres momentos van unidos por cortes secos.
 
-- **Cierre (42,1–54,4 s):** azul Nawar, voz «Nawar Def» (ver la tabla del final).
+- **Cierre (42,1–54,7 s):** el diseño de la página de Black Friday, voz «Yair» (ver la tabla del final).
 
 | Momento | Reel | Original |
 |---|---|---|
@@ -46,13 +46,13 @@
 | 39,6–40,2 | Suárez | Geen probleem. | Ningún problema. |
 | 40,3–42,0 | Suárez | Ik wil alleen maar spelen. | Yo solo quiero jugar. |
 
-**Cierre** (tiempos del reel; la voz empieza a los 42,66 s)
+**Cierre** (tiempos del reel; la voz empieza a los 42,46 s)
 
 | Tiempo | Voz | En pantalla |
 |---|---|---|
-| 42,1–42,4 | (whoosh) | La imagen pasa a azul; el ebook cerrado sube a su sitio |
-| 42,7–44,8 | Habla neerlandés sin miedo, como Luis Suárez. | «Habla neerlandés», y la pastilla «sin miedo» en «sin» |
-| 45,8–47,5 | Nuestro ebook, Holandés sin miedo, | El ebook se abre en «ebook» y pasa sus páginas |
-| 48,1–49,4 | este Black Friday por solo un euro. | «Black Friday · por solo 1 €» (el «1 €» late en «euro»), «hasta el 30 de noviembre» |
-| 50,1–53,1 | Comenta OFERTA y te enviamos los detalles. | El campo de comentario; «OFERTA» se escribe; «y te enviamos los detalles». El ebook se cierra en la portada |
-| 53,1–54,4 | | Todo quieto; el campo late una vez |
+| 42,1–42,9 | (whoosh) | El fondo índigo; entra todo de una: la pastilla, «Habla neerlandés / sin miedo.», el ebook, el sello «1€ 12,50 €» con «−92 %», la cinta azul y «Más de 40 personas ya lo tienen» |
+| 42,5–44,6 | Habla neerlandés sin miedo, como Luis Suárez. | El ebook se abre y pasa sus páginas; la cinta corre |
+| 45,4–47,1 | Nuestro ebook, Holandés sin miedo, | |
+| 47,9–49,6 | este Black Friday por solo un euro. | El ebook se cierra en la portada; el «1€» late en «euro» |
+| 50,2–53,4 | Comenta OFERTA y te enviamos los detalles. | El campo de comentario sustituye a «Más de 40 personas…»; «OFERTA» se escribe, «Publicar», «✓ Te enviamos los detalles por mensaje» |
+| 53,4–54,7 | | Todo quieto salvo la cinta; un brillo cruza el sello |
