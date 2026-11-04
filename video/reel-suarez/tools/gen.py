@@ -15,13 +15,17 @@ YEL = "#FFE11B"
 NL_TOP, NL_W, NL_CX = 1110, 830, 495   # the Dutch block (frame px): clear of Instagram's button rail (x > 930, with a
 NL_SIZE = 76                      # margin for the pop-in) and of its caption band at the bottom; one size for every
                                   # phrase, which wraps onto two lines at most (tools/subs.py keeps them that short)
-TITLE_TOP = 830                   # the title card over the chest for the first seconds: the faces (and the cover) stay clear
-TAG_AT = 3.0                      # the big title (the hook and the cover) becomes a one-line tag at the top here
-TAG_OFF = [(7.96, 9.60), (15.76, 21.44), (26.04, 27.80)]  # the close-ups (Suárez's, and the assistant's from 15.76 until
-                                  # his head drops at 21.44): their eyes are at the top, so the tag steps out
-UP = [(7.96, 9.60), (16.64, 20.52), (26.04, 27.80)]       # Suárez's extreme close-ups: the subtitles sit higher, between
-UP_DY = -130                      # his nose and his mouth, so his lips stay in sight (the block moves on the cuts only)
+TITLE_TOP = 918                   # the title card over the chest for the first seconds, under the assistant's mouth (his
+TITLE_DY = 34                     # lips reach y ≈ 890): the cover stays clear; the subtitles that open under it sit 34 px lower
+TAG_AT = 3.0                      # the big title (the hook and the cover) lifts away here…
+TAG_IN = 3.9                      # …and the small pill settles at the top once the assistant's head has come down
+TAG_OFF = [(7.96, 9.60), (15.76, 24.20), (26.04, 27.80)]  # the close-ups (Suárez's, and the assistant's from 15.76 to the
+                                  # wide shot ending at 24.20): their eyes are at the top, so the tag steps out
+UP = [(7.96, 9.60), (16.64, 20.52), (26.04, 27.80)]       # Suárez's extreme close-ups: the subtitles sit higher, on his
+UP_DY = -300                      # nose, so his lips stay in sight (eyes ≤ 620, lips ≥ 1000; the block moves on the cuts only,
+                                  # and the bottom shade moves with it)
 MIN_ON = 0.6                      # a one-word phrase opens a little early (after the last word before it) to be read
+ON_AT = {22: 32.40, 23: 33.08}    # «Kaartje?» opens on the cut to the card and holds 0.68 s (then «Nee, nee…»)
 
 FLAG = ('<svg viewBox="0 0 48 48" aria-hidden="true"><defs><clipPath id="{id}"><circle cx="24" cy="24" r="24"/></clipPath></defs>'
         '<g clip-path="url(#{id})"><rect width="48" height="16" fill="#AE1C28"/><rect y="16" width="48" height="16" fill="#FFFFFF"/>'
@@ -32,11 +36,11 @@ LABEL_CSS = """
         box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 18px 50px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.10); color: #1D1D1F;
         font-family: "Inter", sans-serif; }
       .row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; }
-      #card { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 30px 56px 36px; border-radius: 44px; white-space: nowrap; }
-      #card .kick { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 30px; letter-spacing: 0.16em;
+      #card { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 24px 50px 28px; border-radius: 40px; white-space: nowrap; }
+      #card .kick { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 27px; letter-spacing: 0.16em;
         color: #1D0084; text-transform: uppercase; line-height: 1; }
-      #card .kick svg { width: 40px; height: 40px; display: block; }
-      #card .big { font-weight: 700; font-size: 80px; letter-spacing: -0.03em; line-height: 1.02; }
+      #card .kick svg { width: 36px; height: 36px; display: block; }
+      #card .big { font-weight: 700; font-size: 72px; letter-spacing: -0.03em; line-height: 1.02; }
       #tag { display: flex; align-items: center; gap: 14px; padding: 12px 30px 12px 14px; border-radius: 999px; white-space: nowrap; opacity: 0;
         font-weight: 600; font-size: 34px; letter-spacing: -0.01em; line-height: 1; }
       #tag svg { width: 44px; height: 44px; display: block; }
@@ -44,11 +48,12 @@ LABEL_CSS = """
 
 
 def segments(on, off):
-    """the y offset of a phrase over its time on screen: UP_DY inside Suárez's close-ups. It changes only on a cut, and
-    never for a bit shorter than 0.4 s (that bit takes its neighbour's place)."""
+    """the y offset of a phrase over its time on screen: UP_DY inside Suárez's close-ups, TITLE_DY if it opens under the
+    title card. It changes only on a cut, and never for a bit shorter than 0.4 s (that bit takes its neighbour's place)."""
+    base = TITLE_DY if on < TAG_AT else 0
     cuts = sorted({c for ab in UP for c in ab if on < c < off})
     edges = [on] + cuts + [off]
-    segs = [[edges[i], edges[i + 1], UP_DY if any(a <= (edges[i] + edges[i + 1]) / 2 < b for a, b in UP) else 0]
+    segs = [[edges[i], edges[i + 1], UP_DY if any(a <= (edges[i] + edges[i + 1]) / 2 < b for a, b in UP) else base]
             for i in range(len(edges) - 1)]
     while len(segs) > 1:
         i = min(range(len(segs)), key=lambda j: segs[j][1] - segs[j][0])
@@ -72,18 +77,19 @@ def main():
         on = max(0.0, words[0]["t"] - 0.05)
         if words[-1]["end"] - on < MIN_ON and k:                   # short: open early, after the phrase before it is said
             on = max(subs[k - 1]["words"][-1]["end"] + 0.03, min(on, words[-1]["end"] - MIN_ON))
-        ons.append(on)
+        ons.append(ON_AT.get(k, on))
     for k, p in enumerate(subs):
         words = p["words"]
         on = ons[k]
         off = min(ons[k + 1], words[-1]["end"] + 0.7) if k + 1 < len(subs) else D
-        spans = " ".join(f'<span id="w{k}-{i}" class="w">{html.escape(w["text"])}</span>' for i, w in enumerate(words))
+        spans = " ".join(('<span class="br"></span> ' if i in p.get("breaks", []) else "") +
+                         f'<span id="w{k}-{i}" class="w">{html.escape(w["text"])}</span>' for i, w in enumerate(words))
         body.append(f'      <div id="p{k}" class="ph"><div class="nl">{spans}</div>'
                     f'<div class="es"><span>{html.escape(p["es"])}</span></div></div>')
         for a, b, dy in segments(on, off):
             js.append(f'      tl.set("#p{k}", {{ y: {dy} }}, {a:.3f});')
         js.append(f'      tl.set("#p{k}", {{ opacity: 1 }}, {on:.3f});')
-        js.append(f'      tl.fromTo("#p{k} .nl", {{ scale: 0.86 }}, {{ scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }}, {on:.3f});')
+        js.append(f'      tl.fromTo("#p{k} .nl", {{ scale: 0.86 }}, {{ scale: 1, duration: 0.16, ease: "back.out(1.6)", immediateRender: false }}, {on:.3f});')
         js.append(f'      tl.set("#p{k}", {{ opacity: 0 }}, {off:.3f});')
         for i, w in enumerate(words):
             t1 = words[i + 1]["t"] - 0.03 if i + 1 < len(words) else off
@@ -115,9 +121,10 @@ def main():
         color: #FFFFFF; -webkit-text-stroke: 10px #000; paint-order: stroke fill; text-shadow: 0 6px 16px rgba(0,0,0,0.5);
         transform-origin: 50% 60%; }}
       .w {{ display: inline-block; color: #FFFFFF; }}
+      .br {{ flex-basis: 100%; height: 0; }}
       .es span {{ display: inline-block; max-width: {NL_W}px; padding: 10px 26px 12px; border-radius: 18px; text-align: center;
         background: rgba(78,78,84,0.78); color: #FFFFFF; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 46px;
-        line-height: 1.2; letter-spacing: -0.005em; }}
+        line-height: 1.2; letter-spacing: -0.005em; text-wrap: balance; }}
     </style>
   </head>
   <body>
@@ -134,9 +141,10 @@ def main():
       const tl = gsap.timeline({{ paused: true }});
       // the title card from the first frame (the cover); at {TAG_AT} s it lifts away and the small pill settles at the top
       tl.to("#card", {{ y: -60, scale: 0.86, opacity: 0, duration: 0.34, ease: "power2.in" }}, {TAG_AT});
-      tl.fromTo("#tag", {{ opacity: 0, y: 18, scale: 0.94 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out", immediateRender: false }}, {TAG_AT + 0.24});
+      tl.fromTo("#tag", {{ opacity: 0, y: 18, scale: 0.94 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out", immediateRender: false }}, {TAG_IN});
 {chr(10).join(f'      tl.to("#tag", {{ opacity: 0, duration: 0.12, ease: "none" }}, {a - 0.12:.2f});{chr(10)}      tl.to("#tag", {{ opacity: 1, duration: 0.16, ease: "none" }}, {b:.2f});' for a, b in TAG_OFF)}
       tl.to("#shade-top", {{ opacity: 0.55, duration: 0.4, ease: "none" }}, {TAG_AT});
+{chr(10).join(f'      tl.set("#shade-bot", {{ y: {UP_DY} }}, {a:.2f});{chr(10)}      tl.set("#shade-bot", {{ y: 0 }}, {b:.2f});' for a, b in UP)}
 {chr(10).join(js)}
       window.__timelines["main"] = tl;
     </script>

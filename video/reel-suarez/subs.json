@@ -5,6 +5,7 @@
   {
    "who": "m",
    "es": "Ah, un deportista",
+   "breaks": [],
    "words": [
     {
      "text": "Ah,",
@@ -26,6 +27,7 @@
   {
    "who": "m",
    "es": "del Ajax.",
+   "breaks": [],
    "words": [
     {
      "text": "van",
@@ -42,6 +44,7 @@
   {
    "who": "m",
    "es": "Sí, un club famoso.",
+   "breaks": [],
    "words": [
     {
      "text": "Ja,",
@@ -62,7 +65,10 @@
   },
   {
    "who": "m",
-   "es": "Cruijff, Keizer, Abe Lenstra.",
+   "es": "Cruyff, Keizer, Abe Lenstra.",
+   "breaks": [
+    2
+   ],
    "words": [
     {
      "text": "Cruijff,",
@@ -89,6 +95,9 @@
   {
    "who": "m",
    "es": "¿En qué le puedo ayudar?",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "Wat",
@@ -125,6 +134,9 @@
   {
    "who": "s",
    "es": "Sí, oí algo sobre",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "Ja,",
@@ -156,6 +168,7 @@
   {
    "who": "s",
    "es": "un control antipitidos.",
+   "breaks": [],
    "words": [
     {
      "text": "één",
@@ -172,6 +185,9 @@
   {
    "who": "m",
    "es": "Ah, se refiere a nuestro audífono",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "Ah,",
@@ -203,6 +219,7 @@
   {
    "who": "m",
    "es": "con control antipitidos avanzado.",
+   "breaks": [],
    "words": [
     {
      "text": "met",
@@ -223,7 +240,8 @@
   },
   {
    "who": "m",
-   "es": "Evita que oiga",
+   "es": "Evita que oiga molestos",
+   "breaks": [],
    "words": [
     {
      "text": "Voorkomt",
@@ -239,18 +257,19 @@
      "text": "u",
      "t": 15.14,
      "end": 15.2
+    },
+    {
+     "text": "irritante",
+     "t": 15.26,
+     "end": 15.84
     }
    ]
   },
   {
    "who": "m",
-   "es": "pitidos molestos.",
+   "es": "pitidos.",
+   "breaks": [],
    "words": [
-    {
-     "text": "irritante",
-     "t": 15.26,
-     "end": 15.84
-    },
     {
      "text": "fluittonen",
      "t": 15.9,
@@ -266,6 +285,7 @@
   {
    "who": "s",
    "es": "Sí, muy molesto.",
+   "breaks": [],
    "words": [
     {
      "text": "Ja,",
@@ -287,6 +307,7 @@
   {
    "who": "s",
    "es": "Ellos pitan",
+   "breaks": [],
    "words": [
     {
      "text": "Zij",
@@ -303,6 +324,9 @@
   {
    "who": "s",
    "es": "demasiadas veces en mi contra.",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "veel",
@@ -334,6 +358,7 @@
   {
    "who": "m",
    "es": "Oh, entonces este modelo no es para usted.",
+   "breaks": [],
    "words": [
     {
      "text": "Oh,",
@@ -384,7 +409,8 @@
   },
   {
    "who": "m",
-   "es": "Vamos a nuestra gama de tapones para los oídos.",
+   "es": "Vamos a nuestra gama de tapones.",
+   "breaks": [],
    "words": [
     {
      "text": "Gaan",
@@ -415,7 +441,8 @@
   },
   {
    "who": "m",
-   "es": "Siéntese un momento en el banco.",
+   "es": "Siéntese un rato en el banco.",
+   "breaks": [],
    "words": [
     {
      "text": "Neemt",
@@ -462,6 +489,7 @@
   {
    "who": "s",
    "es": "¿Eh?",
+   "breaks": [],
    "words": [
     {
      "text": "Hè?",
@@ -472,7 +500,8 @@
   },
   {
    "who": "s",
-   "es": "Suárez nunca se sienta en el banquillo.",
+   "es": "Suárez nunca chupa banquillo.",
+   "breaks": [],
    "words": [
     {
      "text": "Suárez",
@@ -508,7 +537,10 @@
   },
   {
    "who": "m",
-   "es": "Pues nada, mucha suerte con ellos.",
+   "es": "Pues nada, suerte con ellos.",
+   "breaks": [
+    2
+   ],
    "words": [
     {
      "text": "Nou,",
@@ -535,6 +567,7 @@
   {
    "who": "m",
    "es": "Y si vuelve a oír un pitido,",
+   "breaks": [],
    "words": [
     {
      "text": "En",
@@ -576,6 +609,7 @@
   {
    "who": "m",
    "es": "pásese por aquí, ¿eh?",
+   "breaks": [],
    "words": [
     {
      "text": "gewoon",
@@ -602,6 +636,7 @@
   {
    "who": "m",
    "es": "¿Una tarjeta?",
+   "breaks": [],
    "words": [
     {
      "text": "Kaartje?",
@@ -612,7 +647,8 @@
   },
   {
    "who": "s",
-   "es": "No, no, ya tengo tarjetas de sobra.",
+   "es": "No, no, tengo tarjetas de sobra.",
+   "breaks": [],
    "words": [
     {
      "text": "Nee,",
@@ -635,7 +671,7 @@
      "end": 33.68
     },
     {
-     "text": "kaartjes",
+     "text": "kaartje",
      "t": 33.72,
      "end": 33.98
     },

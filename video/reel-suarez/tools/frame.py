@@ -35,13 +35,15 @@ SHOTS = {      # (set from a face detector run on every 3rd frame, checked by ey
     786: [(786, 245), (800, 205), (812, 250), (820, 280), (829, 298)],   # Suárez close: «Suárez nooit zitten…»
     830: [(830, 165), (865, 175)],              # after a dip to black: his hand with the earplugs
     866: [(866, 185), (891, 215)],              # wide on Suárez: «Nou, veel succes ermee»
-    892: [(892, 300), (927, 302)],              # the assistant: «En mocht u nog een fluitje horen…»
-    928: [(928, 142), (944, 232)],              # Suárez (from the left of the shop window's swirl decal)
+    892: [(892, 298), (927, 300)],              # the assistant: «En mocht u nog een fluitje horen…» (4 px clear of the «D»)
+    928: [(928, 120), (931, 124), (936, 160), (944, 232)],   # Suárez: held left of the shop window's swirl decal until
+                                                # his shoulder covers it (932), then after him as the camera pans
     945: [(945, 282)],                          # the assistant holds up a red business card: «Kaartje?»
     960: [(960, 180), (978, 155), (993, 180)],  # Suárez: «Nee, nee, ik heb kaartjes genoeg»
 }
 # brand marks inside the windows: (first frame, last frame, kind, source rect x0, y0, x1, y1)
-LOGOS = [(945, 959, "red_card", 150, 20, 275, 140),     # the assistant's red business card (the shop's logo printed light)
+LOGOS = [(951, 959, "red_card", 150, 20, 275, 140),     # the assistant's red business card (the shop's logo printed light;
+                                                         # before 951 it is a motion blur, nothing readable — left as is)
          (960, 974, "white_card", 215, 35, 300, 110)]    # the white card with the shop's red star (out of the window from 975:
                                                          # after that the rect holds only his red shoulder — never touched)
 # The shop's slogan on the orange wall («De hoorspecialist», source x ≥ 387–400 where the assistant stands in front of
@@ -96,7 +98,9 @@ def erase(img, kind, rect):
         num = np.stack([ndi.gaussian_filter(f[..., c] * plain, 14) for c in range(3)], -1)
         den = ndi.gaussian_filter(plain.astype(np.float32), 14)[..., None]   # from its own unprinted red (its shading kept;
         fill = np.where(den > 0.05, num / np.maximum(den, 1e-3), np.median(f[plain], 0))   # far from any: its median red)
-        a = ndi.gaussian_filter(face.astype(np.float32), 2.5)[..., None]
+        a = ndi.gaussian_filter(face.astype(np.float32), 2.5)
+        a *= np.clip(np.arange(a.shape[1])[::-1] / 16.0, 0, 1)[None, :]   # fades out before the rect's right edge
+        a = a[..., None]                                                    # (next to his glasses): never a straight cut
         out = img.copy()
         out[y0:y1, x0:x1] = (f * (1 - a) + fill * a).clip(0, 255).astype(np.uint8)
         return out
@@ -177,7 +181,7 @@ def mux():
     dur, t0 = n_out / 25, F0 / 25
     snd = os.path.join(ROOT, ".raw", "sound.wav")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{t0:.3f}", "-t", f"{dur:.3f}", "-i", os.path.join(ROOT, ".raw", "suarez.mp4"),
-                    "-vn", "-af", f"afade=t=in:d=0.04,afade=t=out:st={dur - 0.3:.3f}:d=0.3,loudnorm=I=-14:TP=-1.5:LRA=11",
+                    "-vn", "-af", f"afade=t=in:d=0.25,afade=t=out:st={dur - 0.3:.3f}:d=0.3,loudnorm=I=-14:TP=-1.5:LRA=11",
                     "-ar", "48000", "-ac", "2", snd], check=True)
     os.makedirs(os.path.join(ROOT, "assets", "video"), exist_ok=True)
     out = os.path.join(ROOT, "assets", "video", "suarez-916.mp4")

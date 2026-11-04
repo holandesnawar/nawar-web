@@ -14,32 +14,34 @@ T0 = 135 / 25            # the reel starts at source frame 135 (Suárez walking 
 END = 40.08              # …and ends before the brand voice-over («Alleen bij …», 40.20)
 
 # (who, Dutch, Spanish): m = the shop assistant, s = Suárez
-PHRASES = [      # v3 (after QA): whole clauses where a half would flash by, no article cut from its noun; «we» as said;
-                 # every phrase fits two lines at the one subtitle size
+PHRASES = [      # v4 (after QA): whole clauses where a half would flash by, no article cut from its noun; «we» as said;
+                 # every phrase fits two lines at the one subtitle size; «|» breaks the Dutch line there (no orphan word,
+                 # no name split); the Spanish fits one pill line where it can («chupar banquillo» keeps the bench pun);
+                 # «kaartje genoeg» as he says it (no /s/ before «genoeg» in the sound)
     ("m", "Ah, een sportman", "Ah, un deportista"),
     ("m", "van Ajax.", "del Ajax."),
     ("m", "Ja, beroemde club.", "Sí, un club famoso."),
-    ("m", "Cruijff, Keizer, Abe Lenstra.", "Cruijff, Keizer, Abe Lenstra."),
-    ("m", "Wat kan ik voor u oplossen?", "¿En qué le puedo ayudar?"),
-    ("s", "Ja, ik hoorde iets over", "Sí, oí algo sobre"),
+    ("m", "Cruijff, Keizer,|Abe Lenstra.", "Cruyff, Keizer, Abe Lenstra."),
+    ("m", "Wat kan ik|voor u oplossen?", "¿En qué le puedo ayudar?"),
+    ("s", "Ja, ik hoorde|iets over", "Sí, oí algo sobre"),
     ("s", "één antifluitregeling.", "un control antipitidos."),
-    ("m", "Ah, u bedoelt ons hoortoestel", "Ah, se refiere a nuestro audífono"),
+    ("m", "Ah, u bedoelt|ons hoortoestel", "Ah, se refiere a nuestro audífono"),
     ("m", "met geavanceerde antifluitregeling.", "con control antipitidos avanzado."),
-    ("m", "Voorkomt dat u", "Evita que oiga"),
-    ("m", "irritante fluittonen hoort.", "pitidos molestos."),
+    ("m", "Voorkomt dat u irritante", "Evita que oiga molestos"),
+    ("m", "fluittonen hoort.", "pitidos."),
     ("s", "Ja, heel irritant.", "Sí, muy molesto."),
     ("s", "Zij fluiten", "Ellos pitan"),
-    ("s", "veel te vaak tegen mij.", "demasiadas veces en mi contra."),
+    ("s", "veel te vaak|tegen mij.", "demasiadas veces en mi contra."),
     ("m", "Oh, maar dan is dit model niks voor u.", "Oh, entonces este modelo no es para usted."),
-    ("m", "Gaan we naar ons oordopjesgamma.", "Vamos a nuestra gama de tapones para los oídos."),
-    ("m", "Neemt u maar even op de bank plaats.", "Siéntese un momento en el banco."),
+    ("m", "Gaan we naar ons oordopjesgamma.", "Vamos a nuestra gama de tapones."),
+    ("m", "Neemt u maar even op de bank plaats.", "Siéntese un rato en el banco."),
     ("s", "Hè?", "¿Eh?"),
-    ("s", "Suárez nooit zitten op de bank.", "Suárez nunca se sienta en el banquillo."),
-    ("m", "Nou, veel succes ermee.", "Pues nada, mucha suerte con ellos."),
+    ("s", "Suárez nooit zitten op de bank.", "Suárez nunca chupa banquillo."),
+    ("m", "Nou, veel|succes ermee.", "Pues nada, suerte con ellos."),
     ("m", "En mocht u nog een fluitje horen,", "Y si vuelve a oír un pitido,"),
     ("m", "gewoon even langskomen, hè?", "pásese por aquí, ¿eh?"),
     ("m", "Kaartje?", "¿Una tarjeta?"),
-    ("s", "Nee, nee, ik heb kaartjes genoeg.", "No, no, ya tengo tarjetas de sobra."),
+    ("s", "Nee, nee, ik heb kaartje genoeg.", "No, no, tengo tarjetas de sobra."),
 ]
 
 
@@ -55,7 +57,7 @@ def norm(w):
 def main():
     sc = [w for w in json.load(open(os.path.join(ROOT, ".raw", "scribe.json")))["words"]
           if w.get("type") == "word" and T0 - 0.2 <= w["start"] < END]
-    A = [(p, w) for p, (_, nl, _) in enumerate(PHRASES) for w in nl.split()]
+    A = [(p, w) for p, (_, nl, _) in enumerate(PHRASES) for w in nl.replace("|", " ").split()]
     a, b = [norm(w) for _, w in A], [norm(w["text"]) for w in sc]
     times = [None] * len(A)
     for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, a, b, autojunk=False).get_opcodes():
@@ -80,7 +82,9 @@ def main():
     out = []
     for p, (who, nl, es) in enumerate(PHRASES):
         ws = [(w, times[k]) for k, (pp, w) in enumerate(A) if pp == p]
-        out.append({"who": who, "es": es, "words": [{"text": w, "t": round(t[0] - T0, 3), "end": round(t[1] - T0, 3)} for w, t in ws]})
+        brk = [len(part.split()) for part in nl.split("|")[:-1]]          # the Dutch line breaks before word i
+        brk = [sum(brk[:i + 1]) for i in range(len(brk))]
+        out.append({"who": who, "es": es, "breaks": brk, "words": [{"text": w, "t": round(t[0] - T0, 3), "end": round(t[1] - T0, 3)} for w, t in ws]})
     unheard = [A[k][1] for k in range(len(A)) if not any(abs(times[k][0] - w["start"]) < 1e-6 for w in sc)]
     json.dump({"t0": T0, "end": END, "phrases": out}, open(os.path.join(ROOT, "subs.json"), "w"), ensure_ascii=False, indent=1)
     print(f"subs.json: {len(out)} phrases, {len(A)} words; respelled/unheard (timed from neighbours): {unheard}")
