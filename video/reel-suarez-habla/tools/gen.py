@@ -17,7 +17,9 @@ NL_SIZE = 76                           # on his hair and his eyes and mouth stay
                                        # above its button rail (x > 912 from y ≈ 814), so the block can be wider than in
                                        # the first reel; one size, two lines at most («|» in tools/subs.py breaks them)
 TAG_AT = 3.0                           # the title card (the hook and the cover) becomes the small pill at the top here
-MIN_ON = 0.6                           # a one-word phrase opens a little early (after the last word before it)
+MIN_ON = 0.6                           # a phrase on screen for less than this opens a little early (after the last word
+                                       # before it); one that stays long enough after its word (up to 0.7 s) does not
+S_LIFT = 36                            # Suárez's lines (no «Periodista» pill over them) sit this much higher: clear of his brows
 
 FLAG = ('<svg viewBox="0 0 48 48" aria-hidden="true"><defs><clipPath id="{id}"><circle cx="24" cy="24" r="24"/></clipPath></defs>'
         '<g clip-path="url(#{id})"><rect width="48" height="16" fill="#AE1C28"/><rect y="16" width="48" height="16" fill="#FFFFFF"/>'
@@ -41,8 +43,8 @@ LABEL_CSS = """
         padding: 10px 28px 10px 12px; border-radius: 999px; white-space: nowrap; opacity: 0; font-weight: 600; font-size: 32px;
         letter-spacing: -0.01em; line-height: 1; }}
       #tag svg {{ width: 40px; height: 40px; display: block; }}
-      .who {{ position: absolute; left: 50%; top: -64px; transform: translateX(-50%); display: flex; align-items: center; gap: 8px;
-        padding: 9px 20px 9px 13px; border-radius: 999px; font-weight: 700; font-size: 26px; letter-spacing: 0.12em; text-transform: uppercase;
+      .who {{ position: absolute; left: 50%; top: -54px; transform: translateX(-50%); display: flex; align-items: center; gap: 8px;
+        padding: 8px 18px 8px 12px; border-radius: 999px; font-weight: 700; font-size: 24px; letter-spacing: 0.12em; text-transform: uppercase;
         line-height: 1; white-space: nowrap; color: #1D0084; }}
       .who svg {{ width: 26px; height: 26px; display: block; }}
 """.replace("{{", "{").replace("}}", "}")
@@ -57,7 +59,8 @@ def main():
     for k, p in enumerate(subs):
         words = p["words"]
         on = max(0.0, words[0]["t"] - 0.05)
-        if words[-1]["end"] - on < MIN_ON and k:
+        nxt = subs[k + 1]["words"][0]["t"] - 0.05 if k + 1 < len(subs) else D
+        if min(nxt, words[-1]["end"] + 0.7) - on < MIN_ON and k:
             on = max(subs[k - 1]["words"][-1]["end"] + 0.03, min(on, words[-1]["end"] - MIN_ON))
         ons.append(on)
     for k, p in enumerate(subs):
@@ -67,7 +70,8 @@ def main():
         spans = " ".join(('<span class="br"></span> ' if i in p.get("breaks", []) else "") +
                          f'<span id="w{k}-{i}" class="w">{html.escape(w["text"])}</span>' for i, w in enumerate(words))
         who = f'<div class="who glass">{MIC}<span>Periodista</span></div>' if p["who"] == "r" else ""
-        body.append(f'      <div id="p{k}" class="ph">{who}<div class="nl">{spans}</div>'
+        top = NL_TOP - (S_LIFT if p["who"] == "s" else 0)
+        body.append(f'      <div id="p{k}" class="ph" style="top: {top}px">{who}<div class="nl">{spans}</div>'
                     f'<div class="es"><span>{html.escape(p["es"]).replace("|", "<br>")}</span></div></div>')
         js.append(f'      tl.set("#p{k}", {{ opacity: 1 }}, {on:.3f});')
         js.append(f'      tl.fromTo("#p{k} .nl", {{ scale: 0.86 }}, {{ scale: 1, duration: 0.16, ease: "back.out(1.6)", immediateRender: false }}, {on:.3f});')
@@ -96,16 +100,16 @@ def main():
       #shade-top {{ top: 0; height: 760px; background: linear-gradient(180deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.10) 55%, rgba(0,0,0,0) 100%); }}
 {LABEL_CSS}
       .ph {{ position: absolute; left: {NL_CX - 505}px; top: {NL_TOP}px; width: 1010px; display: flex; flex-direction: column; align-items: center;
-        gap: 20px; opacity: 0; }}
+        gap: 12px; opacity: 0; }}
       .nl {{ width: {NL_W}px; font-size: {NL_SIZE}px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 0.26em; row-gap: 0;
         font-family: "Poppins", sans-serif; font-weight: 900; line-height: 1.02; text-transform: uppercase; letter-spacing: -0.01em;
         color: #FFFFFF; -webkit-text-stroke: 10px #000; paint-order: stroke fill; text-shadow: 0 6px 16px rgba(0,0,0,0.5);
         transform-origin: 50% 60%; }}
       .w {{ display: inline-block; color: #FFFFFF; }}
       .br {{ flex-basis: 100%; height: 0; }}
-      .es span {{ display: inline-block; max-width: {NL_W}px; padding: 10px 22px 12px; border-radius: 18px; text-align: center;
-        background: rgba(78,78,84,0.78); color: #FFFFFF; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 46px;
-        line-height: 1.2; letter-spacing: -0.005em; text-wrap: balance; }}
+      .es span {{ display: inline-block; white-space: nowrap; padding: 8px 24px 10px; border-radius: 18px; text-align: center;
+        background: rgba(78,78,84,0.78); color: #FFFFFF; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 44px;
+        line-height: 1.2; letter-spacing: -0.005em; }}
     </style>
   </head>
   <body>
@@ -132,7 +136,7 @@ def main():
     print(f"index.html: {D}s, {len(subs)} subtitle phrases")
 
 
-CARD_TOP = 1180                        # the title card over his chin: the cover shows his eyes and the title
+CARD_TOP = 1310                        # the title card under his mouth, over his chin and collar (above the caption band)
 
 
 if __name__ == "__main__":

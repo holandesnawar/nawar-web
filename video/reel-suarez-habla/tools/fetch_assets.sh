@@ -20,8 +20,10 @@ curl -sS --fail -X POST https://api.elevenlabs.io/v1/speech-to-text -F model_id=
 echo "the upscaler (Real-ESRGAN general-x4v3 → ONNX, without running its pickle)"
 curl -sS -L --fail -o "$RAW/realesr-general-x4v3.pth" https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesr-general-x4v3.pth
 python3 ../reel-suarez/tools/esrgan_onnx.py "$RAW/realesr-general-x4v3.pth" "$RAW/esrgan-x4v3.onnx"
+echo "the face detector (YuNet, OpenCV Zoo)"
+curl -sS -L --fail -o "$RAW/yunet.onnx" https://media.githubusercontent.com/media/opencv/opencv_zoo/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx
 python3 tools/frame.py --track
 python3 tools/frame.py          # ~1.5 h on CPU
 python3 tools/subs.py
 python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v1.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v2.mp4"

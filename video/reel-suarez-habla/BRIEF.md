@@ -19,11 +19,12 @@ más estilo Apple, bonito.»
   y al final, la cortinilla del canal.
 - «luis ajax» (un documento de Google): no se ha podido leer desde aquí (la red de este entorno no llega a docs.google.com).
 
-## Decisiones (v1)
+## Decisiones (v1, corregidas en v2)
 
 - **Tres momentos** de la entrevista, uno tras otro (42,4 s), elegidos porque son graciosos y se entienden:
   1. «Het was spannend.» — «Wie?» (no entiende la pregunta y pregunta «¿quién?»).
-  2. «Feestje gevierd?» — «Sorry?» — «… in vier… negen en veertig uur.» (en cuatro… cuarenta y nueve horas).
+  2. «Feestje gevierd?» — «Sorry?» — «… in vier… in achtenveertig uur.» (en cuatro… en cuarenta y ocho horas: empieza
+     «en cuatro…» y se corrige; en neerlandés el 48 se dice «ocho-y-cuarenta»).
   3. «Ben je blij dat je in de spits staat?» — «Voor mij maakt niet uit… Ik wil alleen maar spelen.»
 - **Sin la marca del canal:** fuera la cortinilla «Sportweek TV», el logo de la esquina queda fuera del encuadre y el
   texto del micrófono se borra.

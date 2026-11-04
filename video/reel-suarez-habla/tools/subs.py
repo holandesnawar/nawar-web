@@ -21,25 +21,32 @@ PHRASES = [
     ("s", "Sorry?", "¿Perdón?"),
     ("r", "Feest.|Feestje gevierd?", "Fiesta. ¿Hubo fiestecita?"),
     ("s", "Ah, nee, nee,|nee, nee.", "Ah, no, no, no, no."),
-    ("s", "Wij echt blij.|Echt tevreden.", "Nosotros muy contentos. Muy satisfechos."),
+    ("s", "Wij echt blij.|Echt tevreden.", "Muy contentos. Muy satisfechos."),
     ("s", "Maar nu is klaar", "Pero ya se acabó"),
     ("s", "omdat wij hebben|volgende wedstrijd", "porque tenemos el próximo partido"),
-    ("s", "in, in vier…|negen en veertig uur.", "en, en cuatro… cuarenta y nueve horas."),
-    ("r", "Ben je blij dat je|in de spits staat?", "¿Estás contento de jugar de delantero?"),
+    ("s", "in, in vier… in|achtenveertig uur.", "en cuatro… en cuarenta y ocho horas."),
+    ("r", "Ben je blij dat je|in de spits staat?", "¿Contento de jugar de delantero?"),
     ("s", "Ja, voor mij|maakt niet uit.", "Sí, a mí me da igual."),
-    ("s", "Ik wil spelen|links, rechts,", "Quiero jugar por la izquierda, por la derecha,"),
+    ("s", "Ik wil spelen|links, rechts,", "Quiero jugar por la izquierda,|por la derecha,"),
     ("s", "in de spits,|op tien ook.", "de delantero, de diez también."),
     ("s", "Voor mij|maakt niet uit.", "A mí me da igual."),
-    ("s", "Ik wil spelen.|Trainer weet.", "Quiero jugar. El entrenador sabe."),
+    ("s", "Ik wil spelen.|Trainer weet.", "Quiero jugar. El entrenador sabrá."),
     ("r", "Je hebt geen|liefste positie?", "¿No tienes una posición favorita?"),
-    ("r", "De positie waar je", "La posición en la que"),
-    ("r", "het graagst|op speelt.", "más te gusta jugar."),
+    ("r", "De positie waar je…", "La posición en la que…"),
+    ("r", "…het graagst|op speelt.", "…más te gusta jugar."),
     ("s", "Nee, nee, nee, nee.", "No, no, no, no."),
     ("s", "Voor mij|geen probleem.", "Para mí no hay problema."),
     ("s", "Geen probleem.", "Ningún problema."),
     ("s", "Ik wil alleen|maar spelen.", "Yo solo quiero jugar."),
 ]
 SKIP = {"uh"}
+# times set by ear and by the waveform where Scribe is off (reel seconds): (phrase, word, the word, start, end)
+FIX = [(5, 0, "Sorry?", 7.48, 8.02),                                       # (the drawn-out «Sss…» is heard from 7.48)
+       (7, 1, "nee,", 10.56, 10.86), (7, 2, "nee,", 11.20, 11.66), (7, 3, "nee,", 11.72, 11.90), (7, 4, "nee.", 11.96, 12.22),
+       (11, 3, "in", 19.57, 19.70), (11, 4, "achtenveertig", 19.72, 20.58),   # Scribe: «negen en veertig»; he says
+                                                                           # «in achtenveertig» (48: [a], [x], 2 syllables)
+       (17, 0, "Ik", 30.58, 30.84),                                         # «Ik, ik wil spelen» (Scribe: «Ik-ik» at 30.94)
+       (19, 2, "waar", 35.46, 35.56), (19, 3, "je…", 35.58, 35.86)]       # «waar je het, waar je het graagst»
 
 
 def norm(w):
@@ -95,6 +102,10 @@ def main():
             prev = next((times[j][1] for j in range(k - 1, -1, -1) if times[j]), 0.0)
             nxt = next((times[j][0] for j in range(k + 1, len(times)) if times[j]), prev + 0.3)
             times[k] = (prev, max(prev + 0.08, min(nxt, prev + 0.3)))
+    for p, i, text, t0, t1 in FIX:
+        k = [j for j, (pp, _) in enumerate(A) if pp == p][i]
+        assert A[k][1] == text, (p, i, A[k][1], text)
+        times[k] = (t0, t1)
     out = []
     for p, (who, nl, es) in enumerate(PHRASES):
         ws = [(w, times[k]) for k, (pp, w) in enumerate(A) if pp == p]

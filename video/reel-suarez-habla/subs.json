@@ -119,7 +119,7 @@
    "words": [
     {
      "text": "Sorry?",
-     "t": 7.74,
+     "t": 7.48,
      "end": 8.02
     }
    ]
@@ -162,29 +162,29 @@
     },
     {
      "text": "nee,",
-     "t": 11.32,
+     "t": 10.56,
+     "end": 10.86
+    },
+    {
+     "text": "nee,",
+     "t": 11.2,
      "end": 11.66
     },
     {
      "text": "nee,",
-     "t": 11.74,
+     "t": 11.72,
      "end": 11.9
     },
     {
-     "text": "nee,",
-     "t": 11.9,
-     "end": 11.92
-    },
-    {
      "text": "nee.",
-     "t": 11.98,
-     "end": 12.28
+     "t": 11.96,
+     "end": 12.22
     }
    ]
   },
   {
    "who": "s",
-   "es": "Nosotros muy contentos. Muy satisfechos.",
+   "es": "Muy contentos. Muy satisfechos.",
    "breaks": [
     3
    ],
@@ -279,9 +279,9 @@
   },
   {
    "who": "s",
-   "es": "en, en cuatro… cuarenta y nueve horas.",
+   "es": "en cuatro… en cuarenta y ocho horas.",
    "breaks": [
-    3
+    4
    ],
    "words": [
     {
@@ -300,18 +300,13 @@
      "end": 19.34
     },
     {
-     "text": "negen",
-     "t": 19.74,
-     "end": 20.06
+     "text": "in",
+     "t": 19.57,
+     "end": 19.7
     },
     {
-     "text": "en",
-     "t": 20.08,
-     "end": 20.18
-    },
-    {
-     "text": "veertig",
-     "t": 20.24,
+     "text": "achtenveertig",
+     "t": 19.72,
      "end": 20.58
     },
     {
@@ -323,7 +318,7 @@
   },
   {
    "who": "r",
-   "es": "¿Estás contento de jugar de delantero?",
+   "es": "¿Contento de jugar de delantero?",
    "breaks": [
     5
    ],
@@ -416,7 +411,7 @@
   },
   {
    "who": "s",
-   "es": "Quiero jugar por la izquierda, por la derecha,",
+   "es": "Quiero jugar por la izquierda,|por la derecha,",
    "breaks": [
     3
    ],
@@ -523,15 +518,15 @@
   },
   {
    "who": "s",
-   "es": "Quiero jugar. El entrenador sabe.",
+   "es": "Quiero jugar. El entrenador sabrá.",
    "breaks": [
     3
    ],
    "words": [
     {
      "text": "Ik",
-     "t": 30.94,
-     "end": 31.1
+     "t": 30.58,
+     "end": 30.84
     },
     {
      "text": "wil",
@@ -591,7 +586,7 @@
   },
   {
    "who": "r",
-   "es": "La posición en la que",
+   "es": "La posición en la que…",
    "breaks": [],
    "words": [
     {
@@ -606,25 +601,25 @@
     },
     {
      "text": "waar",
-     "t": 35.74,
-     "end": 35.82
+     "t": 35.46,
+     "end": 35.56
     },
     {
-     "text": "je",
-     "t": 35.84,
+     "text": "je…",
+     "t": 35.58,
      "end": 35.86
     }
    ]
   },
   {
    "who": "r",
-   "es": "más te gusta jugar.",
+   "es": "…más te gusta jugar.",
    "breaks": [
     2
    ],
    "words": [
     {
-     "text": "het",
+     "text": "…het",
      "t": 35.88,
      "end": 35.92
     },

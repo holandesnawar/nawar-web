@@ -6,27 +6,32 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 
 - **Corte** (`SEGMENTS` en `tools/frame.py`): tres momentos de la entrevista de 4:17, uno tras otro (42,4 s):
   1. «Het was spannend.» — «Wie?»;
-  2. «Feestje gevierd?» — «Sorry?» — «… in vier… negen en veertig uur.»;
+  2. «Feestje gevierd?» — «Sorry?» — «… in vier… in achtenveertig uur.» (48 horas);
   3. «Ben je blij dat je in de spits staat?» — «Voor mij maakt niet uit… Ik wil alleen maar spelen.»
 
   Fuera quedan la cortinilla «Sportweek TV» del principio y del final y los planos de recurso del entrenamiento.
-- **9:16 a pantalla completa:** el encuadre sigue su cara con suavidad, con un detector de caras en cada fotograma y una
-  cámara lenta (mediana + gaussiana). Siempre queda a la izquierda del logo «SPORTWEEK.NL» de la esquina.
+- **9:16 a pantalla completa:** el encuadre sigue su cara con suavidad. Un detector de caras (YuNet) la encuentra en
+  cada fotograma, y la cámara (mediana + gaussiana) mantiene toda la cara dentro del encuadre, también al empezar cada
+  momento. Siempre queda a la izquierda del logo «SPORTWEEK.NL» de la esquina.
 - **Nitidez:** el original está entrelazado, así que primero se desentrelaza (bwdif). Después cada encuadre se amplía ×4
-  con Real-ESRGAN («realesr-general-x4v3», en ONNX y en CPU), se mezcla con un 30 % de ampliación normal y lleva un grano
+  con Real-ESRGAN («realesr-general-x4v3», en ONNX y en CPU), se mezcla con un 40 % de ampliación normal y lleva un grano
   fino, para que la piel no quede de cera.
-- **Sin marca:** el texto «SPORTWEEK» del micrófono se pinta con el rojo del propio micrófono (`mic()`).
-- **Título:** tarjeta blanca esmerilada (estilo Apple), «APRENDIENDO NEERLANDÉS · con Luis Suárez», con la bandera
-  redonda de Países Bajos, durante los 3 primeros segundos (gancho y portada). Después queda una pastilla pequeña arriba,
-  «Neerlandés con Luis Suárez».
+- **Sin marca:** el texto «SPORTWEEK» del micrófono se pinta con el rojo del propio micrófono (`mic()`), en todos los
+  fotogramas, también cuando el borde del encuadre corta el micrófono. Se comprueba fotograma a fotograma antes de ampliar.
+- **Título:** tarjeta blanca esmerilada (estilo Apple), «Aprendiendo neerlandés» y, debajo y en grande, «con Luis
+  Suárez», con la bandera redonda de Países Bajos, durante los 3 primeros segundos (gancho y portada), bajo su boca.
+  Después queda una pastilla pequeña arriba, «Neerlandés con Luis Suárez».
 - **Subtítulos:** por frases, sincronizados palabra a palabra (ElevenLabs Scribe, comprobado con una segunda pasada):
   - el holandés va grande, en mayúsculas, todo al mismo tamaño, con la palabra que se dice en amarillo;
-  - el español va debajo, en una pastilla gris;
-  - van arriba, sobre el pelo, porque su cara llena el plano: así se le ven los ojos y la boca;
+  - el español va debajo, en una pastilla gris, en una línea siempre que cabe (si no, cortada a mano con «|»);
+  - van arriba, sobre el pelo, porque su cara llena el plano: así se le ven los ojos y la boca (las de Suárez, un poco
+    más arriba que las del periodista, para no rozarle las cejas);
   - las frases del periodista, que no sale en el plano, llevan una pastilla «Periodista»;
   - el holandés roto de Suárez se deja tal cual («Wij echt blij», «Trainer weet»); solo se quitan los «uh» y las
     repeticiones.
-- **Sonido:** el de la entrevista, a −14 LUFS, con fundidos de 25 ms en cada corte.
+- **Sonido:** el de la entrevista, con un filtro de graves a 90 Hz (el viento y los golpes del micrófono de mano), la
+  voz del periodista 6 dB más baja (está pegado al micrófono y sonaba mucho más fuerte que Suárez), a −14 LUFS y con
+  fundidos cortos en cada corte.
 
 ## Estructura
 
@@ -45,7 +50,7 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v1.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v2.mp4
 ```
 
 Para cambiar una traducción, edita `PHRASES` en `tools/subs.py` y ejecuta `python3 tools/subs.py && python3 tools/gen.py`.
