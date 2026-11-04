@@ -1,10 +1,10 @@
-# Storyboard · Reel «Aprendiendo neerlandés con Luis Suárez» v4 (34,7 s)
+# Storyboard · Reel «Aprendiendo neerlandés con Luis Suárez» v5 (34,7 s)
 
-- **Título (v4):** durante los 3 primeros segundos, una tarjeta blanca esmerilada (estilo Apple) sobre el pecho, debajo
-  de la boca del dependiente, con la bandera redonda de Países Bajos: «APRENDIENDO NEERLANDÉS» y, en grande, «con Luis
-  Suárez». La cara queda limpia en la portada. Desde 3,9 s queda una pastilla pequeña arriba, «Neerlandés con Luis
-  Suárez», que se aparta en los primeros planos (los de Suárez y, de 15,8 a 24,2 s, los del dependiente) para no tapar
-  los ojos.
+- **Título (v5):** durante los 3 primeros segundos, una tarjeta blanca esmerilada (estilo Apple) sobre el pecho, debajo
+  de la boca del dependiente, con la bandera redonda de Países Bajos: «Aprendiendo neerlandés» y, debajo y en grande,
+  «con Luis Suárez». La cara queda limpia en la portada. Desde 5,1 s queda una pastilla pequeña arriba, «Neerlandés con
+  Luis Suárez», que se aparta en los primeros planos (los de Suárez y, de 15,8 a 24,2 s, los del dependiente) y en el
+  plano en el que la cámara sube hasta la cara de Suárez (hasta 30,3 s), para no tapar los ojos.
 - **Subtítulos:** el holandés va en mayúsculas, todo al mismo tamaño y en dos líneas como mucho (cortadas a mano, sin
   palabras sueltas), con la palabra que se dice en amarillo; el español, debajo, en una pastilla gris, en una línea
   donde cabe. Todo queda fuera de la columna de botones de Instagram. En los primeros planos de Suárez el bloque sube a
@@ -38,7 +38,7 @@
 | 2,7–3,6 | Dependiente | Ja, beroemde club. | Sí, un club famoso. |
 | 3,8–5,3 | Dependiente | Cruijff, Keizer, Abe Lenstra. | Cruyff, Keizer, Abe Lenstra. |
 | 5,8–6,7 | Dependiente | Wat kan ik voor u oplossen? | ¿En qué le puedo ayudar? |
-| 7,0–8,9 | Suárez | Ja, ik hoorde iets over | Sí, oí algo sobre |
+| 7,0–8,9 | Suárez | Ja, ik hoorde iets over | Sí, he oído algo sobre |
 | 9,2–10,5 | Suárez | één antifluitregeling. | un control antipitidos. |
 | 10,6–12,4 | Dependiente | Ah, u bedoelt ons hoortoestel | Ah, se refiere a nuestro audífono |
 | 12,4–14,6 | Dependiente | met geavanceerde antifluitregeling. | con control antipitidos avanzado. |

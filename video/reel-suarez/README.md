@@ -16,20 +16,23 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
     derecho un poco a su izquierda, sin borrar nada (así no se toca la oreja del dependiente);
   - la tarjeta roja se repinta entera de rojo liso, sin tocar los dedos (en sus dos primeros fotogramas es solo un
     borrón de movimiento y se deja), y a la blanca se le quita la estrella (`LOGOS`);
-  - en el plano 928 la ventana se queda a la izquierda del remolino naranja del escaparate hasta que su hombro lo tapa.
-- **Título (v4, estilo Apple):** una tarjeta blanca esmerilada sobre el pecho desde el primer fotograma (gancho y
-  portada), con la bandera redonda de Países Bajos: «APRENDIENDO NEERLANDÉS» y, en grande, «con Luis Suárez». Va justo
-  debajo de la boca del dependiente, que habla en esos segundos. A los 3 s se aparta y, cuando el dependiente baja la
-  cabeza (3,9 s), queda una pastilla pequeña arriba («Neerlandés con Luis Suárez»). La pastilla se aparta en los
-  primeros planos (de 15,8 a 24,2 s, todo el tramo del dependiente) para no tapar los ojos. Es el mismo diseño del
-  segundo reel (`../reel-suarez-habla`).
+  - en el plano 928 la ventana se queda a la izquierda del remolino naranja del escaparate todo lo que se puede sin
+    cortarle la cara; el trocito que queda junto a su mandíbula (0,3 s) no se borra, porque borrarlo le mancha la mejilla.
+- **Título (v5, estilo Apple):** una tarjeta blanca esmerilada sobre el pecho desde el primer fotograma (gancho y
+  portada), con la bandera redonda de Países Bajos: «Aprendiendo neerlandés» en azul y, debajo y en grande, «con Luis
+  Suárez». Va justo debajo de la boca del dependiente, que habla en esos segundos. A los 3 s se aparta y, cuando el
+  dependiente baja la cabeza (5,1 s), queda una pastilla pequeña arriba («Neerlandés con Luis Suárez»). La pastilla se
+  aparta para no tapar ojos ni caras: en los primeros planos de Suárez, de 15,8 a 24,2 s (todo el tramo del
+  dependiente) y de 26,0 a 30,3 s (el primer plano y el plano en el que la cámara sube hasta su cara). Es el mismo
+  diseño del segundo reel (`../reel-suarez-habla`).
 - **Subtítulos:** por frases cortas, sincronizados palabra a palabra (ElevenLabs Scribe):
   - el holandés grande y en mayúsculas, todo al mismo tamaño y en dos líneas como mucho, con la palabra que se está
     diciendo en amarillo; los cortes de línea van marcados con «|» en `PHRASES`, para no dejar una palabra sola ni
     partir un nombre;
   - el español debajo, en una pastilla gris, en una sola línea donde cabe (y si no, en dos líneas equilibradas);
-  - en los primeros planos de Suárez el bloque sube a la nariz para que se le vean los labios (cambia de altura solo
-    en los cortes, y la sombra de abajo sube con él).
+  - en los primeros planos de Suárez el bloque sube a la nariz para que se le vean los labios. Cambia de altura solo
+    en los cortes: las frases que cruzarían uno empiezan o terminan en él. La sombra de abajo se quita ahí, para no
+    oscurecerle la boca.
 
   El español conserva los juegos de palabras del anuncio:
   - «fluiten» → pitar: los árbitros le pitan;
@@ -54,7 +57,7 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v4.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v5.mp4
 ```
 
 Para cambiar una traducción o cortar una frase de otra manera, edita `PHRASES` en `tools/subs.py` y ejecuta
