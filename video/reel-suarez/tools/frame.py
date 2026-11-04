@@ -15,33 +15,35 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UP0, F0, F1, HOLD = 123, 135, 993, 8        # up.mp4 starts at source frame 123; the reel plays 135–993, then holds
 S = 4                                       # upscale factor (512×288 → 2048×1152)
 WIN = 162                                   # 9:16 window width in source px (288 × 9/16)
-CUTS = [123, 148, 172, 193, 302, 334, 375, 471, 495, 551, 648, 690, 740, 772, 786, 866, 892, 928, 945, 960, 994]
-# shot (first frame) → [(source frame, window centre x in source px)]; linear between keyframes, eased
-SHOTS = {      # (set from a face detector run on every 3rd frame, and checked by eye on native-scale frames)
-    123: [(123, 262)],                          # Suárez walks in (the reel opens here)
+CUTS = [123, 148, 172, 193, 302, 334, 375, 471, 495, 551, 648, 690, 740, 772, 786, 830, 866, 892, 928, 945, 960, 994]
+# shot (first frame) → [(source frame, window centre x in source px)]; one smooth monotone curve through the keys
+SHOTS = {      # (set from a face detector run on every 3rd frame, checked by eye on native-scale frames, re-keyed after QA)
+    123: [(135, 272), (147, 212)],              # Suárez walks in (the reel opens here) — followed as he walks
     148: [(148, 330), (160, 318), (171, 300)],  # over his shoulder: the assistant, «een sportman van Ajax»
-    172: [(172, 175)],                          # the Ajax badge
-    193: [(193, 245), (210, 300), (222, 318), (301, 318)],   # the assistant: «Ja, beroemde club. Cruijff…»
+    172: [(172, 238)],                          # the Ajax badge, whole
+    193: [(193, 245), (210, 296), (222, 308), (301, 308)],   # the assistant: «Ja, beroemde club. Cruijff…»
     302: [(302, 168), (333, 198)],              # Suárez, wide: «Ja, ik hoorde iets…»
-    334: [(334, 215), (356, 205), (374, 255)],  # Suárez close: «…anti-fluitregeling» (on his mouth)
-    375: [(375, 280), (405, 312), (440, 285), (470, 308)],   # the assistant: «Ah, u bedoelt…»
-    471: [(471, 190)],                          # the hearing aid
+    334: [(334, 215), (356, 205), (374, 255)],  # Suárez close: «…antifluitregeling» (on his mouth)
+    375: [(375, 280), (400, 305), (412, 265), (424, 235), (437, 285), (470, 305)],   # the assistant bends for the hearing aid
+    471: [(471, 250)],                          # the hearing aid and the thumb holding it
     495: [(495, 320), (507, 302), (550, 302)],  # the assistant close: «…fluittonen hoort»
-    551: [(551, 205), (600, 285), (647, 245)],  # Suárez close: «Zij fluiten veel te vaak tegen mij»
-    648: [(648, 290), (670, 315), (689, 245)],  # the assistant close: «Oh, maar dan…»
+    551: [(551, 205), (600, 290), (612, 335), (628, 340), (636, 290), (647, 245)],   # Suárez close, his head turn
+    648: [(648, 290), (670, 315), (680, 230), (689, 160)],   # the assistant close, bending forward: «Oh, maar dan…»
     690: [(690, 395), (710, 372), (739, 372)],  # wide, on the assistant as he talks: «…oordopjesgamma»
-    740: [(740, 250)],                          # the sofa: «Neemt u maar even op de bank plaats»
+    740: [(740, 350), (771, 290)],              # the sofa and his gesturing hand: «…op de bank plaats»
     772: [(772, 212), (785, 200)],              # Suárez: «Hè?»
-    786: [(786, 195), (812, 250), (828, 300), (834, 165), (865, 175)],   # Suárez close, a dip, then his hand
-    866: [(866, 185), (891, 195)],              # wide on Suárez: «Nou, veel succes ermee»
-    892: [(892, 312), (927, 315)],              # the assistant: «En mocht u nog een fluitje horen…»
-    928: [(928, 160), (936, 200), (944, 228)],  # Suárez
-    945: [(945, 268)],                          # the assistant holds up a red business card: «Kaartje?»
+    786: [(786, 245), (800, 205), (812, 250), (820, 280), (829, 298)],   # Suárez close: «Suárez nooit zitten…»
+    830: [(830, 165), (865, 175)],              # after a dip to black: his hand with the earplugs
+    866: [(866, 185), (891, 215)],              # wide on Suárez: «Nou, veel succes ermee»
+    892: [(892, 305), (927, 309)],              # the assistant: «En mocht u nog een fluitje horen…»
+    928: [(928, 158), (944, 232)],              # Suárez
+    945: [(945, 282)],                          # the assistant holds up a red business card: «Kaartje?»
     960: [(960, 180), (978, 155), (993, 180)],  # Suárez: «Nee, nee, ik heb kaartjes genoeg»
 }
 # brand marks inside the windows: (first frame, last frame, kind, source rect x0, y0, x1, y1)
 LOGOS = [(945, 959, "red_card", 150, 20, 240, 140),     # the assistant's red business card (the shop's logo printed light)
-         (960, 993, "white_card", 215, 35, 300, 110),    # the white card with the shop's red star (on its way out of frame)
+         (960, 974, "white_card", 215, 35, 300, 110),    # the white card with the shop's red star (out of the window from 975:
+                                                         # after that the rect holds only his red shoulder — never touched)
          (148, 171, "wall", 385, 40, 512, 140),          # «De hoorspecialist» on the orange wall, where a window reaches it
          (193, 301, "wall", 385, 40, 512, 140),
          (375, 470, "wall", 385, 40, 512, 140),
@@ -50,38 +52,55 @@ LOGOS = [(945, 959, "red_card", 150, 20, 240, 140),     # the assistant's red bu
 
 
 def centre(n):
+    from scipy.interpolate import PchipInterpolator
     s = max(c for c in CUTS if c <= n)
     ks = SHOTS[s]
-    if n <= ks[0][0]:
+    if len(ks) == 1 or n <= ks[0][0]:
         c = ks[0][1]
     elif n >= ks[-1][0]:
         c = ks[-1][1]
     else:
-        (a, ca), (b, cb) = next((p, q) for p, q in zip(ks, ks[1:]) if p[0] <= n <= q[0])
-        u = (n - a) / (b - a); u = u * u * (3 - 2 * u)
-        c = ca + (cb - ca) * u
+        c = float(PchipInterpolator([k[0] for k in ks], [k[1] for k in ks])(n))
     return min(max(c, WIN / 2), 512 - WIN / 2)
 
 
 def wall(img, rect):
-    """the shop's slogan in light letters on the out-of-focus orange wall: the letters (lighter or less saturated than
-    the wall around them) are painted over with the wall (OpenCV inpainting)."""
-    import cv2
+    """the shop's slogan in light letters on the out-of-focus orange wall. The letters are found at the source's own
+    scale (the rect shrunk ×4: there they are thin strokes, lighter than the wall around them) and painted over, in the
+    upscale, with the wall around them (a masked blur), plus the frame's grain."""
     from scipy import ndimage as ndi
     x0, y0, x1, y1 = [v * S for v in rect]
-    sub = img[y0:y1, x0:x1].copy()
-    f = sub.astype(np.float32); r, g, b = f[..., 0], f[..., 1], f[..., 2]
+    sub = img[y0:y1, x0:x1].astype(np.float32)
+    h, w = sub.shape[0] // S, sub.shape[1] // S
+    sm = sub[:h * S, :w * S].reshape(h, S, w, S, 3).mean((1, 3))
+    r, g, b = sm[..., 0], sm[..., 1], sm[..., 2]
     luma = 0.299 * r + 0.587 * g + 0.114 * b
-    sat = (f.max(-1) - f.min(-1)) / np.maximum(f.max(-1), 1)
-    orange = (r > 140) & (r > 1.25 * g) & (g > 1.2 * b)
-    wallish = ndi.binary_closing(ndi.gaussian_filter(orange.astype(np.float32), 12) > 0.45, iterations=8)
-    ml, ms = ndi.median_filter(luma, 41), ndi.median_filter(sat, 41)
-    text = wallish & ((luma - ml > 14) | (ms - sat > 0.10))
-    text = ndi.binary_dilation(ndi.binary_opening(text, iterations=1), iterations=4)
-    if not text.any():
+    wallish = ndi.gaussian_filter(((r > 140) & (r > 1.25 * g) & (g > 1.2 * b)).astype(np.float32), 4) > 0.45
+    text = wallish & (luma - ndi.median_filter(luma, 15) > 9)
+    text = ndi.binary_opening(text, iterations=1)
+    rows, cols = np.flatnonzero(text.sum(1) >= 2), np.flatnonzero(text.sum(0) >= 1)
+    if not len(rows):
         return img
+    band = np.zeros_like(text)                          # the whole line of lettering: its rows (± 3 px), from its first
+    band[max(0, rows.min() - 3):rows.max() + 4, max(0, cols.min() - 3):] = True   # letter on, wherever there is wall
+    text = band & ndi.binary_dilation(wallish, iterations=1)
+    big = np.zeros(sub.shape[:2], bool); big[:h * S, :w * S] = np.kron(text, np.ones((S, S), bool))
+    big = ndi.binary_dilation(big, iterations=5)
+    keep = np.zeros(sub.shape[:2], bool); keep[:h * S, :w * S] = np.kron(wallish, np.ones((S, S), bool))
+    keep &= ~big
+    kf = keep.astype(np.float32)
+    if kf.sum() < 500:
+        return img
+    def mblur(sig):
+        num = np.stack([ndi.gaussian_filter(sub[..., c] * kf, sig) for c in range(3)], -1)
+        den = ndi.gaussian_filter(kf, sig)[..., None]
+        return num / np.maximum(den, 1e-6), den
+    fill, den = mblur(26)
+    wide, den2 = mblur(90)                              # far from any wall pixel: a wider look, then the wall's median
+    fill = np.where(den > 0.05, fill, np.where(den2 > 0.02, wide, np.median(sub[keep], axis=0)))
+    a = ndi.gaussian_filter(big.astype(np.float32), 4)[..., None]
     out = img.copy()
-    out[y0:y1, x0:x1] = cv2.inpaint(sub, text.astype(np.uint8) * 255, 9, cv2.INPAINT_TELEA)
+    out[y0:y1, x0:x1] = (sub * (1 - a) + fill * a).clip(0, 255).astype(np.uint8)
     return out
 
 
@@ -107,7 +126,16 @@ def erase(img, kind, rect):
         hull = np.zeros(card.shape, np.uint8); cv2.fillConvexPoly(hull, cv2.convexHull(pts), 1)
         luma = 0.299 * r + 0.587 * g + 0.114 * b
         cl = np.median(luma[lab == k])
-        mark = hull.astype(bool) & (luma > cl + 12) & (np.abs(g - b) < 30)   # the light print (not his skin: g ≫ b)
+        skin = (b < 0.85 * g) & (g > 0.62 * r)                              # his fingers on the card (the print: g ≈ 0.52 r)
+        face = ndi.binary_erosion(hull.astype(bool), iterations=2) & ~skin   # the whole card face is repainted plain red,
+        near = ndi.binary_dilation(hull.astype(bool), iterations=12)          # (+ the light strip of print on its edge:
+        face |= near & ~skin & ((f.min(-1) > 185) | ((r > 1.25 * g) & (luma > cl + 8)))   # white or pink, not the grey wall)
+        plain = (lab == k) & (luma <= cl + 6)                                # from its own unprinted red (its shading kept)
+        fill = np.stack([ndi.gaussian_filter(f[..., c] * plain, 14) for c in range(3)], -1) / np.maximum(ndi.gaussian_filter(plain.astype(np.float32), 14), 1e-3)[..., None]
+        a = ndi.gaussian_filter(face.astype(np.float32), 2.5)[..., None]
+        out = img.copy()
+        out[y0:y1, x0:x1] = (f * (1 - a) + fill * a).clip(0, 255).astype(np.uint8)
+        return out
     else:                                  # a white card with the logo's red star
         mark = (r > 90) & (r > 1.6 * g) & (r > 1.6 * b)      # in its rect only the star is that red (his skin is not)
     mark = ndi.binary_dilation(mark, iterations=6)
@@ -118,6 +146,7 @@ def erase(img, kind, rect):
     return out
 
 
+LANCZOS_MIX = 0.3                    # share of a plain upscale in each frame: the ESRGAN look alone is waxy on faces
 GRADE = "eq=contrast=1.07:saturation=1.10:gamma=0.98"   # the ad's flat, bright grade, given a little punch
 
 
@@ -132,6 +161,12 @@ def picture():
     for _ in range(F0 - UP0):
         read()
     img0 = None
+    fnp = os.path.join(ROOT, ".raw", "frames.npy")                 # the source frames (512×288), for the Lanczos mix
+    if not os.path.exists(fnp):
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-i", os.path.join(ROOT, ".raw", "suarez.mp4"), "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
+                             capture_output=True, check=True).stdout
+        np.save(fnp, np.frombuffer(raw, np.uint8).reshape(-1, 288, 512, 3))
+    src = np.load(fnp, mmap_mode="r")
     n_out = F1 - F0 + 1 + HOLD
     enc = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", "1080x1920", "-r", "25", "-i", "-",
                             "-c:v", "libx264", "-preset", "slow", "-crf", "15", "-pix_fmt", "yuv420p", os.path.join(ROOT, ".raw", "picture.mp4")],
@@ -141,7 +176,8 @@ def picture():
         n = min(F0 + k, F1)
         if F0 + k <= F1:
             img0 = read(); assert img0 is not None, f"up.mp4 ends before source frame {n}"
-        img = img0
+        lz = np.asarray(Image.fromarray(src[n]).resize((2048, 1152), Image.LANCZOS), np.float32)
+        img = (img0.astype(np.float32) * (1 - LANCZOS_MIX) + lz * LANCZOS_MIX).clip(0, 255).astype(np.uint8)
         for a, b, kind, *rect in LOGOS:
             if a <= n <= b:
                 img = erase(img, kind, rect)

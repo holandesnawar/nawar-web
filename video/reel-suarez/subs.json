@@ -62,7 +62,7 @@
   },
   {
    "who": "m",
-   "es": "Cruijff, Keizer,",
+   "es": "Cruijff, Keizer, Abe Lenstra.",
    "words": [
     {
      "text": "Cruijff,",
@@ -73,13 +73,7 @@
      "text": "Keizer,",
      "t": 4.3,
      "end": 4.64
-    }
-   ]
-  },
-  {
-   "who": "m",
-   "es": "Abe Lenstra.",
-   "words": [
+    },
     {
      "text": "Abe",
      "t": 4.76,
@@ -94,7 +88,7 @@
   },
   {
    "who": "m",
-   "es": "¿Qué puedo",
+   "es": "¿Qué le puedo solucionar?",
    "words": [
     {
      "text": "Wat",
@@ -110,13 +104,7 @@
      "text": "ik",
      "t": 6.12,
      "end": 6.18
-    }
-   ]
-  },
-  {
-   "who": "m",
-   "es": "hacer por usted?",
-   "words": [
+    },
     {
      "text": "voor",
      "t": 6.22,
@@ -136,7 +124,7 @@
   },
   {
    "who": "s",
-   "es": "Sí, oí algo",
+   "es": "Sí, oí algo sobre",
    "words": [
     {
      "text": "Ja,",
@@ -157,31 +145,25 @@
      "text": "iets",
      "t": 8.22,
      "end": 8.38
-    }
-   ]
-  },
-  {
-   "who": "s",
-   "es": "sobre un",
-   "words": [
+    },
     {
      "text": "over",
      "t": 8.48,
      "end": 8.86
-    },
-    {
-     "text": "één",
-     "t": 9.2,
-     "end": 9.38
     }
    ]
   },
   {
    "who": "s",
-   "es": "control anti-pitidos.",
+   "es": "un control antipitidos.",
    "words": [
     {
-     "text": "anti-fluitregeling.",
+     "text": "één",
+     "t": 9.2,
+     "end": 9.38
+    },
+    {
+     "text": "antifluitregeling.",
      "t": 9.44,
      "end": 10.48
     }
@@ -189,7 +171,7 @@
   },
   {
    "who": "m",
-   "es": "Ah, se refiere a",
+   "es": "Ah, se refiere a nuestro audífono",
    "words": [
     {
      "text": "Ah,",
@@ -205,13 +187,7 @@
      "text": "bedoelt",
      "t": 11.42,
      "end": 11.68
-    }
-   ]
-  },
-  {
-   "who": "m",
-   "es": "nuestro audífono",
-   "words": [
+    },
     {
      "text": "ons",
      "t": 11.74,
@@ -226,7 +202,7 @@
   },
   {
    "who": "m",
-   "es": "con un avanzado",
+   "es": "con control antipitidos avanzado.",
    "words": [
     {
      "text": "met",
@@ -237,15 +213,9 @@
      "text": "geavanceerde",
      "t": 12.56,
      "end": 13.24
-    }
-   ]
-  },
-  {
-   "who": "m",
-   "es": "control anti-pitidos.",
-   "words": [
+    },
     {
-     "text": "anti-fluitregeling.",
+     "text": "antifluitregeling.",
      "t": 13.3,
      "end": 14.58
     }
@@ -253,7 +223,7 @@
   },
   {
    "who": "m",
-   "es": "Evita que usted",
+   "es": "Evita que oiga pitidos molestos.",
    "words": [
     {
      "text": "Voorkomt",
@@ -269,13 +239,7 @@
      "text": "u",
      "t": 15.14,
      "end": 15.2
-    }
-   ]
-  },
-  {
-   "who": "m",
-   "es": "oiga pitidos molestos.",
-   "words": [
+    },
     {
      "text": "irritante",
      "t": 15.26,
@@ -332,7 +296,7 @@
   },
   {
    "who": "s",
-   "es": "demasiadas veces",
+   "es": "demasiadas veces en mi contra.",
    "words": [
     {
      "text": "veel",
@@ -348,13 +312,7 @@
      "text": "vaak",
      "t": 20.08,
      "end": 20.32
-    }
-   ]
-  },
-  {
-   "who": "s",
-   "es": "contra mí.",
-   "words": [
+    },
     {
      "text": "tegen",
      "t": 20.38,
@@ -369,7 +327,7 @@
   },
   {
    "who": "m",
-   "es": "Oh, pero entonces",
+   "es": "Oh, entonces este modelo no es para usted.",
    "words": [
     {
      "text": "Oh,",
@@ -390,13 +348,7 @@
      "text": "is",
      "t": 21.48,
      "end": 21.54
-    }
-   ]
-  },
-  {
-   "who": "m",
-   "es": "este modelo no es para usted.",
-   "words": [
+    },
     {
      "text": "dit",
      "t": 21.58,
@@ -426,7 +378,7 @@
   },
   {
    "who": "m",
-   "es": "Vamos a nuestra",
+   "es": "Vamos a nuestra gama de tapones para los oídos.",
    "words": [
     {
      "text": "Gaan",
@@ -434,7 +386,7 @@
      "end": 22.62
     },
     {
-     "text": "wij",
+     "text": "we",
      "t": 22.66,
      "end": 22.74
     },
@@ -447,13 +399,7 @@
      "text": "ons",
      "t": 22.92,
      "end": 23.1
-    }
-   ]
-  },
-  {
-   "who": "m",
-   "es": "gama de tapones.",
-   "words": [
+    },
     {
      "text": "oordopjesgamma.",
      "t": 23.18,
@@ -463,7 +409,7 @@
   },
   {
    "who": "m",
-   "es": "Siéntese un momento",
+   "es": "Siéntese un momento en el banco.",
    "words": [
     {
      "text": "Neemt",
@@ -484,13 +430,7 @@
      "text": "even",
      "t": 24.58,
      "end": 24.76
-    }
-   ]
-  },
-  {
-   "who": "m",
-   "es": "en el banco.",
-   "words": [
+    },
     {
      "text": "op",
      "t": 24.8,
@@ -526,7 +466,7 @@
   },
   {
    "who": "s",
-   "es": "Suárez nunca",
+   "es": "Suárez nunca se sienta en el banquillo.",
    "words": [
     {
      "text": "Suárez",
@@ -537,13 +477,7 @@
      "text": "nooit",
      "t": 26.7,
      "end": 26.899
-    }
-   ]
-  },
-  {
-   "who": "s",
-   "es": "se sienta en el banquillo.",
-   "words": [
+    },
     {
      "text": "zitten",
      "t": 26.96,
@@ -568,7 +502,7 @@
   },
   {
    "who": "m",
-   "es": "Bueno, mucha suerte.",
+   "es": "Pues nada, mucha suerte con ellos.",
    "words": [
     {
      "text": "Nou,",
@@ -594,7 +528,7 @@
   },
   {
    "who": "m",
-   "es": "Y si vuelve a",
+   "es": "Y si vuelve a oír un pitido,",
    "words": [
     {
      "text": "En",
@@ -615,13 +549,7 @@
      "text": "nog",
      "t": 30.28,
      "end": 30.38
-    }
-   ]
-  },
-  {
-   "who": "m",
-   "es": "oír un pitido,",
-   "words": [
+    },
     {
      "text": "een",
      "t": 30.4,
@@ -641,7 +569,7 @@
   },
   {
    "who": "m",
-   "es": "pásese por aquí.",
+   "es": "pásese por aquí, ¿eh?",
    "words": [
     {
      "text": "gewoon",
@@ -654,9 +582,14 @@
      "end": 31.8
     },
     {
-     "text": "langskomen.",
+     "text": "langskomen,",
      "t": 31.82,
-     "end": 32.42
+     "end": 32.28
+    },
+    {
+     "text": "hè?",
+     "t": 32.28,
+     "end": 32.44
     }
    ]
   },
@@ -673,7 +606,7 @@
   },
   {
    "who": "s",
-   "es": "No, no,",
+   "es": "No, no, ya tengo tarjetas de sobra.",
    "words": [
     {
      "text": "Nee,",
@@ -684,13 +617,7 @@
      "text": "nee,",
      "t": 33.28,
      "end": 33.42
-    }
-   ]
-  },
-  {
-   "who": "s",
-   "es": "tengo tarjetas de sobra.",
-   "words": [
+    },
     {
      "text": "ik",
      "t": 33.44,

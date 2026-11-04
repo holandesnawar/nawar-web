@@ -9,9 +9,11 @@ import html, json, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 YEL = "#FFE11B"
-NL_TOP, NL_W = 1150, 940          # the Dutch line's box (frame px) — above Instagram's caption/username band (≥ 1480)
-TITLE_TOP = 236
+NL_TOP, NL_W, NL_CX = 1110, 850, 505   # the Dutch block (frame px): clear of Instagram's button rail (x > 930) and of its
+NL_SIZE = 78                      # caption/username band at the bottom; one size, long phrases wrap onto two lines
+TITLE_TOP = 830                   # the big title over the chest for the first seconds: the faces (and the cover) stay clear
 TAG_AT = 3.0                      # the big title (the hook and the cover) becomes a one-line tag at the top here
+CLOSE = [(7.96, 9.60), (16.64, 20.52), (26.04, 27.80)]   # Suárez's extreme close-ups (his eyes at the top): the tag steps out
 
 
 def em_width(s):
@@ -20,6 +22,29 @@ def em_width(s):
     for ch in s.upper():
         w += 0.98 if ch in "MW" else 0.36 if ch in "I" else 0.27 if ch == " " else 0.3 if ch in ".,?!'-" else 0.74
     return w
+
+
+def lines_at(words, size):
+    """greedy wrap of the upper-case words at a font size → number of lines (and whether a single word overflows)."""
+    n, cur, over = 1, 0.0, False
+    for w in words:
+        ww = em_width(w) * size
+        over |= ww > NL_W
+        add = ww if cur == 0 else ww + 0.26 * size
+        if cur and cur + add > NL_W:
+            n, cur = n + 1, ww
+        else:
+            cur += add
+    return n, over
+
+
+def fit(words):
+    """NL_SIZE, unless the phrase needs more than two lines (or one word is wider than the box): then the size that fits."""
+    for size in range(NL_SIZE, 54, -2):
+        n, over = lines_at(words, size)
+        if n <= 2 and not over:
+            return size
+    return 56
 
 
 def main():
@@ -32,11 +57,7 @@ def main():
         on = max(0.0, words[0]["t"] - 0.05)
         nxt = subs[k + 1]["words"][0]["t"] - 0.05 if k + 1 < len(subs) else D
         off = min(nxt, words[-1]["end"] + 0.7) if k + 1 < len(subs) else D
-        text = " ".join(w["text"] for w in words)
-        size = min(86, int(NL_W / em_width(text)))
-        lines = 1
-        if size < 64:
-            size, lines = 72, 2
+        size = fit([w["text"] for w in words])
         spans = " ".join(f'<span id="w{k}-{i}" class="w">{html.escape(w["text"])}</span>' for i, w in enumerate(words))
         body.append(f'      <div id="p{k}" class="ph"><div class="nl" style="font-size: {size}px">{spans}</div>'
                     f'<div class="es"><span>{html.escape(p["es"])}</span></div></div>')
@@ -66,7 +87,7 @@ def main():
       #shade-top {{ top: 0; height: 700px; background: linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.18) 55%, rgba(0,0,0,0) 100%); }}
       #shade-bot {{ top: 1020px; height: 560px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.30) 45%, rgba(0,0,0,0.30) 75%, rgba(0,0,0,0) 100%); }}
       #title {{ position: absolute; left: 0; top: {TITLE_TOP}px; width: 1080px; text-align: center; color: #FFFFFF; transform-origin: 50% 0%;
-        font-family: "Poppins", sans-serif; font-weight: 800; font-size: 76px; line-height: 1.08; letter-spacing: -0.01em;
+        font-family: "Poppins", sans-serif; font-weight: 800; font-size: 72px; line-height: 1.06; letter-spacing: -0.01em;
         -webkit-text-stroke: 9px #000; paint-order: stroke fill; text-shadow: 0 6px 18px rgba(0,0,0,0.45); }}
       #title .emo {{ position: absolute; width: 112px; height: auto; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35)); }}
       #emo-book {{ left: 52px; top: 22px; }}
@@ -78,14 +99,14 @@ def main():
       #tag i {{ display: block; height: 46px; background-size: contain; background-repeat: no-repeat; background-position: center; }}
       #tag-book {{ width: 47px; background-image: url("assets/img/emoji-book.png"); }}
       #tag-nl {{ width: 62px; background-image: url("assets/img/emoji-nl.png"); }}
-      .ph {{ position: absolute; left: 0; top: {NL_TOP}px; width: 1080px; display: flex; flex-direction: column; align-items: center;
+      .ph {{ position: absolute; left: {NL_CX - 505}px; top: {NL_TOP}px; width: 1010px; display: flex; flex-direction: column; align-items: center;
         gap: 20px; opacity: 0; }}
       .nl {{ width: {NL_W}px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 0.26em; row-gap: 0;
         font-family: "Poppins", sans-serif; font-weight: 900; line-height: 1.02; text-transform: uppercase; letter-spacing: -0.01em;
         color: #FFFFFF; -webkit-text-stroke: 10px #000; paint-order: stroke fill; text-shadow: 0 6px 16px rgba(0,0,0,0.5);
         transform-origin: 50% 60%; }}
       .w {{ display: inline-block; color: #FFFFFF; }}
-      .es span {{ display: inline-block; max-width: 900px; padding: 10px 26px 12px; border-radius: 18px; text-align: center;
+      .es span {{ display: inline-block; max-width: {NL_W}px; padding: 10px 26px 12px; border-radius: 18px; text-align: center;
         background: rgba(78,78,84,0.78); color: #FFFFFF; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 46px;
         line-height: 1.2; letter-spacing: -0.005em; }}
     </style>
@@ -103,8 +124,9 @@ def main():
       window.__timelines = window.__timelines || {{}};
       const tl = gsap.timeline({{ paused: true }});
       // the big title from the first frame (the cover), then a one-line tag that keeps clear of the faces
-      tl.to("#title", {{ opacity: 0, y: -40, scale: 0.86, duration: 0.3, ease: "power2.in" }}, {TAG_AT});
-      tl.fromTo("#tag", {{ opacity: 0, y: 24 }}, {{ opacity: 1, y: 0, duration: 0.32, ease: "power3.out", immediateRender: false }}, {TAG_AT + 0.18});
+      tl.to("#title", {{ opacity: 0, scale: 0.9, duration: 0.28, ease: "power2.in" }}, {TAG_AT});
+      tl.fromTo("#tag", {{ opacity: 0, y: 24 }}, {{ opacity: 1, y: 0, duration: 0.32, ease: "power3.out", immediateRender: false }}, {TAG_AT + 0.32});
+{chr(10).join(f'      tl.to("#tag", {{ opacity: 0, duration: 0.12, ease: "none" }}, {a - 0.06:.2f});{chr(10)}      tl.to("#tag", {{ opacity: 1, duration: 0.16, ease: "none" }}, {b:.2f});' for a, b in CLOSE)}
       tl.to("#shade-top", {{ opacity: 0.55, duration: 0.4, ease: "none" }}, {TAG_AT});
 {chr(10).join(js)}
       window.__timelines["main"] = tl;

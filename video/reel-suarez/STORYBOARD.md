@@ -1,19 +1,54 @@
-# Storyboard · Reel «Aprendiendo neerlandés con Luis Suárez» v1 (34,7 s)
+# Storyboard · Reel «Aprendiendo neerlandés con Luis Suárez» v2 (34,7 s)
 
-Arriba, grande durante los 3 primeros segundos: «📚 Aprendiendo neerlandés con Luis Suárez 🇳🇱». Después queda una
-etiqueta pequeña, «📚 Neerlandés con Luis Suárez 🇳🇱». Debajo de las caras van los subtítulos: el
-holandés en mayúsculas, con la palabra que se dice en amarillo, y el español en una pastilla gris.
+- **Título:** durante los 3 primeros segundos va grande, «📚 Aprendiendo neerlandés con Luis Suárez 🇳🇱», sobre el pecho,
+  para que la cara se vea limpia en la portada. Después queda una etiqueta pequeña arriba, «📚 Neerlandés con Luis
+  Suárez 🇳🇱», que se aparta en los primeros planos de Suárez para no taparle los ojos.
+- **Subtítulos:** el holandés va en mayúsculas, con la palabra que se dice en amarillo; el español, debajo, en una
+  pastilla gris. Todo queda fuera de la columna de botones de Instagram.
 
-| Tiempo | Plano (encuadre 9:16) | Holandés | Español |
+**Planos (encuadre 9:16 sobre quien habla):**
+1. Suárez entra.
+2. Por encima de su hombro, el dependiente.
+3. El escudo del Ajax.
+4. El dependiente.
+5. Suárez, plano medio y primer plano.
+6. El dependiente coge el audífono.
+7. El audífono.
+8. El dependiente, de cerca.
+9. Suárez, de cerca (gira la cabeza).
+10. El dependiente, de cerca.
+11. Plano general sobre el dependiente.
+12. El sofá y su mano.
+13. Suárez, de cerca.
+14. Fundido a negro y la mano de Suárez con los tapones.
+15. Suárez.
+16. El dependiente.
+17. Suárez.
+18. El dependiente con la tarjeta roja, sin el logo.
+19. Suárez, mientras la tarjeta blanca sale del encuadre sin la estrella. Su último fotograma aguanta 0,3 s.
+
+| Tiempo | Quién | Holandés | Español |
 |---|---|---|---|
-| 0,0–0,5 | Suárez entra en la tienda | — | — |
-| 0,4–2,5 | Por encima de su hombro, el dependiente; el escudo del Ajax | Ah, een sportman / van Ajax. | Ah, un deportista / del Ajax. |
-| 2,7–6,8 | El dependiente | Ja, beroemde club. / Cruijff, Keizer, / Abe Lenstra. / Wat kan ik / voor u oplossen? | Sí, un club famoso. / … / ¿Qué puedo / hacer por usted? |
-| 7,0–10,4 | Suárez, plano medio y primer plano | Ja, ik hoorde iets / over één / anti-fluitregeling. | Sí, oí algo / sobre un / control anti-pitidos. |
-| 10,6–16,7 | El dependiente, con el audífono en la mano | Ah, u bedoelt / ons hoortoestel / met geavanceerde / anti-fluitregeling. / Voorkomt dat u / irritante fluittonen hoort. | Ah, se refiere a / nuestro audífono / con un avanzado / control anti-pitidos. / Evita que usted / oiga pitidos molestos. |
-| 16,7–20,9 | Suárez, primer plano | Ja, heel irritant. / Zij fluiten / veel te vaak / tegen mij. | Sí, muy molesto. / Ellos pitan / demasiadas veces / contra mí. |
-| 21,0–25,7 | El dependiente; plano general sobre él; el sofá | Oh, maar dan is / dit model niks voor u. / Gaan wij naar ons / oordopjesgamma. / Neemt u maar even / op de bank plaats. | Oh, pero entonces / este modelo no es para usted. / Vamos a nuestra / gama de tapones. / Siéntese un momento / en el banco. |
-| 25,8–27,9 | Suárez, primer plano | Hè? / Suárez nooit / zitten op de bank. | ¿Eh? / Suárez nunca / se sienta en el banquillo. |
-| 28,0–32,4 | Suárez con los tapones; el dependiente | Nou, veel succes ermee. / En mocht u nog / een fluitje horen, / gewoon even langskomen. | Bueno, mucha suerte. / Y si vuelve a / oír un pitido, / pásese por aquí. |
-| 32,6–33,0 | El dependiente le ofrece una tarjeta (sin el logo) | Kaartje? | ¿Una tarjeta? |
-| 33,0–34,7 | Suárez (la tarjeta, sin la estrella del logo) | Nee, nee, / ik heb kaartjes genoeg. | No, no, / tengo tarjetas de sobra. |
+| 0,4–1,3 | Dependiente | Ah, een sportman | Ah, un deportista |
+| 1,6–2,5 | Dependiente | van Ajax. | del Ajax. |
+| 2,7–3,6 | Dependiente | Ja, beroemde club. | Sí, un club famoso. |
+| 3,8–5,3 | Dependiente | Cruijff, Keizer, Abe Lenstra. | Cruijff, Keizer, Abe Lenstra. |
+| 5,8–6,7 | Dependiente | Wat kan ik voor u oplossen? | ¿Qué le puedo solucionar? |
+| 7,0–8,9 | Suárez | Ja, ik hoorde iets over | Sí, oí algo sobre |
+| 9,2–10,5 | Suárez | één antifluitregeling. | un control antipitidos. |
+| 10,6–12,4 | Dependiente | Ah, u bedoelt ons hoortoestel | Ah, se refiere a nuestro audífono |
+| 12,4–14,6 | Dependiente | met geavanceerde antifluitregeling. | con control antipitidos avanzado. |
+| 14,7–16,6 | Dependiente | Voorkomt dat u irritante fluittonen hoort. | Evita que oiga pitidos molestos. |
+| 16,7–17,8 | Suárez | Ja, heel irritant. | Sí, muy molesto. |
+| 18,4–19,1 | Suárez | Zij fluiten | Ellos pitan |
+| 19,6–20,8 | Suárez | veel te vaak tegen mij. | demasiadas veces en mi contra. |
+| 21,0–22,4 | Dependiente | Oh, maar dan is dit model niks voor u. | Oh, entonces este modelo no es para usted. |
+| 22,5–24,0 | Dependiente | Gaan we naar ons oordopjesgamma. | Vamos a nuestra gama de tapones para los oídos. |
+| 24,2–25,6 | Dependiente | Neemt u maar even op de bank plaats. | Siéntese un momento en el banco. |
+| 25,8–25,9 | Suárez | Hè? | ¿Eh? |
+| 26,3–27,7 | Suárez | Suárez nooit zitten op de bank. | Suárez nunca se sienta en el banquillo. |
+| 28,0–29,4 | Dependiente | Nou, veel succes ermee. | Pues nada, mucha suerte con ellos. |
+| 29,4–31,1 | Dependiente | En mocht u nog een fluitje horen, | Y si vuelve a oír un pitido, |
+| 31,4–32,4 | Dependiente | gewoon even langskomen, hè? | pásese por aquí, ¿eh? |
+| 32,6–33,0 | Dependiente | Kaartje? | ¿Una tarjeta? |
+| 33,0–34,4 | Suárez | Nee, nee, ik heb kaartjes genoeg. | No, no, ya tengo tarjetas de sobra. |
