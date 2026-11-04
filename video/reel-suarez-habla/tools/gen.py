@@ -92,8 +92,8 @@ def main():
       #root {{ position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #000; }}
       #v {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
       .shade {{ position: absolute; left: 0; width: 1080px; pointer-events: none; }}
-      #shade-top {{ top: 0; height: 520px; background: linear-gradient(180deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.10) 55%, rgba(0,0,0,0) 100%); }}
-      #shade-bot {{ top: 1020px; height: 560px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.30) 45%, rgba(0,0,0,0.30) 75%, rgba(0,0,0,0) 100%); }}
+      /* a soft shade at the top only, under the subtitles (no text lower down: his mouth keeps its own light) */
+      #shade-top {{ top: 0; height: 760px; background: linear-gradient(180deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.10) 55%, rgba(0,0,0,0) 100%); }}
 {LABEL_CSS}
       .ph {{ position: absolute; left: {NL_CX - 505}px; top: {NL_TOP}px; width: 1010px; display: flex; flex-direction: column; align-items: center;
         gap: 20px; opacity: 0; }}
@@ -112,7 +112,6 @@ def main():
     <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="{D}" data-fps="25">
       <video id="v" class="clip" src="assets/video/habla-916.mp4" data-start="0" data-duration="{D}" data-track-index="0" playsinline data-has-audio="true"></video>
       <div id="shade-top" class="shade"></div>
-      <div id="shade-bot" class="shade"></div>
       <div class="row" style="top: {CARD_TOP}px"><div id="card" class="glass"><div class="kick">{FLAG.format(id="fc")}<span>Aprendiendo neerlandés</span></div><div class="big">con Luis Suárez</div></div></div>
       <div class="row" style="top: 206px"><div id="tag" class="glass">{FLAG.format(id="ft")}<span>Neerlandés con Luis Suárez</span></div></div>
 {chr(10).join(body)}

@@ -3,6 +3,7 @@
   {
    "who": "r",
    "es": "Fue emocionante.",
+   "breaks": [],
    "words": [
     {
      "text": "Het",
@@ -24,6 +25,7 @@
   {
    "who": "s",
    "es": "¿Quién?",
+   "breaks": [],
    "words": [
     {
      "text": "Wie?",
@@ -35,6 +37,9 @@
   {
    "who": "r",
    "es": "El partido fue emocionante, creo.",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "De",
@@ -71,6 +76,7 @@
   {
    "who": "s",
    "es": "Sí, un poquito.",
+   "breaks": [],
    "words": [
     {
      "text": "Ja,",
@@ -92,6 +98,7 @@
   {
    "who": "r",
    "es": "¿Hubo fiestecita?",
+   "breaks": [],
    "words": [
     {
      "text": "Feestje",
@@ -108,6 +115,7 @@
   {
    "who": "s",
    "es": "¿Perdón?",
+   "breaks": [],
    "words": [
     {
      "text": "Sorry?",
@@ -119,6 +127,9 @@
   {
    "who": "r",
    "es": "Fiesta. ¿Hubo fiestecita?",
+   "breaks": [
+    1
+   ],
    "words": [
     {
      "text": "Feest.",
@@ -140,6 +151,9 @@
   {
    "who": "s",
    "es": "Ah, no, no, no, no.",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "Ah,",
@@ -171,6 +185,9 @@
   {
    "who": "s",
    "es": "Nosotros muy contentos. Muy satisfechos.",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "Wij",
@@ -202,6 +219,7 @@
   {
    "who": "s",
    "es": "Pero ya se acabó",
+   "breaks": [],
    "words": [
     {
      "text": "Maar",
@@ -228,6 +246,9 @@
   {
    "who": "s",
    "es": "porque tenemos el próximo partido",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "omdat",
@@ -259,6 +280,9 @@
   {
    "who": "s",
    "es": "en, en cuatro… cuarenta y nueve horas.",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "in,",
@@ -300,6 +324,9 @@
   {
    "who": "r",
    "es": "¿Estás contento de jugar de delantero?",
+   "breaks": [
+    5
+   ],
    "words": [
     {
      "text": "Ben",
@@ -351,6 +378,9 @@
   {
    "who": "s",
    "es": "Sí, a mí me da igual.",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "Ja,",
@@ -387,6 +417,9 @@
   {
    "who": "s",
    "es": "Quiero jugar por la izquierda, por la derecha,",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "Ik",
@@ -418,6 +451,9 @@
   {
    "who": "s",
    "es": "de delantero, de diez también.",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "in",
@@ -454,6 +490,9 @@
   {
    "who": "s",
    "es": "A mí me da igual.",
+   "breaks": [
+    2
+   ],
    "words": [
     {
      "text": "Voor",
@@ -485,6 +524,9 @@
   {
    "who": "s",
    "es": "Quiero jugar. El entrenador sabe.",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "Ik",
@@ -516,6 +558,9 @@
   {
    "who": "r",
    "es": "¿No tienes una posición favorita?",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "Je",
@@ -546,7 +591,8 @@
   },
   {
    "who": "r",
-   "es": "La posición en la que más te gusta jugar.",
+   "es": "La posición en la que",
+   "breaks": [],
    "words": [
     {
      "text": "De",
@@ -567,7 +613,16 @@
      "text": "je",
      "t": 35.84,
      "end": 35.86
-    },
+    }
+   ]
+  },
+  {
+   "who": "r",
+   "es": "más te gusta jugar.",
+   "breaks": [
+    2
+   ],
+   "words": [
     {
      "text": "het",
      "t": 35.88,
@@ -593,6 +648,7 @@
   {
    "who": "s",
    "es": "No, no, no, no.",
+   "breaks": [],
    "words": [
     {
      "text": "Nee,",
@@ -618,7 +674,10 @@
   },
   {
    "who": "s",
-   "es": "Para mí no hay problema. Ningún problema.",
+   "es": "Para mí no hay problema.",
+   "breaks": [
+    2
+   ],
    "words": [
     {
      "text": "Voor",
@@ -639,7 +698,14 @@
      "text": "probleem.",
      "t": 38.9,
      "end": 39.28
-    },
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "Ningún problema.",
+   "breaks": [],
+   "words": [
     {
      "text": "Geen",
      "t": 39.62,
@@ -655,6 +721,9 @@
   {
    "who": "s",
    "es": "Yo solo quiero jugar.",
+   "breaks": [
+    3
+   ],
    "words": [
     {
      "text": "Ik",
