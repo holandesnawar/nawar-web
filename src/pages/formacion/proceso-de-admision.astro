@@ -6,6 +6,7 @@
  * preguntas o de Calendly, mirar las tres. Solo cambia el nombre con el que
  * se avisa al píxel y a la API de conversiones ('Formación Nawar web').
  */
+import { AGENDA_URL } from '../../lib/agenda'
 import Layout from '../../layouts/Layout.astro'
 import { LETRAS, PREGUNTAS } from '../../lib/cualificacion'
 
@@ -17,9 +18,9 @@ const FOTO_FONDO = ''
 /**
  * El calendario de la llamada (Calendly), incrustado en la última pantalla
  * como hace ICO: texto que prepara la llamada a un lado y el calendario al
- * otro. PUBLIC_AGENDA_URL en Vercel lo cambia sin tocar código.
+ * otro. Sale de `lib/agenda.ts` (el evento por turnos del equipo).
  */
-const CALENDLY_URL = (import.meta.env.PUBLIC_AGENDA_URL as string | undefined) || 'https://calendly.com/holandesnawar/llamada-de-consultoria'
+const CALENDLY_URL = AGENDA_URL
 const WHATSAPP_URL = 'https://wa.me/31616084212'
 
 const parrafos = (t: string) => t.split(/\n\n+/).map((s) => s.trim()).filter(Boolean)
