@@ -1,10 +1,10 @@
-# Storyboard · Reel «Aprendiendo neerlandés con Luis Suárez» v5 (34,7 s)
+# Storyboard · Reel «Aprendiendo neerlandés con Luis Suárez» v6 (34,7 s)
 
-- **Título (v5):** durante los 3 primeros segundos, una tarjeta blanca esmerilada (estilo Apple) sobre el pecho, debajo
+- **Título (v6):** durante los 3 primeros segundos, una tarjeta blanca esmerilada (estilo Apple) sobre el pecho, debajo
   de la boca del dependiente, con la bandera redonda de Países Bajos: «Aprendiendo neerlandés» y, debajo y en grande,
   «con Luis Suárez». La cara queda limpia en la portada. Desde 5,1 s queda una pastilla pequeña arriba, «Neerlandés con
-  Luis Suárez», que se aparta en los primeros planos (los de Suárez y, de 15,8 a 24,2 s, los del dependiente) y en el
-  plano en el que la cámara sube hasta la cara de Suárez (hasta 30,3 s), para no tapar los ojos.
+  Luis Suárez», que se aparta en los primeros planos (de 8,0 a 10,5 s y de 14,4 a 30,3 s, también el plano en el que la
+  cámara sube hasta la cara de Suárez), para no tapar los ojos.
 - **Subtítulos:** el holandés va en mayúsculas, todo al mismo tamaño y en dos líneas como mucho (cortadas a mano, sin
   palabras sueltas), con la palabra que se dice en amarillo; el español, debajo, en una pastilla gris, en una línea
   donde cabe. Todo queda fuera de la columna de botones de Instagram. En los primeros planos de Suárez el bloque sube a

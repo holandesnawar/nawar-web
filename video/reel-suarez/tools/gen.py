@@ -19,14 +19,14 @@ TITLE_TOP = 918                   # the title card over the chest for the first 
 TITLE_DY = 50                     # lips reach y ≈ 890): the cover stays clear; the subtitles that open under it sit 50 px lower
 TAG_AT = 3.0                      # the big title (the hook and the cover) lifts away here…
 TAG_IN = 5.10                     # …and the small pill settles at the top once the assistant's head is down (5.04)
-TAG_OFF = [(7.96, 9.60), (15.76, 24.20), (26.04, 30.28)]  # the close-ups (Suárez's, and the assistant's from 15.76 to the
-                                  # wide shot ending at 24.20) and Suárez's wide tilt-up (29.24–30.28): eyes at the top
+TAG_OFF = [(7.96, 10.52), (14.40, 30.28)]  # the close-ups (Suárez's, and the assistant's: he leans in up to 10.52 and is
+                                  # close from the cut at 14.40) and Suárez's wide tilt-up (to 30.28): eyes at the top
 UP = [(7.96, 9.60), (16.64, 20.52), (26.04, 27.80)]       # Suárez's extreme close-ups: the subtitles sit higher, on his
 UP_DY = -300                      # nose, so his lips stay in sight (eyes ≤ 620, lips ≥ 1000; the block moves on the cuts only,
                                   # and the bottom shade is off there: it would darken his lips)
 MIN_ON = 0.6                      # a one-word phrase opens a little early (after the last word before it) to be read
 ON_AT = {11: 16.64, 18: 26.04,    # these open on the cut into Suárez's close-up (the phrase before closes there: no
-         22: 32.40, 23: 33.08}    # block over his lips for a frame, no jump mid-shot); «Kaartje?» on the cut to the card
+         22: 32.40, 23: 33.00}    # block over his lips for a frame, no jump mid-shot); «Kaartje?» on the cut to the card
 OFF_AT = {18: 27.80}              # …and this one closes on the cut out of it (the dip to black)
 
 FLAG = ('<svg viewBox="0 0 48 48" aria-hidden="true"><defs><clipPath id="{id}"><circle cx="24" cy="24" r="24"/></clipPath></defs>'
@@ -98,6 +98,9 @@ def main():
             js.append(f'      tl.set("#w{k}-{i}", {{ color: "{YEL}" }}, {max(on, w["t"] - 0.03):.3f});')
             if i + 1 < len(words):
                 js.append(f'      tl.set("#w{k}-{i}", {{ color: "#FFFFFF" }}, {t1:.3f});')
+    # a phrase still under the card's offset when the card lifts away glides up with it (no jump later, mid-shot)
+    glide = "\n".join(f'      tl.to("#p{k}", {{ y: 0, duration: 0.32, ease: "power2.inOut" }}, {TAG_AT});'
+                      for k in range(len(subs)) if ons[k] < TAG_AT < (min(ons[k + 1], subs[k]["words"][-1]["end"] + 0.7) if k + 1 < len(subs) else D))
     fonts = "\n".join(f'      @font-face {{ font-family: "{f}"; font-weight: {w}; src: url("assets/fonts/{f.lower()}-latin-{w}-normal.woff2") format("woff2"); }}'
                       for f, w in (("Poppins", 700), ("Poppins", 900), ("Inter", 600), ("Inter", 700)))
     page = f"""<!doctype html>
@@ -113,11 +116,11 @@ def main():
       #root {{ position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #000; }}
       #v {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
       .shade {{ position: absolute; left: 0; width: 1080px; pointer-events: none; }}
-      #shade-top {{ top: 0; height: 700px; background: linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.18) 55%, rgba(0,0,0,0) 100%); }}
+      #shade-top {{ top: 0; height: 700px; opacity: 0.55; background: linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.18) 55%, rgba(0,0,0,0) 100%); }}
       #shade-bot {{ top: 1020px; height: 560px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.30) 45%, rgba(0,0,0,0.30) 75%, rgba(0,0,0,0) 100%); }}
 {LABEL_CSS}
       .ph {{ position: absolute; left: {NL_CX - 505}px; top: {NL_TOP}px; width: 1010px; display: flex; flex-direction: column; align-items: center;
-        gap: 20px; opacity: 0; }}
+        gap: 12px; opacity: 0; }}
       .nl {{ width: {NL_W}px; font-size: {NL_SIZE}px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 0.26em; row-gap: 0;
         font-family: "Poppins", sans-serif; font-weight: 900; line-height: 1.02; text-transform: uppercase; letter-spacing: -0.01em;
         color: #FFFFFF; -webkit-text-stroke: 10px #000; paint-order: stroke fill; text-shadow: 0 6px 16px rgba(0,0,0,0.5);
@@ -144,8 +147,11 @@ def main():
       // the title card from the first frame (the cover); at {TAG_AT} s it lifts away and the small pill settles at the top
       tl.to("#card", {{ y: -20, scale: 0.94, opacity: 0, duration: 0.32, ease: "power2.inOut" }}, {TAG_AT});
       tl.fromTo("#tag", {{ opacity: 0, y: 18, scale: 0.94 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power3.out", immediateRender: false }}, {TAG_IN});
-{chr(10).join(f'      tl.to("#tag", {{ opacity: 0, duration: 0.12, ease: "none" }}, {a - 0.12:.2f});{chr(10)}      tl.to("#tag", {{ opacity: 1, duration: 0.24, ease: "power2.out" }}, {b:.2f});' for a, b in TAG_OFF)}
-      tl.to("#shade-top", {{ opacity: 0.55, duration: 0.4, ease: "none" }}, {TAG_AT});
+{chr(10).join(f'      tl.to("#tag", {{ opacity: 0, y: -8, scale: 0.96, duration: 0.2, ease: "power2.in" }}, {a - 0.2:.2f});{chr(10)}      tl.fromTo("#tag", {{ opacity: 0, y: 12, scale: 0.96 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.36, ease: "power3.out", immediateRender: false }}, {b:.2f});' for a, b in TAG_OFF)}
+      // the cover is not darkened: the top shade is light and steady, the bottom one comes in with the first subtitle
+      tl.set("#shade-bot", {{ opacity: 0 }}, 0);
+      tl.set("#shade-bot", {{ opacity: 1 }}, {ons[0]:.3f});
+{glide}
 {chr(10).join(f'      tl.set("#shade-bot", {{ opacity: 0 }}, {a:.2f});{chr(10)}      tl.set("#shade-bot", {{ opacity: 1 }}, {b:.2f});' for a, b in UP)}
 {chr(10).join(js)}
       window.__timelines["main"] = tl;

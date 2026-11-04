@@ -24,4 +24,4 @@ python3 tools/upscale.py 123 993
 python3 tools/frame.py
 python3 tools/subs.py
 python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v5.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v6.mp4"

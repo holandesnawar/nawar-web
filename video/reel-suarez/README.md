@@ -18,13 +18,14 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
     borrón de movimiento y se deja), y a la blanca se le quita la estrella (`LOGOS`);
   - en el plano 928 la ventana se queda a la izquierda del remolino naranja del escaparate todo lo que se puede sin
     cortarle la cara; el trocito que queda junto a su mandíbula (0,3 s) no se borra, porque borrarlo le mancha la mejilla.
-- **Título (v5, estilo Apple):** una tarjeta blanca esmerilada sobre el pecho desde el primer fotograma (gancho y
+- **Título (v6, estilo Apple):** una tarjeta blanca esmerilada sobre el pecho desde el primer fotograma (gancho y
   portada), con la bandera redonda de Países Bajos: «Aprendiendo neerlandés» en azul y, debajo y en grande, «con Luis
   Suárez». Va justo debajo de la boca del dependiente, que habla en esos segundos. A los 3 s se aparta y, cuando el
   dependiente baja la cabeza (5,1 s), queda una pastilla pequeña arriba («Neerlandés con Luis Suárez»). La pastilla se
-  aparta para no tapar ojos ni caras: en los primeros planos de Suárez, de 15,8 a 24,2 s (todo el tramo del
-  dependiente) y de 26,0 a 30,3 s (el primer plano y el plano en el que la cámara sube hasta su cara). Es el mismo
-  diseño del segundo reel (`../reel-suarez-habla`).
+  aparta para no tapar ojos ni caras: de 8,0 a 10,5 s (el primer plano de Suárez y el dependiente inclinándose) y de
+  14,4 a 30,3 s (los primeros planos de los dos y el plano en el que la cámara sube hasta la cara de Suárez); entra y
+  sale con el mismo movimiento suave. La portada no se oscurece: la sombra de abajo llega con el primer subtítulo. Es el
+  mismo diseño del segundo reel (`../reel-suarez-habla`).
 - **Subtítulos:** por frases cortas, sincronizados palabra a palabra (ElevenLabs Scribe):
   - el holandés grande y en mayúsculas, todo al mismo tamaño y en dos líneas como mucho, con la palabra que se está
     diciendo en amarillo; los cortes de línea van marcados con «|» en `PHRASES`, para no dejar una palabra sola ni
@@ -57,7 +58,7 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v5.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v6.mp4
 ```
 
 Para cambiar una traducción o cortar una frase de otra manera, edita `PHRASES` en `tools/subs.py` y ejecuta

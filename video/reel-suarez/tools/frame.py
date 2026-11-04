@@ -36,7 +36,7 @@ SHOTS = {      # (set from a face detector run on every 3rd frame, checked by ey
     830: [(830, 165), (865, 175)],              # after a dip to black: his hand with the earplugs
     866: [(866, 185), (891, 215)],              # wide on Suárez: «Nou, veel succes ermee»
     892: [(892, 298), (927, 300)],              # the assistant: «En mocht u nog een fluitje horen…» (4 px clear of the «D»)
-    928: [(928, 111), (931, 113), (936, 160), (944, 232)],   # Suárez: held left of the shop window's orange swirl decal
+    928: [(928, 111), (931, 113), (933, 122.5), (935, 139.5), (944, 222)],   # Suárez: held left of the window's swirl decal
                                                 # (his nose ≥ 9 px from the edge), then after him as the camera pans; the
                                                 # bit beside his jaw at 932–937 stays: erasing it marks his cheek
     945: [(945, 282)],                          # the assistant holds up a red business card: «Kaartje?»
