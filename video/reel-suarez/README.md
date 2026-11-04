@@ -43,7 +43,7 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v1.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v2.mp4
 ```
 
 Para cambiar una traducción o cortar una frase de otra manera, edita `PHRASES` en `tools/subs.py` y ejecuta
