@@ -1,13 +1,14 @@
-# Storyboard · Reel «Suárez habla neerlandés» v4 (42,4 s), en dos versiones
+# Storyboard · Reel «Suárez habla neerlandés» v5 (42,4 s), en dos versiones
 
 - **Versión «con tarjeta»** (`python3 tools/gen.py`): arriba, todo el reel, una tarjeta blanca esmerilada grande con la
   bandera redonda de Países Bajos: «Aprendiendo neerlandés» y, debajo y en grande, «con Luis Suárez». Es también la portada.
   Va bajo la cabecera de Instagram, sobre el pelo; los ojos quedan libres.
 - **Versión «solo subtítulos»** (`python3 tools/gen.py --sin-tarjeta`): sin tarjeta, solo los subtítulos.
-- **Subtítulos (las dos):** abajo, sobre la barbilla, por encima de la franja del texto de Instagram y a la izquierda de su
+- **Subtítulos (las dos):** abajo y centrados, por encima de la franja del texto de Instagram y a la izquierda de su
   columna de botones. El holandés en mayúsculas, todo al mismo tamaño, con la palabra que se dice en amarillo; el español
-  debajo, en una pastilla gris. Las frases del periodista (que no sale en el plano) llevan encima una pastilla
-  «🎙 Periodista». Una sombra suave abajo los separa de la imagen.
+  debajo, en una pastilla gris. Una sombra suave abajo los separa de la imagen.
+- **Encuadre:** la imagen se acerca un 15 % desde abajo, así que su boca queda por encima de los subtítulos, y su cabeza
+  va centrada.
 - **Imagen:** un solo plano, su cara, que el encuadre sigue con suavidad. Los tres momentos van unidos por cortes secos.
 
 | Momento | Reel | Original |

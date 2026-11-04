@@ -24,7 +24,7 @@ PHRASES = [
     ("s", "Wij echt blij.|Echt tevreden.", "Muy contentos. Muy satisfechos."),
     ("s", "Maar nu is klaar", "Pero ya se acabó"),
     ("s", "omdat wij hebben|volgende wedstrijd", "porque tenemos el próximo partido"),
-    ("s", "in vier… in|achtenveertig uur.", "en cuatro… en cuarenta y ocho horas."),
+    ("s", "in vier… in|achtenveertig uur.", "en cuatro…|en cuarenta y ocho horas."),
     ("r", "Ben je blij dat je|in de spits staat?", "¿Contento de jugar de delantero?"),
     ("s", "Ja, voor mij|maakt niet uit.", "Sí, a mí me da igual."),
     ("s", "Ik wil spelen|links, rechts,", "Quiero jugar por la izquierda,|por la derecha,"),

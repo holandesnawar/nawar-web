@@ -13,13 +13,15 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 - **9:16 a pantalla completa:** el encuadre sigue su cara con suavidad. Un detector de caras (YuNet) la encuentra en
   cada fotograma, y la cámara (mediana + gaussiana) mantiene toda la cara dentro del encuadre, también al empezar cada
   momento. Siempre queda a la izquierda del logo «SPORTWEEK.NL» de la esquina.
+  Al montar (`mux()`), la imagen se acerca un 15 % desde el borde de abajo (`PUSH`): su boca sube unos 120 px y queda
+  por encima de los subtítulos, y su cabeza queda centrada en cada momento (`centres()`, YuNet sobre la imagen ya hecha).
 - **Nitidez:** el original está entrelazado, así que primero se desentrelaza (bwdif). Después cada encuadre se amplía ×4
   con Real-ESRGAN («realesr-general-x4v3», en ONNX y en CPU), se mezcla con un 40 % de ampliación normal y lleva un grano
   fino, para que la piel no quede de cera.
 - **Sin marca:** el texto «SPORTWEEK» del micrófono se pinta con el rojo del propio micrófono (`mic()`), en todos los
   fotogramas, también cuando el borde del encuadre corta el micrófono (hasta el borde mismo). Se comprueba fotograma a
   fotograma antes de ampliar. El primer fotograma (la portada) es una copia del segundo: en el original pasa el micrófono.
-- **Dos versiones (v4)**, para elegir:
+- **Dos versiones (v5)**, para elegir:
   - **con tarjeta** (`python3 tools/gen.py`): arriba, todo el reel, una tarjeta blanca esmerilada grande (estilo Apple),
     «Aprendiendo neerlandés» y, debajo y en grande, «con Luis Suárez», con la bandera redonda de Países Bajos; es también
     la portada;
@@ -27,9 +29,8 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 - **Subtítulos:** por frases, sincronizados palabra a palabra (ElevenLabs Scribe, comprobado con una segunda pasada):
   - el holandés va grande, en mayúsculas, todo al mismo tamaño, con la palabra que se dice en amarillo;
   - el español va debajo, en una pastilla gris, en una línea siempre que cabe (si no, cortada a mano con «|»);
-  - van abajo, sobre la barbilla: por encima de la franja del texto de Instagram (y ≤ 1500) y a la izquierda de su
+  - van abajo y centrados: por encima de la franja del texto de Instagram (y ≤ 1500) y a la izquierda de su
     columna de botones (x < 912), con una sombra suave debajo;
-  - las frases del periodista, que no sale en el plano, llevan una pastilla «Periodista»;
   - el holandés roto de Suárez se deja tal cual («Wij echt blij», «Trainer weet»); solo se quitan los «uh» y las
     repeticiones;
   - una frase no pasa nunca de un momento al siguiente, y entre dos frases seguidas no queda ningún fotograma vacío.
@@ -55,9 +56,9 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v4-tarjeta.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v5-tarjeta.mp4
 python3 tools/gen.py --sin-tarjeta
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v4-solo-subtitulos.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v5-solo-subtitulos.mp4
 python3 tools/gen.py
 ```
 

@@ -12,9 +12,11 @@ interview's own sound, balanced and at −14 LUFS).
 - The «SPORTWEEK» print on the reporter's red microphone is painted over with the microphone's own red (mic(): in every
   frame, also where the window's edge cuts the mic; checked on every window before the upscale).
 - The sound: a high-pass at 90 Hz, the reporter 6 dB down (he is close to the mic), −14 LUFS in two passes (sound()).
+- The mux pushes the picture in a little (PUSH, anchored at the bottom): his mouth sits higher, clear of the subtitles
+  at the bottom, and his head is centred in each moment (centres(): YuNet on the finished picture).
   python3 tools/frame.py --track     the face track and the windows → .raw/track.json (+ a preview sheet)
   python3 tools/frame.py             the picture (~50 min) and the sound → assets/video/habla-916.mp4
-  python3 tools/frame.py --mux       only the sound, the grade and the mux
+  python3 tools/frame.py --mux       only the sound, the push-in, the grade and the mux
 """
 import json, os, subprocess, sys
 import numpy as np
@@ -35,6 +37,9 @@ SEGMENTS = [
 DEINT = "bwdif=mode=send_frame:parity=bff:deint=all"
 LANCZOS_MIX = 0.4                          # (a bit more of the plain enlargement: his skin keeps the source's texture)
 GRADE = "eq=contrast=1.04:saturation=1.06"
+PUSH = (936, 1664)                         # the mux crops this much of the 1080×1920 picture (×1.154), from the bottom
+                                           # edge: his mouth rises by about 120 px (y ≈ 1105 instead of 1225), above the
+                                           # subtitles; left and right, centres() puts his head in the middle
 
 
 def frames(a, b):
@@ -302,12 +307,48 @@ def sound():
     return snd
 
 
+def centres():
+    """for each moment, where the push-in's crop starts (x, picture px): his head in the middle. YuNet on every frame of
+    .raw/picture.mp4 (at half size); his head is taken half from its box and half from his eyes and mouth (he turns
+    towards the reporter, so his features sit a little left of his head's box). Cached in .raw/centres.json."""
+    import cv2
+    path = os.path.join(ROOT, ".raw", "centres.json")
+    if os.path.exists(path):
+        return json.load(open(path))
+    w, h = 540, 960
+    det = cv2.FaceDetectorYN.create(os.path.join(ROOT, ".raw", "yunet.onnx"), "", (w, h), 0.5, 0.3, 5000)
+    p = subprocess.Popen(["ffmpeg", "-v", "error", "-i", os.path.join(ROOT, ".raw", "picture.mp4"), "-vf", f"scale={w}:{h}",
+                          "-f", "rawvideo", "-pix_fmt", "bgr24", "-"], stdout=subprocess.PIPE)
+    xs = []
+    while len(buf := p.stdout.read(w * h * 3)) == w * h * 3:
+        _, f = det.detect(np.frombuffer(buf, np.uint8).reshape(h, w, 3))
+        if f is None or not len(f):
+            xs.append(None); continue
+        f = max(f, key=lambda r: r[2] * r[3]) * 2
+        xs.append(0.5 * (f[0] + f[2] / 2) + 0.5 * (f[4] + f[6] + f[10] + f[12]) / 4)
+    p.wait()
+    out, k = [], 0
+    for a, b in SEGMENTS:
+        x = np.median([v for v in xs[k:k + b - a + 1] if v is not None])
+        out.append(int(np.clip(round((x - PUSH[0] / 2) / 2) * 2, 0, 1080 - PUSH[0]))); k += b - a + 1
+    json.dump(out, open(path, "w"))
+    return out
+
+
 def mux():
-    """the picture (.raw/picture.mp4), graded, with the sound → assets/video/habla-916.mp4 (+ .json)."""
+    """the picture (.raw/picture.mp4), graded and pushed in (PUSH, centres()), with the sound → assets/video/habla-916.mp4
+    (+ .json)."""
     snd = sound()
     out = os.path.join(ROOT, "assets", "video", "habla-916.mp4")
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", os.path.join(ROOT, ".raw", "picture.mp4"), "-i", snd, "-vf", GRADE,
+    xs, k, expr = centres(), 0, ""
+    for (a, b), x in zip(SEGMENTS, xs):
+        k += b - a + 1
+        expr += f"if(lt(n,{k}),{x},"
+    expr += f"{xs[-1]}" + ")" * len(xs)
+    push = f"crop={PUSH[0]}:{PUSH[1]}:'{expr}':{1920 - PUSH[1]},scale=1080:1920:flags=lanczos,setsar=1"
+    print(f"push-in: {PUSH[0]}×{PUSH[1]} from y {1920 - PUSH[1]}, x per moment {xs}")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", os.path.join(ROOT, ".raw", "picture.mp4"), "-i", snd, "-vf", f"{push},{GRADE}",
                     "-c:v", "libx264", "-preset", "slow", "-crf", "15", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
                     "-shortest", "-movflags", "+faststart", out], check=True)
     frames_n = sum(b - a + 1 for a, b in SEGMENTS)

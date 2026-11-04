@@ -58,3 +58,19 @@ para así elegir mejor.»
 - **Con tarjeta:** la tarjeta del título, más grande (817 × 200 px en vez de la pastilla pequeña), arriba todo el reel.
 - **Solo subtítulos:** sin tarjeta ni pastilla.
 - La imagen y el sonido no cambian (los de la v3).
+
+## Petición de la v5 (cliente, 4 nov 2026)
+
+«Está bien, solo que los subtítulos tapan la boca de Luis Suárez. ¿Hay alguna forma de subir un poco la cámara para que
+los subtítulos sigan debajo pero no tapen su boca? ¿Y a la vez que esté centrado? Quita lo de "Periodista" del
+principio, solo molesta.»
+
+- **Cámara más arriba:** el original no tiene imagen por debajo del encuadre (la ventana 9:16 ya usa toda su altura), así
+  que la imagen se acerca un 15 % desde el borde de abajo (`PUSH` en `tools/frame.py`). Su boca pasa de y ≈ 1225 a
+  y ≈ 1105 (mediana); se pierde algo de pelo arriba. Los subtítulos ya no le tocan el labio salvo dos ratos en que baja
+  la cabeza (3,7–4,2 s y 10,6–11,3 s, el «Ah, nee, nee…» riéndose): 31 fotogramas en vez de 257.
+- **Centrado:** su cabeza va en el centro en cada momento (`centres()`), y los subtítulos también, centrados en x = 540
+  (antes, en 490): el holandés a 62 px y el español a 38 px, en 744 px de ancho, así siguen fuera de la columna de
+  botones. «en cuatro… / en cuarenta y ocho horas» va en dos líneas.
+- **Sin «Periodista».**
+- Las dos versiones siguen: con la tarjeta grande arriba y solo subtítulos.

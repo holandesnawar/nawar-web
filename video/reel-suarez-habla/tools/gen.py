@@ -5,7 +5,7 @@
 - --sin-tarjeta: no card, only the subtitles.
 Both: the interview full frame on his face (assets/video/habla-916.mp4, tools/frame.py), and the subtitles at the bottom:
 the Dutch phrase big, in capitals, one size for all, white with the word being said in yellow, and the Spanish under it,
-in a grey pill; the reporter (off screen) has a small «Periodista» pill over his lines.
+in a grey pill, all centred under his face (the picture is pushed in so his mouth sits above them: tools/frame.py).
   python3 tools/gen.py [--sin-tarjeta]      → index.html
 """
 import html, json, os, sys
@@ -13,9 +13,9 @@ import html, json, os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 YEL = "#FFE11B"
 SUB_BOTTOM = 1500                      # the subtitle block stands on this line (frame px): above Instagram's caption band
-NL_W, NL_CX = 830, 490                 # and left of its button rail (x > 912 from y ≈ 814), so a little left of centre
-NL_SIZE = 66                           # one size, two lines at most («|» in tools/subs.py breaks them)
-ES_SIZE = 40
+NL_W, NL_CX = 744, 540                 # centred, and left of its button rail (x > 912 from y ≈ 814)
+NL_SIZE = 62                           # one size, two lines at most («|» in tools/subs.py breaks them)
+ES_SIZE = 38
 CARD_TOP = 214                         # (con tarjeta) the title card, under Instagram's header, over his hair: his eyes
                                        # stay below y ≈ 720
 MIN_ON = 0.6                           # a phrase on screen for less than this opens a little early (after the last word
@@ -25,11 +25,9 @@ BRIDGE = 0.25                          # a gap shorter than this between two phr
 FLAG = ('<svg viewBox="0 0 48 48" aria-hidden="true"><defs><clipPath id="{id}"><circle cx="24" cy="24" r="24"/></clipPath></defs>'
         '<g clip-path="url(#{id})"><rect width="48" height="16" fill="#AE1C28"/><rect y="16" width="48" height="16" fill="#FFFFFF"/>'
         '<rect y="32" width="48" height="16" fill="#21468B"/></g><circle cx="24" cy="24" r="23" fill="none" stroke="rgba(0,0,0,0.22)" stroke-width="2"/></svg>')
-MIC = ('<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="2.5" width="7" height="12" rx="3.5" fill="currentColor"/>'
-       '<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5M8.5 21.5h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>')
 
 LABEL_CSS = """
-      /* the labels: frosted white, like iOS (title card, «Periodista») */
+      /* the title card: frosted white, like iOS */
       .glass {{ background: rgba(255,255,255,0.80); -webkit-backdrop-filter: blur(28px) saturate(180%); backdrop-filter: blur(28px) saturate(180%);
         box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 18px 50px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.10); color: #1D1D1F;
         font-family: "Inter", sans-serif; }}
@@ -41,10 +39,6 @@ LABEL_CSS = """
         color: #1D0084; line-height: 1.1; }}
       #card .kick svg {{ width: 54px; height: 54px; display: block; }}
       #card .big {{ font-weight: 700; font-size: 96px; letter-spacing: -0.03em; line-height: 1.02; }}
-      .who {{ position: absolute; left: 50%; top: -54px; transform: translateX(-50%); display: flex; align-items: center; gap: 8px;
-        padding: 8px 18px 8px 12px; border-radius: 999px; font-weight: 700; font-size: 24px; letter-spacing: 0.12em; text-transform: uppercase;
-        line-height: 1; white-space: nowrap; color: #1D0084; }}
-      .who svg {{ width: 26px; height: 26px; display: block; }}
 """.replace("{{", "{").replace("}}", "}")
 
 
@@ -72,8 +66,7 @@ def main():
         off = min([off] + [c for c in cuts if c > on])
         spans = " ".join(('<span class="br"></span> ' if i in p.get("breaks", []) else "") +
                          f'<span id="w{k}-{i}" class="w">{html.escape(w["text"])}</span>' for i, w in enumerate(words))
-        who = f'<div class="who glass">{MIC}<span>Periodista</span></div>' if p["who"] == "r" else ""
-        body.append(f'      <div id="p{k}" class="ph">{who}<div class="nl">{spans}</div>'
+        body.append(f'      <div id="p{k}" class="ph"><div class="nl">{spans}</div>'
                     f'<div class="es"><span>{html.escape(p["es"]).replace("|", "<br>")}</span></div></div>')
         js.append(f'      tl.set("#p{k}", {{ opacity: 1 }}, {on:.3f});')
         js.append(f'      tl.fromTo("#p{k} .nl", {{ scale: 0.86 }}, {{ scale: 1, duration: 0.16, ease: "back.out(1.6)", immediateRender: false }}, {on:.3f});')
