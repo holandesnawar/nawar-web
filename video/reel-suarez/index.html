@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Poppins"; font-weight: 700; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Poppins"; font-weight: 800; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Poppins"; font-weight: 900; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 700; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #v { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      .shade { position: absolute; left: 0; width: 1080px; pointer-events: none; }
+      #shade-top { top: 0; height: 700px; background: linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.18) 55%, rgba(0,0,0,0) 100%); }
+      #shade-bot { top: 1020px; height: 560px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.30) 45%, rgba(0,0,0,0.30) 75%, rgba(0,0,0,0) 100%); }
+      #title { position: absolute; left: 0; top: 236px; width: 1080px; text-align: center; color: #FFFFFF; transform-origin: 50% 0%;
+        font-family: "Poppins", sans-serif; font-weight: 800; font-size: 76px; line-height: 1.08; letter-spacing: -0.01em;
+        -webkit-text-stroke: 9px #000; paint-order: stroke fill; text-shadow: 0 6px 18px rgba(0,0,0,0.45); }
+      #title .emo { position: absolute; width: 112px; height: auto; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35)); }
+      #emo-book { left: 52px; top: 22px; }
+      #emo-flag { right: 52px; top: 90px; }
+      #tag { position: absolute; left: 0; top: 214px; width: 1080px; display: flex; justify-content: center; opacity: 0; }
+      #tag div { display: flex; align-items: center; gap: 16px; padding: 10px 26px 12px; border-radius: 999px;
+        background: rgba(0,0,0,0.42); color: #FFFFFF; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 42px;
+        line-height: 1; letter-spacing: -0.005em; white-space: nowrap; }
+      #tag i { display: block; height: 46px; background-size: contain; background-repeat: no-repeat; background-position: center; }
+      #tag-book { width: 47px; background-image: url("assets/img/emoji-book.png"); }
+      #tag-nl { width: 62px; background-image: url("assets/img/emoji-nl.png"); }
+      .ph { position: absolute; left: 0; top: 1150px; width: 1080px; display: flex; flex-direction: column; align-items: center;
+        gap: 20px; opacity: 0; }
+      .nl { width: 940px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 0.26em; row-gap: 0;
+        font-family: "Poppins", sans-serif; font-weight: 900; line-height: 1.02; text-transform: uppercase; letter-spacing: -0.01em;
+        color: #FFFFFF; -webkit-text-stroke: 10px #000; paint-order: stroke fill; text-shadow: 0 6px 16px rgba(0,0,0,0.5);
+        transform-origin: 50% 60%; }
+      .w { display: inline-block; color: #FFFFFF; }
+      .es span { display: inline-block; max-width: 900px; padding: 10px 26px 12px; border-radius: 18px; text-align: center;
+        background: rgba(78,78,84,0.78); color: #FFFFFF; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 46px;
+        line-height: 1.2; letter-spacing: -0.005em; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="34.68" data-fps="25">
+      <video id="v" class="clip" src="assets/video/suarez-916.mp4" data-start="0" data-duration="34.68" data-track-index="0" playsinline data-has-audio="true"></video>
+      <div id="shade-top" class="shade"></div>
+      <div id="shade-bot" class="shade"></div>
+      <div id="title"><img id="emo-book" class="emo" src="assets/img/emoji-book.png" alt="" />Aprendiendo<br/>neerlandés<br/>con Luis Suárez<img id="emo-flag" class="emo" src="assets/img/emoji-nl.png" alt="" /></div>
+      <div id="tag"><div><i id="tag-book"></i><span>Neerlandés con Luis Suárez</span><i id="tag-nl"></i></div></div>
+      <div id="p0" class="ph"><div class="nl" style="font-size: 86px"><span id="w0-0" class="w">Ah,</span> <span id="w0-1" class="w">een</span> <span id="w0-2" class="w">sportman</span></div><div class="es"><span>Ah, un deportista</span></div></div>
+      <div id="p1" class="ph"><div class="nl" style="font-size: 86px"><span id="w1-0" class="w">van</span> <span id="w1-1" class="w">Ajax.</span></div><div class="es"><span>del Ajax.</span></div></div>
+      <div id="p2" class="ph"><div class="nl" style="font-size: 80px"><span id="w2-0" class="w">Ja,</span> <span id="w2-1" class="w">beroemde</span> <span id="w2-2" class="w">club.</span></div><div class="es"><span>Sí, un club famoso.</span></div></div>
+      <div id="p3" class="ph"><div class="nl" style="font-size: 86px"><span id="w3-0" class="w">Cruijff,</span> <span id="w3-1" class="w">Keizer,</span></div><div class="es"><span>Cruijff, Keizer,</span></div></div>
+      <div id="p4" class="ph"><div class="nl" style="font-size: 86px"><span id="w4-0" class="w">Abe</span> <span id="w4-1" class="w">Lenstra.</span></div><div class="es"><span>Abe Lenstra.</span></div></div>
+      <div id="p5" class="ph"><div class="nl" style="font-size: 86px"><span id="w5-0" class="w">Wat</span> <span id="w5-1" class="w">kan</span> <span id="w5-2" class="w">ik</span></div><div class="es"><span>¿Qué puedo</span></div></div>
+      <div id="p6" class="ph"><div class="nl" style="font-size: 86px"><span id="w6-0" class="w">voor</span> <span id="w6-1" class="w">u</span> <span id="w6-2" class="w">oplossen?</span></div><div class="es"><span>hacer por usted?</span></div></div>
+      <div id="p7" class="ph"><div class="nl" style="font-size: 86px"><span id="w7-0" class="w">Ja,</span> <span id="w7-1" class="w">ik</span> <span id="w7-2" class="w">hoorde</span> <span id="w7-3" class="w">iets</span></div><div class="es"><span>Sí, oí algo</span></div></div>
+      <div id="p8" class="ph"><div class="nl" style="font-size: 86px"><span id="w8-0" class="w">over</span> <span id="w8-1" class="w">één</span></div><div class="es"><span>sobre un</span></div></div>
+      <div id="p9" class="ph"><div class="nl" style="font-size: 78px"><span id="w9-0" class="w">anti-fluitregeling.</span></div><div class="es"><span>control anti-pitidos.</span></div></div>
+      <div id="p10" class="ph"><div class="nl" style="font-size: 86px"><span id="w10-0" class="w">Ah,</span> <span id="w10-1" class="w">u</span> <span id="w10-2" class="w">bedoelt</span></div><div class="es"><span>Ah, se refiere a</span></div></div>
+      <div id="p11" class="ph"><div class="nl" style="font-size: 86px"><span id="w11-0" class="w">ons</span> <span id="w11-1" class="w">hoortoestel</span></div><div class="es"><span>nuestro audífono</span></div></div>
+      <div id="p12" class="ph"><div class="nl" style="font-size: 80px"><span id="w12-0" class="w">met</span> <span id="w12-1" class="w">geavanceerde</span></div><div class="es"><span>con un avanzado</span></div></div>
+      <div id="p13" class="ph"><div class="nl" style="font-size: 78px"><span id="w13-0" class="w">anti-fluitregeling.</span></div><div class="es"><span>control anti-pitidos.</span></div></div>
+      <div id="p14" class="ph"><div class="nl" style="font-size: 86px"><span id="w14-0" class="w">Voorkomt</span> <span id="w14-1" class="w">dat</span> <span id="w14-2" class="w">u</span></div><div class="es"><span>Evita que usted</span></div></div>
+      <div id="p15" class="ph"><div class="nl" style="font-size: 72px"><span id="w15-0" class="w">irritante</span> <span id="w15-1" class="w">fluittonen</span> <span id="w15-2" class="w">hoort.</span></div><div class="es"><span>oiga pitidos molestos.</span></div></div>
+      <div id="p16" class="ph"><div class="nl" style="font-size: 86px"><span id="w16-0" class="w">Ja,</span> <span id="w16-1" class="w">heel</span> <span id="w16-2" class="w">irritant.</span></div><div class="es"><span>Sí, muy molesto.</span></div></div>
+      <div id="p17" class="ph"><div class="nl" style="font-size: 86px"><span id="w17-0" class="w">Zij</span> <span id="w17-1" class="w">fluiten</span></div><div class="es"><span>Ellos pitan</span></div></div>
+      <div id="p18" class="ph"><div class="nl" style="font-size: 86px"><span id="w18-0" class="w">veel</span> <span id="w18-1" class="w">te</span> <span id="w18-2" class="w">vaak</span></div><div class="es"><span>demasiadas veces</span></div></div>
+      <div id="p19" class="ph"><div class="nl" style="font-size: 86px"><span id="w19-0" class="w">tegen</span> <span id="w19-1" class="w">mij.</span></div><div class="es"><span>contra mí.</span></div></div>
+      <div id="p20" class="ph"><div class="nl" style="font-size: 86px"><span id="w20-0" class="w">Oh,</span> <span id="w20-1" class="w">maar</span> <span id="w20-2" class="w">dan</span> <span id="w20-3" class="w">is</span></div><div class="es"><span>Oh, pero entonces</span></div></div>
+      <div id="p21" class="ph"><div class="nl" style="font-size: 69px"><span id="w21-0" class="w">dit</span> <span id="w21-1" class="w">model</span> <span id="w21-2" class="w">niks</span> <span id="w21-3" class="w">voor</span> <span id="w21-4" class="w">u.</span></div><div class="es"><span>este modelo no es para usted.</span></div></div>
+      <div id="p22" class="ph"><div class="nl" style="font-size: 85px"><span id="w22-0" class="w">Gaan</span> <span id="w22-1" class="w">wij</span> <span id="w22-2" class="w">naar</span> <span id="w22-3" class="w">ons</span></div><div class="es"><span>Vamos a nuestra</span></div></div>
+      <div id="p23" class="ph"><div class="nl" style="font-size: 84px"><span id="w23-0" class="w">oordopjesgamma.</span></div><div class="es"><span>gama de tapones.</span></div></div>
+      <div id="p24" class="ph"><div class="nl" style="font-size: 80px"><span id="w24-0" class="w">Neemt</span> <span id="w24-1" class="w">u</span> <span id="w24-2" class="w">maar</span> <span id="w24-3" class="w">even</span></div><div class="es"><span>Siéntese un momento</span></div></div>
+      <div id="p25" class="ph"><div class="nl" style="font-size: 81px"><span id="w25-0" class="w">op</span> <span id="w25-1" class="w">de</span> <span id="w25-2" class="w">bank</span> <span id="w25-3" class="w">plaats.</span></div><div class="es"><span>en el banco.</span></div></div>
+      <div id="p26" class="ph"><div class="nl" style="font-size: 86px"><span id="w26-0" class="w">Hè?</span></div><div class="es"><span>¿Eh?</span></div></div>
+      <div id="p27" class="ph"><div class="nl" style="font-size: 86px"><span id="w27-0" class="w">Suárez</span> <span id="w27-1" class="w">nooit</span></div><div class="es"><span>Suárez nunca</span></div></div>
+      <div id="p28" class="ph"><div class="nl" style="font-size: 84px"><span id="w28-0" class="w">zitten</span> <span id="w28-1" class="w">op</span> <span id="w28-2" class="w">de</span> <span id="w28-3" class="w">bank.</span></div><div class="es"><span>se sienta en el banquillo.</span></div></div>
+      <div id="p29" class="ph"><div class="nl" style="font-size: 72px"><span id="w29-0" class="w">Nou,</span> <span id="w29-1" class="w">veel</span> <span id="w29-2" class="w">succes</span> <span id="w29-3" class="w">ermee.</span></div><div class="es"><span>Bueno, mucha suerte.</span></div></div>
+      <div id="p30" class="ph"><div class="nl" style="font-size: 86px"><span id="w30-0" class="w">En</span> <span id="w30-1" class="w">mocht</span> <span id="w30-2" class="w">u</span> <span id="w30-3" class="w">nog</span></div><div class="es"><span>Y si vuelve a</span></div></div>
+      <div id="p31" class="ph"><div class="nl" style="font-size: 81px"><span id="w31-0" class="w">een</span> <span id="w31-1" class="w">fluitje</span> <span id="w31-2" class="w">horen,</span></div><div class="es"><span>oír un pitido,</span></div></div>
+      <div id="p32" class="ph"><div class="nl" style="font-size: 72px"><span id="w32-0" class="w">gewoon</span> <span id="w32-1" class="w">even</span> <span id="w32-2" class="w">langskomen.</span></div><div class="es"><span>pásese por aquí.</span></div></div>
+      <div id="p33" class="ph"><div class="nl" style="font-size: 86px"><span id="w33-0" class="w">Kaartje?</span></div><div class="es"><span>¿Una tarjeta?</span></div></div>
+      <div id="p34" class="ph"><div class="nl" style="font-size: 86px"><span id="w34-0" class="w">Nee,</span> <span id="w34-1" class="w">nee,</span></div><div class="es"><span>No, no,</span></div></div>
+      <div id="p35" class="ph"><div class="nl" style="font-size: 72px"><span id="w35-0" class="w">ik</span> <span id="w35-1" class="w">heb</span> <span id="w35-2" class="w">kaartjes</span> <span id="w35-3" class="w">genoeg.</span></div><div class="es"><span>tengo tarjetas de sobra.</span></div></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      // the big title from the first frame (the cover), then a one-line tag that keeps clear of the faces
+      tl.to("#title", { opacity: 0, y: -40, scale: 0.86, duration: 0.3, ease: "power2.in" }, 3.0);
+      tl.fromTo("#tag", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out", immediateRender: false }, 3.18);
+      tl.to("#shade-top", { opacity: 0.55, duration: 0.4, ease: "none" }, 3.0);
+      tl.set("#p0", { opacity: 1 }, 0.330);
+      tl.fromTo("#p0 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 0.330);
+      tl.set("#p0", { opacity: 0 }, 1.550);
+      tl.set("#w0-0", { color: "#FFE11B" }, 0.350);
+      tl.set("#w0-0", { color: "#FFFFFF" }, 0.730);
+      tl.set("#w0-1", { color: "#FFE11B" }, 0.730);
+      tl.set("#w0-1", { color: "#FFFFFF" }, 0.870);
+      tl.set("#w0-2", { color: "#FFE11B" }, 0.870);
+      tl.set("#p1", { opacity: 1 }, 1.550);
+      tl.fromTo("#p1 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 1.550);
+      tl.set("#p1", { opacity: 0 }, 2.669);
+      tl.set("#w1-0", { color: "#FFE11B" }, 1.570);
+      tl.set("#w1-0", { color: "#FFFFFF" }, 1.990);
+      tl.set("#w1-1", { color: "#FFE11B" }, 1.990);
+      tl.set("#p2", { opacity: 1 }, 2.669);
+      tl.fromTo("#p2 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 2.669);
+      tl.set("#p2", { opacity: 0 }, 3.730);
+      tl.set("#w2-0", { color: "#FFE11B" }, 2.689);
+      tl.set("#w2-0", { color: "#FFFFFF" }, 3.070);
+      tl.set("#w2-1", { color: "#FFE11B" }, 3.070);
+      tl.set("#w2-1", { color: "#FFFFFF" }, 3.330);
+      tl.set("#w2-2", { color: "#FFE11B" }, 3.330);
+      tl.set("#p3", { opacity: 1 }, 3.730);
+      tl.fromTo("#p3 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 3.730);
+      tl.set("#p3", { opacity: 0 }, 4.710);
+      tl.set("#w3-0", { color: "#FFE11B" }, 3.750);
+      tl.set("#w3-0", { color: "#FFFFFF" }, 4.270);
+      tl.set("#w3-1", { color: "#FFE11B" }, 4.270);
+      tl.set("#p4", { opacity: 1 }, 4.710);
+      tl.fromTo("#p4 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 4.710);
+      tl.set("#p4", { opacity: 0 }, 5.790);
+      tl.set("#w4-0", { color: "#FFE11B" }, 4.730);
+      tl.set("#w4-0", { color: "#FFFFFF" }, 4.910);
+      tl.set("#w4-1", { color: "#FFE11B" }, 4.910);
+      tl.set("#p5", { opacity: 1 }, 5.790);
+      tl.fromTo("#p5 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 5.790);
+      tl.set("#p5", { opacity: 0 }, 6.170);
+      tl.set("#w5-0", { color: "#FFE11B" }, 5.810);
+      tl.set("#w5-0", { color: "#FFFFFF" }, 5.950);
+      tl.set("#w5-1", { color: "#FFE11B" }, 5.950);
+      tl.set("#w5-1", { color: "#FFFFFF" }, 6.090);
+      tl.set("#w5-2", { color: "#FFE11B" }, 6.090);
+      tl.set("#p6", { opacity: 1 }, 6.170);
+      tl.fromTo("#p6 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 6.170);
+      tl.set("#p6", { opacity: 0 }, 6.990);
+      tl.set("#w6-0", { color: "#FFE11B" }, 6.190);
+      tl.set("#w6-0", { color: "#FFFFFF" }, 6.310);
+      tl.set("#w6-1", { color: "#FFE11B" }, 6.310);
+      tl.set("#w6-1", { color: "#FFFFFF" }, 6.370);
+      tl.set("#w6-2", { color: "#FFE11B" }, 6.370);
+      tl.set("#p7", { opacity: 1 }, 6.990);
+      tl.fromTo("#p7 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 6.990);
+      tl.set("#p7", { opacity: 0 }, 8.430);
+      tl.set("#w7-0", { color: "#FFE11B" }, 7.010);
+      tl.set("#w7-0", { color: "#FFFFFF" }, 7.310);
+      tl.set("#w7-1", { color: "#FFE11B" }, 7.310);
+      tl.set("#w7-1", { color: "#FFFFFF" }, 7.410);
+      tl.set("#w7-2", { color: "#FFE11B" }, 7.410);
+      tl.set("#w7-2", { color: "#FFFFFF" }, 8.190);
+      tl.set("#w7-3", { color: "#FFE11B" }, 8.190);
+      tl.set("#p8", { opacity: 1 }, 8.430);
+      tl.fromTo("#p8 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 8.430);
+      tl.set("#p8", { opacity: 0 }, 9.390);
+      tl.set("#w8-0", { color: "#FFE11B" }, 8.450);
+      tl.set("#w8-0", { color: "#FFFFFF" }, 9.170);
+      tl.set("#w8-1", { color: "#FFE11B" }, 9.170);
+      tl.set("#p9", { opacity: 1 }, 9.390);
+      tl.fromTo("#p9 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 9.390);
+      tl.set("#p9", { opacity: 0 }, 10.590);
+      tl.set("#w9-0", { color: "#FFE11B" }, 9.410);
+      tl.set("#p10", { opacity: 1 }, 10.590);
+      tl.fromTo("#p10 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 10.590);
+      tl.set("#p10", { opacity: 0 }, 11.690);
+      tl.set("#w10-0", { color: "#FFE11B" }, 10.610);
+      tl.set("#w10-0", { color: "#FFFFFF" }, 11.290);
+      tl.set("#w10-1", { color: "#FFE11B" }, 11.290);
+      tl.set("#w10-1", { color: "#FFFFFF" }, 11.390);
+      tl.set("#w10-2", { color: "#FFE11B" }, 11.390);
+      tl.set("#p11", { opacity: 1 }, 11.690);
+      tl.fromTo("#p11 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 11.690);
+      tl.set("#p11", { opacity: 0 }, 12.370);
+      tl.set("#w11-0", { color: "#FFE11B" }, 11.710);
+      tl.set("#w11-0", { color: "#FFFFFF" }, 11.870);
+      tl.set("#w11-1", { color: "#FFE11B" }, 11.870);
+      tl.set("#p12", { opacity: 1 }, 12.370);
+      tl.fromTo("#p12 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 12.370);
+      tl.set("#p12", { opacity: 0 }, 13.250);
+      tl.set("#w12-0", { color: "#FFE11B" }, 12.390);
+      tl.set("#w12-0", { color: "#FFFFFF" }, 12.530);
+      tl.set("#w12-1", { color: "#FFE11B" }, 12.530);
+      tl.set("#p13", { opacity: 1 }, 13.250);
+      tl.fromTo("#p13 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 13.250);
+      tl.set("#p13", { opacity: 0 }, 14.630);
+      tl.set("#w13-0", { color: "#FFE11B" }, 13.270);
+      tl.set("#p14", { opacity: 1 }, 14.630);
+      tl.fromTo("#p14 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 14.630);
+      tl.set("#p14", { opacity: 0 }, 15.210);
+      tl.set("#w14-0", { color: "#FFE11B" }, 14.650);
+      tl.set("#w14-0", { color: "#FFFFFF" }, 14.990);
+      tl.set("#w14-1", { color: "#FFE11B" }, 14.990);
+      tl.set("#w14-1", { color: "#FFFFFF" }, 15.110);
+      tl.set("#w14-2", { color: "#FFE11B" }, 15.110);
+      tl.set("#p15", { opacity: 1 }, 15.210);
+      tl.fromTo("#p15 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 15.210);
+      tl.set("#p15", { opacity: 0 }, 16.670);
+      tl.set("#w15-0", { color: "#FFE11B" }, 15.230);
+      tl.set("#w15-0", { color: "#FFFFFF" }, 15.870);
+      tl.set("#w15-1", { color: "#FFE11B" }, 15.870);
+      tl.set("#w15-1", { color: "#FFFFFF" }, 16.330);
+      tl.set("#w15-2", { color: "#FFE11B" }, 16.330);
+      tl.set("#p16", { opacity: 1 }, 16.670);
+      tl.fromTo("#p16 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 16.670);
+      tl.set("#p16", { opacity: 0 }, 18.310);
+      tl.set("#w16-0", { color: "#FFE11B" }, 16.690);
+      tl.set("#w16-0", { color: "#FFFFFF" }, 16.950);
+      tl.set("#w16-1", { color: "#FFE11B" }, 16.950);
+      tl.set("#w16-1", { color: "#FFFFFF" }, 17.190);
+      tl.set("#w16-2", { color: "#FFE11B" }, 17.190);
+      tl.set("#p17", { opacity: 1 }, 18.310);
+      tl.fromTo("#p17 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 18.310);
+      tl.set("#p17", { opacity: 0 }, 19.590);
+      tl.set("#w17-0", { color: "#FFE11B" }, 18.330);
+      tl.set("#w17-0", { color: "#FFFFFF" }, 18.650);
+      tl.set("#w17-1", { color: "#FFE11B" }, 18.650);
+      tl.set("#p18", { opacity: 1 }, 19.590);
+      tl.fromTo("#p18 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 19.590);
+      tl.set("#p18", { opacity: 0 }, 20.330);
+      tl.set("#w18-0", { color: "#FFE11B" }, 19.610);
+      tl.set("#w18-0", { color: "#FFFFFF" }, 19.890);
+      tl.set("#w18-1", { color: "#FFE11B" }, 19.890);
+      tl.set("#w18-1", { color: "#FFFFFF" }, 20.050);
+      tl.set("#w18-2", { color: "#FFE11B" }, 20.050);
+      tl.set("#p19", { opacity: 1 }, 20.330);
+      tl.fromTo("#p19 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 20.330);
+      tl.set("#p19", { opacity: 0 }, 20.930);
+      tl.set("#w19-0", { color: "#FFE11B" }, 20.350);
+      tl.set("#w19-0", { color: "#FFFFFF" }, 20.650);
+      tl.set("#w19-1", { color: "#FFE11B" }, 20.650);
+      tl.set("#p20", { opacity: 1 }, 20.930);
+      tl.fromTo("#p20 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 20.930);
+      tl.set("#p20", { opacity: 0 }, 21.530);
+      tl.set("#w20-0", { color: "#FFE11B" }, 20.950);
+      tl.set("#w20-0", { color: "#FFFFFF" }, 21.170);
+      tl.set("#w20-1", { color: "#FFE11B" }, 21.170);
+      tl.set("#w20-1", { color: "#FFFFFF" }, 21.310);
+      tl.set("#w20-2", { color: "#FFE11B" }, 21.310);
+      tl.set("#w20-2", { color: "#FFFFFF" }, 21.450);
+      tl.set("#w20-3", { color: "#FFE11B" }, 21.450);
+      tl.set("#p21", { opacity: 1 }, 21.530);
+      tl.fromTo("#p21 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 21.530);
+      tl.set("#p21", { opacity: 0 }, 22.450);
+      tl.set("#w21-0", { color: "#FFE11B" }, 21.550);
+      tl.set("#w21-0", { color: "#FFFFFF" }, 21.690);
+      tl.set("#w21-1", { color: "#FFE11B" }, 21.690);
+      tl.set("#w21-1", { color: "#FFFFFF" }, 21.950);
+      tl.set("#w21-2", { color: "#FFE11B" }, 21.950);
+      tl.set("#w21-2", { color: "#FFFFFF" }, 22.110);
+      tl.set("#w21-3", { color: "#FFE11B" }, 22.110);
+      tl.set("#w21-3", { color: "#FFFFFF" }, 22.250);
+      tl.set("#w21-4", { color: "#FFE11B" }, 22.250);
+      tl.set("#p22", { opacity: 1 }, 22.450);
+      tl.fromTo("#p22 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 22.450);
+      tl.set("#p22", { opacity: 0 }, 23.130);
+      tl.set("#w22-0", { color: "#FFE11B" }, 22.470);
+      tl.set("#w22-0", { color: "#FFFFFF" }, 22.630);
+      tl.set("#w22-1", { color: "#FFE11B" }, 22.630);
+      tl.set("#w22-1", { color: "#FFFFFF" }, 22.750);
+      tl.set("#w22-2", { color: "#FFE11B" }, 22.750);
+      tl.set("#w22-2", { color: "#FFFFFF" }, 22.890);
+      tl.set("#w22-3", { color: "#FFE11B" }, 22.890);
+      tl.set("#p23", { opacity: 1 }, 23.130);
+      tl.fromTo("#p23 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 23.130);
+      tl.set("#p23", { opacity: 0 }, 24.110);
+      tl.set("#w23-0", { color: "#FFE11B" }, 23.150);
+      tl.set("#p24", { opacity: 1 }, 24.110);
+      tl.fromTo("#p24 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 24.110);
+      tl.set("#p24", { opacity: 0 }, 24.750);
+      tl.set("#w24-0", { color: "#FFE11B" }, 24.130);
+      tl.set("#w24-0", { color: "#FFFFFF" }, 24.350);
+      tl.set("#w24-1", { color: "#FFE11B" }, 24.350);
+      tl.set("#w24-1", { color: "#FFFFFF" }, 24.430);
+      tl.set("#w24-2", { color: "#FFE11B" }, 24.430);
+      tl.set("#w24-2", { color: "#FFFFFF" }, 24.550);
+      tl.set("#w24-3", { color: "#FFE11B" }, 24.550);
+      tl.set("#p25", { opacity: 1 }, 24.750);
+      tl.fromTo("#p25 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 24.750);
+      tl.set("#p25", { opacity: 0 }, 25.730);
+      tl.set("#w25-0", { color: "#FFE11B" }, 24.770);
+      tl.set("#w25-0", { color: "#FFFFFF" }, 24.910);
+      tl.set("#w25-1", { color: "#FFE11B" }, 24.910);
+      tl.set("#w25-1", { color: "#FFFFFF" }, 25.010);
+      tl.set("#w25-2", { color: "#FFE11B" }, 25.010);
+      tl.set("#w25-2", { color: "#FFFFFF" }, 25.250);
+      tl.set("#w25-3", { color: "#FFE11B" }, 25.250);
+      tl.set("#p26", { opacity: 1 }, 25.730);
+      tl.fromTo("#p26 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 25.730);
+      tl.set("#p26", { opacity: 0 }, 26.270);
+      tl.set("#w26-0", { color: "#FFE11B" }, 25.750);
+      tl.set("#p27", { opacity: 1 }, 26.270);
+      tl.fromTo("#p27 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 26.270);
+      tl.set("#p27", { opacity: 0 }, 26.910);
+      tl.set("#w27-0", { color: "#FFE11B" }, 26.290);
+      tl.set("#w27-0", { color: "#FFFFFF" }, 26.670);
+      tl.set("#w27-1", { color: "#FFE11B" }, 26.670);
+      tl.set("#p28", { opacity: 1 }, 26.910);
+      tl.fromTo("#p28 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 26.910);
+      tl.set("#p28", { opacity: 0 }, 27.930);
+      tl.set("#w28-0", { color: "#FFE11B" }, 26.930);
+      tl.set("#w28-0", { color: "#FFFFFF" }, 27.210);
+      tl.set("#w28-1", { color: "#FFE11B" }, 27.210);
+      tl.set("#w28-1", { color: "#FFFFFF" }, 27.310);
+      tl.set("#w28-2", { color: "#FFE11B" }, 27.310);
+      tl.set("#w28-2", { color: "#FFFFFF" }, 27.410);
+      tl.set("#w28-3", { color: "#FFE11B" }, 27.410);
+      tl.set("#p29", { opacity: 1 }, 27.930);
+      tl.fromTo("#p29 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 27.930);
+      tl.set("#p29", { opacity: 0 }, 29.390);
+      tl.set("#w29-0", { color: "#FFE11B" }, 27.950);
+      tl.set("#w29-0", { color: "#FFFFFF" }, 28.450);
+      tl.set("#w29-1", { color: "#FFE11B" }, 28.450);
+      tl.set("#w29-1", { color: "#FFFFFF" }, 28.650);
+      tl.set("#w29-2", { color: "#FFE11B" }, 28.650);
+      tl.set("#w29-2", { color: "#FFFFFF" }, 28.990);
+      tl.set("#w29-3", { color: "#FFE11B" }, 28.990);
+      tl.set("#p30", { opacity: 1 }, 29.390);
+      tl.fromTo("#p30 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 29.390);
+      tl.set("#p30", { opacity: 0 }, 30.350);
+      tl.set("#w30-0", { color: "#FFE11B" }, 29.410);
+      tl.set("#w30-0", { color: "#FFFFFF" }, 29.970);
+      tl.set("#w30-1", { color: "#FFE11B" }, 29.970);
+      tl.set("#w30-1", { color: "#FFFFFF" }, 30.190);
+      tl.set("#w30-2", { color: "#FFE11B" }, 30.190);
+      tl.set("#w30-2", { color: "#FFFFFF" }, 30.250);
+      tl.set("#w30-3", { color: "#FFE11B" }, 30.250);
+      tl.set("#p31", { opacity: 1 }, 30.350);
+      tl.fromTo("#p31 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 30.350);
+      tl.set("#p31", { opacity: 0 }, 31.330);
+      tl.set("#w31-0", { color: "#FFE11B" }, 30.370);
+      tl.set("#w31-0", { color: "#FFFFFF" }, 30.470);
+      tl.set("#w31-1", { color: "#FFE11B" }, 30.470);
+      tl.set("#w31-1", { color: "#FFFFFF" }, 30.810);
+      tl.set("#w31-2", { color: "#FFE11B" }, 30.810);
+      tl.set("#p32", { opacity: 1 }, 31.330);
+      tl.fromTo("#p32 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 31.330);
+      tl.set("#p32", { opacity: 0 }, 32.530);
+      tl.set("#w32-0", { color: "#FFE11B" }, 31.350);
+      tl.set("#w32-0", { color: "#FFFFFF" }, 31.630);
+      tl.set("#w32-1", { color: "#FFE11B" }, 31.630);
+      tl.set("#w32-1", { color: "#FFFFFF" }, 31.790);
+      tl.set("#w32-2", { color: "#FFE11B" }, 31.790);
+      tl.set("#p33", { opacity: 1 }, 32.530);
+      tl.fromTo("#p33 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 32.530);
+      tl.set("#p33", { opacity: 0 }, 32.990);
+      tl.set("#w33-0", { color: "#FFE11B" }, 32.550);
+      tl.set("#p34", { opacity: 1 }, 32.990);
+      tl.fromTo("#p34 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 32.990);
+      tl.set("#p34", { opacity: 0 }, 33.390);
+      tl.set("#w34-0", { color: "#FFE11B" }, 33.010);
+      tl.set("#w34-0", { color: "#FFFFFF" }, 33.250);
+      tl.set("#w34-1", { color: "#FFE11B" }, 33.250);
+      tl.set("#p35", { opacity: 1 }, 33.390);
+      tl.fromTo("#p35 .nl", { scale: 0.86 }, { scale: 1, duration: 0.16, ease: "back.out(2.2)", immediateRender: false }, 33.390);
+      tl.set("#p35", { opacity: 0 }, 34.680);
+      tl.set("#w35-0", { color: "#FFE11B" }, 33.410);
+      tl.set("#w35-0", { color: "#FFFFFF" }, 33.530);
+      tl.set("#w35-1", { color: "#FFE11B" }, 33.530);
+      tl.set("#w35-1", { color: "#FFFFFF" }, 33.690);
+      tl.set("#w35-2", { color: "#FFE11B" }, 33.690);
+      tl.set("#w35-2", { color: "#FFFFFF" }, 33.990);
+      tl.set("#w35-3", { color: "#FFE11B" }, 33.990);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

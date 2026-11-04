@@ -30,6 +30,7 @@ principio eso de aprendiendo neerlandés con Luis Suárez, y que pongas subtítu
   presentación de la tienda y el cierre de la marca, en voz y en imagen.
 - A pantalla completa, como el de Mario Casas, con un encuadre por plano sobre quien habla. El original es de baja
   resolución, así que se reescala ×4 con IA antes de recortar.
-- El título va arriba durante todo el reel, como en el de Mario Casas; se ve desde el primer fotograma (portada).
+- El título va grande arriba desde el primer fotograma (portada), como en el de Mario Casas. A los 3 s pasa a una
+  etiqueta pequeña que no tapa los ojos en los primeros planos.
 - Los subtítulos van en frases cortas: el holandés tal como se dice (también el holandés roto de Suárez) y el español
   debajo, conservando los juegos de palabras (pitar, banquillo, tarjetas).

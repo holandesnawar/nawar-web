@@ -1,6 +1,7 @@
 # Storyboard · Reel «Aprendiendo neerlandés con Luis Suárez» v1 (34,7 s)
 
-Arriba, todo el reel: «📚 Aprendiendo neerlandés con Luis Suárez 🇳🇱». Debajo de las caras van los subtítulos: el
+Arriba, grande durante los 3 primeros segundos: «📚 Aprendiendo neerlandés con Luis Suárez 🇳🇱». Después queda una
+etiqueta pequeña, «📚 Neerlandés con Luis Suárez 🇳🇱». Debajo de las caras van los subtítulos: el
 holandés en mayúsculas, con la palabra que se dice en amarillo, y el español en una pastilla gris.
 
 | Tiempo | Plano (encuadre 9:16) | Holandés | Español |

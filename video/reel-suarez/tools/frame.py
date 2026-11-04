@@ -6,7 +6,7 @@ cut) to frame 993 (the last frame before the brand end card), held 8 frames unde
 Each shot has its own 9:16 window (SHOTS: the centre in source px — 512 wide —, keyframed where the camera or the
 speaker moves; a window is 162 source px wide), on whoever talks. What still shows of the brand inside a window is
 taken out (LOGOS): the red business card's print and the red star on the white one.
-  python3 tools/frame.py
+  python3 tools/frame.py          (python3 tools/frame.py --mux: only the sound, the grade and the mux)
 """
 import json, os, subprocess
 import numpy as np
@@ -118,7 +118,10 @@ def erase(img, kind, rect):
     return out
 
 
-def main():
+GRADE = "eq=contrast=1.07:saturation=1.10:gamma=0.98"   # the ad's flat, bright grade, given a little punch
+
+
+def picture():
     from PIL import Image
     dec = subprocess.Popen(["ffmpeg", "-v", "error", "-i", os.path.join(ROOT, ".raw", "up.mp4"), "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
                            stdout=subprocess.PIPE)                # streamed: the whole upscale would not fit in memory
@@ -130,13 +133,10 @@ def main():
         read()
     img0 = None
     n_out = F1 - F0 + 1 + HOLD
-    dur = n_out / 25
-    t0 = F0 / 25
-    vid = os.path.join(ROOT, ".raw", "picture.mp4")
     enc = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", "1080x1920", "-r", "25", "-i", "-",
-                            "-c:v", "libx264", "-preset", "slow", "-crf", "15", "-pix_fmt", "yuv420p", vid], stdin=subprocess.PIPE)
+                            "-c:v", "libx264", "-preset", "slow", "-crf", "15", "-pix_fmt", "yuv420p", os.path.join(ROOT, ".raw", "picture.mp4")],
+                           stdin=subprocess.PIPE)
     rng = np.random.default_rng(7)
-    log = []
     for k in range(n_out):
         n = min(F0 + k, F1)
         if F0 + k <= F1:
@@ -151,20 +151,28 @@ def main():
         a = np.asarray(crop).astype(np.float32)
         a += rng.normal(0, 2.2, a.shape[:2])[..., None]          # a fine grain: no waxy upscale look
         enc.stdin.write(a.clip(0, 255).astype(np.uint8).tobytes())
-        log.append({"k": k, "src": n, "centre": round(c, 1)})
     enc.stdin.close(); enc.wait(); assert enc.returncode == 0
     dec.stdout.close(); dec.wait()
+
+
+def mux():
+    n_out = F1 - F0 + 1 + HOLD
+    dur, t0 = n_out / 25, F0 / 25
     snd = os.path.join(ROOT, ".raw", "sound.wav")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{t0:.3f}", "-t", f"{dur:.3f}", "-i", os.path.join(ROOT, ".raw", "suarez.mp4"),
                     "-vn", "-af", f"afade=t=in:d=0.04,afade=t=out:st={dur - 0.3:.3f}:d=0.3,loudnorm=I=-14:TP=-1.5:LRA=11",
                     "-ar", "48000", "-ac", "2", snd], check=True)
     os.makedirs(os.path.join(ROOT, "assets", "video"), exist_ok=True)
     out = os.path.join(ROOT, "assets", "video", "suarez-916.mp4")
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", vid, "-i", snd, "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", os.path.join(ROOT, ".raw", "picture.mp4"), "-i", snd, "-vf", GRADE,
+                    "-c:v", "libx264", "-preset", "slow", "-crf", "15", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
                     "-shortest", "-movflags", "+faststart", out], check=True)
     json.dump({"t0": t0, "frames": n_out, "duration": round(dur, 3), "fps": 25}, open(os.path.join(ROOT, "assets", "video", "suarez-916.json"), "w"))
     print(f"suarez-916.mp4: source frames {F0}–{F1} + {HOLD} held = {dur:.2f}s (source {t0:.2f}–{t0 + dur:.2f})")
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    if "--mux" not in sys.argv:          # --mux: only the sound, the grade and the mux (the picture is ~25 min)
+        picture()
+    mux()
