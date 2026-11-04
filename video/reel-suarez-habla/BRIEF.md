@@ -133,3 +133,17 @@ mejor centrados. Tómate tu tiempo para esta versión final.»
 - **Voz:** «Yair - Narration Spanish», el mismo texto. Comprobada con Scribe (lee «Hablan neerlandés» por la unión de
   «habla» con «neerlandés», que es como suena al hablar).
 - Los datos de la oferta («1 €», «12,50 €», «−92 %», «Más de 40 personas ya lo tienen») son los de la página.
+
+### Revisión de la v7
+
+Revisores independientes (el gancho frente a la maqueta, el cierre frente a la página, movimiento/sincronía/sonido y
+regresiones de la entrevista), cada fallo comprobado por otro agente. Corregido antes de entregar:
+- **Iconos del gancho:** con 118 px rozaban la «H» de «Hablando» y la «s» de «neerlandés», y quedaban un poco altos.
+  Ahora miden 108 y 88 px y van centrados en las letras de la línea del medio (9 px más abajo): ya no tocan nada.
+- **Sello del precio:** tapaba los títulos de las páginas del libro abierto. Ahora va al 78 % y más arriba: solo cubre la
+  esquina del libro y su franja azul, como en la página.
+- **«1 €»:** con espacio entre el 1 y el €, como en la página (antes se leía pegado).
+- **El aviso del mensaje:** sonaba 0,3 s tarde (el archivo empieza con silencio); recortado, suena con la pastilla.
+- Comprobado sin fallos: el contorno y los iconos frente a la maqueta, la entrevista idéntica a la v6, el resto del
+  cierre (todo entra antes de 43 s salvo la llamada, la cinta sin saltos, sin solapes, dentro de las zonas seguras), la
+  voz de Yair entera y clara, y el volumen (−14,7 LUFS en total, −15,1 el cierre, pico real −2,2 dBTP).

@@ -139,6 +139,7 @@ BED_FROM = 0.023 + 8 * 4 * 60 / 107.7  # «musica v1» (the BF ad's track): from
 BED_AT, BED_IN, BED_OUT = 0.25, 0.6, 1.2
 EQ = "highpass=f=110,lowshelf=f=150:g=-6,lowshelf=f=250:g=-6,equalizer=f=2500:t=q:w=0.9:g=-3"   # (as in the BF ad: room for the voice)
 SR = 48000
+LEAD = {"ping": 0.28}                  # ping.mp3 opens with 0.3 s of near-silence: trimmed, so it sounds with the pill
 SFX = {"whoosh": ("whoosh.mp3", -9), "pop": ("pop.mp3", -15), "click": ("click.mp3", -14), "ping": ("ping.mp3", -15)}
 
 
@@ -208,6 +209,7 @@ def audio():
     for name, at in (("whoosh", 0.0), ("pop", c["SEAL"]), ("click", c["TAP"]), ("ping", c["CONFIRM"])):   # to the ground,
         f, db = SFX[name]                                           # the price seal landing, the tap on «Publicar», the
         fx = load(os.path.join(RAW, f)) * 10 ** (db / 20)           # message sent
+        fx = fx[int(LEAD.get(name, 0) * SR):]                       # (its silence before the sound trimmed)
         a = int(round(at * SR)); m = min(len(fx), n - a); mix[a:a + m] += fx[:m]
     sf.write(tmp, mix, SR)
     peak = np.abs(mix).max()

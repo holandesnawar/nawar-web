@@ -47,8 +47,8 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
   - el ebook: la animación del cliente («Animación libro interactivo.html», carpeta «MARIO») convertida en vídeo
     transparente fotograma a fotograma (su reloj se sustituye por uno que se fija desde fuera), sin sombra. Se abre en
     cuanto sale, pasa tres páginas y se cierra en la portada en «un euro»;
-  - el sello blanco de la página sobre su esquina: «BLACK FRIDAY · 1€ · ~~12,50 €~~», con la pastilla roja «−92 %» (el
-    «1€» late en «euro» y lo cruza un brillo al final);
+  - el sello blanco de la página sobre su esquina (al 78 %, sin tapar los títulos de las páginas): «BLACK FRIDAY · 1 € ·
+    ~~12,50 €~~», con la pastilla roja «−92 %» (el «1 €» late en «euro» y lo cruza un brillo al final);
   - la cinta azul claro de la página, corriendo: «✦ 70 páginas ✦ Explicado en español ✦ Ejercicios con respuestas…»;
   - «★★★★★ Más de 40 personas ya lo tienen», que en «Comenta» deja su sitio al campo de comentario de Instagram:
     «OFERTA» se escribe letra a letra, se toca «Publicar» y sale «✓ Te enviamos los detalles por mensaje»;

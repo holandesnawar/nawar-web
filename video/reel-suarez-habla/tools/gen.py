@@ -34,7 +34,8 @@ HOOK_TOP, HOOK_SIZE, HOOK_LH = 180, 77, 1.06   # under Instagram's header, over 
 HOOK_OUTLINE = 6                       # stay under it, also when he raises them on «Wie?»); outline px, outside the glyph
 HOOK_OUT = 3.30                        # …and it leaves here (it is the cover too: on screen from the first frame)
 HOOK = ["Hablando neerlandés", "sin miedo como", "Luis Suárez"]
-ICONS = {"books": 118, "nl": 96}       # display height (px): about the proportions of the mock-up
+ICONS = {"books": 108, "nl": 88}       # display height (px): about the proportions of the mock-up, clear of the other lines
+ICON_DY = 9                            # centred on the middle line's letters (its x-height), not on its line box
 ICON_GAP = 18                          # between the middle line's outline and each icon
 OUT_LEAD = 0.30                        # the closing ad comes in over the interview's last 0.3 s
 
@@ -87,17 +88,18 @@ def outro_html():
     /* the book, and the page's white seal over its corner */
     #o-book { position: absolute; left: «BL»px; top: «BT»px; width: «BW»px; height: «BH»px; }
     #o-book video { position: absolute; left: 0; top: 0; width: «BW»px; height: «BH»px; display: block; }
-    #o-seal { position: absolute; left: 58px; top: 566px; transform-origin: 30% 50%; }
+    #o-seal { position: absolute; left: 88px; top: 506px; transform-origin: 30% 50%; }   /* (at 0.78: over the book's corner
+                                                     and its blue band only, never over the page headings) */
     .o-seal { position: relative; padding: 20px 30px 22px; border-radius: 28px; background: #FFFFFF; overflow: hidden; }
     .o-seal .k { font-weight: 700; font-size: 25px; letter-spacing: 0.14em; color: «RED»; line-height: 1; }
     .o-seal .p { display: flex; align-items: flex-end; gap: 18px; margin-top: 28px; }   /* (the 112 px price keeps its own line box clear of the label) */
     #o-eur { display: inline-block; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 112px; line-height: 1;
-      letter-spacing: -0.04em; color: «INDIGO»; transform-origin: 40% 60%; }
+      letter-spacing: -0.03em; color: «INDIGO»; transform-origin: 40% 60%; }
     .o-seal s { font-family: "Poppins", sans-serif; font-weight: 600; font-size: 40px; color: #5B6380; line-height: 1; padding-bottom: 15px;
       text-decoration-color: «RED»; text-decoration-thickness: 4px; }
     #o-shine { position: absolute; top: -40px; left: -160px; width: 110px; height: 320px; transform: rotate(18deg);
       background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 100%); opacity: 0.7; }
-    #o-off { position: absolute; left: 316px; top: -30px; transform-origin: 50% 50%; }
+    #o-off { position: absolute; left: 339px; top: -16px; transform-origin: 50% 50%; }
     .o-off { padding: 12px 22px; border-radius: 999px; background: #E02D3C; color: #FFFFFF; font-family: "Poppins", sans-serif;
       font-weight: 700; font-size: 38px; line-height: 1; white-space: nowrap; }
     /* the page's light-blue ticker */
@@ -144,7 +146,7 @@ def outro_html():
     <div id="o-l1" class="o-row o-h"><span>Habla neerlandés</span></div>
     <div id="o-l2" class="o-row o-h">sin miedo.</div>
     <div id="o-book"><video id="o-v" class="clip" src="assets/video/libro.webm" muted playsinline data-start="«BS»" data-duration="«BD»" data-track-index="1"></video></div>
-    <div id="o-seal"><div class="o-seal"><div class="k">BLACK FRIDAY</div><div class="p"><span id="o-eur">1€</span><s>12,50&nbsp;€</s></div><div id="o-shine"></div></div>
+    <div id="o-seal"><div class="o-seal"><div class="k">BLACK FRIDAY</div><div class="p"><span id="o-eur">1&nbsp;€</span><s>12,50&nbsp;€</s></div><div id="o-shine"></div></div>
       <div id="o-off"><div class="o-off">−92&nbsp;%</div></div></div>
     <div id="o-band"><div id="o-track">{track}</div></div>
     <div id="o-proof" class="o-row"><div class="o-avs">{avs}</div><div><div class="o-stars">★★★★★</div><div class="o-ptxt">Más de 40 personas ya lo tienen</div></div></div>
@@ -160,7 +162,7 @@ def outro_html():
       tl.fromTo("#o-book", { opacity: 0, y: 70, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "power3.out" }, «BOOK»);
       tl.fromTo("#o-band", { x: -1120 }, { x: 0, duration: 0.50, ease: "power3.out" }, «BAND»);
       tl.fromTo("#o-track", { xPercent: 0 }, { xPercent: -25, duration: «D», ease: "none" }, 0);
-      tl.fromTo("#o-seal", { opacity: 0, scale: 0.45, rotation: -14 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.50, ease: "back.out(1.8)" }, «SEAL»);
+      tl.fromTo("#o-seal", { opacity: 0, scale: 0.45, rotation: -14 }, { opacity: 1, scale: 0.78, rotation: 0, duration: 0.50, ease: "back.out(1.8)" }, «SEAL»);
       tl.fromTo("#o-off", { opacity: 0, scale: 0.2, rotation: 30 }, { opacity: 1, scale: 1, rotation: 8, duration: 0.40, ease: "back.out(2.2)" }, «OFF»);
       tl.fromTo("#o-proof", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.40, ease: "power3.out" }, «PROOF»);
       tl.fromTo("#o-eur", { scale: 1 }, { scale: 1.14, duration: 0.16, ease: "power2.out", yoyo: true, repeat: 1 }, «EURO»);
@@ -283,8 +285,8 @@ def main():
       #hook .hl {{ white-space: nowrap; }}
       #hook .mid {{ position: relative; display: inline-block; }}
       #hook .em {{ position: absolute; top: 50%; display: block; }}
-      #hook .em-books {{ height: {ICONS["books"]}px; right: calc(100% + {ICON_GAP + HOOK_OUTLINE}px); transform: translateY(-50%); }}
-      #hook .em-nl {{ height: {ICONS["nl"]}px; left: calc(100% + {ICON_GAP + HOOK_OUTLINE}px); transform: translateY(-50%); }}
+      #hook .em-books {{ height: {ICONS["books"]}px; top: calc(50% + {ICON_DY}px); right: calc(100% + {ICON_GAP + HOOK_OUTLINE}px); transform: translateY(-50%); }}
+      #hook .em-nl {{ height: {ICONS["nl"]}px; top: calc(50% + {ICON_DY}px); left: calc(100% + {ICON_GAP + HOOK_OUTLINE}px); transform: translateY(-50%); }}
       .ph {{ position: absolute; left: {NL_CX - 505}px; bottom: {1920 - SUB_BOTTOM}px; width: 1010px; display: flex; flex-direction: column;
         align-items: center; gap: 6px; opacity: 0; }}
       .nl {{ width: {NL_W}px; font-size: {NL_SIZE}px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 0.26em; row-gap: 0;
