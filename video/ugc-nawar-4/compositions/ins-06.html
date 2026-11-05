@@ -1,0 +1,136 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .i6-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .i6-paper { background: #F5F7FF; }
+    .i6-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .i6-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i6-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .i6-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i6-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .i6-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .i6-dark { background: radial-gradient(circle at 50% 34%, #1b1846 0%, #0b0a1c 56%, #050409 100%); }
+    .i6-dark-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1.6px, transparent 1.8px); background-size: 30px 30px; }
+    .i6-dark-amb { position: absolute; left: 40px; top: 220px; width: 1000px; height: 980px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(11,109,240,0.22) 0%, rgba(11,109,240,0.07) 45%, rgba(11,109,240,0) 70%); }
+    .i6-dark-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%); }
+    .i6-on-dark { box-shadow: none; }
+    /* Black Friday pieces: the tape (a yellow strip with «BLACK FRIDAY» running on it), the yellow pill and the burst */
+    .i6-tape { position: absolute; height: 92px; background: #FFD60A; overflow: hidden; }
+    .i6-tape-run { position: absolute; left: 0; top: 0; height: 92px; display: flex; align-items: center; gap: 34px; white-space: nowrap;
+      font-weight: 900; font-size: 52px; line-height: 1; letter-spacing: 0.02em; color: #08070F; padding-top: 4px; box-sizing: border-box; }
+    .i6-tape-run i { display: block; width: 16px; height: 16px; border-radius: 50%; background: #08070F; font-style: normal; }
+    .i6-ypill { display: flex; align-items: center; gap: 14px; height: 72px; padding: 0 32px 0 22px; border-radius: 999px; background: #FFD60A;
+      color: #08070F; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 31px; line-height: 1; letter-spacing: -0.005em; }
+    .i6-ypill svg { display: block; width: 38px; height: 38px; }
+    .i6-acc-y { color: #FFD60A; }
+    .i6-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    /* v6: no outer shadows anywhere (flat objects); on paper a white card keeps its edge with a hairline */
+    .i6-on-paper { box-shadow: inset 0 0 0 2px #DDE6F5; }
+    .i6-on-blue { box-shadow: none; }
+    .i6-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .i6-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .i6-pill svg { display: block; width: 28px; height: 28px; }
+    .i6-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .i6-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .i6-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .i6-flag svg { display: block; width: 40px; height: 27px; }
+    .i6-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .i6-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF; }
+    .i6-av svg { display: block; width: 96px; height: 96px; }
+    .i6-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .i6-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: inset 0 0 0 2px #DDE6F5; }
+    .i6-bub-g { background: #E8ECF7; color: #374151; }
+    .i6-bub-b { background: #0b6df0; color: #FFFFFF; }
+    .i6-bl { border-bottom-left-radius: 10px; }
+    .i6-br { border-bottom-right-radius: 10px; }
+    .i6-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .i6-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .i6-acc { color: #4da3ff; }
+    .i6-w { display: inline-block; }
+
+    #i6-list { left: 110px; top: 170px; width: 860px; height: 560px; overflow: hidden; }
+    #i6-lh { position: absolute; left: 36px; top: 30px; display: flex; align-items: center; gap: 16px; font-weight: 800; font-size: 48px;
+      color: #1D0084; letter-spacing: -0.02em; }
+    #i6-lh svg { display: block; width: 48px; height: 48px; color: #0b6df0; }
+    #i6-rows { position: absolute; left: 24px; top: 118px; width: 812px; }
+    .i6-rw { position: relative; display: flex; align-items: center; gap: 22px; height: 100px; padding: 0 22px; margin-bottom: 10px;
+      border-radius: 22px; background: #F1F2F8; }
+    .i6-pic { width: 68px; height: 68px; flex: 0 0 68px; border-radius: 50%; overflow: hidden; }
+    .i6-pic svg { display: block; width: 68px; height: 68px; }
+    .i6-nm { flex: 1 1 auto; }
+    .i6-n { font-family: "Inter", sans-serif; font-weight: 700; font-size: 36px; line-height: 1.1; color: #0C0C1E; }
+    .i6-sub { font-family: "Inter", sans-serif; font-weight: 600; font-size: 24px; line-height: 1.2; color: rgba(255,255,255,0.85); }
+    .i6-ck svg { display: block; width: 52px; height: 52px; }
+    #i6-me { background: #0b6df0; }
+    #i6-me .i6-n { color: #FFFFFF; }
+    #i6-me .i6-pic { box-shadow: 0 0 0 4px #FFFFFF; }
+    #i6-box { left: 110px; top: 780px; width: 860px; height: 330px; background: #1D0084; overflow: visible; }
+    #i6-bk { position: absolute; left: 40px; top: 34px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; letter-spacing: 0.14em;
+      color: #4da3ff; text-transform: uppercase; }
+    #i6-bt { position: absolute; left: 40px; top: 74px; font-weight: 800; font-size: 50px; line-height: 1.05; color: #FFFFFF; letter-spacing: -0.02em; }
+    .i6-ln { position: absolute; left: 40px; height: 22px; border-radius: 11px; background: rgba(255,255,255,0.28); filter: blur(3px); }
+    #i6-lock { position: absolute; right: 54px; top: 92px; width: 140px; height: 140px; border-radius: 50%; background: rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center; }
+    #i6-lock svg { display: block; width: 84px; height: 84px; overflow: visible; }
+    #i6-okrow { top: 1080px; }
+    #i6-ok { gap: 14px; height: 88px; padding: 0 38px 0 24px; font-size: 40px; background: #16A34A; color: #FFFFFF; }
+    #i6-ok svg { display: block; width: 46px; height: 46px; }
+
+  </style>
+  <div id="root" data-composition-id="ins-06" data-width="1080" data-height="1920" data-duration="5.189">
+    <div class="i6-full i6-paper"><div class="i6-paper-dots"></div><div class="i6-paper-light"></div></div>
+    <div id="i6-list" class="i6-card i6-on-paper">
+      <div id="i6-lh"><svg viewBox="0 0 48 48"><path d="M24 4 L29.6 17.3 L44 18.5 L33 28 L36.4 42 L24 34.6 L11.6 42 L15 28 L4 18.5 L18.4 17.3 Z" fill="currentColor"/></svg><span>Lista prioritaria</span></div>
+      <div id="i6-rows"><div id="i6-me" class="i6-rw"><div class="i6-pic" style="background: #1D0084;"><svg viewBox="0 0 96 96"><circle cx="48" cy="38" r="17.5" fill="#FFFFFF" /><path d="M13 101 C13 75 29 62 48 62 C67 62 83 75 83 101 Z" fill="#FFFFFF" /></svg></div><div class="i6-nm"><div class="i6-n">Tú</div><div class="i6-sub">+ el libro «Holandés sin miedo»</div></div><div class="i6-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div id="i6-r0" class="i6-rw"><div class="i6-pic" style="background: #7C5CFF;"><svg viewBox="0 0 96 96"><circle cx="48" cy="38" r="17.5" fill="#FFFFFF" /><path d="M13 101 C13 75 29 62 48 62 C67 62 83 75 83 101 Z" fill="#FFFFFF" /></svg></div><div class="i6-nm"><div class="i6-n">Laura M.</div></div><div class="i6-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div id="i6-r1" class="i6-rw"><div class="i6-pic" style="background: #15A3A3;"><svg viewBox="0 0 96 96"><circle cx="48" cy="38" r="17.5" fill="#FFFFFF" /><path d="M13 101 C13 75 29 62 48 62 C67 62 83 75 83 101 Z" fill="#FFFFFF" /></svg></div><div class="i6-nm"><div class="i6-n">Diego R.</div></div><div class="i6-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div id="i6-r2" class="i6-rw"><div class="i6-pic" style="background: #D9487A;"><svg viewBox="0 0 96 96"><circle cx="48" cy="38" r="17.5" fill="#FFFFFF" /><path d="M13 101 C13 75 29 62 48 62 C67 62 83 75 83 101 Z" fill="#FFFFFF" /></svg></div><div class="i6-nm"><div class="i6-n">Carmen S.</div></div><div class="i6-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div>
+    </div>
+    <div id="i6-box" class="i6-card">
+      <div id="i6-bk">Black Friday</div><div id="i6-bt">Formación Nawar</div>
+      <div class="i6-ln" style="top: 176px; width: 470px;"></div><div class="i6-ln" style="top: 222px; width: 380px;"></div>
+      <div class="i6-ln" style="top: 268px; width: 430px;"></div>
+      <div id="i6-lock"><svg viewBox="0 0 64 64"><path id="i6-shk" d="M20 30 V20 A12 12 0 0 1 44 20 V30" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/><rect x="12" y="28" width="40" height="30" rx="8" fill="#FFFFFF"/><circle cx="32" cy="41" r="4.5" fill="#1D0084"/><rect x="30" y="42" width="4" height="9" rx="2" fill="#1D0084"/></svg></div>
+    </div>
+    <div id="i6-okrow" class="i6-row"><div id="i6-ok" class="i6-wpill"><svg viewBox="0 0 64 64"><path d="M16 33 L28 45 L49 21" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Lo ves antes que nadie</span></div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("i6-" + id);
+
+      tl.fromTo(q("list"), { opacity: 0.4, y: 30, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power3.out" }, 0);   // there from the cut
+      // your row: the others are pushed down as it slides in on top
+      tl.fromTo(q("rows"), { y: -110 }, { y: 0, duration: 0.34, ease: "power3.out", immediateRender: true }, 0.378 + 0.02);
+      tl.fromTo(q("me"), { opacity: 0, x: -60, scale: 0.94 }, { opacity: 1, x: 0, scale: 1, duration: 0.34, ease: "back.out(1.6)" }, 0.378 + 0.02);
+      tl.fromTo(q("box"), { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, 2.472 - 0.06);
+      tl.fromTo(q("lock"), { scale: 1 }, { keyframes: [{ scale: 1.12, duration: 0.1 }, { scale: 1, duration: 0.16 }], immediateRender: false }, 3.491 - 0.02);
+      tl.fromTo("#i6-shk", { y: 0, rotation: 0 }, { y: -10, rotation: -24, svgOrigin: "44 30", duration: 0.26, ease: "back.out(2.4)", immediateRender: false }, 4.378 - 0.04);
+      tl.fromTo(q("ok"), { opacity: 0, y: 26, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, 4.378 + 0.1);
+
+      window.__timelines["ins-06"] = tl;
+    })();
+  </script>
+</template>

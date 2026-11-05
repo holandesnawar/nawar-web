@@ -1,0 +1,1285 @@
+{
+ "rate": 1.06,
+ "clip_end": 45.274,
+ "total": 45.574,
+ "speech_end": 45.227,
+ "outro": 39.689,
+ "hook_bf": 0.717,
+ "offer": 27.132,
+ "turn": 4.264,
+ "hold": {
+  "start": 45.274,
+  "duration": 0.3
+ },
+ "shots": [
+  {
+   "n": 1,
+   "take": "p",
+   "start": 0.0,
+   "duration": 4.17,
+   "media_start": 0.44,
+   "media_end": 4.86,
+   "face": [
+    560,
+    660
+   ]
+  },
+  {
+   "n": 2,
+   "take": "p",
+   "start": 4.17,
+   "duration": 4.566,
+   "media_start": 15.02,
+   "media_end": 19.86,
+   "face": [
+    560,
+    660
+   ]
+  },
+  {
+   "n": 3,
+   "take": "p",
+   "start": 8.736,
+   "duration": 4.849,
+   "media_start": 21.56,
+   "media_end": 26.7,
+   "face": [
+    560,
+    660
+   ]
+  },
+  {
+   "n": 4,
+   "take": "p",
+   "start": 13.585,
+   "duration": 3.83,
+   "media_start": 26.98,
+   "media_end": 31.04,
+   "face": [
+    560,
+    660
+   ]
+  },
+  {
+   "n": 5,
+   "take": "p",
+   "start": 17.415,
+   "duration": 1.547,
+   "media_start": 37.12,
+   "media_end": 38.76,
+   "face": [
+    560,
+    660
+   ]
+  },
+  {
+   "n": 6,
+   "take": "p",
+   "start": 18.962,
+   "duration": 2.491,
+   "media_start": 38.805,
+   "media_end": 41.445,
+   "face": [
+    560,
+    660
+   ]
+  },
+  {
+   "n": 7,
+   "take": "p",
+   "start": 21.453,
+   "duration": 1.491,
+   "media_start": 41.78,
+   "media_end": 43.36,
+   "face": [
+    560,
+    660
+   ]
+  },
+  {
+   "n": 8,
+   "take": "p",
+   "start": 22.944,
+   "duration": 4.075,
+   "media_start": 50.96,
+   "media_end": 55.28,
+   "face": [
+    560,
+    660
+   ]
+  },
+  {
+   "n": 9,
+   "take": "p",
+   "start": 27.019,
+   "duration": 4.774,
+   "media_start": 55.4,
+   "media_end": 60.46,
+   "face": [
+    560,
+    660
+   ]
+  },
+  {
+   "n": 10,
+   "take": "p",
+   "start": 31.793,
+   "duration": 1.245,
+   "media_start": 60.56,
+   "media_end": 61.88,
+   "face": [
+    560,
+    660
+   ]
+  },
+  {
+   "n": 11,
+   "take": "p",
+   "start": 33.038,
+   "duration": 6.566,
+   "media_start": 65.92,
+   "media_end": 72.88,
+   "face": [
+    560,
+    660
+   ]
+  },
+  {
+   "n": 12,
+   "take": "p",
+   "start": 39.604,
+   "duration": 3.802,
+   "media_start": 72.93,
+   "media_end": 76.96,
+   "face": [
+    560,
+    660
+   ]
+  },
+  {
+   "n": 13,
+   "take": "p",
+   "start": 43.406,
+   "duration": 1.868,
+   "media_start": 78.64,
+   "media_end": 80.62,
+   "face": [
+    560,
+    660
+   ]
+  }
+ ],
+ "inserts": [
+  {
+   "id": "ins-01",
+   "ground": "paper",
+   "start": 4.981,
+   "duration": 3.755
+  },
+  {
+   "id": "ins-02",
+   "ground": "blue",
+   "start": 10.132,
+   "duration": 3.453
+  },
+  {
+   "id": "ins-03",
+   "ground": "paper",
+   "start": 15.339,
+   "duration": 2.076
+  },
+  {
+   "id": "ins-04",
+   "ground": "paper",
+   "start": 23.925,
+   "duration": 3.094
+  },
+  {
+   "id": "ins-05",
+   "ground": "blue",
+   "start": 27.924,
+   "duration": 5.114
+  },
+  {
+   "id": "ins-06",
+   "ground": "paper",
+   "start": 34.415,
+   "duration": 5.189
+  }
+ ],
+ "girl": [
+  {
+   "start": 0.0,
+   "end": 4.981
+  },
+  {
+   "start": 8.736,
+   "end": 10.132
+  },
+  {
+   "start": 13.585,
+   "end": 15.339
+  },
+  {
+   "start": 17.415,
+   "end": 23.925
+  },
+  {
+   "start": 27.019,
+   "end": 27.924
+  },
+  {
+   "start": 33.038,
+   "end": 34.415
+  },
+  {
+   "start": 39.604,
+   "end": 45.574
+  }
+ ],
+ "words": [
+  {
+   "shot": 1,
+   "text": "Nuestro",
+   "punct": "",
+   "t": 0.151,
+   "end": 0.717
+  },
+  {
+   "shot": 1,
+   "text": "Black",
+   "punct": "",
+   "t": 0.717,
+   "end": 1.057
+  },
+  {
+   "shot": 1,
+   "text": "Friday",
+   "punct": "",
+   "t": 1.057,
+   "end": 1.585
+  },
+  {
+   "shot": 1,
+   "text": "empieza",
+   "punct": "",
+   "t": 1.585,
+   "end": 2.245
+  },
+  {
+   "shot": 1,
+   "text": "hoy",
+   "punct": ".",
+   "t": 2.245,
+   "end": 2.868
+  },
+  {
+   "shot": 1,
+   "text": "Sí",
+   "punct": ",",
+   "t": 2.868,
+   "end": 3.302
+  },
+  {
+   "shot": 1,
+   "text": "antes",
+   "punct": "",
+   "t": 3.302,
+   "end": 3.547
+  },
+  {
+   "shot": 1,
+   "text": "de",
+   "punct": "",
+   "t": 3.547,
+   "end": 3.698
+  },
+  {
+   "shot": 1,
+   "text": "tiempo",
+   "punct": ".",
+   "t": 3.698,
+   "end": 4.17
+  },
+  {
+   "shot": 2,
+   "text": "¿Por",
+   "punct": "",
+   "t": 4.264,
+   "end": 4.359
+  },
+  {
+   "shot": 2,
+   "text": "qué",
+   "punct": "",
+   "t": 4.359,
+   "end": 4.491
+  },
+  {
+   "shot": 2,
+   "text": "tan",
+   "punct": "",
+   "t": 4.491,
+   "end": 4.661
+  },
+  {
+   "shot": 2,
+   "text": "pronto",
+   "punct": "?",
+   "t": 4.661,
+   "end": 5.038
+  },
+  {
+   "shot": 2,
+   "text": "Porque",
+   "punct": "",
+   "t": 5.038,
+   "end": 5.415
+  },
+  {
+   "shot": 2,
+   "text": "cada",
+   "punct": "",
+   "t": 5.415,
+   "end": 5.698
+  },
+  {
+   "shot": 2,
+   "text": "mes",
+   "punct": "",
+   "t": 5.698,
+   "end": 5.887
+  },
+  {
+   "shot": 2,
+   "text": "que",
+   "punct": "",
+   "t": 5.887,
+   "end": 5.962
+  },
+  {
+   "shot": 2,
+   "text": "esperas",
+   "punct": "",
+   "t": 5.962,
+   "end": 6.528
+  },
+  {
+   "shot": 2,
+   "text": "es",
+   "punct": "",
+   "t": 6.528,
+   "end": 6.812
+  },
+  {
+   "shot": 2,
+   "text": "otro",
+   "punct": "",
+   "t": 6.812,
+   "end": 7.057
+  },
+  {
+   "shot": 2,
+   "text": "mes",
+   "punct": "",
+   "t": 7.057,
+   "end": 7.283
+  },
+  {
+   "shot": 2,
+   "text": "pidiendo",
+   "punct": "",
+   "t": 7.283,
+   "end": 7.679
+  },
+  {
+   "shot": 2,
+   "text": "que",
+   "punct": "",
+   "t": 7.679,
+   "end": 7.793
+  },
+  {
+   "shot": 2,
+   "text": "te",
+   "punct": "",
+   "t": 7.793,
+   "end": 7.944
+  },
+  {
+   "shot": 2,
+   "text": "traduzcan",
+   "punct": ".",
+   "t": 7.944,
+   "end": 8.736
+  },
+  {
+   "shot": 3,
+   "text": "En",
+   "punct": "",
+   "t": 8.83,
+   "end": 8.944
+  },
+  {
+   "shot": 3,
+   "text": "la",
+   "punct": "",
+   "t": 8.944,
+   "end": 9.094
+  },
+  {
+   "shot": 3,
+   "text": "pausa",
+   "punct": "",
+   "t": 9.094,
+   "end": 9.378
+  },
+  {
+   "shot": 3,
+   "text": "del",
+   "punct": "",
+   "t": 9.378,
+   "end": 9.566
+  },
+  {
+   "shot": 3,
+   "text": "trabajo",
+   "punct": ",",
+   "t": 9.566,
+   "end": 10.189
+  },
+  {
+   "shot": 3,
+   "text": "alguien",
+   "punct": "",
+   "t": 10.189,
+   "end": 10.453
+  },
+  {
+   "shot": 3,
+   "text": "dice",
+   "punct": "",
+   "t": 10.453,
+   "end": 10.793
+  },
+  {
+   "shot": 3,
+   "text": "algo",
+   "punct": ",",
+   "t": 10.793,
+   "end": 11.227
+  },
+  {
+   "shot": 3,
+   "text": "todos",
+   "punct": "",
+   "t": 11.227,
+   "end": 11.491
+  },
+  {
+   "shot": 3,
+   "text": "se",
+   "punct": "",
+   "t": 11.491,
+   "end": 11.642
+  },
+  {
+   "shot": 3,
+   "text": "ríen",
+   "punct": "",
+   "t": 11.642,
+   "end": 11.981
+  },
+  {
+   "shot": 3,
+   "text": "y",
+   "punct": "",
+   "t": 11.981,
+   "end": 12.094
+  },
+  {
+   "shot": 3,
+   "text": "tú",
+   "punct": "",
+   "t": 12.094,
+   "end": 12.245
+  },
+  {
+   "shot": 3,
+   "text": "sonríes",
+   "punct": "",
+   "t": 12.245,
+   "end": 12.774
+  },
+  {
+   "shot": 3,
+   "text": "sin",
+   "punct": "",
+   "t": 12.774,
+   "end": 12.944
+  },
+  {
+   "shot": 3,
+   "text": "saber",
+   "punct": "",
+   "t": 12.944,
+   "end": 13.189
+  },
+  {
+   "shot": 3,
+   "text": "de",
+   "punct": "",
+   "t": 13.189,
+   "end": 13.34
+  },
+  {
+   "shot": 3,
+   "text": "qué",
+   "punct": ".",
+   "t": 13.34,
+   "end": 13.585
+  },
+  {
+   "shot": 4,
+   "text": "Te",
+   "punct": "",
+   "t": 13.66,
+   "end": 13.811
+  },
+  {
+   "shot": 4,
+   "text": "dices",
+   "punct": "",
+   "t": 13.811,
+   "end": 14.227
+  },
+  {
+   "shot": 4,
+   "text": "que",
+   "punct": "",
+   "t": 14.227,
+   "end": 14.302
+  },
+  {
+   "shot": 4,
+   "text": "en",
+   "punct": "",
+   "t": 14.302,
+   "end": 14.415
+  },
+  {
+   "shot": 4,
+   "text": "enero",
+   "punct": "",
+   "t": 14.415,
+   "end": 14.717
+  },
+  {
+   "shot": 4,
+   "text": "empiezas",
+   "punct": ",",
+   "t": 14.717,
+   "end": 15.396
+  },
+  {
+   "shot": 4,
+   "text": "pero",
+   "punct": "",
+   "t": 15.396,
+   "end": 15.585
+  },
+  {
+   "shot": 4,
+   "text": "llega",
+   "punct": "",
+   "t": 15.585,
+   "end": 15.811
+  },
+  {
+   "shot": 4,
+   "text": "enero",
+   "punct": ",",
+   "t": 15.811,
+   "end": 16.566
+  },
+  {
+   "shot": 4,
+   "text": "luego",
+   "punct": "",
+   "t": 16.566,
+   "end": 16.83
+  },
+  {
+   "shot": 4,
+   "text": "febrero",
+   "punct": ",",
+   "t": 16.83,
+   "end": 17.415
+  },
+  {
+   "shot": 5,
+   "text": "y",
+   "punct": "",
+   "t": 17.509,
+   "end": 17.641
+  },
+  {
+   "shot": 5,
+   "text": "no",
+   "punct": "",
+   "t": 17.641,
+   "end": 17.792
+  },
+  {
+   "shot": 5,
+   "text": "es",
+   "punct": "",
+   "t": 17.792,
+   "end": 17.943
+  },
+  {
+   "shot": 5,
+   "text": "falta",
+   "punct": "",
+   "t": 17.943,
+   "end": 18.226
+  },
+  {
+   "shot": 5,
+   "text": "de",
+   "punct": "",
+   "t": 18.226,
+   "end": 18.34
+  },
+  {
+   "shot": 5,
+   "text": "ganas",
+   "punct": ",",
+   "t": 18.34,
+   "end": 18.717
+  },
+  {
+   "shot": 5,
+   "text": "es",
+   "punct": "",
+   "t": 18.717,
+   "end": 18.83
+  },
+  {
+   "shot": 5,
+   "text": "que",
+   "punct": "",
+   "t": 18.83,
+   "end": 18.962
+  },
+  {
+   "shot": 6,
+   "text": "siempre",
+   "punct": "",
+   "t": 18.962,
+   "end": 19.184
+  },
+  {
+   "shot": 6,
+   "text": "hay",
+   "punct": "",
+   "t": 19.184,
+   "end": 19.278
+  },
+  {
+   "shot": 6,
+   "text": "un",
+   "punct": "",
+   "t": 19.278,
+   "end": 19.354
+  },
+  {
+   "shot": 6,
+   "text": "motivo",
+   "punct": "",
+   "t": 19.354,
+   "end": 19.769
+  },
+  {
+   "shot": 6,
+   "text": "para",
+   "punct": "",
+   "t": 19.769,
+   "end": 19.92
+  },
+  {
+   "shot": 6,
+   "text": "que",
+   "punct": "",
+   "t": 19.92,
+   "end": 19.995
+  },
+  {
+   "shot": 6,
+   "text": "empieces",
+   "punct": "",
+   "t": 19.995,
+   "end": 20.542
+  },
+  {
+   "shot": 6,
+   "text": "el",
+   "punct": "",
+   "t": 20.542,
+   "end": 20.693
+  },
+  {
+   "shot": 6,
+   "text": "mes",
+   "punct": "",
+   "t": 20.693,
+   "end": 20.92
+  },
+  {
+   "shot": 6,
+   "text": "que",
+   "punct": "",
+   "t": 20.92,
+   "end": 21.052
+  },
+  {
+   "shot": 6,
+   "text": "viene",
+   "punct": ".",
+   "t": 21.052,
+   "end": 21.453
+  },
+  {
+   "shot": 7,
+   "text": "Por",
+   "punct": "",
+   "t": 21.51,
+   "end": 21.698
+  },
+  {
+   "shot": 7,
+   "text": "eso",
+   "punct": "",
+   "t": 21.698,
+   "end": 21.887
+  },
+  {
+   "shot": 7,
+   "text": "lo",
+   "punct": "",
+   "t": 21.887,
+   "end": 21.981
+  },
+  {
+   "shot": 7,
+   "text": "abrimos",
+   "punct": "",
+   "t": 21.981,
+   "end": 22.453
+  },
+  {
+   "shot": 7,
+   "text": "ahora",
+   "punct": ".",
+   "t": 22.453,
+   "end": 22.944
+  },
+  {
+   "shot": 8,
+   "text": "Si",
+   "punct": "",
+   "t": 23.001,
+   "end": 23.095
+  },
+  {
+   "shot": 8,
+   "text": "empiezas",
+   "punct": "",
+   "t": 23.095,
+   "end": 23.68
+  },
+  {
+   "shot": 8,
+   "text": "ya",
+   "punct": ",",
+   "t": 23.68,
+   "end": 23.982
+  },
+  {
+   "shot": 8,
+   "text": "en",
+   "punct": "",
+   "t": 23.982,
+   "end": 24.095
+  },
+  {
+   "shot": 8,
+   "text": "Navidad",
+   "punct": "",
+   "t": 24.095,
+   "end": 24.397
+  },
+  {
+   "shot": 8,
+   "text": "vas",
+   "punct": "",
+   "t": 24.397,
+   "end": 24.548
+  },
+  {
+   "shot": 8,
+   "text": "a",
+   "punct": "",
+   "t": 24.548,
+   "end": 24.604
+  },
+  {
+   "shot": 8,
+   "text": "entender",
+   "punct": "",
+   "t": 24.604,
+   "end": 25.133
+  },
+  {
+   "shot": 8,
+   "text": "cosas",
+   "punct": "",
+   "t": 25.133,
+   "end": 25.491
+  },
+  {
+   "shot": 8,
+   "text": "que",
+   "punct": "",
+   "t": 25.491,
+   "end": 25.699
+  },
+  {
+   "shot": 8,
+   "text": "antes",
+   "punct": "",
+   "t": 25.699,
+   "end": 26.019
+  },
+  {
+   "shot": 8,
+   "text": "se",
+   "punct": "",
+   "t": 26.019,
+   "end": 26.17
+  },
+  {
+   "shot": 8,
+   "text": "te",
+   "punct": "",
+   "t": 26.17,
+   "end": 26.246
+  },
+  {
+   "shot": 8,
+   "text": "escapaban",
+   "punct": ".",
+   "t": 26.246,
+   "end": 27.019
+  },
+  {
+   "shot": 9,
+   "text": "La",
+   "punct": "",
+   "t": 27.189,
+   "end": 27.34
+  },
+  {
+   "shot": 9,
+   "text": "primera",
+   "punct": "",
+   "t": 27.34,
+   "end": 27.623
+  },
+  {
+   "shot": 9,
+   "text": "oferta",
+   "punct": ":",
+   "t": 27.623,
+   "end": 27.981
+  },
+  {
+   "shot": 9,
+   "text": "nuestro",
+   "punct": "",
+   "t": 27.981,
+   "end": 28.302
+  },
+  {
+   "shot": 9,
+   "text": "libro",
+   "punct": "",
+   "t": 28.302,
+   "end": 28.547
+  },
+  {
+   "shot": 9,
+   "text": "en",
+   "punct": "",
+   "t": 28.547,
+   "end": 28.661
+  },
+  {
+   "shot": 9,
+   "text": "neerlandés",
+   "punct": "",
+   "t": 28.661,
+   "end": 29.359
+  },
+  {
+   "shot": 9,
+   "text": "para",
+   "punct": "",
+   "t": 29.359,
+   "end": 29.585
+  },
+  {
+   "shot": 9,
+   "text": "principiantes",
+   "punct": ",",
+   "t": 29.585,
+   "end": 30.415
+  },
+  {
+   "shot": 9,
+   "text": "explicado",
+   "punct": "",
+   "t": 30.415,
+   "end": 31.113
+  },
+  {
+   "shot": 9,
+   "text": "en",
+   "punct": "",
+   "t": 31.113,
+   "end": 31.227
+  },
+  {
+   "shot": 9,
+   "text": "español",
+   "punct": ",",
+   "t": 31.227,
+   "end": 31.793
+  },
+  {
+   "shot": 10,
+   "text": "por",
+   "punct": "",
+   "t": 31.831,
+   "end": 32.019
+  },
+  {
+   "shot": 10,
+   "text": "solo",
+   "punct": "",
+   "t": 32.019,
+   "end": 32.378
+  },
+  {
+   "shot": 10,
+   "text": "un",
+   "punct": "",
+   "t": 32.378,
+   "end": 32.661
+  },
+  {
+   "shot": 10,
+   "text": "euro",
+   "punct": ".",
+   "t": 32.661,
+   "end": 33.038
+  },
+  {
+   "shot": 11,
+   "text": "Quien",
+   "punct": "",
+   "t": 33.095,
+   "end": 33.283
+  },
+  {
+   "shot": 11,
+   "text": "lo",
+   "punct": "",
+   "t": 33.283,
+   "end": 33.396
+  },
+  {
+   "shot": 11,
+   "text": "consiga",
+   "punct": "",
+   "t": 33.396,
+   "end": 33.83
+  },
+  {
+   "shot": 11,
+   "text": "entra",
+   "punct": "",
+   "t": 33.83,
+   "end": 34.019
+  },
+  {
+   "shot": 11,
+   "text": "en",
+   "punct": "",
+   "t": 34.019,
+   "end": 34.095
+  },
+  {
+   "shot": 11,
+   "text": "nuestra",
+   "punct": "",
+   "t": 34.095,
+   "end": 34.472
+  },
+  {
+   "shot": 11,
+   "text": "lista",
+   "punct": "",
+   "t": 34.472,
+   "end": 34.793
+  },
+  {
+   "shot": 11,
+   "text": "prioritaria",
+   "punct": "",
+   "t": 34.793,
+   "end": 35.868
+  },
+  {
+   "shot": 11,
+   "text": "y",
+   "punct": "",
+   "t": 35.868,
+   "end": 35.981
+  },
+  {
+   "shot": 11,
+   "text": "sabrá",
+   "punct": "",
+   "t": 35.981,
+   "end": 36.321
+  },
+  {
+   "shot": 11,
+   "text": "lo",
+   "punct": "",
+   "t": 36.321,
+   "end": 36.396
+  },
+  {
+   "shot": 11,
+   "text": "que",
+   "punct": "",
+   "t": 36.396,
+   "end": 36.51
+  },
+  {
+   "shot": 11,
+   "text": "estaremos",
+   "punct": "",
+   "t": 36.51,
+   "end": 36.887
+  },
+  {
+   "shot": 11,
+   "text": "preparando",
+   "punct": "",
+   "t": 36.887,
+   "end": 37.396
+  },
+  {
+   "shot": 11,
+   "text": "para",
+   "punct": "",
+   "t": 37.396,
+   "end": 37.623
+  },
+  {
+   "shot": 11,
+   "text": "este",
+   "punct": "",
+   "t": 37.623,
+   "end": 37.906
+  },
+  {
+   "shot": 11,
+   "text": "Black",
+   "punct": "",
+   "t": 37.906,
+   "end": 38.17
+  },
+  {
+   "shot": 11,
+   "text": "Friday",
+   "punct": "",
+   "t": 38.17,
+   "end": 38.793
+  },
+  {
+   "shot": 11,
+   "text": "antes",
+   "punct": "",
+   "t": 38.793,
+   "end": 39.189
+  },
+  {
+   "shot": 11,
+   "text": "que",
+   "punct": "",
+   "t": 39.189,
+   "end": 39.321
+  },
+  {
+   "shot": 11,
+   "text": "nadie",
+   "punct": ".",
+   "t": 39.321,
+   "end": 39.604
+  },
+  {
+   "shot": 12,
+   "text": "Apúntate",
+   "punct": "",
+   "t": 39.746,
+   "end": 40.161
+  },
+  {
+   "shot": 12,
+   "text": "en",
+   "punct": "",
+   "t": 40.161,
+   "end": 40.274
+  },
+  {
+   "shot": 12,
+   "text": "el",
+   "punct": "",
+   "t": 40.274,
+   "end": 40.425
+  },
+  {
+   "shot": 12,
+   "text": "enlace",
+   "punct": "",
+   "t": 40.425,
+   "end": 40.802
+  },
+  {
+   "shot": 12,
+   "text": "de",
+   "punct": "",
+   "t": 40.802,
+   "end": 40.859
+  },
+  {
+   "shot": 12,
+   "text": "abajo",
+   "punct": "",
+   "t": 40.859,
+   "end": 41.123
+  },
+  {
+   "shot": 12,
+   "text": "y",
+   "punct": "",
+   "t": 41.123,
+   "end": 41.198
+  },
+  {
+   "shot": 12,
+   "text": "llévate",
+   "punct": "",
+   "t": 41.198,
+   "end": 41.557
+  },
+  {
+   "shot": 12,
+   "text": "el",
+   "punct": "",
+   "t": 41.557,
+   "end": 41.67
+  },
+  {
+   "shot": 12,
+   "text": "libro",
+   "punct": "",
+   "t": 41.67,
+   "end": 42.029
+  },
+  {
+   "shot": 12,
+   "text": "por",
+   "punct": "",
+   "t": 42.029,
+   "end": 42.179
+  },
+  {
+   "shot": 12,
+   "text": "solo",
+   "punct": "",
+   "t": 42.179,
+   "end": 42.613
+  },
+  {
+   "shot": 12,
+   "text": "un",
+   "punct": "",
+   "t": 42.613,
+   "end": 42.915
+  },
+  {
+   "shot": 12,
+   "text": "euro",
+   "punct": ".",
+   "t": 42.915,
+   "end": 43.406
+  },
+  {
+   "shot": 13,
+   "text": "Solo",
+   "punct": "",
+   "t": 43.557,
+   "end": 43.934
+  },
+  {
+   "shot": 13,
+   "text": "hasta",
+   "punct": "",
+   "t": 43.934,
+   "end": 44.123
+  },
+  {
+   "shot": 13,
+   "text": "el",
+   "punct": "",
+   "t": 44.123,
+   "end": 44.312
+  },
+  {
+   "shot": 13,
+   "text": "30",
+   "punct": "",
+   "t": 44.312,
+   "end": 44.481
+  },
+  {
+   "shot": 13,
+   "text": "de",
+   "punct": "",
+   "t": 44.481,
+   "end": 44.595
+  },
+  {
+   "shot": 13,
+   "text": "noviembre",
+   "punct": ".",
+   "t": 44.595,
+   "end": 45.227
+  }
+ ]
+}
