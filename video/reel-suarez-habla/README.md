@@ -39,7 +39,7 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
   fuerte que Suárez: 6 dB, 10 dB en el segundo momento y 8 dB en el último, que sube 3 dB porque Suárez habla ahí más
   bajo (`REPORTER_DB`, `SEG_DB`). Todo a −14 LUFS, con el pico real por debajo de −2,5 dBTP.
 
-- **Cierre (v7.4, `tools/outro.py` → `compositions/outro.html`, 12,6 s):** con el diseño de la página de Black Friday del
+- **Cierre (v7.5, `tools/outro.py` → `compositions/outro.html`, 12,4 s):** con el diseño de la página de Black Friday del
   ebook (blackfriday.holandesnawar.com/ebook): fondo índigo con dos luces azules y una trama de puntos, Poppins 700 e Inter.
   Todo sale de una (en 0,2–0,8 s) para que nadie se vaya, y la llamada a comentar, la última:
   - la pastilla «● Black Friday · eBook nivel A0 – A1»;
@@ -53,7 +53,7 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
   - en «Comenta», el campo de comentario de Instagram (lo último en salir): «OFERTA» se escribe letra a letra, se toca
     «Publicar» y sale «✓ Te enviamos los detalles por mensaje»;
   - la voz (ElevenLabs, «Yair - Narration Spanish» con el modelo eleven_v4): «Habla neerlandés sin miedo, como Luis
-    Suárez. Nuestro libro, Holandés sin miedo, este Black Friday por solo un euro. Comenta OFERTA y te enviamos los
+    Suárez. Nuestro libro para principiantes, este Black Friday por solo un euro. Comenta OFERTA y te enviamos los
     detalles.» En tono natural de principio a fin, sin etiquetas de emoción (con `[excited]` o `[cheerfully]` sonaba forzado) (`outro.json`
     guarda sus palabras y tiempos; `cues()` en `tools/outro.py` saca de ellas cada momento, para la imagen y los efectos);
   - el sonido: la voz a −15 LUFS (pico real por debajo de −2,5 dBTP), la música «musica v1» del anuncio de Black Friday
@@ -80,7 +80,7 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v7-4.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v7-5.mp4
 ```
 
 Para cambiar una traducción, edita `PHRASES` en `tools/subs.py` y ejecuta `python3 tools/subs.py && python3 tools/gen.py`.

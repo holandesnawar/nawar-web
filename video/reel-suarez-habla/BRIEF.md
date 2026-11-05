@@ -183,3 +183,12 @@ feliz y ya, no tan exagerado.»
 - Sin etiquetas de emoción: el texto tal cual, con la estabilidad «natural» (0,5) de eleven_v4. De cinco tomas, la elegida
   dice la primera frase en el mismo tono que el resto (≈ 148 Hz en las dos; la v7.3 subía 4,5 semitonos en ella). Se
   transcribe igual que el texto. Todo lo demás, igual.
+
+## Petición de la v7.5 (cliente, 5 nov 2026)
+
+«Quita la segunda vez que dice "Nuestro libro, Holandés sin miedo": mejor "nuestro libro para principiantes, este Black
+Friday…".»
+
+- Texto: «Habla neerlandés sin miedo, como Luis Suárez. Nuestro libro para principiantes, este Black Friday por solo un
+  euro. Comenta OFERTA y te enviamos los detalles.» Misma voz y mismo tono natural (de cuatro tomas, todas sin subida en
+  la primera frase; la elegida va al mismo ritmo que la v7.4). Se transcribe igual que el texto. Todo lo demás, igual.

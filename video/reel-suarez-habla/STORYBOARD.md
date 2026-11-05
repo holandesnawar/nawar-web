@@ -1,4 +1,4 @@
-# Storyboard · Reel «Suárez habla neerlandés» v7.4 (54,6 s)
+# Storyboard · Reel «Suárez habla neerlandés» v7.5 (54,5 s)
 
 - **Gancho (0–3,3 s, portada):** arriba, sobre el pelo, el diseño del cliente: «Hablando neerlandés / sin miedo como /
   Luis Suárez» en Inter ExtraBold blanco con contorno negro grueso, con 📚 y 🇳🇱 a los lados de la línea del medio.
@@ -9,7 +9,7 @@
   va centrada.
 - **Imagen:** un solo plano, su cara, que el encuadre sigue con suavidad. Los tres momentos van unidos por cortes secos.
 
-- **Cierre (42,1–54,6 s):** el diseño de la página de Black Friday, voz «Yair» con eleven_v4 (ver la tabla del final).
+- **Cierre (42,1–54,5 s):** el diseño de la página de Black Friday, voz «Yair» con eleven_v4 (ver la tabla del final).
 
 | Momento | Reel | Original |
 |---|---|---|
@@ -55,4 +55,4 @@
 | 45,7–47,4 | Nuestro libro, Holandés sin miedo, | |
 | 47,9–49,6 | este Black Friday por solo un euro. | El ebook se cierra en la portada; el «1 €» late en «euro» |
 | 50,4–52,9 | Comenta OFERTA y te enviamos los detalles. | Lo último: el campo de comentario; «OFERTA» se escribe, «Publicar», «✓ Te enviamos los detalles por mensaje» |
-| 53,3–54,6 | | Todo quieto salvo la cinta; un brillo cruza el sello |
+| 53,2–54,5 | | Todo quieto salvo la cinta; un brillo cruza el sello |
