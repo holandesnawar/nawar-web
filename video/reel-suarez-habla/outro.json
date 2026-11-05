@@ -1,5 +1,5 @@
 {
- "text": "[excited] ¡Habla neerlandés sin miedo, como Luis Suárez! [warmly] Nuestro libro, Holandés sin miedo, este Black Friday por solo un euro. Comenta OFERTA y te enviamos los detalles.",
+ "text": "[cheerfully] Habla neerlandés sin miedo, como Luis Suárez. Nuestro libro, Holandés sin miedo, este Black Friday por solo un euro. Comenta OFERTA y te enviamos los detalles.",
  "voice": "LP0ZBLgGaLqbDU1l9PDX",
  "model": "eleven_v4",
  "settings": {
@@ -8,63 +8,63 @@
  },
  "words": [
   {
-   "text": "¡Habla",
-   "t": 0.06,
+   "text": "Habla",
+   "t": 0.07,
    "end": 0.24
   },
   {
    "text": "neerlandés",
    "t": 0.32,
-   "end": 0.8
+   "end": 0.88
   },
   {
    "text": "sin",
-   "t": 0.88,
-   "end": 0.96
+   "t": 0.96,
+   "end": 1.04
   },
   {
    "text": "miedo,",
-   "t": 1.12,
-   "end": 1.56
+   "t": 1.2,
+   "end": 1.76
   },
   {
    "text": "como",
-   "t": 1.68,
-   "end": 1.84
+   "t": 1.88,
+   "end": 2.0
   },
   {
    "text": "Luis",
-   "t": 1.92,
-   "end": 2.16
+   "t": 2.08,
+   "end": 2.24
   },
   {
-   "text": "Suárez!",
-   "t": 2.24,
-   "end": 2.88
+   "text": "Suárez.",
+   "t": 2.32,
+   "end": 3.04
   },
   {
    "text": "Nuestro",
-   "t": 3.2,
-   "end": 3.52
+   "t": 3.28,
+   "end": 3.6
   },
   {
    "text": "libro,",
-   "t": 3.64,
-   "end": 3.92
+   "t": 3.72,
+   "end": 4.08
   },
   {
    "text": "Holandés",
-   "t": 4.0,
-   "end": 4.48
+   "t": 4.16,
+   "end": 4.56
   },
   {
    "text": "sin",
-   "t": 4.56,
+   "t": 4.64,
    "end": 4.72
   },
   {
    "text": "miedo,",
-   "t": 4.827,
+   "t": 4.8,
    "end": 5.28
   },
   {
@@ -80,12 +80,12 @@
   {
    "text": "Friday",
    "t": 5.84,
-   "end": 6.24
+   "end": 6.16
   },
   {
    "text": "por",
-   "t": 6.32,
-   "end": 6.4
+   "t": 6.24,
+   "end": 6.32
   },
   {
    "text": "solo",
@@ -94,48 +94,48 @@
   },
   {
    "text": "un",
-   "t": 6.96,
+   "t": 6.88,
    "end": 7.04
   },
   {
    "text": "euro.",
    "t": 7.12,
-   "end": 7.84
+   "end": 7.76
   },
   {
    "text": "Comenta",
-   "t": 7.92,
-   "end": 8.24
+   "t": 7.84,
+   "end": 8.16
   },
   {
    "text": "OFERTA",
-   "t": 8.4,
-   "end": 9.04
+   "t": 8.24,
+   "end": 8.72
   },
   {
    "text": "y",
-   "t": 9.08,
-   "end": 9.12
+   "t": 8.76,
+   "end": 8.8
   },
   {
    "text": "te",
-   "t": 9.2,
-   "end": 9.24
+   "t": 8.88,
+   "end": 8.92
   },
   {
    "text": "enviamos",
-   "t": 9.28,
-   "end": 9.68
+   "t": 8.96,
+   "end": 9.36
   },
   {
    "text": "los",
-   "t": 9.72,
-   "end": 9.76
+   "t": 9.4,
+   "end": 9.44
   },
   {
    "text": "detalles.",
-   "t": 9.88,
-   "end": 10.56
+   "t": 9.56,
+   "end": 10.24
   }
  ]
 }

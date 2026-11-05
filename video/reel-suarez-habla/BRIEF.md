@@ -166,3 +166,12 @@ separamos un poco, que está tan apretado en medio; así bajamos un poco y no to
 - **Más aire:** el ebook va al 92 % y 52 px más abajo, el sello 34 px más abajo (el «−92 %» queda a unos 45 px del
   título) y la cinta azul 18 px más abajo y algo más fina, con unos 40 px de aire bajo el libro. La llamada a comentar
   sigue dentro de la zona segura (termina en y ≈ 1496).
+
+## Petición de la v7.3 (cliente, 5 nov 2026)
+
+«Quedó perfecto, solo la primera frase de "Habla neerlandés sin miedo" es demasiada energía: mejor algo más normal, solo
+feliz y ya, no tan exagerado.»
+
+- La primera frase va con `[cheerfully]` y sin signos de exclamación (antes, `[excited]` con «¡…!»). De cuatro tomas, la
+  elegida sube en la primera frase a unos 203 Hz (la de la v7.2, a 242) y el resto queda en el tono normal de Yair
+  (≈ 156 Hz). Se transcribe igual que el texto. Todo lo demás, igual que la v7.2.

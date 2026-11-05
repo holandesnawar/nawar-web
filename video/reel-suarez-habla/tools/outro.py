@@ -11,9 +11,9 @@ import base64, json, os, subprocess, sys, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, ".raw", "outro")
-TEXT = ("[excited] ¡Habla neerlandés sin miedo, como Luis Suárez! [warmly] Nuestro libro, Holandés sin miedo, este Black "
-        "Friday por solo un euro. Comenta OFERTA y te enviamos los detalles.")   # (v7.2: «libro», not «ebook»; the tags
-                                                     # give the first sentence its lift, then the rest settles)
+TEXT = ("[cheerfully] Habla neerlandés sin miedo, como Luis Suárez. Nuestro libro, Holandés sin miedo, este Black Friday "
+        "por solo un euro. Comenta OFERTA y te enviamos los detalles.")   # («libro», not «ebook»; v7.3: the first sentence
+                                                     # just happy — v7.2's [excited] was too much)
 VOICE = "LP0ZBLgGaLqbDU1l9PDX"         # «Yair - Narration Spanish» (v7; v6 used «Nawar Def»)
 MODEL = "eleven_v4"                    # (v7.2; eleven_multilingual_v2 before: it sounded flat)
 SETTINGS = {"stability": 0.5, "similarity_boost": 0.8}
