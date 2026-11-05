@@ -73,7 +73,7 @@
     .h-acc { color: #4da3ff; }
     .h-w { display: inline-block; }
 
-    #h-row { top: 236px; }
+    #h-row { top: 1130px; }   /* v1 QA: on her black t-shirt, above the captions (at the top it sat on her hair) */
     #h-tag { gap: 14px; height: 80px; padding: 0 34px 0 22px; font-size: 34px; }
     #h-tag svg { display: block; width: 42px; height: 42px; color: #0b6df0; }
 
@@ -86,7 +86,7 @@
       const tl = gsap.timeline({ paused: true });
       const q = (id) => document.getElementById("h-" + id);
 
-      tl.fromTo(q("tag"), { opacity: 0, y: -20, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 0.0);
+      tl.fromTo(q("tag"), { opacity: 0, y: 22, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 0.0);
       tl.to(q("tag"), { opacity: 0, y: -12, duration: 0.16, ease: "power2.in" }, 0.968 - 0.18);
 
       window.__timelines["hook"] = tl;

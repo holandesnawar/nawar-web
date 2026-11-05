@@ -28,7 +28,8 @@ SEGMENTS = [
     ("p", 41.78, 43.36),   # «Por eso lo abrimos ahora.»
     ("p", 50.96, 55.28),   # «Si empiezas ya, en Navidad vas a entender cosas que antes se te escapaban.» (2nd take)
     ("p", 55.40, 61.88),   # «La primera oferta: nuestro libro en neerlandés para principiantes, explicado en español, por solo un euro.»
-    ("p", 65.92, 72.88),   # «Quien lo consiga entra en nuestra lista prioritaria y sabrá lo que estaremos preparando…antes que nadie.»
+    ("p", 65.92, 72.90),   # «Quien lo consiga entra en nuestra lista prioritaria y sabrá lo que estaremos preparando…antes que nadie.»
+                           #  (v1 QA: to just before the creator's own cut at 72.905, so «nadie» isn't cut short)
     ("p", 72.93, 76.96),   # «Apúntate en el enlace de abajo y llévate el libro por solo un euro.»
     ("p", 78.64, 80.62),   # «Solo hasta el 30 de noviembre.» (1st take)
 ]

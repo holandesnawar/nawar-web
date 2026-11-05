@@ -38,7 +38,8 @@ def build():
     .i3-d { border-top: 2px solid «LINE»; font-family: "Inter", sans-serif; font-weight: 600; font-size: 30px; color: «INK2»;
       padding: 10px 0 0 14px; }
     .i3-page { position: absolute; left: 0; top: 0; width: «CW»px; height: 760px; background: #FFFFFF; }
-    #i3-note { position: absolute; left: 150px; top: 560px; width: 660px; height: 150px; border-radius: 24px; background: #EAF3FF;
+    #i3-note { position: absolute; left: 120px; top: 632px; width: 720px; height: 100px; border-radius: 22px; background: #EAF3FF;   /* v1 QA: exactly on the
+      last week row (no dates cut in half) */
       box-shadow: inset 0 0 0 3px «SKY»; display: flex; align-items: center; gap: 22px; padding: 0 30px; transform-origin: 50% 50%; }
     #i3-box { width: 58px; height: 58px; flex: 0 0 58px; border-radius: 14px; box-shadow: inset 0 0 0 5px «INDIGO»; background: #FFFFFF; }
     #i3-nt { font-weight: 800; font-size: 44px; line-height: 1.05; color: «INDIGO»; white-space: nowrap; }
@@ -77,6 +78,6 @@ def build():
       tl.set(q("p{k}"), {{ opacity: 0 }}, {round(t + 0.42, 3)});   // the page under it, gone once it has turned
       tl.fromTo(q("note"), {{ x: -760, rotation: -8 }}, {{ x: 0, rotation: 0, duration: 0.24, ease: "power3.out", immediateRender: false }}, {round(t + 0.3, 3)});
 """
-    sfx = [(o1 - 0.2, "error", 0.1), (o1, "whoosh-short", 0.12), (o1 + 0.2, "page", 0.22),
-           (o2 - 0.2, "error", 0.1), (o2, "whoosh-short", 0.12), (o2 + 0.2, "page", 0.22)]
+    sfx = [(o1 - 0.2, "error", 0.5), (o1, "whoosh-short", 0.12), (o1 + 0.2, "page", 0.22),     # v1 QA: «error» at 0.1 was
+           (o2 - 0.2, "error", 0.5), (o2, "whoosh-short", 0.12), (o2 + 0.2, "page", 0.22)]     # inaudible under her voice
     return comp(iid, d, P, css, body, js, dict(c, CL=CAL_L, CT=CAL_T, CW=CAL_W)), sfx

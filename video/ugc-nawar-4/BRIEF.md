@@ -45,3 +45,22 @@ los detalles.»
 - Neerlandés de los gráficos revisado (como nativo): «En toen stond hij met z'n mond vol tanden!» (un modismo que un
   principiante no pilla: por eso sonríes sin saber de qué) y «Fijne feestdagen! Ga je met kerst naar je familie?».
 - Los datos de la oferta (1 €, 12,50 €, hasta el 30 de noviembre) son los de la página de Black Friday.
+
+## Revisión de la v1 (antes de entregar, v1.1)
+
+Cuatro revisores independientes (voz y montaje, gráficos y subtítulos, continuidad de imagen, sonido) y cada hallazgo
+comprobado por otro agente. Confirmado y corregido:
+- «Por eso lo abrimos ahora» sonaba unos 8 LU más alto que la frase de antes: −3,6 dB en esa frase y +2 / +2,5 dB en
+  las dos anteriores (`SHOT_GAIN` en `tools/gen.py`).
+- Subtítulos: «y no / es falta de ganas» separaba la negación de su verbo → «y no es / falta de ganas,».
+- La etiqueta «Black Friday anticipado» tapaba su pelo y su frente → sobre su camiseta, encima de los subtítulos.
+- En el calendario la nota partía los números de los días por la mitad → ocupa justo la última semana.
+- El último fotograma congelado era el primero de un parpadeo y uno por delante del vídeo → el fotograma anterior, con
+  los ojos abiertos.
+- El corte de «…el mes que viene.» a «Por eso lo abrimos ahora» no cambiaba de encuadre → ahora todo corte dentro de
+  ella cambia de encuadre.
+- «nadie» se cortaba en seco → llega hasta el corte propio de la grabación, con un fundido de 35 ms.
+- El sonido de «Pospuesto» no se oía → más alto (sigue más de 10 dB bajo la voz).
+Descartado tras comprobarlo: finales de «febrero», «euro» y «escapaban» (cortes propios de la grabación, sin clic ni
+pérdida de la palabra), la /s/ de «siempre», los «sparkle» y los márgenes de ins-01 e ins-05.
+

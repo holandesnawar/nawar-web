@@ -40,20 +40,20 @@ def wcue_from(t0):
 
 
 def hook():
-    """the hook, «Nuestro Black Friday empieza hoy. Sí, antes de tiempo.»: a small white tag at the top, over the wall
-    above her head — «Black Friday anticipado» (calendar icon) — lands on «antes de tiempo» and leaves with the hook,
+    """the hook, «Nuestro Black Friday empieza hoy. Sí, antes de tiempo.»: a small white tag on her t-shirt, just above
+    the captions — «Black Friday anticipado» (calendar icon) — lands on «antes de tiempo» and leaves with the hook,
     the only Black Friday dress of the ad (the rest is the Formación's look)."""
     P = "h"; sh2 = ED["shots"][1]["start"]; wcue = wcue_from(0.0)
     t0 = round(wcue("antes") - 0.1, 3); d = round(sh2 - t0, 3)
     c = dict(END=d)
     css = """
-    #h-row { top: 236px; }
+    #h-row { top: 1130px; }   /* v1 QA: on her black t-shirt, above the captions (at the top it sat on her hair) */
     #h-tag { gap: 14px; height: 80px; padding: 0 34px 0 22px; font-size: 34px; }
     #h-tag svg { display: block; width: 42px; height: 42px; color: «BLUE»; }
 """
     body = f"""    <div id="h-row" class="h-row"><div id="h-tag" class="h-wpill">{icon('cal')}<span>Black Friday anticipado</span></div></div>"""
     js = """
-      tl.fromTo(q("tag"), { opacity: 0, y: -20, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 0.0);
+      tl.fromTo(q("tag"), { opacity: 0, y: 22, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 0.0);
       tl.to(q("tag"), { opacity: 0, y: -12, duration: 0.16, ease: "power2.in" }, «END» - 0.18);
 """
     return comp("hook", d, P, css, body, js, c), t0, d, [(0.0, "pop", 0.18)]
@@ -110,7 +110,7 @@ def outro():
 SHOW = {}
 HL_PHRASES = []   # no coloured words: clean white captions, as in UGC #2 (pages still never split these:)
 KEEP = [["black", "friday"], ["30", "de", "noviembre"], ["lista", "prioritaria"], ["un", "euro"], ["cada", "mes"], ["otro", "mes"],
-        ["falta", "de", "ganas"]]
+        ["falta", "de", "ganas"], ["no", "es"]]
 # caption pages a graphic on screen already says (words twice, one over the other, look cheap): ins-06's green pill «Lo
 # ves antes que nadie» and the closing date pill «Hasta el 30 de noviembre»
 HIDE = [("ins-06", ["antes", "que", "nadie"]), ("outro", ["el", "30", "de", "noviembre"])]
@@ -225,7 +225,11 @@ def captions(window=None):
 
 # ============================================================================== the girl's framing
 OPEN_STILLS = 4                   # her first 4 frames are stills (see index())
-SHOT_GAIN = {}                    # per-shot voice gain (shot number → linear), where a retake comes out quieter or hotter
+# per-shot voice gain (shot number → linear), where a retake comes out quieter or hotter (v1 QA, ebur128 per shot: shots
+# 5–6 «…no es falta de ganas… el mes que viene.» −18.8/−19.4 LUFS, shot 7 «Por eso lo abrimos ahora.» −11.0, the rest
+# about −15): +2 / +2.5 / −3.6 dB, which keeps a small lift for the emphasis
+SHOT_GAIN = {5: 1.26, 6: 1.33, 7: 0.66}
+SOFT_OUT = {11}                   # shots whose last word runs into the creator's own cut: a 35 ms fade, not 12 ms
 ZOOM_IN = (0.0, 0.3, 1.0, 1.18)   # v6.4, the opening hook: from her plain shot (frame 0, sharp) a fast zoom-in on her face
                                   # (t0, duration, scale from, scale to; most of it in the first ~0.12 s)
 
@@ -247,15 +251,18 @@ def zooms():
     push(z0 + zd, shots[1]["start"], zs1, zs1 + 0.05, "#zwp")
     PUNCH = {"pronto": 1.1, "ahora": 1.12, "ganas": 1.1, "oferta": 1.1, "abajo": 1.1}   # on the key word
     LOOK = [1.0, 1.1, 1.02, 1.12, 1.04, 1.08, 1.0, 1.1, 1.03, 1.11]   # start framings, cycling; neighbours differ
-    used = [0]
+    used = [0]; prev = [None, -1.0]                           # (end scale, end time) of the stretch before
     def stretch(a, b):                                       # one look, a slow push, a punch on the key word
         s0 = LOOK[used[0] % len(LOOK)]; used[0] += 1
+        while prev[0] is not None and abs(a - prev[1]) < 0.06 and abs(s0 - prev[0]) < 0.06:   # v1 QA: a cut with no
+            s0 = LOOK[used[0] % len(LOOK)]; used[0] += 1                                      # visible reframe
         pw = [w for w in WORDS if a + 0.25 <= w["t"] < b - 0.3 and norm(w["text"]) in PUNCH]
         if pw:
             t = pw[0]["t"]; k = PUNCH[norm(pw[0]["text"])] - 1.0
             push(a, t - 0.05, s0, s0 + 0.02, "#zwp"); punch(t, s0 + k, "#zwp"); push(t + 0.2, b, s0 + k, s0 + k + 0.02, "#zwp")
+            prev[:] = [s0 + k + 0.02, b]
         else:
-            push(a, b, s0, s0 + 0.04, "#zwp")
+            push(a, b, s0, s0 + 0.04, "#zwp"); prev[:] = [s0 + 0.04, b]
     for g in G:
         for sh in shots:
             a0, b0 = max(g["start"], sh["start"]), min(g["end"], sh["start"] + sh["duration"])
@@ -331,7 +338,7 @@ def index(sfx_all, overlays):
     for n, sh in enumerate(shots):
         dd = sh["duration"]; last = n == len(shots) - 1
         gap = (not last) and shots[n + 1]["start"] - (sh["start"] + dd) > 0.05
-        out = 0.05 if last else 0.045 if gap else (0.03 if shots[n + 1]["take"] != sh["take"] else 0.012)
+        out = 0.05 if last else 0.045 if gap else 0.035 if sh["n"] in SOFT_OUT else (0.03 if shots[n + 1]["take"] != sh["take"] else 0.012)
         lv = SHOT_GAIN.get(sh["n"], 1.0)
         pts = [(0, 0), (0.012, lv), (dd - out, lv), (dd, 0)]
         auto = json.dumps({"version": 1, "lanes": [{"target": "volume", "points": [{"t": round(t, 3), "v": v} for t, v in pts]}]})
@@ -352,7 +359,8 @@ def index(sfx_all, overlays):
     hold, lk = ED["hold"], key(shots[-1])                                        # her last frame, held in the last shot's wrapper
     if hold["duration"] > 0:                                                     # (only if edit.py asks for a hold)
         png = os.path.join(ROOT, "assets", "img", f"take-{shots[-1]['take']}-last.png")
-        nlast = int(round(shots[-1]["media_end"] * 30)) - 1                 # exactly the last frame shown (no jump)
+        nlast = int(round(shots[-1]["media_end"] * 30)) - 2                 # the last frame the render really shows (v1 QA: −1 was one
+                                                                             # frame ahead of it, and the first frame of a blink)
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", os.path.join(ROOT, f"assets/video/take-{shots[-1]['take']}.mp4"),
                         "-vf", f"select=eq(n\\,{nlast})", "-frames:v", "1", png], check=True)
         from PIL import Image                                                   # no colour chunks: Chrome would tone-map it
