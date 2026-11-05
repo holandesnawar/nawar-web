@@ -192,3 +192,17 @@ Friday…".»
 - Texto: «Habla neerlandés sin miedo, como Luis Suárez. Nuestro libro para principiantes, este Black Friday por solo un
   euro. Comenta OFERTA y te enviamos los detalles.» Misma voz y mismo tono natural (de cuatro tomas, todas sin subida en
   la primera frase; la elegida va al mismo ritmo que la v7.4). Se transcribe igual que el texto. Todo lo demás, igual.
+
+## Petición de la v7.6 (cliente, 5 nov 2026)
+
+«Última cosa: quitar el punto verde de la etiqueta azul de arriba, delante de "Black Friday". Luego, en la línea que se
+mueve, quita lo de "Ejercicios con respuestas", que no es así. ¿Qué ponemos mejor?»
+
+- **Pastilla:** «Black Friday · eBook nivel A0 – A1», sin el punto verde, con el mismo margen a los dos lados.
+- **Cinta:** «Ejercicios con respuestas» pasa a ser «Vocabulario y gramática», que sale del propio guion del anuncio de
+  Black Friday («con vocabulario, gramática…»). Queda: «70 páginas · Explicado en español · Vocabulario y gramática ·
+  Tuyo para siempre · Black Friday: −92 % · Descarga al momento».
+- Ojo: la página de Black Friday también dice «Ejercicios con respuestas» y «Ejercicios con todas las respuestas», y la
+  página del ebook de esta web (`src/pages/ebook-a0-a1.astro`) dice «Respuestas a todos los ejercicios» y «7 lecciones con
+  ejercicios y respuestas incluidas». Si no es así, conviene cambiarlo también allí (no se ha tocado).
+- Todo lo demás, igual que la v7.5.

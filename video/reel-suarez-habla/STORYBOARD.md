@@ -1,4 +1,4 @@
-# Storyboard · Reel «Suárez habla neerlandés» v7.5 (54,5 s)
+# Storyboard · Reel «Suárez habla neerlandés» v7.6 (54,5 s)
 
 - **Gancho (0–3,3 s, portada):** arriba, sobre el pelo, el diseño del cliente: «Hablando neerlandés / sin miedo como /
   Luis Suárez» en Inter ExtraBold blanco con contorno negro grueso, con 📚 y 🇳🇱 a los lados de la línea del medio.
@@ -50,7 +50,7 @@
 
 | Tiempo | Voz | En pantalla |
 |---|---|---|
-| 42,1–42,9 | (whoosh) | El fondo índigo; entra todo de una: la pastilla, «Habla neerlandés / sin miedo.», el ebook, el sello «1 € 12,50 €» con «−92 %» y la cinta azul |
+| 42,1–42,9 | (whoosh) | El fondo índigo; entra todo de una: la pastilla (sin punto verde), «Habla neerlandés / sin miedo.», el ebook, el sello «1 € 12,50 €» con «−92 %» y la cinta azul («70 páginas · Explicado en español · Vocabulario y gramática · Tuyo para siempre · Black Friday: −92 % · Descarga al momento») |
 | 42,5–44,9 | Habla neerlandés sin miedo, como Luis Suárez. | El ebook se abre y pasa sus páginas; la cinta corre |
 | 45,7–47,4 | Nuestro libro, Holandés sin miedo, | |
 | 47,9–49,6 | este Black Friday por solo un euro. | El ebook se cierra en la portada; el «1 €» late en «euro» |

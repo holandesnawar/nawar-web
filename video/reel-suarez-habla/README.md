@@ -39,17 +39,18 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
   fuerte que Suárez: 6 dB, 10 dB en el segundo momento y 8 dB en el último, que sube 3 dB porque Suárez habla ahí más
   bajo (`REPORTER_DB`, `SEG_DB`). Todo a −14 LUFS, con el pico real por debajo de −2,5 dBTP.
 
-- **Cierre (v7.5, `tools/outro.py` → `compositions/outro.html`, 12,4 s):** con el diseño de la página de Black Friday del
+- **Cierre (v7.6, `tools/outro.py` → `compositions/outro.html`, 12,4 s):** con el diseño de la página de Black Friday del
   ebook (blackfriday.holandesnawar.com/ebook): fondo índigo con dos luces azules y una trama de puntos, Poppins 700 e Inter.
   Todo sale de una (en 0,2–0,8 s) para que nadie se vaya, y la llamada a comentar, la última:
-  - la pastilla «● Black Friday · eBook nivel A0 – A1»;
+  - la pastilla «Black Friday · eBook nivel A0 – A1», sin el punto verde de la página (v7.6);
   - «Habla neerlandés» (degradado blanco, como el título de la página) y «sin miedo.» en azul claro;
   - el ebook: la animación del cliente («Animación libro interactivo.html», carpeta «MARIO») convertida en vídeo
     transparente fotograma a fotograma (su reloj se sustituye por uno que se fija desde fuera), sin sombra. Se abre en
     cuanto sale, pasa tres páginas y se cierra en la portada en «un euro»;
   - el sello blanco de la página sobre su esquina (al 78 %, sin tapar los títulos de las páginas): «BLACK FRIDAY · 1 € ·
     ~~12,50 €~~», con la pastilla roja «−92 %» (el «1 €» late en «euro» y lo cruza un brillo al final);
-  - la cinta azul claro de la página, corriendo: «✦ 70 páginas ✦ Explicado en español ✦ Ejercicios con respuestas…»;
+  - la cinta azul claro de la página, corriendo: «✦ 70 páginas ✦ Explicado en español ✦ Vocabulario y gramática…» (v7.6: sin «Ejercicios con
+    respuestas», que no es así);
   - en «Comenta», el campo de comentario de Instagram (lo último en salir): «OFERTA» se escribe letra a letra, se toca
     «Publicar» y sale «✓ Te enviamos los detalles por mensaje»;
   - la voz (ElevenLabs, «Yair - Narration Spanish» con el modelo eleven_v4): «Habla neerlandés sin miedo, como Luis
@@ -80,7 +81,7 @@ Esta vez es una entrevista de Sportweek TV a Suárez en el Amsterdam ArenA, sin 
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v7-5.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v7-6.mp4
 ```
 
 Para cambiar una traducción, edita `PHRASES` en `tools/subs.py` y ejecuta `python3 tools/subs.py && python3 tools/gen.py`.

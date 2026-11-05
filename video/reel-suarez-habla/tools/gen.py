@@ -73,12 +73,11 @@ def outro_html():
     .o-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 2px, transparent 2.2px);
       background-size: 52px 52px; }
     .o-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
-    /* the badge: «● BLACK FRIDAY · EBOOK NIVEL A0 – A1» */
+    /* the badge: «BLACK FRIDAY · EBOOK NIVEL A0 – A1» (v7.6: without the page's green dot) */
     #o-badge { top: 212px; }
-    .o-badge { display: flex; align-items: center; gap: 16px; height: 64px; padding: 0 32px 0 26px; border-radius: 999px;
+    .o-badge { display: flex; align-items: center; height: 64px; padding: 0 32px; border-radius: 999px;
       background: #025DC7; color: #E0F2FF; font-weight: 700; font-size: 25px; letter-spacing: 0.14em; text-transform: uppercase;
       white-space: nowrap; line-height: 1; }
-    .o-badge i { display: block; width: 14px; height: 14px; border-radius: 50%; background: #22C55E; box-shadow: 0 0 0 5px rgba(34,197,94,0.22); }
     /* the headline, as the page's title: Poppins 700, the first line in a white gradient, the second in sky blue */
     .o-h { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 96px; line-height: 1.08; letter-spacing: -0.03em;
       white-space: nowrap; }
@@ -125,7 +124,9 @@ def outro_html():
       background: rgba(34,197,94,0.18); border: 2px solid rgba(34,197,94,0.55); font-weight: 700; font-size: 29px; white-space: nowrap; }
     .o-ok svg { display: block; width: 36px; height: 36px; }
 """
-    ticker = ["70 páginas", "Explicado en español", "Ejercicios con respuestas", "Tuyo para siempre", "Black Friday: −92 %",
+    # (v7.6: «Ejercicios con respuestas» out — the client says it is not so; «Vocabulario y gramática» comes from their own
+    # Black Friday ad script)
+    ticker = ["70 páginas", "Explicado en español", "Vocabulario y gramática", "Tuyo para siempre", "Black Friday: −92 %",
               "Descarga al momento"]
     track = "".join(f"<span><b>✦</b>{html.escape(t)}</span>" for t in ticker * 4)
     av = ('<svg class="o-av" viewBox="0 0 62 62"><circle cx="31" cy="31" r="31" fill="#E6E8EF"/><circle cx="31" cy="25" r="11" fill="#A9AFBE"/>'
@@ -134,7 +135,7 @@ def outro_html():
           'stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>')
     body = f"""
     <div id="o-ground" class="o-full"><div class="o-luz1"></div><div class="o-luz2"></div><div class="o-dots"></div></div>
-    <div id="o-badge" class="o-row"><div class="o-badge"><i></i><span>Black Friday · eBook nivel A0 – A1</span></div></div>
+    <div id="o-badge" class="o-row"><div class="o-badge"><span>Black Friday · eBook nivel A0 – A1</span></div></div>
     <div id="o-l1" class="o-row o-h"><span>Habla neerlandés</span></div>
     <div id="o-l2" class="o-row o-h">sin miedo.</div>
     <div id="o-book"><video id="o-v" class="clip" src="assets/video/libro.webm" muted playsinline data-start="«BS»" data-duration="«BD»" data-track-index="1"></video></div>
