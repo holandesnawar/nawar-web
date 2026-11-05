@@ -41,4 +41,4 @@ curl -sS -L --fail --retry 3 -o assets/fonts/inter-var-latin.woff2 "https://blac
 python3 tools/outro.py libro
 python3 tools/outro.py audio
 python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v7-3.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-habla-v7-4.mp4"

@@ -175,3 +175,11 @@ feliz y ya, no tan exagerado.»
 - La primera frase va con `[cheerfully]` y sin signos de exclamación (antes, `[excited]` con «¡…!»). De cuatro tomas, la
   elegida sube en la primera frase a unos 203 Hz (la de la v7.2, a 242) y el resto queda en el tono normal de Yair
   (≈ 156 Hz). Se transcribe igual que el texto. Todo lo demás, igual que la v7.2.
+
+## Petición de la v7.4 (cliente, 5 nov 2026)
+
+«Nada, demasiado alegre igual la primera frase: "Habla neerlandés sin miedo, como…" más normal, es que se nota falso.»
+
+- Sin etiquetas de emoción: el texto tal cual, con la estabilidad «natural» (0,5) de eleven_v4. De cinco tomas, la elegida
+  dice la primera frase en el mismo tono que el resto (≈ 148 Hz en las dos; la v7.3 subía 4,5 semitonos en ella). Se
+  transcribe igual que el texto. Todo lo demás, igual.
