@@ -17,13 +17,19 @@ def build():
     c = dict(ANT=cue(iid, "antes"), RATE=round(SRC_END / (d - 0.2), 3))
     css = PHONE_CSS + """
     #i6-web { position: absolute; left: 0; top: 0; width: «VW»px; height: «VH»px; display: block; }
-    #i6-okrow { top: 1150px; }
+    #i6-bg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; display: block; }
+    #i6-krow { top: 140px; }
+    #i6-kick { background: «INDIGO»; border: 2px solid rgba(255,255,255,0.85); height: 68px; padding: 0 30px 0 22px; font-size: 27px; }
+    #i6-kick svg { width: 32px; height: 32px; }
+    #i6-okrow { top: 1200px; }
     #i6-ok { gap: 14px; height: 92px; padding: 0 40px 0 26px; font-size: 40px; background: «GREEN»; color: #FFFFFF; }
     #i6-ok svg { display: block; width: 48px; height: 48px; }
 """
     pw, ph = VW + 32, VH + 32
     screen = f'<video id="i6-web" class="clip" src="assets/video/web.mp4" muted playsinline data-start="0" data-duration="«D»" data-playback-rate="«RATE»" data-track-index="1"></video>'
-    body = "\n".join([ground(P, "paper"), "    " + phone(P, "phone", (1080 - pw) // 2, 150, pw, ph, screen, time=None),
+    bg = '<video id="i6-bg" class="clip" src="assets/video/web-bg.mp4" muted playsinline data-start="0" data-duration="«D»" data-playback-rate="«RATE»" data-track-index="2"></video>'
+    kick = f'<div id="i6-krow" class="i6-row"><div id="i6-kick" class="i6-pill">{icon("star").replace("currentColor", "#FFFFFF")}<span>Lista prioritaria · Black Friday</span></div></div>'
+    body = "\n".join(["    " + bg, "    " + phone(P, "phone", (1080 - pw) // 2, 226, pw, ph, screen, time=None), "    " + kick,
                       f'    <div id="i6-okrow" class="i6-row"><div id="i6-ok" class="i6-wpill">{icon("checkw")}<span>Lo ves antes que nadie</span></div></div>'])
     js = """
       tl.fromTo(q("phone"), { opacity: 0.4, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);   // there from the cut

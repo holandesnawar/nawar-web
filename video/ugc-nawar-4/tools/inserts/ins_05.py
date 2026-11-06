@@ -58,6 +58,6 @@ def build():
       tl.fromTo(q("eur"), { scale: 1 }, { keyframes: [{ scale: 1.14, duration: 0.12, ease: "power2.out" }, { scale: 1, duration: 0.2, ease: "power2.inOut" }],
         immediateRender: false }, «EUR» + 0.02);
 """
-    sfx = [(round(t / sp, 3), "page", v) for t, v in PAGES if t / sp < d - 0.1]
-    sfx += [(c["PRI"] - 0.06, "pop", 0.16), (c["ESP"] - 0.06, "pop", 0.16), (c["UN"] - 0.08, "sparkle", 0.16)]
+    sfx = [   # (v3: no page-turn sounds — the client)
+           (c["PRI"] - 0.06, "pop", 0.16), (c["ESP"] - 0.06, "pop", 0.16), (c["UN"] - 0.08, "sparkle", 0.16)]
     return comp(iid, d, P, css, body, js, c), sfx

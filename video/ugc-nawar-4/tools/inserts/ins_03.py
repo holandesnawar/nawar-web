@@ -9,7 +9,7 @@ from common import *  # noqa: F401,F403
 
 DAYS = ["viernes, 1 de enero", "lunes, 1 de febrero", "lunes, 1 de marzo"]
 SUBS = ["Hoy · 9:00", "Pospuesto 1 vez", "Pospuesto 2 veces"]
-PW, PH, PL, PT = 660, 1090, 210, 150
+PW, PH, PL, PT = 540, 1110, 270, 140   # v3: a phone's proportions (the client: v2 «parece una tablet»)
 BELL = ('<svg viewBox="0 0 40 40"><rect width="40" height="40" rx="10" fill="#0B6DF0"/><path d="M20 9 C14 9 12 13 12 18 V23 L9.5 27 H30.5 L28 23 '
         'V18 C28 13 26 9 20 9 Z M17 29 A3 3 0 0 0 23 29 Z" fill="#FFFFFF"/></svg>')
 
@@ -22,16 +22,16 @@ def build():
     .i3-date { position: absolute; left: 0; top: 150px; width: 100%; text-align: center; font-family: "Inter", sans-serif; font-weight: 600;
       font-size: 32px; color: rgba(255,255,255,0.92); }
     #i3-clock { position: absolute; left: 0; top: 206px; width: 100%; text-align: center; font-family: "Inter", sans-serif; font-weight: 700;
-      font-size: 168px; line-height: 1; letter-spacing: -0.02em; color: #FFFFFF; }
-    #i3-nf { position: absolute; left: 26px; right: 26px; top: 560px; height: 210px; border-radius: 34px; background: rgba(245,246,250,0.94); }
+      font-size: 150px; line-height: 1; letter-spacing: -0.02em; color: #FFFFFF; }
+    #i3-nf { position: absolute; left: 20px; right: 20px; top: 540px; height: 252px; border-radius: 34px; background: rgba(245,246,250,0.94); }
     #i3-ic { position: absolute; left: 26px; top: 26px; width: 52px; height: 52px; }
     #i3-ic svg { display: block; width: 52px; height: 52px; }
     #i3-app { position: absolute; left: 96px; top: 30px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 24px; color: «MUTED»;
       letter-spacing: 0.02em; }
     #i3-now { position: absolute; right: 30px; top: 30px; font-family: "Inter", sans-serif; font-weight: 500; font-size: 24px; color: «MUTED»; }
-    #i3-tt { position: absolute; left: 96px; top: 68px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 38px; color: «INK»; }
+    #i3-tt { position: absolute; left: 96px; top: 68px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 34px; color: «INK»; }
     .i3-sub { position: absolute; left: 96px; top: 118px; font-family: "Inter", sans-serif; font-weight: 500; font-size: 28px; color: «INK2»; }
-    #i3-btn { position: absolute; right: 26px; bottom: 24px; height: 58px; padding: 0 28px; border-radius: 29px; background: #E3E6EE;
+    #i3-btn { position: absolute; left: 96px; bottom: 22px; height: 58px; padding: 0 28px; border-radius: 29px; background: #E3E6EE;
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; line-height: 58px; color: «INK»; transform-origin: 50% 50%; }
 """
     dates = "".join(f'<div id="i3-dt{k}" class="i3-date">{t}</div>' for k, t in enumerate(DAYS))

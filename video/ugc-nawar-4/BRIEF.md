@@ -85,3 +85,18 @@ la lista prioritaria te dejé un vídeo de cómo es la web, scrolleando.»
 - **ins-03** (0:16): la pantalla de bloqueo con el recordatorio «Empezar neerlandés» que se pospone de enero a febrero y a
   marzo.
 - **ins-06** (0:35): la página real de la lista prioritaria, en un móvil, con su scroll.
+
+## Petición de la v3 (cliente, 6 nov 2026)
+
+«No me gustó, está igual el tema de "Navidad" en 0:25: otro vídeo de Navidad, en la mesa, hablando gente, siempre adaptado
+a 9:16, igual que al inicio, que pusiste un vídeo en horizontal. La música tampoco me convence, mucha tensión: algo
+tranquilo. Quita el efecto de sonido de pasar páginas del libro. El chat está bien, el recordatorio también (pero parece
+una tablet) y la lista prioritaria está bien, pero toda la página vacía blanca y solo el móvil… puede estar mejor.»
+
+- Vídeos de stock en 9:16 a pantalla completa, recortados de 4K (Mixkit): la mesa de la oficina, una compañera que se
+  ríe y, en 0:25, una cena de Navidad con amigos, con la frase en neerlandés y su traducción encima.
+- Música: «Serene View» (Arulo, Mixkit), chill tranquilo, a nivel constante unos 22 LU bajo la voz.
+- Sin sonido de páginas en el ebook.
+- El móvil del recordatorio con proporciones de móvil (540×1110).
+- La lista prioritaria: detrás del móvil, la propia página ampliada, desenfocada y oscura, que se mueve con el scroll, y
+  arriba «Lista prioritaria · Black Friday».

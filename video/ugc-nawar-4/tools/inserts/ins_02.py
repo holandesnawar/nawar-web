@@ -1,18 +1,17 @@
-"""ins-02 · «En la pausa del trabajo, alguien dice algo, todos se ríen y tú sonríes sin saber de qué.» — v2 (the client:
-«un vídeo stock de una mesa, gente hablando como en el descanso del trabajo, riéndose»): real footage instead of a
-drawing, two free Mixkit clips (Mixkit Stock Video Free License), each laid out vertically as a full-width band over a
-blurred, darker copy of itself (assets/video/stock-*.mp4, tools/fetch_assets.sh):
-  · from the cut to «todos»: coworkers at their lunch table, chatting («Having a working lunch in the office», 24893);
-    on «dice algo» a white bubble with what someone says, in quick idiomatic Dutch: «En toen stond hij met z'n mond
-    vol tanden!»;
-  · from «todos se ríen»: colleagues laughing around a table («Work colleagues having happy discussion around a
-    table», 48479); on «tú sonríes» a white pill with an awkward smile, «¿De qué se ríen?».
+"""ins-02 · «En la pausa del trabajo, alguien dice algo, todos se ríen y tú sonríes sin saber de qué.» — real footage,
+two free Mixkit clips (Mixkit Stock Video Free License), v3 full frame in 9:16 (cropped from 4K, tools/fetch_assets.sh;
+the client: «siempre adaptado a 9:16»):
+  · from the cut to «todos»: colleagues at an office table («People having a work meeting around a table», 4547); on
+    «dice algo» a white bubble with what someone says, in quick idiomatic Dutch: «En toen stond hij met z'n mond vol
+    tanden!»;
+  · from «todos se ríen»: a colleague laughing («Two coworkers talking and laughing», 4872); on «tú sonríes» a white
+    pill with an awkward smile, «¿De qué se ríen?».
 """
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from common import *  # noqa: F401,F403
 
-A_FROM, B_FROM = 9.0, 0.3        # where each clip is played from (source s)
+A_FROM, B_FROM = 0.0, 0.0        # (v3: the clips are cut and cropped to 9:16 in tools/fetch_assets.sh)
 AWK = ('<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="«BLUE»"/><circle cx="17" cy="20" r="3" fill="#FFFFFF"/>'
        '<circle cx="31" cy="20" r="3" fill="#FFFFFF"/><path d="M15 31 Q24 35 33 29" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round"/></svg>')
 
@@ -30,7 +29,7 @@ def build():
       transform-origin: 100% 50%; }
     #i2-awk svg { display: block; width: 54px; height: 54px; }
 """
-    body = f"""    <video id="i2-a" class="clip i2-v" src="assets/video/stock-lunch.mp4" muted playsinline data-start="0" data-duration="«CUT»" data-media-start="«AF»" data-track-index="1"></video>
+    body = f"""    <video id="i2-a" class="clip i2-v" src="assets/video/stock-table.mp4" muted playsinline data-start="0" data-duration="«CUT»" data-media-start="«AF»" data-track-index="1"></video>
     <video id="i2-b" class="clip i2-v" src="assets/video/stock-laugh.mp4" muted playsinline data-start="«CUT»" data-duration="«DB»" data-media-start="«BF»" data-track-index="2"></video>
     <div id="i2-say" class="i2-bub i2-bub-w i2-bl">En toen stond hij met z'n<br/>mond vol tanden!</div>
     <div id="i2-awk">{sub(AWK, {})}<span>¿De qué se ríen?</span></div>"""
