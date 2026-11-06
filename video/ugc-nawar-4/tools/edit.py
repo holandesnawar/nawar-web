@@ -43,7 +43,7 @@ INSERTS = [
     ("ins-06", "paper", "quien lo consiga", "solo hasta el"),       # v2: the priority-list page, scrolled on a phone
 ]
 HOOK_BF = "black friday empieza"   # the opening line (a light «Black Friday» tag on the hook)
-TURN = "y no es"                   # the calm music's second part comes in here
+TURN = "por eso lo"                # v4: the groove comes back here (the turn to the offer)
 OFFER = "la primera oferta"        # the offer part starts here
 OUTRO = "solo hasta el"            # the button under her face, from here to the end
 

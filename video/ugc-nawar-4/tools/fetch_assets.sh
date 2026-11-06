@@ -14,9 +14,9 @@ echo "v2: the client's cut and the website recording (Drive «BF 2»), the ebook
 dl 1ICfGZcfKjO_ka9FffpNE15w88yu1DFvR cortado.mp4  # «Cortado BF2 Video.mp4» — the client's own cut of the ad (60 fps)
 dl 1kI-Hx921ioe0ocrZs0ORYR6TIgh5XGHc web.mov      # «Grabación de pantalla 2026-11-06…» — the priority-list page, scrolled
 dl 1NEbiZ-7Hp1LeORMbohAwvFKGnfPhu7h0 libro2.mp4   # «Animación Libro» — the ebook «Holandés sin miedo» on black (7 s)
-# v3: Mixkit (free licenses): the music «Serene View» (Arulo) and three 4K clips — «People having a work meeting around a
+# v3: Mixkit (free license): three 4K clips — «People having a work meeting around a
 # table», «Two coworkers talking and laughing», «Couple of friends chatting during Christmas dinner»
-curl -sS -L --fail -o "$RAW/music-serene.mp3" https://assets.mixkit.co/music/443/443.mp3
+dl 1iMcSFRAOoly8OG6jDt3ENBwSntuhA8FL music.mp3    # v4: «musica v1» — the client's track (UGC #2), shaped to the script in build_audio.py
 for i in 4547 4872 42157; do curl -sS -L --fail -o "$RAW/stock-$i.mp4" "https://assets.mixkit.co/videos/$i/$i-2160.mp4"; done
 # the cut: 60 → 30 fps, light grade; audio cleaned and normalised to −16 LUFS
 ffmpeg -v error -y -i "$RAW/cortado.mp4" -vf "fps=30,eq=contrast=1.05:saturation=1.05:gamma=0.98,format=yuv420p" \
@@ -44,4 +44,4 @@ python3 tools/sfx_impact.py      # the page turn of the ebook (synthesised)
 echo "word times, edit, ebook clip, soundtrack, compositions"
 python3 tools/align_fix.py && python3 tools/edit.py && python3 tools/libro_clip.py && python3 tools/build_audio.py
 python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc4-v3.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc4-v4.mp4"
