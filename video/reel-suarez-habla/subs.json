@@ -1,0 +1,746 @@
+{
+ "phrases": [
+  {
+   "who": "r",
+   "es": "Fue emocionante.",
+   "breaks": [],
+   "words": [
+    {
+     "text": "Het",
+     "t": 0.18,
+     "end": 0.22
+    },
+    {
+     "text": "was",
+     "t": 0.26,
+     "end": 0.38
+    },
+    {
+     "text": "spannend.",
+     "t": 0.4,
+     "end": 0.94
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "¿Quién?",
+   "breaks": [],
+   "words": [
+    {
+     "text": "Wie?",
+     "t": 1.7,
+     "end": 1.9
+    }
+   ]
+  },
+  {
+   "who": "r",
+   "es": "El partido fue emocionante, creo.",
+   "breaks": [
+    3
+   ],
+   "words": [
+    {
+     "text": "De",
+     "t": 2.48,
+     "end": 2.52
+    },
+    {
+     "text": "wedstrijd",
+     "t": 2.56,
+     "end": 2.86
+    },
+    {
+     "text": "was",
+     "t": 2.9,
+     "end": 2.98
+    },
+    {
+     "text": "spannend,",
+     "t": 3.04,
+     "end": 3.28
+    },
+    {
+     "text": "denk",
+     "t": 3.32,
+     "end": 3.46
+    },
+    {
+     "text": "ik.",
+     "t": 3.5,
+     "end": 3.66
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "Sí, un poquito.",
+   "breaks": [],
+   "words": [
+    {
+     "text": "Ja,",
+     "t": 4.3,
+     "end": 4.58
+    },
+    {
+     "text": "klein",
+     "t": 4.64,
+     "end": 4.84
+    },
+    {
+     "text": "beetje.",
+     "t": 4.88,
+     "end": 5.28
+    }
+   ]
+  },
+  {
+   "who": "r",
+   "es": "¿Hubo fiestecita?",
+   "breaks": [],
+   "words": [
+    {
+     "text": "Feestje",
+     "t": 5.6,
+     "end": 5.88
+    },
+    {
+     "text": "gevierd?",
+     "t": 5.92,
+     "end": 6.3
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "¿Perdón?",
+   "breaks": [],
+   "words": [
+    {
+     "text": "Sorry?",
+     "t": 7.48,
+     "end": 8.02
+    }
+   ]
+  },
+  {
+   "who": "r",
+   "es": "Fiesta. ¿Hubo fiestecita?",
+   "breaks": [
+    1
+   ],
+   "words": [
+    {
+     "text": "Feest.",
+     "t": 8.54,
+     "end": 8.86
+    },
+    {
+     "text": "Feestje",
+     "t": 9.06,
+     "end": 9.32
+    },
+    {
+     "text": "gevierd?",
+     "t": 9.36,
+     "end": 9.8
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "Ah, no, no, no, no.",
+   "breaks": [
+    3
+   ],
+   "words": [
+    {
+     "text": "Ah,",
+     "t": 10.36,
+     "end": 10.56
+    },
+    {
+     "text": "nee,",
+     "t": 10.56,
+     "end": 10.86
+    },
+    {
+     "text": "nee,",
+     "t": 11.2,
+     "end": 11.66
+    },
+    {
+     "text": "nee,",
+     "t": 11.72,
+     "end": 11.9
+    },
+    {
+     "text": "nee.",
+     "t": 11.96,
+     "end": 12.22
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "Muy contentos. Muy satisfechos.",
+   "breaks": [
+    3
+   ],
+   "words": [
+    {
+     "text": "Wij",
+     "t": 12.32,
+     "end": 12.64
+    },
+    {
+     "text": "echt",
+     "t": 12.7,
+     "end": 12.96
+    },
+    {
+     "text": "blij.",
+     "t": 13.02,
+     "end": 13.4
+    },
+    {
+     "text": "Echt",
+     "t": 13.46,
+     "end": 13.66
+    },
+    {
+     "text": "tevreden.",
+     "t": 13.72,
+     "end": 14.22
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "Pero ya se acabó",
+   "breaks": [],
+   "words": [
+    {
+     "text": "Maar",
+     "t": 14.32,
+     "end": 14.48
+    },
+    {
+     "text": "nu",
+     "t": 14.56,
+     "end": 15.04
+    },
+    {
+     "text": "is",
+     "t": 15.14,
+     "end": 15.68
+    },
+    {
+     "text": "klaar",
+     "t": 15.76,
+     "end": 16.0
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "porque tenemos el próximo partido",
+   "breaks": [
+    3
+   ],
+   "words": [
+    {
+     "text": "omdat",
+     "t": 16.04,
+     "end": 16.34
+    },
+    {
+     "text": "wij",
+     "t": 16.54,
+     "end": 16.78
+    },
+    {
+     "text": "hebben",
+     "t": 16.98,
+     "end": 17.46
+    },
+    {
+     "text": "volgende",
+     "t": 17.54,
+     "end": 17.94
+    },
+    {
+     "text": "wedstrijd",
+     "t": 17.98,
+     "end": 18.32
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "en cuatro…|en cuarenta y ocho horas.",
+   "breaks": [
+    3
+   ],
+   "words": [
+    {
+     "text": "in",
+     "t": 18.38,
+     "end": 18.54
+    },
+    {
+     "text": "vier…",
+     "t": 19.06,
+     "end": 19.34
+    },
+    {
+     "text": "in",
+     "t": 19.57,
+     "end": 19.7
+    },
+    {
+     "text": "achtenveertig",
+     "t": 19.72,
+     "end": 20.58
+    },
+    {
+     "text": "uur.",
+     "t": 20.64,
+     "end": 20.9
+    }
+   ]
+  },
+  {
+   "who": "r",
+   "es": "¿Contento de jugar de delantero?",
+   "breaks": [
+    5
+   ],
+   "words": [
+    {
+     "text": "Ben",
+     "t": 21.3,
+     "end": 21.66
+    },
+    {
+     "text": "je",
+     "t": 21.68,
+     "end": 21.76
+    },
+    {
+     "text": "blij",
+     "t": 21.8,
+     "end": 21.94
+    },
+    {
+     "text": "dat",
+     "t": 21.96,
+     "end": 22.06
+    },
+    {
+     "text": "je",
+     "t": 22.08,
+     "end": 22.1
+    },
+    {
+     "text": "in",
+     "t": 22.12,
+     "end": 22.16
+    },
+    {
+     "text": "de",
+     "t": 22.18,
+     "end": 22.22
+    },
+    {
+     "text": "spits",
+     "t": 22.3,
+     "end": 22.5
+    },
+    {
+     "text": "staat?",
+     "t": 22.52,
+     "end": 22.78
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "Sí, a mí me da igual.",
+   "breaks": [
+    3
+   ],
+   "words": [
+    {
+     "text": "Ja,",
+     "t": 24.1,
+     "end": 24.28
+    },
+    {
+     "text": "voor",
+     "t": 24.36,
+     "end": 24.48
+    },
+    {
+     "text": "mij",
+     "t": 24.54,
+     "end": 24.68
+    },
+    {
+     "text": "maakt",
+     "t": 24.74,
+     "end": 24.88
+    },
+    {
+     "text": "niet",
+     "t": 24.94,
+     "end": 25.0
+    },
+    {
+     "text": "uit.",
+     "t": 25.06,
+     "end": 25.32
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "Quiero jugar por la izquierda,|por la derecha,",
+   "breaks": [
+    3
+   ],
+   "words": [
+    {
+     "text": "Ik",
+     "t": 25.42,
+     "end": 25.54
+    },
+    {
+     "text": "wil",
+     "t": 25.58,
+     "end": 25.72
+    },
+    {
+     "text": "spelen",
+     "t": 25.9,
+     "end": 26.2
+    },
+    {
+     "text": "links,",
+     "t": 26.38,
+     "end": 26.62
+    },
+    {
+     "text": "rechts,",
+     "t": 26.78,
+     "end": 27.04
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "de delantero, de diez también.",
+   "breaks": [
+    3
+   ],
+   "words": [
+    {
+     "text": "in",
+     "t": 27.16,
+     "end": 27.26
+    },
+    {
+     "text": "de",
+     "t": 27.3,
+     "end": 27.36
+    },
+    {
+     "text": "spits,",
+     "t": 27.46,
+     "end": 27.82
+    },
+    {
+     "text": "op",
+     "t": 28.21,
+     "end": 28.46
+    },
+    {
+     "text": "tien",
+     "t": 28.92,
+     "end": 29.12
+    },
+    {
+     "text": "ook.",
+     "t": 29.22,
+     "end": 29.44
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "A mí me da igual.",
+   "breaks": [
+    2
+   ],
+   "words": [
+    {
+     "text": "Voor",
+     "t": 29.74,
+     "end": 29.88
+    },
+    {
+     "text": "mij",
+     "t": 29.92,
+     "end": 30.04
+    },
+    {
+     "text": "maakt",
+     "t": 30.1,
+     "end": 30.26
+    },
+    {
+     "text": "niet",
+     "t": 30.28,
+     "end": 30.34
+    },
+    {
+     "text": "uit.",
+     "t": 30.4,
+     "end": 30.84
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "Quiero jugar. El entrenador sabrá.",
+   "breaks": [
+    3
+   ],
+   "words": [
+    {
+     "text": "Ik",
+     "t": 30.58,
+     "end": 30.84
+    },
+    {
+     "text": "wil",
+     "t": 31.14,
+     "end": 31.24
+    },
+    {
+     "text": "spelen.",
+     "t": 31.48,
+     "end": 31.78
+    },
+    {
+     "text": "Trainer",
+     "t": 31.84,
+     "end": 32.12
+    },
+    {
+     "text": "weet.",
+     "t": 32.18,
+     "end": 32.52
+    }
+   ]
+  },
+  {
+   "who": "r",
+   "es": "¿No tienes una posición favorita?",
+   "breaks": [
+    3
+   ],
+   "words": [
+    {
+     "text": "Je",
+     "t": 33.44,
+     "end": 33.48
+    },
+    {
+     "text": "hebt",
+     "t": 33.5,
+     "end": 33.62
+    },
+    {
+     "text": "geen",
+     "t": 33.68,
+     "end": 33.92
+    },
+    {
+     "text": "liefste",
+     "t": 34.2,
+     "end": 34.52
+    },
+    {
+     "text": "positie?",
+     "t": 34.58,
+     "end": 34.96
+    }
+   ]
+  },
+  {
+   "who": "r",
+   "es": "La posición en la que…",
+   "breaks": [],
+   "words": [
+    {
+     "text": "De",
+     "t": 35.02,
+     "end": 35.08
+    },
+    {
+     "text": "positie",
+     "t": 35.14,
+     "end": 35.42
+    },
+    {
+     "text": "waar",
+     "t": 35.46,
+     "end": 35.56
+    },
+    {
+     "text": "je…",
+     "t": 35.58,
+     "end": 35.86
+    }
+   ]
+  },
+  {
+   "who": "r",
+   "es": "…más te gusta jugar.",
+   "breaks": [
+    2
+   ],
+   "words": [
+    {
+     "text": "…het",
+     "t": 35.88,
+     "end": 35.92
+    },
+    {
+     "text": "graagst",
+     "t": 35.96,
+     "end": 36.24
+    },
+    {
+     "text": "op",
+     "t": 36.28,
+     "end": 36.32
+    },
+    {
+     "text": "speelt.",
+     "t": 36.36,
+     "end": 36.58
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "No, no, no, no.",
+   "breaks": [],
+   "words": [
+    {
+     "text": "Nee,",
+     "t": 36.88,
+     "end": 37.02
+    },
+    {
+     "text": "nee,",
+     "t": 37.1,
+     "end": 37.22
+    },
+    {
+     "text": "nee,",
+     "t": 37.28,
+     "end": 37.46
+    },
+    {
+     "text": "nee.",
+     "t": 37.46,
+     "end": 37.46
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "Por mí, no hay problema.",
+   "breaks": [
+    2
+   ],
+   "words": [
+    {
+     "text": "Voor",
+     "t": 37.78,
+     "end": 37.92
+    },
+    {
+     "text": "mij",
+     "t": 37.96,
+     "end": 38.1
+    },
+    {
+     "text": "geen",
+     "t": 38.68,
+     "end": 38.86
+    },
+    {
+     "text": "probleem.",
+     "t": 38.9,
+     "end": 39.28
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "Ningún problema.",
+   "breaks": [],
+   "words": [
+    {
+     "text": "Geen",
+     "t": 39.62,
+     "end": 39.82
+    },
+    {
+     "text": "probleem.",
+     "t": 39.86,
+     "end": 40.2
+    }
+   ]
+  },
+  {
+   "who": "s",
+   "es": "Yo solo quiero jugar.",
+   "breaks": [
+    3
+   ],
+   "words": [
+    {
+     "text": "Ik",
+     "t": 40.26,
+     "end": 40.4
+    },
+    {
+     "text": "wil",
+     "t": 40.9,
+     "end": 41.06
+    },
+    {
+     "text": "alleen",
+     "t": 41.14,
+     "end": 41.36
+    },
+    {
+     "text": "maar",
+     "t": 41.42,
+     "end": 41.5
+    },
+    {
+     "text": "spelen.",
+     "t": 41.6,
+     "end": 42.02
+    }
+   ]
+  }
+ ]
+}

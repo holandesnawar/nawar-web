@@ -1,0 +1,10 @@
+# Heavy / derived media: rebuild with `bash tools/fetch_assets.sh`
+assets/
+renders/
+.raw/
+.preview/
+.film/
+.hyperframes/
+snapshots/
+node_modules/
+__pycache__/

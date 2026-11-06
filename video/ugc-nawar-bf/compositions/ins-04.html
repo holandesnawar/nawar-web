@@ -1,0 +1,120 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .i4-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .i4-paper { background: #F5F7FF; }
+    .i4-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .i4-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i4-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .i4-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i4-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .i4-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .i4-dark { background: radial-gradient(circle at 50% 34%, #1b1846 0%, #0b0a1c 56%, #050409 100%); }
+    .i4-dark-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1.6px, transparent 1.8px); background-size: 30px 30px; }
+    .i4-dark-amb { position: absolute; left: 40px; top: 220px; width: 1000px; height: 980px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(11,109,240,0.22) 0%, rgba(11,109,240,0.07) 45%, rgba(11,109,240,0) 70%); }
+    .i4-dark-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%); }
+    .i4-on-dark { box-shadow: none; }
+    /* Black Friday pieces: the tape (a yellow strip with «BLACK FRIDAY» running on it), the yellow pill and the burst */
+    .i4-tape { position: absolute; height: 92px; background: #FFD60A; overflow: hidden; }
+    .i4-tape-run { position: absolute; left: 0; top: 0; height: 92px; display: flex; align-items: center; gap: 34px; white-space: nowrap;
+      font-weight: 900; font-size: 52px; line-height: 1; letter-spacing: 0.02em; color: #08070F; padding-top: 4px; box-sizing: border-box; }
+    .i4-tape-run i { display: block; width: 16px; height: 16px; border-radius: 50%; background: #08070F; font-style: normal; }
+    .i4-ypill { display: flex; align-items: center; gap: 14px; height: 72px; padding: 0 32px 0 22px; border-radius: 999px; background: #FFD60A;
+      color: #08070F; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 31px; line-height: 1; letter-spacing: -0.005em; }
+    .i4-ypill svg { display: block; width: 38px; height: 38px; }
+    .i4-acc-y { color: #FFD60A; }
+    .i4-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    /* v6: no outer shadows anywhere (flat objects); on paper a white card keeps its edge with a hairline */
+    .i4-on-paper { box-shadow: inset 0 0 0 2px #DDE6F5; }
+    .i4-on-blue { box-shadow: none; }
+    .i4-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .i4-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .i4-pill svg { display: block; width: 28px; height: 28px; }
+    .i4-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .i4-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .i4-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .i4-flag svg { display: block; width: 40px; height: 27px; }
+    .i4-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .i4-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF; }
+    .i4-av svg { display: block; width: 96px; height: 96px; }
+    .i4-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .i4-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: inset 0 0 0 2px #DDE6F5; }
+    .i4-bub-g { background: #E8ECF7; color: #374151; }
+    .i4-bub-b { background: #0b6df0; color: #FFFFFF; }
+    .i4-bl { border-bottom-left-radius: 10px; }
+    .i4-br { border-bottom-right-radius: 10px; }
+    .i4-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .i4-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .i4-acc { color: #4da3ff; }
+    .i4-w { display: inline-block; }
+
+    #i4-stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 316.8px 575px; }
+    #i4-vw { position: absolute; left: -228px; top: 179px; width: 1536px; height: 864px;
+      -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 11%); mask-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 11%); }
+    #i4-vw video { position: absolute; left: 0; top: 0; width: 1536px; height: 864px; display: block; }
+    #i4-lrow { top: 168px; }
+    #i4-lab { background: #1D0084; border: 2px solid rgba(255,255,255,0.85); }   /* opaque: the turning pages pass behind it */
+    #i4-prow { top: 1000px; gap: 16px; }
+    .i4-wpill { gap: 12px; height: 76px; padding: 0 30px 0 18px; font-size: 33px; }
+    .i4-wpill svg { display: block; width: 40px; height: 40px; color: #1D0084; }
+    .i4-wpill .i4-flag svg { width: 40px; height: 27px; }
+    #i4-crow { top: 1096px; gap: 10px; width: 1040px; left: 20px; }
+    .i4-ck { display: flex; align-items: center; gap: 8px; height: 62px; padding: 0 22px 0 10px; border-radius: 999px;
+      background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.30); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 27px; line-height: 1; }
+    .i4-ck svg { display: block; width: 36px; height: 36px; }
+
+  </style>
+  <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="5.887">
+    <div class="i4-full i4-blue"><div class="i4-blue-dots"></div><div class="i4-blue-amb"></div><div class="i4-blue-vig"></div></div>
+    <div id="i4-stage">
+      <div id="i4-vw"><video id="i4-v" class="clip" src="assets/video/libro-ins04.webm" muted playsinline data-start="0" data-duration="5.887" data-track-index="1"></video></div>
+    </div>
+    <div id="i4-lrow" class="i4-row"><div id="i4-lab" class="i4-pill"><svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="#FFFFFF" stroke-width="4.2"/></svg><span>Ebook · Holandés sin miedo</span></div></div>
+    <div id="i4-prow" class="i4-row"><div id="i4-p0" class="i4-wpill"><svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="currentColor" stroke-width="4.2"/></svg><span>70 páginas</span></div><div id="i4-p1" class="i4-wpill"><span class="i4-flag i4-flagd"><svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#AA151B" /><rect y="7" width="40" height="13" fill="#F1BF00" /></svg></span><span>En español</span></div><div id="i4-p2" class="i4-wpill"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"><path d="M14 18 V6 H34 V18"/><rect x="5" y="18" width="38" height="16" rx="5"/><path d="M14 28 H34 V42 H14 Z"/></g></svg><span>Para imprimir</span></div></div>
+    <div id="i4-crow" class="i4-row"><div id="i4-c0" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Vocabulario</span></div><div id="i4-c1" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Gramática</span></div><div id="i4-c2" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ejercicios</span></div><div id="i4-c3" class="i4-ck"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Pronunciación</span></div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("i4-" + id);
+
+      // v6.4: the book stays put (no drift, no push-in): it freezes open on «¡Hora de practicar!» (tools/libro_clip.py)
+      tl.fromTo(q("lab"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.4);   // before the cover lifts behind it
+      tl.fromTo(q("p0"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 0.897 - 0.06);
+      tl.fromTo(q("p1"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 1.859 - 0.06);
+      tl.fromTo(q("p2"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 2.576 - 0.06);
+      tl.fromTo(q("c0"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 3.227 - 0.05);
+      tl.fromTo(q("c1"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 3.962 - 0.05);
+      tl.fromTo(q("c2"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 4.453 - 0.05);
+      tl.fromTo(q("c3"), { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }, 5.274 - 0.05);
+
+      window.__timelines["ins-04"] = tl;
+    })();
+  </script>
+</template>

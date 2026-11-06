@@ -1,0 +1,400 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: nawar-blue + white dot grid + soft vignette (identical to 23) ---------- */
+    #f24-ground {
+      position: absolute; inset: 0;
+      background-color: #120081;
+      background-image:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+      background-size: 100% 100%, 28px 28px, 100% 100%;
+    }
+
+    /* ---------- camera: cam (tilt-up in scene 2) > world (pull-out about the hub 960,470) ---------- */
+    #f24-cam { position: absolute; inset: 0; }
+    #f24-world { position: absolute; inset: 0; transform-origin: 960px 470px; }
+    #f24-nucleus {
+      position: absolute; left: 160px; top: -130px; width: 1600px; height: 1200px; opacity: 0;
+      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(77,163,255,0.40) 0%, rgba(77,163,255,0.14) 45%, rgba(77,163,255,0) 72%);
+    }
+    #f24-field {
+      position: absolute; left: -2100px; top: -1100px; width: 6300px; height: 3900px; overflow: visible;
+    }
+    .f24-mesh { fill: none; stroke: rgba(159,213,245,0.17); stroke-width: 2.6; stroke-linecap: round; }
+    #f24-lines, #f24-comets { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+    /* SHARED: connector lines disc-centre -> hub-centre, 2px rgba(255,255,255,0.22) */
+    #f24-lines line { stroke: rgba(255,255,255,0.22); stroke-width: 2; fill: none; }
+    .f24-comet { stroke: #E6F4FF; stroke-width: 9; stroke-linecap: round; fill: none; }
+    #f24-comets { filter: drop-shadow(0 0 10px rgba(159,213,245,1)) drop-shadow(0 0 22px rgba(77,163,255,0.8)); }
+
+    /* SHARED: avatar discs */
+    .f24-av { position: absolute; }
+    .f24-disc {
+      position: absolute; inset: 0; border-radius: 50%; box-sizing: border-box;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Inter", sans-serif; font-weight: 700; letter-spacing: -0.01em; line-height: 1;
+      box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.16), 0 12px 28px rgba(4,0,40,0.38);
+    }
+    .f24-disc span { display: block; }
+
+    /* SHARED: hub pill «Comunidad Nawar» centred (960,470), 460x96 */
+    .f24-shock {
+      position: absolute; left: 730px; top: 422px; width: 460px; height: 96px; border-radius: 999px;
+      box-sizing: border-box; border: 5px solid rgba(255,255,255,0.9); opacity: 0;
+    }
+    #f24-hub {
+      position: absolute; left: 730px; top: 422px; width: 460px; height: 96px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #f24-pill {
+      position: relative; width: 460px; height: 96px; flex: none; border-radius: 999px; background: #FFFFFF;
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 0 80px rgba(77,163,255,0.55);
+    }
+    #f24-pill-text {
+      flex: none; white-space: nowrap; display: block;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 40px; line-height: 1;
+      letter-spacing: -0.01em; color: #1D0084; padding-top: 4px;
+    }
+
+
+    /* ---------- legibility scrims ---------- */
+    #f24-scrim-top {
+      position: absolute; left: 0; top: 0; width: 1920px; height: 300px; opacity: 0;
+      background: linear-gradient(180deg, rgba(6,2,52,0.55) 0%, rgba(6,2,52,0.28) 48%, rgba(6,2,52,0) 100%);
+    }
+    #f24-scrim-low {
+      position: absolute; left: 210px; top: 470px; width: 1500px; height: 600px; opacity: 0;
+      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(6,2,52,0.74) 0%, rgba(6,2,52,0.5) 45%, rgba(6,2,52,0) 100%);
+    }
+
+    /* ---------- scene 1: lead line ---------- */
+    #f24-lead {
+      position: absolute; left: 80px; right: 80px; top: 96px; height: 84px;
+      display: flex; justify-content: center; align-items: baseline; white-space: nowrap;
+    }
+    .f24-lw {
+      display: inline-block; font-family: "Poppins", sans-serif; font-weight: 600; font-size: 58px; line-height: 1.2;
+      letter-spacing: -0.01em; color: rgba(255,255,255,0.80); margin-right: 18px;
+      text-shadow: 0 6px 28px rgba(4,0,40,0.45);
+    }
+    .f24-lw:last-child { margin-right: 0; }
+    .f24-lk { font-weight: 700; color: #FFFFFF; }
+
+    /* ---------- scene 2: title + counter card ---------- */
+    #f24-title {
+      position: absolute; left: 80px; right: 80px; top: 516px; height: 150px;
+      display: flex; justify-content: center; align-items: flex-start;
+    }
+    #f24-title-w {
+      display: block; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 124px; line-height: 1.0;
+      letter-spacing: -0.035em; color: #FFFFFF;
+      text-shadow: 0 0 60px rgba(77,163,255,0.45), 0 14px 40px rgba(4,0,40,0.5);
+    }
+    #f24-cardpos { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #f24-card {
+      position: absolute; left: 448px; top: 716px; width: 1024px; height: 196px; box-sizing: border-box;
+      border-radius: 28px; background: #FFFFFF; overflow: hidden;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45);
+      display: flex; align-items: center; padding: 0 56px 0 52px;
+    }
+    #f24-numbox { position: relative; width: 470px; height: 130px; flex: none; }
+    #f24-num {
+      position: absolute; left: 0; top: 0; height: 130px; display: flex; align-items: center; white-space: nowrap;
+      transform-origin: 0% 50%;
+      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 112px; line-height: 1;
+      letter-spacing: -0.03em; color: #1D0084; font-variant-numeric: tabular-nums; padding-top: 10px;
+    }
+    #f24-plus { display: inline-block; color: #0b6df0; font-weight: 800; font-size: 86px; margin-right: 10px; transform-origin: 50% 55%; position: relative; top: -6px; }
+    #f24-div { width: 3px; height: 112px; flex: none; background: #DDE6F5; border-radius: 2px; margin: 0 40px 0 22px; }
+    #f24-label {
+      flex: 1 1 auto; font-family: "Inter", sans-serif; font-weight: 600; font-size: 32px; line-height: 1.3;
+      letter-spacing: -0.005em; color: #374151; white-space: nowrap;
+    }
+    #f24-label b { font-weight: 700; color: #0b6df0; }
+    #f24-sweep {
+      position: absolute; left: -260px; top: -40px; width: 200px; height: 280px; opacity: 0;
+      background: linear-gradient(90deg, rgba(159,213,245,0) 0%, rgba(159,213,245,0.55) 50%, rgba(159,213,245,0) 100%);
+    }
+  </style>
+
+  <div id="root" data-composition-id="24-acompanado" data-width="1920" data-height="1080" data-duration="2.589">
+    <div id="f24-ground" class="clip" data-start="0" data-duration="2.589" data-track-index="0"></div>
+
+    <div id="f24-cam">
+      <div id="f24-world">
+        <div id="f24-nucleus"></div>
+        <svg id="f24-field" viewBox="-2100 -1100 6300 3900" width="6300" height="3900" aria-hidden="true">
+          <g id="f24-mesh-g"></g>
+          <circle id="f24-ring-glow" cx="960" cy="470" r="160" fill="none" stroke="#4da3ff" stroke-width="80" opacity="0" />
+          <circle id="f24-ring" cx="960" cy="470" r="160" fill="none" stroke="#CFEAFF" stroke-width="9" opacity="0" />
+          <g id="f24-dots-g"></g>
+        </svg>
+        <svg id="f24-lines" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true">
+          <line x1="960" y1="470" x2="560" y2="300" />
+          <line x1="960" y1="470" x2="760" y2="230" />
+          <line x1="960" y1="470" x2="1180" y2="220" />
+          <line x1="960" y1="470" x2="1380" y2="310" />
+          <line x1="960" y1="470" x2="1500" y2="470" />
+          <line x1="960" y1="470" x2="1390" y2="640" />
+          <line x1="960" y1="470" x2="1160" y2="720" />
+          <line x1="960" y1="470" x2="760" y2="720" />
+          <line x1="960" y1="470" x2="540" y2="640" />
+          <line x1="960" y1="470" x2="420" y2="470" />
+          <line x1="960" y1="470" x2="320" y2="250" />
+          <line x1="960" y1="470" x2="1600" y2="230" />
+          <line x1="960" y1="470" x2="1640" y2="780" />
+          <line x1="960" y1="470" x2="300" y2="780" />
+        </svg>
+        <svg id="f24-comets" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true"></svg>
+        <div class="f24-av" id="f24-av-MA" style="left:508px; top:248px; width:104px; height:104px;"><div class="f24-disc" id="f24-dc-MA" style="background:#0b6df0; color:#FFFFFF; font-size:37px;"><span>MA</span></div></div>
+        <div class="f24-av" id="f24-av-JL" style="left:716px; top:186px; width:88px; height:88px;"><div class="f24-disc" id="f24-dc-JL" style="background:#9fd5f5; color:#1D0084; font-size:32px;"><span>JL</span></div></div>
+        <div class="f24-av" id="f24-av-SO" style="left:1132px; top:172px; width:96px; height:96px;"><div class="f24-disc" id="f24-dc-SO" style="background:#FFFFFF; color:#1D0084; font-size:35px;"><span>SO</span></div></div>
+        <div class="f24-av" id="f24-av-PE" style="left:1328px; top:258px; width:104px; height:104px;"><div class="f24-disc" id="f24-dc-PE" style="background:#4da3ff; color:#FFFFFF; font-size:37px;"><span>PE</span></div></div>
+        <div class="f24-av" id="f24-av-LU" style="left:1456px; top:426px; width:88px; height:88px;"><div class="f24-disc" id="f24-dc-LU" style="background:#21468C; color:#FFFFFF; font-size:32px;"><span>LU</span></div></div>
+        <div class="f24-av" id="f24-av-AN" style="left:1340px; top:590px; width:100px; height:100px;"><div class="f24-disc" id="f24-dc-AN" style="background:#1D0084; color:#FFFFFF; font-size:36px; border:3px solid #FFFFFF;"><span>AN</span></div></div>
+        <div class="f24-av" id="f24-av-CR" style="left:1116px; top:676px; width:88px; height:88px;"><div class="f24-disc" id="f24-dc-CR" style="background:#0b6df0; color:#FFFFFF; font-size:32px;"><span>CR</span></div></div>
+        <div class="f24-av" id="f24-av-DI" style="left:712px; top:672px; width:96px; height:96px;"><div class="f24-disc" id="f24-dc-DI" style="background:#9fd5f5; color:#1D0084; font-size:35px;"><span>DI</span></div></div>
+        <div class="f24-av" id="f24-av-RO" style="left:496px; top:596px; width:88px; height:88px;"><div class="f24-disc" id="f24-dc-RO" style="background:#FFFFFF; color:#1D0084; font-size:32px;"><span>RO</span></div></div>
+        <div class="f24-av" id="f24-av-VA" style="left:370px; top:420px; width:100px; height:100px;"><div class="f24-disc" id="f24-dc-VA" style="background:#4da3ff; color:#FFFFFF; font-size:36px;"><span>VA</span></div></div>
+        <div class="f24-av" id="f24-av-IS" style="left:284px; top:214px; width:72px; height:72px;"><div class="f24-disc" id="f24-dc-IS" style="background:#21468C; color:#FFFFFF; font-size:26px;"><span>IS</span></div></div>
+        <div class="f24-av" id="f24-av-TO" style="left:1564px; top:194px; width:72px; height:72px;"><div class="f24-disc" id="f24-dc-TO" style="background:#1D0084; color:#FFFFFF; font-size:26px; border:3px solid #FFFFFF;"><span>TO</span></div></div>
+        <div class="f24-av" id="f24-av-EL" style="left:1602px; top:742px; width:76px; height:76px;"><div class="f24-disc" id="f24-dc-EL" style="background:#FFFFFF; color:#1D0084; font-size:27px;"><span>EL</span></div></div>
+        <div class="f24-av" id="f24-av-GA" style="left:262px; top:742px; width:76px; height:76px;"><div class="f24-disc" id="f24-dc-GA" style="background:#0b6df0; color:#FFFFFF; font-size:27px;"><span>GA</span></div></div>
+        <div class="f24-shock" id="f24-shock-a"></div>
+        <div id="f24-hub">
+          <div id="f24-pill"><span id="f24-pill-text">Comunidad Nawar</span></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="f24-scrim-top"></div>
+    <div id="f24-scrim-low"></div>
+
+    <div id="f24-lead">
+      <span class="f24-lw" id="f24-lw-avanzas">Avanzas</span>
+      <span class="f24-lw" id="f24-lw-a">a</span>
+      <span class="f24-lw f24-lk" id="f24-lw-tu">tu</span>
+      <span class="f24-lw f24-lk" id="f24-lw-ritmo">ritmo,</span>
+    </div>
+
+    <div id="f24-title"><span id="f24-title-w">acompañado.</span></div>
+
+    <div id="f24-cardpos">
+    <div id="f24-card">
+      <div id="f24-numbox">
+        <div id="f24-num"><span id="f24-plus">+</span><span id="f24-val">0</span></div>
+      </div>
+      <div id="f24-div"></div>
+      <div id="f24-label">alumnos siguen nuestras<br><b>clases en redes</b></div>
+      <div id="f24-sweep"></div>
+    </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const SVGNS = "http://www.w3.org/2000/svg";
+      const HUB = { x: 960, y: 470 };
+      const DUR = 2.589;
+      // SHARED GEOMETRY: [id, cx, cy, diameter]
+      const AV = [["MA", 560, 300, 104], ["JL", 760, 230, 88], ["SO", 1180, 220, 96], ["PE", 1380, 310, 104], ["LU", 1500, 470, 88], ["AN", 1390, 640, 100], ["CR", 1160, 720, 88], ["DI", 760, 720, 96], ["RO", 540, 640, 88], ["VA", 420, 470, 100], ["IS", 320, 250, 72], ["TO", 1600, 230, 72], ["EL", 1640, 780, 76], ["GA", 300, 780, 76]];
+
+      // camera constants
+      const S_END = 0.35;          // block: constellation scales 1 -> 0.35
+      const CAM_UP = -122;         // scene-2 tilt: hub rises 470 -> 348 (screen)
+      const KEEP = 1.43;           // counter-scale on discs + pill so they stay readable (effective 0.5)
+
+      // deterministic hash
+      const hh = (i, j, k) => { const v = Math.sin(i * 127.1 + j * 311.7 + k * 74.7 + 0.5) * 43758.5453; return v - Math.floor(v); };
+
+      // ---------- build the community field: jittered grid of member dots + sparse mesh ----------
+      const dotsG = document.getElementById("f24-dots-g");
+      const meshG = document.getElementById("f24-mesh-g");
+      const STEP_X = 132, STEP_Y = 124, X0 = -1960, Y0 = -1010, COLS = 45, ROWS = 31;
+      const PAL = ["#FFFFFF", "#9fd5f5", "#4da3ff", "#0b6df0", "#FFFFFF", "#9fd5f5"];
+      const grid = [];
+      const dots = [];
+      // final-state screen mapping (for culling the wave to visible dots)
+      const toScreen = (x, y) => ({ x: HUB.x + (x - HUB.x) * S_END, y: HUB.y + CAM_UP + (y - HUB.y) * S_END });
+      for (let j = 0; j < ROWS; j++) {
+        grid.push([]);
+        for (let i = 0; i < COLS; i++) {
+          const x = X0 + i * STEP_X + (hh(i, j, 1) - 0.5) * STEP_X * 0.78;
+          const y = Y0 + j * STEP_Y + (hh(i, j, 2) - 0.5) * STEP_Y * 0.78;
+          const ex = (x - HUB.x) / 860, ey = (y - HUB.y) / 450;
+          if (ex * ex + ey * ey < 1) { grid[j].push(null); continue; }
+          const big = hh(i, j, 3) < 0.11;
+          const r = big ? 20 + hh(i, j, 4) * 9 : 8.5 + hh(i, j, 4) * 7.5;
+          const fill = big ? ["#0b6df0", "#9fd5f5", "#FFFFFF", "#4da3ff", "#21468C"][Math.floor(hh(i, j, 5) * 5)] : PAL[Math.floor(hh(i, j, 5) * PAL.length)];
+          const op = big ? 0.95 : 0.38 + hh(i, j, 6) * 0.42;
+          const c = document.createElementNS(SVGNS, "circle");
+          c.setAttribute("cx", x.toFixed(1));
+          c.setAttribute("cy", y.toFixed(1));
+          c.setAttribute("r", "0");
+          c.setAttribute("fill", fill);
+          if (big && fill === "#21468C") { c.setAttribute("stroke", "#FFFFFF"); c.setAttribute("stroke-width", "4"); }
+          c.style.opacity = "0";
+          dotsG.appendChild(c);
+          const d = Math.hypot(x - HUB.x, y - HUB.y);
+          const s = toScreen(x, y);
+          const dot = { el: c, x, y, r, op, d, big, vis: s.x > -30 && s.x < 1950 && s.y > -30 && s.y < 1110 };
+          dots.push(dot);
+          grid[j].push(dot);
+        }
+      }
+      // mesh: sparse neighbour links, grouped into distance bands so each band fades as one path
+      const BANDS = [1150, 1550, 2050, 2650, 3300, 1e9];
+      const bandOf = (d) => BANDS.findIndex((b) => d < b);
+      const meshD = BANDS.map(() => "");
+      const link = (a, b) => {
+        if (!a || !b) return;
+        const k = bandOf(Math.max(a.d, b.d));
+        meshD[k] += "M" + a.x.toFixed(1) + " " + a.y.toFixed(1) + "L" + b.x.toFixed(1) + " " + b.y.toFixed(1);
+      };
+      for (let j = 0; j < ROWS; j++) {
+        for (let i = 0; i < COLS; i++) {
+          const a = grid[j][i];
+          if (!a) continue;
+          if (i + 1 < COLS && hh(i, j, 7) < 0.34) link(a, grid[j][i + 1]);
+          if (j + 1 < ROWS && hh(i, j, 8) < 0.28) link(a, grid[j + 1][i]);
+          if (i + 1 < COLS && j + 1 < ROWS && hh(i, j, 9) < 0.12) link(a, grid[j + 1][i + 1]);
+        }
+      }
+      // tie the constellation into the network: each avatar links to its 2 nearest members
+      AV.forEach(([n, cx, cy]) => {
+        const near = dots.map((p) => ({ p, k: Math.hypot(p.x - cx, p.y - cy) })).sort((u, v) => u.k - v.k).slice(0, 2);
+        near.forEach(({ p }) => { meshD[0] += "M" + cx + " " + cy + "L" + p.x.toFixed(1) + " " + p.y.toFixed(1); });
+      });
+      const meshPaths = meshD.map((dStr) => {
+        const p = document.createElementNS(SVGNS, "path");
+        p.setAttribute("d", dStr || "M0 0");
+        p.setAttribute("class", "f24-mesh");
+        p.style.opacity = "0";
+        meshG.appendChild(p);
+        return p;
+      });
+
+      // comets (hub -> each avatar) for the "acompañado." broadcast
+      const cometsSvg = document.getElementById("f24-comets");
+      const comets = AV.map(([n, cx, cy]) => {
+        const L = Math.hypot(cx - HUB.x, cy - HUB.y);
+        const ln = document.createElementNS(SVGNS, "line");
+        ln.setAttribute("x1", HUB.x); ln.setAttribute("y1", HUB.y); ln.setAttribute("x2", cx); ln.setAttribute("y2", cy);
+        ln.setAttribute("class", "f24-comet");
+        ln.style.strokeDasharray = "150 " + (L + 150).toFixed(2);
+        ln.style.strokeDashoffset = "150";
+        cometsSvg.appendChild(ln);
+        return { el: ln, L, n };
+      });
+
+      // =====================================================================
+      // Scene 1 (0.00–1.30) — "Avanzas a tu ritmo," · camera pulls OUT 1 -> 0.35
+      // =====================================================================
+      // entrance on the cut: max-velocity pull-out + a shock ring off the pill + the nucleus glow
+      tl.fromTo("#f24-world", { scale: 1 }, { scale: S_END, duration: 1.3, ease: "power3.out" }, 0);
+      tl.fromTo(".f24-av", { scale: 1 }, { scale: KEEP, duration: 1.3, ease: "power3.out" }, 0);
+      tl.fromTo("#f24-hub", { scale: 1 }, { scale: KEEP, duration: 1.3, ease: "power3.out" }, 0);
+      tl.fromTo("#f24-lines line", { strokeWidth: 2 }, { strokeWidth: 4.4, duration: 1.3, ease: "power3.out" }, 0);
+      tl.fromTo("#f24-shock-a", { scale: 1, opacity: 0.85 }, { scale: 2.6, opacity: 0, duration: 0.6, ease: "power2.out" }, 0);
+      tl.fromTo("#f24-nucleus", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, 0);
+      tl.fromTo("#f24-nucleus", { opacity: 1 }, { opacity: 0.72, duration: 0.7, ease: "power1.inOut", immediateRender: false }, 0.55);
+
+      // members light up centre-outward as the camera backs away
+      dots.forEach((p, k) => {
+        const e = Math.min(1, Math.max(0, (p.d - 520) / 2900));
+        const t0 = e * 0.5 + hh(k, 3, 11) * 0.08;
+        tl.fromTo(p.el, { attr: { r: 0 }, opacity: 0 }, { attr: { r: p.r }, opacity: p.op, duration: 0.3, ease: "back.out(2)" }, t0);
+      });
+      meshPaths.forEach((p, k) => {
+        tl.fromTo(p, { opacity: 0 }, { opacity: 1, duration: 0.32, ease: "power1.out" }, 0.1 + k * 0.08);
+      });
+
+
+      // lead line, word by word on the voice
+      tl.fromTo("#f24-scrim-top", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, 0.06);
+      const LW = [["#f24-lw-avanzas", 0.12], ["#f24-lw-a", 0.546], ["#f24-lw-tu", 0.611], ["#f24-lw-ritmo", 0.731]];
+      LW.forEach(([sel, t]) => {
+        tl.fromTo(sel, { opacity: 0, y: 34, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, t - 0.04);
+      });
+
+      // =====================================================================
+      // Scene 2 (1.30–2.589) — "pero" seam · **acompañado.** · counter +30.000
+      // =====================================================================
+      // velocity-matched seam on "pero": the camera tilts up while the card rises in the same direction
+      tl.fromTo("#f24-cam", { y: 0 }, { y: CAM_UP, duration: 0.5, ease: "power3.inOut" }, 1.27);
+      tl.fromTo("#f24-scrim-low", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power1.out" }, 1.28);
+      tl.fromTo("#f24-cardpos", { y: 190 }, { y: 0, duration: 0.5, ease: "power3.out" }, 1.3);
+      tl.fromTo("#f24-card", { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "power1.out" }, 1.3);
+
+      // counter 0 -> 30.000 (1.30–2.40, power3.out) with dynamic scale (count + scale share ease)
+      const valEl = document.getElementById("f24-val");
+      const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const ctr = { v: 0 };
+      tl.set(valEl, { textContent: "0" }, 0);
+      tl.fromTo(ctr, { v: 0 }, {
+        v: 30000, duration: 1.1, ease: "power3.out",
+        onUpdate: () => { valEl.textContent = fmt(Math.round(ctr.v)); },
+      }, 1.3);
+      tl.fromTo("#f24-num", { scale: 0.72 }, { scale: 1, duration: 1.1, ease: "power3.out" }, 1.3);
+
+      // "acompañado." lands on 1.463 — slam from blur, rising with the seam
+      tl.fromTo("#f24-title-w", { scale: 1.24, y: 40, filter: "blur(10px)" },
+        { scale: 1, y: 0, filter: "blur(0px)", duration: 0.34, ease: "expo.out" }, 1.42);
+      tl.fromTo("#f24-title", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power1.out" }, 1.42);
+
+      // ...and the whole community answers: hub pulse, comets to every avatar, a light ring through the field
+      const BC = 1.44;
+      tl.fromTo("#f24-pill", { scale: 1 }, { scale: 1.1, duration: 0.1, ease: "power2.out" }, BC);
+      tl.fromTo("#f24-pill", { scale: 1.1 }, { scale: 1, duration: 0.36, ease: "power3.out", immediateRender: false }, BC + 0.1);
+      tl.fromTo("#f24-nucleus", { opacity: 0.72 }, { opacity: 1, duration: 0.14, ease: "power2.out", immediateRender: false }, BC);
+      tl.fromTo("#f24-nucleus", { opacity: 1 }, { opacity: 0.6, duration: 0.7, ease: "power1.inOut", immediateRender: false }, BC + 0.14);
+      comets.forEach(({ el, L }) => {
+        tl.fromTo(el, { strokeDashoffset: 150 }, { strokeDashoffset: -L, duration: 0.32, ease: "power1.out", immediateRender: false }, BC + 0.02);
+      });
+      AV.forEach(([n, cx, cy]) => {
+        const L = Math.hypot(cx - HUB.x, cy - HUB.y);
+        const t = BC + 0.06 + (L / 760) * 0.22;
+        tl.fromTo("#f24-dc-" + n, { scale: 1 }, { scale: 1.16, duration: 0.1, ease: "power2.out", immediateRender: false }, t);
+        tl.fromTo("#f24-dc-" + n, { scale: 1.16 }, { scale: 1, duration: 0.34, ease: "power3.out", immediateRender: false }, t + 0.1);
+      });
+      const R0 = 160, R1 = 3500, RD = 0.95, RT = BC + 0.08;
+      tl.fromTo(["#f24-ring", "#f24-ring-glow"], { attr: { r: R0 } }, { attr: { r: R1 }, duration: RD, ease: "power1.out" }, RT);
+      tl.fromTo("#f24-ring", { opacity: 0 }, { opacity: 0.85, duration: 0.06, ease: "none" }, RT);
+      tl.fromTo("#f24-ring", { opacity: 0.85 }, { opacity: 0, duration: RD - 0.06, ease: "power1.in", immediateRender: false }, RT + 0.06);
+      tl.fromTo("#f24-ring-glow", { opacity: 0 }, { opacity: 0.24, duration: 0.06, ease: "none" }, RT);
+      tl.fromTo("#f24-ring-glow", { opacity: 0.24 }, { opacity: 0, duration: RD - 0.06, ease: "power1.in", immediateRender: false }, RT + 0.06);
+      // each visible member flares as the ring passes it (inverse of power1.out)
+      dots.forEach((p) => {
+        if (!p.vis || p.d > R1) return;
+        const e = Math.min(1, Math.max(0, (p.d - R0) / (R1 - R0)));
+        const t = RT + RD * (1 - Math.sqrt(1 - e));
+        const rr = p.r * (p.big ? 1.45 : 1.8);
+        tl.fromTo(p.el, { attr: { r: p.r }, opacity: p.op }, { attr: { r: rr }, opacity: 1, duration: 0.1, ease: "power2.out", immediateRender: false }, t);
+        tl.fromTo(p.el, { attr: { r: rr }, opacity: 1 }, { attr: { r: p.r }, opacity: p.op, duration: 0.42, ease: "power2.out", immediateRender: false }, t + 0.1);
+      });
+
+      // counter lands (~2.38): light sweep across the card + a small settle on the number
+      tl.fromTo("#f24-plus", { scale: 1 }, { scale: 1.25, duration: 0.1, ease: "power2.out" }, 2.36);
+      tl.fromTo("#f24-plus", { scale: 1.25 }, { scale: 1, duration: 0.2, ease: "power3.out", immediateRender: false }, 2.46);
+      tl.fromTo("#f24-sweep", { x: 0, opacity: 1 }, { x: 1500, opacity: 1, duration: 0.42, ease: "power2.inOut" }, 2.2);
+
+      tl.set({}, {}, DUR);
+      window.__timelines["24-acompanado"] = tl;
+    })();
+  </script>
+</template>

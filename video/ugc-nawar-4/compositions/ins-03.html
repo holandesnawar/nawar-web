@@ -1,0 +1,126 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .i3-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .i3-paper { background: #F5F7FF; }
+    .i3-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .i3-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i3-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .i3-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i3-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .i3-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .i3-dark { background: radial-gradient(circle at 50% 34%, #1b1846 0%, #0b0a1c 56%, #050409 100%); }
+    .i3-dark-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1.6px, transparent 1.8px); background-size: 30px 30px; }
+    .i3-dark-amb { position: absolute; left: 40px; top: 220px; width: 1000px; height: 980px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(11,109,240,0.22) 0%, rgba(11,109,240,0.07) 45%, rgba(11,109,240,0) 70%); }
+    .i3-dark-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%); }
+    .i3-on-dark { box-shadow: none; }
+    /* Black Friday pieces: the tape (a yellow strip with «BLACK FRIDAY» running on it), the yellow pill and the burst */
+    .i3-tape { position: absolute; height: 92px; background: #FFD60A; overflow: hidden; }
+    .i3-tape-run { position: absolute; left: 0; top: 0; height: 92px; display: flex; align-items: center; gap: 34px; white-space: nowrap;
+      font-weight: 900; font-size: 52px; line-height: 1; letter-spacing: 0.02em; color: #08070F; padding-top: 4px; box-sizing: border-box; }
+    .i3-tape-run i { display: block; width: 16px; height: 16px; border-radius: 50%; background: #08070F; font-style: normal; }
+    .i3-ypill { display: flex; align-items: center; gap: 14px; height: 72px; padding: 0 32px 0 22px; border-radius: 999px; background: #FFD60A;
+      color: #08070F; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 31px; line-height: 1; letter-spacing: -0.005em; }
+    .i3-ypill svg { display: block; width: 38px; height: 38px; }
+    .i3-acc-y { color: #FFD60A; }
+    .i3-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    /* v6: no outer shadows anywhere (flat objects); on paper a white card keeps its edge with a hairline */
+    .i3-on-paper { box-shadow: inset 0 0 0 2px #DDE6F5; }
+    .i3-on-blue { box-shadow: none; }
+    .i3-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .i3-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .i3-pill svg { display: block; width: 28px; height: 28px; }
+    .i3-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .i3-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .i3-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .i3-flag svg { display: block; width: 40px; height: 27px; }
+    .i3-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .i3-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF; }
+    .i3-av svg { display: block; width: 96px; height: 96px; }
+    .i3-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .i3-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: inset 0 0 0 2px #DDE6F5; }
+    .i3-bub-g { background: #E8ECF7; color: #374151; }
+    .i3-bub-b { background: #0b6df0; color: #FFFFFF; }
+    .i3-bl { border-bottom-left-radius: 10px; }
+    .i3-br { border-bottom-right-radius: 10px; }
+    .i3-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .i3-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .i3-acc { color: #4da3ff; }
+    .i3-w { display: inline-block; }
+
+    .i3-ph { position: absolute; border-radius: 74px; background: #0E0E12; box-shadow: inset 0 0 0 3px #2A2A33, inset 0 0 0 5px #0E0E12, inset 0 0 0 6px #3B3B46; }
+    .i3-scr { position: absolute; left: 16px; top: 16px; right: 16px; bottom: 16px; border-radius: 60px; overflow: hidden; background: #FFFFFF; }
+    .i3-isl { position: absolute; left: 50%; top: 30px; width: 150px; height: 42px; margin-left: -75px; border-radius: 21px; background: #000000; z-index: 5; }
+    .i3-sb { position: absolute; left: 0; top: 0; width: 100%; height: 96px; display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 58px 0; box-sizing: border-box; font-family: "Inter", sans-serif; font-weight: 700; font-size: 28px; color: #0C0C1E; z-index: 4; }
+    .i3-sb i { display: inline-block; width: 46px; height: 22px; border-radius: 6px; box-shadow: inset 0 0 0 3px currentColor; position: relative; }
+    .i3-sb i::after { content: ""; position: absolute; left: 5px; top: 5px; width: 28px; height: 12px; border-radius: 3px; background: currentColor; }
+
+    #i3-wp { position: absolute; inset: 0; background: linear-gradient(170deg, #3E7BE6 0%, #1F3FA8 55%, #172C7A 100%); }
+    .i3-date { position: absolute; left: 0; top: 150px; width: 100%; text-align: center; font-family: "Inter", sans-serif; font-weight: 600;
+      font-size: 32px; color: rgba(255,255,255,0.92); }
+    #i3-clock { position: absolute; left: 0; top: 206px; width: 100%; text-align: center; font-family: "Inter", sans-serif; font-weight: 700;
+      font-size: 150px; line-height: 1; letter-spacing: -0.02em; color: #FFFFFF; }
+    #i3-nf { position: absolute; left: 20px; right: 20px; top: 540px; height: 252px; border-radius: 34px; background: rgba(245,246,250,0.94); }
+    #i3-ic { position: absolute; left: 26px; top: 26px; width: 52px; height: 52px; }
+    #i3-ic svg { display: block; width: 52px; height: 52px; }
+    #i3-app { position: absolute; left: 96px; top: 30px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 24px; color: #5A6480;
+      letter-spacing: 0.02em; }
+    #i3-now { position: absolute; right: 30px; top: 30px; font-family: "Inter", sans-serif; font-weight: 500; font-size: 24px; color: #5A6480; }
+    #i3-tt { position: absolute; left: 96px; top: 68px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 34px; color: #0C0C1E; }
+    .i3-sub { position: absolute; left: 96px; top: 118px; font-family: "Inter", sans-serif; font-weight: 500; font-size: 28px; color: #374151; }
+    #i3-btn { position: absolute; left: 96px; bottom: 22px; height: 58px; padding: 0 28px; border-radius: 29px; background: #E3E6EE;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; line-height: 58px; color: #0C0C1E; transform-origin: 50% 50%; }
+
+  </style>
+  <div id="root" data-composition-id="ins-03" data-width="1080" data-height="1920" data-duration="2.246">
+    <div class="i3-full i3-paper"><div class="i3-paper-dots"></div><div class="i3-paper-light"></div></div>
+    <div id="i3-phone" class="i3-ph" style="left:270px; top:140px; width:540px; height:1110px;"><div class="i3-scr"><div class="i3-sb" style="color: #FFFFFF;"><span>9:00</span><i></i></div><div id="i3-wp"></div><div id="i3-dt0" class="i3-date">viernes, 1 de enero</div><div id="i3-dt1" class="i3-date">lunes, 1 de febrero</div><div id="i3-dt2" class="i3-date">lunes, 1 de marzo</div><div id="i3-clock">9:00</div><div id="i3-nf"><div id="i3-ic"><svg viewBox="0 0 40 40"><rect width="40" height="40" rx="10" fill="#0B6DF0"/><path d="M20 9 C14 9 12 13 12 18 V23 L9.5 27 H30.5 L28 23 V18 C28 13 26 9 20 9 Z M17 29 A3 3 0 0 0 23 29 Z" fill="#FFFFFF"/></svg></div><div id="i3-app">RECORDATORIOS</div><div id="i3-now">ahora</div><div id="i3-tt">Empezar neerlandés</div><div id="i3-s0" class="i3-sub">Hoy · 9:00</div><div id="i3-s1" class="i3-sub">Pospuesto 1 vez</div><div id="i3-s2" class="i3-sub">Pospuesto 2 veces</div><div id="i3-btn">Posponer</div></div></div><div class="i3-isl"></div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("i3-" + id);
+
+      tl.fromTo(q("phone"), { opacity: 0.4, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);   // there from the cut
+      tl.set([q("dt1"), q("dt2"), q("s1"), q("s2")], { opacity: 0 }, 0);
+      tl.to(q("btn"), { keyframes: [{ scale: 0.9, backgroundColor: "#C9CEDA", duration: 0.07 }, { scale: 1, backgroundColor: "#E3E6EE", duration: 0.1 }] }, 0.42);
+      tl.to(q("nf"), { x: -700, opacity: 0.6, duration: 0.2, ease: "power2.in" }, 0.56);
+      tl.set(q("dt0"), { opacity: 0 }, 0.72); tl.set(q("dt1"), { opacity: 1 }, 0.72);
+      tl.set(q("s0"), { opacity: 0 }, 0.72); tl.set(q("s1"), { opacity: 1 }, 0.72);
+      tl.fromTo(q("nf"), { x: 0, y: -60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.24, ease: "back.out(1.5)", immediateRender: false }, 0.78);
+      tl.to(q("btn"), { keyframes: [{ scale: 0.9, backgroundColor: "#C9CEDA", duration: 0.07 }, { scale: 1, backgroundColor: "#E3E6EE", duration: 0.1 }] }, 1.52);
+      tl.to(q("nf"), { x: -700, opacity: 0.6, duration: 0.2, ease: "power2.in" }, 1.66);
+      tl.set(q("dt1"), { opacity: 0 }, 1.82); tl.set(q("dt2"), { opacity: 1 }, 1.82);
+      tl.set(q("s1"), { opacity: 0 }, 1.82); tl.set(q("s2"), { opacity: 1 }, 1.82);
+      tl.fromTo(q("nf"), { x: 0, y: -60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.24, ease: "back.out(1.5)", immediateRender: false }, 1.88);
+
+      window.__timelines["ins-03"] = tl;
+    })();
+  </script>
+</template>

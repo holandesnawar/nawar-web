@@ -1,0 +1,319 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE + dots + soft vignette ---------- */
+    #f32-ground { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%); }
+    #f32-dots {
+      position: absolute; left: -160px; top: -100px; width: 2240px; height: 1280px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px;
+    }
+    #f32-amb {
+      position: absolute; left: 820px; top: 160px; width: 1120px; height: 760px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.22) 0%, rgba(77,163,255,0.08) 45%, rgba(77,163,255,0) 70%);
+    }
+    #f32-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 78% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%); }
+    .f32-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+    /* ================= macOS window (tools/mac_mockup.md) ================= */
+    .f32-win { --u: calc(var(--sw) / 1120); }
+    /* standalone macOS window (same chrome, 16:10 overall, 16:9 content) */
+    .f32-win {
+      --sw: 1120px;
+      position: absolute; width: calc(var(--u) * 1120); height: calc(var(--u) * 700);
+      border-radius: calc(var(--u) * 12); overflow: hidden; background: #FFFFFF;
+      box-shadow: 0 0 0 calc(var(--u) * 1) rgba(10,10,30,0.28), 0 calc(var(--u) * 30) calc(var(--u) * 90) rgba(4,0,40,0.50), 0 calc(var(--u) * 10) calc(var(--u) * 26) rgba(4,0,40,0.30);
+    }
+    .f32-win-edge {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: calc(var(--u) * 12); pointer-events: none;
+      box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(255,255,255,0.45);
+    }
+    
+    /* browser chrome (shared): tab strip 36u + toolbar 34u = 70u */
+    .f32-chrome { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 70); font-family: "Inter", sans-serif; }
+    .f32-tabs { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--u) * 36); background: #DEE1E6; }
+    .f32-tl { position: absolute; top: calc(var(--u) * 12); width: calc(var(--u) * 12); height: calc(var(--u) * 12); border-radius: 50%; }
+    .f32-tl-r { left: calc(var(--u) * 13); background: #FF5F57; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #E0443E; }
+    .f32-tl-y { left: calc(var(--u) * 33); background: #FEBC2E; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #DEA123; }
+    .f32-tl-g { left: calc(var(--u) * 53); background: #28C840; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #1AAB29; }
+    .f32-tab {
+      position: absolute; left: calc(var(--u) * 82); top: calc(var(--u) * 7); width: calc(var(--u) * 232); height: calc(var(--u) * 29);
+      border-radius: calc(var(--u) * 9) calc(var(--u) * 9) 0 0; background: #FFFFFF;
+    }
+    .f32-tab::before, .f32-tab::after { content: ""; position: absolute; bottom: 0; width: calc(var(--u) * 9); height: calc(var(--u) * 9); }
+    .f32-tab::before { left: calc(var(--u) * -9); background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f32-tab::after { right: calc(var(--u) * -9); background: radial-gradient(circle at 100% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f32-fav {
+      position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 7); width: calc(var(--u) * 15); height: calc(var(--u) * 15);
+      border-radius: calc(var(--u) * 3.5); overflow: hidden; background: radial-gradient(circle at 50% 45%, #2fb6f2 0%, #0b6df0 80%);
+    }
+    .f32-fav img { position: absolute; left: calc(var(--u) * 1.2); top: calc(var(--u) * 5.2); width: calc(var(--u) * 12.6); height: auto; display: block; }
+    .f32-tab-t {
+      position: absolute; left: calc(var(--u) * 35); top: 0; height: calc(var(--u) * 29); line-height: calc(var(--u) * 29);
+      font-size: calc(var(--u) * 12); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f32-tab-x { position: absolute; right: calc(var(--u) * 10); top: calc(var(--u) * 9.5); width: calc(var(--u) * 10); height: calc(var(--u) * 10); }
+    .f32-plus { position: absolute; left: calc(var(--u) * 330); top: calc(var(--u) * 11); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    .f32-bar { position: absolute; left: 0; top: calc(var(--u) * 36); width: 100%; height: calc(var(--u) * 34); background: #FFFFFF; box-shadow: inset 0 calc(var(--u) * -1) 0 #DADCE0; }
+    .f32-nav { position: absolute; left: calc(var(--u) * 14); top: calc(var(--u) * 9); width: calc(var(--u) * 86); height: calc(var(--u) * 16); overflow: visible; }   /* back · forward (disabled) · reload */
+    .f32-menu { position: absolute; left: calc(var(--u) * 1086); top: calc(var(--u) * 9); width: calc(var(--u) * 16); height: calc(var(--u) * 16); }
+    .f32-url {
+      position: absolute; left: calc(var(--u) * 102); top: calc(var(--u) * 4); width: calc(var(--u) * 962); height: calc(var(--u) * 26);
+      border-radius: calc(var(--u) * 13); background: #F1F3F4;
+    }
+    .f32-lock { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6.5); width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
+    .f32-url-t {
+      position: absolute; left: calc(var(--u) * 33); top: 0; height: calc(var(--u) * 26); line-height: calc(var(--u) * 26);
+      font-size: calc(var(--u) * 13); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f32-star { position: absolute; right: calc(var(--u) * 11); top: calc(var(--u) * 6); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    /* 16:9 content area — real recordings, object-fit cover (never stretch) */
+    .f32-content { position: absolute; left: 0; top: calc(var(--u) * 70); width: calc(var(--u) * 1120); height: calc(var(--u) * 630); overflow: hidden; background: #FFFFFF; }
+    .f32-media { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--fx, 50%) var(--fy, 50%); display: block; }
+    #f32-stage { transform-origin: 1376px 540px; }
+    .f32-pane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: hidden; background: #FFFFFF; }
+
+    /* completa-frase.mp4 (1718×690): static framing of the exercise column, source x 549–1514 × y 0–543 (16:9), uniform scale */
+    .f32-cf { position: absolute; left: -509.75px; top: 0; width: 1595.2px; height: 640.7px; display: block; object-fit: fill; }
+
+    /* ordena-palabras (879×434, white page): shown whole, uniform scale 896/879; chips rebuilt to fly into the answer */
+    #f32-osc { position: absolute; left: 0; top: 26px; width: 879px; height: 434px; transform: scale(1.01934); transform-origin: 0 0; }
+    #f32-osc img { position: absolute; left: 0; top: 0; width: 879px; height: 434px; display: block; }
+    .f32-patch { position: absolute; background: #FFFFFF; }
+    .f32-chip {
+      position: absolute; top: 296px; height: 35px; box-sizing: border-box; border: 1px solid #DDE4F4; border-radius: 8px; background: #F1F5FF;
+      display: flex; align-items: center; justify-content: center; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 14.5px; line-height: 1; color: #10162A;
+    }
+
+    #f32-cmp {
+      position: absolute; left: 207px; top: 347px; width: 569px; height: 47px; border-radius: 8px; background: #4298FD; opacity: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 14.5px; line-height: 1; color: #001678;
+    }
+    /* pane 4: the hint line shows its default «Ver pista» state (same recording, media 0–1.5, before any click) */
+    #f32-hint { position: absolute; left: 147.6px; top: 157.8px; width: 271.1px; height: 27.9px; overflow: hidden; }
+    #f32-vidh { position: absolute; left: -657.4px; top: -157.8px; width: 1595.2px; height: 640.7px; display: block; object-fit: fill; }
+
+    /* luisteren (1902×1080): cover, scale 0.47108, y offset -2.4 — played bars tint blue under a playhead */
+    #f32-tclip { position: absolute; left: 76.8px; top: 167px; width: 0; height: 52px; overflow: hidden; }
+    #f32-tcopy { position: absolute; left: -76.8px; top: -169.4px; width: 896px; height: 508.8px; filter: url(#f32-tintf);
+      background: url("assets/img/ui-luisteren-audio.png") 0 0 / 100% 100% no-repeat; }
+    #f32-head { position: absolute; left: 75.6px; top: 161px; width: 2.5px; height: 64px; border-radius: 1.2px; background: #0b6df0; }
+    #f32-pause { position: absolute; left: 410.8px; top: 258.1px; width: 45.2px; height: 45.2px; border-radius: 50%; background: #64A1F8; }
+    #f32-pause i { position: absolute; top: 15.3px; width: 4.2px; height: 14.7px; border-radius: 1.4px; background: #1A017F; }
+    #f32-press { position: absolute; left: 60.8px; top: 346.2px; width: 789.5px; height: 50.9px; border-radius: 8px; background: rgba(26,1,127,0.16); opacity: 0; }
+    #f32-cur { position: absolute; left: 0; top: 0; width: 22px; height: 30px; transform-origin: 3px 3px; }
+
+    /* ---------- left column ---------- */
+    .f32-col { position: absolute; left: 96px; top: 0; width: 800px; height: 1080px; }
+    #f32-lead {
+      position: absolute; left: 0; top: 284px; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 48px; line-height: 1.2; letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
+    }
+    #f32-h1 {
+      position: absolute; left: 0; top: 346px; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 88px; line-height: 1.05; letter-spacing: -0.035em; color: #FFFFFF;
+      text-shadow: 0 10px 34px rgba(4,0,40,0.22);
+    }
+    .f32-w { display: inline-block; }
+    .f32-row { position: absolute; left: 0; height: 58px; width: 800px; }
+    .f32-verb {
+      position: absolute; left: 66px; top: 0; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 48px; line-height: 58px; letter-spacing: -0.02em; color: #FFFFFF;
+    }
+    .f32-acc { color: #4da3ff; }
+    .f32-ck { position: absolute; left: 0; top: 9px; width: 40px; height: 40px; }
+    .f32-ck svg { position: absolute; left: 0; top: 0; width: 40px; height: 40px; overflow: visible; }
+    .f32-ring { fill: none; stroke: rgba(255,255,255,0.32); stroke-width: 2; }
+    .f32-dot { fill: #34D399; }
+    .f32-tick { fill: none; stroke: #FFFFFF; stroke-width: 3.6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 24; }
+  </style>
+
+  <div id="root" data-composition-id="32-practicas" data-width="1920" data-height="1080" data-duration="7.192">
+    <div id="f32-ground" class="clip" data-start="0" data-duration="7.192" data-track-index="0"><div id="f32-dots"></div><div id="f32-amb"></div><div id="f32-vig"></div></div>
+
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+      <filter id="f32-tintf" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.043  0 0 0 0 0.427  0 0 0 0 0.941  -5.5 0 0 0 5.5" /></filter>
+    </svg>
+
+    <!-- ===== macOS window (right), front-on; its real content changes with every verb ===== -->
+    <div id="f32-stage" class="f32-full">
+      <div id="f32-rise" class="f32-full">
+        <div id="f32-win" class="f32-win" style="--sw:896px; left:928px; top:260px;">
+          <div class="f32-chrome">
+    <div class="f32-tabs"><i class="f32-tl f32-tl-r"></i><i class="f32-tl f32-tl-y"></i><i class="f32-tl f32-tl-g"></i>
+      <div class="f32-tab"><div class="f32-fav"><img src="assets/img/logo-nawar.png" alt="" /></div><div class="f32-tab-t">Holandés Nawar</div><svg class="f32-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
+      <svg class="f32-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
+    <div class="f32-bar"><svg class="f32-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
+      <div class="f32-url"><svg class="f32-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="f32-url-t">app.holandesnawar.com</div><svg class="f32-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
+      <svg class="f32-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
+  </div>
+          <div class="f32-content">
+            <!-- 1 · escribes — «Ik ___ elke dag koffie.»: the student types «drink» (media 15.4–16.4 = 2.40–3.40) -->
+            <div class="f32-pane" id="f32-p1">
+              <video id="f32-vid1" class="clip f32-cf" src="assets/video/completa-frase.mp4" muted playsinline
+                data-start="0" data-duration="4.022" data-media-start="13.0" data-hf-media-start-basis="local" data-track-index="2"></video>
+            </div>
+            <!-- 2 · ordenas frases — the chips fly into «Ik wil een glas water, alsjeblieft.» -->
+            <div class="f32-pane" id="f32-p2">
+              <div id="f32-osc">
+                <img src="assets/img/ui-ordena-palabras.png" alt="" />
+                <div class="f32-patch" style="left:100px; top:290px; width:400px; height:46px;"></div>
+                <div class="f32-patch" id="f32-ph" style="left:112px; top:234px; width:300px; height:38px;"></div>
+                <div class="f32-chip" id="f32-c-wil" style="left:106px; width:44px;">wil</div>
+                <div class="f32-chip" id="f32-c-een" style="left:158px; width:51px;">een</div>
+                <div class="f32-chip" id="f32-c-glas" style="left:217px; width:54px;">glas</div>
+                <div class="f32-chip" id="f32-c-alsj" style="left:279px; width:93px;">alsjeblieft.</div>
+                <div class="f32-chip" id="f32-c-water" style="left:380px; width:67px;">water,</div>
+                <div class="f32-chip" id="f32-c-ik" style="left:455px; width:37px;">Ik</div>
+                <div id="f32-cmp">Comprobar</div>
+              </div>
+            </div>
+            <!-- 3 · escuchas y respondes — the dialogue plays, then «Hacer los ejercicios» -->
+            <div class="f32-pane" id="f32-p3">
+              <img class="f32-media" src="assets/img/ui-luisteren-audio.png" alt="" />
+              <div id="f32-tclip"><div id="f32-tcopy"></div></div>
+              <div id="f32-head"></div>
+              <div id="f32-pause"><i style="left:15.3px;"></i><i style="left:25.7px;"></i></div>
+              <div id="f32-press"></div>
+              <div id="f32-cur"><svg viewBox="0 0 22 30" width="22" height="30" aria-hidden="true"><path d="M2.5 2 L2.5 23.5 L7.8 18.6 L11.3 26.6 L14.8 25.1 L11.4 17.2 L18.6 17.2 Z" fill="#0C0C1E" stroke="#FFFFFF" stroke-width="1.7" stroke-linejoin="round" /></svg></div>
+            </div>
+            <!-- 4 · completas sin pistas — «Een koffie, alsjeblieft!» → Comprobar (6.24) → ¡Correcto! (6.74) -->
+            <div class="f32-pane" id="f32-p4">
+              <video id="f32-vid4" class="clip f32-cf" src="assets/video/completa-frase.mp4" muted playsinline
+                data-start="5.817" data-duration="1.375" data-media-start="8.76" data-hf-media-start-basis="local" data-track-index="2"></video>
+              <div id="f32-hint"><video id="f32-vidh" class="clip" src="assets/video/completa-frase.mp4" muted playsinline
+                data-start="5.836" data-duration="1.356" data-media-start="0" data-hf-media-start-basis="local" data-track-index="3"></video></div>
+            </div>
+          </div>
+          <div class="f32-win-edge"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== left column ===== -->
+    <div class="f32-col">
+      <div id="f32-lead"><span class="f32-w" id="f32-w-y">Y</span> <span class="f32-w" id="f32-w-no">no</span> <span class="f32-w" id="f32-w-menos">menos</span> <span class="f32-w" id="f32-w-imp">importante,</span></div>
+      <div id="f32-h1"><span class="f32-w" id="f32-w-los">los</span> <span class="f32-w" id="f32-w-ej">ejercicios.</span></div>
+
+      <div class="f32-row" id="f32-r1" style="top:500px;">
+        <div class="f32-ck" id="f32-ck1"><svg viewBox="0 0 40 40" aria-hidden="true"><circle class="f32-ring" cx="20" cy="20" r="19" /><circle class="f32-dot" id="f32-dot1" cx="20" cy="20" r="20" /><path class="f32-tick" id="f32-tk1" d="M12.5 20.5 L17.8 25.6 L27.5 15.2" /></svg></div>
+        <div class="f32-verb"><span class="f32-w" id="f32-w-escribes">Escribes</span></div>
+      </div>
+      <div class="f32-row" id="f32-r2" style="top:580px;">
+        <div class="f32-ck" id="f32-ck2"><svg viewBox="0 0 40 40" aria-hidden="true"><circle class="f32-ring" cx="20" cy="20" r="19" /><circle class="f32-dot" id="f32-dot2" cx="20" cy="20" r="20" /><path class="f32-tick" id="f32-tk2" d="M12.5 20.5 L17.8 25.6 L27.5 15.2" /></svg></div>
+        <div class="f32-verb"><span class="f32-w" id="f32-w-ordenas">Ordenas</span> <span class="f32-w" id="f32-w-frases">frases</span></div>
+      </div>
+      <div class="f32-row" id="f32-r3" style="top:660px;">
+        <div class="f32-ck" id="f32-ck3"><svg viewBox="0 0 40 40" aria-hidden="true"><circle class="f32-ring" cx="20" cy="20" r="19" /><circle class="f32-dot" id="f32-dot3" cx="20" cy="20" r="20" /><path class="f32-tick" id="f32-tk3" d="M12.5 20.5 L17.8 25.6 L27.5 15.2" /></svg></div>
+        <div class="f32-verb"><span class="f32-w" id="f32-w-escuchas">Escuchas</span> <span class="f32-w" id="f32-w-respondes">y respondes</span></div>
+      </div>
+      <div class="f32-row" id="f32-r4" style="top:740px;">
+        <div class="f32-ck" id="f32-ck4"><svg viewBox="0 0 40 40" aria-hidden="true"><circle class="f32-ring" cx="20" cy="20" r="19" /><circle class="f32-dot" id="f32-dot4" cx="20" cy="20" r="20" /><path class="f32-tick" id="f32-tk4" d="M12.5 20.5 L17.8 25.6 L27.5 15.2" /></svg></div>
+        <div class="f32-verb"><span class="f32-w" id="f32-w-completas">Completas</span> <span class="f32-w f32-acc" id="f32-w-sin">sin</span> <span class="f32-w f32-acc" id="f32-w-pistas">pistas</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 7.275, LEAD = 0.04, W = 896, SL = 0.42;
+      const T = { y: 0.12, no: 0.28, menos: 0.41, imp: 0.93, los: 1.43, ej: 1.68, escribes: 2.86, ordenas: 3.60, frases: 3.95,
+                  escuchas: 4.56, yres: 5.06, completas: 5.91, sin: 6.46, pistas: 6.68 };
+      const word = (id, cue) => tl.fromTo(q(id), { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, cue - LEAD);
+      const head = (id, cue) => tl.fromTo(q(id), { opacity: 0, y: 40, filter: "blur(6px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.5, ease: "power3.out" }, cue - LEAD);
+      // a row arrives: its empty ring + the verb rise together
+      const row = (n, verbId, cue) => {
+        tl.fromTo(q("f32-ck" + n), { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, cue - LEAD);
+        word(verbId, cue);
+      };
+      // the ring fills green and the tick draws (no overshoot)
+      const check = (n, t) => {
+        tl.fromTo(q("f32-dot" + n), { scale: 0.4, svgOrigin: "20 20" }, { scale: 1, svgOrigin: "20 20", duration: 0.3, ease: "power3.out" }, t);
+        tl.fromTo(q("f32-dot" + n), { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, t);
+        tl.fromTo(q("f32-tk" + n), { strokeDashoffset: 24 }, { strokeDashoffset: 0, duration: 0.24, ease: "power2.out" }, t + 0.08);
+      };
+      const dim = (id, t) => tl.fromTo(q(id), { opacity: 1 }, { opacity: 0.55, duration: 0.3, ease: "power2.out", immediateRender: false }, t);
+      // the window's content slides to the next exercise (clean horizontal page slide)
+      const slide = (a, b, t) => {
+        tl.fromTo(q(a), { x: 0 }, { x: -W, duration: SL, ease: "power3.inOut", immediateRender: false }, t);
+        tl.fromTo(q(b), { x: W }, { x: 0, duration: SL, ease: "power3.inOut" }, t);
+      };
+
+      // ===== ENTRANCE: the window rises into place, the lead line starts on «Y» =====
+      tl.fromTo(q("f32-rise"), { y: 70 }, { y: 0, duration: 0.8, ease: "expo.out" }, 0);
+      tl.fromTo(q("f32-win"), { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power1.out" }, 0);
+      tl.fromTo(q("f32-stage"), { scale: 1 }, { scale: 1.012, duration: D, ease: "none" }, 0);
+      word("f32-w-y", T.y); word("f32-w-no", T.no); word("f32-w-menos", T.menos); word("f32-w-imp", T.imp);
+      head("f32-w-los", T.los); head("f32-w-ej", T.ej);
+      // panes 2–4 wait off to the right
+      tl.set([q("f32-p2"), q("f32-p3"), q("f32-p4")], { x: W }, 0);
+
+      // ===== 1 · Escribes =====
+      row(1, "f32-w-escribes", T.escribes);
+      check(1, 3.38);
+
+      // ===== 2 · Ordenas frases — chips fly into the answer in order =====
+      slide("f32-p1", "f32-p2", T.ordenas - 0.06);
+      dim("f32-w-escribes", T.ordenas - 0.04);
+      row(2, "f32-w-ordenas", T.ordenas); word("f32-w-frases", T.frases);
+      tl.fromTo(q("f32-ph"), { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, 3.9);
+      const order = [["f32-c-ik", -337], ["f32-c-wil", 57], ["f32-c-een", 57], ["f32-c-glas", 57], ["f32-c-water", -44], ["f32-c-alsj", 132]];
+      order.forEach(([id, dx], i) => {
+        tl.fromTo(q(id), { x: 0, y: 0 }, { x: dx, y: -60, duration: 0.26, ease: "power3.inOut" }, 3.76 + i * 0.085);
+      });
+      tl.fromTo(q("f32-cmp"), { opacity: 0 }, { opacity: 1, duration: 0.14, ease: "power1.out" }, 4.42);
+      check(2, 4.44);
+
+      // ===== 3 · Escuchas y respondes — the dialogue is playing; click «Hacer los ejercicios» =====
+      slide("f32-p2", "f32-p3", T.escuchas - 0.04);
+      dim("f32-w-ordenas", T.escuchas - 0.04); dim("f32-w-frases", T.escuchas - 0.04);
+      row(3, "f32-w-escuchas", T.escuchas); word("f32-w-respondes", T.yres);
+      const P0 = T.escuchas - 0.04, P1 = 5.9;
+      tl.fromTo(q("f32-head"), { x: 0 }, { x: 330, duration: P1 - P0, ease: "none" }, P0);
+      tl.fromTo(q("f32-tclip"), { width: 0 }, { width: 330, duration: P1 - P0, ease: "none" }, P0);
+      tl.fromTo(q("f32-cur"), { x: 690, y: 452 }, { x: 468, y: 372, duration: 0.3, ease: "power2.inOut" }, 4.82);
+      tl.fromTo(q("f32-cur"), { scale: 1 }, { scale: 0.86, duration: 0.07, ease: "power2.out", immediateRender: false }, 5.13);
+      tl.to(q("f32-cur"), { scale: 1, duration: 0.14, ease: "power2.out" }, 5.2);
+      tl.fromTo(q("f32-press"), { opacity: 0 }, { opacity: 1, duration: 0.07, ease: "power2.out" }, 5.13);
+      tl.to(q("f32-press"), { opacity: 0, duration: 0.3, ease: "power2.out" }, 5.24);
+      check(3, 5.36);
+
+      // ===== 4 · Completas sin pistas — Comprobar → ¡Correcto! on «pistas» =====
+      slide("f32-p3", "f32-p4", T.completas - 0.06);
+      dim("f32-w-escuchas", T.completas - 0.04); dim("f32-w-respondes", T.completas - 0.04);
+      row(4, "f32-w-completas", T.completas); word("f32-w-sin", T.sin); word("f32-w-pistas", T.pistas);
+      check(4, 6.78);
+
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.285, 0.204], [0.413, 0.336], [0.927, 0.58], [1.431, 1.388], [1.679, 1.66], [2.615, 2.618], [2.863, 2.89], [3.597, 3.604], [3.954, 3.979], [4.56, 4.552], [5.064, 5.097], [5.138, 5.172], [5.909, 5.923], [6.459, 6.458], [6.679, 6.646], [7.275, 7.192]]);
+      window.__timelines["32-practicas"] = tl;
+    })();
+  </script>
+</template>

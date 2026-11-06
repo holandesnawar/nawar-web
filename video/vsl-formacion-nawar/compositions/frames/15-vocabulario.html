@@ -1,0 +1,339 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: PAPER ---------- */
+    #f15-ground { position: absolute; inset: 0; background: #F5F7FF; overflow: hidden; }
+    #f15-dots {
+      position: absolute; left: -140px; top: -140px; width: 2200px; height: 1360px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; transform-origin: 1100px 680px;
+    }
+    #f15-vig {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 75% 70% at 50% 48%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 60%, rgba(29,0,132,0.045) 100%);
+    }
+
+    .f15-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #f15-cam { transform-origin: 960px 600px; }
+
+    /* ---------- header: pill + title ---------- */
+    #f15-pillrow { position: absolute; left: 0; top: 318px; width: 1920px; display: flex; justify-content: center; }
+    #f15-pill {
+      display: flex; align-items: center; gap: 16px;
+      height: 60px; padding: 0 28px; border-radius: 999px; box-sizing: border-box;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap;
+      box-shadow: 0 16px 36px rgba(18,0,129,0.20);
+    }
+    #f15-plab { font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; letter-spacing: 0.14em; color: rgba(255,255,255,0.72); }
+    #f15-pnum { font-family: "Poppins", sans-serif; font-weight: 800; font-size: 28px; line-height: 1; letter-spacing: -0.01em; color: #FFFFFF; padding-top: 3px; }
+    #f15-psegs { display: flex; gap: 6px; margin-left: 4px; }
+    #f15-psegs i { display: block; width: 26px; height: 7px; border-radius: 4px; background: rgba(255,255,255,0.26); }
+    #f15-psegs i.f15-done { background: rgba(255,255,255,0.55); }
+    #f15-psegs i.f15-on { background: #FFFFFF; }
+
+    #f15-titlerow { position: absolute; left: 0; top: 410px; width: 1920px; display: flex; justify-content: center; }
+    #f15-title { display: flex; align-items: center; gap: 34px; transform-origin: 50% 0%; white-space: nowrap; }
+    #f15-wvoc {
+      display: inline-block; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 140px; line-height: 1.12;
+      letter-spacing: -0.035em; color: #1D0084;
+    }
+    #f15-chip {
+      display: inline-block; padding: 0 34px 0 30px; border-radius: 26px; background: #1D0084; color: #FFFFFF;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 140px; line-height: 1.12; letter-spacing: -0.035em;
+      box-shadow: 0 22px 50px rgba(18,0,129,0.22);
+    }
+
+    /* ---------- tiles ---------- */
+    #f15-row { transform-origin: 960px 400px; }
+    .f15-slot {
+      position: absolute; top: 400px; width: 396px; height: 500px; border-radius: 28px; box-sizing: border-box;
+      border: 2px dashed rgba(29,0,132,0.16); background: rgba(29,0,132,0.022);
+    }
+    .f15-tile {
+      position: absolute; top: 400px; width: 396px; height: 500px; border-radius: 28px; box-sizing: border-box;
+      background: #FFFFFF; border: 1px solid #DDE6F5;
+      box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08);
+      display: flex; flex-direction: column; align-items: center; padding-top: 58px;
+      transform-origin: 50% 60%;
+    }
+    .f15-badge {
+      position: relative; width: 232px; height: 232px; border-radius: 50%;
+      background: radial-gradient(circle at 50% 42%, rgba(11,109,240,0.10) 0%, rgba(29,0,132,0.05) 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .f15-ico { width: 160px; height: 160px; display: block; overflow: visible; }
+    .f15-ico .f15-d {
+      fill: none; stroke: #1D0084; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 1 2;
+    }
+    .f15-nl {
+      margin-top: 46px; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 52px; line-height: 1.1;
+      letter-spacing: -0.02em; color: #1D0084; white-space: nowrap;
+    }
+    .f15-art { color: #0b6df0; font-weight: 600; }
+    .f15-es {
+      margin-top: 12px; font-family: "Inter", sans-serif; font-weight: 500; font-size: 28px; line-height: 1.35;
+      color: #5A6480; white-space: nowrap;
+    }
+
+    /* ---------- scene 3: the textbook card ---------- */
+    #f15-s3 { position: absolute; left: 0; top: 396px; width: 1920px; display: flex; justify-content: center; }
+    #f15-s3col { display: flex; flex-direction: column; align-items: flex-start; }
+    #f15-lead {
+      display: flex; gap: 0.28em; margin-left: 6px;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 60px; line-height: 1.15; letter-spacing: -0.01em; color: #374151;
+    }
+    .f15-w { display: inline-block; }
+    #f15-drop { margin-top: 18px; transform-origin: 50% 50%; }
+    #f15-card {
+      display: flex; align-items: center; gap: 50px; padding: 44px 70px 44px 54px; border-radius: 28px;
+      background: #FFFFFF; border: 1px solid #DDE6F5;
+      box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08);
+      transform-origin: 50% 50%;
+    }
+    #f15-apple { width: 206px; height: 206px; display: block; overflow: visible; flex: 0 0 206px; }
+    #f15-ctext { display: flex; flex-direction: column; align-items: flex-start; }
+    #f15-clab { font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; letter-spacing: 0.14em; color: #5A6480; }
+    #f15-nlline { position: relative; margin-top: 10px; }
+    #f15-cnl {
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 96px; line-height: 1.08; letter-spacing: -0.03em;
+      color: #0C0C1E; white-space: nowrap;
+    }
+    #f15-strike {
+      position: absolute; left: -16px; right: -16px; top: 56px; height: 13px; border-radius: 7px;
+      background: #E02D3C; transform-origin: 0% 50%;
+      box-shadow: 0 6px 16px rgba(224,45,60,0.28);
+    }
+    #f15-ces {
+      display: flex; gap: 0.26em; margin-top: 8px;
+      font-family: "Inter", sans-serif; font-weight: 500; font-size: 34px; line-height: 1.35; color: #5A6480; white-space: nowrap;
+    }
+  </style>
+
+  <div id="root" data-composition-id="15-vocabulario" data-width="1920" data-height="1080" data-duration="6.563">
+    <div id="f15-ground" class="clip" data-start="0" data-duration="6.563" data-track-index="0">
+      <div id="f15-dots"></div>
+      <div id="f15-vig"></div>
+    </div>
+
+    <div id="f15-shake" class="f15-full">
+      <div id="f15-cam" class="f15-full">
+
+        <!-- ===== tiles (scene 2) ===== -->
+        <div id="f15-row" class="f15-full">
+          <div class="f15-slot" style="left:120px"></div>
+          <div class="f15-slot" style="left:548px"></div>
+          <div class="f15-slot" style="left:976px"></div>
+          <div class="f15-slot" style="left:1404px"></div>
+
+          <!-- het werk : briefcase -->
+          <div class="f15-tile" id="f15-t0" style="left:120px">
+            <div class="f15-badge" id="f15-bg0">
+              <svg class="f15-ico" viewBox="0 0 120 120">
+                <path class="f15-d" pathLength="1" d="M26 40 H94 A12 12 0 0 1 106 52 V92 A12 12 0 0 1 94 104 H26 A12 12 0 0 1 14 92 V52 A12 12 0 0 1 26 40 Z"/>
+                <path class="f15-d" pathLength="1" d="M44 40 V31 A9 9 0 0 1 53 22 H67 A9 9 0 0 1 76 31 V40"/>
+                <path class="f15-d" pathLength="1" d="M14 66 H48"/>
+                <path class="f15-d" pathLength="1" d="M72 66 H106"/>
+                <path class="f15-f" fill="#0b6df0" d="M54 58 H66 A5 5 0 0 1 71 63 V70 A5 5 0 0 1 66 75 H54 A5 5 0 0 1 49 70 V63 A5 5 0 0 1 54 58 Z"/>
+              </svg>
+            </div>
+            <div class="f15-nl"><span class="f15-art">het</span> werk</div>
+            <div class="f15-es">el trabajo</div>
+          </div>
+
+          <!-- de huisarts : stethoscope -->
+          <div class="f15-tile" id="f15-t1" style="left:548px">
+            <div class="f15-badge" id="f15-bg1">
+              <svg class="f15-ico" viewBox="0 0 120 120">
+                <path class="f15-d" pathLength="1" d="M34 16 V48 A23 23 0 0 0 80 48 V16"/>
+                <path class="f15-d" pathLength="1" d="M57 71 V84 A16 16 0 0 0 89 84 V77"/>
+                <path class="f15-d" pathLength="1" d="M77 64 A12 12 0 1 0 101 64 A12 12 0 1 0 77 64 Z"/>
+                <path class="f15-f" fill="#1D0084" d="M28 14 A6 6 0 1 0 40 14 A6 6 0 1 0 28 14 Z"/>
+                <path class="f15-f" fill="#1D0084" d="M74 14 A6 6 0 1 0 86 14 A6 6 0 1 0 74 14 Z"/>
+                <path class="f15-f" fill="#0b6df0" d="M83 64 A6 6 0 1 0 95 64 A6 6 0 1 0 83 64 Z"/>
+              </svg>
+            </div>
+            <div class="f15-nl"><span class="f15-art">de</span> huisarts</div>
+            <div class="f15-es">el médico</div>
+          </div>
+
+          <!-- de gemeente : town hall with columns + Dutch flag -->
+          <div class="f15-tile" id="f15-t2" style="left:976px">
+            <div class="f15-badge" id="f15-bg2">
+              <svg class="f15-ico" viewBox="0 0 120 120">
+                <path class="f15-d" pathLength="1" d="M12 46 L60 22 L108 46 Z"/>
+                <path class="f15-d" pathLength="1" d="M16 54 H104"/>
+                <path class="f15-d" pathLength="1" d="M28 62 V92"/>
+                <path class="f15-d" pathLength="1" d="M48 62 V92"/>
+                <path class="f15-d" pathLength="1" d="M72 62 V92"/>
+                <path class="f15-d" pathLength="1" d="M92 62 V92"/>
+                <path class="f15-d" pathLength="1" d="M16 99 H104"/>
+                <path class="f15-d" pathLength="1" d="M8 108 H112"/>
+                <path class="f15-d" pathLength="1" d="M60 22 V2"/>
+                <g class="f15-f">
+                  <rect x="60" y="2" width="22" height="5" fill="#AE1C27"/>
+                  <rect x="60" y="7" width="22" height="5" fill="#FFFFFF"/>
+                  <rect x="60" y="12" width="22" height="5" fill="#21468C"/>
+                  <rect x="60" y="2" width="22" height="15" fill="none" stroke="#1D0084" stroke-width="1.4"/>
+                </g>
+              </svg>
+            </div>
+            <div class="f15-nl"><span class="f15-art">de</span> gemeente</div>
+            <div class="f15-es">el ayuntamiento</div>
+          </div>
+
+          <!-- de routine : mug with steam (tu día a día) -->
+          <div class="f15-tile" id="f15-t3" style="left:1404px">
+            <div class="f15-badge" id="f15-bg3">
+              <svg class="f15-ico" viewBox="0 0 120 120">
+                <path class="f15-d" pathLength="1" d="M22 50 H82 V82 A22 22 0 0 1 60 104 H44 A22 22 0 0 1 22 82 Z"/>
+                <path class="f15-d" pathLength="1" d="M82 60 H88 A12 12 0 0 1 88 84 H81"/>
+                <path class="f15-d" pathLength="1" d="M12 112 H92"/>
+                <path class="f15-d" pathLength="1" d="M40 38 C34 31 46 26 40 18"/>
+                <path class="f15-d" pathLength="1" d="M58 38 C52 31 64 26 58 18"/>
+                <path class="f15-f" fill="#0b6df0" d="M52 90 C39 81 40 68 47 68 C50 68 52 71 52 71 C52 71 54 68 57 68 C64 68 65 81 52 90 Z"/>
+              </svg>
+            </div>
+            <div class="f15-nl"><span class="f15-art">de</span> routine</div>
+            <div class="f15-es">tu día a día</div>
+          </div>
+        </div>
+
+        <!-- ===== header (scene 1) ===== -->
+        <div id="f15-pillrow">
+          <div id="f15-pill">
+            <span id="f15-plab">FASE</span><span id="f15-pnum">02</span>
+            <span id="f15-psegs"><i class="f15-done"></i><i class="f15-on"></i><i></i></span>
+          </div>
+        </div>
+        <div id="f15-titlerow">
+          <div id="f15-title">
+            <span id="f15-wvoc">Vocabulario</span><span id="f15-chip">real.</span>
+          </div>
+        </div>
+
+        <!-- ===== scene 3: the textbook sentence ===== -->
+        <div id="f15-s3">
+          <div id="f15-s3col">
+            <div id="f15-lead"><span class="f15-w" id="f15-l0">Nada</span><span class="f15-w" id="f15-l1">de</span></div>
+            <div id="f15-drop">
+              <div id="f15-card">
+                <svg id="f15-apple" viewBox="0 0 120 120">
+                  <ellipse cx="60" cy="112" rx="36" ry="5" fill="rgba(18,0,129,0.10)"/>
+                  <path d="M60 40 C50 31 22 30 17 58 C12 86 33 109 47 109 C53 109 55 105 60 105 C65 105 67 109 73 109 C87 109 108 86 103 58 C98 30 70 31 60 40 Z" fill="#AE1C27"/>
+                  <path d="M60 40 C70 31 98 30 103 58 C106 76 98 93 88 102 C96 88 98 70 92 56 C86 44 74 40 60 40 Z" fill="rgba(12,12,30,0.16)"/>
+                  <ellipse cx="38" cy="62" rx="7" ry="14" transform="rotate(20 38 62)" fill="rgba(255,255,255,0.38)"/>
+                  <path d="M60 40 C60 30 62 22 67 15" fill="none" stroke="#374151" stroke-width="6" stroke-linecap="round"/>
+                  <path d="M66 26 C73 13 89 10 97 14 C92 27 77 32 66 26 Z" fill="#16A34A"/>
+                </svg>
+                <div id="f15-ctext">
+                  <div id="f15-clab">LECCIÓN 1</div>
+                  <div id="f15-nlline">
+                    <div id="f15-cnl">De appel is rood.</div>
+                    <div id="f15-strike"></div>
+                  </div>
+                  <div id="f15-ces"><span class="f15-w" id="f15-g0">La</span><span class="f15-w" id="f15-g1">manzana</span><span class="f15-w" id="f15-g2">es</span><span class="f15-w" id="f15-g3">roja.</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      var $ = function (id) { return document.getElementById(id); };
+      var D = 7.213;
+
+      /* ===== Scene 1 — entrance: camera settles, pill rises, title lands (scale 1.1 -> 1 + light blur) ===== */
+      tl.fromTo("#f15-dots", { scale: 1.05 }, { scale: 1, duration: 0.7, ease: "expo.out" }, 0);
+      tl.fromTo("#f15-pill", { opacity: 0, scale: 0.94, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "power3.out" }, 0);
+
+      var VOC_SHIFT = 190; // half of (chip width + gap): "Vocabulario" lands centred, then makes room for "real."
+      tl.fromTo("#f15-wvoc", { x: VOC_SHIFT, scale: 1.1, opacity: 0, filter: "blur(8px)" },
+        { x: VOC_SHIFT, scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.34, ease: "expo.out" }, 0.06);
+
+      tl.fromTo("#f15-wvoc", { x: VOC_SHIFT }, { x: 0, duration: 0.34, ease: "expo.out", immediateRender: false }, 0.69);
+      tl.fromTo("#f15-chip", { scale: 1.1, rotation: -1.5, opacity: 0, filter: "blur(6px)" },
+        { scale: 1, rotation: -1.5, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "power4.out" }, 0.69);
+
+      /* ===== Seam 1 -> 2 (silence 1.25-1.51): header lifts, empty slots rise on "El" ===== */
+      tl.fromTo("#f15-pillrow", { y: 0 }, { y: -190, duration: 0.5, ease: "power3.inOut" }, 1.27);
+      tl.fromTo("#f15-title", { y: 0, scale: 1 }, { y: -205, scale: 0.68, duration: 0.5, ease: "power3.inOut" }, 1.27);
+      tl.fromTo("#f15-row .f15-slot", { opacity: 0, y: 60 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power3.out", stagger: 0.05 }, 1.46);
+
+      /* slow push under the list */
+      tl.fromTo("#f15-cam", { scale: 1 }, { scale: 1.03, duration: 3.2, ease: "sine.inOut" }, 1.8);
+
+      /* ===== Scene 2 — four icon tiles rise on their nouns ===== */
+      var CUES = [1.76, 2.52, 3.21, 4.40];
+      CUES.forEach(function (c, i) {
+        var t0 = c - 0.05;
+        var tile = $("f15-t" + i);
+        tl.fromTo(tile, { opacity: 0, y: 60, scale: 0.96 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.46, ease: "power3.out" }, t0);
+        tl.fromTo("#f15-bg" + i, { scale: 0.88 }, { scale: 1, duration: 0.5, ease: "power3.out" }, t0 + 0.03);
+        tl.fromTo(tile.querySelectorAll(".f15-d"), { strokeDashoffset: 1 },
+          { strokeDashoffset: 0, duration: 0.46, ease: "power2.out", stagger: 0.045 }, t0 + 0.06);
+        tl.fromTo(tile.querySelectorAll(".f15-f"), { opacity: 0, scale: 0.8, transformOrigin: "50% 50%" },
+          { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, t0 + 0.34);
+        tl.fromTo(tile.querySelector(".f15-nl"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, t0 + 0.08);
+        tl.fromTo(tile.querySelector(".f15-es"), { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, t0 + 0.16);
+      });
+
+      /* ===== Seam 2 -> 3 (4.86): header leaves up, tiles shrink + slide up into a top shelf ===== */
+      tl.fromTo("#f15-pillrow", { y: -190, opacity: 1 }, { y: -460, opacity: 0, duration: 0.3, ease: "power2.in", immediateRender: false }, 4.86);
+      tl.fromTo("#f15-title", { y: -205, scale: 0.68, opacity: 1, filter: "blur(0px)" },
+        { y: -480, scale: 0.68, opacity: 0, filter: "blur(8px)", duration: 0.3, ease: "power2.in", immediateRender: false }, 4.86);
+      tl.fromTo("#f15-row", { y: 0, scale: 1 }, { y: -316, scale: 0.56, duration: 0.42, ease: "power3.inOut" }, 4.86);
+
+      /* ===== Scene 3 — "Nada de" + the textbook card ===== */
+      tl.fromTo("#f15-l0", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 5.17);
+      tl.fromTo("#f15-l1", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 5.56);
+      tl.fromTo("#f15-card", { opacity: 0, y: 80, scale: 0.96, rotation: 0 },
+        { opacity: 1, y: 0, scale: 1, rotation: 0, duration: 0.5, ease: "power3.out" }, 5.21);
+      tl.fromTo("#f15-apple", { scale: 0.88, rotation: 0, transformOrigin: "50% 60%" },
+        { scale: 1, rotation: 0, duration: 0.5, ease: "power3.out" }, 5.27);
+      [["#f15-g0", 5.74], ["#f15-g1", 5.87], ["#f15-g2", 6.29], ["#f15-g3", 6.46]].forEach(function (p) {
+        tl.fromTo(p[0], { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, p[1]);
+      });
+
+      /* "roja." — alert strike draws, the sentence dies, the card tips and drops away */
+      tl.fromTo("#f15-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power3.out" }, 6.44);
+      tl.fromTo("#f15-cnl", { color: "#0C0C1E" }, { color: "#5A6480", duration: 0.2, ease: "power1.out" }, 6.5);
+      tl.fromTo("#f15-drop", { rotation: 0 }, { rotation: 6, duration: D - 6.7, ease: "power2.inOut" }, 6.7);
+      tl.fromTo("#f15-drop", { y: 0, opacity: 1 }, { y: 200, opacity: 0.12, duration: D - 6.7, ease: "power2.in", immediateRender: false }, 6.7);
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.024, 0.12], [0.12, 0.561], [0.74, 1.218], [1.509, 1.726], [1.564, 1.838], [1.759, 1.979], [2.388, 2.561], [2.518, 2.683], [3.148, 3.228], [3.212, 3.284], [3.555, 3.583], [3.675, 3.664], [3.879, 3.81], [4.231, 4.101], [4.296, 4.171], [4.398, 4.251], [5.212, 4.946], [5.601, 5.331], [5.759, 5.481], [5.888, 5.603], [6.314, 5.979], [6.481, 6.139], [7.213, 6.563]]);
+
+      window.__timelines["15-vocabulario"] = tl;
+    })();
+  </script>
+</template>

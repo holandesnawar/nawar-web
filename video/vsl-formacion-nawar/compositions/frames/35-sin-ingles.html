@@ -1,0 +1,229 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", sans-serif; color: #FFFFFF; }
+
+    /* ---------- ground: nawar-blue + white dot grid + soft vignette ---------- */
+    #f35-ground {
+      position: absolute; inset: 0;
+      background-color: #120081;
+      background-image:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+      background-size: 100% 100%, 28px 28px, 100% 100%;
+    }
+    #f35-world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 520px; }
+    #f35-glow {
+      position: absolute; left: 460px; top: 180px; width: 1000px; height: 680px;
+      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(77,163,255,0.22) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 72%);
+    }
+
+    /* ---------- the other person (callback to 06) ---------- */
+    #f35-av {
+      position: absolute; left: 392px; top: 186px; width: 104px; height: 104px; border-radius: 50%; overflow: hidden;
+      background: #9fd5f5; box-shadow: 0 0 0 6px #FFFFFF, 0 16px 34px rgba(4,0,40,0.35);
+    }
+    #f35-av svg { display: block; width: 104px; height: 104px; }
+    #f35-bpos { position: absolute; left: 536px; top: 150px; }
+    #f35-bub {
+      position: relative; display: flex; align-items: center; height: 140px; box-sizing: border-box; padding: 0 54px;
+      border-radius: 54px 54px 54px 0; background: #FFFFFF; white-space: nowrap; transform-origin: 0% 100%;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 54px; line-height: 1; letter-spacing: -0.015em; color: #0C0C1E;
+      filter: drop-shadow(0 28px 44px rgba(4,0,40,0.36)) drop-shadow(0 4px 10px rgba(4,0,40,0.18));
+    }
+    #f35-tail { position: absolute; left: -22px; bottom: -14px; width: 92px; height: 64px; overflow: visible; }
+    #f35-dots { display: flex; align-items: center; gap: 14px; }
+    .f35-dot { display: block; width: 18px; height: 18px; border-radius: 50%; background: #374151; }
+    #f35-txt { display: block; }
+
+    /* ---------- the NL / EN toggle ---------- */
+    #f35-tpos { position: absolute; left: 700px; top: 434px; width: 520px; height: 160px; transform: scale(1.34); transform-origin: 50% 50%; }
+    #f35-toggle { position: absolute; left: 0; top: 0; width: 520px; height: 160px; }
+    #f35-track {
+      position: absolute; inset: 0; border-radius: 80px; background: #FFFFFF;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45), inset 0 3px 10px rgba(18,0,129,0.12);
+    }
+    #f35-en {
+      position: absolute; left: 330px; top: 0; width: 176px; height: 160px; display: flex; align-items: center; justify-content: center; gap: 12px;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 50px; line-height: 1; letter-spacing: 0.01em; color: #5A6480;
+      padding-top: 4px; box-sizing: border-box;
+    }
+    #f35-uk { display: block; width: 44px; height: 30px; border-radius: 6px; overflow: hidden; flex: none; box-shadow: 0 0 0 2px #DDE6F5; }
+    #f35-uk svg { display: block; width: 44px; height: 30px; }
+    #f35-knob {
+      position: absolute; left: 10px; top: 10px; width: 140px; height: 140px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 12px 28px rgba(18,0,129,0.38), 0 0 0 4px #FFFFFF; transform-origin: 0% 50%;
+    }
+    .f35-stripe { position: absolute; left: 0; width: 140px; }
+    #f35-knob-t {
+      position: absolute; left: 0; top: 46px; width: 140px; height: 48px; display: flex; align-items: center; justify-content: center;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 40px; line-height: 1; letter-spacing: 0.02em; color: #1D0084;
+      padding-top: 3px; box-sizing: border-box;
+    }
+    #f35-lock {
+      position: absolute; left: 104px; top: -26px; width: 72px; height: 72px; border-radius: 50%; background: #0b6df0;
+      box-shadow: 0 0 0 5px #FFFFFF, 0 12px 26px rgba(4,0,40,0.4);
+    }
+    #f35-lock svg { display: block; width: 72px; height: 72px; overflow: visible; }
+
+    /* ---------- headline ---------- */
+    #f35-head {
+      position: absolute; left: 80px; width: 1760px; top: 768px; height: 130px; display: flex; justify-content: center; gap: 0.26em; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 108px; line-height: 130px; letter-spacing: -0.03em; color: #FFFFFF;
+      text-shadow: 0 12px 40px rgba(4,0,40,0.45);
+    }
+    .f35-hw { display: inline-block; }
+    #f35-h6 { color: #4da3ff; }
+  </style>
+
+  <div id="root" data-composition-id="35-sin-ingles" data-width="1920" data-height="1080" data-duration="3.296">
+    <div id="f35-ground" class="clip" data-start="0" data-duration="3.296" data-track-index="0"></div>
+
+    <div id="f35-world">
+      <div id="f35-glow"></div>
+
+      <!-- the other person -->
+      <div id="f35-av">
+        <svg viewBox="0 0 104 104" aria-hidden="true">
+          <circle cx="52" cy="41" r="19" fill="#1D0084" />
+          <path d="M14 110 C14 82 31 68 52 68 C73 68 90 82 90 110 Z" fill="#1D0084" />
+        </svg>
+      </div>
+      <div id="f35-bpos">
+        <div id="f35-bub">
+          <span id="f35-dots"><span class="f35-dot"></span><span class="f35-dot"></span><span class="f35-dot"></span></span>
+          <span id="f35-txt"></span>
+          <svg id="f35-tail" viewBox="0 0 92 64" aria-hidden="true"><path d="M92 50 C68 50 42 60 0 64 C18 48 22 28 22 0 L25 0 L25 47 L92 47 Z" fill="#FFFFFF" /></svg>
+        </div>
+      </div>
+
+      <!-- NL / EN toggle -->
+      <div id="f35-tpos">
+        <div id="f35-toggle">
+          <div id="f35-track"></div>
+          <div id="f35-en"><span id="f35-uk"><svg viewBox="0 0 40 27" aria-hidden="true"><rect width="40" height="27" fill="#21468C" /><path d="M0 0 L40 27 M40 0 L0 27" stroke="#FFFFFF" stroke-width="6" /><path d="M0 0 L40 27 M40 0 L0 27" stroke="#AE1C27" stroke-width="2.2" /><path d="M20 0 V27 M0 13.5 H40" stroke="#FFFFFF" stroke-width="9" /><path d="M20 0 V27 M0 13.5 H40" stroke="#AE1C27" stroke-width="5" /></svg></span><span id="f35-en-t">EN</span></div>
+          <div id="f35-knob">
+            <div class="f35-stripe" style="top:0; height:47px; background:#AE1C27;"></div>
+            <div class="f35-stripe" style="top:47px; height:46px; background:#FFFFFF;"></div>
+            <div class="f35-stripe" style="top:93px; height:47px; background:#21468C;"></div>
+            <div id="f35-knob-t">NL</div>
+          </div>
+          <div id="f35-lock">
+            <svg viewBox="0 0 72 72" aria-hidden="true">
+              <g id="f35-shackle"><path d="M27 34 V27 A9 9 0 0 1 45 27 V34" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" /></g>
+              <rect x="22" y="32" width="28" height="22" rx="5" fill="#FFFFFF" />
+              <circle cx="36" cy="42" r="3.4" fill="#0b6df0" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- headline -->
+      <div id="f35-head"><span class="f35-hw" id="f35-h1">No</span><span class="f35-hw" id="f35-h2">le</span><span class="f35-hw" id="f35-h3">va</span><span class="f35-hw" id="f35-h4">a</span><span class="f35-hw" id="f35-h5">hacer</span><span class="f35-hw" id="f35-h6">falta.</span></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var $ = function (id) { return document.getElementById("f35-" + id); };
+      var tl = gsap.timeline({ paused: true });
+      var D = 3.44;
+      var T = { otro: 0.61, vaya: 0.76, cambiar: 1.04, ingles: 1.46, no: 2.24, le: 2.44, va: 2.55, a: 2.64, hacer: 2.64, falta: 2.83 };
+      var FR = 1 / 30;
+      var HALF = 180; // knob stalls halfway (full travel 360)
+
+      // ================= ENTRANCE: the toggle slides up into the centre =================
+      tl.fromTo($("toggle"), { y: 280, scale: 0.92, opacity: 0, filter: "blur(10px)" },
+        { y: 0, scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, 0);
+      tl.fromTo($("world"), { scale: 1.03 }, { scale: 1, duration: 1.2, ease: "power2.out" }, 0);
+      tl.fromTo($("glow"), { opacity: 0.4 }, { opacity: 0.75, duration: 1.0, ease: "power2.out" }, 0.1);
+      tl.set($("lock"), { scale: 0.4, opacity: 0 }, 0);
+      tl.set($("txt"), { textContent: "" }, 0);
+      tl.set($("dots"), { display: "flex" }, 0);
+
+      // ================= SCENE 1: the other one tries English =================
+      // "el otro": the other person pops in (same avatar as v1 frame 06)
+      tl.fromTo($("av"), { scale: 0.5, x: -40, opacity: 0 }, { scale: 1, x: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, T.otro - 0.04);
+      // "vaya": typing bubble
+      tl.fromTo($("bub"), { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.28, ease: "power3.out" }, T.vaya - 0.04);
+      var dots = $("dots").querySelectorAll(".f35-dot");
+      tl.set(dots, { y: 0, opacity: 0.5 }, 0);
+      for (var d = 0; d < 3; d++) {
+        var t0 = T.vaya + 0.08 + d * 0.06;
+        tl.fromTo(dots[d], { y: 0, opacity: 0.5 }, { y: -9, opacity: 1, duration: 0.09, ease: "power1.out", immediateRender: false }, t0);
+        tl.fromTo(dots[d], { y: -9, opacity: 1 }, { y: 0, opacity: 0.5, duration: 0.09, ease: "power1.in", immediateRender: false }, t0 + 0.09);
+      }
+      // "cambiar": the English starts typing…
+      var EN = "Oh, shall we speak Eng—";
+      tl.set($("dots"), { display: "none" }, T.cambiar - 0.02);
+      var times = [];
+      for (var i = 0; i < 19; i++) times.push(T.cambiar - 0.02 + i * 0.022);   // "Oh, shall we speak "
+      times.push(T.ingles - 0.02, T.ingles + 0.05, T.ingles + 0.12);           // "Eng"
+      times.push(1.72);                                                         // "—" cut off
+      for (var c = 0; c < EN.length; c++) tl.set($("txt"), { textContent: EN.slice(0, c + 1) }, times[c]);
+
+      // …and the knob slides toward EN
+      tl.fromTo($("knob"), { x: 0 }, { x: HALF, duration: T.ingles - T.cambiar, ease: "power1.inOut" }, T.cambiar);
+      // "inglés": EN lights up as the knob reaches it…
+      tl.fromTo($("en"), { color: "#5A6480", scale: 1 }, { color: "#1D0084", scale: 1.05, duration: 0.24, ease: "power3.out" }, T.ingles - 0.06);
+      tl.fromTo($("uk"), { filter: "grayscale(1)", opacity: 0.45 }, { filter: "grayscale(0)", opacity: 1, duration: 0.24, ease: "power2.out" }, T.ingles - 0.06);
+      // …but it stalls halfway (a quiet hold, no strain jitter)
+      tl.fromTo($("knob"), { x: HALF }, { x: HALF - 4, duration: 0.3, ease: "power2.out", immediateRender: false }, T.ingles);
+
+      // ================= SCENE 2: no le va a hacer falta =================
+      var SNAP = T.no - 0.06, HIT = SNAP + 0.13;
+      tl.fromTo($("knob"), { x: HALF - 4 }, { x: 0, duration: HIT - SNAP + 0.06, ease: "power3.inOut", immediateRender: false }, SNAP);
+      // the knob lands firmly back on NL (no squash, no overshoot, no shock ring)
+      tl.fromTo($("en"), { color: "#1D0084", scale: 1.05, opacity: 1 }, { color: "#5A6480", scale: 1, opacity: 0.55, duration: 0.25, ease: "power2.out", immediateRender: false }, HIT);
+      tl.fromTo($("uk"), { filter: "grayscale(0)" }, { filter: "grayscale(1)", duration: 0.25, ease: "power2.out", immediateRender: false }, HIT);
+
+      // the bubble deletes itself back to "O"… and rewrites in Dutch
+      var NL = "Oké, gewoon in het Nederlands!";
+      var del = EN.length - 1;   // keep the shared "O"
+      for (var k = 1; k <= del; k++) tl.set($("txt"), { textContent: EN.slice(0, EN.length - k) }, T.no - 0.02 + k * 0.009);
+      var T2 = 2.47;
+      for (var n = 2; n <= NL.length; n++) tl.set($("txt"), { textContent: NL.slice(0, n) }, T2 + (n - 2) * 0.0155);
+
+      // headline builds word by word on the voice
+      function rise(id, t) {
+        tl.fromTo($(id), { y: 46, opacity: 0, filter: "blur(8px)" },
+          { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, t - 0.04);
+      }
+      rise("h1", T.no);
+      rise("h2", T.le);
+      rise("h3", T.va);
+      rise("h4", T.a);
+      rise("h5", T.hacer + 0.02);
+      tl.fromTo($("h6"), { y: 46, opacity: 0, filter: "blur(8px)" },
+        { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, T.falta - 0.04);
+
+      // "falta.": the padlock locks NL in
+      tl.fromTo($("lock"), { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, T.falta - 0.06);
+      tl.fromTo($("shackle"), { y: -9 }, { y: 0, duration: 0.12, ease: "power3.in" }, T.falta + 0.1);
+
+      tl.set({}, {}, D);
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.21, 0.204], [0.51, 0.505], [0.61, 0.589], [0.76, 0.758], [0.98, 0.983], [1.04, 1.03], [1.36, 1.34], [1.46, 1.434], [2.24, 2.063], [2.44, 2.289], [2.55, 2.401], [2.64, 2.486], [2.83, 2.702], [3.44, 3.296]]);
+      window.__timelines["35-sin-ingles"] = tl;
+    })();
+  </script>
+</template>

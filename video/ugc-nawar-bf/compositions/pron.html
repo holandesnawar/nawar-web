@@ -1,0 +1,95 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .n-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .n-paper { background: #F5F7FF; }
+    .n-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .n-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .n-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .n-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .n-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .n-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .n-dark { background: radial-gradient(circle at 50% 34%, #1b1846 0%, #0b0a1c 56%, #050409 100%); }
+    .n-dark-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1.6px, transparent 1.8px); background-size: 30px 30px; }
+    .n-dark-amb { position: absolute; left: 40px; top: 220px; width: 1000px; height: 980px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(11,109,240,0.22) 0%, rgba(11,109,240,0.07) 45%, rgba(11,109,240,0) 70%); }
+    .n-dark-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%); }
+    .n-on-dark { box-shadow: none; }
+    /* Black Friday pieces: the tape (a yellow strip with «BLACK FRIDAY» running on it), the yellow pill and the burst */
+    .n-tape { position: absolute; height: 92px; background: #FFD60A; overflow: hidden; }
+    .n-tape-run { position: absolute; left: 0; top: 0; height: 92px; display: flex; align-items: center; gap: 34px; white-space: nowrap;
+      font-weight: 900; font-size: 52px; line-height: 1; letter-spacing: 0.02em; color: #08070F; padding-top: 4px; box-sizing: border-box; }
+    .n-tape-run i { display: block; width: 16px; height: 16px; border-radius: 50%; background: #08070F; font-style: normal; }
+    .n-ypill { display: flex; align-items: center; gap: 14px; height: 72px; padding: 0 32px 0 22px; border-radius: 999px; background: #FFD60A;
+      color: #08070F; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 31px; line-height: 1; letter-spacing: -0.005em; }
+    .n-ypill svg { display: block; width: 38px; height: 38px; }
+    .n-acc-y { color: #FFD60A; }
+    .n-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    /* v6: no outer shadows anywhere (flat objects); on paper a white card keeps its edge with a hairline */
+    .n-on-paper { box-shadow: inset 0 0 0 2px #DDE6F5; }
+    .n-on-blue { box-shadow: none; }
+    .n-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .n-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .n-pill svg { display: block; width: 28px; height: 28px; }
+    .n-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .n-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .n-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .n-flag svg { display: block; width: 40px; height: 27px; }
+    .n-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .n-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF; }
+    .n-av svg { display: block; width: 96px; height: 96px; }
+    .n-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .n-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: inset 0 0 0 2px #DDE6F5; }
+    .n-bub-g { background: #E8ECF7; color: #374151; }
+    .n-bub-b { background: #0b6df0; color: #FFFFFF; }
+    .n-bl { border-bottom-left-radius: 10px; }
+    .n-br { border-bottom-right-radius: 10px; }
+    .n-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .n-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .n-acc { color: #4da3ff; }
+    .n-w { display: inline-block; }
+
+    #n-row { top: 1120px; }
+    #n-pill { gap: 14px; height: 88px; padding: 0 38px 0 22px; font-size: 38px; }
+    #n-pill svg { display: block; width: 48px; height: 48px; }
+
+  </style>
+  <div id="root" data-composition-id="pron" data-width="1080" data-height="1920" data-duration="2.146">
+    <div id="n-row" class="n-row"><div id="n-pill" class="n-wpill"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Pronunciación</span></div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("n-" + id);
+
+      tl.fromTo(q("pill"), { opacity: 0, y: 24, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 0.02);
+      tl.to(q("pill"), { opacity: 0, y: 14, duration: 0.18, ease: "power2.in" }, 2.146 - 0.2);
+
+      window.__timelines["pron"] = tl;
+    })();
+  </script>
+</template>

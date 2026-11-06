@@ -1,0 +1,8 @@
+# Heavy / derived media: rebuild with `bash tools/fetch_assets.sh`
+assets/
+renders/
+.raw/
+snapshots/
+node_modules/
+.transcode-cache/
+__pycache__/
