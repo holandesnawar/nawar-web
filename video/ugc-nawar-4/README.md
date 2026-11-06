@@ -35,7 +35,7 @@ del último (`../ugc-nawar-bf`):
 ```bash
 bash tools/fetch_assets.sh          # (necesita ../vsl-formacion-nawar con sus assets)
 npx hyperframes check
-npx hyperframes render . --quality high -o renders/nawar-ugc4-v1-1.mp4
+npx hyperframes render . --quality high -o renders/nawar-ugc4-v2.mp4
 ```
 
 Un gráfico solo, para mirarlo: `python3 tools/gen.py --solo ins-03 --out /tmp/x` y `npx hyperframes snapshot` en `/tmp/x`.

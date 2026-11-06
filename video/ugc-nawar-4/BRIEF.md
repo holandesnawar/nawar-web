@@ -64,3 +64,24 @@ comprobado por otro agente. Confirmado y corregido:
 Descartado tras comprobarlo: finales de «febrero», «euro» y «escapaban» (cortes propios de la grabación, sin clic ni
 pérdida de la palabra), la /s/ de «siempre», los «sparkle» y los márgenes de ins-01 e ins-05.
 
+
+## Petición de la v2 (cliente, 6 nov 2026)
+
+«Te he dejado una versión cortada mejor para que no improvises, está en la carpeta BF 2. Me gustaría para el segundo 0:11
+un vídeo stock de una mesa, gente hablando como en el descanso del trabajo, riéndose ("en la mesa del trabajo y todos se
+ríen y tú no"). La música no me gusta mucho, ya que es el mismo estilo anuncio: otra cosa más tranquila de fondo. No es
+"la gemeente" sino "el gemeente"; usa otras frases que sean más dolor para el buyer persona: llamar para hablar con el
+casero, ir a una cita del dentista. Dale un lavado al diseño del calendario y al del segundo 0:06, que se ve algo IA. Sobre
+la lista prioritaria te dejé un vídeo de cómo es la web, scrolleando.»
+
+- **El corte del cliente** («Cortado BF2 Video.mp4») tal cual: mismo orden, mismas pausas, sin acelerar. Solo se quita
+  la frase repetida («…es que siempre hay un motivo para que empieces el mes que viene», dos veces seguidas: va la
+  primera). El corte termina en «Solo hasta el 30 de noviembre» (sin «Apúntate…»): el botón sale ahí.
+- **0:09–0:14, vídeo de stock** (Mixkit, licencia gratuita): la mesa del almuerzo en la oficina hasta «todos», con la
+  frase en neerlandés en una burbuja, y compañeros riéndose desde «todos se ríen», con «¿De qué se ríen?» en «tú sonríes».
+- **Música:** la del VSL (la del UGC #1), tranquila, unos 22 LU bajo la voz.
+- **ins-01** (0:05): un chat real en un móvil con Laura: «¿Puedes llamar tú al casero?», «¿Me acompañas a la cita del
+  dentista?», «¿Vienes conmigo al gemeente?», «¿Me traduces esta carta?».
+- **ins-03** (0:16): la pantalla de bloqueo con el recordatorio «Empezar neerlandés» que se pospone de enero a febrero y a
+  marzo.
+- **ins-06** (0:35): la página real de la lista prioritaria, en un móvil, con su scroll.

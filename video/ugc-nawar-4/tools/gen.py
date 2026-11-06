@@ -60,12 +60,13 @@ def hook():
 
 
 def outro():
-    """«Apúntate en el enlace de abajo y llévate el libro por solo un euro. Solo hasta el 30 de noviembre.» — the glossy
-    blue button of UGC #2 («CONSÍGUELO POR 1 €») pops under her face on «apúntate»; an arrow bounces under it on «abajo»;
+    """«Solo hasta el 30 de noviembre.» (v2: the client's cut ends here) — the glossy blue button of UGC #2 («CONSÍGUELO
+    POR 1 €») pops under her face on «Solo»; an arrow bounces under it;
     on «30» the arrow gives way to a white «Hasta el 30 de noviembre» pill (calendar icon); the button breathes once on
     her last frame (held, TAIL)."""
     P = "o"; t0 = ED["outro"]; d = round(TOTAL - t0, 3); wcue = wcue_from(t0)
-    c = dict(APU=wcue("apuntate"), ABA=wcue("abajo"), TRE=wcue("30"), END=round(ED["speech_end"] - t0, 3))
+    c = dict(APU=0.06, ABA=0.36, TRE=wcue("30"), END=round(ED["speech_end"] - t0, 3))   # v2: the cut ends on «Solo hasta el
+                                                                                         # 30 de noviembre» (no «Apúntate…»)
     css = """
     #o-wrap { position: absolute; left: 140px; top: 1150px; width: 800px; height: 128px; }
     #o-btn { position: absolute; left: 0; top: 0; width: 800px; height: 128px; border-radius: 64px; overflow: hidden;
@@ -215,7 +216,7 @@ def captions(window=None):
       justify-content: center; column-gap: 18px; row-gap: 0px; opacity: 0; }
     .cap-up { top: 984px; }
     .cap-w { display: inline-block; font-weight: 800; font-size: 66px; line-height: 76px; letter-spacing: -0.015em; white-space: nowrap; }
-    .cap-gr-girl .cap-w { color: #FFFFFF; text-shadow: 0 3px 14px rgba(0,0,0,0.65), 0 1px 3px rgba(0,0,0,0.55); }
+    .cap-gr-girl .cap-w, .cap-gr-stock .cap-w { color: #FFFFFF; text-shadow: 0 3px 14px rgba(0,0,0,0.65), 0 1px 3px rgba(0,0,0,0.55); }
     .cap-gr-blue .cap-w, .cap-gr-dark .cap-w { color: #FFFFFF; text-shadow: none; }
     .cap-g .cap-y { color: «YEL»; }
     .cap-gr-paper .cap-w { color: «INK»; }
@@ -228,8 +229,8 @@ OPEN_STILLS = 4                   # her first 4 frames are stills (see index())
 # per-shot voice gain (shot number → linear), where a retake comes out quieter or hotter (v1 QA, ebur128 per shot: shots
 # 5–6 «…no es falta de ganas… el mes que viene.» −18.8/−19.4 LUFS, shot 7 «Por eso lo abrimos ahora.» −11.0, the rest
 # about −15): +2 / +2.5 / −3.6 dB, which keeps a small lift for the emphasis
-SHOT_GAIN = {5: 1.26, 6: 1.33, 7: 0.66}
-SOFT_OUT = {11}                   # shots whose last word runs into the creator's own cut: a 35 ms fade, not 12 ms
+SHOT_GAIN = {}                    # (v1's levelling of the retakes; v2 is the client's own cut, measured flat enough)
+SOFT_OUT = set()                  # shots whose last word runs into the creator's own cut: a 35 ms fade, not 12 ms
 ZOOM_IN = (0.0, 0.3, 1.0, 1.18)   # v6.4, the opening hook: from her plain shot (frame 0, sharp) a fast zoom-in on her face
                                   # (t0, duration, scale from, scale to; most of it in the first ~0.12 s)
 
@@ -239,7 +240,7 @@ def zooms():
     opens on her plain shot and zooms in fast on her face (the stop-scroll), then a slow push through the hook. After that
     every stretch of the take inside a girl section starts at its own framing (the cuts hide the change) with a slow push,
     and a punch on a key word; the creator's own jump cuts inside a section (edit.py JUMPS) and the cuts between retakes
-    change framing too. #zwp = the take."""
+    change framing too. #zwc = the take."""
     G = ED["girl"]; Z = []
     def push(t0, t1, s0, s1, sel):
         Z.append((round(t0, 3), round(t1 - t0 - 0.004, 3), "none", {"scale": round(s1, 3)}, {"scale": round(s0, 3)}, sel))   # ends just before the next tween
@@ -247,8 +248,8 @@ def zooms():
         Z.append((round(t - 0.05, 3), d, ease, {"scale": s}, None, sel))
     shots = ED["shots"]
     z0, zd, zs0, zs1 = ZOOM_IN
-    Z.append((z0, zd, "power3.out", {"scale": zs1}, {"scale": zs0}, "#zwp"))
-    push(z0 + zd, shots[1]["start"], zs1, zs1 + 0.05, "#zwp")
+    Z.append((z0, zd, "power3.out", {"scale": zs1}, {"scale": zs0}, "#zwc"))
+    push(z0 + zd, shots[1]["start"], zs1, zs1 + 0.05, "#zwc")
     PUNCH = {"pronto": 1.1, "ahora": 1.12, "ganas": 1.1, "oferta": 1.1, "abajo": 1.1}   # on the key word
     LOOK = [1.0, 1.1, 1.02, 1.12, 1.04, 1.08, 1.0, 1.1, 1.03, 1.11]   # start framings, cycling; neighbours differ
     used = [0]; prev = [None, -1.0]                           # (end scale, end time) of the stretch before
@@ -259,10 +260,10 @@ def zooms():
         pw = [w for w in WORDS if a + 0.25 <= w["t"] < b - 0.3 and norm(w["text"]) in PUNCH]
         if pw:
             t = pw[0]["t"]; k = PUNCH[norm(pw[0]["text"])] - 1.0
-            push(a, t - 0.05, s0, s0 + 0.02, "#zwp"); punch(t, s0 + k, "#zwp"); push(t + 0.2, b, s0 + k, s0 + k + 0.02, "#zwp")
+            push(a, t - 0.05, s0, s0 + 0.02, "#zwc"); punch(t, s0 + k, "#zwc"); push(t + 0.2, b, s0 + k, s0 + k + 0.02, "#zwc")
             prev[:] = [s0 + k + 0.02, b]
         else:
-            push(a, b, s0, s0 + 0.04, "#zwp"); prev[:] = [s0 + 0.04, b]
+            push(a, b, s0, s0 + 0.04, "#zwc"); prev[:] = [s0 + 0.04, b]
     for g in G:
         for sh in shots:
             a0, b0 = max(g["start"], sh["start"]), min(g["end"], sh["start"] + sh["duration"])
@@ -330,7 +331,7 @@ def index(sfx_all, overlays):
             ztl.append(f'      tl.fromTo("{sel}", {js(frm)} }}, {js(to)}, duration: {du}, ease: "{ease}", immediateRender: false }}, {round(t, 3)});')
         else:
             ztl.append(f'      tl.to("{sel}", {js(to)}, duration: {du}, ease: "{ease}" }}, {round(t, 3)});')
-    # the shots: one zoom wrapper for the take (origin = her face), #zwp; 12 ms fades at each cut, a longer one at the
+    # the shots: one zoom wrapper for the take (origin = her face), #zwc; 12 ms fades at each cut, a longer one at the
     # very end
     key = lambda sh: sh["take"]
     vids, face = {}, {}
@@ -380,9 +381,9 @@ def index(sfx_all, overlays):
       // a punch on the key word (origin = her face); the ad ends when she stops talking, under the button
 {chr(10).join(ztl)}
       // the opening zoom-in: frame 0 sharp, a light motion blur while it moves fastest, sharp again as it lands
-      tl.fromTo("#zwp", {{ filter: "blur(0px)" }}, {{ filter: "blur(2.5px)", duration: 0.05, ease: "power1.out" }}, 0.0);
-      tl.to("#zwp", {{ filter: "blur(0px)", duration: 0.16, ease: "power2.out" }}, 0.05);
-      tl.set("#zwp", {{ filter: "none" }}, 0.22);
+      tl.fromTo("#zwc", {{ filter: "blur(0px)" }}, {{ filter: "blur(2.5px)", duration: 0.05, ease: "power1.out" }}, 0.0);
+      tl.to("#zwc", {{ filter: "blur(0px)", duration: 0.16, ease: "power2.out" }}, 0.05);
+      tl.set("#zwc", {{ filter: "none" }}, 0.22);
       window.__timelines["main"] = tl;
     </script>
   </body>

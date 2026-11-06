@@ -78,7 +78,7 @@
     #h-tag svg { display: block; width: 42px; height: 42px; color: #0b6df0; }
 
   </style>
-  <div id="root" data-composition-id="hook" data-width="1080" data-height="1920" data-duration="0.968">
+  <div id="root" data-composition-id="hook" data-width="1080" data-height="1920" data-duration="0.897">
     <div id="h-row" class="h-row"><div id="h-tag" class="h-wpill"><svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="33" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><path d="M6 19 H42 M16 5 V13 M32 5 V13" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span>Black Friday anticipado</span></div></div>
   </div>
   <script>
@@ -87,7 +87,7 @@
       const q = (id) => document.getElementById("h-" + id);
 
       tl.fromTo(q("tag"), { opacity: 0, y: 22, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 0.0);
-      tl.to(q("tag"), { opacity: 0, y: -12, duration: 0.16, ease: "power2.in" }, 0.968 - 0.18);
+      tl.to(q("tag"), { opacity: 0, y: -12, duration: 0.16, ease: "power2.in" }, 0.897 - 0.18);
 
       window.__timelines["hook"] = tl;
     })();

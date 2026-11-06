@@ -272,3 +272,23 @@ def burst_svg(r_out=150, r_in=128, n=18, fill="«YEL»"):
         r = r_out if k % 2 == 0 else r_in; a = math.pi * k / n - math.pi / 2
         pts.append(f"{r_out + r * math.cos(a):.1f},{r_out + r * math.sin(a):.1f}")
     return sub(f'<svg viewBox="0 0 {2 * r_out} {2 * r_out}"><polygon points="{" ".join(pts)}" fill="{fill}"/></svg>', {})
+
+
+# v2: a phone, for the screens that should look real (chat, lock screen, the website): a near-black body with a thin
+# lighter rim, the screen inset 14 px with its own rounded corners and the island on top. inner = the screen's HTML
+# (it fills .<P>-scr, which clips it).
+PHONE_CSS = """
+    .«P»-ph { position: absolute; border-radius: 74px; background: #0E0E12; box-shadow: inset 0 0 0 3px #2A2A33, inset 0 0 0 5px #0E0E12, inset 0 0 0 6px #3B3B46; }
+    .«P»-scr { position: absolute; left: 16px; top: 16px; right: 16px; bottom: 16px; border-radius: 60px; overflow: hidden; background: #FFFFFF; }
+    .«P»-isl { position: absolute; left: 50%; top: 30px; width: 150px; height: 42px; margin-left: -75px; border-radius: 21px; background: #000000; z-index: 5; }
+    .«P»-sb { position: absolute; left: 0; top: 0; width: 100%; height: 96px; display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 58px 0; box-sizing: border-box; font-family: "Inter", sans-serif; font-weight: 700; font-size: 28px; color: #0C0C1E; z-index: 4; }
+    .«P»-sb i { display: inline-block; width: 46px; height: 22px; border-radius: 6px; box-shadow: inset 0 0 0 3px currentColor; position: relative; }
+    .«P»-sb i::after { content: ""; position: absolute; left: 5px; top: 5px; width: 28px; height: 12px; border-radius: 3px; background: currentColor; }
+"""
+
+
+def phone(P, pid, left, top, w, h, inner, sb_dark=True, time="9:41"):
+    sb = (f'<div class="{P}-sb" style="color: {"#0C0C1E" if sb_dark else "#FFFFFF"};"><span>{time}</span><i></i></div>' if time else "")
+    return (f'<div id="{P}-{pid}" class="{P}-ph" style="left:{left}px; top:{top}px; width:{w}px; height:{h}px;">'
+            f'<div class="{P}-scr">{sb}{inner}</div><div class="{P}-isl"></div></div>')

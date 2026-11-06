@@ -94,9 +94,9 @@
       text-decoration-color: #E02D3C; text-decoration-thickness: 4px; }
 
   </style>
-  <div id="root" data-composition-id="ins-05" data-width="1080" data-height="1920" data-duration="5.114">
+  <div id="root" data-composition-id="ins-05" data-width="1080" data-height="1920" data-duration="5.46">
     <div class="i5-full i5-blue"><div class="i5-blue-dots"></div><div class="i5-blue-amb"></div><div class="i5-blue-vig"></div></div>
-    <div id="i5-vw"><video id="i5-v" class="clip" src="assets/video/libro-ins05.webm" muted playsinline data-start="0" data-duration="5.114" data-track-index="1"></video></div>
+    <div id="i5-vw"><video id="i5-v" class="clip" src="assets/video/libro-ins05.webm" muted playsinline data-start="0" data-duration="5.46" data-track-index="1"></video></div>
     <div id="i5-lrow" class="i5-row"><div id="i5-lab" class="i5-pill"><svg viewBox="0 0 48 48"><path d="M6 10 Q16 6 24 12 Q32 6 42 10 V38 Q32 34 24 40 Q16 34 6 38 Z" fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linejoin="round"/><path d="M24 12 V40" stroke="#FFFFFF" stroke-width="4.2"/></svg><span>Primera oferta · Black Friday</span></div></div>
     <div id="i5-prow" class="i5-row"><div id="i5-p0" class="i5-wpill"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 42 V22"/><path d="M24 26 C24 16 16 12 8 12 C8 22 15 26 24 26 Z"/><path d="M24 22 C24 13 31 8 40 8 C40 18 33 22 24 22 Z"/></g></svg><span>Para principiantes</span></div><div id="i5-p1" class="i5-wpill"><span class="i5-flag i5-flagd"><svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#AA151B" /><rect y="7" width="40" height="13" fill="#F1BF00" /></svg></span><span>Explicado en español</span></div></div>
     <div id="i5-seal"><div class="i5-seal"><div class="k">BLACK FRIDAY</div><div class="p"><span id="i5-eur">1<span class="i5-e">€</span></span><s>12,50&nbsp;€</s></div></div></div>
@@ -107,11 +107,11 @@
       const q = (id) => document.getElementById("i5-" + id);
 
       tl.fromTo(q("lab"), { opacity: 0.4, y: -12 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);   // there from the cut
-      tl.fromTo(q("p0"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 1.661 - 0.06);
-      tl.fromTo(q("p1"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 3.303 - 0.06);
-      tl.fromTo(q("seal"), { opacity: 0, scale: 0.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.36, ease: "back.out(1.9)" }, 4.454 - 0.08);
+      tl.fromTo(q("p0"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 1.76 - 0.06);
+      tl.fromTo(q("p1"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, 3.5 - 0.06);
+      tl.fromTo(q("seal"), { opacity: 0, scale: 0.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.36, ease: "back.out(1.9)" }, 4.82 - 0.08);
       tl.fromTo(q("eur"), { scale: 1 }, { keyframes: [{ scale: 1.14, duration: 0.12, ease: "power2.out" }, { scale: 1, duration: 0.2, ease: "power2.inOut" }],
-        immediateRender: false }, 4.737 + 0.02);
+        immediateRender: false }, 5.12 + 0.02);
 
       window.__timelines["ins-05"] = tl;
     })();

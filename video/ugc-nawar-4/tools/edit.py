@@ -1,69 +1,50 @@
 #!/usr/bin/env python3
-"""Edit decision list → edit.json (UGC #4, «Nuestro Black Friday empieza hoy» · the 1 € book and the priority list).
+"""Edit decision list → edit.json (UGC #4 v2, «Nuestro Black Friday empieza hoy» · the 1 € book and the priority list).
 
-One file, take p = «Estado de pedido FO4233» (4 nov): the whole ad, with retakes the creator left in. The best of each:
-  · the hook three times — the first one (her air-quote hands on the very first frame, the liveliest: SEGMENTS[0]);
-  · «…y no es falta de ganas…» twice — the second one (higher and livelier: median pitch 254 Hz against 208, a wider
-    range; it carries one of the creator's own jump cuts, at 38.8, which becomes a cut with a new framing);
-  · «Si empiezas ya, en Navidad…» twice — the second one («…cosas que antes se te escapaban», the better line, also the
-    livelier one) — not «…que antes ni sabías»;
-  · «Quien lo consiga entra en nuestra lista prioritaria…» — the last, whole one (the two before it stop half-way);
-  · «Solo hasta el 30 de noviembre» twice — the first one (her hand at her mouth, as if telling a secret; the widest
-    pitch range of the two).
-Every cut sits in a quiet point checked on the energy envelope (or on one of the creator's own cuts), all at RATE (pitch
-preserved). Word times: tools/align/whisper_p.json (Scribe words, tools/align_fix.py).
+v2: the client's own cut («Cortado BF2 Video.mp4», Drive folder «BF 2»: «so you don't improvise»), take c, used as it
+is — same order, same pauses, no speed-up and no pause tightening. One change: the cut says «…es que siempre hay un
+motivo para que empieces el mes que viene» twice in a row (19.6 s and 22.6 s, each its own clip between two of the
+cut's own cuts); the second one goes. The cut ends on «Solo hasta el 30 de noviembre» (no «Apúntate en el enlace…»).
+Word times: tools/align/whisper_c.json (Scribe words, tools/align_fix.py).
 """
 import json, os, unicodedata, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RATE = 1.06
+RATE = 1.0                 # v2: the client's cut at its own speed
 WHISPER_BIAS = 0.0         # align_fix.py already moved the words onto the voice
-# (take, source in, source out) — hand-checked quiet points
+# (take, source in, source out) — the client's cut, minus the repeated sentence (between its own cuts at 22.567 and 25.467)
 SEGMENTS = [
-    ("p", 0.44, 4.86),     # hook: «Nuestro Black Friday empieza hoy. Sí, antes de tiempo.» (take 1 of 3)
-    ("p", 15.02, 19.86),   # «¿Por qué tan pronto? Porque cada mes que esperas es otro mes pidiendo que te traduzcan.»
-    ("p", 21.56, 26.70),   # «En la pausa del trabajo, alguien dice algo, todos se ríen y tú sonríes sin saber de qué.»
-    ("p", 26.98, 31.04),   # «Te dices que en enero empiezas, pero llega enero, luego febrero,» (up to the creator's cut at 31.067)
-    ("p", 37.12, 41.445),  # «y no es falta de ganas, es que siempre hay un motivo para que empieces el mes que viene.» (2nd take)
-    ("p", 41.78, 43.36),   # «Por eso lo abrimos ahora.»
-    ("p", 50.96, 55.28),   # «Si empiezas ya, en Navidad vas a entender cosas que antes se te escapaban.» (2nd take)
-    ("p", 55.40, 61.88),   # «La primera oferta: nuestro libro en neerlandés para principiantes, explicado en español, por solo un euro.»
-    ("p", 65.92, 72.90),   # «Quien lo consiga entra en nuestra lista prioritaria y sabrá lo que estaremos preparando…antes que nadie.»
-                           #  (v1 QA: to just before the creator's own cut at 72.905, so «nadie» isn't cut short)
-    ("p", 72.93, 76.96),   # «Apúntate en el enlace de abajo y llévate el libro por solo un euro.»
-    ("p", 78.64, 80.62),   # «Solo hasta el 30 de noviembre.» (1st take)
+    ("c", 0.0, 22.547),    # «Nuestro Black Friday empieza hoy.» → «…es que siempre hay un motivo para que empieces el mes que viene.»
+    ("c", 25.472, 46.70),  # «Por eso lo abrimos ahora.» → «…Solo hasta el 30 de noviembre.»
 ]
-FACE = {"p": (560, 660)}   # her face centre (zoom origin)
-# cuts already inside the take (the creator's own edit), source second of the first new frame (frame-difference scan
-# on the decoded frames). Next to a graphic's edge the graphic covers it; well inside a girl section it becomes a shot
-# boundary with a reframe in gen.py, so it reads as a jump cut.
+FACE = {"c": (560, 660)}   # her face centre (zoom origin)
+# cuts already inside the cut (the client's own edit), source second of the first new frame (frame-difference scan on the
+# decoded frames). Next to a graphic's edge the graphic covers it; well inside a girl section it becomes a shot boundary
+# with a reframe in gen.py, so it reads as a jump cut.
 CUT_PRE, CUT_POST = 0.05, 0.005
 CUT_PRE_AT = {}
-JUMPS = {"p": [14.533, 21.3, 31.067, 38.8, 41.467, 44.133, 55.3, 61.9, 72.9]}
-# tighter: every pause between two words longer than TIGHT (her voice under LOUD_DB, measured on the take's own sound)
-# is cut down to KEEP_TAIL after the last word + KEEP_HEAD before the next; a take's own cut that sits in such a silence
-# becomes a cut of the edit there too (and inside a girl section, a jump cut with a new framing).
+JUMPS = {"c": [3.667, 8.533, 18.133, 19.633, 22.867, 27.233, 31.5]}   # (19.9: a 0.27 s clip right after 19.633, left as the cut has it)
 TIGHT, KEEP_TAIL, KEEP_HEAD, LOUD_DB = 0.18, 0.05, 0.04, -30.0
 PAUSE = {}
 TAIL_AT = {}
-NO_TIGHT = {0}         # (segment index) the hook stays one continuous shot (her opening zoom and its beat after «hoy»)
+NO_TIGHT = {0, 1}      # (segment index) v2: the client's cut keeps its own pauses
 CUT_POST_AT = {}
-SPEECH_END = 80.57     # «…30 de noviembre.» ends here in take p
-TAIL = 0.30            # her last frame held under the button (gen.py), the music fades on it
+SPEECH_END = 46.62     # «…30 de noviembre.» ends here in take c
+TAIL = 0.0             # the cut ends on her own last frames (0.5 s after the word): nothing held
 LEAD = 0.06            # an insert cuts in this long before its first word (source seconds)
 # (insert id, ground, first words, first words of what comes after) — full-screen graphics while she explains
 INSERTS = [
-    ("ins-01", "paper", "porque cada mes", "en la pausa"),          # another month asking to be translated for
-    ("ins-02", "blue", "alguien dice algo", "te dices que"),        # the break at work: everyone laughs, you smile
-    ("ins-03", "paper", "pero llega enero", "y no es"),              # the calendar: «empezar neerlandés» moves on and on
-    ("ins-04", "paper", "en navidad vas", "la primera oferta"),      # by Christmas you understand
-    ("ins-05", "blue", "nuestro libro en", "quien lo consiga"),      # the ebook, 1 €
-    ("ins-06", "paper", "lista prioritaria y", "apuntate en el"),    # the priority list: first to know
+    ("ins-01", "paper", "porque cada mes", "en la pausa"),          # your chat over the months: another month asking for help
+    ("ins-02", "stock", "en la pausa", "te dices que"),             # v2: stock footage, coworkers laughing at the lunch table
+    ("ins-03", "paper", "pero llega enero", "y no es"),             # the reminder you keep postponing
+    ("ins-04", "paper", "en navidad vas", "la primera oferta"),     # by Christmas you understand
+    ("ins-05", "blue", "nuestro libro en", "quien lo consiga"),     # the ebook, 1 €
+    ("ins-06", "paper", "quien lo consiga", "solo hasta el"),       # v2: the priority-list page, scrolled on a phone
 ]
 HOOK_BF = "black friday empieza"   # the opening line (a light «Black Friday» tag on the hook)
-TURN = "por que tan"               # the music's groove comes in here, right after the hook
+TURN = "y no es"                   # the calm music's second part comes in here
 OFFER = "la primera oferta"        # the offer part starts here
-OUTRO = "apuntate en el"           # the button under her face, from here to the end
+OUTRO = "solo hasta el"            # the button under her face, from here to the end
 
 FIX = {}
 # the script as she says it, with its punctuation and capitals (Whisper's words carry almost none): one token per word
@@ -73,8 +54,7 @@ SCRIPT = ("Nuestro Black Friday empieza hoy. Sí, antes de tiempo. ¿Por qué ta
           "para que empieces el mes que viene. Por eso lo abrimos ahora. Si empiezas ya, en Navidad vas a entender cosas que "
           "antes se te escapaban. La primera oferta: nuestro libro en neerlandés para principiantes, explicado en español, por "
           "solo un euro. Quien lo consiga entra en nuestra lista prioritaria y sabrá lo que estaremos preparando para este Black "
-          "Friday antes que nadie. Apúntate en el enlace de abajo y llévate el libro por solo un euro. Solo hasta el 30 de "
-          "noviembre.").split()
+          "Friday antes que nadie. Solo hasta el 30 de noviembre.").split()
 
 
 def norm(t):

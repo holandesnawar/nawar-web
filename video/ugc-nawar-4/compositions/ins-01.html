@@ -73,49 +73,53 @@
     .i1-acc { color: #4da3ff; }
     .i1-w { display: inline-block; }
 
-    #i1-h { top: 168px; color: #1D0084; font-size: 80px; line-height: 1.05; }
-    #i1-h1 { margin-top: 16px; line-height: 1; }
-    #i1-chip { background: #1D0084; color: #FFFFFF; font-size: 62px; padding: 6px 26px 12px; border-radius: 16px; letter-spacing: -0.01em; }
-    .i1-r { position: absolute; left: 100px; width: 880px; height: 120px; }
-    .i1-m { position: absolute; left: 0; top: 26px; width: 120px; height: 68px; border-radius: 18px; background: #FFFFFF;
-      box-shadow: inset 0 0 0 2px #DDE6F5; display: flex; align-items: center; justify-content: center;
-      font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.14em; color: #5A6480; }
-    .i1-r .i1-bub { right: 0; top: 0; transform-origin: 100% 100%; }
-    .i1-plus { position: absolute; right: -18px; top: -22px; height: 52px; padding: 0 16px; border-radius: 999px; background: #E02D3C;
-      color: #FFFFFF; display: flex; align-items: center; font-family: "Inter", sans-serif; font-weight: 800; font-size: 28px; }
-    #i1-m3 { background: #1D0084; color: #FFFFFF; box-shadow: none; }
+    .i1-ph { position: absolute; border-radius: 74px; background: #0E0E12; box-shadow: inset 0 0 0 3px #2A2A33, inset 0 0 0 5px #0E0E12, inset 0 0 0 6px #3B3B46; }
+    .i1-scr { position: absolute; left: 16px; top: 16px; right: 16px; bottom: 16px; border-radius: 60px; overflow: hidden; background: #FFFFFF; }
+    .i1-isl { position: absolute; left: 50%; top: 30px; width: 150px; height: 42px; margin-left: -75px; border-radius: 21px; background: #000000; z-index: 5; }
+    .i1-sb { position: absolute; left: 0; top: 0; width: 100%; height: 96px; display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 58px 0; box-sizing: border-box; font-family: "Inter", sans-serif; font-weight: 700; font-size: 28px; color: #0C0C1E; z-index: 4; }
+    .i1-sb i { display: inline-block; width: 46px; height: 22px; border-radius: 6px; box-shadow: inset 0 0 0 3px currentColor; position: relative; }
+    .i1-sb i::after { content: ""; position: absolute; left: 5px; top: 5px; width: 28px; height: 12px; border-radius: 3px; background: currentColor; }
+
+    #i1-hd { position: absolute; left: 0; top: 96px; width: 100%; height: 116px; background: #F7F7F9; box-shadow: inset 0 -2px 0 #E4E6EC;
+      display: flex; align-items: center; gap: 20px; padding: 0 30px; box-sizing: border-box; }
+    #i1-hd svg { display: block; width: 26px; height: 40px; }
+    #i1-av { width: 74px; height: 74px; border-radius: 50%; background: #15A3A3; color: #FFFFFF; display: flex; align-items: center;
+      justify-content: center; font-family: "Inter", sans-serif; font-weight: 700; font-size: 34px; }
+    #i1-nm { font-family: "Inter", sans-serif; font-weight: 700; font-size: 34px; color: #0C0C1E; line-height: 1.1; }
+    #i1-st { font-family: "Inter", sans-serif; font-weight: 500; font-size: 24px; color: #5A6480; }
+    #i1-wall { position: absolute; left: 0; top: 212px; width: 100%; bottom: 0; background: #EEF1F6; overflow: hidden; }
+    .i1-day { position: absolute; left: 0; width: 100%; display: flex; justify-content: center; }
+    .i1-day span { padding: 8px 20px; border-radius: 14px; background: #FFFFFF; font-family: "Inter", sans-serif; font-weight: 600;
+      font-size: 22px; color: #5A6480; box-shadow: 0 1px 0 #DADFE8; }
+    #i1-list { position: absolute; left: 0; top: 0; width: 100%; height: 1200px; }
+    .i1-m { position: absolute; right: 26px; white-space: nowrap; padding: 18px 24px 14px; border-radius: 28px 28px 8px 28px; background: #DCEBFF;
+      font-family: "Inter", sans-serif; font-weight: 500; font-size: 33px; line-height: 1.24; color: #0C0C1E; transform-origin: 100% 100%; }
+    .i1-meta { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 6px; font-size: 20px; color: #5A6480; }
+    .i1-meta svg { display: block; width: 30px; height: 18px; }
+    #i1-bar { position: absolute; left: 0; bottom: 0; width: 100%; height: 118px; background: #F7F7F9; box-shadow: inset 0 2px 0 #E4E6EC; }
+    #i1-in { position: absolute; left: 28px; right: 110px; top: 22px; height: 62px; border-radius: 31px; background: #FFFFFF;
+      box-shadow: inset 0 0 0 2px #E1E4EA; font-family: "Inter", sans-serif; font-size: 26px; color: #A0A6B6; line-height: 62px; padding-left: 26px; }
+    #i1-send { position: absolute; right: 26px; top: 20px; width: 66px; height: 66px; border-radius: 50%; background: #0b6df0; }
 
   </style>
-  <div id="root" data-composition-id="ins-01" data-width="1080" data-height="1920" data-duration="3.755">
+  <div id="root" data-composition-id="ins-01" data-width="1080" data-height="1920" data-duration="4.1">
     <div class="i1-full i1-paper"><div class="i1-paper-dots"></div><div class="i1-paper-light"></div></div>
-    <div id="i1-h" class="i1-h1"><div id="i1-h0" class="i1-w">Mes tras mes,</div><div id="i1-h1"><span id="i1-chip" class="i1-chip">pidiendo ayuda</span></div></div>
-    <div id="i1-r0" class="i1-r" style="top: 470px;"><div id="i1-m0" class="i1-m">SEP</div>
-      <div id="i1-b0" class="i1-bub i1-bub-b i1-br">¿Me traduces esta carta?</div></div>
-    <div id="i1-r1" class="i1-r" style="top: 628px;"><div id="i1-m1" class="i1-m">OCT</div>
-      <div id="i1-b1" class="i1-bub i1-bub-b i1-br">¿Puedes llamar tú al casero?</div></div>
-    <div id="i1-r2" class="i1-r" style="top: 786px;"><div id="i1-m2" class="i1-m">NOV</div>
-      <div id="i1-b2" class="i1-bub i1-bub-b i1-br">¿Me acompañas a la gemeente?</div></div>
-    <div id="i1-r3" class="i1-r" style="top: 944px;"><div id="i1-m3" class="i1-m">DIC</div>
-      <div id="i1-b3" class="i1-bub i1-bub-b i1-br">¿Me traduces esto también?<div id="i1-plus" class="i1-plus">+1</div></div></div>
+    <div id="i1-phone" class="i1-ph" style="left:210px; top:150px; width:660px; height:1090px;"><div class="i1-scr"><div class="i1-sb" style="color: #0C0C1E;"><span>9:41</span><i></i></div><div id="i1-hd"><svg viewBox="0 0 26 40"><path d="M20 4 L6 20 L20 36" fill="none" stroke="#0b6df0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><div id="i1-av">L</div><div><div id="i1-nm">Laura</div><div id="i1-st">en línea</div></div></div><div id="i1-wall"><div id="i1-list"><div id="i1-d0" class="i1-day" style="top: 28px;"><span>12 sept</span></div><div id="i1-m0" class="i1-m" style="top: 84px;">¿Puedes llamar tú al casero?<div class="i1-meta"><span>19:42</span><svg viewBox="0 0 34 20"><path d="M2 11 L7 16 L17 4 M13 13 L16 16 L28 3" fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div id="i1-d1" class="i1-day" style="top: 211px;"><span>3 oct</span></div><div id="i1-m1" class="i1-m" style="top: 267px;">¿Me acompañas a la cita<br/>del dentista?<div class="i1-meta"><span>08:15</span><svg viewBox="0 0 34 20"><path d="M2 11 L7 16 L17 4 M13 13 L16 16 L28 3" fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div id="i1-d2" class="i1-day" style="top: 435px;"><span>7 nov</span></div><div id="i1-m2" class="i1-m" style="top: 491px;">¿Vienes conmigo al gemeente?<div class="i1-meta"><span>13:06</span><svg viewBox="0 0 34 20"><path d="M2 11 L7 16 L17 4 M13 13 L16 16 L28 3" fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div id="i1-d3" class="i1-day" style="top: 618px;"><span>Hoy</span></div><div id="i1-m3" class="i1-m" style="top: 674px;">¿Me traduces esta carta?<div class="i1-meta"><span>10:21</span><svg viewBox="0 0 34 20"><path d="M2 11 L7 16 L17 4 M13 13 L16 16 L28 3" fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div></div><div id="i1-bar"><div id="i1-in">Mensaje</div><div id="i1-send"></div></div></div><div class="i1-isl"></div></div>
   </div>
   <script>
     (function () {
       const tl = gsap.timeline({ paused: true });
       const q = (id) => document.getElementById("i1-" + id);
 
-      tl.fromTo(q("h0"), { opacity: 0.3, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);   // there from the cut
-      tl.fromTo(q("chip"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, 0.16);
-      tl.set(q("plus"), { opacity: 0 }, 0);
-      tl.fromTo(q("r0"), { opacity: 0.35, y: 26 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 0.0);
-      tl.fromTo(q("b0"), { scale: 0.82 }, { scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 0.0);
-      tl.fromTo(q("r1"), { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 0.677);
-      tl.fromTo(q("b1"), { scale: 0.82 }, { scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 0.677);
-      tl.fromTo(q("r2"), { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 1.141);
-      tl.fromTo(q("b2"), { scale: 0.82 }, { scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 1.141);
-      tl.fromTo(q("r3"), { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 1.771);
-      tl.fromTo(q("b3"), { scale: 0.82 }, { scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 1.771);
-      tl.fromTo(q("plus"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.26, ease: "back.out(2.2)", immediateRender: false }, 1.831 + 0.22);
-      tl.to(q("r3"), { keyframes: [{ x: -8, duration: 0.05 }, { x: 7, duration: 0.06 }, { x: -4, duration: 0.06 }, { x: 0, duration: 0.06 }] }, 2.963 - 0.04);
+      tl.fromTo(q("phone"), { opacity: 0.4, y: 40 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, 0);   // there from the cut
+      tl.fromTo(q("d1"), { opacity: 0 }, { opacity: 1, duration: 0.16 }, 0.72);
+      tl.fromTo(q("m1"), { opacity: 0, y: 30, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(1.5)" }, 0.78);
+      tl.fromTo(q("d2"), { opacity: 0 }, { opacity: 1, duration: 0.16 }, 1.2);
+      tl.fromTo(q("m2"), { opacity: 0, y: 30, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(1.5)" }, 1.26);
+      tl.fromTo(q("d3"), { opacity: 0 }, { opacity: 1, duration: 0.16 }, 1.88);
+      tl.fromTo(q("m3"), { opacity: 0, y: 30, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(1.5)" }, 1.94);
+      tl.to(q("list"), { y: -89, duration: 0.26, ease: "power2.out" }, 1.86);
 
       window.__timelines["ins-01"] = tl;
     })();

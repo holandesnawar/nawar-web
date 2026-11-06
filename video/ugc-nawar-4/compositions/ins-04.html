@@ -98,7 +98,7 @@
     #i4-ok svg { display: block; width: 50px; height: 50px; }
 
   </style>
-  <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="3.094">
+  <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="3.52">
     <div class="i4-full i4-paper"><div class="i4-paper-dots"></div><div class="i4-paper-light"></div></div>
     <div id="i4-way" class="i4-card i4-on-paper">
       <div id="i4-e0" class="i4-end"><div id="i4-d0" class="i4-dot"><i></i></div><div class="i4-lb">HOY</div><div class="i4-sm">noviembre</div></div>
@@ -116,14 +116,14 @@
       const q = (id) => document.getElementById("i4-" + id);
 
       tl.fromTo(q("way"), { opacity: 0.4, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);   // there from the cut
-      tl.fromTo(q("fill"), { scaleX: 0.04 }, { scaleX: 1, duration: 0.679 - 0.05, ease: "power2.inOut" }, 0.05);
-      tl.fromTo(q("d1"), { scale: 1 }, { keyframes: [{ scale: 1.25, duration: 0.12 }, { scale: 1, duration: 0.18, ease: "back.out(2)" }], immediateRender: false }, 0.679);
+      tl.fromTo(q("fill"), { scaleX: 0.04 }, { scaleX: 1, duration: 0.72 - 0.05, ease: "power2.inOut" }, 0.05);
+      tl.fromTo(q("d1"), { scale: 1 }, { keyframes: [{ scale: 1.25, duration: 0.12 }, { scale: 1, duration: 0.18, ease: "back.out(2)" }], immediateRender: false }, 0.72);
       tl.fromTo(q("av"), { opacity: 0.4, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 0);
       tl.fromTo(q("nl"), { opacity: 0.5, filter: "blur(9px)" }, { opacity: 0.85, filter: "blur(9px)", duration: 0.3, ease: "power2.out" }, 0);
-      tl.to(q("nl"), { opacity: 1, filter: "blur(0px)", duration: 0.26, ease: "power2.out" }, 0.679 - 0.06);
-      tl.set(q("nl"), { filter: "none" }, 0.679 + 0.22);
-      tl.fromTo(q("es"), { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, 0.679 + 0.12);
-      tl.fromTo(q("ok"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, 2.321 - 0.06);
+      tl.to(q("nl"), { opacity: 1, filter: "blur(0px)", duration: 0.26, ease: "power2.out" }, 0.72 - 0.06);
+      tl.set(q("nl"), { filter: "none" }, 0.72 + 0.22);
+      tl.fromTo(q("es"), { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, 0.72 + 0.12);
+      tl.fromTo(q("ok"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, 2.44 - 0.06);
 
       window.__timelines["ins-04"] = tl;
     })();

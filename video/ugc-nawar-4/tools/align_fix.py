@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Word times for the captions: ElevenLabs Scribe words of the take → tools/align/whisper_p.json ([start, end, word]; the
+"""Word times for the captions: ElevenLabs Scribe words of the take → tools/align/whisper_c.json ([start, end, word]; the
 file keeps the old name the rest of the tools read).
 
-tools/align/scribe_p.json is Scribe's own output (word timestamps) on the take's sound. Scribe's onsets are close, but
+tools/align/scribe_c.json is Scribe's own output (word timestamps) on the take's sound. Scribe's onsets are close, but
 at the take's own jump cuts it puts the first word of a phrase too early (into the silence or the cut before it). So the
 first word of each phrase (after a gap or a full stop), when its start sits in silence, is moved to where the voice comes
 back after the pause (energy 24 dB under the take's speech level for ≥ 80 ms), if there is one 0.15 s before to 0.70 s
@@ -12,10 +12,10 @@ import json, os, subprocess
 import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = {"p": ".raw/pedido.mov"}
-FIX = {"p": {"ra--": "ra"}}
+SRC = {"c": ".raw/cortado.mp4"}     # v2: the client's own cut («Cortado BF2 Video», Drive «BF 2»)
+FIX = {"c": {}}
 # (word, Scribe's start) → real start, read off the energy envelope
-MANUAL = {"p": {("¿Por", 14.32): 15.12}}
+MANUAL = {"c": {}}
 SR, H = 16000, 160                                   # 10 ms frames
 
 

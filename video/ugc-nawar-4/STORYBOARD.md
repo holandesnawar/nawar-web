@@ -1,4 +1,4 @@
-# Storyboard · UGC #4 v1.1 (45,6 s) — «Nuestro Black Friday empieza hoy», con el diseño de los UGC de la Formación
+# Storyboard · UGC #4 (v1.1; la v2 está en BRIEF.md: corte del cliente, stock, móviles reales) — «Nuestro Black Friday empieza hoy», con el diseño de los UGC de la Formación
 
 | Tiempo | Plano | Qué se oye | Qué se ve |
 |---|---|---|---|
