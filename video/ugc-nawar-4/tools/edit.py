@@ -23,7 +23,8 @@ FACE = {"c": (560, 660)}   # her face centre (zoom origin)
 # with a reframe in gen.py, so it reads as a jump cut.
 CUT_PRE, CUT_POST = 0.05, 0.005
 CUT_PRE_AT = {}
-JUMPS = {"c": [3.667, 8.533, 18.133, 19.633, 22.867, 27.233, 31.5]}   # (19.9: a 0.27 s clip right after 19.633, left as the cut has it)
+JUMPS = {"c": [3.667, 8.533, 18.133, 22.867, 27.233, 31.5]}   # (19.633 and 19.9 left as the cut has them: a split there
+                                                               #  nearly swallowed the «es» right after the cut)
 TIGHT, KEEP_TAIL, KEEP_HEAD, LOUD_DB = 0.18, 0.05, 0.04, -30.0
 PAUSE = {}
 TAIL_AT = {}
