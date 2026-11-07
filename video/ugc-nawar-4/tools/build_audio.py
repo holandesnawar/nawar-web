@@ -20,7 +20,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MUSIC = os.path.join(ROOT, ".raw", "music.mp3")
 BAR, BAR0, GROOVE_BAR = 4 * 60 / 107.7, 0.023, 8
 EQ = "highpass=f=110,lowshelf=f=150:g=-6,lowshelf=f=250:g=-6,equalizer=f=2500:t=q:w=0.9:g=-3"
-HOOK_LUFS, LOW_LUFS, MID_LUFS, OFFER_LUFS = -33.0, -42.0, -37.0, -35.5
+HOOK_LUFS, LOW_LUFS, MID_LUFS, OFFER_LUFS = -37.0, -38.5, -36.0, -35.0   # v5: hook softer (after the boom), the «why» higher
 XF, FADE_OUT = 0.35, 0.8
 SR = 48000
 
@@ -59,7 +59,7 @@ def main():
     gb = ramp(n, sr, [(0, off), (low_at - XF / 2, off), (low_at + XF / 2, LOW_LUFS - l_intro), (back - XF, LOW_LUFS - l_intro),
                       (back + 0.1, off), (total, off)])
     mus = a * (10 ** (ga / 20))[:, None] + b * (10 ** (gb / 20))[:, None]
-    fi = int(0.05 * sr); mus[:fi] *= np.linspace(0, 1, fi)[:, None]
+    fi = int(0.35 * sr); mus[:fi] *= np.linspace(0, 1, fi)[:, None] ** 2   # v5: comes up right behind the opening boom
     fo = int(FADE_OUT * sr); mus[n - fo:] *= (np.cos(np.linspace(0, np.pi / 2, fo)) ** 2)[:, None]
     sf.write(os.path.join(ROOT, "assets", "audio", "music-bed.wav"), mus.astype(np.float32), sr)
     json.dump({"track": "musica v1", "hook_groove": [0, low_at], "soft_from": low_at, "groove_back": back, "offer_lift": offer,

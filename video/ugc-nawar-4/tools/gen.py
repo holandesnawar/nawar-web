@@ -436,8 +436,7 @@ def main():
         for t, name, vol, *rest in sfx:
             sfx_all.append((INS[iid]["start"] + t, name, vol, *rest))
     overlays = []
-    sfx_all.append((0.0, "whoosh-short", 0.2))                         # the opening zoom-in
-    sfx_all += [(ED["hook_bf"] - 0.02, "impact", 0.14), (ED["hook_bf"], "sparkle", 0.12)]   # v4: the «uu, sorpresa» on «Black Friday»
+    sfx_all.append((0.0, "impact", 0.32))      # v5: the ad starts on a boom, on frame 0 with the zoom-in (the whoosh read late)
     for cid, fn in (("hook", hook), ("outro", outro)):
         html, t0, d, osfx = fn()
         open(os.path.join(ROOT, "compositions", f"{cid}.html"), "w").write(html)

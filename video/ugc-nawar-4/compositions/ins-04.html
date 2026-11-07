@@ -86,20 +86,14 @@
   </style>
   <div id="root" data-composition-id="ins-04" data-width="1080" data-height="1920" data-duration="3.52">
     <video id="i4-v" class="clip" src="assets/video/stock-xmas.mp4" muted playsinline data-start="0" data-duration="3.52" data-track-index="1"></video>
-    <div id="i4-nl" class="i4-bub i4-bub-w i4-bl">Fijne feestdagen! Ga je met<br/>kerst naar je familie?</div>
-    <div id="i4-es" class="i4-card"><span class="i4-flag"><svg viewBox="0 0 40 27"><rect width="40" height="27" fill="#AA151B" /><rect y="7" width="40" height="13" fill="#F1BF00" /></svg></span><span>¡Felices fiestas! ¿Vas a ver a tu<br/>familia en Navidad?</span></div>
-    <div id="i4-okrow" class="i4-row"><div id="i4-ok" class="i4-wpill"><svg viewBox="0 0 64 64"><path d="M16 33 L28 45 L49 21" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ya lo entiendes</span></div></div>
+    <div class="i4-scr" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 52%, rgba(6,4,30,0.62) 68%, rgba(6,4,30,0.62) 76%, rgba(0,0,0,0) 90%);"></div>
   </div>
   <script>
     (function () {
       const tl = gsap.timeline({ paused: true });
       const q = (id) => document.getElementById("i4-" + id);
 
-      tl.fromTo(q("nl"), { opacity: 0, scale: 0.85, filter: "blur(9px)" }, { opacity: 0.9, scale: 1, filter: "blur(9px)", duration: 0.3, ease: "back.out(1.5)" }, 0.05);
-      tl.to(q("nl"), { opacity: 1, filter: "blur(0px)", duration: 0.26, ease: "power2.out" }, 0.72 - 0.06);
-      tl.set(q("nl"), { filter: "none" }, 0.72 + 0.22);
-      tl.fromTo(q("es"), { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.72 + 0.12);
-      tl.fromTo(q("ok"), { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, 2.44 - 0.06);
+      tl.fromTo(q("v"), { scale: 1.0 }, { scale: 1.04, duration: 3.52, ease: "none" }, 0);   // a slow push
 
       window.__timelines["ins-04"] = tl;
     })();

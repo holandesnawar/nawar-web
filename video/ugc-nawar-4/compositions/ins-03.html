@@ -99,7 +99,7 @@
 
   </style>
   <div id="root" data-composition-id="ins-03" data-width="1080" data-height="1920" data-duration="2.246">
-    <div class="i3-full i3-paper"><div class="i3-paper-dots"></div><div class="i3-paper-light"></div></div>
+    <div class="i3-full i3-blue"><div class="i3-blue-dots"></div><div class="i3-blue-amb"></div><div class="i3-blue-vig"></div></div>
     <div id="i3-phone" class="i3-ph" style="left:270px; top:140px; width:540px; height:1110px;"><div class="i3-scr"><div class="i3-sb" style="color: #FFFFFF;"><span>9:00</span><i></i></div><div id="i3-wp"></div><div id="i3-dt0" class="i3-date">viernes, 1 de enero</div><div id="i3-dt1" class="i3-date">lunes, 1 de febrero</div><div id="i3-dt2" class="i3-date">lunes, 1 de marzo</div><div id="i3-clock">9:00</div><div id="i3-nf"><div id="i3-ic"><svg viewBox="0 0 40 40"><rect width="40" height="40" rx="10" fill="#0B6DF0"/><path d="M20 9 C14 9 12 13 12 18 V23 L9.5 27 H30.5 L28 23 V18 C28 13 26 9 20 9 Z M17 29 A3 3 0 0 0 23 29 Z" fill="#FFFFFF"/></svg></div><div id="i3-app">RECORDATORIOS</div><div id="i3-now">ahora</div><div id="i3-tt">Empezar neerlandés</div><div id="i3-s0" class="i3-sub">Hoy · 9:00</div><div id="i3-s1" class="i3-sub">Pospuesto 1 vez</div><div id="i3-s2" class="i3-sub">Pospuesto 2 veces</div><div id="i3-btn">Posponer</div></div></div><div class="i3-isl"></div></div>
   </div>
   <script>
@@ -108,6 +108,7 @@
       const q = (id) => document.getElementById("i3-" + id);
 
       tl.fromTo(q("phone"), { opacity: 0.4, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);   // there from the cut
+      tl.fromTo(q("phone"), { scale: 1 }, { scale: 1.035, duration: 2.246 - 0.3, ease: "none", immediateRender: false }, 0.3);   // v5: a slow push
       tl.set([q("dt1"), q("dt2"), q("s1"), q("s2")], { opacity: 0 }, 0);
       tl.to(q("btn"), { keyframes: [{ scale: 0.9, backgroundColor: "#C9CEDA", duration: 0.07 }, { scale: 1, backgroundColor: "#E3E6EE", duration: 0.1 }] }, 0.42);
       tl.to(q("nf"), { x: -700, opacity: 0.6, duration: 0.2, ease: "power2.in" }, 0.56);

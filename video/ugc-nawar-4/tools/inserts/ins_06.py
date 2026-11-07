@@ -29,10 +29,12 @@ def build():
     screen = f'<video id="i6-web" class="clip" src="assets/video/web.mp4" muted playsinline data-start="0" data-duration="«D»" data-playback-rate="«RATE»" data-track-index="1"></video>'
     bg = '<video id="i6-bg" class="clip" src="assets/video/web-bg.mp4" muted playsinline data-start="0" data-duration="«D»" data-playback-rate="«RATE»" data-track-index="2"></video>'
     kick = f'<div id="i6-krow" class="i6-row"><div id="i6-kick" class="i6-pill">{icon("star").replace("currentColor", "#FFFFFF")}<span>Lista prioritaria · Black Friday</span></div></div>'
-    body = "\n".join(["    " + bg, "    " + phone(P, "phone", (1080 - pw) // 2, 226, pw, ph, screen, time=None), "    " + kick,
+    scrim = '<div class="i6-scr" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 52%, rgba(6,4,30,0.62) 68%, rgba(6,4,30,0.62) 76%, rgba(0,0,0,0) 90%);"></div>'
+    body = "\n".join(["    " + bg, "    " + scrim, "    " + phone(P, "phone", (1080 - pw) // 2, 226, pw, ph, screen, time=None), "    " + kick,
                       f'    <div id="i6-okrow" class="i6-row"><div id="i6-ok" class="i6-wpill">{icon("checkw")}<span>Lo ves antes que nadie</span></div></div>'])
     js = """
       tl.fromTo(q("phone"), { opacity: 0.4, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);   // there from the cut
+      tl.fromTo(q("phone"), { scale: 1 }, { scale: 1.035, duration: «D» - 0.3, ease: "none", immediateRender: false }, 0.3);   // v5: a slow push
       tl.fromTo(q("ok"), { opacity: 0, y: 26, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, «ANT» - 0.04);
 """
     sfx = [(c["ANT"] - 0.04, "chime", 0.14)]

@@ -1,11 +1,8 @@
-"""ins-02 · «En la pausa del trabajo, alguien dice algo, todos se ríen y tú sonríes sin saber de qué.» — real footage,
-two free Mixkit clips (Mixkit Stock Video Free License), v3 full frame in 9:16 (cropped from 4K, tools/fetch_assets.sh;
-the client: «siempre adaptado a 9:16»):
-  · from the cut to «todos»: colleagues at an office table («People having a work meeting around a table», 4547); on
-    «dice algo» a white bubble with what someone says, in quick idiomatic Dutch: «En toen stond hij met z'n mond vol
-    tanden!»;
-  · from «todos se ríen»: a colleague laughing («Two coworkers talking and laughing», 4872); on «tú sonríes» a white
-    pill with an awkward smile, «¿De qué se ríen?».
+"""ins-02 · «En la pausa del trabajo, alguien dice algo, todos se ríen y tú sonríes sin saber de qué.» — real footage, one
+free Mixkit clip (Mixkit Stock Video Free License) full frame in 9:16, cropped from 4K («People having a work meeting
+around a table», 4547, tools/fetch_assets.sh): colleagues at the office table, one of them laughing, the high-five
+landing around «todos se ríen» (v5, the client: the same group the whole time, not a cut to someone else; no Dutch
+line written on screen). On «tú sonríes» a white pill with an awkward smile, «¿De qué se ríen?».
 """
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -29,14 +26,11 @@ def build():
       transform-origin: 100% 50%; }
     #i2-awk svg { display: block; width: 54px; height: 54px; }
 """
-    body = f"""    <video id="i2-a" class="clip i2-v" src="assets/video/stock-table.mp4" muted playsinline data-start="0" data-duration="«CUT»" data-media-start="«AF»" data-track-index="1"></video>
-    <video id="i2-b" class="clip i2-v" src="assets/video/stock-laugh.mp4" muted playsinline data-start="«CUT»" data-duration="«DB»" data-media-start="«BF»" data-track-index="2"></video>
-    <div id="i2-say" class="i2-bub i2-bub-w i2-bl">En toen stond hij met z'n<br/>mond vol tanden!</div>
+    body = f"""    <video id="i2-a" class="clip i2-v" src="assets/video/stock-table.mp4" muted playsinline data-start="0" data-duration="«D»" data-track-index="1"></video>
+    <div class="i2-scr" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 52%, rgba(6,4,30,0.62) 68%, rgba(6,4,30,0.62) 76%, rgba(0,0,0,0) 90%);"></div>
     <div id="i2-awk">{sub(AWK, {})}<span>¿De qué se ríen?</span></div>"""
     js = """
-      tl.fromTo(q("say"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, «DICE» - 0.08);
-      tl.to(q("say"), { opacity: 0, y: -10, duration: 0.2, ease: "power2.in" }, «CUT» + 0.9);
       tl.fromTo(q("awk"), { opacity: 0, scale: 0.7, x: 20 }, { opacity: 1, scale: 1, x: 0, duration: 0.3, ease: "back.out(1.7)" }, «TU» - 0.04);
 """
-    sfx = [(c["DICE"] - 0.08, "pop", 0.12), (c["TU"] - 0.04, "pop", 0.14)]
+    sfx = [(c["TU"] - 0.04, "pop", 0.14)]
     return comp(iid, d, P, css, body, js, c), sfx

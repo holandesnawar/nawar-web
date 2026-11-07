@@ -82,9 +82,8 @@
 
   </style>
   <div id="root" data-composition-id="ins-02" data-width="1080" data-height="1920" data-duration="5.4">
-    <video id="i2-a" class="clip i2-v" src="assets/video/stock-table.mp4" muted playsinline data-start="0" data-duration="2.54" data-media-start="0" data-track-index="1"></video>
-    <video id="i2-b" class="clip i2-v" src="assets/video/stock-laugh.mp4" muted playsinline data-start="2.54" data-duration="2.86" data-media-start="0" data-track-index="2"></video>
-    <div id="i2-say" class="i2-bub i2-bub-w i2-bl">En toen stond hij met z'n<br/>mond vol tanden!</div>
+    <video id="i2-a" class="clip i2-v" src="assets/video/stock-table.mp4" muted playsinline data-start="0" data-duration="5.4" data-track-index="1"></video>
+    <div class="i2-scr" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 52%, rgba(6,4,30,0.62) 68%, rgba(6,4,30,0.62) 76%, rgba(0,0,0,0) 90%);"></div>
     <div id="i2-awk"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="#0b6df0"/><circle cx="17" cy="20" r="3" fill="#FFFFFF"/><circle cx="31" cy="20" r="3" fill="#FFFFFF"/><path d="M15 31 Q24 35 33 29" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round"/></svg><span>¿De qué se ríen?</span></div>
   </div>
   <script>
@@ -92,8 +91,6 @@
       const tl = gsap.timeline({ paused: true });
       const q = (id) => document.getElementById("i2-" + id);
 
-      tl.fromTo(q("say"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, 1.78 - 0.08);
-      tl.to(q("say"), { opacity: 0, y: -10, duration: 0.2, ease: "power2.in" }, 2.54 + 0.9);
       tl.fromTo(q("awk"), { opacity: 0, scale: 0.7, x: 20 }, { opacity: 1, scale: 1, x: 0, duration: 0.3, ease: "back.out(1.7)" }, 3.52 - 0.04);
 
       window.__timelines["ins-02"] = tl;

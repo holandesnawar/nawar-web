@@ -51,10 +51,11 @@ def build():
     screen = (f'<div id="i1-hd">{sub(back, {})}<div id="i1-av">L</div><div><div id="i1-nm">Laura</div><div id="i1-st">en línea</div></div></div>'
               f'<div id="i1-wall"><div id="i1-list">' + "".join(rows) + '</div></div>'
               f'<div id="i1-bar"><div id="i1-in">Mensaje</div><div id="i1-send"></div></div>')
-    body = "\n".join([ground(P, "paper"), "    " + phone(P, "phone", PL, PT, PW, PH, screen)])
+    body = "\n".join([ground(P, "blue"), "    " + phone(P, "phone", PL, PT, PW, PH, screen)])
     starts = [0.0, round(c["MES"] - 0.04, 3), round(c["ESP"] + 0.16, 3), round(c["OTRO"] - 0.06, 3)]
     js = """
       tl.fromTo(q("phone"), { opacity: 0.4, y: 40 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, 0);   // there from the cut
+      tl.fromTo(q("phone"), { scale: 1 }, { scale: 1.035, duration: «D» - 0.3, ease: "none", immediateRender: false }, 0.3);   // v5: a slow push
 """
     for k, t in enumerate(starts):
         if k:

@@ -35,12 +35,12 @@ TAIL = 0.0             # the cut ends on her own last frames (0.5 s after the wo
 LEAD = 0.06            # an insert cuts in this long before its first word (source seconds)
 # (insert id, ground, first words, first words of what comes after) — full-screen graphics while she explains
 INSERTS = [
-    ("ins-01", "paper", "porque cada mes", "en la pausa"),          # your chat over the months: another month asking for help
+    ("ins-01", "blue", "porque cada mes", "en la pausa"),          # your chat over the months: another month asking for help
     ("ins-02", "stock", "en la pausa", "te dices que"),             # v2: stock footage, coworkers laughing at the lunch table
-    ("ins-03", "paper", "pero llega enero", "y no es"),             # the reminder you keep postponing
-    ("ins-04", "paper", "en navidad vas", "la primera oferta"),     # by Christmas you understand
+    ("ins-03", "blue", "pero llega enero", "y no es"),             # the reminder you keep postponing
+    ("ins-04", "stock", "en navidad vas", "la primera oferta"),     # v5: stock footage, a Christmas dinner
     ("ins-05", "blue", "nuestro libro en", "quien lo consiga"),     # the ebook, 1 €
-    ("ins-06", "paper", "quien lo consiga", "solo hasta el"),       # v2: the priority-list page, scrolled on a phone
+    ("ins-06", "stock", "quien lo consiga", "solo hasta el"),       # v2: the priority-list page, scrolled on a phone
 ]
 HOOK_BF = "black friday empieza"   # the opening line (a light «Black Friday» tag on the hook)
 TURN = "por eso lo"                # v4: the groove comes back here (the turn to the offer)

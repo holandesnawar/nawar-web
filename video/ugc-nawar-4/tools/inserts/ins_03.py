@@ -39,9 +39,10 @@ def build():
     screen = (f'<div id="i3-wp"></div>{dates}<div id="i3-clock">9:00</div>'
               f'<div id="i3-nf"><div id="i3-ic">{BELL}</div><div id="i3-app">RECORDATORIOS</div><div id="i3-now">ahora</div>'
               f'<div id="i3-tt">Empezar neerlandés</div>{subs}<div id="i3-btn">Posponer</div></div>')
-    body = "\n".join([ground(P, "paper"), "    " + phone(P, "phone", PL, PT, PW, PH, screen, sb_dark=False, time="9:00")])
+    body = "\n".join([ground(P, "blue"), "    " + phone(P, "phone", PL, PT, PW, PH, screen, sb_dark=False, time="9:00")])
     js = """
       tl.fromTo(q("phone"), { opacity: 0.4, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0);   // there from the cut
+      tl.fromTo(q("phone"), { scale: 1 }, { scale: 1.035, duration: «D» - 0.3, ease: "none", immediateRender: false }, 0.3);   // v5: a slow push
       tl.set([q("dt1"), q("dt2"), q("s1"), q("s2")], { opacity: 0 }, 0);
 """
     for k, t in enumerate((round(c["ENE"] - 0.06, 3), round(c["FEB"] - 0.06, 3))):

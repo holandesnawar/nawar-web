@@ -104,7 +104,7 @@
 
   </style>
   <div id="root" data-composition-id="ins-01" data-width="1080" data-height="1920" data-duration="4.1">
-    <div class="i1-full i1-paper"><div class="i1-paper-dots"></div><div class="i1-paper-light"></div></div>
+    <div class="i1-full i1-blue"><div class="i1-blue-dots"></div><div class="i1-blue-amb"></div><div class="i1-blue-vig"></div></div>
     <div id="i1-phone" class="i1-ph" style="left:210px; top:150px; width:660px; height:1090px;"><div class="i1-scr"><div class="i1-sb" style="color: #0C0C1E;"><span>9:41</span><i></i></div><div id="i1-hd"><svg viewBox="0 0 26 40"><path d="M20 4 L6 20 L20 36" fill="none" stroke="#0b6df0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><div id="i1-av">L</div><div><div id="i1-nm">Laura</div><div id="i1-st">en línea</div></div></div><div id="i1-wall"><div id="i1-list"><div id="i1-d0" class="i1-day" style="top: 28px;"><span>12 sept</span></div><div id="i1-m0" class="i1-m" style="top: 84px;">¿Puedes llamar tú al casero?<div class="i1-meta"><span>19:42</span><svg viewBox="0 0 34 20"><path d="M2 11 L7 16 L17 4 M13 13 L16 16 L28 3" fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div id="i1-d1" class="i1-day" style="top: 211px;"><span>3 oct</span></div><div id="i1-m1" class="i1-m" style="top: 267px;">¿Me acompañas a la cita<br/>del dentista?<div class="i1-meta"><span>08:15</span><svg viewBox="0 0 34 20"><path d="M2 11 L7 16 L17 4 M13 13 L16 16 L28 3" fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div id="i1-d2" class="i1-day" style="top: 435px;"><span>7 nov</span></div><div id="i1-m2" class="i1-m" style="top: 491px;">¿Vienes conmigo al gemeente?<div class="i1-meta"><span>13:06</span><svg viewBox="0 0 34 20"><path d="M2 11 L7 16 L17 4 M13 13 L16 16 L28 3" fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div id="i1-d3" class="i1-day" style="top: 618px;"><span>Hoy</span></div><div id="i1-m3" class="i1-m" style="top: 674px;">¿Me traduces esta carta?<div class="i1-meta"><span>10:21</span><svg viewBox="0 0 34 20"><path d="M2 11 L7 16 L17 4 M13 13 L16 16 L28 3" fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div></div><div id="i1-bar"><div id="i1-in">Mensaje</div><div id="i1-send"></div></div></div><div class="i1-isl"></div></div>
   </div>
   <script>
@@ -113,6 +113,7 @@
       const q = (id) => document.getElementById("i1-" + id);
 
       tl.fromTo(q("phone"), { opacity: 0.4, y: 40 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, 0);   // there from the cut
+      tl.fromTo(q("phone"), { scale: 1 }, { scale: 1.035, duration: 4.1 - 0.3, ease: "none", immediateRender: false }, 0.3);   // v5: a slow push
       tl.fromTo(q("d1"), { opacity: 0 }, { opacity: 1, duration: 0.16 }, 0.72);
       tl.fromTo(q("m1"), { opacity: 0, y: 30, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(1.5)" }, 0.78);
       tl.fromTo(q("d2"), { opacity: 0 }, { opacity: 1, duration: 0.16 }, 1.2);
