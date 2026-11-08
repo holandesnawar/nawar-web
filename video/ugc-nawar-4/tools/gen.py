@@ -231,7 +231,7 @@ OPEN_STILLS = 4                   # her first 4 frames are stills (see index())
 # about −15): +2 / +2.5 / −3.6 dB, which keeps a small lift for the emphasis
 SHOT_GAIN = {}                    # (v1's levelling of the retakes; v2 is the client's own cut, measured flat enough)
 SOFT_OUT = set()                  # shots whose last word runs into the creator's own cut: a 35 ms fade, not 12 ms
-ZOOM_IN = (0.0, 0.3, 1.0, 1.18)   # v6.4, the opening hook: from her plain shot (frame 0, sharp) a fast zoom-in on her face
+ZOOM_IN = (0.95, 0.3, 1.0, 1.18)   # v6: at 0:01 (the client: «en el 0:00 entra muy temprano»)   # v6.4, the opening hook: from her plain shot (frame 0, sharp) a fast zoom-in on her face
                                   # (t0, duration, scale from, scale to; most of it in the first ~0.12 s)
 
 
@@ -381,9 +381,9 @@ def index(sfx_all, overlays):
       // a punch on the key word (origin = her face); the ad ends when she stops talking, under the button
 {chr(10).join(ztl)}
       // the opening zoom-in: frame 0 sharp, a light motion blur while it moves fastest, sharp again as it lands
-      tl.fromTo("#zwc", {{ filter: "blur(0px)" }}, {{ filter: "blur(2.5px)", duration: 0.05, ease: "power1.out" }}, 0.0);
-      tl.to("#zwc", {{ filter: "blur(0px)", duration: 0.16, ease: "power2.out" }}, 0.05);
-      tl.set("#zwc", {{ filter: "none" }}, 0.22);
+      tl.fromTo("#zwc", {{ filter: "blur(0px)" }}, {{ filter: "blur(2.5px)", duration: 0.05, ease: "power1.out", immediateRender: false }}, {ZOOM_IN[0]});
+      tl.to("#zwc", {{ filter: "blur(0px)", duration: 0.16, ease: "power2.out" }}, {ZOOM_IN[0] + 0.05});
+      tl.set("#zwc", {{ filter: "none" }}, {ZOOM_IN[0] + 0.22});
       window.__timelines["main"] = tl;
     </script>
   </body>
@@ -436,7 +436,7 @@ def main():
         for t, name, vol, *rest in sfx:
             sfx_all.append((INS[iid]["start"] + t, name, vol, *rest))
     overlays = []
-    sfx_all.append((0.0, "impact", 0.32))      # v5: the ad starts on a boom, on frame 0 with the zoom-in (the whoosh read late)
+    sfx_all.append((ZOOM_IN[0] - 0.06, "whoosh-short", 0.22))   # v6: a zoom-in whoosh on the zoom at 0:01 (no boom on frame 0)
     for cid, fn in (("hook", hook), ("outro", outro)):
         html, t0, d, osfx = fn()
         open(os.path.join(ROOT, "compositions", f"{cid}.html"), "w").write(html)

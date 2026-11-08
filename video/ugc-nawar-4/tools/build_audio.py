@@ -20,7 +20,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MUSIC = os.path.join(ROOT, ".raw", "music.mp3")
 BAR, BAR0, GROOVE_BAR = 4 * 60 / 107.7, 0.023, 8
 EQ = "highpass=f=110,lowshelf=f=150:g=-6,lowshelf=f=250:g=-6,equalizer=f=2500:t=q:w=0.9:g=-3"
-HOOK_LUFS, LOW_LUFS, MID_LUFS, OFFER_LUFS = -37.0, -38.5, -36.0, -35.0   # v5: hook softer (after the boom), the «why» higher
+HOOK_LUFS, LOW_LUFS, MID_LUFS, OFFER_LUFS = -37.0, -44.0, -35.5, -35.0   # v6: the pains calm and low, a lift at the turn
 XF, FADE_OUT = 0.35, 0.8
 SR = 48000
 
@@ -45,13 +45,16 @@ def main():
     groove = BAR0 + GROOVE_BAR * BAR
     l_intro, l_groove = lufs(eq_wav, 1.0, groove - 1.5), lufs(eq_wav, groove + 1.0, 40.0)
     n = int(round(total * sr)) + 1
-    low_at = ed["shots"][1]["start"]                                    # «¿Por qué tan pronto?» (the cut after the hook)
+    low_at = next(i["start"] for i in ed["inserts"] if i["id"] == "ins-01")   # v6: from 0:05 («Porque cada mes…»), calm
     turn = ed["turn"]; offer = ed["offer"]
     # layer A, the groove, from bar 8 at t = 0; its downbeat nearest the turn is where it comes back
     a = y[int(groove * sr):int(groove * sr) + n]; a = np.pad(a, ((0, n - len(a)), (0, 0)))
     back = round(round(turn / BAR) * BAR - 0.02, 3)
     # layer B, the soft intro, from its start at the end of the hook
-    b = np.zeros((n, 2), np.float32); i0 = int(low_at * sr); m = min(n - i0, len(y)); b[i0:i0 + m] = y[:m]
+    soft_wav = os.path.join(ROOT, ".raw", "music-soft.wav")              # v6: the intro, mellower (no highs, a touch slower in feel)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", eq_wav, "-af", "lowpass=f=2200,treble=g=-4", soft_wav], check=True)
+    ys, _ = sf.read(soft_wav, dtype="float32")
+    b = np.zeros((n, 2), np.float32); i0 = int(low_at * sr); m = min(n - i0, len(ys)); b[i0:i0 + m] = ys[:m]
     off = -80.0
     ga = ramp(n, sr, [(0, HOOK_LUFS - l_groove), (low_at - XF / 2, HOOK_LUFS - l_groove), (low_at + XF / 2, off), (back - XF, off),
                       (back, MID_LUFS - l_groove), (offer - 0.2, MID_LUFS - l_groove), (offer + 0.6, OFFER_LUFS - l_groove),

@@ -2,7 +2,7 @@
 free Mixkit clip (Mixkit Stock Video Free License) full frame in 9:16, cropped from 4K («People having a work meeting
 around a table», 4547, tools/fetch_assets.sh): colleagues at the office table, one of them laughing, the high-five
 landing around «todos se ríen» (v5, the client: the same group the whole time, not a cut to someone else; no Dutch
-line written on screen). On «tú sonríes» a white pill with an awkward smile, «¿De qué se ríen?».
+line written on screen; v6: no text at all).
 """
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -27,10 +27,8 @@ def build():
     #i2-awk svg { display: block; width: 54px; height: 54px; }
 """
     body = f"""    <video id="i2-a" class="clip i2-v" src="assets/video/stock-table.mp4" muted playsinline data-start="0" data-duration="«D»" data-track-index="1"></video>
-    <div class="i2-scr" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 52%, rgba(6,4,30,0.62) 68%, rgba(6,4,30,0.62) 76%, rgba(0,0,0,0) 90%);"></div>
-    <div id="i2-awk">{sub(AWK, {})}<span>¿De qué se ríen?</span></div>"""
+    <div class="i2-scr" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 52%, rgba(6,4,30,0.62) 68%, rgba(6,4,30,0.62) 76%, rgba(0,0,0,0) 90%);"></div>"""
     js = """
-      tl.fromTo(q("awk"), { opacity: 0, scale: 0.7, x: 20 }, { opacity: 1, scale: 1, x: 0, duration: 0.3, ease: "back.out(1.7)" }, «TU» - 0.04);
 """
-    sfx = [(c["TU"] - 0.04, "pop", 0.14)]
+    sfx = []   # (v6: no «¿De qué se ríen?» pill — the client)
     return comp(iid, d, P, css, body, js, c), sfx
