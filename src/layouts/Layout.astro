@@ -14,6 +14,8 @@ interface Props {
   /** Inter y Poppins desde la propia web y precargadas, en vez de Google
    *  Fonts (ver src/styles/fuentes-locales.css, que la página importa). */
   fuentesLocales?: boolean
+  /** Idioma de la página (la de empresas, /bedrijven, va en neerlandés). */
+  lang?: string
 }
 
 const {
@@ -24,6 +26,7 @@ const {
   canonicalURL = Astro.url.href,
   noindex = false,
   fuentesLocales = false,
+  lang = 'es',
 } = Astro.props
 
 const siteURL = 'https://www.holandesnawar.com'
@@ -68,7 +71,7 @@ const META_PIXEL_NOSCRIPT = `<img height="1" width="1" style="display:none" alt=
 ---
 
 <!doctype html>
-<html lang="es" style="background:#1D0084">
+<html lang={lang} style="background:#1D0084">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
