@@ -242,7 +242,7 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
             </span>
             <span class="eb-caras-txt">
               <span class="eb-estrellas" aria-label="5 van 5 sterren">★★★★★</span>
-              Al meer dan {EBOOK_LECTORES} lezers
+              Al meer dan 100 lezers
             </span>
           </div>
 
@@ -465,8 +465,12 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
           <span class="text-gradient-white">Laat je team vandaag starten,</span>
           <span style="color:#4da3ff;-webkit-text-fill-color:#4da3ff;white-space:nowrap;">voor {PRECIO}</span>
         </h2>
-        <p class="eb-cierre-sub">«{EBOOK_NOMBRE}», {EBOOK_PAGINAS_TXT} pagina's, binnen een minuut in de mailbox. <span class="bf-solo-activa">Normaal <s>{PRECIO_NORMAL}</s>, nu {PRECIO}.</span></p>
-        <p class="eb-cierre-sub bz-team">Voor je hele team? <a href={WA} target="_blank" rel="noopener">Vraag naar de Black Friday-voorwaarden voor bedrijven</a>.</p>
+        <div class="bz-slot-regels">
+          <p>«{EBOOK_NOMBRE}», {EBOOK_PAGINAS_TXT} pagina's.</p>
+          <p>Binnen een minuut in de mailbox.</p>
+          <p class="bf-solo-activa">Normaal <s>{PRECIO_NORMAL}</s>, nu {PRECIO}.</p>
+        </div>
+        <p class="bz-team">Voor je hele team?<br /><a href={WA} target="_blank" rel="noopener">Vraag naar de Black Friday-voorwaarden voor bedrijven</a></p>
         <div class="bf-solo-activa">
           <button type="button" class="ebook-cta-primary ebook-cta-big" data-bf-comprar>
             Bestel voor {PRECIO}
@@ -710,7 +714,16 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
     background: rgba(34,197,94,0.13); border: 1px solid rgba(134,239,172,0.38); color: rgba(255,255,255,0.95); font-size: 14.5px; line-height: 1.5; }
   :global(html.bz-gekocht) .bz-bedankt { display: flex; }
   .bz-vertaald { margin: 10px 0 0; font-size: 13px; color: #5B6382; }
-  .bz-team { margin-top: 10px !important; }
+    .bz-slot-regels { display: flex; flex-direction: column; gap: 2px; }
+  .bz-slot-regels p { margin: 0; font-size: 17px; line-height: 1.55; color: rgba(255,255,255,0.93); }
+  .bz-slot-regels s { color: rgba(255,255,255,0.75); }
+  .bz-team { margin: 4px 0 6px; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,0.85); }
+  /* «Wat staat erin?»: una línea por color, nunca tres. */
+  .ebook-incluye-text .value-title { font-size: clamp(28px, 2.9vw, 42px); }
+  .ebook-incluye-text .value-title > span { white-space: nowrap; }
+  @media (max-width: 640px) {
+    .ebook-incluye-text .value-title { font-size: min(30px, calc((100vw - 48px) / 13.5)); }
+  }
   .bz-team a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
   /* ════ Oferta desbloqueada (viene de la portada de Black Friday) ════ */
   /* En UNA línea (02/11, noche: "en un párrafo, no en dos"): sin partir y,
@@ -762,7 +775,10 @@ const check = `<svg width="11" height="11" fill="none" stroke="currentColor" str
   @keyframes h-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
   .h-anim { opacity: 0; animation: h-in 0.75s cubic-bezier(0.22,1,0.36,1) forwards; animation-delay: var(--hd, 0s); }
 
+  /* El relleno de abajo deja sitio a la cola de la «j» (con el degradado
+     recortado al texto, se cortaba en el borde de la línea). */
   .hero-title-gradient {
+    padding-bottom: 0.14em; margin-bottom: -0.14em;
     background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
