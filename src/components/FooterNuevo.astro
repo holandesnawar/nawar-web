@@ -4,7 +4,17 @@ import { CTA_PRINCIPAL } from '../lib/cta'
 // ctaHref: a dónde va «Matricularme» (de serie, CTA_PRINCIPAL).
 // sinTarjeta: sin la tarjeta «Aprende como el 1%» (en /formacion, que ya
 // tiene su propio cierre; 09/10).
-const { ctaHref = CTA_PRINCIPAL, sinTarjeta = false } = Astro.props as { ctaHref?: string; sinTarjeta?: boolean }
+// lang: 'nl' pone los textos del pie en neerlandés (/bedrijven, 10/11/2026).
+const { ctaHref = CTA_PRINCIPAL, sinTarjeta = false, lang = 'es' } = Astro.props as { ctaHref?: string; sinTarjeta?: boolean; lang?: 'es' | 'nl' }
+const T = lang === 'nl' ? {
+  tagline: 'Online school voor Nederlands, speciaal voor Spaanstaligen. Echt leren, met een methode en een community.',
+  nav: 'Navigatie', inicio: 'Home', vision: 'Onze visie', contacto: 'Contact', contactoT: 'Contact', legal: 'Juridisch',
+  condiciones: 'Verkoopvoorwaarden', terminos: 'Algemene voorwaarden', privacidad: 'Privacybeleid', derechos: 'Alle rechten voorbehouden.',
+} : {
+  tagline: 'Escuela online de neerlandés para hispanohablantes. Aprende de verdad, con método y comunidad.',
+  nav: 'Navegación', inicio: 'Inicio', vision: 'Nuestra Visión', contacto: 'Contacto', contactoT: 'Contacto', legal: 'Legal',
+  condiciones: 'Condiciones de contratación', terminos: 'Términos y condiciones', privacidad: 'Política de privacidad', derechos: 'Todos los derechos reservados.',
+}
 ---
 <footer class="footer-nuevo" id="contacto" data-navbar="dark">
 
@@ -54,7 +64,7 @@ const { ctaHref = CTA_PRINCIPAL, sinTarjeta = false } = Astro.props as { ctaHref
     <div class="footer-grid">
       <div>
         <img src="https://d1yei2z3i6k35z.cloudfront.net/9533860/671a9c9265e23_Logo_Nawar_2.png" alt="Holandés Nawar" class="footer-logo" style="font-size: 55px; line-height: 30px;">
-        <p class="footer-tagline">Escuela online de neerlandés para hispanohablantes. Aprende de verdad, con método y comunidad.</p>
+        <p class="footer-tagline">{T.tagline}</p>
         <div class="footer-socials">
           <!-- Instagram -->
           <a href="https://www.instagram.com/holandes.nawar" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="footer-social-btn">
@@ -71,33 +81,33 @@ const { ctaHref = CTA_PRINCIPAL, sinTarjeta = false } = Astro.props as { ctaHref
         </div>
       </div>
       <div>
-        <p class="footer-col-label">Navegación</p>
+        <p class="footer-col-label">{T.nav}</p>
         <ul class="footer-nav">
-          <li><a href="/">Inicio</a></li>
-          <li><a href="/nuestra-vision">Nuestra Visión</a></li>
+          <li><a href="/">{T.inicio}</a></li>
+          <li><a href="/nuestra-vision">{T.vision}</a></li>
           <li><a href="/blog">Blog</a></li>
-          <li><a href="/contacto">Contacto</a></li>
+          <li><a href="/contacto">{T.contacto}</a></li>
         </ul>
       </div>
       <div>
-        <p class="footer-col-label">Contacto</p>
+        <p class="footer-col-label">{T.contactoT}</p>
         <ul class="footer-contact">
           <li><a href="mailto:info@holandesnawar.com">info@holandesnawar.com</a></li>
           <li><a href="https://www.instagram.com/holandes.nawar" target="_blank" rel="noopener noreferrer">@holandes.nawar</a></li>
         </ul>
       </div>
       <div>
-        <p class="footer-col-label">Legal</p>
+        <p class="footer-col-label">{T.legal}</p>
         <ul class="footer-nav">
-          <li><a href="/condiciones-de-contratacion">Condiciones de contratación</a></li>
-          <li><a href="/terminos-y-condiciones">Términos y condiciones</a></li>
-          <li><a href="/politica-de-privacidad">Política de privacidad</a></li>
+          <li><a href="/condiciones-de-contratacion">{T.condiciones}</a></li>
+          <li><a href="/terminos-y-condiciones">{T.terminos}</a></li>
+          <li><a href="/politica-de-privacidad">{T.privacidad}</a></li>
           <li><a href="/cookies">Cookies</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <p class="footer-copy">© <span id="footer-year"></span> HOLANDÉS NAWAR. Todos los derechos reservados.</p>
+      <p class="footer-copy">© <span id="footer-year"></span> HOLANDÉS NAWAR. {T.derechos}</p>
     </div>
   </div>
 </footer>
