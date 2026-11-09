@@ -1,0 +1,185 @@
+---
+/**
+ * Aviso de cookies (10/11/2026), con el diseño que pasó el usuario (el de
+ * udia.es): una barra clara abajo con «Ajustes / Rechazar / Aceptar» y, en
+ * Ajustes, dos casillas (Analítica y Publicidad).
+ *
+ * Lo pone el Layout cuando la página lleva `consentimiento`: entonces el
+ * Layout NO carga Google Analytics ni el píxel de Meta, y este aviso los
+ * carga solo si la persona los acepta (Analítica → Google Analytics,
+ * Publicidad → píxel de Meta). Vercel Analytics no usa cookies y va siempre.
+ *
+ * La elección se guarda en el navegador (`nawar.cookies`) y vale para toda
+ * la web. `window.nawarCookies.abrir()` vuelve a abrir el aviso (enlace
+ * «Cookies» del pie).
+ *
+ * ⚠️ Quien no acepte no cuenta en Meta ni en Google: si se pone en las
+ * páginas de los anuncios, se pierden sus eventos.
+ */
+interface Props {
+  lang?: 'es' | 'nl'
+  gaId: string
+  pixelSnippet?: string
+}
+const { lang = 'es', gaId, pixelSnippet = '' } = Astro.props
+
+const T = {
+  es: {
+    texto: 'Usamos cookies de terceros para medir visitas y anuncios.',
+    info: 'Más info',
+    ajustes: 'Ajustes',
+    rechazar: 'Rechazar',
+    aceptar: 'Aceptar',
+    guardar: 'Guardar',
+    analitica: 'Analítica',
+    analiticaD: 'Medir visitas con Google Analytics.',
+    publicidad: 'Publicidad',
+    publicidadD: 'Medir campañas con Meta. Si nos das tu correo o teléfono, se envían a Meta cifrados.',
+    privacidad: '/politica-de-privacidad',
+  },
+  nl: {
+    texto: 'We gebruiken cookies van derden om bezoeken en advertenties te meten.',
+    info: 'Meer info',
+    ajustes: 'Instellingen',
+    rechazar: 'Weigeren',
+    aceptar: 'Accepteren',
+    guardar: 'Opslaan',
+    analitica: 'Analyse',
+    analiticaD: 'Bezoeken meten met Google Analytics.',
+    publicidad: 'Advertenties',
+    publicidadD: 'Campagnes meten met Meta. Als je ons je e-mail of telefoonnummer geeft, gaan die versleuteld naar Meta.',
+    privacidad: '/politica-de-privacidad',
+  },
+}[lang]
+---
+
+<div id="nc-aviso" class="nc" hidden data-ga={gaId} data-pixel={pixelSnippet} role="dialog" aria-label="Cookies">
+  <div class="nc-caja">
+    <div class="nc-ajustes" hidden>
+      <label class="nc-fila">
+        <span><strong>{T.analitica}</strong> · {T.analiticaD}</span>
+        <input type="checkbox" data-cat="analitica" />
+      </label>
+      <label class="nc-fila">
+        <span><strong>{T.publicidad}</strong> · {T.publicidadD}</span>
+        <input type="checkbox" data-cat="publicidad" />
+      </label>
+    </div>
+    <div class="nc-pie">
+      <p class="nc-texto">{T.texto} <a href={T.privacidad}>{T.info}</a></p>
+      <div class="nc-botones">
+        <button type="button" class="nc-b nc-ver">{T.ajustes}</button>
+        <button type="button" class="nc-b nc-guardar" hidden>{T.guardar}</button>
+        <button type="button" class="nc-b nc-no">{T.rechazar}</button>
+        <button type="button" class="nc-b nc-si">{T.aceptar}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var CLAVE = 'nawar.cookies'
+    var el = document.getElementById('nc-aviso')
+    if (!el) return
+    var cargado = { analitica: false, publicidad: false }
+
+    function cargarGA() {
+      if (cargado.analitica) return
+      cargado.analitica = true
+      var id = el.dataset.ga
+      var s = document.createElement('script')
+      s.async = true
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id
+      document.head.appendChild(s)
+      window.dataLayer = window.dataLayer || []
+      window.gtag = function () { window.dataLayer.push(arguments) }
+      window.gtag('js', new Date())
+      window.gtag('config', id)
+    }
+    function cargarPixel() {
+      if (cargado.publicidad || !el.dataset.pixel) return
+      cargado.publicidad = true
+      var s = document.createElement('script')
+      s.textContent = el.dataset.pixel
+      document.head.appendChild(s)
+    }
+    function aplicar(e) {
+      if (e.analitica) cargarGA()
+      if (e.publicidad) cargarPixel()
+    }
+    function leer() {
+      try { return JSON.parse(localStorage.getItem(CLAVE) || 'null') } catch (x) { return null }
+    }
+    function guardar(e) {
+      e.fecha = new Date().toISOString()
+      try { localStorage.setItem(CLAVE, JSON.stringify(e)) } catch (x) {}
+      aplicar(e)
+      cerrar()
+    }
+    var ajustes = el.querySelector('.nc-ajustes')
+    var bVer = el.querySelector('.nc-ver')
+    var bGuardar = el.querySelector('.nc-guardar')
+    var casillas = el.querySelectorAll('input[data-cat]')
+    function abrir(conAjustes) {
+      var e = leer() || {}
+      casillas.forEach(function (c) { c.checked = !!e[c.dataset.cat] })
+      ajustes.hidden = !conAjustes
+      bVer.hidden = !!conAjustes
+      bGuardar.hidden = !conAjustes
+      el.hidden = false
+    }
+    function cerrar() { el.hidden = true }
+
+    bVer.addEventListener('click', function () { abrir(true) })
+    bGuardar.addEventListener('click', function () {
+      var e = {}
+      casillas.forEach(function (c) { e[c.dataset.cat] = c.checked })
+      guardar(e)
+    })
+    el.querySelector('.nc-no').addEventListener('click', function () { guardar({ analitica: false, publicidad: false }) })
+    el.querySelector('.nc-si').addEventListener('click', function () { guardar({ analitica: true, publicidad: true }) })
+
+    window.nawarCookies = { abrir: function () { abrir(true) } }
+    var hecho = leer()
+    if (hecho) aplicar(hecho)
+    else abrir(false)
+  })()
+</script>
+
+<style>
+  .nc { position: fixed; left: 0; right: 0; bottom: 20px; z-index: 9999; padding: 0 16px; pointer-events: none; }
+  .nc[hidden] { display: none; }
+  .nc-caja {
+    pointer-events: auto; max-width: 1080px; margin: 0 auto;
+    background: rgba(245, 246, 248, 0.94); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 22px;
+    box-shadow: 0 18px 50px rgba(5, 8, 30, 0.28);
+    font-family: Inter, system-ui, sans-serif; color: #4a4f63;
+  }
+  .nc-pie { display: flex; align-items: center; justify-content: space-between; gap: 16px 24px; padding: 14px 16px 14px 26px; flex-wrap: wrap; }
+  .nc-texto { margin: 0; font-size: 15.5px; line-height: 1.45; flex: 1 1 320px; }
+  .nc-texto a { color: #2b2f42; text-decoration: underline; text-underline-offset: 3px; }
+  .nc-botones { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .nc-b { font: 500 15.5px/1 Inter, system-ui, sans-serif; color: #3d4256; background: none; border: 0; padding: 13px 16px; border-radius: 999px; cursor: pointer; }
+  .nc-b:hover { color: #0b0d1a; }
+  .nc-b[hidden] { display: none; }
+  .nc-guardar { border: 1.5px solid #c9cedb; }
+  .nc-guardar:hover { border-color: #0a1656; }
+  .nc-si { background: #0a1656; color: #fff; font-weight: 700; padding: 13px 24px; }
+  .nc-si:hover { background: #1D0084; color: #fff; }
+  .nc-ajustes { padding: 18px 26px 6px; border-bottom: 1px solid #e3e5ec; }
+  .nc-ajustes[hidden] { display: none; }
+  .nc-fila { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 10px 0; font-size: 15px; line-height: 1.45; cursor: pointer; }
+  .nc-fila strong { color: #0b0d1a; font-weight: 600; }
+  .nc-fila input { flex: none; width: 20px; height: 20px; accent-color: #0a1656; cursor: pointer; }
+  @media (max-width: 640px) {
+    .nc { bottom: 12px; padding: 0 12px; }
+    .nc-pie { padding: 14px 16px; }
+    .nc-texto { font-size: 14.5px; }
+    .nc-ajustes { padding: 14px 16px 4px; }
+    .nc-botones { width: 100%; justify-content: flex-end; }
+    .nc-b { padding: 11px 12px; font-size: 14.5px; }
+    .nc-si { padding: 11px 20px; }
+  }
+</style>
