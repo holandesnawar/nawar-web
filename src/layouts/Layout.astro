@@ -1,6 +1,7 @@
 ---
 import { PIXEL_META } from '../lib/admision'
 import '../styles/global.css'
+import AvisoCookies from '../components/AvisoCookies.astro'
 import Analytics from '@vercel/analytics/astro'
 import SpeedInsights from '@vercel/speed-insights/astro'
 
@@ -16,6 +17,9 @@ interface Props {
   fuentesLocales?: boolean
   /** Idioma de la página (la de empresas, /bedrijven, va en neerlandés). */
   lang?: string
+  /** Aviso de cookies: Google Analytics y el píxel de Meta solo se cargan si
+   *  la persona los acepta (components/AvisoCookies.astro). */
+  consentimiento?: boolean
 }
 
 const {
@@ -27,6 +31,7 @@ const {
   noindex = false,
   fuentesLocales = false,
   lang = 'es',
+  consentimiento = false,
 } = Astro.props
 
 const siteURL = 'https://www.holandesnawar.com'
@@ -138,21 +143,23 @@ const META_PIXEL_NOSCRIPT = `<img height="1" width="1" style="display:none" alt=
       }
     </script>
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3GJTLQHRJ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-S3GJTLQHRJ');
-    </script>
+    <!-- Google Analytics (con aviso de cookies lo carga el aviso, si se acepta) -->
+    {!consentimiento && <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3GJTLQHRJ"></script>}
+    {!consentimiento && (
+      <script is:inline>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-S3GJTLQHRJ');
+      </script>
+    )}
 
     {/* Píxel de Meta. is:inline para que salga tal cual y se
         ejecute en la cabecera: si no, Astro se lo lleva a un módulo
         aparte y se carga más tarde, que para medir es justo lo que
         no interesa. */}
-    {META_PIXEL && <script is:inline set:html={META_PIXEL_SNIPPET} />}
-    {META_PIXEL && <noscript set:html={META_PIXEL_NOSCRIPT} />}
+    {META_PIXEL && !consentimiento && <script is:inline set:html={META_PIXEL_SNIPPET} />}
+    {META_PIXEL && !consentimiento && <noscript set:html={META_PIXEL_NOSCRIPT} />}
 
     <!-- Fonts: Inter + Poppins -->
     {fuentesLocales ? (
@@ -184,6 +191,9 @@ const META_PIXEL_NOSCRIPT = `<img height="1" width="1" style="display:none" alt=
   </head>
   <body class="min-h-screen antialiased" style="background:#1D0084">
     <slot />
+    {consentimiento && (
+      <AvisoCookies lang={lang === 'nl' ? 'nl' : 'es'} gaId="G-S3GJTLQHRJ" pixelSnippet={META_PIXEL ? META_PIXEL_SNIPPET : ''} />
+    )}
 
     <!-- Metricool tracking pixel — métricas de visitas del blog/web -->
     <img
