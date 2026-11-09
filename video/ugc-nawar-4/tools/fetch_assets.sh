@@ -44,4 +44,4 @@ python3 tools/sfx_impact.py      # the page turn of the ebook (synthesised)
 echo "word times, edit, ebook clip, soundtrack, compositions"
 python3 tools/align_fix.py && python3 tools/edit.py && python3 tools/libro_clip.py && python3 tools/build_audio.py
 python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc4-v5.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high -o renders/nawar-ugc4-v6.mp4"
