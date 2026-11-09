@@ -16,17 +16,22 @@
  */
 interface Props {
   fondo?: 'claro' | 'oscuro'
+  /** 'nl': los enlaces en neerlandés (la página del ebook para empresas). */
+  lang?: 'es' | 'nl'
 }
-const { fondo = 'claro' } = Astro.props
+const { fondo = 'claro', lang = 'es' } = Astro.props
+const T = lang === 'nl'
+  ? { terminos: 'Algemene voorwaarden', aviso: 'Juridische informatie', privacidad: 'Privacybeleid' }
+  : { terminos: 'Términos y condiciones', aviso: 'Aviso legal', privacidad: 'Política de privacidad' }
 const WWW = 'https://www.holandesnawar.com'
 ---
 
 <footer class:list={['pl', `pl-${fondo}`]} data-pie-bf>
   <div class="pl-caja">
     <div class="pl-links">
-      <a href={`${WWW}/terminos-y-condiciones`}>Términos y condiciones</a>
-      <a href={`${WWW}/condiciones-de-contratacion`}>Aviso legal</a>
-      <a href={`${WWW}/politica-de-privacidad`}>Política de privacidad</a>
+      <a href={`${WWW}/terminos-y-condiciones`}>{T.terminos}</a>
+      <a href={`${WWW}/condiciones-de-contratacion`}>{T.aviso}</a>
+      <a href={`${WWW}/politica-de-privacidad`}>{T.privacidad}</a>
     </div>
     <div class="pl-raya" aria-hidden="true"></div>
     <p class="pl-copy">HOLANDÉS NAWAR © {new Date().getFullYear()}</p>
