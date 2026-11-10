@@ -1,0 +1,419 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Caveat"; font-weight: 700; font-style: normal; src: url("assets/fonts/caveat-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: nawar-blue + white dot grid + vignette ---------- */
+    #f12-ground { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 50% 46%, #025dc7 0%, #120081 72%); }
+    #f12-dots {
+      position: absolute; left: -160px; top: -100px; width: 2240px; height: 1280px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px; transform-origin: 1120px 660px;
+    }
+    #f12-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 72% 70% at 50% 46%, rgba(4,0,40,0) 52%, rgba(4,0,40,0.42) 100%); }
+
+    .f12-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .f12-w { display: inline-block; }
+
+    /* ================= SCENE 1 — the direct route ================= */
+    #f12-s1-cam { transform-origin: 960px 560px; }
+    #f12-flash {
+      position: absolute; left: 560px; top: 160px; width: 800px; height: 800px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(159,213,245,0.6) 16%, rgba(77,163,255,0.2) 40%, rgba(77,163,255,0) 68%);
+    }
+    .f12-spark { position: absolute; width: 0; height: 0; }
+    .f12-streak {
+      position: absolute; left: 0; top: -3px; height: 6px; border-radius: 3px; transform-origin: 0% 50%;
+      background: linear-gradient(90deg, rgba(159,213,245,0) 0%, rgba(159,213,245,0.7) 45%, #FFFFFF 100%);
+      box-shadow: 0 0 14px rgba(159,213,245,0.5);
+    }
+    #f12-s1-svg { overflow: visible; }
+    #f12-ghost { fill: none; stroke: rgba(255,255,255,0.34); stroke-width: 5; stroke-linecap: round; stroke-dasharray: 3 18; }
+    #f12-track { fill: none; stroke: rgba(255,255,255,0.4); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 2 16; }
+    #f12-beam-glow { fill: none; stroke: #9fd5f5; stroke-opacity: 0.55; stroke-width: 34; stroke-linecap: round; stroke-dasharray: 1000 1000; stroke-dashoffset: 1000; }
+    #f12-beam { fill: none; stroke: #FFFFFF; stroke-width: 10; stroke-linecap: round; stroke-dasharray: 1000 1000; stroke-dashoffset: 1000; }
+    #f12-beamclip { position: absolute; left: 510px; top: 470px; width: 900px; height: 180px; overflow: hidden; }
+    #f12-trail {
+      position: absolute; left: -340px; top: 84px; width: 340px; height: 12px; border-radius: 6px;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(159,213,245,0.55) 55%, #FFFFFF 100%);
+      box-shadow: 0 0 22px rgba(159,213,245,0.65);
+    }
+    #f12-head {
+      position: absolute; left: -60px; top: 30px; width: 120px; height: 120px; border-radius: 50%;
+      background: radial-gradient(circle, #FFFFFF 0%, #FFFFFF 13%, rgba(159,213,245,0.75) 24%, rgba(77,163,255,0.25) 46%, rgba(77,163,255,0) 70%);
+    }
+    .f12-node { position: absolute; width: 180px; height: 180px; margin: -90px 0 0 -90px; }
+    .f12-disc {
+      position: absolute; inset: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 64px; letter-spacing: -0.02em; line-height: 1;
+      color: #1D0084; background: #FFFFFF;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 0 0 10px rgba(255,255,255,0.12), 0 0 60px rgba(77,163,255,0.35);
+    }
+    .f12-label {
+      position: absolute; left: 50%; top: 206px; width: 420px; margin-left: -210px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.14em; line-height: 1; color: #FFFFFF;
+    }
+    .f12-ring { position: absolute; inset: -6px; border-radius: 50%; border: 6px solid #FFFFFF; opacity: 0; }
+    #f12-nl-glow {
+      position: absolute; left: -150px; top: -150px; width: 480px; height: 480px; border-radius: 50%; opacity: 0;
+      background: radial-gradient(circle, rgba(159,213,245,0.6) 0%, rgba(77,163,255,0.22) 40%, rgba(77,163,255,0) 70%);
+    }
+    #f12-n-en .f12-disc { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.42); box-shadow: inset 0 0 0 4px rgba(255,255,255,0.22); }
+    #f12-n-en .f12-label { color: rgba(255,255,255,0.42); }
+    #f12-x { position: absolute; left: 20px; top: 20px; width: 140px; height: 140px; overflow: visible; }
+    #f12-note {
+      position: absolute; left: 0; top: 584px; width: 1920px; text-align: center;
+      font-family: "Caveat", cursive; font-weight: 700; font-size: 54px; line-height: 1; color: #9fd5f5;
+    }
+    #f12-note-in { display: inline-block; }
+    .f12-row { position: absolute; left: 0; width: 1920px; display: flex; justify-content: center; align-items: baseline; white-space: nowrap; gap: 0.26em; }
+    #f12-lead { top: 740px; font-family: "Poppins", sans-serif; font-weight: 600; font-size: 54px; line-height: 1.1; letter-spacing: -0.01em; color: rgba(255,255,255,0.72); }
+    #f12-w-metodo { color: #FFFFFF; font-weight: 700; }
+    #f12-main { top: 802px; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 108px; line-height: 1.05; letter-spacing: -0.035em; color: #FFFFFF; }
+    #f12-w-espanol { color: #4da3ff; transform-origin: 30% 62%; text-shadow: 0 0 46px rgba(77,163,255,0.45), 0 12px 40px rgba(4,0,40,0.38); }
+
+    /* ================= SCENE 2 — the native teacher, live ================= */
+    #f12-push { transform-origin: 514px 366px; }
+    #f12-lapstage { perspective: 2200px; perspective-origin: 605px 520px; }
+    #f12-floor {
+      position: absolute; left: 85px; top: 770px; width: 1040px; height: 80px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 40%, rgba(4,0,40,0.55) 0%, rgba(4,0,40,0.22) 45%, rgba(4,0,40,0) 72%);
+    }
+    #f12-lap { position: absolute; left: 145px; top: 250px; width: 920px; height: 541px; transform-origin: 50% 50%; }
+    #f12-bezel {
+      position: absolute; left: 0; top: 0; width: 920px; height: 515px; box-sizing: border-box; padding: 22px; border-radius: 26px;
+      background: #0C0C1E; box-shadow: 0 40px 110px rgba(4,0,40,0.45), inset 0 0 0 2px rgba(255,255,255,0.06);
+    }
+    #f12-camdot { position: absolute; left: 456px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: #262a40; }
+    #f12-screen { position: relative; width: 876px; height: 471px; border-radius: 8px; overflow: hidden; background: #F5F7FF; }
+    #f12-vid { position: absolute; left: -21px; top: 0; width: 918px; height: 494px; object-fit: cover; object-position: 50% 0%; display: block; }
+    #f12-focus { position: absolute; left: 274px; top: 57px; width: 136px; height: 86px; border-radius: 12px; box-shadow: 0 0 0 4px #4da3ff, 0 0 26px 6px rgba(77,163,255,0.65); }
+    #f12-dim { position: absolute; inset: 0; background: rgba(7,4,31,0.4); opacity: 0; }
+    #f12-glass { position: absolute; inset: 0; background: linear-gradient(118deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 34%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 100%); }
+    #f12-base {
+      position: absolute; left: -45px; top: 513px; width: 1010px; height: 26px; border-radius: 3px 3px 24px 24px;
+      background: linear-gradient(180deg, #eef1f7 0%, #c9cfdc 40%, #9aa3b8 100%); box-shadow: 0 10px 24px rgba(4,0,40,0.35);
+    }
+    #f12-notch { position: absolute; left: 425px; top: 0; width: 160px; height: 9px; border-radius: 0 0 10px 10px; background: linear-gradient(180deg, #9aa3b8 0%, #b9c0cf 100%); }
+
+    #f12-s2-right { position: absolute; left: 1128px; top: 0; width: 712px; height: 1080px; }
+    .f12-pill {
+      position: absolute; left: 0; display: flex; align-items: center; gap: 22px; padding: 18px 38px 18px 18px;
+      border-radius: 999px; background: #FFFFFF; white-space: nowrap; transform-origin: 10% 50%;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 0 0 8px rgba(255,255,255,0.10);
+    }
+    #f12-pill1 { top: 288px; }
+    #f12-pill2 { top: 446px; }
+    .f12-pill-ico { position: relative; width: 78px; height: 78px; flex: 0 0 78px; border-radius: 50%; overflow: hidden; }
+    .f12-pill-txt { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 36px; line-height: 1; letter-spacing: -0.02em; color: #1D0084; }
+    .f12-flag { position: absolute; left: 0; width: 78px; height: 26px; }
+    #f12-nl-ico { box-shadow: inset 0 0 0 2px #DDE6F5; }
+    #f12-es-ico {
+      background: #1D0084; display: flex; align-items: center; justify-content: center;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 32px; letter-spacing: -0.02em; color: #FFFFFF;
+    }
+    #f12-exact {
+      position: absolute; left: 2px; top: 600px; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 104px;
+      line-height: 1.05; letter-spacing: -0.035em; color: #FFFFFF; white-space: nowrap; transform-origin: 10% 62%;
+      text-shadow: 0 12px 40px rgba(4,0,40,0.38);
+    }
+    #f12-ruler { position: absolute; left: 8px; top: 728px; width: 680px; height: 30px; overflow: visible; }
+
+    /* ================= SCENE 3 — where you will stumble ================= */
+    #f12-s3-right { position: absolute; left: 1000px; top: 36px; width: 840px; height: 1044px; }
+    #f12-s3-lead {
+      position: absolute; left: 60px; top: 184px; display: flex; gap: 0.26em; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 54px; line-height: 1.1; letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
+    }
+    #f12-trop {
+      position: absolute; left: 54px; top: 248px; font-family: "Poppins", sans-serif; font-weight: 900; font-size: 136px;
+      line-height: 1; letter-spacing: -0.04em; color: #FFFFFF; white-space: nowrap; transform-origin: 20% 70%; text-shadow: 0 16px 50px rgba(4,0,40,0.4);
+    }
+    #f12-card {
+      position: absolute; left: 0; top: 440px; width: 840px; height: 334px; box-sizing: border-box;
+      background: #FFFFFF; border: 1px solid #DDE6F5; border-radius: 28px; box-shadow: 0 40px 110px rgba(4,0,40,0.45);
+    }
+    #f12-card-lbl {
+      position: absolute; left: 46px; top: 40px; display: flex; align-items: center; gap: 14px;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 0.14em; line-height: 1; color: #5A6480;
+    }
+    #f12-card-flag { position: relative; width: 34px; height: 24px; border-radius: 5px; overflow: hidden; box-shadow: 0 0 0 1px #DDE6F5; }
+    #f12-card-flag i { position: absolute; left: 0; width: 34px; height: 8px; }
+    #f12-sent {
+      position: absolute; left: 46px; top: 112px; display: flex; align-items: baseline; gap: 40px; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 56px; line-height: 1.1; letter-spacing: -0.02em; color: #0C0C1E;
+    }
+    .f12-dw { display: inline-block; padding: 0 9px; margin: 0 -9px; border-radius: 14px; background-color: rgba(224,45,60,0); }
+    #f12-gloss { position: absolute; left: 46px; top: 270px; font-family: "Inter", sans-serif; font-weight: 500; font-size: 28px; line-height: 1; color: #5A6480; white-space: nowrap; }
+    #f12-brk { position: absolute; left: 0; top: 0; width: 840px; height: 334px; overflow: visible; }
+    #f12-reticle { position: absolute; left: 0; top: 0; width: 0; height: 0; color: #1D0084; }
+    #f12-ret-svg { position: absolute; left: -100px; top: -100px; width: 200px; height: 200px; overflow: visible; }
+  </style>
+
+  <div id="root" data-composition-id="12-metodo" data-width="1920" data-height="1080" data-duration="6.037">
+    <div id="f12-ground" class="clip" data-start="0" data-duration="6.037" data-track-index="0"><div id="f12-dots"></div><div id="f12-vig"></div></div>
+
+    <!-- ===================== SCENE 1 — ES -> NL, straight ===================== -->
+    <div id="f12-s1" class="f12-full">
+      <div id="f12-s1-cam" class="f12-full">
+        <div id="f12-flash"></div>
+        <div id="f12-sparks" class="f12-full"></div>
+        <svg id="f12-s1-svg" class="f12-full" viewBox="0 0 1920 1080" aria-hidden="true">
+          <path id="f12-ghost" d="M454,468 C490,330 620,250 848,250 L1072,250 C1300,250 1430,330 1466,468" />
+          <path id="f12-track" d="M510,560 L1410,560" />
+          <path id="f12-beam-glow" d="M510,560 L1410,560" pathLength="1000" />
+          <path id="f12-beam" d="M510,560 L1410,560" pathLength="1000" />
+        </svg>
+        <div id="f12-beamclip"><div id="f12-trail"></div><div id="f12-head"></div></div>
+        <div class="f12-node" id="f12-n-en" style="left:960px; top:250px;">
+          <div class="f12-disc" id="f12-disc-en">EN</div>
+          <div class="f12-label">INGLÉS</div>
+          <svg id="f12-x" viewBox="0 0 140 140" aria-hidden="true">
+            <path d="M28,28 L112,112 M112,28 L28,112" fill="none" stroke="rgba(4,0,40,0.35)" stroke-width="26" stroke-linecap="round" transform="translate(0,6)" />
+            <path d="M28,28 L112,112 M112,28 L28,112" fill="none" stroke="#E02D3C" stroke-width="20" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div id="f12-nodes" class="f12-full">
+          <div class="f12-node" id="f12-n-es" style="left:420px; top:560px;">
+            <div class="f12-ring" id="f12-ring-es"></div>
+            <div class="f12-disc" id="f12-disc-es">ES</div>
+            <div class="f12-label" id="f12-lbl-es">ESPAÑOL</div>
+          </div>
+          <div class="f12-node" id="f12-n-nl" style="left:1500px; top:560px;">
+            <div id="f12-nl-glow"></div>
+            <div class="f12-ring" id="f12-ring-nl"></div>
+            <div class="f12-disc" id="f12-disc-nl">NL</div>
+            <div class="f12-label" id="f12-lbl-nl">NEERLANDÉS</div>
+          </div>
+        </div>
+        <div id="f12-note"><span id="f12-note-in">sin pasar por el inglés</span></div>
+        <div class="f12-row" id="f12-lead"><span class="f12-w" id="f12-w-un">Un</span><span class="f12-w" id="f12-w-metodo">método</span><span class="f12-w" id="f12-w-construido">construido</span></div>
+        <div class="f12-row" id="f12-main"><span class="f12-w" id="f12-w-desde">desde</span><span class="f12-w" id="f12-w-el">el</span><span class="f12-w" id="f12-w-espanol">español</span></div>
+      </div>
+    </div>
+
+    <!-- ===================== SCENE 2 + 3 — laptop (live class) + right column ===================== -->
+    <div id="f12-s2" class="f12-full">
+      <div id="f12-push" class="f12-full">
+        <div id="f12-floor"></div>
+        <div id="f12-lapstage" class="f12-full">
+          <div id="f12-lap">
+            <div id="f12-base"><div id="f12-notch"></div></div>
+            <div id="f12-bezel">
+              <div id="f12-camdot"></div>
+              <div id="f12-screen">
+                <video id="f12-vid" class="clip" src="assets/video/clases-video-dentro.mp4" muted playsinline
+                  data-start="2.2" data-duration="3.837" data-media-start="0" data-hf-media-start-basis="local" data-track-index="2"></video>
+                <div id="f12-focus"></div><div id="f12-dim"></div><div id="f12-glass"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="f12-s2-right">
+        <div class="f12-pill" id="f12-pill1">
+          <div class="f12-pill-ico" id="f12-nl-ico"><i class="f12-flag" style="top:0; background:#AE1C27;"></i><i class="f12-flag" style="top:26px; background:#FFFFFF;"></i><i class="f12-flag" style="top:52px; background:#21468C;"></i></div>
+          <div class="f12-pill-txt">Profesores nativos holandeses</div>
+        </div>
+        <div class="f12-pill" id="f12-pill2">
+          <div class="f12-pill-ico" id="f12-es-ico">ES</div>
+          <div class="f12-pill-txt">Expertos en español</div>
+        </div>
+        <div id="f12-exact">exactamente</div>
+        <svg id="f12-ruler" viewBox="0 0 680 30" aria-hidden="true">
+          <g id="f12-ruler-g" fill="none" stroke="#4da3ff" stroke-width="5" stroke-linecap="round"><path d="M3,4 L3,26 M677,4 L677,26 M3,15 L677,15" /></g>
+        </svg>
+      </div>
+
+      <div id="f12-s3-right">
+        <div id="f12-s3-lead"><span class="f12-w" id="f12-w-donde">dónde</span><span class="f12-w" id="f12-w-vas">vas</span><span class="f12-w" id="f12-w-a">a</span></div>
+        <div id="f12-trop">tropezar.</div>
+        <div id="f12-card">
+          <div id="f12-card-lbl">
+            <div id="f12-card-flag"><i style="top:0; background:#AE1C27;"></i><i style="top:8px; background:#FFFFFF;"></i><i style="top:16px; background:#21468C;"></i></div>
+            <span>NEERLANDÉS</span>
+          </div>
+          <div id="f12-sent"><span class="f12-dw" id="f12-d-ik">Ik</span><span class="f12-dw" id="f12-d-heb">heb</span><span class="f12-dw" id="f12-d-gisteren">gisteren</span><span class="f12-dw" id="f12-d-gewerkt">gewerkt.</span></div>
+          <div id="f12-gloss">Ayer trabajé.</div>
+          <svg id="f12-brk" viewBox="0 0 840 334" aria-hidden="true">
+            <path id="f12-brk-path" d="M188.5,210 L188.5,230 L671,230 L671,188" pathLength="1000" fill="none" stroke="#E02D3C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1000 1000" stroke-dashoffset="1000" />
+          </svg>
+          <div id="f12-reticle">
+            <svg id="f12-ret-svg" viewBox="-100 -100 200 200" aria-hidden="true">
+              <g id="f12-ret-g">
+                <ellipse cx="0" cy="0" rx="74" ry="58" fill="none" stroke="currentColor" stroke-width="5" />
+                <path d="M50,-50 L61,-61 M-50,-50 L-61,-61 M50,50 L61,61 M-50,50 L-61,61" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+              </g>
+              <ellipse id="f12-ret-burst" cx="0" cy="0" rx="74" ry="58" fill="none" stroke="#E02D3C" stroke-width="4" opacity="0" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 6.037, LEAD = 0.04, F = 1 / 30;
+      const T = {
+        un: 0.12, metodo: 0.37, construido: 0.70, desde: 1.35, el: 1.62, espanol: 1.71,
+        con: 2.32, profesores: 2.58, nativos: 3.06, que: 3.49, saben: 3.61, exactamente: 3.99,
+        donde: 4.78, vas: 5.00, a: 5.20, tropezar: 5.27
+      };
+      const rise = (id, cue) => tl.fromTo(q(id), { opacity: 0, y: 42, filter: "blur(8px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, cue - LEAD);
+      const slam = (id, cue, s) => tl.fromTo(q(id), { opacity: 0, scale: s, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, cue - LEAD);
+      const pop = (id, cue) => tl.fromTo(q(id), { opacity: 0, scale: 0.62, y: 26, filter: "blur(8px)" },
+        { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 0.32, ease: "power4.out" }, cue - LEAD);
+      const shake = (id, t, a) => {
+        tl.fromTo(q(id), { x: 0, y: 0 }, { x: a, y: -a * 0.5, duration: F, ease: "power2.out", immediateRender: false }, t);
+        tl.to(q(id), { x: -a * 0.7, y: a * 0.35, duration: F, ease: "power2.out" }, t + F);
+        tl.to(q(id), { x: 0, y: 0, duration: F, ease: "power2.out" }, t + 2 * F);
+      };
+      // directional (x-axis) SVG blur filters, driven by proxies (seeded so a seek to t=0 is right)
+      const fsvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      fsvg.setAttribute("width", "0"); fsvg.setAttribute("height", "0"); fsvg.style.position = "absolute";
+      fsvg.innerHTML = ["nodes", "s1", "s2"].map((n) => '<filter id="f12-hb-' + n + '" x="-30%" y="-10%" width="160%" height="120%"><feGaussianBlur id="f12-hb-' + n + '-b" stdDeviation="0 0"/></filter>').join("");
+      q("root").appendChild(fsvg);
+      const blurProxy = (n, seed) => {
+        const node = q("f12-hb-" + n + "-b"), p = { v: seed };
+        const write = () => node.setAttribute("stdDeviation", p.v.toFixed(2) + " 0");
+        write();
+        return { p, write };
+      };
+
+      // ================= ENTRANCE (0.00–0.40): ES / NL burst out of the center with streaks =================
+      const streaks = [];
+      for (let i = 0; i < 14; i++) {
+        const a = (i / 14) * Math.PI * 2 + 0.11;
+        const s = document.createElement("div"), k = document.createElement("div");
+        s.className = "f12-spark"; k.className = "f12-streak";
+        s.style.left = (960 + Math.cos(a) * 70).toFixed(1) + "px";
+        s.style.top = (560 + Math.sin(a) * 70).toFixed(1) + "px";
+        s.style.transform = "rotate(" + (a * 180 / Math.PI).toFixed(2) + "deg)";
+        k.style.width = [150, 96, 190, 120][i % 4] + "px";
+        s.appendChild(k); q("f12-sparks").appendChild(s); streaks.push(k);
+      }
+      streaks.forEach((k, i) => {
+        const at = (i % 3) * 0.015;
+        tl.fromTo(k, { x: 0, opacity: 0, scaleX: 0.2 }, { x: 60, opacity: 1, scaleX: 1, duration: 0.08, ease: "power2.out" }, at);
+        tl.to(k, { x: 420 + (i % 4) * 60, opacity: 0, scaleX: 0.3, duration: 0.36, ease: "power2.out" }, at + 0.08);
+      });
+      tl.fromTo(q("f12-flash"), { opacity: 1, scale: 0.6 }, { opacity: 0, scale: 1.5, duration: 0.42, ease: "power2.out" }, 0);
+      tl.fromTo(q("f12-dots"), { scale: 1.14 }, { scale: 1, duration: 0.6, ease: "power3.out" }, 0);
+      const bn = blurProxy("nodes", 34);
+      q("f12-nodes").style.filter = "url(#f12-hb-nodes)";
+      tl.fromTo(bn.p, { v: 34 }, { v: 0, duration: 0.36, ease: "expo.out", onUpdate: bn.write }, 0);
+      tl.set(q("f12-nodes"), { filter: "none" }, 0.4);
+      tl.fromTo(q("f12-n-es"), { x: 540, scale: 0.42 }, { x: 0, scale: 1, duration: 0.36, ease: "expo.out" }, 0);
+      tl.fromTo(q("f12-n-nl"), { x: -540, scale: 0.42 }, { x: 0, scale: 1, duration: 0.36, ease: "expo.out" }, 0);
+      tl.fromTo([q("f12-lbl-es"), q("f12-lbl-nl")], { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 0.2);
+      tl.fromTo(q("f12-track"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, 0.18);
+      tl.fromTo(q("f12-s1-cam"), { scale: 1 }, { scale: 1.035, duration: 1.9, ease: "power1.inOut" }, 0.36);
+
+      // ================= SCENE 1 text (rows re-center as words arrive) =================
+      rise("f12-w-un", T.un); rise("f12-w-metodo", T.metodo); rise("f12-w-construido", T.construido);
+      rise("f12-w-desde", T.desde); rise("f12-w-el", T.el); slam("f12-w-espanol", T.espanol, 1.42);
+      const STEPS = {
+        "f12-lead": [[null, 269.5], [T.metodo, 154, 0.34], [T.construido, 0, 0.34]],
+        "f12-main": [[null, 288], [T.el, 227, 0.26], [T.espanol, 0, 0.34]]
+      };
+      Object.keys(STEPS).forEach((id) => {
+        const st = STEPS[id];
+        for (let k = 1; k < st.length; k++) {
+          if (k === 1) tl.fromTo(q(id), { x: st[0][1] }, { x: st[k][1], duration: st[k][2], ease: "power3.out" }, st[k][0] - LEAD);
+          else tl.to(q(id), { x: st[k][1], duration: st[k][2], ease: "power3.out" }, st[k][0] - LEAD);
+        }
+      });
+
+      // ================= the beam ES -> NL with a light trail (construido … el) =================
+      const B0 = T.construido - LEAD, BD = 0.94, ARR = B0 + BD - 0.02;
+      tl.fromTo([q("f12-beam"), q("f12-beam-glow")], { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: BD, ease: "power2.inOut" }, B0);
+      tl.fromTo([q("f12-head"), q("f12-trail")], { x: 0 }, { x: 900, duration: BD, ease: "power2.inOut" }, B0);
+      tl.fromTo(q("f12-head"), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power2.out" }, B0);
+      tl.fromTo(q("f12-trail"), { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power1.out" }, B0);
+      tl.to([q("f12-head"), q("f12-trail")], { opacity: 0, duration: 0.16, ease: "power1.out" }, B0 + BD - 0.04);
+      tl.to(q("f12-beam-glow"), { strokeOpacity: 0.28, duration: 0.4, ease: "power1.out" }, B0 + BD);
+      tl.fromTo(q("f12-ring-es"), { scale: 1, opacity: 0.8 }, { scale: 1.55, opacity: 0, duration: 0.45, ease: "power2.out" }, B0);
+      tl.fromTo(q("f12-ring-nl"), { scale: 1, opacity: 0.9 }, { scale: 1.7, opacity: 0, duration: 0.5, ease: "power2.out" }, ARR);
+      tl.fromTo(q("f12-disc-nl"), { scale: 1.14 }, { scale: 1, duration: 0.34, ease: "power3.out", immediateRender: false }, ARR);
+      tl.fromTo(q("f12-nl-glow"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }, ARR);
+
+      // ================= INGLÉS: off the path, greyed, crossed out on "español" =================
+      tl.fromTo(q("f12-n-en"), { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "power3.out" }, T.metodo - LEAD);
+      tl.fromTo(q("f12-ghost"), { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, T.metodo);
+      tl.fromTo(q("f12-note-in"), { clipPath: "inset(0% 100% 0% 0%)", opacity: 0 }, { clipPath: "inset(0% 0% 0% 0%)", opacity: 1, duration: 0.42, ease: "power2.out" }, T.desde - LEAD);
+      tl.fromTo(q("f12-x"), { opacity: 0, scale: 2.1, rotation: -28 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.22, ease: "power4.out" }, T.espanol - LEAD);
+      shake("f12-n-en", T.espanol + 0.14, 6);
+      tl.to(q("f12-ghost"), { opacity: 0.32, duration: 0.3, ease: "power1.out" }, T.espanol);
+      tl.to(q("f12-disc-en"), { opacity: 0.7, duration: 0.3, ease: "power1.out" }, T.espanol);
+
+      // ================= SEAM 1 -> 2: cut-the-curve to the LEFT (velocity-matched, x-blur) =================
+      const S0 = 2.10, SX = 0.22, SN = 0.4, S1 = S0 + SX;
+      const b1 = blurProxy("s1", 0), b2 = blurProxy("s2", 20);
+      tl.set(q("f12-s1"), { filter: "url(#f12-hb-s1)" }, S0);
+      tl.to(q("f12-s1"), { x: -360, duration: SX, ease: "power4.in" }, S0);
+      tl.fromTo(b1.p, { v: 0 }, { v: 20, duration: SX, ease: "power4.in", onUpdate: b1.write }, S0);
+      tl.to(q("f12-s1"), { opacity: 0, duration: 0.08, ease: "none" }, S1 - 0.06);
+      tl.fromTo(q("f12-dots"), { x: 0 }, { x: -140, duration: SX + SN, ease: "power2.inOut" }, S0);
+      q("f12-s2").style.filter = "url(#f12-hb-s2)";
+      tl.fromTo(q("f12-s2"), { x: 360 }, { x: 0, duration: SN, ease: "power4.out" }, S1);
+      tl.fromTo(q("f12-s2"), { opacity: 0 }, { opacity: 1, duration: 0.05, ease: "none" }, S1);
+      tl.fromTo(b2.p, { v: 20 }, { v: 0, duration: SN, ease: "power4.out", onUpdate: b2.write }, S1);
+      tl.set(q("f12-s2"), { filter: "none" }, S1 + SN + 0.02);
+      tl.fromTo(q("f12-lap"), { rotationY: 30, rotationX: 4 }, { rotationY: 12, rotationX: 3, duration: 0.7, ease: "power3.out" }, S1);
+
+      // ================= SCENE 2: native teachers, live =================
+      tl.fromTo(q("f12-push"), { scale: 0.88, x: 0, y: 0 }, { scale: 0.98, x: 0, y: 0, duration: 1.6, ease: "power2.inOut" }, 2.62);
+      pop("f12-pill1", T.profesores);
+      tl.fromTo(q("f12-nl-ico"), { scale: 0.3, rotation: -40 }, { scale: 1, rotation: 0, duration: 0.34, ease: "power3.out" }, T.profesores + 0.04);
+      tl.fromTo(q("f12-focus"), { opacity: 0, scale: 1.35 }, { opacity: 1, scale: 1, duration: 0.26, ease: "power3.out" }, T.nativos - LEAD);
+      pop("f12-pill2", T.saben);
+      tl.fromTo(q("f12-es-ico"), { scale: 0.3, rotation: -40 }, { scale: 1, rotation: 0, duration: 0.34, ease: "power3.out" }, T.saben + 0.04);
+      slam("f12-exact", T.exactamente, 1.3);
+      tl.fromTo(q("f12-ruler-g"), { scaleX: 0, transformOrigin: "50% 50%" }, { scaleX: 1, duration: 0.34, ease: "power3.out" }, T.exactamente + 0.08);
+
+      // ================= SEAM 2 -> 3: right column cuts UP, laptop steps back =================
+      const U0 = 4.52, UX = 0.24, UN = 0.36, U1 = U0 + UX;
+      tl.to(q("f12-s2-right"), { y: -260, filter: "blur(8px)", duration: UX, ease: "power4.in" }, U0);
+      tl.to(q("f12-s2-right"), { opacity: 0, duration: 0.06, ease: "none" }, U1 - 0.05);
+      tl.fromTo(q("f12-s3-right"), { y: 260, filter: "blur(8px)" }, { y: 0, filter: "blur(0px)", duration: UN, ease: "power4.out" }, U1);
+      tl.fromTo(q("f12-s3-right"), { opacity: 0 }, { opacity: 1, duration: 0.05, ease: "none" }, U1);
+      tl.to(q("f12-push"), { scale: 0.8, x: -70, y: 28, duration: 0.5, ease: "power3.out" }, U1);
+      tl.to(q("f12-dim"), { opacity: 1, duration: 0.4, ease: "power2.out" }, U1);
+      tl.to(q("f12-focus"), { opacity: 0.3, duration: 0.4, ease: "power2.out" }, U1);
+
+      // ================= SCENE 3: the reticle sweeps and locks on heb … gewerkt =================
+      rise("f12-w-donde", T.donde); rise("f12-w-vas", T.vas); rise("f12-w-a", T.a);
+      const HEB = 188.5, RY = 142;   // card coords: ink centre of "heb" (56px, gap 40, pad 46), measured
+      tl.fromTo(q("f12-reticle"), { x: 680, y: RY, opacity: 0, scale: 1.4, rotation: -40 },
+        { x: 620, opacity: 0.75, duration: 0.14, ease: "power2.out" }, 4.9);
+      tl.to(q("f12-reticle"), { x: HEB, rotation: 0, duration: 0.25, ease: "power3.inOut" }, 5.03);
+      tl.to(q("f12-reticle"), { scale: 1, opacity: 1, duration: 0.2, ease: "power4.out" }, T.tropezar - 0.02);
+      tl.to(q("f12-reticle"), { color: "#E02D3C", duration: 0.06, ease: "none" }, T.tropezar - 0.02);
+      tl.fromTo(q("f12-ret-burst"), { scale: 0.7, opacity: 0.9, transformOrigin: "50% 50%" }, { scale: 1.9, opacity: 0, duration: 0.42, ease: "power2.out" }, T.tropezar - 0.02);
+      tl.to(q("f12-d-heb"), { color: "#E02D3C", backgroundColor: "rgba(224,45,60,0.10)", duration: 0.08, ease: "none" }, T.tropezar - 0.02);
+      tl.fromTo(q("f12-brk-path"), { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.3, ease: "power2.inOut" }, T.tropezar + 0.06);
+      tl.to(q("f12-d-gewerkt"), { color: "#E02D3C", backgroundColor: "rgba(224,45,60,0.10)", duration: 0.08, ease: "none" }, T.tropezar + 0.3);
+      tl.fromTo(q("f12-d-gewerkt"), { scale: 1.12 }, { scale: 1, duration: 0.26, ease: "power3.out", immediateRender: false }, T.tropezar + 0.3);
+      slam("f12-trop", T.tropezar, 1.32);
+      shake("f12-card", T.tropezar + 0.06, 5);
+      tl.fromTo(q("f12-gloss"), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 5.5);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["12-metodo"] = tl;
+    })();
+  </script>
+</template>

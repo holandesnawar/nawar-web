@@ -1,0 +1,420 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE ---------- */
+    #f14-ground {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
+    .f14-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #f14-dots {
+      position: absolute; left: -224px; top: -84px; width: 2368px; height: 1248px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px;
+    }
+    #f14-amb {
+      position: absolute; left: 20px; top: 210px; width: 1180px; height: 760px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.26) 0%, rgba(77,163,255,0.09) 45%, rgba(77,163,255,0) 70%);
+    }
+
+    /* speed lines (entrance only) */
+    #f14-speed { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+    .f14-sl {
+      position: absolute; left: 0; border-radius: 4px; opacity: 0;
+      background: linear-gradient(90deg, rgba(159,213,245,0) 0%, rgba(159,213,245,0.55) 55%, #FFFFFF 100%);
+    }
+
+    /* ---------- laptop (shared house geometry) ---------- */
+    #f14-push { transform-origin: 600px 558px; }
+    #f14-ltail {
+      position: absolute; left: -420px; top: 338px; width: 900px; height: 420px; border-radius: 210px;
+      transform-origin: 100% 50%;
+      background: linear-gradient(90deg, rgba(159,213,245,0) 0%, rgba(159,213,245,0.20) 55%, rgba(255,255,255,0.45) 100%);
+    }
+    #f14-floor {
+      position: absolute; left: 100px; top: 806px; width: 1000px; height: 80px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 40%, rgba(4,0,40,0.55) 0%, rgba(4,0,40,0.22) 45%, rgba(4,0,40,0) 72%);
+    }
+    #f14-lapstage { perspective: 2200px; perspective-origin: 600px 558px; }
+    #f14-lap { position: absolute; left: 150px; top: 288px; width: 900px; height: 531px; transform-origin: 50% 50%; }
+    #f14-bezel {
+      position: absolute; left: 0; top: 0; width: 900px; height: 505px; box-sizing: border-box; padding: 22px; border-radius: 26px;
+      background: #0C0C1E; box-shadow: 0 40px 110px rgba(4,0,40,0.45), inset 0 0 0 2px rgba(255,255,255,0.06);
+    }
+    #f14-camdot { position: absolute; left: 446px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: #262a40; }
+    #f14-screen { position: relative; width: 856px; height: 461px; border-radius: 8px; overflow: hidden; background: #EEF1F8; }
+    #f14-vzoom { position: absolute; left: 0; top: 0; width: 856px; height: 461px; transform-origin: 760px 95px; }
+    .f14-vid { position: absolute; left: 0; top: 0; width: 856px; height: 461px; object-fit: cover; display: block; }
+    #f14-sheen {
+      position: absolute; left: 0; top: -120px; width: 520px; height: 720px; opacity: 0.9;
+      background: linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.32) 50%, rgba(255,255,255,0) 70%);
+    }
+    #f14-glass {
+      position: absolute; inset: 0;
+      background: linear-gradient(118deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 34%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 100%);
+    }
+    #f14-base {
+      position: absolute; left: -44px; top: 503px; width: 988px; height: 26px; border-radius: 3px 3px 24px 24px;
+      background: linear-gradient(180deg, #eef1f7 0%, #c9cfdc 40%, #9aa3b8 100%); box-shadow: 0 10px 24px rgba(4,0,40,0.35);
+    }
+    #f14-notch { position: absolute; left: 414px; top: 0; width: 160px; height: 9px; border-radius: 0 0 10px 10px; background: linear-gradient(180deg, #9aa3b8 0%, #b9c0cf 100%); }
+
+    /* ---------- Dutch subtitle bubble ---------- */
+    #f14-bub { position: absolute; left: 186px; top: 600px; transform-origin: 0% 100%; filter: drop-shadow(0 26px 40px rgba(4,0,40,0.45)); }
+    #f14-bub-card {
+      display: flex; align-items: center; gap: 22px; padding: 24px 34px 24px 26px;
+      background: #FFFFFF; border-radius: 28px; white-space: nowrap;
+    }
+    #f14-flag { width: 58px; height: 40px; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; box-shadow: inset 0 0 0 1px rgba(12,12,30,0.08); flex: 0 0 58px; }
+    #f14-flag i { display: block; flex: 1 1 0; }
+    #f14-nl { font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.15; letter-spacing: -0.01em; color: #0C0C1E; }
+    .f14-nw { display: inline-block; }
+    #f14-gloss { margin-top: 6px; font-family: "Inter", sans-serif; font-weight: 500; font-size: 24px; line-height: 1.35; color: #5A6480; }
+    #f14-btail { position: absolute; left: 40px; bottom: -22px; width: 44px; height: 26px; overflow: visible; }
+
+    /* ---------- checklist card ---------- */
+    #f14-card {
+      position: absolute; left: 1090px; top: 174px; width: 750px; box-sizing: border-box;
+      padding: 34px 40px 22px; border-radius: 28px; background: #FFFFFF;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45);
+    }
+    #f14-head { display: flex; align-items: center; justify-content: space-between; height: 46px; }
+    #f14-hlabel {
+      display: flex; align-items: center; gap: 12px;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; letter-spacing: 0.14em; text-transform: uppercase; color: #5A6480;
+    }
+    #f14-hlabel svg { width: 30px; height: 30px; display: block; color: #0b6df0; }
+    #f14-count { font-family: "Poppins", sans-serif; font-weight: 800; font-size: 38px; line-height: 1; letter-spacing: -0.02em; color: #1D0084; }
+    #f14-cof { color: #9AA3B8; }
+    #f14-bar { margin-top: 18px; height: 10px; border-radius: 5px; background: #E8ECF7; overflow: hidden; }
+    #f14-barfill { width: 100%; height: 10px; border-radius: 5px; background: #0b6df0; transform-origin: 0% 50%; }
+    #f14-bargreen { position: relative; top: -10px; width: 100%; height: 10px; border-radius: 5px; background: #16A34A; opacity: 0; }
+    #f14-rows { position: relative; margin-top: 20px; height: 586px; }
+    #f14-hl {
+      position: absolute; left: -18px; top: 0; width: 706px; height: 108px; border-radius: 18px; opacity: 0;
+      background: rgba(11,109,240,0.07); box-shadow: inset 5px 0 0 #0b6df0;
+    }
+    .f14-row { position: absolute; left: 0; width: 670px; height: 108px; }
+    .f14-row + .f14-row { box-shadow: inset 0 1px 0 #DDE6F5; }
+    #f14-r5 { height: 154px; }
+    .f14-ck { position: absolute; left: 4px; top: 26px; width: 56px; height: 56px; }
+    #f14-r5 .f14-ck { top: 49px; }
+    .f14-ring { position: absolute; inset: 0; border-radius: 50%; box-shadow: inset 0 0 0 3px #DDE6F5; }
+    .f14-fill { position: absolute; inset: 0; border-radius: 50%; background: #16A34A; opacity: 0; }
+    .f14-burst { position: absolute; inset: 0; border-radius: 50%; box-sizing: border-box; border: 3px solid #16A34A; opacity: 0; }
+    .f14-tick { position: absolute; left: 0; top: 0; width: 56px; height: 56px; overflow: visible; }
+    .f14-tick path { fill: none; stroke: #FFFFFF; stroke-width: 5.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 34; stroke-dashoffset: 34; }
+    .f14-skel { position: absolute; left: 90px; top: 45px; height: 18px; border-radius: 9px; background: #EEF2FA; }
+    #f14-r5 .f14-skel { top: 52px; }
+    .f14-skel2 { top: 86px !important; }
+    .f14-txt {
+      position: absolute; left: 90px; top: 0; height: 108px; display: flex; align-items: center; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 44px; line-height: 1.1; letter-spacing: -0.02em; color: #0C0C1E;
+    }
+    #f14-r5 .f14-txt { height: 154px; }
+
+    /* ---------- pill (top-left) ---------- */
+    #f14-pill {
+      position: absolute; left: 80px; top: 70px;
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 28px 14px 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; line-height: 1;
+      letter-spacing: 0.14em; text-transform: uppercase; color: #FFFFFF; white-space: nowrap;
+    }
+    #f14-pill svg { display: block; width: 28px; height: 28px; color: #9fd5f5; }
+    #f14-p01 { color: #9fd5f5; }
+    #f14-pdot { color: rgba(255,255,255,0.5); }
+
+    /* ---------- Scene 3: MAÑANA MISMO ---------- */
+    #f14-s3 { position: absolute; left: 1118px; top: 0; width: 740px; height: 1080px; }
+    #f14-s3glow {
+      position: absolute; left: -200px; top: 250px; width: 1100px; height: 640px; border-radius: 50%; opacity: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.42) 0%, rgba(77,163,255,0.14) 42%, rgba(77,163,255,0) 70%);
+    }
+    #f14-lead {
+      position: absolute; left: 0; top: 334px; display: flex; gap: 0.26em; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 50px; line-height: 1.1; letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
+    }
+    .f14-w { display: inline-block; }
+    #f14-chip {
+      position: absolute; left: -30px; top: 416px; padding: 10px 30px 0; border-radius: 14px;
+      background: #FFFFFF; color: #1D0084; transform-origin: 30% 60%;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 136px; line-height: 1.1; letter-spacing: -0.035em; white-space: nowrap;
+      box-shadow: 0 30px 80px rgba(4,0,40,0.42);
+    }
+    #f14-mis {
+      position: absolute; left: 0; top: 592px; transform-origin: 20% 60%;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 136px; line-height: 1.1; letter-spacing: -0.035em; white-space: nowrap;
+      color: #FFFFFF; text-shadow: 0 14px 44px rgba(4,0,40,0.4);
+    }
+  </style>
+
+  <div id="root" data-composition-id="14-supervivencia" data-width="1920" data-height="1080" data-duration="8.028">
+    <div id="f14-ground" class="clip" data-start="0" data-duration="8.028" data-track-index="0"></div>
+
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+      <filter id="f14-sb" x="-0.4" y="-0.1" width="1.8" height="1.2"><feGaussianBlur id="f14-sbn" in="SourceGraphic" stdDeviation="30 0" /></filter>
+      <symbol id="f14-i-buoy" viewBox="0 0 92 92">
+        <g fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round">
+          <circle cx="46" cy="46" r="38" />
+          <circle cx="46" cy="46" r="17" />
+          <path d="M19.1 19.1 L33.98 33.98 M72.9 19.1 L58.02 33.98 M19.1 72.9 L33.98 58.02 M72.9 72.9 L58.02 58.02" />
+        </g>
+      </symbol>
+    </svg>
+
+    <div id="f14-dots"></div>
+    <div id="f14-amb"></div>
+
+    <div id="f14-speed">
+      <div class="f14-sl" style="top:214px; width:640px; height:3px;"></div>
+      <div class="f14-sl" style="top:338px; width:440px; height:2px;"></div>
+      <div class="f14-sl" style="top:452px; width:560px; height:3px;"></div>
+      <div class="f14-sl" style="top:548px; width:780px; height:4px;"></div>
+      <div class="f14-sl" style="top:676px; width:520px; height:3px;"></div>
+      <div class="f14-sl" style="top:792px; width:400px; height:2px;"></div>
+      <div class="f14-sl" style="top:884px; width:620px; height:3px;"></div>
+    </div>
+
+    <!-- ===== laptop (left) + Dutch bubble, under one slow push-in ===== -->
+    <div id="f14-push" class="f14-full">
+      <div id="f14-slide" class="f14-full">
+        <div id="f14-ltail"></div>
+        <div id="f14-floor"></div>
+        <div id="f14-lapstage" class="f14-full">
+          <div id="f14-lap">
+            <div id="f14-base"><div id="f14-notch"></div></div>
+            <div id="f14-bezel">
+              <div id="f14-camdot"></div>
+              <div id="f14-screen">
+                <div id="f14-vzoom">
+                  <!-- media 5.4–7.25 is a clean static hold (same cursor); 7.35–9.0 has recorder overlay + cursor moves, so the hold is looped from that window -->
+                  <video id="f14-vid" class="clip f14-vid" src="assets/video/inicio-home.mp4" muted playsinline
+                    data-start="0" data-duration="3.25" data-media-start="4.0" data-hf-media-start-basis="local" data-track-index="2"></video>
+                  <video id="f14-vid2" class="clip f14-vid" src="assets/video/inicio-home.mp4" muted playsinline
+                    data-start="3.25" data-duration="1.85" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
+                  <video id="f14-vid3" class="clip f14-vid" src="assets/video/inicio-home.mp4" muted playsinline
+                    data-start="5.1" data-duration="1.85" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
+                  <video id="f14-vid4" class="clip f14-vid" src="assets/video/inicio-home.mp4" muted playsinline
+                    data-start="6.95" data-duration="1.078" data-media-start="5.4" data-hf-media-start-basis="local" data-track-index="2"></video>
+                </div>
+                <div id="f14-sheen"></div>
+                <div id="f14-glass"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="f14-bub">
+        <div id="f14-bub-card">
+          <div id="f14-flag"><i style="background:#AE1C27"></i><i style="background:#FFFFFF"></i><i style="background:#21468C"></i></div>
+          <div>
+            <div id="f14-nl"><span class="f14-nw">Ik</span> <span class="f14-nw">wil</span> <span class="f14-nw">graag</span> <span class="f14-nw">een</span> <span class="f14-nw">afspraak</span> <span class="f14-nw">maken.</span></div>
+            <div id="f14-gloss">Quiero pedir una cita.</div>
+          </div>
+        </div>
+        <svg id="f14-btail" viewBox="0 0 44 26"><path d="M0 0 H44 L6 26 Z" fill="#FFFFFF" /></svg>
+      </div>
+    </div>
+
+    <!-- ===== checklist card (right) ===== -->
+    <div id="f14-card">
+      <div id="f14-head">
+        <div id="f14-hlabel"><svg><use href="#f14-i-buoy" /></svg><span>Tu lista</span></div>
+        <div id="f14-count"><span id="f14-cnum">0</span><span id="f14-cof">/5</span></div>
+      </div>
+      <div id="f14-bar"><div id="f14-barfill"></div><div id="f14-bargreen"></div></div>
+      <div id="f14-rows">
+        <div id="f14-hl"></div>
+        <div class="f14-row" id="f14-r1" style="top:0px;">
+          <div class="f14-ck"><div class="f14-ring"></div><div class="f14-burst" id="f14-b1"></div><div class="f14-fill" id="f14-f1"></div><svg class="f14-tick" viewBox="0 0 56 56"><path id="f14-t1" d="M17 29 L25 37 L40 21" /></svg></div>
+          <div class="f14-skel" id="f14-s1" style="width:280px;"></div>
+          <div class="f14-txt" id="f14-x1">Presentarte</div>
+        </div>
+        <div class="f14-row" id="f14-r2" style="top:108px;">
+          <div class="f14-ck"><div class="f14-ring"></div><div class="f14-burst" id="f14-b2"></div><div class="f14-fill" id="f14-f2"></div><svg class="f14-tick" viewBox="0 0 56 56"><path id="f14-t2" d="M17 29 L25 37 L40 21" /></svg></div>
+          <div class="f14-skel" id="f14-s2" style="width:420px;"></div>
+          <div class="f14-txt" id="f14-x2">Números y horarios</div>
+        </div>
+        <div class="f14-row" id="f14-r3" style="top:216px;">
+          <div class="f14-ck"><div class="f14-ring"></div><div class="f14-burst" id="f14-b3"></div><div class="f14-fill" id="f14-f3"></div><svg class="f14-tick" viewBox="0 0 56 56"><path id="f14-t3" d="M17 29 L25 37 L40 21" /></svg></div>
+          <div class="f14-skel" id="f14-s3k" style="width:320px;"></div>
+          <div class="f14-txt" id="f14-x3">Pedir una cita</div>
+        </div>
+        <div class="f14-row" id="f14-r4" style="top:324px;">
+          <div class="f14-ck"><div class="f14-ring"></div><div class="f14-burst" id="f14-b4"></div><div class="f14-fill" id="f14-f4"></div><svg class="f14-tick" viewBox="0 0 56 56"><path id="f14-t4" d="M17 29 L25 37 L40 21" /></svg></div>
+          <div class="f14-skel" id="f14-s4" style="width:350px;"></div>
+          <div class="f14-txt" id="f14-x4">Hacer la compra</div>
+        </div>
+        <div class="f14-row" id="f14-r5" style="top:432px;">
+          <div class="f14-ck"><div class="f14-ring"></div><div class="f14-burst" id="f14-b5"></div><div class="f14-fill" id="f14-f5"></div><svg class="f14-tick" viewBox="0 0 56 56"><path id="f14-t5" d="M17 29 L25 37 L40 21" /></svg></div>
+          <div class="f14-skel" id="f14-s5" style="width:380px;"></div>
+          <div class="f14-skel f14-skel2" id="f14-s5b" style="width:260px;"></div>
+          <div class="f14-txt" id="f14-x5">Preguntar cuando<br />no entiendes</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Scene 3: MAÑANA MISMO ===== -->
+    <div id="f14-s3">
+      <div id="f14-s3glow"></div>
+      <div id="f14-lead">
+        <span class="f14-w" id="f14-w-lo">Lo</span><span class="f14-w" id="f14-w-que">que</span><span class="f14-w" id="f14-w-te">te</span><span class="f14-w" id="f14-w-hace">hace</span><span class="f14-w" id="f14-w-falta">falta</span>
+      </div>
+      <div id="f14-chip">MAÑANA</div>
+      <div id="f14-mis">MISMO</div>
+    </div>
+
+    <!-- ===== pill ===== -->
+    <div id="f14-pill">
+      <svg viewBox="0 0 92 92"><use href="#f14-i-buoy" /></svg>
+      <span id="f14-p01">01</span><span id="f14-pdot">·</span><span>Supervivencia</span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 8.028;
+
+      // ================= ENTRANCE (0.00–0.55): the world whips in from the left =================
+      // speed lines sweep left -> right through the cut
+      const lines = Array.from(document.querySelectorAll("#f14-speed .f14-sl"));
+      const lineAt = [0.0, 0.04, 0.07, 0.0, 0.08, 0.03, 0.1];
+      const lineOp = [0.5, 0.32, 0.42, 0.6, 0.45, 0.34, 0.36];
+      lines.forEach((el, i) => {
+        tl.fromTo(el, { x: -620, opacity: lineOp[i] }, { x: 2300, opacity: lineOp[i], duration: 0.28 + (i % 3) * 0.04, ease: "none" }, lineAt[i]);
+      });
+      tl.fromTo(q("f14-dots"), { x: -168 }, { x: 0, duration: 0.7, ease: "power4.out" }, 0);
+      tl.fromTo(q("f14-amb"), { x: -260, opacity: 0.4 }, { x: 0, opacity: 1, duration: 0.6, ease: "expo.out" }, 0);
+
+      // laptop slides in with a directional motion-blur streak (blur envelope shares the move's ease)
+      const slide = q("f14-slide");
+      const sbn = q("f14-sbn");
+      const bp = { v: 30 };
+      const writeBlur = () => sbn.setAttribute("stdDeviation", bp.v.toFixed(2) + " 0");
+      writeBlur();
+      slide.style.filter = "url(#f14-sb)";
+      const MOVE = 0.5;
+      tl.fromTo(slide, { x: -780 }, { x: 0, duration: MOVE, ease: "expo.out" }, 0);
+      tl.fromTo(slide, { opacity: 0.35 }, { opacity: 1, duration: 0.08, ease: "power1.out" }, 0);
+      tl.fromTo(bp, { v: 30 }, { v: 0, duration: MOVE, ease: "expo.out", onUpdate: writeBlur }, 0);
+      tl.fromTo(q("f14-ltail"), { scaleX: 1, opacity: 1 }, { scaleX: 0.05, opacity: 0, duration: 0.36, ease: "expo.out" }, 0);
+      tl.set(slide, { filter: "none" }, MOVE + 0.02);
+      // the laptop swings into its 10° tilt while it travels, then drifts a hair for life
+      tl.fromTo(q("f14-lap"), { rotationY: 26, rotationX: 3 }, { rotationY: 10, rotationX: 2, duration: 0.7, ease: "power3.out" }, 0);
+      tl.to(q("f14-lap"), { rotationY: 8, duration: D - 0.7, ease: "power1.inOut" }, 0.7);
+      // a glass sheen crosses the screen once as it lands
+      tl.fromTo(q("f14-sheen"), { x: -620 }, { x: 1000, duration: 0.7, ease: "power2.inOut" }, 0.36);
+
+      // macro camera: slow push-in on the laptop + deeper push into the "Hoja de ruta" on screen
+      tl.fromTo(q("f14-push"), { scale: 1 }, { scale: 1.02, duration: D, ease: "power1.out" }, 0);
+      tl.fromTo(q("f14-vzoom"), { scale: 1 }, { scale: 1.26, duration: D - 1.0, ease: "power2.inOut" }, 1.0);
+
+      // checklist card rides the same sweep (a farther plane: shorter travel, soft focus pull)
+      tl.fromTo(q("f14-card"), { x: -240, filter: "blur(12px)" },
+        { x: 0, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 0.02);
+      tl.fromTo(q("f14-card"), { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "power1.out" }, 0.02);
+
+      // pill
+      tl.fromTo(q("f14-pill"), { opacity: 0, x: -44 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, 0.06);
+
+      // ================= CHECKLIST — each row on its cue, ✓ draws 0.2 s later =================
+      const ROWS = [
+        { n: 1, t: 0.12, y: 0, h: 108, skel: ["f14-s1"] },
+        { n: 2, t: 0.99, y: 108, h: 108, skel: ["f14-s2"] },
+        { n: 3, t: 2.46, y: 216, h: 108, skel: ["f14-s3k"] },
+        { n: 4, t: 3.39, y: 324, h: 108, skel: ["f14-s4"] },
+        { n: 5, t: 4.43, y: 432, h: 154, skel: ["f14-s5", "f14-s5b"] }
+      ];
+      const hl = q("f14-hl");
+      const cnum = q("f14-cnum");
+      const barfill = q("f14-barfill");
+      tl.fromTo(barfill, { scaleX: 0 }, { scaleX: 0, duration: 0.01, ease: "none" }, 0);
+      tl.fromTo(hl, { opacity: 0, y: 0, height: 108 }, { opacity: 1, y: 0, height: 108, duration: 0.2, ease: "power2.out" }, 0.08);
+
+      ROWS.forEach((r, i) => {
+        const T = r.t - 0.04;
+        // text lands, skeleton bar dissolves under it
+        tl.fromTo(q("f14-x" + r.n), { opacity: 0, x: -28, filter: "blur(6px)" },
+          { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, T);
+        r.skel.forEach((s) => {
+          tl.fromTo(q(s), { opacity: 1 }, { opacity: 0, duration: 0.14, ease: "power1.out" }, T);
+        });
+        // active-row highlight travels down to this row
+        if (i > 0) {
+          const p = ROWS[i - 1];
+          tl.fromTo(hl, { y: p.y, height: p.h }, { y: r.y, height: r.h, duration: 0.3, ease: "power3.out", immediateRender: false }, T);
+        }
+        // ✓ pop (overshoot allowed for check pops) + tick draw + ring burst
+        const C = r.t + 0.2;
+        tl.fromTo(q("f14-f" + r.n), { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.34, ease: "back.out(2.2)" }, C - 0.03);
+        tl.fromTo(q("f14-t" + r.n), { strokeDashoffset: 34 }, { strokeDashoffset: 0, duration: 0.22, ease: "power2.out" }, C);
+        tl.fromTo(q("f14-b" + r.n), { opacity: 0.85, scale: 1 }, { opacity: 0, scale: 1.75, duration: 0.45, ease: "power2.out", immediateRender: false }, C);
+        // counter + progress bar
+        tl.set(cnum, { textContent: String(r.n) }, C);
+        tl.fromTo(barfill, { scaleX: (r.n - 1) / 5 }, { scaleX: r.n / 5, duration: 0.32, ease: "power3.out", immediateRender: false }, C);
+        tl.fromTo(q("f14-count"), { scale: 1.18 }, { scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, C);
+      });
+      // 5/5 — list complete: bar turns green, counter goes green
+      tl.fromTo(q("f14-bargreen"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 4.78);
+      tl.fromTo(q("f14-count"), { color: "#1D0084" }, { color: "#16A34A", duration: 0.3, ease: "power2.out" }, 4.78);
+      tl.fromTo(hl, { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power1.out", immediateRender: false }, 4.9);
+
+      // ================= CALLOUT (2.6–3.9): Dutch subtitle bubble over the laptop =================
+      const BUB = 2.6;
+      const bub = q("f14-bub");
+      tl.fromTo(bub, { opacity: 0, scale: 0.5, y: 40 }, { opacity: 1, scale: 1, y: 0, duration: 0.42, ease: "expo.out" }, BUB - 0.05);
+      Array.from(document.querySelectorAll("#f14-nl .f14-nw")).forEach((w, i) => {
+        tl.fromTo(w, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, BUB + i * 0.055);
+      });
+      tl.fromTo(q("f14-gloss"), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.26, ease: "power3.out" }, BUB + 0.36);
+      // settles smaller, docking on the screen's lower-left like a subtitle
+      tl.to(bub, { scale: 0.7, x: -4, y: 18, duration: 0.5, ease: "power3.inOut" }, 3.48);
+
+      // ================= SCENE 3 (5.72–8.03): checklist leaves upward, MAÑANA MISMO rises =================
+      const card = q("f14-card");
+      tl.fromTo(card, { y: 0, filter: "blur(0px)" }, { y: -880, filter: "blur(14px)", duration: 0.34, ease: "power3.in", immediateRender: false }, 5.72);
+      tl.fromTo(card, { opacity: 1 }, { opacity: 0, duration: 0.1, ease: "none", immediateRender: false }, 5.96);
+
+      const LW = [["lo", 6.0], ["que", 6.12], ["te", 6.21], ["hace", 6.32], ["falta", 6.55]];
+      LW.forEach(([id, t]) => {
+        tl.fromTo(q("f14-w-" + id), { opacity: 0, y: 64, filter: "blur(6px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, t - 0.04);
+      });
+
+      // MAÑANA — white word-chip slams on "mañana"
+      tl.fromTo(q("f14-chip"), { opacity: 0, scale: 1.42, rotation: -1.5, filter: "blur(14px)" },
+        { opacity: 1, scale: 1, rotation: -1.5, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 6.84);
+      tl.fromTo(q("f14-s3glow"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" }, 6.86);
+      // deterministic 3-frame landing shake
+      const s3 = q("f14-s3");
+      tl.set(s3, { x: 0, y: 0 }, 0);
+      tl.set(s3, { x: 7, y: -3 }, 6.98);
+      tl.set(s3, { x: -5, y: 2 }, 7.013);
+      tl.set(s3, { x: 2, y: -1 }, 7.046);
+      tl.set(s3, { x: 0, y: 0 }, 7.08);
+
+      // MISMO — slams on "mismo."
+      tl.fromTo(q("f14-mis"), { opacity: 0, y: 56, scale: 1.2, filter: "blur(10px)" },
+        { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.32, ease: "expo.out" }, 7.23);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["14-supervivencia"] = tl;
+    })();
+  </script>
+</template>

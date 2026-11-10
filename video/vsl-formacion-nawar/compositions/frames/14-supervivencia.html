@@ -1,0 +1,486 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE ---------- */
+    #f14-ground {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
+    .f14-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #f14-dots {
+      position: absolute; left: -224px; top: -84px; width: 2368px; height: 1248px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px;
+    }
+    #f14-amb {
+      position: absolute; left: 20px; top: 210px; width: 1180px; height: 760px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.26) 0%, rgba(77,163,255,0.09) 45%, rgba(77,163,255,0) 70%);
+    }
+
+    /* ---------- MacBook Pro mockup (tools/mac_mockup.md) ---------- */
+    #f14-push { transform-origin: 558px 544px; }
+    /* ================= MAC MOCKUP (tools/mac_mockup.md) — MacBook Pro front view + macOS window =================
+       One design unit u = screen width / 1120. Screen = 1120u × 700u (16:10). Browser chrome = 70u,
+       content = 1120u × 630u = exactly 16:9. Set --sw (screen / window width, a multiple of 16) and
+       everything else follows. */
+    .f14-mbp { --u: calc(var(--sw) / 1120); }
+    .f14-mbp {
+      --sw: 896px;
+      --al-0: #fbfbfc; --al-1: #e4e6ea; --al-2: #c3c7ce; --al-3: #9a9fa8; --al-4: #6f747d;   /* silver */
+      position: absolute; width: calc(var(--u) * 1236); height: calc(var(--u) * 778);
+    }
+    .f14-mbp--grey { --al-0: #c4c7cc; --al-1: #8e9198; --al-2: #6c6f76; --al-3: #4d5056; --al-4: #34363b; }
+    /* soft contact shadow on the "table" + a tight occlusion line under the lip */
+    .f14-mbp-shadow {
+      position: absolute; left: calc(var(--u) * -50); top: calc(var(--u) * 746); width: calc(var(--u) * 1336); height: calc(var(--u) * 110);
+      border-radius: 50%;
+      background: radial-gradient(ellipse 50% 50% at 50% 40%, rgba(3,0,30,0.72) 0%, rgba(3,0,30,0.44) 34%, rgba(3,0,30,0.14) 64%, rgba(3,0,30,0) 100%);
+    }
+    .f14-mbp-occl {
+      position: absolute; left: calc(var(--u) * 30); top: calc(var(--u) * 772); width: calc(var(--u) * 1176); height: calc(var(--u) * 14);
+      border-radius: 50%; background: rgba(2,0,20,0.85); filter: blur(calc(var(--u) * 4));
+    }
+    /* lid: thin aluminium edge around black glass */
+    .f14-mbp-lid {
+      position: absolute; left: calc(var(--u) * 38); top: 0; width: calc(var(--u) * 1160); height: calc(var(--u) * 754);
+      border-radius: calc(var(--u) * 30) calc(var(--u) * 30) calc(var(--u) * 7) calc(var(--u) * 7);
+      background: linear-gradient(180deg, var(--al-1) 0%, var(--al-2) 45%, var(--al-3) 100%);
+      box-shadow: inset 0 0 0 calc(var(--u) * 0.8) rgba(255,255,255,0.55), 0 calc(var(--u) * 26) calc(var(--u) * 70) rgba(4,0,40,0.30);
+    }
+    .f14-mbp-glass {
+      position: absolute; left: calc(var(--u) * 4); top: calc(var(--u) * 4); width: calc(var(--u) * 1152); height: calc(var(--u) * 746);
+      border-radius: calc(var(--u) * 26.5) calc(var(--u) * 26.5) calc(var(--u) * 4) calc(var(--u) * 4); overflow: hidden;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, #0d0e12 0%, #050506 70%);
+      box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(0,0,0,0.85);
+    }
+    .f14-mbp-screen {
+      position: absolute; left: calc(var(--u) * 16); top: calc(var(--u) * 16); width: calc(var(--u) * 1120); height: calc(var(--u) * 700);
+      border-radius: calc(var(--u) * 10) calc(var(--u) * 10) calc(var(--u) * 1.5) calc(var(--u) * 1.5); overflow: hidden; background: #FFFFFF;
+    }
+    /* camera notch (with concave fillets into the bezel) + lens */
+    .f14-mbp-notch {
+      position: absolute; left: calc(var(--u) * 517); top: calc(var(--u) * 16); width: calc(var(--u) * 118); height: calc(var(--u) * 21);
+      border-radius: 0 0 calc(var(--u) * 8) calc(var(--u) * 8); background: #050506;
+    }
+    .f14-mbp-notch::before, .f14-mbp-notch::after { content: ""; position: absolute; top: 0; width: calc(var(--u) * 6); height: calc(var(--u) * 6); }
+    .f14-mbp-notch::before { left: calc(var(--u) * -6); background: radial-gradient(circle at 0% 100%, rgba(5,5,6,0) calc(var(--u) * 5.5), #050506 calc(var(--u) * 6)); }
+    .f14-mbp-notch::after { right: calc(var(--u) * -6); background: radial-gradient(circle at 100% 100%, rgba(5,5,6,0) calc(var(--u) * 5.5), #050506 calc(var(--u) * 6)); }
+    .f14-mbp-lens {
+      position: absolute; left: calc(var(--u) * 55.5); top: calc(var(--u) * 7); width: calc(var(--u) * 7); height: calc(var(--u) * 7); border-radius: 50%;
+      background: radial-gradient(circle at 38% 34%, #4a5a8c 0%, #1a2142 38%, #0a0b14 72%);
+      box-shadow: 0 0 0 calc(var(--u) * 1.2) #111217;
+    }
+    /* glass reflection over bezel + screen */
+    .f14-mbp-reflect {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none;
+      background: linear-gradient(121deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.035) 30%, rgba(255,255,255,0.016) 40.5%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 100%);
+    }
+    /* base: front lip only (no keyboard), slightly wider than the lid, drawn over the lid's hinge edge */
+    .f14-mbp-base {
+      position: absolute; left: 0; top: calc(var(--u) * 751); width: calc(var(--u) * 1236); height: calc(var(--u) * 27);
+      border-radius: calc(var(--u) * 4) calc(var(--u) * 4) calc(var(--u) * 70) calc(var(--u) * 70) / calc(var(--u) * 3) calc(var(--u) * 3) calc(var(--u) * 24) calc(var(--u) * 24);
+      background: linear-gradient(180deg, var(--al-0) 0%, var(--al-1) 12%, var(--al-2) 44%, var(--al-3) 76%, var(--al-4) 100%);
+      box-shadow: inset 0 calc(var(--u) * -1.2) calc(var(--u) * 1.5) rgba(0,0,0,0.22), inset 0 calc(var(--u) * 0.8) 0 rgba(255,255,255,0.7);
+    }
+    .f14-mbp-thumb {
+      position: absolute; left: calc(var(--u) * 538); top: 0; width: calc(var(--u) * 160); height: calc(var(--u) * 8);
+      border-radius: 0 0 50% 50% / 0 0 100% 100%;
+      background: linear-gradient(180deg, var(--al-3) 0%, var(--al-2) 55%, var(--al-1) 100%);
+      box-shadow: inset 0 calc(var(--u) * 1.6) calc(var(--u) * 2.2) rgba(0,0,0,0.30), 0 calc(var(--u) * 0.6) 0 rgba(255,255,255,0.45);
+    }
+
+    /* browser chrome (shared): tab strip 36u + toolbar 34u = 70u */
+    .f14-chrome { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 70); font-family: "Inter", sans-serif; }
+    .f14-tabs { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--u) * 36); background: #DEE1E6; }
+    .f14-tl { position: absolute; top: calc(var(--u) * 12); width: calc(var(--u) * 12); height: calc(var(--u) * 12); border-radius: 50%; }
+    .f14-tl-r { left: calc(var(--u) * 13); background: #FF5F57; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #E0443E; }
+    .f14-tl-y { left: calc(var(--u) * 33); background: #FEBC2E; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #DEA123; }
+    .f14-tl-g { left: calc(var(--u) * 53); background: #28C840; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #1AAB29; }
+    .f14-tab {
+      position: absolute; left: calc(var(--u) * 82); top: calc(var(--u) * 7); width: calc(var(--u) * 232); height: calc(var(--u) * 29);
+      border-radius: calc(var(--u) * 9) calc(var(--u) * 9) 0 0; background: #FFFFFF;
+    }
+    .f14-tab::before, .f14-tab::after { content: ""; position: absolute; bottom: 0; width: calc(var(--u) * 9); height: calc(var(--u) * 9); }
+    .f14-tab::before { left: calc(var(--u) * -9); background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f14-tab::after { right: calc(var(--u) * -9); background: radial-gradient(circle at 100% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f14-fav {
+      position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 7); width: calc(var(--u) * 15); height: calc(var(--u) * 15);
+      border-radius: calc(var(--u) * 3.5); overflow: hidden; background: radial-gradient(circle at 50% 45%, #2fb6f2 0%, #0b6df0 80%);
+    }
+    .f14-fav img { position: absolute; left: calc(var(--u) * 1.2); top: calc(var(--u) * 5.2); width: calc(var(--u) * 12.6); height: auto; display: block; }
+    .f14-tab-t {
+      position: absolute; left: calc(var(--u) * 35); top: 0; height: calc(var(--u) * 29); line-height: calc(var(--u) * 29);
+      font-size: calc(var(--u) * 12); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f14-tab-x { position: absolute; right: calc(var(--u) * 10); top: calc(var(--u) * 9.5); width: calc(var(--u) * 10); height: calc(var(--u) * 10); }
+    .f14-plus { position: absolute; left: calc(var(--u) * 330); top: calc(var(--u) * 11); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    .f14-bar { position: absolute; left: 0; top: calc(var(--u) * 36); width: 100%; height: calc(var(--u) * 34); background: #FFFFFF; box-shadow: inset 0 calc(var(--u) * -1) 0 #DADCE0; }
+    .f14-nav { position: absolute; left: calc(var(--u) * 14); top: calc(var(--u) * 9); width: calc(var(--u) * 86); height: calc(var(--u) * 16); overflow: visible; }   /* back · forward (disabled) · reload */
+    .f14-menu { position: absolute; left: calc(var(--u) * 1086); top: calc(var(--u) * 9); width: calc(var(--u) * 16); height: calc(var(--u) * 16); }
+    .f14-url {
+      position: absolute; left: calc(var(--u) * 102); top: calc(var(--u) * 4); width: calc(var(--u) * 962); height: calc(var(--u) * 26);
+      border-radius: calc(var(--u) * 13); background: #F1F3F4;
+    }
+    .f14-lock { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6.5); width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
+    .f14-url-t {
+      position: absolute; left: calc(var(--u) * 33); top: 0; height: calc(var(--u) * 26); line-height: calc(var(--u) * 26);
+      font-size: calc(var(--u) * 13); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f14-star { position: absolute; right: calc(var(--u) * 11); top: calc(var(--u) * 6); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    /* 16:9 content area — real recordings, object-fit cover (never stretch) */
+    .f14-content { position: absolute; left: 0; top: calc(var(--u) * 70); width: calc(var(--u) * 1120); height: calc(var(--u) * 630); overflow: hidden; background: #FFFFFF; }
+    .f14-media { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--fx, 50%) 50%; display: block; }
+    #f14-sheen {
+      position: absolute; left: 0; top: -120px; width: 520px; height: 780px; opacity: 0.9; pointer-events: none;
+      background: linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0) 70%);
+    }
+
+    /* ---------- Dutch subtitle bubble ---------- */
+    #f14-bub { position: absolute; left: 186px; top: 600px; transform-origin: 0% 100%; filter: drop-shadow(0 18px 34px rgba(4,0,40,0.30)); }
+    #f14-bub-card {
+      display: flex; align-items: center; gap: 22px; padding: 24px 34px 24px 26px;
+      background: #FFFFFF; border-radius: 28px; white-space: nowrap;
+    }
+    #f14-flag { width: 58px; height: 40px; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; box-shadow: inset 0 0 0 1px rgba(12,12,30,0.08); flex: 0 0 58px; }
+    #f14-flag i { display: block; flex: 1 1 0; }
+    #f14-nl { font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.15; letter-spacing: -0.01em; color: #0C0C1E; }
+    .f14-nw { display: inline-block; }
+    #f14-gloss { margin-top: 6px; font-family: "Inter", sans-serif; font-weight: 500; font-size: 24px; line-height: 1.35; color: #5A6480; }
+    #f14-btail { position: absolute; left: 40px; bottom: -22px; width: 44px; height: 26px; overflow: visible; }
+
+    /* ---------- checklist card ---------- */
+    #f14-card {
+      position: absolute; left: 1090px; top: 174px; width: 750px; box-sizing: border-box;
+      padding: 34px 40px 22px; border-radius: 28px; background: #FFFFFF;
+      box-shadow: 0 30px 80px rgba(4,0,40,0.34);
+    }
+    #f14-head { display: flex; align-items: center; justify-content: space-between; height: 46px; }
+    #f14-hlabel {
+      display: flex; align-items: center; gap: 12px;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; letter-spacing: 0.14em; text-transform: uppercase; color: #5A6480;
+    }
+    #f14-hlabel svg { width: 30px; height: 30px; display: block; color: #0b6df0; }
+    #f14-count { font-family: "Poppins", sans-serif; font-weight: 800; font-size: 38px; line-height: 1; letter-spacing: -0.02em; color: #1D0084; }
+    #f14-cof { color: #9AA3B8; }
+    #f14-bar { margin-top: 18px; height: 10px; border-radius: 5px; background: #E8ECF7; overflow: hidden; }
+    #f14-barfill { width: 100%; height: 10px; border-radius: 5px; background: #0b6df0; transform-origin: 0% 50%; }
+    #f14-bargreen { position: relative; top: -10px; width: 100%; height: 10px; border-radius: 5px; background: #16A34A; opacity: 0; }
+    #f14-rows { position: relative; margin-top: 20px; height: 586px; }
+    #f14-hl {
+      position: absolute; left: -18px; top: 0; width: 706px; height: 108px; border-radius: 18px; opacity: 0;
+      background: rgba(11,109,240,0.07); box-shadow: inset 5px 0 0 #0b6df0;
+    }
+    .f14-row { position: absolute; left: 0; width: 670px; height: 108px; }
+    .f14-row + .f14-row { box-shadow: inset 0 1px 0 #DDE6F5; }
+    #f14-r5 { height: 154px; }
+    .f14-ck { position: absolute; left: 4px; top: 26px; width: 56px; height: 56px; }
+    #f14-r5 .f14-ck { top: 49px; }
+    .f14-ring { position: absolute; inset: 0; border-radius: 50%; box-shadow: inset 0 0 0 3px #DDE6F5; }
+    .f14-fill { position: absolute; inset: 0; border-radius: 50%; background: #16A34A; opacity: 0; }
+    .f14-tick { position: absolute; left: 0; top: 0; width: 56px; height: 56px; overflow: visible; }
+    .f14-tick path { fill: none; stroke: #FFFFFF; stroke-width: 5.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 34; stroke-dashoffset: 34; }
+    .f14-skel { position: absolute; left: 90px; top: 45px; height: 18px; border-radius: 9px; background: #EEF2FA; }
+    #f14-r5 .f14-skel { top: 52px; }
+    .f14-skel2 { top: 86px !important; }
+    .f14-txt {
+      position: absolute; left: 90px; top: 0; height: 108px; display: flex; align-items: center; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 44px; line-height: 1.1; letter-spacing: -0.02em; color: #0C0C1E;
+    }
+    #f14-r5 .f14-txt { height: 154px; }
+
+    /* ---------- pill (top-left) ---------- */
+    #f14-pill {
+      position: absolute; left: 80px; top: 70px;
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 28px 14px 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; line-height: 1;
+      letter-spacing: 0.14em; text-transform: uppercase; color: #FFFFFF; white-space: nowrap;
+    }
+    #f14-pill svg { display: block; width: 28px; height: 28px; color: #9fd5f5; }
+    #f14-p01 { color: #9fd5f5; }
+    #f14-pdot { color: rgba(255,255,255,0.5); }
+
+    /* ---------- Scene 3: MAÑANA MISMO ---------- */
+    #f14-s3 { position: absolute; left: 1118px; top: 0; width: 740px; height: 1080px; }
+    #f14-lead {
+      position: absolute; left: 0; top: 334px; display: flex; gap: 0.26em; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 50px; line-height: 1.1; letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
+    }
+    .f14-w { display: inline-block; }
+    #f14-chip {
+      position: absolute; left: -30px; top: 416px; padding: 10px 30px 0; border-radius: 14px;
+      background: #FFFFFF; color: #1D0084; transform-origin: 30% 60%;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 136px; line-height: 1.1; letter-spacing: -0.035em; white-space: nowrap;
+      box-shadow: 0 20px 50px rgba(4,0,40,0.30);
+    }
+    #f14-mis {
+      position: absolute; left: 0; top: 592px; transform-origin: 20% 60%;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 136px; line-height: 1.1; letter-spacing: -0.035em; white-space: nowrap;
+      color: #FFFFFF;
+    }
+  </style>
+
+  <div id="root" data-composition-id="14-supervivencia" data-width="1920" data-height="1080" data-duration="7.183">
+    <div id="f14-ground" class="clip" data-start="0" data-duration="7.183" data-track-index="0"></div>
+
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+      <filter id="f14-sb" x="-0.4" y="-0.1" width="1.8" height="1.2"><feGaussianBlur id="f14-sbn" in="SourceGraphic" stdDeviation="14 0" /></filter>
+      <symbol id="f14-i-buoy" viewBox="0 0 92 92">
+        <g fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round">
+          <circle cx="46" cy="46" r="38" />
+          <circle cx="46" cy="46" r="17" />
+          <path d="M19.1 19.1 L33.98 33.98 M72.9 19.1 L58.02 33.98 M19.1 72.9 L33.98 58.02 M72.9 72.9 L58.02 58.02" />
+        </g>
+      </symbol>
+    </svg>
+
+    <div id="f14-dots"></div>
+    <div id="f14-amb"></div>
+
+    <!-- ===== laptop (left) + Dutch bubble, under one slow push-in ===== -->
+    <div id="f14-push" class="f14-full">
+      <div id="f14-slide" class="f14-full">
+        <!-- MacBook Pro mockup, screen 848 px: content 848×477 (16:9) — front view, no tilt, no zoom on the footage -->
+        <div id="f14-lap" class="f14-mbp" style="--sw:848px; left:90px; top:250px;">
+          <div class="f14-mbp-shadow"></div><div class="f14-mbp-occl"></div>
+          <div class="f14-mbp-lid">
+            <div class="f14-mbp-glass">
+              <div class="f14-mbp-screen">
+                <div class="f14-chrome">
+                  <div class="f14-tabs"><i class="f14-tl f14-tl-r"></i><i class="f14-tl f14-tl-y"></i><i class="f14-tl f14-tl-g"></i>
+                    <div class="f14-tab"><div class="f14-fav"><img src="assets/img/logo-nawar.png" alt="" /></div><div class="f14-tab-t">Holandés Nawar</div><svg class="f14-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
+                    <svg class="f14-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
+                  <div class="f14-bar"><svg class="f14-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
+                    <div class="f14-url"><svg class="f14-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="f14-url-t">app.holandesnawar.com</div><svg class="f14-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
+                    <svg class="f14-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
+                </div>
+                <div class="f14-content" style="--fx:12%;">
+                  <!-- v4: the «Inicio» page stitched from inicio-home.mp4 (tools/stitch_page.py): it holds at the top, then
+                       scrolls in two smooth moves to «Tus cursos · Comunidad · Próximos eventos» — never to the bottom -->
+                  <div id="f14-page" style="position: absolute; left: -4.73px; top: 0; width: 887.44px; height: 477px;">
+                    <img src="assets/img/ui-inicio-sidebar.png" alt="" style="position: absolute; left: 0; top: 0; width: 159.46px; height: 477px;" />
+                    <div style="position: absolute; left: 159.46px; top: 0; width: 727.98px; height: 477px; overflow: hidden; background: #F3F4F8;">
+                      <img id="f14-pimg" src="assets/img/ui-inicio-page.png" alt="" style="position: absolute; left: 0; top: 0; width: 727.98px; height: 1516.27px;" />
+                    </div>
+                  </div>
+                </div>
+                <div id="f14-sheen"></div>
+              </div>
+              <div class="f14-mbp-notch"><i class="f14-mbp-lens"></i></div>
+              <div class="f14-mbp-reflect"></div>
+            </div>
+          </div>
+          <div class="f14-mbp-base"><div class="f14-mbp-thumb"></div></div>
+        </div>
+      </div>
+
+      <div id="f14-bub">
+        <div id="f14-bub-card">
+          <div id="f14-flag"><i style="background:#AE1C27"></i><i style="background:#FFFFFF"></i><i style="background:#21468C"></i></div>
+          <div>
+            <div id="f14-nl"><span class="f14-nw">Ik</span> <span class="f14-nw">wil</span> <span class="f14-nw">graag</span> <span class="f14-nw">een</span> <span class="f14-nw">afspraak</span> <span class="f14-nw">maken.</span></div>
+            <div id="f14-gloss">Quiero pedir una cita.</div>
+          </div>
+        </div>
+        <svg id="f14-btail" viewBox="0 0 44 26"><path d="M0 0 H44 L6 26 Z" fill="#FFFFFF" /></svg>
+      </div>
+    </div>
+
+    <!-- ===== checklist card (right) ===== -->
+    <div id="f14-card">
+      <div id="f14-head">
+        <div id="f14-hlabel"><svg><use href="#f14-i-buoy" /></svg><span>Tu lista</span></div>
+        <div id="f14-count"><span id="f14-cnum">0</span><span id="f14-cof">/5</span></div>
+      </div>
+      <div id="f14-bar"><div id="f14-barfill"></div><div id="f14-bargreen"></div></div>
+      <div id="f14-rows">
+        <div id="f14-hl"></div>
+        <div class="f14-row" id="f14-r1" style="top:0px;">
+          <div class="f14-ck"><div class="f14-ring"></div><div class="f14-fill" id="f14-f1"></div><svg class="f14-tick" viewBox="0 0 56 56"><path id="f14-t1" d="M17 29 L25 37 L40 21" /></svg></div>
+          <div class="f14-skel" id="f14-s1" style="width:280px;"></div>
+          <div class="f14-txt" id="f14-x1">Presentarte</div>
+        </div>
+        <div class="f14-row" id="f14-r2" style="top:108px;">
+          <div class="f14-ck"><div class="f14-ring"></div><div class="f14-fill" id="f14-f2"></div><svg class="f14-tick" viewBox="0 0 56 56"><path id="f14-t2" d="M17 29 L25 37 L40 21" /></svg></div>
+          <div class="f14-skel" id="f14-s2" style="width:420px;"></div>
+          <div class="f14-txt" id="f14-x2">Números y horarios</div>
+        </div>
+        <div class="f14-row" id="f14-r3" style="top:216px;">
+          <div class="f14-ck"><div class="f14-ring"></div><div class="f14-fill" id="f14-f3"></div><svg class="f14-tick" viewBox="0 0 56 56"><path id="f14-t3" d="M17 29 L25 37 L40 21" /></svg></div>
+          <div class="f14-skel" id="f14-s3k" style="width:320px;"></div>
+          <div class="f14-txt" id="f14-x3">Pedir una cita</div>
+        </div>
+        <div class="f14-row" id="f14-r4" style="top:324px;">
+          <div class="f14-ck"><div class="f14-ring"></div><div class="f14-fill" id="f14-f4"></div><svg class="f14-tick" viewBox="0 0 56 56"><path id="f14-t4" d="M17 29 L25 37 L40 21" /></svg></div>
+          <div class="f14-skel" id="f14-s4" style="width:350px;"></div>
+          <div class="f14-txt" id="f14-x4">Hacer la compra</div>
+        </div>
+        <div class="f14-row" id="f14-r5" style="top:432px;">
+          <div class="f14-ck"><div class="f14-ring"></div><div class="f14-fill" id="f14-f5"></div><svg class="f14-tick" viewBox="0 0 56 56"><path id="f14-t5" d="M17 29 L25 37 L40 21" /></svg></div>
+          <div class="f14-skel" id="f14-s5" style="width:380px;"></div>
+          <div class="f14-skel f14-skel2" id="f14-s5b" style="width:260px;"></div>
+          <div class="f14-txt" id="f14-x5">Preguntar cuando<br />no entiendes</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Scene 3: MAÑANA MISMO ===== -->
+    <div id="f14-s3">
+      <div id="f14-lead">
+        <span class="f14-w" id="f14-w-lo">Lo</span><span class="f14-w" id="f14-w-que">que</span><span class="f14-w" id="f14-w-te">te</span><span class="f14-w" id="f14-w-hace">hace</span><span class="f14-w" id="f14-w-falta">falta</span>
+      </div>
+      <div id="f14-chip">MAÑANA</div>
+      <div id="f14-mis">MISMO</div>
+    </div>
+
+    <!-- ===== pill ===== -->
+    <div id="f14-pill">
+      <svg viewBox="0 0 92 92"><use href="#f14-i-buoy" /></svg>
+      <span id="f14-p01">01</span><span id="f14-pdot">·</span><span>Supervivencia</span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 8.028;
+
+      // ================= ENTRANCE (0.00–0.55): the stage slides in from the left =================
+      tl.fromTo(q("f14-dots"), { x: -168 }, { x: 0, duration: 0.7, ease: "power4.out" }, 0);
+      tl.fromTo(q("f14-amb"), { x: -260, opacity: 0.4 }, { x: 0, opacity: 1, duration: 0.6, ease: "expo.out" }, 0);
+
+      // laptop slides in with a light directional motion blur (blur envelope shares the move's ease)
+      const slide = q("f14-slide");
+      const sbn = q("f14-sbn");
+      const bp = { v: 14 };
+      const writeBlur = () => sbn.setAttribute("stdDeviation", bp.v.toFixed(2) + " 0");
+      writeBlur();
+      slide.style.filter = "url(#f14-sb)";
+      const MOVE = 0.5;
+      tl.fromTo(slide, { x: -600 }, { x: 0, duration: MOVE, ease: "expo.out" }, 0);
+      tl.fromTo(slide, { opacity: 0.35 }, { opacity: 1, duration: 0.08, ease: "power1.out" }, 0);
+      tl.fromTo(bp, { v: 14 }, { v: 0, duration: MOVE, ease: "expo.out", onUpdate: writeBlur }, 0);
+      tl.set(slide, { filter: "none" }, MOVE + 0.02);
+      // a glass sheen crosses the screen once as it lands
+      tl.fromTo(q("f14-sheen"), { x: -620 }, { x: 1000, duration: 0.7, ease: "power2.inOut" }, 0.36);
+
+      // the Mac holds still after landing (owner: no drift / zoom on the mockup)
+
+      // checklist card rides the same sweep (a farther plane: shorter travel, soft focus pull)
+      tl.fromTo(q("f14-card"), { x: -240, filter: "blur(8px)" },
+        { x: 0, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 0.02);
+      tl.fromTo(q("f14-card"), { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "power1.out" }, 0.02);
+
+      // pill
+      tl.fromTo(q("f14-pill"), { opacity: 0, x: -44 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, 0.06);
+
+      // ================= CHECKLIST — each row on its cue, ✓ draws 0.2 s later =================
+      const ROWS = [
+        { n: 1, t: 0.12, y: 0, h: 108, skel: ["f14-s1"] },
+        { n: 2, t: 0.99, y: 108, h: 108, skel: ["f14-s2"] },
+        { n: 3, t: 2.46, y: 216, h: 108, skel: ["f14-s3k"] },
+        { n: 4, t: 3.39, y: 324, h: 108, skel: ["f14-s4"] },
+        { n: 5, t: 4.43, y: 432, h: 154, skel: ["f14-s5", "f14-s5b"] }
+      ];
+      const hl = q("f14-hl");
+      const cnum = q("f14-cnum");
+      const barfill = q("f14-barfill");
+      tl.fromTo(barfill, { scaleX: 0 }, { scaleX: 0, duration: 0.01, ease: "none" }, 0);
+      tl.fromTo(hl, { opacity: 0, y: 0, height: 108 }, { opacity: 1, y: 0, height: 108, duration: 0.2, ease: "power2.out" }, 0.08);
+
+      ROWS.forEach((r, i) => {
+        const T = r.t - 0.04;
+        // text lands, skeleton bar dissolves under it
+        tl.fromTo(q("f14-x" + r.n), { opacity: 0, x: -28, filter: "blur(6px)" },
+          { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, T);
+        r.skel.forEach((s) => {
+          tl.fromTo(q(s), { opacity: 1 }, { opacity: 0, duration: 0.14, ease: "power1.out" }, T);
+        });
+        // active-row highlight travels down to this row
+        if (i > 0) {
+          const p = ROWS[i - 1];
+          tl.fromTo(hl, { y: p.y, height: p.h }, { y: r.y, height: r.h, duration: 0.3, ease: "power3.out", immediateRender: false }, T);
+        }
+        // ✓ fills in + tick draws (no overshoot, no burst)
+        const C = r.t + 0.2;
+        tl.fromTo(q("f14-f" + r.n), { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.28, ease: "power3.out" }, C - 0.03);
+        tl.fromTo(q("f14-t" + r.n), { strokeDashoffset: 34 }, { strokeDashoffset: 0, duration: 0.22, ease: "power2.out" }, C);
+        // counter + progress bar
+        tl.set(cnum, { textContent: String(r.n) }, C);
+        tl.fromTo(barfill, { scaleX: (r.n - 1) / 5 }, { scaleX: r.n / 5, duration: 0.32, ease: "power3.out", immediateRender: false }, C);
+        tl.fromTo(q("f14-count"), { scale: 1.06 }, { scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, C);
+      });
+      // 5/5 — list complete: bar turns green, counter goes green
+      tl.fromTo(q("f14-bargreen"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 4.78);
+      tl.fromTo(q("f14-count"), { color: "#1D0084" }, { color: "#16A34A", duration: 0.3, ease: "power2.out" }, 4.78);
+      tl.fromTo(hl, { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power1.out", immediateRender: false }, 4.9);
+
+      // ================= CALLOUT (2.6–3.9): Dutch subtitle bubble over the laptop =================
+      const BUB = 2.6;
+      const bub = q("f14-bub");
+      tl.fromTo(bub, { opacity: 0, scale: 0.92, y: 28 }, { opacity: 1, scale: 1, y: 0, duration: 0.42, ease: "power3.out" }, BUB - 0.05);
+      Array.from(document.querySelectorAll("#f14-nl .f14-nw")).forEach((w, i) => {
+        tl.fromTo(w, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, BUB + i * 0.055);
+      });
+      tl.fromTo(q("f14-gloss"), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.26, ease: "power3.out" }, BUB + 0.36);
+      // settles smaller, docking on the screen's lower-left like a subtitle
+      tl.to(bub, { scale: 0.7, x: -4, y: 18, duration: 0.5, ease: "power3.inOut" }, 3.48);
+
+      // ================= SCENE 3 (5.72–8.03): checklist leaves upward, MAÑANA MISMO rises =================
+      const card = q("f14-card");
+      tl.fromTo(card, { y: 0, filter: "blur(0px)" }, { y: -880, filter: "blur(8px)", duration: 0.34, ease: "power3.in", immediateRender: false }, 5.72);
+      tl.fromTo(card, { opacity: 1 }, { opacity: 0, duration: 0.1, ease: "none", immediateRender: false }, 5.96);
+
+      const LW = [["lo", 6.0], ["que", 6.12], ["te", 6.21], ["hace", 6.32], ["falta", 6.55]];
+      LW.forEach(([id, t]) => {
+        tl.fromTo(q("f14-w-" + id), { opacity: 0, y: 64, filter: "blur(6px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, t - 0.04);
+      });
+
+      // MAÑANA — white word-chip lands on "mañana"
+      tl.fromTo(q("f14-chip"), { opacity: 0, scale: 1.12, rotation: -1.5, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, rotation: -1.5, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 6.84);
+
+      // MISMO — lands on "mismo."
+      tl.fromTo(q("f14-mis"), { opacity: 0, y: 40, scale: 1.06, filter: "blur(6px)" },
+        { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.32, ease: "expo.out" }, 7.23);
+
+      // ================= the screen: hold on the top of the dashboard, then scroll like a person would =================
+      tl.fromTo(q("f14-pimg"), { y: 0 }, { y: 0, duration: 0.001 }, 0);
+      tl.fromTo(q("f14-pimg"), { y: 0.0 }, { y: -208.0, duration: 0.952, ease: "power2.inOut", immediateRender: false }, 1.674);
+      tl.fromTo(q("f14-pimg"), { y: -208.0 }, { y: -596.2, duration: 1.252, ease: "power2.inOut", immediateRender: false }, 4.086);
+
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.99, 0.927], [1.435, 1.331], [1.814, 1.678], [1.879, 1.735], [2.463, 2.298], [2.694, 2.514], [2.87, 2.664], [3.389, 3.153], [3.648, 3.397], [3.731, 3.491], [4.426, 3.998], [4.861, 4.439], [5.139, 4.683], [5.259, 4.777], [6.0, 5.463], [6.12, 5.575], [6.213, 5.716], [6.324, 5.81], [6.546, 5.979], [6.884, 6.298], [7.259, 6.721], [8.028, 7.183]]);
+      window.__timelines["14-supervivencia"] = tl;
+    })();
+  </script>
+</template>

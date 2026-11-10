@@ -1,0 +1,184 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE ---------- */
+    #f26-ground {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
+    #f26-dots {
+      position: absolute; left: -56px; top: -56px; width: 2032px; height: 1192px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px;
+    }
+    #f26-amb {
+      position: absolute; left: 40px; top: 190px; width: 1100px; height: 760px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%);
+    }
+
+    /* ---------- MacBook (tools/mac_mockup.md), left ---------- */
+    #f26-drift { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 590px 545px; }
+    /*MAC_CSS*/
+
+    /* ---------- right column ---------- */
+    #f26-col { position: absolute; left: 1164px; top: 0; width: 660px; height: 1080px; }
+    .f26-h {
+      position: absolute; left: -4px; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 100px; line-height: 1; letter-spacing: -0.035em; color: #FFFFFF;
+    }
+    #f26-h1 { top: 166px; }
+    #f26-h2 { top: 268px; color: #4da3ff; }
+    .f26-s {
+      position: absolute; left: 0; display: flex; gap: 0.27em; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 36px; line-height: 1.2; letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
+    }
+    .f26-w { display: inline-block; }
+    .f26-hi { color: #FFFFFF; }
+    #f26-s1 { top: 408px; }
+    #f26-s2 { top: 754px; }
+
+    /* word cards: a clean stack (back cards peek out above the front one) */
+    #f26-stack { position: absolute; left: 0; top: 488px; width: 560px; height: 228px; }
+    .f26-card {
+      position: absolute; left: 0; width: 560px; height: 108px; border-radius: 18px; background: #FFFFFF;
+      transform-origin: 50% 0%;
+      box-shadow: 0 16px 34px rgba(4,0,40,0.30), 0 2px 6px rgba(4,0,40,0.14);
+    }
+    #f26-c3 { top: 0; background: #E4EAF7; }
+    #f26-c2 { top: 60px; background: #F0F3FB; }
+    #f26-c1 { top: 120px; }
+    .f26-cw {
+      position: absolute; left: 30px; top: 14px; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 36px; line-height: 44px; letter-spacing: -0.02em; color: #0C0C1E;
+    }
+    .f26-cg { position: absolute; left: 30px; top: 64px; font-family: "Inter", sans-serif; font-weight: 500; font-size: 20px; line-height: 28px; color: #5A6480; }
+    .f26-flag { position: absolute; right: 28px; top: 24px; width: 36px; height: 24px; border-radius: 5px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(12,12,30,0.10); }
+    .f26-flag i { display: block; height: 8px; }
+
+    /* week strip */
+    #f26-week { position: absolute; left: 0; top: 822px; width: 556px; height: 92px; }
+    .f26-day { position: absolute; top: 0; width: 64px; height: 92px; }
+    .f26-dl {
+      position: absolute; left: 0; top: 0; width: 64px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; line-height: 24px; color: rgba(255,255,255,0.72);
+    }
+    .f26-dc { position: absolute; left: 9px; top: 36px; width: 46px; height: 46px; border-radius: 50%; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.26); }
+    .f26-df { position: absolute; left: 0; top: 0; width: 46px; height: 46px; border-radius: 50%; background: #4da3ff; opacity: 0; }
+    .f26-dk { position: absolute; left: 0; top: 0; width: 46px; height: 46px; overflow: visible; }
+    .f26-dk path { fill: none; stroke: #FFFFFF; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100 100; stroke-dashoffset: 100; }
+  </style>
+
+  <div id="root" data-composition-id="26-flashcards" data-width="1920" data-height="1080" data-duration="3.89">
+    <div id="f26-ground" class="clip" data-start="0" data-duration="3.89" data-track-index="0"><div id="f26-dots"></div></div>
+    <div id="f26-amb"></div>
+
+    <!-- ===== MacBook Pro (front view) with the REAL flashcards tool ===== -->
+    <div id="f26-drift">
+      <div id="f26-lap" class="f26-mbp" style="--sw:896px; left:96px; top:232px;">
+        <div class="f26-mbp-shadow"></div><div class="f26-mbp-occl"></div>
+        <div class="f26-mbp-lid">
+          <div class="f26-mbp-glass">
+            <div class="f26-mbp-screen">
+              <!--CHROME-->
+              <div class="f26-content" style="--fx:0%;">
+                <!-- source 1.1–4.99: «el bocadillo» flips to «het broodje» at ≈0.5–0.75 (on «Flashcards … incluidas») -->
+                <video id="f26-vid" class="clip f26-media" src="assets/video/flashcards.mp4" muted playsinline
+                  data-start="0" data-duration="3.89" data-media-start="1.1" data-hf-media-start-basis="local" data-track-index="2"></video>
+              </div>
+            </div>
+            <div class="f26-mbp-notch"><i class="f26-mbp-lens"></i></div>
+            <div class="f26-mbp-reflect"></div>
+          </div>
+        </div>
+        <div class="f26-mbp-base"><div class="f26-mbp-thumb"></div></div>
+      </div>
+    </div>
+
+    <!-- ===== right column ===== -->
+    <div id="f26-col">
+      <div class="f26-h" id="f26-h1">Flashcards</div>
+      <div class="f26-h" id="f26-h2">incluidas.</div>
+
+      <div class="f26-s" id="f26-s1"><span class="f26-w" id="f26-w-para">para</span><span class="f26-w" id="f26-w-que">que</span><span class="f26-w" id="f26-w-el">el</span><span class="f26-w" id="f26-w-vocab">vocabulario</span><span class="f26-w f26-hi" id="f26-w-se">se</span><span class="f26-w f26-hi" id="f26-w-quede">quede</span></div>
+
+      <div id="f26-stack">
+        <div class="f26-card" id="f26-c3"><div class="f26-cw">komen</div><div class="f26-cg">venir</div><div class="f26-flag"><i style="background:#AE1C27"></i><i style="background:#FFFFFF"></i><i style="background:#21468C"></i></div></div>
+        <div class="f26-card" id="f26-c2"><div class="f26-cw">de vis</div><div class="f26-cg">el pescado</div><div class="f26-flag"><i style="background:#AE1C27"></i><i style="background:#FFFFFF"></i><i style="background:#21468C"></i></div></div>
+        <div class="f26-card" id="f26-c1"><div class="f26-cw">het broodje</div><div class="f26-cg">el bocadillo</div><div class="f26-flag"><i style="background:#AE1C27"></i><i style="background:#FFFFFF"></i><i style="background:#21468C"></i></div></div>
+      </div>
+
+      <div class="f26-s" id="f26-s2"><span class="f26-w" id="f26-w-y">y</span><span class="f26-w" id="f26-w-no">no</span><span class="f26-w" id="f26-w-se2">se</span><span class="f26-w" id="f26-w-te">te</span><span class="f26-w" id="f26-w-escape">escape</span><span class="f26-w" id="f26-w-a">a</span><span class="f26-w" id="f26-w-la">la</span><span class="f26-w f26-hi" id="f26-w-semana">semana.</span></div>
+
+      <div id="f26-week">
+        <div class="f26-day" style="left:0px;"><div class="f26-dl" id="f26-dl0">L</div><div class="f26-dc"><div class="f26-df" id="f26-df0"></div><svg class="f26-dk" viewBox="0 0 46 46" aria-hidden="true"><path id="f26-dt0" d="M14.5 23.5 L20.5 29.5 L32 17.5" pathLength="100" /></svg></div></div>
+        <div class="f26-day" style="left:82px;"><div class="f26-dl" id="f26-dl1">M</div><div class="f26-dc"><div class="f26-df" id="f26-df1"></div><svg class="f26-dk" viewBox="0 0 46 46" aria-hidden="true"><path id="f26-dt1" d="M14.5 23.5 L20.5 29.5 L32 17.5" pathLength="100" /></svg></div></div>
+        <div class="f26-day" style="left:164px;"><div class="f26-dl" id="f26-dl2">X</div><div class="f26-dc"><div class="f26-df" id="f26-df2"></div><svg class="f26-dk" viewBox="0 0 46 46" aria-hidden="true"><path id="f26-dt2" d="M14.5 23.5 L20.5 29.5 L32 17.5" pathLength="100" /></svg></div></div>
+        <div class="f26-day" style="left:246px;"><div class="f26-dl" id="f26-dl3">J</div><div class="f26-dc"><div class="f26-df" id="f26-df3"></div><svg class="f26-dk" viewBox="0 0 46 46" aria-hidden="true"><path id="f26-dt3" d="M14.5 23.5 L20.5 29.5 L32 17.5" pathLength="100" /></svg></div></div>
+        <div class="f26-day" style="left:328px;"><div class="f26-dl" id="f26-dl4">V</div><div class="f26-dc"><div class="f26-df" id="f26-df4"></div><svg class="f26-dk" viewBox="0 0 46 46" aria-hidden="true"><path id="f26-dt4" d="M14.5 23.5 L20.5 29.5 L32 17.5" pathLength="100" /></svg></div></div>
+        <div class="f26-day" style="left:410px;"><div class="f26-dl" id="f26-dl5">S</div><div class="f26-dc"><div class="f26-df" id="f26-df5"></div><svg class="f26-dk" viewBox="0 0 46 46" aria-hidden="true"><path id="f26-dt5" d="M14.5 23.5 L20.5 29.5 L32 17.5" pathLength="100" /></svg></div></div>
+        <div class="f26-day" style="left:492px;"><div class="f26-dl" id="f26-dl6">D</div><div class="f26-dc"><div class="f26-df" id="f26-df6"></div><svg class="f26-dk" viewBox="0 0 46 46" aria-hidden="true"><path id="f26-dt6" d="M14.5 23.5 L20.5 29.5 L32 17.5" pathLength="100" /></svg></div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 3.89, LEAD = 0.05;
+      // v3 voice cues (frame-relative)
+      const T = {
+        flash: 0.12, incl: 0.616, para: 1.285, que: 1.423, el: 1.496, vocab: 1.57, se: 2.083, quede: 2.194,
+        y: 2.437, no: 2.588, se2: 2.726, te: 2.863, escape: 2.946, a: 3.294, la: 3.34, semana: 3.414
+      };
+      const rise = (el, cue, dy, dur) => tl.fromTo(el, { opacity: 0, y: dy },
+        { opacity: 1, y: 0, duration: dur || 0.36, ease: "power3.out" }, cue - LEAD);
+
+      // ================= ENTRANCE: the MacBook rises into place (one move) =================
+      tl.fromTo(q("f26-lap"), { y: 64 }, { y: 0, duration: 0.7, ease: "power3.out" }, 0);
+      tl.fromTo(q("f26-lap"), { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power1.out" }, 0);
+      tl.fromTo(q("f26-amb"), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0);
+      // slow, purposeful camera: the device breathes in by 1.5 % over the shot (footage never zoomed)
+      tl.fromTo(q("f26-drift"), { scale: 1 }, { scale: 1.015, duration: D, ease: "power1.inOut" }, 0);
+
+      // ================= «Flashcards incluidas,» =================
+      rise(q("f26-h1"), T.flash, 46, 0.5);
+      rise(q("f26-h2"), T.incl, 46, 0.5);
+
+      // ================= «para que el vocabulario se quede» =================
+      [["para", T.para], ["que", T.que], ["el", T.el], ["vocab", T.vocab], ["se", T.se], ["quede", T.quede]]
+        .forEach(([id, t]) => rise(q("f26-w-" + id), t, 18, 0.32));
+      // the real word cards arrive with «vocabulario» and the stack settles on «quede»
+      [["f26-c3", 0.92, 34, T.vocab - LEAD], ["f26-c2", 0.96, 34, T.vocab + 0.14], ["f26-c1", 1, 40, T.quede - LEAD]].forEach(([id, s, dy, at]) => {
+        tl.fromTo(q(id), { y: dy, scale: s }, { y: 0, scale: s, duration: 0.5, ease: "power3.out" }, at);
+        tl.fromTo(q(id), { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "power1.out" }, at);
+      });
+
+      // ================= «y no se te escape a la semana.» =================
+      [["y", T.y], ["no", T.no], ["se2", T.se2], ["te", T.te], ["escape", T.escape], ["a", T.a], ["la", T.la], ["semana", T.semana]]
+        .forEach(([id, t]) => rise(q("f26-w-" + id), t, 18, 0.32));
+      tl.fromTo(q("f26-week"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, T.y - LEAD);
+      // every day of the week ticks in #4da3ff, the last one on «semana»
+      const step = (T.semana - T.no) / 6;
+      for (let i = 0; i < 7; i++) {
+        const at = T.no + i * step - 0.03;
+        tl.fromTo(q("f26-df" + i), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.26, ease: "power3.out" }, at);
+        tl.fromTo(q("f26-dt" + i), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.22, ease: "power2.out" }, at + 0.06);
+        tl.fromTo(q("f26-dl" + i), { color: "rgba(255,255,255,0.72)" }, { color: "#FFFFFF", duration: 0.2, ease: "power1.out" }, at);
+      }
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["26-flashcards"] = tl;
+    })();
+  </script>
+</template>

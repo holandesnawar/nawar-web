@@ -1,0 +1,215 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE ---------- */
+    #f27-ground {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
+    #f27-dots {
+      position: absolute; left: -56px; top: -56px; width: 2032px; height: 1192px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px;
+    }
+    #f27-amb {
+      position: absolute; left: 800px; top: 200px; width: 1060px; height: 760px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%);
+    }
+    .f27-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+    /* ---------- MacBook (tools/mac_mockup.md), right ---------- */
+    #f27-drift { transform-origin: 1330px 550px; }
+    /*MAC_CSS*/
+
+    /* ---------- left column: kinetic type, three pages ---------- */
+    .f27-h {
+      position: absolute; left: 92px; display: flex; gap: 0.24em; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 84px; line-height: 1.04; letter-spacing: -0.035em; color: #FFFFFF;
+    }
+    .f27-s {
+      position: absolute; left: 96px; display: flex; gap: 0.27em; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 36px; line-height: 1.2; letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
+    }
+    .f27-w { display: inline-block; }
+    .f27-acc { color: #4da3ff; }
+    .f27-hi { color: #FFFFFF; }
+
+    /* status pills (frame.md pill: label type, rgba fill on blue) */
+    .f27-pill {
+      position: absolute; left: 96px; display: flex; align-items: center; gap: 14px; white-space: nowrap;
+      padding: 15px 30px 15px 22px; border-radius: 999px;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; line-height: 26px; letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .f27-pill svg { width: 28px; height: 28px; display: block; flex: 0 0 28px; }
+    .f27-pill-glass { background: rgba(255,255,255,0.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25); color: rgba(255,255,255,0.86); }
+    #f27-st-ok { background: #FFFFFF; color: #035EC7; box-shadow: 0 18px 40px rgba(4,0,40,0.30); }
+
+    /* ---------- the REAL answered consulta (ui-consulta-respondida.png, modal crop 542,292 · 969×507) ---------- */
+    #f27-answ { position: absolute; left: 850px; top: 446px; width: 900px; height: 471px; transform-origin: 0 0; filter: drop-shadow(0 30px 44px rgba(4,0,40,0.42)); }
+    #f27-ansc { position: absolute; left: 0; top: 0; width: 900px; height: 471px; border-radius: 18px; overflow: hidden; background: #FFFFFF; }
+    #f27-ansc img { position: absolute; left: -503.4px; top: -271.2px; width: 1902.2px; height: 988.2px; display: block; }
+
+    /* ---------- the shared library: answered consultas in the platform's card style ---------- */
+    #f27-lib { position: absolute; left: 884px; top: 262px; width: 880px; height: 556px; }
+    .f27-row {
+      position: absolute; left: 0; width: 880px; height: 100px; border-radius: 18px; background: #FFFFFF;
+      box-shadow: 0 18px 40px rgba(4,0,40,0.30), 0 2px 6px rgba(4,0,40,0.12);
+    }
+    .f27-chips { position: absolute; left: 26px; top: 16px; display: flex; gap: 10px; }
+    .f27-chip {
+      display: flex; align-items: center; gap: 6px; height: 28px; padding: 0 13px; border-radius: 14px; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 15px; line-height: 28px;
+    }
+    .f27-chip svg { width: 16px; height: 16px; display: block; }
+    .f27-gram { background: #ECFEF5; color: #007A56; box-shadow: inset 0 0 0 1px #D1FAE5; }
+    .f27-met { background: #EEF0FF; color: #1D0084; box-shadow: inset 0 0 0 1px #DCE0FF; }
+    .f27-resp { background: #EAF4FF; color: #035EC7; }
+    .f27-rt {
+      position: absolute; left: 26px; top: 52px; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 24px; line-height: 32px; letter-spacing: -0.01em; color: #0C0C1E;
+    }
+  </style>
+
+  <div id="root" data-composition-id="27-consultas" data-width="1920" data-height="1080" data-duration="9.135">
+    <div id="f27-ground" class="clip" data-start="0" data-duration="9.135" data-track-index="0"><div id="f27-dots"></div></div>
+    <div id="f27-amb"></div>
+
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+      <symbol id="f27-i-ok" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.4" /><path d="M5.3 8.2 L7.2 10.1 L10.8 6.3" /></g></symbol>
+    </svg>
+
+    <!-- ===== MacBook Pro (front view): the REAL «Abre una nueva consulta» form ===== -->
+    <div id="f27-drift" class="f27-full">
+      <div id="f27-lapf" class="f27-full">
+        <div id="f27-lap" class="f27-mbp" style="--sw:896px; left:835px; top:240px;">
+          <div class="f27-mbp-shadow"></div><div class="f27-mbp-occl"></div>
+          <div class="f27-mbp-lid">
+            <div class="f27-mbp-glass">
+              <div class="f27-mbp-screen">
+                <!--CHROME-->
+                <div class="f27-content" style="--fx:50%;">
+                  <!-- 3.4–11.55: category «Gramática» set, typing «cómo se traduce gezellig?»; tail held on the «Publicar consulta» hover -->
+                  <video id="f27-vid" class="clip f27-media" src="assets/video/consulta-nueva.mp4" muted playsinline
+                    data-start="0" data-duration="8.15" data-media-start="3.4" data-hf-media-start-basis="local" data-track-index="2"></video>
+                  <video id="f27-vid2" class="clip f27-media" src="assets/video/consulta-nueva.mp4" muted playsinline
+                    data-start="8.15" data-duration="0.985" data-media-start="10.55" data-hf-media-start-basis="local" data-track-index="2"></video>
+                </div>
+              </div>
+              <div class="f27-mbp-notch"><i class="f27-mbp-lens"></i></div>
+              <div class="f27-mbp-reflect"></div>
+            </div>
+          </div>
+          <div class="f27-mbp-base"><div class="f27-mbp-thumb"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== library (behind the answered consulta until it files itself in) ===== -->
+    <div id="f27-lib">
+      <div class="f27-row" id="f27-r1" style="top:0px;"><div class="f27-chips"><div class="f27-chip f27-gram">Gramática</div><div class="f27-chip f27-resp"><svg><use href="#f27-i-ok" /></svg>Respondida</div></div><div class="f27-rt">¿Por qué a veces veo “hij werkt” y otras “werk jij”?</div></div>
+      <div class="f27-row" id="f27-r2" style="top:114px;"><div class="f27-chips"><div class="f27-chip f27-gram">Gramática</div><div class="f27-chip f27-resp"><svg><use href="#f27-i-ok" /></svg>Respondida</div></div><div class="f27-rt">¿Cómo se traduce “gezellig”?</div></div>
+      <div class="f27-row" id="f27-r3" style="top:228px;"><div class="f27-chips"><div class="f27-chip f27-gram">Gramática</div><div class="f27-chip f27-resp"><svg><use href="#f27-i-ok" /></svg>Respondida</div></div><div class="f27-rt">¿Cuándo se usa “er”?</div></div>
+      <div class="f27-row" id="f27-r4" style="top:342px;"><div class="f27-chips"><div class="f27-chip f27-gram">Gramática</div><div class="f27-chip f27-resp"><svg><use href="#f27-i-ok" /></svg>Respondida</div></div><div class="f27-rt">¿De of het?</div></div>
+      <div class="f27-row" id="f27-r5" style="top:456px;"><div class="f27-chips"><div class="f27-chip f27-met">Método</div><div class="f27-chip f27-resp"><svg><use href="#f27-i-ok" /></svg>Respondida</div></div><div class="f27-rt">¿Cada cuánto repaso las flashcards?</div></div>
+    </div>
+
+    <!-- ===== the REAL answered consulta (student name already blurred in the asset) ===== -->
+    <div id="f27-answ"><div id="f27-ansc"><img src="assets/img/ui-consulta-respondida.png" alt="" /></div></div>
+
+    <!-- ===== left column ===== -->
+    <!-- page 1 -->
+    <div class="f27-h" id="f27-p1a" style="top:346px;"><span class="f27-w" id="f27-w-consultas">Consultas</span></div>
+    <div class="f27-h" id="f27-p1b" style="top:433px;"><span class="f27-w" id="f27-w-dentro">dentro</span><span class="f27-w" id="f27-w-de">de</span></div>
+    <div class="f27-h" id="f27-p1c" style="top:520px;"><span class="f27-w f27-acc" id="f27-w-la">la</span><span class="f27-w f27-acc" id="f27-w-escuela">escuela.</span></div>
+    <div class="f27-s" id="f27-p1s" style="top:658px;"><span class="f27-w" id="f27-w-te">¿Te</span><span class="f27-w" id="f27-w-atascas">atascas</span><span class="f27-w" id="f27-w-y">y</span><span class="f27-w" id="f27-w-necesitas">necesitas</span><span class="f27-w f27-hi" id="f27-w-ayuda">ayuda?</span></div>
+    <!-- page 2 -->
+    <div class="f27-h" id="f27-p2a" style="top:346px;"><span class="f27-w" id="f27-w-preguntas">Preguntas,</span></div>
+    <div class="f27-h" id="f27-p2b" style="top:433px;"><span class="f27-w" id="f27-w-y2">y</span><span class="f27-w" id="f27-w-te2">te</span><span class="f27-w f27-acc" id="f27-w-responden">responden.</span></div>
+    <div class="f27-s" id="f27-p2s" style="top:572px;"><span class="f27-w" id="f27-w-tus">Tus</span><span class="f27-w" id="f27-w-dudas">dudas</span><span class="f27-w" id="f27-w-no">no</span><span class="f27-w" id="f27-w-se">se</span><span class="f27-w" id="f27-w-quedan">quedan</span><span class="f27-w" id="f27-w-esperando">esperando,</span></div>
+    <div class="f27-pill f27-pill-glass" id="f27-st-wait" style="top:644px;"><svg viewBox="0 0 28 28" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="14" r="10.5" /><path d="M14 8.2 V14 L18 16.4" /></g></svg><span>Pendiente</span></div>
+    <div class="f27-pill" id="f27-st-ok" style="top:644px;"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#f27-i-ok" /></svg><span>Respondida</span></div>
+    <!-- page 3 -->
+    <div class="f27-h" id="f27-p3a" style="top:346px;"><span class="f27-w" id="f27-w-se3">Se</span><span class="f27-w" id="f27-w-quedan3">quedan</span></div>
+    <div class="f27-h" id="f27-p3b" style="top:433px;"><span class="f27-w f27-acc" id="f27-w-guardadas">guardadas.</span></div>
+    <div class="f27-pill f27-pill-glass" id="f27-vis" style="top:572px;"><svg viewBox="0 0 28 28" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="9.5" r="3.8" /><path d="M3.5 22 C3.5 17.6 6.6 14.8 10.5 14.8 C14.4 14.8 17.5 17.6 17.5 22" /><circle cx="19.2" cy="10.4" r="3" /><path d="M19 14.9 C22.3 14.9 24.6 17.4 24.6 21.2" /></g></svg><span>Visible para todos los alumnos</span></div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 9.135, LEAD = 0.05;
+      // v3 voice cues (frame-relative)
+      const T = {
+        consultas: 0.12, dentro: 0.661, de: 0.973, la: 1.056, escuela: 1.129,
+        te: 1.844, atascas: 1.935, y: 2.44, necesitas: 2.523, ayuda: 3.009,
+        preguntas: 3.668, y2: 4.421, te2: 4.503, responden: 4.613,
+        tus: 5.494, dudas: 5.677, no: 6.012, se: 6.219, quedan: 6.356, esperando: 6.586,
+        y3: 7.375, se3: 7.448, quedan3: 7.577, guardadas: 7.907, para: 8.411, todos: 8.577
+      };
+      const word = (id, cue, dy, dur) => tl.fromTo(q("f27-w-" + id), { opacity: 0, y: dy },
+        { opacity: 1, y: 0, duration: dur, ease: "power3.out" }, cue - LEAD);
+      const H = (id, cue) => word(id, cue, 44, 0.48);
+      const S = (id, cue) => word(id, cue, 18, 0.32);
+      // page change: the previous lines lift away together, just before the next line lands
+      const pageOut = (ids, at) => ids.forEach((id) => {
+        tl.fromTo(q(id), { y: 0, opacity: 1 }, { y: -34, opacity: 0, duration: 0.24, ease: "power2.in", immediateRender: false }, at);
+      });
+
+      // ================= ENTRANCE: the MacBook rises into place (one move) =================
+      tl.fromTo(q("f27-lap"), { y: 64 }, { y: 0, duration: 0.7, ease: "power3.out" }, 0);
+      tl.fromTo(q("f27-lap"), { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power1.out" }, 0);
+      tl.fromTo(q("f27-amb"), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0);
+      tl.fromTo(q("f27-drift"), { scale: 1 }, { scale: 1.012, duration: D, ease: "power1.inOut" }, 0);
+
+      // ================= PAGE 1 — «Consultas dentro de la escuela. ¿Te atascas y necesitas ayuda?» =================
+      H("consultas", T.consultas); H("dentro", T.dentro); H("de", T.de); H("la", T.la); H("escuela", T.escuela);
+      S("te", T.te); S("atascas", T.atascas); S("y", T.y); S("necesitas", T.necesitas); S("ayuda", T.ayuda);
+
+      // ================= PAGE 2 — «Preguntas, y te responden.» =================
+      pageOut(["f27-p1a", "f27-p1b", "f27-p1c", "f27-p1s"], T.preguntas - 0.26);
+      H("preguntas", T.preguntas); H("y2", T.y2); H("te2", T.te2); H("responden", T.responden);
+      // the REAL answered consulta slides in front of the laptop; the laptop steps back in focus
+      tl.fromTo(q("f27-answ"), { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.62, ease: "power3.out" }, T.te2 - LEAD);
+      tl.fromTo(q("f27-lapf"), { filter: "brightness(1) blur(0px)" }, { filter: "brightness(0.78) blur(0px)", duration: 0.6, ease: "power2.out" }, T.te2 - LEAD);
+
+      // ================= «Tus dudas no se quedan esperando,» — Pendiente → Respondida =================
+      S("tus", T.tus); S("dudas", T.dudas); S("no", T.no); S("se", T.se); S("quedan", T.quedan); S("esperando", T.esperando);
+      tl.fromTo(q("f27-st-wait"), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, T.dudas - LEAD);
+      tl.fromTo(q("f27-st-wait"), { opacity: 1, y: 0 }, { opacity: 0, y: -12, duration: 0.16, ease: "power2.in", immediateRender: false }, T.esperando - 0.16);
+      tl.fromTo(q("f27-st-ok"), { y: 14 }, { y: 0, duration: 0.36, ease: "power3.out" }, T.esperando - 0.02);
+      tl.fromTo(q("f27-st-ok"), { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power1.out" }, T.esperando - 0.02);
+
+      // ================= PAGE 3 — «y se quedan guardadas para todos.» =================
+      pageOut(["f27-p2a", "f27-p2b", "f27-p2s", "f27-st-ok"], T.se3 - 0.28);
+      H("se3", T.se3); H("quedan3", T.quedan3); H("guardadas", T.guardadas);
+      // the laptop recedes further (focus pull) as the library takes the stage
+      tl.fromTo(q("f27-lapf"), { filter: "brightness(0.78) blur(0px)" }, { filter: "brightness(0.56) blur(3px)", duration: 0.6, ease: "power2.out", immediateRender: false }, T.y3);
+      // the answered consulta files itself into the library: it collapses into the first row's slot
+      const F0 = T.quedan3 - 0.12, FD = T.guardadas + 0.02 - F0;
+      tl.fromTo(q("f27-answ"), { x: 0, y: 0, scale: 1 }, { x: 34, y: -184, scale: 880 / 900, duration: FD, ease: "power3.inOut", immediateRender: false }, F0);
+      tl.fromTo(q("f27-ansc"), { clipPath: "inset(0px 0px 0px 0px round 18px)" }, { clipPath: "inset(0px 0px 369px 0px round 18px)", duration: FD, ease: "power3.inOut", immediateRender: false }, F0);
+      tl.fromTo(q("f27-r1"), { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power1.out" }, F0 + FD - 0.14);
+      tl.fromTo(q("f27-answ"), { opacity: 1 }, { opacity: 0, duration: 0.14, ease: "power1.in", immediateRender: false }, F0 + FD - 0.06);
+      // the rest of the shared library settles in under it
+      ["f27-r2", "f27-r3", "f27-r4", "f27-r5"].forEach((id, i) => {
+        tl.fromTo(q(id), { y: 26 }, { y: 0, duration: 0.46, ease: "power3.out" }, T.guardadas + 0.04 + i * 0.12);
+        tl.fromTo(q(id), { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "power1.out" }, T.guardadas + 0.04 + i * 0.12);
+      });
+      tl.fromTo(q("f27-vis"), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, T.para - LEAD);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["27-consultas"] = tl;
+    })();
+  </script>
+</template>

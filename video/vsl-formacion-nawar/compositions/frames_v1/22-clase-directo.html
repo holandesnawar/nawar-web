@@ -1,0 +1,513 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 800; font-style: normal; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE (gradient + vignette); dots on their own layer ---------- */
+    #f22-ground {
+      position: absolute; inset: 0;
+      background-color: #120081;
+      background-image:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+      background-size: 100% 100%, 100% 100%;
+    }
+    #f22-dots {
+      position: absolute; left: -240px; top: -140px; width: 2400px; height: 1360px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px;
+    }
+
+    /* ---------- shared type ---------- */
+    .f22-w { display: inline-block; will-change: transform, opacity; }
+    .f22-lead {
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 54px; line-height: 1.1;
+      letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
+    }
+    .f22-key {
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 116px; line-height: 1.0;
+      letter-spacing: -0.035em; color: #FFFFFF;
+    }
+    .f22-cline {
+      position: absolute; left: 0; width: 1920px;
+      display: flex; justify-content: center; align-items: baseline; white-space: nowrap;
+    }
+
+    /* =================== SCENE 1 — laptop + Eventos calendar =================== */
+    #f22-s1 { position: absolute; inset: 0; }
+    #f22-h1a { top: 74px; height: 66px; }
+    #f22-h1a .f22-w { margin: 0 9px; }
+    #f22-h1b { top: 138px; height: 130px; }
+    #f22-h1b .f22-w { margin: 0 17px; }
+    #f22-w-directo { transform-origin: 40% 70%; }
+
+    #f22-push { position: absolute; inset: 0; perspective: 2200px; perspective-origin: 960px 560px; transform-origin: 920px 616px; }
+    #f22-lap { position: absolute; inset: 0; transform-origin: 960px 903px; }
+    #f22-floor {
+      position: absolute; left: 230px; top: 905px; width: 1460px; height: 84px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 40%, rgba(4,0,40,0.55) 0%, rgba(4,0,40,0.22) 45%, rgba(4,0,40,0) 72%);
+    }
+    #f22-base {
+      position: absolute; left: 292px; top: 903px; width: 1336px; height: 26px;
+      border-radius: 3px 3px 24px 24px;
+      background: linear-gradient(180deg, #eef1f7 0%, #c9cfdc 40%, #9aa3b8 100%);
+      box-shadow: 0 10px 24px rgba(4,0,40,0.35);
+    }
+    #f22-notch {
+      position: absolute; left: 568px; top: 0; width: 200px; height: 9px; border-radius: 0 0 10px 10px;
+      background: linear-gradient(180deg, #9aa3b8 0%, #b9c0cf 100%);
+    }
+    #f22-bezel {
+      position: absolute; left: 378px; top: 324px; width: 1164px; height: 579px; box-sizing: border-box;
+      padding: 22px; border-radius: 26px; background: #0C0C1E;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45), inset 0 0 0 2px rgba(255,255,255,0.06);
+    }
+    #f22-camdot { position: absolute; left: 578px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: #262a40; }
+    #f22-scr { position: relative; width: 1120px; height: 535px; border-radius: 8px; overflow: hidden; background: #0C0C1E; }
+    #f22-zo { position: absolute; left: 0; top: 0; width: 1120px; height: 535px; transform-origin: 560px 267.5px; }
+    #f22-zi { position: absolute; left: 0; top: 0; width: 1120px; height: 535px; }
+    #f22-cal { position: absolute; left: 0; top: 0; width: 1120px; height: 534.84px; display: block; }
+    .f22-ring {
+      position: absolute; box-sizing: border-box; border-radius: 7px;
+      border: 2px solid #0b6df0;
+    }
+    #f22-r24 { box-shadow: 0 0 0 3px rgba(11,109,240,0.18), 0 0 14px rgba(11,109,240,0.55); }
+    #f22-glass {
+      position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(118deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 34%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 100%);
+    }
+    /* EN DIRECTO pill (screen space, not zoomed) */
+    #f22-live { position: absolute; left: 652px; top: 250px; width: 300px; height: 60px; transform-origin: 20% 50%; }
+    #f22-liveburst {
+      position: absolute; inset: 0; border-radius: 999px; box-sizing: border-box; border: 4px solid #E02D3C;
+    }
+    #f22-livepill {
+      position: absolute; inset: 0; border-radius: 999px; background: #E02D3C;
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 28px; line-height: 1;
+      letter-spacing: 0.1em; color: #FFFFFF; white-space: nowrap;
+      box-shadow: 0 16px 34px rgba(4,0,40,0.38), 0 0 0 3px rgba(255,255,255,0.9);
+    }
+    #f22-livedot-wrap { position: relative; width: 16px; height: 16px; flex: none; }
+    #f22-livedot { position: absolute; inset: 0; border-radius: 50%; background: #FFFFFF; }
+    #f22-liveping { position: absolute; inset: 0; border-radius: 50%; border: 2px solid #FFFFFF; box-sizing: border-box; }
+
+    /* =================== SCENE 2 — video-call card + correction =================== */
+    #f22-s2 { position: absolute; inset: 0; transform-origin: 960px 560px; opacity: 0; }
+    #f22-h2 {
+      position: absolute; left: 130px; top: 116px; height: 130px;
+      display: flex; align-items: baseline; white-space: nowrap;
+    }
+    #f22-h2 .f22-lead { margin-right: 18px; }
+    #f22-h2 .f22-key { font-size: 104px; margin-right: 26px; }
+    #f22-h2 .f22-key:last-child { margin-right: 0; }
+    #f22-w-corrigen { transform-origin: 30% 70%; }
+
+    #f22-call {
+      position: absolute; left: 130px; top: 288px; width: 1012px; height: 614px; box-sizing: border-box;
+      padding: 16px; border-radius: 34px; background: #0C0C1E;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45), inset 0 0 0 2px rgba(255,255,255,0.06);
+    }
+    #f22-cscr { position: relative; width: 980px; height: 526px; border-radius: 20px; overflow: hidden; background: #120081; }
+    #f22-vid { position: absolute; left: -641.4px; top: -94px; width: 2039.7px; height: 1096.3px; display: block; }
+    /* right-edge fade: the slide's second card bleeds off-screen under a designed vignette, not a hard crop */
+    #f22-cfade {
+      position: absolute; right: 0; top: 0; width: 200px; height: 100%; pointer-events: none;
+      background: linear-gradient(90deg, rgba(11,33,150,0) 0%, rgba(11,33,150,0.8) 48%, #0b2196 80%);
+    }
+    #f22-speaker {
+      position: absolute; left: 27px; top: 37px; width: 276px; height: 163px; box-sizing: border-box;
+      border: 4px solid #34D399; border-radius: 12px;
+    }
+    #f22-tag {
+      position: absolute; left: 28px; top: 216px; height: 44px; box-sizing: border-box;
+      display: flex; align-items: center; gap: 10px; padding: 0 18px 0 12px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; transform-origin: 0% 50%;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 21px; line-height: 1; white-space: nowrap;
+      box-shadow: 0 10px 24px rgba(4,0,40,0.35);
+    }
+    #f22-tag svg { display: block; width: 30px; height: 20px; border-radius: 4px; }
+    #f22-cglass {
+      position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(118deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 30%, rgba(255,255,255,0) 31%, rgba(255,255,255,0) 100%);
+    }
+    #f22-ctrl {
+      position: absolute; left: 16px; right: 16px; top: 542px; height: 72px;
+      display: flex; align-items: center; justify-content: center; gap: 18px;
+    }
+    .f22-btn {
+      width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .f22-btn svg { display: block; width: 24px; height: 24px; }
+    #f22-ctrl-live {
+      position: absolute; left: 14px; top: 23px; display: flex; align-items: center; gap: 10px;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 18px; line-height: 1;
+      letter-spacing: 0.14em; color: rgba(255,255,255,0.72); white-space: nowrap;
+    }
+    #f22-ctrl-live i { display: block; width: 12px; height: 12px; border-radius: 50%; background: #E02D3C; }
+
+    /* correction bubbles */
+    .f22-bub {
+      position: absolute; background: #FFFFFF; border-radius: 28px;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45);
+      font-family: "Inter", sans-serif; line-height: 1; white-space: nowrap;
+    }
+    .f22-tail { position: absolute; width: 34px; height: 34px; overflow: visible; }
+    #f22-bubA {
+      left: 1384px; top: 446px; height: 118px; padding: 0 40px; box-sizing: border-box;
+      display: flex; align-items: center;
+      font-weight: 600; font-size: 60px; color: #0C0C1E; transform-origin: 90% 100%;
+    }
+    #f22-bubA .f22-tail { right: 26px; bottom: -20px; }
+    #f22-txtA { position: relative; display: block; padding-bottom: 4px; }
+    #f22-strike {
+      position: absolute; left: -8px; right: -8px; top: 50%; height: 10px; margin-top: -3px;
+      background: #E02D3C; border-radius: 5px; transform-origin: 0% 50%;
+    }
+    #f22-bubB {
+      left: 1196px; top: 620px; height: 128px; padding: 0 42px 0 28px; box-sizing: border-box;
+      display: flex; align-items: center; gap: 22px;
+      font-weight: 700; font-size: 62px; color: #1D0084; transform-origin: 10% 100%;
+    }
+    #f22-bubB .f22-tail { left: 22px; bottom: -20px; }
+    #f22-txtB { display: block; padding-bottom: 4px; }
+    #f22-check { position: relative; width: 66px; height: 66px; flex: none; }
+    #f22-checkdisc { position: absolute; inset: 0; border-radius: 50%; background: #16A34A; }
+    #f22-check svg { position: absolute; left: 0; top: 0; width: 66px; height: 66px; overflow: visible; }
+
+    /* =================== SCENE 3 — mic + voice bars + HABLAR =================== */
+    #f22-s3 { position: absolute; inset: 0; transform-origin: 960px 540px; opacity: 0; }
+    #f22-s3in { position: absolute; inset: 0; }
+    #f22-h3 { top: 204px; height: 66px; }
+    #f22-h3 .f22-w { margin: 0 8px; }
+    #f22-vglow {
+      position: absolute; left: 400px; top: 205px; width: 1120px; height: 540px;
+      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(77,163,255,0.42) 0%, rgba(77,163,255,0.14) 45%, rgba(77,163,255,0) 72%);
+    }
+    #f22-voice {
+      position: absolute; left: 550px; top: 320px; width: 820px; height: 310px; box-sizing: border-box;
+      border-radius: 999px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+    }
+    .f22-mring {
+      position: absolute; left: 25px; top: 25px; width: 260px; height: 260px; border-radius: 50%;
+      box-sizing: border-box; border: 5px solid rgba(255,255,255,0.85);
+    }
+    #f22-mic {
+      position: absolute; left: 25px; top: 25px; width: 260px; height: 260px; border-radius: 50%;
+      background: #FFFFFF; box-shadow: 0 0 70px rgba(77,163,255,0.55), 0 24px 48px rgba(4,0,40,0.35);
+    }
+    #f22-mic svg { position: absolute; left: 61px; top: 61px; width: 138px; height: 138px; }
+    #f22-bars {
+      position: absolute; left: 335px; top: 40px; width: 400px; height: 230px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .f22-bar { flex: none; width: 44px; height: 46px; border-radius: 22px; background: #FFFFFF; }
+    #f22-hablar {
+      top: 650px; height: 240px;
+      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 240px; line-height: 1;
+      letter-spacing: -0.04em; color: #FFFFFF; text-transform: uppercase;
+    }
+    #f22-hablar .f22-w { transform-origin: 50% 60%; }
+  </style>
+
+  <div id="root" data-composition-id="22-clase-directo" data-width="1920" data-height="1080" data-duration="4.222">
+    <div id="f22-ground" class="clip" data-start="0" data-duration="4.222" data-track-index="0"></div>
+    <div id="f22-dots"></div>
+
+    <!-- ================= SCENE 1 ================= -->
+    <div id="f22-s1">
+      <div id="f22-push">
+        <div id="f22-lap">
+          <div id="f22-floor"></div>
+          <div id="f22-base"><div id="f22-notch"></div></div>
+          <div id="f22-bezel">
+            <div id="f22-camdot"></div>
+            <div id="f22-scr">
+              <div id="f22-zo">
+                <div id="f22-zi">
+                  <img id="f22-cal" src="assets/img/ui-eventos-calendario.png" alt="" />
+                  <div class="f22-ring" id="f22-r17"></div>
+                  <div class="f22-ring" id="f22-r01"></div>
+                  <div class="f22-ring" id="f22-r08"></div>
+                  <div class="f22-ring" id="f22-r24"></div>
+                </div>
+              </div>
+              <div id="f22-glass"></div>
+              <div id="f22-live">
+                <div id="f22-liveburst"></div>
+                <div id="f22-livepill">
+                  <div id="f22-livedot-wrap"><div id="f22-liveping"></div><div id="f22-livedot"></div></div>
+                  <span>EN DIRECTO</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="f22-cline" id="f22-h1a">
+        <span class="f22-w f22-lead" id="f22-w-cada">Cada</span>
+        <span class="f22-w f22-lead" id="f22-w-semana">semana</span>
+      </div>
+      <div class="f22-cline" id="f22-h1b">
+        <span class="f22-w f22-key" id="f22-w-clase">clase</span>
+        <span class="f22-w f22-key" id="f22-w-en">en</span>
+        <span class="f22-w f22-key" id="f22-w-directo">directo</span>
+      </div>
+    </div>
+
+    <!-- ================= SCENE 2 ================= -->
+    <div id="f22-s2">
+      <div id="f22-h2">
+        <span class="f22-w f22-lead" id="f22-w-con">con</span>
+        <span class="f22-w f22-key" id="f22-w-profesores">profesores</span>
+        <span class="f22-w f22-lead" id="f22-w-que">que</span>
+        <span class="f22-w f22-lead" id="f22-w-te">te</span>
+        <span class="f22-w f22-key" id="f22-w-corrigen">corrigen</span>
+      </div>
+
+      <div id="f22-call">
+        <div id="f22-cscr">
+          <video id="f22-vid" class="clip" src="assets/video/clases-video-dentro.mp4" muted playsinline
+            data-start="1.85" data-duration="1.45" data-media-start="1.0" data-hf-media-start-basis="local" data-track-index="2"></video>
+          <div id="f22-cfade"></div>
+          <div id="f22-cglass"></div>
+          <div id="f22-speaker"></div>
+          <div id="f22-tag">
+            <svg viewBox="0 0 30 20" aria-hidden="true">
+              <rect x="0" y="0" width="30" height="7" fill="#AE1C27"></rect>
+              <rect x="0" y="6.6" width="30" height="7" fill="#FFFFFF"></rect>
+              <rect x="0" y="13.3" width="30" height="6.7" fill="#21468C"></rect>
+              <rect x="0.5" y="0.5" width="29" height="19" rx="3.5" fill="none" stroke="rgba(12,12,30,0.18)" stroke-width="1"></rect>
+            </svg>
+            <span>Profesor nativo</span>
+          </div>
+        </div>
+        <div id="f22-ctrl">
+          <div id="f22-ctrl-live"><i></i><span>EN DIRECTO</span></div>
+          <div class="f22-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="2.5" width="7" height="12" rx="3.5" fill="#FFFFFF"></rect><path d="M 5 11.5 A 7 7 0 0 0 19 11.5 M 12 18.5 V 21.5" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"></path></svg>
+          </div>
+          <div class="f22-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="13" height="12" rx="3" fill="#FFFFFF"></rect><path d="M 16.5 10.5 L 21.5 7.5 V 16.5 L 16.5 13.5 Z" fill="#FFFFFF"></path></svg>
+          </div>
+          <div class="f22-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M 4 5.5 H 20 V 16 H 10 L 6 19.5 V 16 H 4 Z" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linejoin="round"></path></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- student's attempt -->
+      <div class="f22-bub" id="f22-bubA">
+        <span id="f22-txtA">Werkt jij?<span id="f22-strike"></span></span>
+        <svg class="f22-tail" viewBox="0 0 34 34" aria-hidden="true"><path d="M 0 0 H 34 L 30 30 Z" fill="#FFFFFF"></path></svg>
+      </div>
+      <!-- teacher's correction -->
+      <div class="f22-bub" id="f22-bubB">
+        <div id="f22-check">
+          <div id="f22-checkdisc"></div>
+          <svg viewBox="-33 -33 66 66" aria-hidden="true"><path id="f22-tick" d="M -14 1 L -4 11 L 15 -10" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="48" stroke-dashoffset="48"></path></svg>
+        </div>
+        <span id="f22-txtB">Werk jij?</span>
+        <svg class="f22-tail" viewBox="0 0 34 34" aria-hidden="true"><path d="M 0 0 H 34 L 4 30 Z" fill="#FFFFFF"></path></svg>
+      </div>
+    </div>
+
+    <!-- ================= SCENE 3 ================= -->
+    <div id="f22-s3">
+      <div id="f22-s3in">
+        <div class="f22-cline" id="f22-h3"><span class="f22-w f22-lead" id="f22-w-yte">y te</span><span class="f22-w f22-lead" id="f22-w-hacen">hacen</span></div>
+        <div id="f22-vglow"></div>
+        <div id="f22-voice">
+          <div class="f22-mring" id="f22-mring1"></div>
+          <div class="f22-mring" id="f22-mring2"></div>
+          <div id="f22-mic">
+            <svg viewBox="0 0 100 100" aria-hidden="true">
+              <rect x="35" y="8" width="30" height="52" rx="15" fill="#1D0084"></rect>
+              <path d="M 22 46 A 28 28 0 0 0 78 46" fill="none" stroke="#1D0084" stroke-width="8" stroke-linecap="round"></path>
+              <path d="M 50 74 V 88 M 36 90 H 64" fill="none" stroke="#1D0084" stroke-width="8" stroke-linecap="round"></path>
+            </svg>
+          </div>
+          <div id="f22-bars">
+            <div class="f22-bar" id="f22-bar0"></div>
+            <div class="f22-bar" id="f22-bar1"></div>
+            <div class="f22-bar" id="f22-bar2"></div>
+            <div class="f22-bar" id="f22-bar3"></div>
+            <div class="f22-bar" id="f22-bar4"></div>
+          </div>
+        </div>
+        <div class="f22-cline" id="f22-hablar"><span class="f22-w" id="f22-w-hablar">hablar</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+
+      // ---------- calendar geometry (source px of ui-eventos-calendario.png, 2048×978) ----------
+      const S0 = 1120 / 2048;                       // image scale inside the laptop screen
+      const CX = 560, CY = 267.5;                   // screen centre
+      const ZOOM = 2.1;
+      const ENTRY = { x0: 1103, x1: 1312, y: { r17: [519, 552], r24: [638, 671], r01: [757, 791], r08: [876, 910] } };
+      Object.keys(ENTRY.y).forEach((k) => {
+        const el = document.getElementById("f22-" + k);
+        el.style.left = (ENTRY.x0 * S0 - 4) + "px";
+        el.style.width = ((ENTRY.x1 - ENTRY.x0) * S0 + 8) + "px";
+        el.style.top = (ENTRY.y[k][0] * S0 - 4) + "px";
+        el.style.height = ((ENTRY.y[k][1] - ENTRY.y[k][0]) * S0 + 8) + "px";
+      });
+      // the 24-Sept entry lands at screen (520, 270) once zoomed: content centre pc, counter-translate T = C - pc
+      const ex = (ENTRY.x0 + ENTRY.x1) / 2 * S0, ey = (638 + 671) / 2 * S0;
+      const pcx = ex - (520 - CX) / ZOOM, pcy = ey - (270 - CY) / ZOOM;
+      const TX = CX - pcx, TY = CY - pcy;
+
+      // =====================================================================
+      // SCENE 1 (0.00–1.88) — laptop swings in; ring finds the class; push in
+      // =====================================================================
+      // entrance: lid-hinge swing rotationX 25 -> 0 (the cut's designed arrival)
+      tl.fromTo("#f22-lap",
+        { rotationX: 25, rotationY: -12, y: 140, scale: 0.9, filter: "blur(6px)" },
+        { rotationX: 0, rotationY: -6, y: 0, scale: 1, filter: "blur(0px)", duration: 0.36, ease: "expo.out" }, 0);
+      tl.fromTo("#f22-dots", { scale: 0.92, x: 0 }, { scale: 1, x: 0, duration: 0.5, ease: "expo.out" }, 0);
+
+      // headline words on their cues
+      [["#f22-w-cada", 0.08], ["#f22-w-semana", 0.47]].forEach(([sel, t]) => {
+        tl.fromTo(sel, { opacity: 0, y: 34, filter: "blur(6px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, t);
+      });
+      tl.fromTo("#f22-w-clase", { opacity: 0, scale: 1.3, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 1.12);
+      tl.fromTo("#f22-w-en", { opacity: 0, y: 40, filter: "blur(6px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, 1.40);
+      tl.fromTo("#f22-w-directo", { opacity: 0, scale: 1.3, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 1.50);
+
+      // "semana": the Thursday column lights up week after week, the ring locks on the 24th
+      [["#f22-r17", 0.47], ["#f22-r01", 0.59], ["#f22-r08", 0.65]].forEach(([sel, t]) => {
+        tl.fromTo(sel, { opacity: 0, scale: 1.5 }, { opacity: 0.95, scale: 1, duration: 0.18, ease: "expo.out" }, t);
+        tl.to(sel, { opacity: 0, duration: 0.3, ease: "power1.out" }, t + 0.22);
+      });
+      tl.fromTo("#f22-r24", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: 0.26, ease: "expo.out" }, 0.53);
+      tl.to("#f22-r24", { scale: 1.12, duration: 0.07, ease: "power2.out" }, 0.80);
+      tl.to("#f22-r24", { scale: 1, duration: 0.3, ease: "power3.out" }, 0.872);
+
+      // camera pushes toward the entry: device push + screen zoom (nested scale / counter-translate)
+      tl.fromTo("#f22-push", { scale: 1 }, { scale: 1.1, duration: 0.94, ease: "power3.inOut" }, 0.51);
+      tl.to("#f22-push", { scale: 1.125, duration: 0.39, ease: "none" }, 1.45);
+      tl.to("#f22-lap", { rotationY: 0, duration: 0.94, ease: "power3.inOut" }, 0.51);
+      tl.fromTo("#f22-zo", { scale: 1 }, { scale: ZOOM, duration: 0.94, ease: "power3.inOut" }, 0.51);
+      tl.fromTo("#f22-zi", { x: 0, y: 0 }, { x: TX, y: TY, duration: 0.94, ease: "power3.inOut" }, 0.51);
+
+      // "directo": the red EN DIRECTO pill pops on the class
+      tl.fromTo("#f22-live", { opacity: 0, scale: 0.35, rotation: -10 },
+        { opacity: 1, scale: 1, rotation: -3, duration: 0.34, ease: "expo.out" }, 1.52);
+      tl.fromTo("#f22-liveburst", { opacity: 0.9, scale: 1 },
+        { opacity: 0, scale: 1.4, duration: 0.34, ease: "power2.out", immediateRender: false }, 1.58);
+      tl.set("#f22-liveburst", { opacity: 0 }, 0);
+      tl.fromTo("#f22-liveping", { opacity: 0.9, scale: 1 },
+        { opacity: 0, scale: 2.6, duration: 0.5, ease: "power2.out" }, 1.62);
+
+      // ---------- seam 1 -> 2 (cut-the-curve whip, leftward) on "con" ----------
+      // outgoing whips left at FULL opacity (accelerating), hard swap, incoming continues left (decelerating)
+      const WHIP1 = 1.72, CUT1 = 1.88;
+      tl.set("#f22-s1", { opacity: 1 }, 0);
+      tl.set("#f22-s2", { opacity: 0 }, 0);
+      tl.to("#f22-s1", { x: -700, filter: "blur(14px)", duration: CUT1 - WHIP1, ease: "power3.in" }, WHIP1);
+      tl.set("#f22-s1", { opacity: 0 }, CUT1);
+      tl.set("#f22-s2", { opacity: 1 }, CUT1);
+      tl.to("#f22-dots", { x: -90, duration: 0.6, ease: "power2.inOut" }, WHIP1);
+
+      // =====================================================================
+      // SCENE 2 (1.88–3.26) — live class with a native teacher; correction
+      // =====================================================================
+      tl.fromTo("#f22-call", { x: 700, filter: "blur(14px)" }, { x: 0, filter: "blur(0px)", duration: 0.36, ease: "power4.out" }, CUT1);
+      [["#f22-w-con", 1.86], ["#f22-w-profesores", 1.99]].forEach(([sel, t]) => {
+        tl.fromTo(sel, { opacity: 0, x: 230 }, { opacity: 1, x: 0, duration: 0.32, ease: "power4.out" }, t);
+      });
+      // active-speaker highlight + name tag
+      tl.fromTo("#f22-speaker", { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power2.out" }, 2.10);
+      tl.fromTo("#f22-tag", { opacity: 0, scale: 0.6, x: -12 },
+        { opacity: 1, scale: 1, x: 0, duration: 0.3, ease: "expo.out" }, 2.12);
+
+      // "que te": the student's attempt arrives
+      tl.fromTo("#f22-w-que", { opacity: 0, y: 34, filter: "blur(6px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, 2.53);
+      tl.fromTo("#f22-w-te", { opacity: 0, y: 34, filter: "blur(6px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, 2.64);
+      tl.fromTo("#f22-bubA", { opacity: 0, scale: 0.6, x: 40 },
+        { opacity: 1, scale: 1, x: 0, duration: 0.3, ease: "expo.out" }, 2.53);
+
+      // "corrigen": strike + correction
+      tl.fromTo("#f22-w-corrigen", { opacity: 0, scale: 1.3, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 2.75);
+      tl.fromTo("#f22-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.14, ease: "power2.out" }, 2.78);
+      tl.fromTo("#f22-bubB", { opacity: 0, scale: 0.55, x: -40 },
+        { opacity: 1, scale: 1, x: 0, duration: 0.32, ease: "expo.out" }, 2.80);
+      tl.fromTo("#f22-check", { scale: 0.3 }, { scale: 1, duration: 0.34, ease: "back.out(2.4)" }, 2.83);
+      tl.fromTo("#f22-tick", { strokeDashoffset: 48 }, { strokeDashoffset: 0, duration: 0.16, ease: "power2.out" }, 2.86);
+      // the wrong attempt recedes: grey text + slight shrink, bubble stays opaque white so the strike stays alert-red
+      tl.fromTo("#f22-txtA", { color: "#0C0C1E" }, { color: "#9AA3B8", duration: 0.2, ease: "power2.out", immediateRender: false }, 2.92);
+      tl.to("#f22-bubA", { scale: 0.92, duration: 0.2, ease: "power2.out" }, 2.92);
+
+      // ---------- seam 2 -> 3 (inverse zoom-through, arrival) on "y te hacen" ----------
+      // outgoing recedes (scale down, accelerating) at full opacity; hard swap; incoming keeps receding into place
+      const SEAM2 = 3.17, CUT2 = 3.26;
+      tl.to("#f22-s2", { scale: 0.86, filter: "blur(10px)", duration: CUT2 - SEAM2, ease: "power3.in" }, SEAM2);
+      tl.set("#f22-s2", { opacity: 0 }, CUT2);
+
+      // =====================================================================
+      // SCENE 3 (3.26–4.22) — mic + five voice bars; HABLAR on "hablar"
+      // =====================================================================
+      tl.set("#f22-s3", { opacity: 0, scale: 1.18, filter: "blur(10px)" }, 0);
+      tl.set("#f22-s3", { opacity: 1 }, CUT2);
+      tl.fromTo("#f22-s3", { scale: 1.18, filter: "blur(10px)" },
+        { scale: 1, filter: "blur(0px)", duration: 0.28, ease: "power4.out", immediateRender: false }, CUT2);
+      // "hacen" on its own cue (the "y te" lead arrives with the cut)
+      tl.fromTo("#f22-w-hacen", { opacity: 0, y: 30, filter: "blur(6px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 3.32);
+      tl.fromTo("#f22-dots", { scale: 1 }, { scale: 1.06, duration: 0.5, ease: "expo.out", immediateRender: false }, CUT2);
+
+      // HABLAR slams on the voice
+      tl.fromTo("#f22-w-hablar", { opacity: 0, scale: 1.55, filter: "blur(12px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 3.55);
+      tl.fromTo("#f22-s3in", { y: 0 }, { y: 9, duration: 0.04, ease: "power1.out" }, 3.70);
+      tl.to("#f22-s3in", { y: -4, duration: 0.05, ease: "power1.inOut" }, 3.742);
+      tl.to("#f22-s3in", { y: 0, duration: 0.07, ease: "power1.out" }, 3.794);
+      tl.fromTo("#f22-vglow", { opacity: 0.45, scale: 0.9 }, { opacity: 1, scale: 1.08, duration: 0.4, ease: "power2.out" }, 3.57);
+      [["#f22-mring1", 3.57], ["#f22-mring2", 3.72]].forEach(([sel, t]) => {
+        tl.fromTo(sel, { opacity: 0.85, scale: 1 }, { opacity: 0, scale: 1.9, duration: 0.42, ease: "power2.out", immediateRender: false }, t);
+        tl.set(sel, { opacity: 0 }, 0);
+      });
+      tl.fromTo("#f22-mic", { scale: 1 }, { scale: 1.08, duration: 0.06, ease: "power2.out" }, 3.57);
+      tl.to("#f22-mic", { scale: 1, duration: 0.3, ease: "power3.out" }, 3.63);
+
+      // five voice bars: deterministic bounce, quiet on "hacen", full on "hablar", resting pose at the end
+      const BAR_H = 230, BAR_MIN = 46;
+      const REST = [0.42, 0.78, 1.0, 0.64, 0.34];
+      const STEP = 0.07;
+      for (let i = 0; i < 5; i++) {
+        const sel = "#f22-bar" + i;
+        tl.fromTo(sel, { height: BAR_MIN }, { height: BAR_MIN, duration: 0.01, ease: "none" }, 0);
+        let t = CUT2 + 0.02, k = 0;
+        while (t < 4.06) {
+          const amp = t < 3.56 ? 0.26 : 0.8;
+          const v = 0.2 + amp * (0.5 + 0.5 * Math.sin(2.3 * k + 1.9 * i + 0.7 * i * i));
+          tl.to(sel, { height: Math.round(BAR_H * Math.min(1, v)), duration: STEP, ease: "sine.inOut" }, t);
+          t += STEP; k++;
+        }
+        tl.to(sel, { height: Math.round(BAR_H * REST[i]), duration: 0.12, ease: "power2.out" }, t);
+      }
+
+      window.__timelines["22-clase-directo"] = tl;
+    })();
+  </script>
+</template>

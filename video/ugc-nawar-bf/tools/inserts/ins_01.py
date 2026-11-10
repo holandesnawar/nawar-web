@@ -1,0 +1,79 @@
+"""ins-01 · «(Antes de pedir cita,) miras quién puede ir contigo, y si ese día no puede nadie, la cambias.» — on paper,
+like a phone chat: the «Pedir cita» label, the appointment card (Huisarts, 14 nov, 10:30) drops in; your blue bubble
+asks «¿Me acompañas al médico el día 14?» on «ir contigo»; two white answers come back on «no puede nadie», each with
+a small red ✕; on «la cambias» the date flips from 14 to 25 and a red «Cita cambiada» pill lands on the card. Same
+family as UGC #2 ins-02 (paper, white cards, indigo shadows; red only for what goes wrong)."""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from common import *  # noqa: F401,F403
+
+REPLIES = [("Ana", "#7C5CFF", "Ese día trabajo, lo siento"), ("Carlos", "#15A3A3", "Uf, no puedo…")]
+
+
+def build():
+    iid, P = "ins-01", "i1"; d = INS[iid]["duration"]
+    c = dict(MIR=cue(iid, "miras"), CON=cue(iid, "contigo"), NO=cue(iid, "no"), NAD=cue(iid, "nadie"), CAM=cue(iid, "cambias"))
+    css = """
+    #i1-h { top: 178px; color: «INDIGO»; font-size: 80px; line-height: 1.05; }
+    #i1-h1 { margin-top: 18px; line-height: 1; }        /* v6.4: «ir contigo?» smaller, with air under the first line */
+    #i1-chip { background: «INDIGO»; color: #FFFFFF; font-size: 60px; padding: 6px 24px 12px; border-radius: 16px;
+      letter-spacing: -0.005em; word-spacing: 0.12em; }   /* «ir contigo?» never reads as one word */
+    #i1-card { left: 110px; top: 430px; width: 860px; height: 236px; }
+    #i1-day { position: absolute; left: 28px; top: 28px; width: 156px; height: 180px; border-radius: 22px; overflow: hidden;
+      background: #FFFFFF; box-shadow: 0 0 0 3px «LINE»; }
+    #i1-dayh { position: absolute; left: 0; top: 0; width: 156px; height: 50px; background: «RED»; color: #FFFFFF; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; line-height: 52px; letter-spacing: 0.14em; }
+    .i1-num { position: absolute; left: 0; top: 52px; width: 156px; height: 128px; text-align: center; color: «INK»;
+      font-weight: 800; font-size: 86px; line-height: 128px; letter-spacing: -0.03em; }
+    #i1-hdr { position: absolute; left: 216px; top: 46px; font-weight: 800; font-size: 54px; line-height: 1; color: «INDIGO»; letter-spacing: -0.02em; }
+    #i1-sub { position: absolute; left: 216px; top: 116px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 34px; line-height: 1;
+      color: «MUTED»; white-space: nowrap; }
+    #i1-chg { position: absolute; left: 216px; top: 164px; display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px 0 14px;
+      border-radius: 999px; background: «RED»; color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; line-height: 1; letter-spacing: 0.08em; text-transform: uppercase; }
+    #i1-chg svg { display: block; width: 30px; height: 30px; }
+    #i1-ico { position: absolute; right: 40px; top: 58px; width: 120px; height: 120px; border-radius: 50%; background: «BLUE»;
+      display: flex; align-items: center; justify-content: center; }
+    #i1-ico svg { display: block; width: 72px; height: 72px; }
+    #i1-me { right: 110px; top: 724px; transform-origin: 100% 100%; }
+    .i1-rep { position: absolute; left: 110px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; transform-origin: 0% 100%; }
+    .i1-name { font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em;
+      text-transform: uppercase; color: «MUTED»; padding: 0 10px; }
+    .i1-rb { position: relative; }
+    .i1-x { position: absolute; right: -20px; top: -20px; width: 48px; height: 48px; }
+    .i1-x svg { display: block; width: 48px; height: 48px; }
+    #i1-r0 { top: 884px; }
+    #i1-r1 { top: 1050px; }
+"""
+    reps = "\n".join(f"""    <div id="i1-r{k}" class="i1-rep"><div class="i1-name">{name}</div>
+      <div class="i1-rb i1-bub i1-bub-w i1-bl" style="position: relative;">{txt}<div id="i1-x{k}" class="i1-x">{icon('xr')}</div></div></div>"""
+                     for k, (name, col, txt) in enumerate(REPLIES))
+    body = "\n".join([ground(P, "paper"), f"""    <div id="i1-h" class="i1-h1"><div id="i1-h0" class="i1-w">¿Quién puede</div><div id="i1-h1"><span id="i1-chip" class="i1-chip">ir contigo?</span></div></div>
+    <div id="i1-card" class="i1-card i1-on-paper">
+      <div id="i1-day"><div id="i1-dayh">NOV</div><div id="i1-n0" class="i1-num">14</div><div id="i1-n1" class="i1-num">25</div></div>
+      <div id="i1-hdr">Huisarts</div>
+      <div id="i1-sub">Cita médica · 10:30</div>
+      <div id="i1-chg">{icon('redo')}<span>Cita cambiada</span></div>
+      <div id="i1-ico">{icon('steth')}</div>
+    </div>
+    <div id="i1-me" class="i1-bub i1-bub-b i1-br">¿Me acompañas al médico<br/>el día 14?</div>
+{reps}"""])
+    js = """
+      tl.fromTo(q("h0"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, «MIR» + 0.2);
+      tl.fromTo(q("chip"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, «MIR» + 0.36);   // v6.5: right after the first line, not on «contigo»
+      tl.fromTo(q("card"), { opacity: 0.35, y: 44, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power3.out" }, 0);   // there from the cut (no empty paper)
+      tl.set(q("n1"), { opacity: 0 }, 0);
+      tl.set(q("chg"), { opacity: 0 }, 0);
+      tl.fromTo(q("me"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, «CON» - 0.06);
+      tl.fromTo(q("r0"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, «NO» - 0.12);
+      tl.fromTo(q("r1"), { opacity: 0, scale: 0.8, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, «NAD» - 0.02);
+      tl.fromTo(q("x0"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.24, ease: "back.out(2)" }, «NO» + 0.12);
+      tl.fromTo(q("x1"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.24, ease: "back.out(2)" }, «NAD» + 0.2);
+      // «la cambias»: the date flips 14 → 25, the red pill lands
+      tl.to(q("n0"), { opacity: 0, y: -36, duration: 0.2, ease: "power2.in" }, «CAM» - 0.06);
+      tl.fromTo(q("n1"), { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out", immediateRender: false }, «CAM» + 0.1);
+      tl.fromTo(q("chg"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.8)", immediateRender: false }, «CAM» + 0.18);
+"""
+    sfx = [(c["CON"] - 0.06, "pop", 0.16), (c["NO"] - 0.12, "notification", 0.14), (c["NAD"] - 0.02, "notification", 0.14),
+           (c["CAM"] + 0.1, "click-soft", 0.22)]
+    return comp(iid, d, P, css, body, js, c), sfx
