@@ -216,12 +216,16 @@ const META_PIXEL_NOSCRIPT = `<img height="1" width="1" style="display:none" alt=
     <script>
       import { registrarPagina } from '../lib/recorrido'
       import { guardarUTM } from '../lib/utm'
+      import { contarVisita } from '../lib/visitas'
       registrarPagina()
       // La campaña del anuncio, en cuanto abre cualquier página: el anuncio
       // lleva a una landing y el formulario (/agendar) está en otra. Antes
       // solo la guardaban las guías y los formularios, y con los botones de
       // las landings yendo a /agendar la campaña se perdía por el camino.
       guardarUTM()
+      // La analítica del panel de la escuela (17/11): cada página vista, sin
+      // datos personales. Después de guardarUTM, para que lleve la campaña.
+      contarVisita()
     </script>
 
     <!-- Scroll reveal: sequential stagger for .sr/.sr-s, bidirectional for .sr-bi -->
