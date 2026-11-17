@@ -21,6 +21,8 @@
  * poder apuntar de dónde venía.
  */
 
+import { webDeOrigen } from './visitas'
+
 const CLAVE = 'nawar_recorrido'
 const TOPE = 12
 
@@ -148,5 +150,10 @@ export function contextoDelLead(): { recorrido: string[]; referrer: string } {
   } catch {
     /* referrer ilegible: se queda vacío */
   }
+  // Si llegó de fuera a otra página y luego pasó por la web hasta el
+  // formulario, la web de la que venía la guarda el contador de visitas
+  // (17/11): sin esto, quien entra por Instagram a la home y se apunta en
+  // otra página salía como «Directo».
+  if (!referrer) referrer = webDeOrigen()
   return { recorrido: leerRecorrido(), referrer }
 }
