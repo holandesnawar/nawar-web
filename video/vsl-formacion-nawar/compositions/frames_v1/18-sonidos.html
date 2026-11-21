@@ -1,0 +1,367 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 800; font-style: normal; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #f18-ground {
+      position: absolute; inset: 0;
+      background-color: #F5F7FF;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px;
+    }
+    #f18-stage { position: absolute; inset: 0; }
+
+    /* ---------- scene 1: headline ---------- */
+    #f18-head { position: absolute; left: 0; top: 0; width: 1920px; height: 480px; }
+    #f18-pillrow { position: absolute; left: 0; top: 104px; width: 1920px; display: flex; justify-content: center; }
+    #f18-pill {
+      display: flex; align-items: center; gap: 18px;
+      height: 92px; padding: 0 14px 0 42px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 36px; letter-spacing: 0.14em;
+      box-shadow: 0 18px 44px rgba(18,0,129,0.22);
+      transform-origin: 50% 50%;
+    }
+    #f18-pill svg { width: 38px; height: 38px; display: block; }
+    #f18-one {
+      width: 66px; height: 66px; border-radius: 999px; background: #FFFFFF; color: #1D0084;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 40px; letter-spacing: 0;
+      padding-top: 2px;
+    }
+    .f18-line { position: absolute; left: 0; width: 1920px; text-align: center; white-space: nowrap; }
+    #f18-lead {
+      top: 232px; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 62px;
+      line-height: 1.1; letter-spacing: -0.02em; color: #374151;
+    }
+    #f18-lead .f18-key { color: #1D0084; }
+    #f18-main {
+      top: 300px; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 150px;
+      line-height: 1.0; letter-spacing: -0.035em; color: #1D0084;
+    }
+    #f18-main .f18-no { color: #E02D3C; }
+    .f18-w { display: inline-block; transform-origin: 50% 70%; }
+
+    /* ---------- scene 1: recorded waveform ---------- */
+    #f18-wave { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #f18-base {
+      position: absolute; left: 160px; top: 703px; width: 1600px; height: 4px; border-radius: 2px;
+      background: rgba(29,0,132,0.16); transform-origin: 0 50%;
+    }
+    /* motion-blur head that draws the waveform in (glow lives on the head only, not the clear tail) */
+    #f18-streak { position: absolute; left: 160px; top: 696px; width: 560px; height: 18px; }
+    #f18-streak-tail {
+      position: absolute; inset: 0; border-radius: 9px;
+      background: linear-gradient(90deg, rgba(11,109,240,0) 0%, rgba(11,109,240,0.35) 45%, rgba(11,109,240,0.85) 85%, #0b6df0 100%);
+    }
+    #f18-streak-head {
+      position: absolute; right: 0; top: 0; width: 150px; height: 18px; border-radius: 9px;
+      background: #0b6df0; box-shadow: 0 0 34px rgba(11,109,240,0.6), 0 0 80px rgba(11,109,240,0.3);
+    }
+    .f18-bar {
+      position: absolute; width: 16px; border-radius: 8px; background: #1D0084;
+      transform-origin: 50% 50%;
+    }
+    #f18-play { position: absolute; left: 157px; top: 509px; width: 6px; height: 370px; }
+    #f18-play-in { position: absolute; inset: 0; transform-origin: 50% 50%; }
+    #f18-play-line {
+      position: absolute; left: 0; top: 18px; width: 6px; height: 352px; border-radius: 3px;
+      background: #0b6df0; box-shadow: 0 0 22px rgba(11,109,240,0.55);
+    }
+    #f18-play-head {
+      position: absolute; left: -11px; top: 0; width: 28px; height: 28px; border-radius: 999px;
+      background: #0b6df0; border: 5px solid #FFFFFF; box-shadow: 0 6px 18px rgba(11,109,240,0.45);
+    }
+
+    /* ---------- scene 2: sound keycaps (shared geometry with 19-delatan) ---------- */
+    #f18-row { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .f18-slot {
+      position: absolute; width: 300px; height: 300px; border-radius: 22px;
+      border: 2px dashed rgba(29,0,132,0.16); background: rgba(29,0,132,0.025);
+    }
+    .f18-burst { position: absolute; width: 300px; height: 160px; }
+    .f18-burst i { position: absolute; width: 14px; border-radius: 7px; background: #0b6df0; opacity: 0; transform-origin: 50% 50%; }
+    .f18-ring {
+      position: absolute; width: 328px; height: 328px; border-radius: 34px;
+      border: 4px solid #0b6df0; box-shadow: 0 0 46px rgba(11,109,240,0.55), inset 0 0 26px rgba(11,109,240,0.25);
+      opacity: 0;
+    }
+    .f18-cap {
+      position: absolute; width: 300px; height: 300px; border-radius: 22px; box-sizing: border-box;
+      background: #FFFFFF; border: 1px solid #DDE6F5;
+      box-shadow: 0 18px 0 #DDE6F5, 0 30px 60px rgba(18,0,129,0.16);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transform-origin: 50% 50%;
+    }
+    .f18-letter {
+      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 150px; line-height: 1;
+      letter-spacing: -0.04em; color: #1D0084;
+    }
+    .f18-ex {
+      margin-top: 10px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 26px; line-height: 1;
+      color: #5A6480;
+    }
+    #f18-chips {
+      position: absolute; left: 282px; top: 800px; width: 1410px;
+      display: flex; justify-content: center; gap: 16px;
+    }
+    .f18-chip {
+      height: 58px; padding: 0 28px; border-radius: 999px; display: flex; align-items: center;
+      background: rgba(255,255,255,0.8); border: 1px solid #DDE6F5; color: #5A6480;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 26px; letter-spacing: 0.04em;
+    }
+  </style>
+  <div id="root" data-composition-id="18-sonidos" data-width="1920" data-height="1080" data-duration="6.879">
+    <div id="f18-ground" class="clip" data-start="0" data-duration="6.879" data-track-index="0"></div>
+    <div id="f18-stage">
+      <div id="f18-wave">
+        <div id="f18-base"></div>
+      <div class="f18-bar" style="left:160.0px;top:590px;height:230px"></div>
+      <div class="f18-bar" style="left:186.8px;top:555px;height:300px"></div>
+      <div class="f18-bar" style="left:213.7px;top:579px;height:252px"></div>
+      <div class="f18-bar" style="left:240.5px;top:596px;height:218px"></div>
+      <div class="f18-bar" style="left:267.4px;top:649px;height:112px"></div>
+      <div class="f18-bar" style="left:294.2px;top:594px;height:222px"></div>
+      <div class="f18-bar" style="left:321.1px;top:606px;height:198px"></div>
+      <div class="f18-bar" style="left:347.9px;top:646px;height:118px"></div>
+      <div class="f18-bar" style="left:374.8px;top:617px;height:176px"></div>
+      <div class="f18-bar" style="left:401.6px;top:622px;height:166px"></div>
+      <div class="f18-bar" style="left:428.5px;top:599px;height:212px"></div>
+      <div class="f18-bar" style="left:455.3px;top:575px;height:260px"></div>
+      <div class="f18-bar" style="left:482.2px;top:592px;height:226px"></div>
+      <div class="f18-bar" style="left:509.0px;top:616px;height:178px"></div>
+      <div class="f18-bar" style="left:535.9px;top:640px;height:130px"></div>
+      <div class="f18-bar" style="left:562.7px;top:597px;height:216px"></div>
+      <div class="f18-bar" style="left:589.6px;top:599px;height:212px"></div>
+      <div class="f18-bar" style="left:616.4px;top:607px;height:196px"></div>
+      <div class="f18-bar" style="left:643.3px;top:643px;height:124px"></div>
+      <div class="f18-bar" style="left:670.1px;top:662px;height:86px"></div>
+      <div class="f18-bar" style="left:696.9px;top:695px;height:20px"></div>
+      <div class="f18-bar" style="left:723.8px;top:609px;height:192px"></div>
+      <div class="f18-bar" style="left:750.6px;top:605px;height:200px"></div>
+      <div class="f18-bar" style="left:777.5px;top:604px;height:202px"></div>
+      <div class="f18-bar" style="left:804.3px;top:656px;height:98px"></div>
+      <div class="f18-bar" style="left:831.2px;top:672px;height:66px"></div>
+      <div class="f18-bar" style="left:858.0px;top:652px;height:106px"></div>
+      <div class="f18-bar" style="left:884.9px;top:644px;height:122px"></div>
+      <div class="f18-bar" style="left:911.7px;top:608px;height:194px"></div>
+      <div class="f18-bar" style="left:938.6px;top:614px;height:182px"></div>
+      <div class="f18-bar" style="left:965.4px;top:603px;height:204px"></div>
+      <div class="f18-bar" style="left:992.3px;top:639px;height:132px"></div>
+      <div class="f18-bar" style="left:1019.1px;top:677px;height:56px"></div>
+      <div class="f18-bar" style="left:1046.0px;top:684px;height:42px"></div>
+      <div class="f18-bar" style="left:1072.8px;top:628px;height:154px"></div>
+      <div class="f18-bar" style="left:1099.7px;top:631px;height:148px"></div>
+      <div class="f18-bar" style="left:1126.5px;top:647px;height:116px"></div>
+      <div class="f18-bar" style="left:1153.4px;top:669px;height:72px"></div>
+      <div class="f18-bar" style="left:1180.2px;top:691px;height:28px"></div>
+      <div class="f18-bar" style="left:1207.1px;top:648px;height:114px"></div>
+      <div class="f18-bar" style="left:1233.9px;top:654px;height:102px"></div>
+      <div class="f18-bar" style="left:1260.7px;top:624px;height:162px"></div>
+      <div class="f18-bar" style="left:1287.6px;top:614px;height:182px"></div>
+      <div class="f18-bar" style="left:1314.4px;top:607px;height:196px"></div>
+      <div class="f18-bar" style="left:1341.3px;top:626px;height:158px"></div>
+      <div class="f18-bar" style="left:1368.1px;top:667px;height:76px"></div>
+      <div class="f18-bar" style="left:1395.0px;top:695px;height:20px"></div>
+      <div class="f18-bar" style="left:1421.8px;top:650px;height:110px"></div>
+      <div class="f18-bar" style="left:1448.7px;top:593px;height:224px"></div>
+      <div class="f18-bar" style="left:1475.5px;top:606px;height:198px"></div>
+      <div class="f18-bar" style="left:1502.4px;top:600px;height:210px"></div>
+      <div class="f18-bar" style="left:1529.2px;top:604px;height:202px"></div>
+      <div class="f18-bar" style="left:1556.1px;top:634px;height:142px"></div>
+      <div class="f18-bar" style="left:1582.9px;top:686px;height:38px"></div>
+      <div class="f18-bar" style="left:1609.8px;top:648px;height:114px"></div>
+      <div class="f18-bar" style="left:1636.6px;top:640px;height:130px"></div>
+      <div class="f18-bar" style="left:1663.5px;top:657px;height:96px"></div>
+      <div class="f18-bar" style="left:1690.3px;top:657px;height:96px"></div>
+      <div class="f18-bar" style="left:1717.2px;top:667px;height:76px"></div>
+      <div class="f18-bar" style="left:1744.0px;top:680px;height:50px"></div>
+        <div id="f18-streak"><div id="f18-streak-tail"></div><div id="f18-streak-head"></div></div>
+        <div id="f18-play"><div id="f18-play-in"><div id="f18-play-line"></div><div id="f18-play-head"></div></div></div>
+      </div>
+      <div id="f18-head">
+        <div id="f18-pillrow">
+          <div id="f18-pill">
+            <svg viewBox="0 0 32 32" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6.5" width="24" height="21" rx="4"/><path d="M4 13h24M10.5 3.5v6M21.5 3.5v6"/></svg>
+            <span>DESDE EL DÍA</span>
+            <div id="f18-one">1</div>
+          </div>
+        </div>
+        <div id="f18-lead" class="f18-line"><span class="f18-w" id="f18-w-los">los</span> <span class="f18-w f18-key" id="f18-w-sonidos">sonidos</span> <span class="f18-w" id="f18-w-que">que</span></div>
+        <div id="f18-main" class="f18-line"><span class="f18-w" id="f18-w-el">el</span> <span class="f18-w" id="f18-w-espanol">español</span> <span class="f18-w f18-no" id="f18-w-no">no</span> <span class="f18-w f18-no" id="f18-w-tiene">tiene</span></div>
+      </div>
+      <div id="f18-row">
+      <div class="f18-slot" style="left:282px;top:430px"></div>
+      <div class="f18-burst" id="f18-burst0" style="left:282px;top:230px"><i id="f18-b0-0" style="left:13px;top:58px;height:44px"></i><i id="f18-b0-1" style="left:39px;top:52px;height:56px"></i><i id="f18-b0-2" style="left:65px;top:36px;height:88px"></i><i id="f18-b0-3" style="left:91px;top:19px;height:122px"></i><i id="f18-b0-4" style="left:117px;top:35px;height:90px"></i><i id="f18-b0-5" style="left:143px;top:6px;height:148px"></i><i id="f18-b0-6" style="left:169px;top:36px;height:88px"></i><i id="f18-b0-7" style="left:195px;top:15px;height:130px"></i><i id="f18-b0-8" style="left:221px;top:39px;height:82px"></i><i id="f18-b0-9" style="left:247px;top:49px;height:62px"></i><i id="f18-b0-10" style="left:273px;top:58px;height:44px"></i></div>
+      <div class="f18-ring" id="f18-ring0" style="left:268px;top:416px"></div>
+      <div class="f18-cap" id="f18-cap0" style="left:282px;top:430px">
+        <div class="f18-letter" id="f18-letter0">G</div>
+        <div class="f18-ex">goed</div>
+      </div>
+      <div class="f18-slot" style="left:652px;top:430px"></div>
+      <div class="f18-burst" id="f18-burst1" style="left:652px;top:230px"><i id="f18-b1-0" style="left:13px;top:60px;height:40px"></i><i id="f18-b1-1" style="left:39px;top:19px;height:122px"></i><i id="f18-b1-2" style="left:65px;top:31px;height:98px"></i><i id="f18-b1-3" style="left:91px;top:6px;height:148px"></i><i id="f18-b1-4" style="left:117px;top:30px;height:100px"></i><i id="f18-b1-5" style="left:143px;top:20px;height:120px"></i><i id="f18-b1-6" style="left:169px;top:42px;height:76px"></i><i id="f18-b1-7" style="left:195px;top:50px;height:60px"></i><i id="f18-b1-8" style="left:221px;top:59px;height:42px"></i><i id="f18-b1-9" style="left:247px;top:58px;height:44px"></i><i id="f18-b1-10" style="left:273px;top:58px;height:44px"></i></div>
+      <div class="f18-ring" id="f18-ring1" style="left:638px;top:416px"></div>
+      <div class="f18-cap" id="f18-cap1" style="left:652px;top:430px">
+        <div class="f18-letter" id="f18-letter1">UI</div>
+        <div class="f18-ex">huis</div>
+      </div>
+      <div class="f18-slot" style="left:1022px;top:430px"></div>
+      <div class="f18-burst" id="f18-burst2" style="left:1022px;top:230px"><i id="f18-b2-0" style="left:13px;top:60px;height:40px"></i><i id="f18-b2-1" style="left:39px;top:8px;height:144px"></i><i id="f18-b2-2" style="left:65px;top:28px;height:104px"></i><i id="f18-b2-3" style="left:91px;top:15px;height:130px"></i><i id="f18-b2-4" style="left:117px;top:37px;height:86px"></i><i id="f18-b2-5" style="left:143px;top:50px;height:60px"></i><i id="f18-b2-6" style="left:169px;top:61px;height:38px"></i><i id="f18-b2-7" style="left:195px;top:59px;height:42px"></i><i id="f18-b2-8" style="left:221px;top:50px;height:60px"></i><i id="f18-b2-9" style="left:247px;top:34px;height:92px"></i><i id="f18-b2-10" style="left:273px;top:58px;height:44px"></i></div>
+      <div class="f18-ring" id="f18-ring2" style="left:1008px;top:416px"></div>
+      <div class="f18-cap" id="f18-cap2" style="left:1022px;top:430px">
+        <div class="f18-letter" id="f18-letter2">UU</div>
+        <div class="f18-ex">uur</div>
+      </div>
+      <div class="f18-slot" style="left:1392px;top:430px"></div>
+      <div class="f18-burst" id="f18-burst3" style="left:1392px;top:230px"><i id="f18-b3-0" style="left:13px;top:58px;height:44px"></i><i id="f18-b3-1" style="left:39px;top:21px;height:118px"></i><i id="f18-b3-2" style="left:65px;top:37px;height:86px"></i><i id="f18-b3-3" style="left:91px;top:49px;height:62px"></i><i id="f18-b3-4" style="left:117px;top:60px;height:40px"></i><i id="f18-b3-5" style="left:143px;top:58px;height:44px"></i><i id="f18-b3-6" style="left:169px;top:53px;height:54px"></i><i id="f18-b3-7" style="left:195px;top:34px;height:92px"></i><i id="f18-b3-8" style="left:221px;top:23px;height:114px"></i><i id="f18-b3-9" style="left:247px;top:32px;height:96px"></i><i id="f18-b3-10" style="left:273px;top:59px;height:42px"></i></div>
+      <div class="f18-ring" id="f18-ring3" style="left:1378px;top:416px"></div>
+      <div class="f18-cap" id="f18-cap3" style="left:1392px;top:430px">
+        <div class="f18-letter" id="f18-letter3">EU</div>
+        <div class="f18-ex">leuk</div>
+      </div>
+      </div>
+      <div id="f18-chips">
+        <div class="f18-chip">G/CH</div>
+        <div class="f18-chip">NG-NK</div>
+        <div class="f18-chip">SCH-ISCH</div>
+        <div class="f18-chip">A-AA</div>
+        <div class="f18-chip">E-EE</div>
+        <div class="f18-chip">O-OO</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      var $ = function (id) { return document.getElementById(id); };
+      var BAR_T = [0.115, 0.164, 0.214, 0.264, 0.313, 0.363, 0.413, 0.462, 0.512, 0.562, 0.612, 0.661, 0.711, 0.76, 0.81, 0.86, 0.91, 0.959, 1.009, 1.058, 1.108, 1.158, 1.207, 1.257, 1.307, 1.357, 1.406, 1.456, 1.505, 1.555, 1.605, 1.655, 1.704, 1.754, 1.803, 1.853, 1.903, 1.953, 2.002, 2.052, 2.102, 2.151, 2.201, 2.25, 2.3, 2.35, 2.4, 2.449, 2.499, 2.548, 2.598, 2.648, 2.698, 2.747, 2.797, 2.847, 2.896, 2.946, 2.996, 3.045];
+      var bars = document.querySelectorAll("#f18-wave .f18-bar");
+
+      /* ===== Entrance (0-0.25s): stage punch + a motion-blur head whips across and the whole
+               waveform blooms in behind it as a faint "ghost" the playhead later records over ===== */
+      tl.fromTo("#f18-stage", { scale: 1.05, filter: "blur(6px)" },
+        { scale: 1, filter: "blur(0px)", duration: 0.28, ease: "expo.out" }, 0);
+      tl.set("#f18-stage", { filter: "none" }, 0.3);
+
+      /* the cut lands mid-whip: on frame 0 the head is already 400px in, trailing its tail */
+      var HEAD_D = 0.26, X0 = -160, X1 = 1600, headEase = gsap.parseEase("power2.out");
+      var ghostEase = gsap.parseEase("power3.out");
+      /* canvas x of the streak's leading edge at tween progress s (560 -> 2320) */
+      var headX = function (s) { return 720 + X0 + (X1 - X0) * headEase(s); };
+      var HEAD_V0 = (headX(0.001) - headX(0)) / (0.001 * HEAD_D); /* px/s at the cut */
+      /* frame time at which the head passes canvas x (bisection on the monotonic ease);
+         x already behind the head at the cut gets a (negative) virtual pass time */
+      var headTime = function (px) {
+        if (px < headX(0)) { return (px - headX(0)) / HEAD_V0; }
+        var lo = 0, hi = 1;
+        for (var n = 0; n < 24; n++) { var m = (lo + hi) / 2; if (headX(m) < px) { lo = m; } else { hi = m; } }
+        return hi * HEAD_D;
+      };
+      tl.fromTo("#f18-streak", { x: X0, opacity: 1 }, { x: X1, duration: HEAD_D, ease: "power2.out" }, 0);
+      tl.to("#f18-streak", { opacity: 0, duration: 0.1, ease: "power1.in" }, 0.15);
+      /* the track line is drawn exactly up to the head */
+      tl.fromTo("#f18-base", { scaleX: (headX(0) - 160) / 1600 }, { scaleX: 1, duration: HEAD_D,
+        ease: function (s) {
+          var a = (headX(0) - 160) / 1600, v = Math.max(0, Math.min(1, (headX(s) - 160) / 1600));
+          return (v - a) / (1 - a);
+        } }, 0);
+
+      var G_Y = 0.32, G_O = 0.22;
+      for (var i = 0; i < bars.length; i++) {
+        var tp = headTime(168 + 26.84 * i);            /* head passes this bar */
+        var gTot = Math.min(0.16, BAR_T[i] - tp - 0.004); /* full ghost rise length */
+        var g0 = Math.max(0, tp), lag = g0 - tp;        /* bars the head passed before the cut start part-grown */
+        var e0 = ghostEase(Math.min(1, lag / gTot));
+        tl.fromTo(bars[i], { scaleY: G_Y * e0, opacity: G_O * e0, backgroundColor: "#1D0084" },
+          { scaleY: G_Y, opacity: G_O, duration: Math.max(0.02, gTot - lag), ease: "power3.out" }, g0);
+      }
+
+      /* ===== Playhead records the voice: 0.12 -> 3.08, each bar is recorded over its ghost ===== */
+      tl.fromTo("#f18-play-in", { opacity: 0, scaleY: 0.4 }, { opacity: 1, scaleY: 1, duration: 0.16, ease: "power3.out" }, 0.06);
+      tl.fromTo("#f18-play", { x: 0 }, { x: 1600, duration: 2.96, ease: "none" }, 0.12);
+      for (var i2 = 0; i2 < bars.length; i2++) {
+        tl.fromTo(bars[i2], { scaleY: G_Y, opacity: G_O, backgroundColor: "#0b6df0" },
+          { scaleY: 1, opacity: 1, duration: 0.2, ease: "power3.out", immediateRender: false }, BAR_T[i2]);
+        tl.to(bars[i2], { backgroundColor: "#1D0084", duration: 0.45, ease: "power1.out" }, BAR_T[i2] + 0.18);
+      }
+
+      /* ===== Pill: "DESDE EL DIA" on "primer" (0.56), the "1" stamps on "dia" (0.83) ===== */
+      tl.fromTo("#f18-pill", { scale: 0.35, opacity: 0, y: 20 }, { scale: 1, opacity: 1, y: 0, duration: 0.34, ease: "expo.out" }, 0.51);
+      tl.fromTo("#f18-one", { scale: 0, rotation: -35 }, { scale: 1, rotation: 0, duration: 0.3, ease: "expo.out" }, 0.79);
+
+      /* ===== Lead line: los / sonidos / que ===== */
+      [["#f18-w-los", 1.14], ["#f18-w-sonidos", 1.31], ["#f18-w-que", 1.71]].forEach(function (p) {
+        tl.fromTo(p[0], { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.28, ease: "power3.out" }, p[1]);
+      });
+      /* ===== Main line: el español rises, NO / TIENE slam ===== */
+      tl.fromTo("#f18-w-el", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, 1.79);
+      tl.fromTo("#f18-w-espanol", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, 1.85);
+      [["#f18-w-no", 2.22], ["#f18-w-tiene", 2.36]].forEach(function (p) {
+        tl.fromTo(p[0], { scale: 1.35, opacity: 0, filter: "blur(12px)" },
+          { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, p[1]);
+      });
+
+      /* ===== Seam (3.08-3.45, silence before "la ge"): pill + lead lift away, the waveform drops
+               away, and "el español no tiene" condenses into a quiet label over the key row ===== */
+      tl.fromTo(["#f18-pillrow", "#f18-lead"], { y: 0, filter: "blur(0px)" },
+        { y: -170, filter: "blur(10px)", duration: 0.22, ease: "power2.in", immediateRender: false }, 3.08);
+      tl.fromTo(["#f18-pillrow", "#f18-lead"], { opacity: 1 },
+        { opacity: 0, duration: 0.15, ease: "power1.in", immediateRender: false }, 3.1);
+      tl.fromTo("#f18-wave", { y: 0, opacity: 1, filter: "blur(0px)" },
+        { y: 420, opacity: 0, filter: "blur(8px)", duration: 0.28, ease: "power2.in" }, 3.12);
+      tl.fromTo("#f18-main", { x: 0, y: 0, scale: 1, opacity: 1, color: "#1D0084" },
+        { x: 27, y: -195, scale: 0.4, opacity: 0.8, color: "#5A6480", duration: 0.34, ease: "power3.inOut" }, 3.1);
+      tl.fromTo("#f18-row .f18-slot", { opacity: 0, scale: 0.9 },
+        { opacity: 1, scale: 1, duration: 0.2, ease: "power3.out", stagger: 0.03 }, 3.22);
+
+      /* ===== Keycaps press in on "la" and bottom out on the vowel ===== */
+      var S_AIR = "0px 18px 0px #DDE6F5, 0px 70px 90px rgba(18,0,129,0.10)";
+      var S_DOWN = "0px 0px 0px #DDE6F5, 0px 8px 18px rgba(18,0,129,0.14)";
+      var S_REST = "0px 18px 0px #DDE6F5, 0px 30px 60px rgba(18,0,129,0.16)";
+      var CUES = [3.45, 4.0, 4.8, 6.0];
+      CUES.forEach(function (c, k) {
+        var cap = $("f18-cap" + k), ring = $("f18-ring" + k), letter = $("f18-letter" + k);
+        var hit = c + 0.1;
+        tl.fromTo(cap, { opacity: 0 }, { opacity: 1, duration: 0.035, ease: "none" }, c);
+        if (k === 0) {
+          /* the first key continues the seam: it drops from high up, stretched by its own speed */
+          tl.fromTo(cap, { y: -300, boxShadow: S_AIR },
+            { y: 18, boxShadow: S_DOWN, duration: 0.1, ease: "power1.in" }, c);
+          tl.fromTo(cap, { scaleX: 0.96, scaleY: 1.14 }, { scaleX: 1, scaleY: 1, duration: 0.07, ease: "power1.out" }, c + 0.03);
+        } else {
+          tl.fromTo(cap, { y: -90, scale: 1.08, boxShadow: S_AIR },
+            { y: 18, scale: 1, boxShadow: S_DOWN, duration: 0.1, ease: "power2.in" }, c);
+        }
+        tl.to(cap, { y: 0, boxShadow: S_REST, duration: 0.34, ease: "power3.out" }, hit);
+        tl.fromTo(letter, { color: "#0b6df0" }, { color: "#1D0084", duration: 0.6, ease: "power1.in" }, hit);
+        tl.fromTo(ring, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.07, ease: "power2.out" }, hit - 0.02);
+        tl.to(ring, { opacity: 0, scale: 1.12, duration: 0.5, ease: "power2.out" }, hit + 0.06);
+        /* the pressed key "sounds": a mini waveform bursts out of it, centre-out ... */
+        for (var j = 0; j < 11; j++) {
+          tl.fromTo("#f18-b" + k + "-" + j, { opacity: 0, scaleY: 0.08, y: 26 },
+            { opacity: 1, scaleY: 1, y: 0, duration: 0.16, ease: "power3.out" }, hit + Math.abs(j - 5) * 0.022);
+        }
+        /* ... and dies away as one unit (no orphan edge bars) */
+        tl.fromTo("#f18-burst" + k, { opacity: 1, y: 0 },
+          { opacity: 0, y: -14, duration: 0.2, ease: "power2.in", immediateRender: false }, hit + 0.3);
+        /* three-frame impact jolt on the row */
+        tl.to("#f18-row", { y: 5, duration: 0.033, ease: "none" }, hit);
+        tl.to("#f18-row", { y: -3, duration: 0.033, ease: "none" }, hit + 0.033);
+        tl.to("#f18-row", { y: 0, duration: 0.05, ease: "power1.out" }, hit + 0.066);
+      });
+
+      /* ===== 6.30: the rest of the new sounds, dim chips under the row (centred on the key axis) ===== */
+      tl.fromTo("#f18-chips .f18-chip", { y: 18, opacity: 0 },
+        { y: 0, opacity: 0.88, duration: 0.26, ease: "power3.out", stagger: 0.045 }, 6.3);
+      /* the label clears the top band before the cut, so the end state == 19-delatan's start */
+      tl.to("#f18-main", { y: -235, opacity: 0, duration: 0.22, ease: "power2.in" }, 6.56);
+
+      window.__timelines["18-sonidos"] = tl;
+    })();
+  </script>
+</template>

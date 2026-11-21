@@ -1,0 +1,166 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: paper (frame 10's world) flooded by the nawar-blue iris ---------- */
+    #f11-ground { position: absolute; inset: 0; overflow: hidden; background: #F5F7FF; }
+    #f11-paper-dots {
+      position: absolute; inset: -40px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px;
+    }
+    #f11-blue { position: absolute; inset: 0; overflow: hidden; clip-path: circle(0px at 960px 540px); }
+    #f11-blue-grad {
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 44%, #025dc7 0%, #120081 72%);
+    }
+    #f11-blue-dots {
+      position: absolute; inset: -60px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px;
+    }
+    #f11-vig {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 72% 70% at 50% 46%, rgba(4,0,40,0) 52%, rgba(4,0,40,0.42) 100%);
+    }
+
+    /* ---------- stage (camera) ---------- */
+    #f11-stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 50% 46%; }
+    #f11-hero { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+    #f11-glow {
+      position: absolute; left: 260px; top: 150px; width: 1400px; height: 780px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.30) 0%, rgba(77,163,255,0.13) 34%, rgba(77,163,255,0.04) 56%, rgba(77,163,255,0) 70%);
+    }
+
+
+    #f11-logo-wrap {
+      position: absolute; left: 550px; top: 394px; width: 820px; height: 292.5px;
+      filter: drop-shadow(0 18px 36px rgba(4,0,40,0.38));
+    }
+    #f11-logo { position: absolute; left: 0; top: 0; width: 820px; height: 292.5px; display: block; }
+    #f11-shine-mask {
+      position: absolute; left: 0; top: 0; width: 820px; height: 292.5px; overflow: hidden; mix-blend-mode: screen;
+      -webkit-mask-image: url("assets/img/logo-nawar.png"); -webkit-mask-size: 100% 100%; -webkit-mask-repeat: no-repeat;
+      mask-image: url("assets/img/logo-nawar.png"); mask-size: 100% 100%; mask-repeat: no-repeat;
+    }
+    #f11-shine {
+      position: absolute; left: 0; top: -60px; width: 260px; height: 420px;
+      background: linear-gradient(112deg, rgba(255,255,255,0) 22%, rgba(255,255,255,0.08) 38%, rgba(255,255,255,0.32) 48.5%, rgba(255,255,255,0.32) 51.5%, rgba(255,255,255,0.08) 62%, rgba(255,255,255,0) 78%);
+    }
+
+    /* ---------- the lead line ---------- */
+    #f11-line {
+      position: absolute; left: 0; top: 664px; width: 1920px; display: flex; justify-content: center; align-items: baseline;
+      gap: 0.25em; font-family: "Poppins", sans-serif; font-size: 100px; line-height: 1.1; letter-spacing: -0.03em;
+      color: #FFFFFF; white-space: nowrap;
+    }
+    .f11-w { display: inline-block; font-weight: 700; text-shadow: 0 10px 30px rgba(4,0,40,0.24); }
+    #f11-w-cambiar { font-weight: 800; color: #4da3ff; transform-origin: 20% 62%; }
+    #f11-w-eso { font-weight: 800; }
+  </style>
+
+  <div id="root" data-composition-id="11-nawar-nace" data-width="1920" data-height="1080" data-duration="1.793">
+    <div id="f11-ground" class="clip" data-start="0" data-duration="1.793" data-track-index="0">
+      <div id="f11-paper-dots"></div>
+      <div id="f11-blue">
+        <div id="f11-blue-grad"></div>
+        <div id="f11-blue-dots"></div>
+        <div id="f11-vig"></div>
+      </div>
+    </div>
+
+    <div id="f11-stage">
+      <div id="f11-hero">
+        <div id="f11-glow"></div>
+        <div id="f11-logo-wrap">
+          <img id="f11-logo" src="assets/img/logo-nawar.png" alt="Nawar" />
+          <div id="f11-shine-mask"><div id="f11-shine"></div></div>
+        </div>
+      </div>
+      <div id="f11-line">
+        <span id="f11-w-nace" class="f11-w">nace</span>
+        <span id="f11-w-para" class="f11-w">para</span>
+        <span id="f11-w-cambiar" class="f11-w">cambiar</span>
+        <span id="f11-w-eso" class="f11-w">eso.</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 1.954;
+      const LEAD = 0.04;
+      // cue table (frame-relative seconds, from the packet)
+      const T = { nawar: 0.12, nace: 0.509, para: 0.778, cambiar: 0.963, eso: 1.296 };
+
+      // ---------------- Scene 1 — iris floods the frame with nawar-blue ----------------
+      const blue = q("f11-blue");
+      const iris = { r: 70 };
+      function writeIris() {
+        blue.style.clipPath = "circle(" + iris.r.toFixed(1) + "px at 960px 540px)";
+      }
+      writeIris();
+      tl.fromTo(iris, { r: 70 }, { r: 1180, duration: 0.36, ease: "power2.out", onUpdate: writeIris }, 0);
+      // paper grid is shoved outward by the wavefront; blue grid rushes in from depth
+      tl.fromTo(q("f11-paper-dots"), { scale: 1 }, { scale: 1.14, duration: 0.36, ease: "power2.out" }, 0);
+      tl.fromTo(q("f11-blue-dots"), { scale: 1.08 }, { scale: 1, duration: 0.7, ease: "power3.out" }, 0);
+
+      // ---------------- "Nawar" — the logo blooms ----------------
+      const t0 = T.nawar - 0.02;
+      const wrap = q("f11-logo-wrap");
+      // soft bloom: a gentle settle, no burst
+      tl.fromTo(wrap, { scale: 0.86 }, { scale: 1.015, duration: 0.28, ease: "power3.out" }, t0);
+      tl.to(wrap, { scale: 1, duration: 0.3, ease: "power2.inOut" }, t0 + 0.28);
+      tl.fromTo(wrap, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power1.out" }, t0);
+      tl.fromTo(q("f11-logo"), { filter: "blur(10px)" }, { filter: "blur(0px)", duration: 0.26, ease: "power2.out" }, t0);
+
+      tl.fromTo(q("f11-glow"), { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.55, ease: "power3.out" }, t0);
+
+
+      // light-sweep band crosses the logo once (0.35–0.9)
+      tl.fromTo(q("f11-shine"), { x: -380 }, { x: 860, duration: 0.55, ease: "power2.inOut" }, 0.35);
+
+      // ---------------- Scene 2 — logo eases up, the line builds on the voice ----------------
+      tl.fromTo(q("f11-hero"), { y: 0 }, { y: -90, duration: 0.6, ease: "power2.out" }, 0.38);
+
+      const rise = (el, cue) =>
+        tl.fromTo(el, { opacity: 0, y: 46, filter: "blur(8px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, cue - LEAD);
+      rise(q("f11-w-nace"), T.nace);
+      rise(q("f11-w-para"), T.para);
+      tl.fromTo(q("f11-w-cambiar"), { opacity: 0, scale: 1.08, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, T.cambiar - LEAD);
+      rise(q("f11-w-eso"), T.eso);
+
+      // macro camera: a quiet push under the whole beat (monotonic, no breathing)
+      tl.fromTo(q("f11-stage"), { scale: 1 }, { scale: 1.025, duration: D - 0.38, ease: "power1.inOut" }, 0.38);
+
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.509, 0.566], [0.778, 0.899], [0.963, 1.077], [1.296, 1.425], [1.954, 1.793]]);
+      window.__timelines["11-nawar-nace"] = tl;
+    })();
+  </script>
+</template>

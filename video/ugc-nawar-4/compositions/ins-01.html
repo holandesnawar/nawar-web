@@ -1,0 +1,128 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .i1-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .i1-paper { background: #F5F7FF; }
+    .i1-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .i1-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i1-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .i1-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i1-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .i1-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .i1-dark { background: radial-gradient(circle at 50% 34%, #1b1846 0%, #0b0a1c 56%, #050409 100%); }
+    .i1-dark-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1.6px, transparent 1.8px); background-size: 30px 30px; }
+    .i1-dark-amb { position: absolute; left: 40px; top: 220px; width: 1000px; height: 980px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(11,109,240,0.22) 0%, rgba(11,109,240,0.07) 45%, rgba(11,109,240,0) 70%); }
+    .i1-dark-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%); }
+    .i1-on-dark { box-shadow: none; }
+    /* Black Friday pieces: the tape (a yellow strip with «BLACK FRIDAY» running on it), the yellow pill and the burst */
+    .i1-tape { position: absolute; height: 92px; background: #FFD60A; overflow: hidden; }
+    .i1-tape-run { position: absolute; left: 0; top: 0; height: 92px; display: flex; align-items: center; gap: 34px; white-space: nowrap;
+      font-weight: 900; font-size: 52px; line-height: 1; letter-spacing: 0.02em; color: #08070F; padding-top: 4px; box-sizing: border-box; }
+    .i1-tape-run i { display: block; width: 16px; height: 16px; border-radius: 50%; background: #08070F; font-style: normal; }
+    .i1-ypill { display: flex; align-items: center; gap: 14px; height: 72px; padding: 0 32px 0 22px; border-radius: 999px; background: #FFD60A;
+      color: #08070F; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 31px; line-height: 1; letter-spacing: -0.005em; }
+    .i1-ypill svg { display: block; width: 38px; height: 38px; }
+    .i1-acc-y { color: #FFD60A; }
+    .i1-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    /* v6: no outer shadows anywhere (flat objects); on paper a white card keeps its edge with a hairline */
+    .i1-on-paper { box-shadow: inset 0 0 0 2px #DDE6F5; }
+    .i1-on-blue { box-shadow: none; }
+    .i1-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .i1-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .i1-pill svg { display: block; width: 28px; height: 28px; }
+    .i1-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .i1-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .i1-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .i1-flag svg { display: block; width: 40px; height: 27px; }
+    .i1-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .i1-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF; }
+    .i1-av svg { display: block; width: 96px; height: 96px; }
+    .i1-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .i1-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: inset 0 0 0 2px #DDE6F5; }
+    .i1-bub-g { background: #E8ECF7; color: #374151; }
+    .i1-bub-b { background: #0b6df0; color: #FFFFFF; }
+    .i1-bl { border-bottom-left-radius: 10px; }
+    .i1-br { border-bottom-right-radius: 10px; }
+    .i1-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .i1-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .i1-acc { color: #4da3ff; }
+    .i1-w { display: inline-block; }
+
+    .i1-ph { position: absolute; border-radius: 74px; background: #0E0E12; box-shadow: inset 0 0 0 3px #2A2A33, inset 0 0 0 5px #0E0E12, inset 0 0 0 6px #3B3B46; }
+    .i1-scr { position: absolute; left: 16px; top: 16px; right: 16px; bottom: 16px; border-radius: 60px; overflow: hidden; background: #FFFFFF; }
+    .i1-isl { position: absolute; left: 50%; top: 30px; width: 150px; height: 42px; margin-left: -75px; border-radius: 21px; background: #000000; z-index: 5; }
+    .i1-sb { position: absolute; left: 0; top: 0; width: 100%; height: 96px; display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 58px 0; box-sizing: border-box; font-family: "Inter", sans-serif; font-weight: 700; font-size: 28px; color: #0C0C1E; z-index: 4; }
+    .i1-sb i { display: inline-block; width: 46px; height: 22px; border-radius: 6px; box-shadow: inset 0 0 0 3px currentColor; position: relative; }
+    .i1-sb i::after { content: ""; position: absolute; left: 5px; top: 5px; width: 28px; height: 12px; border-radius: 3px; background: currentColor; }
+
+    #i1-hd { position: absolute; left: 0; top: 96px; width: 100%; height: 116px; background: #F7F7F9; box-shadow: inset 0 -2px 0 #E4E6EC;
+      display: flex; align-items: center; gap: 20px; padding: 0 30px; box-sizing: border-box; }
+    #i1-hd svg { display: block; width: 26px; height: 40px; }
+    #i1-av { width: 74px; height: 74px; border-radius: 50%; background: #15A3A3; color: #FFFFFF; display: flex; align-items: center;
+      justify-content: center; font-family: "Inter", sans-serif; font-weight: 700; font-size: 34px; }
+    #i1-nm { font-family: "Inter", sans-serif; font-weight: 700; font-size: 34px; color: #0C0C1E; line-height: 1.1; }
+    #i1-st { font-family: "Inter", sans-serif; font-weight: 500; font-size: 24px; color: #5A6480; }
+    #i1-wall { position: absolute; left: 0; top: 212px; width: 100%; bottom: 0; background: #EEF1F6; overflow: hidden; }
+    .i1-day { position: absolute; left: 0; width: 100%; display: flex; justify-content: center; }
+    .i1-day span { padding: 8px 20px; border-radius: 14px; background: #FFFFFF; font-family: "Inter", sans-serif; font-weight: 600;
+      font-size: 22px; color: #5A6480; box-shadow: 0 1px 0 #DADFE8; }
+    #i1-list { position: absolute; left: 0; top: 0; width: 100%; height: 1200px; }
+    .i1-m { position: absolute; right: 26px; white-space: nowrap; padding: 18px 24px 14px; border-radius: 28px 28px 8px 28px; background: #DCEBFF;
+      font-family: "Inter", sans-serif; font-weight: 500; font-size: 33px; line-height: 1.24; color: #0C0C1E; transform-origin: 100% 100%; }
+    .i1-meta { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 6px; font-size: 20px; color: #5A6480; }
+    .i1-meta svg { display: block; width: 30px; height: 18px; }
+    #i1-bar { position: absolute; left: 0; bottom: 0; width: 100%; height: 118px; background: #F7F7F9; box-shadow: inset 0 2px 0 #E4E6EC; }
+    #i1-in { position: absolute; left: 28px; right: 110px; top: 22px; height: 62px; border-radius: 31px; background: #FFFFFF;
+      box-shadow: inset 0 0 0 2px #E1E4EA; font-family: "Inter", sans-serif; font-size: 26px; color: #A0A6B6; line-height: 62px; padding-left: 26px; }
+    #i1-send { position: absolute; right: 26px; top: 20px; width: 66px; height: 66px; border-radius: 50%; background: #0b6df0; }
+
+  </style>
+  <div id="root" data-composition-id="ins-01" data-width="1080" data-height="1920" data-duration="4.1">
+    <div class="i1-full i1-blue"><div class="i1-blue-dots"></div><div class="i1-blue-amb"></div><div class="i1-blue-vig"></div></div>
+    <div id="i1-phone" class="i1-ph" style="left:210px; top:150px; width:660px; height:1090px;"><div class="i1-scr"><div class="i1-sb" style="color: #0C0C1E;"><span>9:41</span><i></i></div><div id="i1-hd"><svg viewBox="0 0 26 40"><path d="M20 4 L6 20 L20 36" fill="none" stroke="#0b6df0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><div id="i1-av">L</div><div><div id="i1-nm">Laura</div><div id="i1-st">en línea</div></div></div><div id="i1-wall"><div id="i1-list"><div id="i1-d0" class="i1-day" style="top: 28px;"><span>12 sept</span></div><div id="i1-m0" class="i1-m" style="top: 84px;">¿Puedes llamar tú al casero?<div class="i1-meta"><span>19:42</span><svg viewBox="0 0 34 20"><path d="M2 11 L7 16 L17 4 M13 13 L16 16 L28 3" fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div id="i1-d1" class="i1-day" style="top: 211px;"><span>3 oct</span></div><div id="i1-m1" class="i1-m" style="top: 267px;">¿Me acompañas a la cita<br/>del dentista?<div class="i1-meta"><span>08:15</span><svg viewBox="0 0 34 20"><path d="M2 11 L7 16 L17 4 M13 13 L16 16 L28 3" fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div id="i1-d2" class="i1-day" style="top: 435px;"><span>7 nov</span></div><div id="i1-m2" class="i1-m" style="top: 491px;">¿Vienes conmigo al gemeente?<div class="i1-meta"><span>13:06</span><svg viewBox="0 0 34 20"><path d="M2 11 L7 16 L17 4 M13 13 L16 16 L28 3" fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div id="i1-d3" class="i1-day" style="top: 618px;"><span>Hoy</span></div><div id="i1-m3" class="i1-m" style="top: 674px;">¿Me traduces esta carta?<div class="i1-meta"><span>10:21</span><svg viewBox="0 0 34 20"><path d="M2 11 L7 16 L17 4 M13 13 L16 16 L28 3" fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div></div><div id="i1-bar"><div id="i1-in">Mensaje</div><div id="i1-send"></div></div></div><div class="i1-isl"></div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("i1-" + id);
+
+      tl.fromTo(q("phone"), { opacity: 0.4, y: 40 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, 0);   // there from the cut
+      tl.fromTo(q("phone"), { scale: 1 }, { scale: 1.035, duration: 4.1 - 0.3, ease: "none", immediateRender: false }, 0.3);   // v5: a slow push
+      tl.fromTo(q("d1"), { opacity: 0 }, { opacity: 1, duration: 0.16 }, 0.72);
+      tl.fromTo(q("m1"), { opacity: 0, y: 30, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(1.5)" }, 0.78);
+      tl.fromTo(q("d2"), { opacity: 0 }, { opacity: 1, duration: 0.16 }, 1.2);
+      tl.fromTo(q("m2"), { opacity: 0, y: 30, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(1.5)" }, 1.26);
+      tl.fromTo(q("d3"), { opacity: 0 }, { opacity: 1, duration: 0.16 }, 1.88);
+      tl.fromTo(q("m3"), { opacity: 0, y: 30, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "back.out(1.5)" }, 1.94);
+      tl.to(q("list"), { y: -89, duration: 0.26, ease: "power2.out" }, 1.86);
+
+      window.__timelines["ins-01"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,222 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE + dots + soft vignette ---------- */
+    #f24-ground { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%); }
+    #f24-dots {
+      position: absolute; left: -160px; top: -100px; width: 2240px; height: 1280px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px;
+    }
+    #f24-amb {
+      position: absolute; left: 700px; top: 150px; width: 1200px; height: 780px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.22) 0%, rgba(77,163,255,0.08) 45%, rgba(77,163,255,0) 70%);
+    }
+    #f24-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 78% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%); }
+    .f24-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+    /* ================= macOS window (tools/mac_mockup.md) ================= */
+    .f24-win { --u: calc(var(--sw) / 1120); }
+    /* standalone macOS window (same chrome, 16:10 overall, 16:9 content) */
+    .f24-win {
+      --sw: 1120px;
+      position: absolute; width: calc(var(--u) * 1120); height: calc(var(--u) * 700);
+      border-radius: calc(var(--u) * 12); overflow: hidden; background: #FFFFFF;
+      box-shadow: 0 0 0 calc(var(--u) * 1) rgba(10,10,30,0.28), 0 calc(var(--u) * 30) calc(var(--u) * 90) rgba(4,0,40,0.50), 0 calc(var(--u) * 10) calc(var(--u) * 26) rgba(4,0,40,0.30);
+    }
+    .f24-win-edge {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: calc(var(--u) * 12); pointer-events: none;
+      box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(255,255,255,0.45);
+    }
+    
+    /* browser chrome (shared): tab strip 36u + toolbar 34u = 70u */
+    .f24-chrome { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 70); font-family: "Inter", sans-serif; }
+    .f24-tabs { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--u) * 36); background: #DEE1E6; }
+    .f24-tl { position: absolute; top: calc(var(--u) * 12); width: calc(var(--u) * 12); height: calc(var(--u) * 12); border-radius: 50%; }
+    .f24-tl-r { left: calc(var(--u) * 13); background: #FF5F57; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #E0443E; }
+    .f24-tl-y { left: calc(var(--u) * 33); background: #FEBC2E; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #DEA123; }
+    .f24-tl-g { left: calc(var(--u) * 53); background: #28C840; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #1AAB29; }
+    .f24-tab {
+      position: absolute; left: calc(var(--u) * 82); top: calc(var(--u) * 7); width: calc(var(--u) * 232); height: calc(var(--u) * 29);
+      border-radius: calc(var(--u) * 9) calc(var(--u) * 9) 0 0; background: #FFFFFF;
+    }
+    .f24-tab::before, .f24-tab::after { content: ""; position: absolute; bottom: 0; width: calc(var(--u) * 9); height: calc(var(--u) * 9); }
+    .f24-tab::before { left: calc(var(--u) * -9); background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f24-tab::after { right: calc(var(--u) * -9); background: radial-gradient(circle at 100% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f24-fav {
+      position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 7); width: calc(var(--u) * 15); height: calc(var(--u) * 15);
+      border-radius: calc(var(--u) * 3.5); overflow: hidden; background: radial-gradient(circle at 50% 45%, #2fb6f2 0%, #0b6df0 80%);
+    }
+    .f24-fav img { position: absolute; left: calc(var(--u) * 1.2); top: calc(var(--u) * 5.2); width: calc(var(--u) * 12.6); height: auto; display: block; }
+    .f24-tab-t {
+      position: absolute; left: calc(var(--u) * 35); top: 0; height: calc(var(--u) * 29); line-height: calc(var(--u) * 29);
+      font-size: calc(var(--u) * 12); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f24-tab-x { position: absolute; right: calc(var(--u) * 10); top: calc(var(--u) * 9.5); width: calc(var(--u) * 10); height: calc(var(--u) * 10); }
+    .f24-plus { position: absolute; left: calc(var(--u) * 330); top: calc(var(--u) * 11); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    .f24-bar { position: absolute; left: 0; top: calc(var(--u) * 36); width: 100%; height: calc(var(--u) * 34); background: #FFFFFF; box-shadow: inset 0 calc(var(--u) * -1) 0 #DADCE0; }
+    .f24-nav { position: absolute; left: calc(var(--u) * 14); top: calc(var(--u) * 9); width: calc(var(--u) * 86); height: calc(var(--u) * 16); overflow: visible; }   /* back · forward (disabled) · reload */
+    .f24-menu { position: absolute; left: calc(var(--u) * 1086); top: calc(var(--u) * 9); width: calc(var(--u) * 16); height: calc(var(--u) * 16); }
+    .f24-url {
+      position: absolute; left: calc(var(--u) * 102); top: calc(var(--u) * 4); width: calc(var(--u) * 962); height: calc(var(--u) * 26);
+      border-radius: calc(var(--u) * 13); background: #F1F3F4;
+    }
+    .f24-lock { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6.5); width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
+    .f24-url-t {
+      position: absolute; left: calc(var(--u) * 33); top: 0; height: calc(var(--u) * 26); line-height: calc(var(--u) * 26);
+      font-size: calc(var(--u) * 13); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f24-star { position: absolute; right: calc(var(--u) * 11); top: calc(var(--u) * 6); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    /* 16:9 content area — real recordings, object-fit cover (never stretch) */
+    .f24-content { position: absolute; left: 0; top: calc(var(--u) * 70); width: calc(var(--u) * 1120); height: calc(var(--u) * 630); overflow: hidden; background: #FFFFFF; }
+    .f24-media { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--fx, 50%) var(--fy, 50%); display: block; }
+    #f24-stage { transform-origin: 1296px 536px; }
+    .f24-pane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: hidden; background: #FFFFFF; }
+    #f24-sheen {
+      position: absolute; left: 0; top: -140px; width: 520px; height: 940px; pointer-events: none;
+      background: linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.16) 50%, rgba(255,255,255,0) 70%);
+    }
+
+    /* ---------- left column ---------- */
+    .f24-col { position: absolute; left: 96px; top: 0; width: 640px; height: 1080px; }
+    #f24-pill {
+      position: absolute; left: 0; top: 334px; display: flex; align-items: center; gap: 12px;
+      padding: 12px 24px 12px 14px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; line-height: 1; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #FFFFFF; white-space: nowrap;
+    }
+    #f24-pill svg { display: block; width: 26px; height: 26px; }
+    .f24-h1 {
+      position: absolute; left: 0; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 112px; line-height: 1; letter-spacing: -0.035em; color: #FFFFFF;
+      text-shadow: 0 10px 34px rgba(4,0,40,0.22);
+    }
+    .f24-lead {
+      position: absolute; left: 0; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 44px; line-height: 1.2; letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
+    }
+    .f24-w { display: inline-block; }
+    .f24-strong { color: #FFFFFF; }
+    .f24-acc { color: #4da3ff; }
+    #f24-h-videos { top: 416px; }
+    #f24-h-cortos { top: 528px; }
+    #f24-lead1 { top: 668px; }
+    #f24-lead2 { top: 398px; }
+    #f24-h-practica { top: 464px; }
+    #f24-h-verdad { top: 576px; }
+  </style>
+
+  <div id="root" data-composition-id="24-videos" data-width="1920" data-height="1080" data-duration="4.572">
+    <div id="f24-ground" class="clip" data-start="0" data-duration="4.572" data-track-index="0"><div id="f24-dots"></div><div id="f24-amb"></div><div id="f24-vig"></div></div>
+
+    <!-- ===== macOS window (right), front-on: Paul's module video, then the reading exercise ===== -->
+    <div id="f24-stage" class="f24-full">
+      <div id="f24-rise" class="f24-full">
+        <div id="f24-win" class="f24-win" style="--sw:1056px; left:768px; top:206px;">
+          <div class="f24-chrome">
+    <div class="f24-tabs"><i class="f24-tl f24-tl-r"></i><i class="f24-tl f24-tl-y"></i><i class="f24-tl f24-tl-g"></i>
+      <div class="f24-tab"><div class="f24-fav"><img src="assets/img/logo-nawar.png" alt="" /></div><div class="f24-tab-t">Holandés Nawar</div><svg class="f24-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
+      <svg class="f24-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
+    <div class="f24-bar"><svg class="f24-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
+      <div class="f24-url"><svg class="f24-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="f24-url-t">app.holandesnawar.com</div><svg class="f24-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
+      <svg class="f24-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
+  </div>
+          <div class="f24-content">
+            <div class="f24-pane" id="f24-pa">
+              <!-- media 9.2: the player bar appears at 10.2 (= frame 1.0, on «Vídeos») and fades at 12.3 (= 3.1, under the slide) -->
+              <video id="f24-vid" class="clip f24-media" src="assets/video/paul-clase-2.mp4" muted playsinline
+                data-start="0" data-duration="3.791" data-media-start="9.2" data-hf-media-start-basis="local" data-track-index="2"></video>
+            </div>
+            <div class="f24-pane" id="f24-pb">
+              <img class="f24-media" src="assets/img/ui-lezen-texto.png" alt="" style="--fy:84%;" />
+            </div>
+          </div>
+          <div id="f24-sheen"></div>
+          <div class="f24-win-edge"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== left column — scene 1 ===== -->
+    <div class="f24-col" id="f24-s1">
+      <div id="f24-pill">
+        <svg viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11.2" fill="none" stroke="#9fd5f5" stroke-width="2.2" /><path d="M10.6 8.6 L17.6 13 L10.6 17.4 Z" fill="#9fd5f5" /></svg>
+        <span>Microlearning</span>
+      </div>
+      <div class="f24-h1" id="f24-h-videos">Vídeos</div>
+      <div class="f24-h1" id="f24-h-cortos">cortos</div>
+      <div class="f24-lead" id="f24-lead1"><span class="f24-w" id="f24-w-que">que</span> <span class="f24-w" id="f24-w-te">te</span> <span class="f24-w" id="f24-w-explican">explican</span> <span class="f24-w f24-strong" id="f24-w-cada">cada</span> <span class="f24-w f24-strong" id="f24-w-tema">tema</span></div>
+    </div>
+
+    <!-- ===== left column — scene 2 ===== -->
+    <div class="f24-col" id="f24-s2">
+      <div class="f24-lead" id="f24-lead2"><span class="f24-w" id="f24-w-y">Y</span> <span class="f24-w" id="f24-w-despues">después,</span></div>
+      <div class="f24-h1" id="f24-h-practica">práctica</div>
+      <div class="f24-h1 f24-acc" id="f24-h-verdad">de verdad.</div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 4.431, LEAD = 0.04, W = 1056;
+      const T = { micro: 0.12, videos: 1.06, cortos: 1.40, que: 1.75, te: 1.83, explican: 1.90, cada: 2.39, tema: 2.62,
+                  y: 3.08, despues: 3.16, practica: 3.56, verdad: 3.98 };
+      const head = (id, cue) => tl.fromTo(q(id), { opacity: 0, y: 46, filter: "blur(6px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.5, ease: "power3.out" }, cue - LEAD);
+      const word = (id, cue) => tl.fromTo(q(id), { opacity: 0, y: 22 },
+        { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, cue - LEAD);
+
+      // ===== ENTRANCE: the window rises into place (the one hero move), a soft light passes once =====
+      tl.fromTo(q("f24-rise"), { y: 70 }, { y: 0, duration: 0.8, ease: "expo.out" }, 0);
+      tl.fromTo(q("f24-win"), { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power1.out" }, 0);
+      tl.fromTo(q("f24-stage"), { scale: 1 }, { scale: 1.015, duration: D, ease: "none" }, 0);
+      tl.fromTo(q("f24-sheen"), { x: -640 }, { x: 1700, duration: 1.0, ease: "power2.inOut" }, 0.3);
+
+      // ===== SCENE 1 — Microlearning · Vídeos cortos · que te explican cada tema =====
+      tl.fromTo(q("f24-pill"), { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, T.micro - 0.06);
+      head("f24-h-videos", T.videos);
+      head("f24-h-cortos", T.cortos);
+      word("f24-w-que", T.que); word("f24-w-te", T.te); word("f24-w-explican", T.explican);
+      word("f24-w-cada", T.cada); word("f24-w-tema", T.tema);
+
+      // ===== SEAM on «Y después»: left text clears upward, window content slides to the next lesson item =====
+      tl.fromTo(q("f24-s1"), { y: 0, opacity: 1 }, { y: -40, opacity: 0, duration: 0.24, ease: "power2.in", immediateRender: false }, T.y - 0.1);
+      tl.fromTo(q("f24-pa"), { x: 0 }, { x: -W, duration: 0.5, ease: "power3.inOut" }, T.y - 0.04);
+      tl.fromTo(q("f24-pb"), { x: W }, { x: 0, duration: 0.5, ease: "power3.inOut" }, T.y - 0.04);
+
+      // ===== SCENE 2 — Y después, práctica de verdad. =====
+      word("f24-w-y", T.y); word("f24-w-despues", T.despues);
+      head("f24-h-practica", T.practica);
+      head("f24-h-verdad", T.verdad);
+
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [1.065, 1.106], [1.404, 1.49], [1.753, 1.819], [1.835, 1.894], [1.899, 1.96], [2.386, 2.448], [2.624, 2.702], [3.083, 3.181], [3.156, 3.256], [3.56, 3.735], [3.982, 4.129], [4.055, 4.195], [4.431, 4.572]]);
+      window.__timelines["24-videos"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,372 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 800; font-style: normal; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+
+    /* ---------- ground: paper + indigo dot grid ---------- */
+    #f05-ground { position: absolute; inset: 0; background: #F5F7FF; overflow: hidden; }
+    #f05-dots {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.6px, transparent 1.8px);
+      background-size: 28px 28px; background-position: 12px 10px;
+    }
+    #f05-light {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 58% 56% at 50% 52%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 95% 95% at 50% 50%, rgba(29,0,132,0) 60%, rgba(29,0,132,0.06) 100%);
+    }
+
+    /* ---------- lead-in block (lives in row coords, left of card 1; exits left on the first conveyor move) ---------- */
+    #f05-lead { position: absolute; left: -600px; top: 436px; width: 610px; white-space: nowrap; }
+    #f05-lead-1 {
+      display: block; font-family: "Poppins", sans-serif; font-weight: 600; font-size: 66px; line-height: 1.1;
+      letter-spacing: -0.01em; color: #5A6480; padding-left: 6px;
+    }
+    #f05-lead-2 {
+      display: block; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 128px; line-height: 1.0;
+      letter-spacing: -0.035em; color: #1D0084;
+    }
+    .f05-hw { display: inline-block; }
+
+    /* ---------- camera + card row (row coords: cards at left 98 + i*440, top 220, centre y 540) ---------- */
+    #f05-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 540px; }
+    .f05-card {
+      position: absolute; top: 220px; width: 404px; height: 640px; border-radius: 28px;
+      background: #FFFFFF; border: 1px solid #DDE6F5;
+      box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08);
+    }
+    #f05-c1 { left: 98px; }
+    #f05-c2 { left: 538px; }
+    #f05-c3 { left: 978px; }
+    #f05-c4 { left: 1418px; }
+
+    .f05-panel {
+      position: absolute; left: 14px; top: 14px; width: 376px; height: 264px; border-radius: 20px; overflow: hidden;
+      background: linear-gradient(180deg, #EEF3FF 0%, #E1E9FA 100%);
+    }
+    .f05-pdots {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.4px, transparent 1.6px);
+      background-size: 22px 22px; background-position: 6px 6px;
+    }
+    .f05-panel svg { position: absolute; left: 0; top: 0; width: 376px; height: 264px; overflow: visible; }
+
+    .f05-title { position: absolute; left: 30px; top: 296px; width: 360px; height: 60px; overflow: hidden; }
+    #f05-c4 .f05-title { top: 284px; height: 72px; padding-top: 12px; box-sizing: border-box; }
+    .f05-word {
+      display: block; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 46px; line-height: 60px;
+      letter-spacing: -0.03em; color: #0C0C1E; white-space: nowrap;
+    }
+    .f05-nl {
+      position: absolute; left: 31px; top: 362px; display: flex; align-items: center; gap: 11px;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 23px; line-height: 1; color: #5A6480; white-space: nowrap;
+    }
+    .f05-flag {
+      display: block; width: 28px; height: 19px; border-radius: 4px;
+      background: linear-gradient(180deg, #AE1C27 0%, #AE1C27 33.4%, #FFFFFF 33.4%, #FFFFFF 66.6%, #21468C 66.6%, #21468C 100%);
+      box-shadow: 0 0 0 1px #DDE6F5;
+    }
+
+    .f05-them {
+      position: absolute; left: 28px; top: 412px; padding: 16px 24px 17px 22px; border-radius: 24px 24px 24px 6px;
+      background: #1D0084; color: #FFFFFF; transform-origin: 0% 100%;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 27px; line-height: 1.28; white-space: nowrap;
+      box-shadow: 0 16px 34px rgba(29,0,132,0.22), 0 3px 8px rgba(29,0,132,0.12);
+    }
+    .f05-me {
+      position: absolute; right: 28px; top: 532px; width: 156px; height: 70px; border-radius: 26px 26px 6px 26px;
+      background: #E8ECF7; display: flex; align-items: center; justify-content: center; gap: 14px;
+      transform-origin: 100% 100%;
+    }
+    .f05-me::after {
+      content: ""; position: absolute; right: 0; bottom: -11px; width: 0; height: 0;
+      border-right: 16px solid #E8ECF7; border-bottom: 12px solid transparent;
+    }
+    .f05-them::after {
+      content: ""; position: absolute; left: 0; bottom: -11px; width: 0; height: 0;
+      border-left: 16px solid #1D0084; border-bottom: 12px solid transparent;
+    }
+    .f05-dot { display: block; width: 17px; height: 17px; border-radius: 50%; background: #374151; }
+  </style>
+
+  <div id="root" data-composition-id="05-situaciones" data-width="1920" data-height="1080" data-duration="4.796">
+    <div id="f05-ground" class="clip" data-start="0" data-duration="4.796" data-track-index="0">
+      <div id="f05-dots"></div>
+      <div id="f05-light"></div>
+    </div>
+
+    <div id="f05-cam">
+
+      <!-- lead-in -->
+      <div id="f05-lead">
+        <span id="f05-lead-1"><span class="f05-hw" id="f05-h1">Pero</span></span>
+        <span id="f05-lead-2"><span class="f05-hw" id="f05-h2">llegas</span> <span class="f05-hw" id="f05-h3">a…</span></span>
+      </div>
+
+      <!-- ================= 1 · SUPERMERCADO ================= -->
+      <div class="f05-card" id="f05-c1">
+        <div class="f05-panel">
+          <div class="f05-pdots"></div>
+          <svg viewBox="0 -14 376 264" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="188" cy="214" rx="160" ry="9" fill="rgba(29,0,132,0.08)" />
+            <!-- cart -->
+            <g id="f05-cart" stroke="#1D0084" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="86" y="56" width="42" height="52" rx="7" fill="#9fd5f5" />
+              <rect x="134" y="72" width="48" height="36" rx="7" fill="#4da3ff" />
+              <path d="M30 78 H54 L86 174 H186" fill="none" />
+              <path d="M61 100 H204 L188 154 H79 Z" fill="#FFFFFF" />
+              <path d="M70 127 H196 M112 100 L114 154 M154 100 L150 154" stroke-width="4" opacity="0.28" fill="none" />
+              <path d="M104 174 V184 M170 174 V184" fill="none" />
+              <circle cx="104" cy="194" r="12" fill="#FFFFFF" />
+              <circle cx="170" cy="194" r="12" fill="#FFFFFF" />
+            </g>
+            <!-- register -->
+            <g stroke="#1D0084" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+              <g id="f05-receipt">
+                <path d="M322 120 V50 L328 43 L334 50 L340 43 L346 50 V120 Z" fill="#FFFFFF" stroke-width="5" />
+                <path d="M329 66 H339 M329 80 H339 M329 94 H336" stroke-width="4" opacity="0.45" fill="none" />
+              </g>
+              <rect x="268" y="100" width="18" height="20" fill="#1D0084" />
+              <rect x="226" y="58" width="90" height="44" rx="10" fill="#1D0084" />
+              <rect x="222" y="116" width="132" height="84" rx="13" fill="#FFFFFF" />
+              <path d="M222 178 H354 M276 189 H300" stroke-width="5" fill="none" />
+            </g>
+            <g fill="#DDE6F5">
+              <rect x="238" y="130" width="24" height="14" rx="4" />
+              <rect x="268" y="130" width="24" height="14" rx="4" />
+              <rect x="298" y="130" width="24" height="14" rx="4" />
+              <rect x="238" y="152" width="24" height="14" rx="4" />
+              <rect x="268" y="152" width="24" height="14" rx="4" />
+              <rect x="298" y="152" width="24" height="14" rx="4" fill="#0b6df0" />
+            </g>
+            <text id="f05-price" x="271" y="88" text-anchor="middle" font-family="Inter" font-weight="800" font-size="21" fill="#9fd5f5">€23,80</text>
+          </svg>
+        </div>
+        <div class="f05-title"><span class="f05-word" id="f05-w1">supermercado</span></div>
+        <div class="f05-nl" id="f05-nl1"><span class="f05-flag"></span><span>de supermarkt</span></div>
+        <div class="f05-them" id="f05-b1">Wilt u het<br />bonnetje?</div>
+        <div class="f05-me" id="f05-r1"><span class="f05-dot"></span><span class="f05-dot"></span><span class="f05-dot"></span></div>
+      </div>
+
+      <!-- ================= 2 · MÉDICO ================= -->
+      <div class="f05-card" id="f05-c2">
+        <div class="f05-panel">
+          <div class="f05-pdots"></div>
+          <svg viewBox="0 -14 376 264" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="188" cy="214" rx="160" ry="9" fill="rgba(29,0,132,0.08)" />
+            <!-- clipboard -->
+            <rect x="212" y="44" width="128" height="164" rx="14" fill="#FFFFFF" stroke="#1D0084" stroke-width="7" />
+            <rect x="250" y="31" width="52" height="27" rx="8" fill="#1D0084" />
+            <path d="M276 72 V106 M259 89 H293" stroke="#0b6df0" stroke-width="13" stroke-linecap="round" fill="none" />
+            <path d="M232 190 H300" stroke="#DDE6F5" stroke-width="7" stroke-linecap="round" fill="none" />
+            <path id="f05-ecg" d="M230 150 H248 L258 130 L270 176 L282 136 L290 150 H322" stroke="#0b6df0" stroke-width="6"
+              stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1" />
+            <!-- stethoscope -->
+            <g stroke="#1D0084" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M62 52 V92 C62 140 130 140 130 92 V52" />
+              <path d="M96 128 V160 C96 200 162 200 162 160 V152" />
+              <circle cx="162" cy="130" r="22" fill="#FFFFFF" />
+            </g>
+            <circle cx="162" cy="130" r="9" fill="#0b6df0" />
+            <circle cx="62" cy="47" r="9" fill="#1D0084" />
+            <circle cx="130" cy="47" r="9" fill="#1D0084" />
+          </svg>
+        </div>
+        <div class="f05-title"><span class="f05-word" id="f05-w2">médico</span></div>
+        <div class="f05-nl" id="f05-nl2"><span class="f05-flag"></span><span>de huisarts</span></div>
+        <div class="f05-them" id="f05-b2">Wat kan ik voor<br />u doen?</div>
+        <div class="f05-me" id="f05-r2"><span class="f05-dot"></span><span class="f05-dot"></span><span class="f05-dot"></span></div>
+      </div>
+
+      <!-- ================= 3 · REUNIÓN ================= -->
+      <div class="f05-card" id="f05-c3">
+        <div class="f05-panel">
+          <div class="f05-pdots"></div>
+          <svg viewBox="0 -14 376 264" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="188" cy="214" rx="160" ry="9" fill="rgba(29,0,132,0.08)" />
+            <g stroke="#1D0084" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M120 176 L100 212 M256 176 L276 212 M188 176 V206" />
+              <path d="M188 30 V19" />
+              <rect x="58" y="28" width="260" height="142" rx="12" fill="#FFFFFF" />
+            </g>
+            <circle cx="188" cy="15" r="6" fill="#1D0084" />
+            <rect x="94" y="167" width="188" height="12" rx="6" fill="#1D0084" />
+            <rect x="122" y="159" width="34" height="9" rx="4" fill="#0b6df0" />
+            <g id="f05-bars">
+              <rect class="f05-bar" x="228" y="108" width="20" height="40" rx="5" fill="#9fd5f5" />
+              <rect class="f05-bar" x="256" y="88" width="20" height="60" rx="5" fill="#4da3ff" />
+              <rect class="f05-bar" x="284" y="64" width="20" height="84" rx="5" fill="#0b6df0" />
+            </g>
+            <text x="82" y="110" font-family="Poppins" font-weight="800" font-size="56" letter-spacing="-1" fill="#1D0084">abc</text>
+            <path id="f05-chalk" d="M84 132 C112 122 150 140 196 124" stroke="#0b6df0" stroke-width="7" stroke-linecap="round"
+              fill="none" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1" />
+          </svg>
+        </div>
+        <div class="f05-title"><span class="f05-word" id="f05-w3">reunión</span></div>
+        <div class="f05-nl" id="f05-nl3"><span class="f05-flag"></span><span>het oudergesprek</span></div>
+        <div class="f05-them" id="f05-b3">Hoe gaat het met<br />uw dochter?</div>
+        <div class="f05-me" id="f05-r3"><span class="f05-dot"></span><span class="f05-dot"></span><span class="f05-dot"></span></div>
+      </div>
+
+      <!-- ================= 4 · ENTREVISTA ================= -->
+      <div class="f05-card" id="f05-c4">
+        <div class="f05-panel">
+          <div class="f05-pdots"></div>
+          <svg viewBox="0 -14 376 264" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="188" cy="214" rx="160" ry="9" fill="rgba(29,0,132,0.08)" />
+            <!-- wall clock -->
+            <circle cx="188" cy="50" r="30" fill="#FFFFFF" stroke="#1D0084" stroke-width="7" />
+            <path d="M188 50 V32" stroke="#1D0084" stroke-width="6" stroke-linecap="round" fill="none" />
+            <path id="f05-hand" d="M188 50 H207" stroke="#0b6df0" stroke-width="5" stroke-linecap="round" fill="none" />
+            <circle cx="188" cy="50" r="4.5" fill="#1D0084" />
+            <g stroke="#1D0084" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+              <!-- left chair (faces right) -->
+              <path d="M54 166 V208 M100 166 V208" fill="none" />
+              <rect x="38" y="82" width="18" height="84" rx="9" fill="#9fd5f5" />
+              <rect x="38" y="150" width="76" height="18" rx="9" fill="#9fd5f5" />
+              <!-- right chair (faces left) -->
+              <path d="M276 166 V208 M322 166 V208" fill="none" />
+              <rect x="320" y="82" width="18" height="84" rx="9" fill="#9fd5f5" />
+              <rect x="262" y="150" width="76" height="18" rx="9" fill="#9fd5f5" />
+              <!-- desk -->
+              <path d="M140 138 V208 M236 138 V208" fill="none" />
+              <!-- CV + mug on the desk -->
+              <rect x="144" y="90" width="40" height="38" rx="5" fill="#FFFFFF" stroke-width="5" />
+              <path d="M152 102 H176 M152 112 H170" stroke-width="4" opacity="0.45" fill="none" />
+              <path d="M232 106 C242 106 242 120 232 120" stroke-width="5" fill="none" />
+              <rect x="206" y="100" width="26" height="28" rx="5" fill="#4da3ff" stroke-width="5" />
+            </g>
+            <rect x="122" y="124" width="132" height="15" rx="6" fill="#1D0084" />
+          </svg>
+        </div>
+        <div class="f05-title"><span class="f05-word" id="f05-w4">entrevista</span></div>
+        <div class="f05-nl" id="f05-nl4"><span class="f05-flag"></span><span>het sollicitatiegesprek</span></div>
+        <div class="f05-them" id="f05-b4">Vertel eens iets<br />over uzelf.</div>
+        <div class="f05-me" id="f05-r4"><span class="f05-dot"></span><span class="f05-dot"></span><span class="f05-dot"></span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var $ = function (id) { return document.getElementById("f05-" + id); };
+      var tl = gsap.timeline({ paused: true });
+
+      // ---- exact word cues (frame-relative s) ----
+      var T = {
+        pero: 0.12, llegas: 0.287, a: 0.537, caja: 0.666, supermercado: 1.028,
+        medico: 2.12, reunion: 3.055, entrevista: 3.745
+      };
+      var LEAD = 0.04;
+
+      // ---- camera: row recentres + pulls back on each landing (card centres in row coords: 300 / 740 / 1180 / 1620) ----
+      // screen = 960 + s * (p - 960) + x  ->  x = s * (960 - centre of the visible group)
+      // phase 1 group = lead block (row x -600..10) + card 1 (98..502) -> centre -49
+      var CAM = [
+        { scale: 1.38, x: 1.38 * 1009 },  // t = 0 (entrance, tight on lead + card 1)
+        { scale: 1.3, x: 1.3 * 1009 },    // lead + card 1
+        { scale: 1.24, x: 1.24 * 440 },   // cards 1-2
+        { scale: 1.13, x: 1.13 * 220 },   // cards 1-3
+        { scale: 1.0, x: 0 }              // all four, centred
+      ];
+      var cam = $("cam");
+      tl.fromTo(cam, CAM[0], Object.assign({ duration: 0.75, ease: "expo.out" }, CAM[1]), 0);
+      tl.fromTo(cam, CAM[1], Object.assign({ duration: 0.55, ease: "expo.out", immediateRender: false }, CAM[2]), T.medico - 0.05);
+      tl.fromTo(cam, CAM[2], Object.assign({ duration: 0.55, ease: "expo.out", immediateRender: false }, CAM[3]), T.reunion - 0.05);
+      tl.fromTo(cam, CAM[3], Object.assign({ duration: 0.5, ease: "expo.out", immediateRender: false }, CAM[4]), T.entrevista - 0.05);
+
+      // ---- ground settles with the cut ----
+      tl.fromTo($("dots"), { scale: 1.08 }, { scale: 1, duration: 0.7, ease: "expo.out" }, 0);
+
+      // ================= ENTRANCE: card 1 slides up from below with blur =================
+      tl.fromTo($("c1"),
+        { y: 340, rotation: -3, opacity: 0.7, filter: "blur(16px)" },
+        { y: 0, rotation: 0, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "expo.out" }, 0);
+
+      // ---- lead-in "Pero llegas a…" ----
+      function rise(id, t) {
+        tl.fromTo($(id), { y: 46, opacity: 0, filter: "blur(8px)" },
+          { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, t - LEAD);
+      }
+      rise("h1", T.pero);
+      rise("h2", T.llegas);
+      rise("h3", T.a);
+      // seam: the lead-in rides the conveyor out to the left as card 2 arrives (velocity-matched)
+      tl.fromTo($("lead"), { x: 0, filter: "blur(0px)" },
+        { x: -460, filter: "blur(16px)", duration: 0.26, ease: "power2.in", immediateRender: false }, T.medico - 0.08);
+      tl.fromTo($("lead"), { opacity: 1 },
+        { opacity: 0, duration: 0.2, ease: "power1.in", immediateRender: false }, T.medico - 0.04);
+
+      // ---- per-card beats ----
+      function word(i, t) {
+        tl.fromTo($("w" + i), { yPercent: 110 }, { yPercent: 0, duration: 0.3, ease: "expo.out" }, t - LEAD);
+        tl.fromTo($("nl" + i), { x: -18, opacity: 0 }, { x: 0, opacity: 1, duration: 0.26, ease: "power3.out" }, t + 0.06);
+      }
+      function bubble(i, t) {
+        tl.fromTo($("b" + i), { scale: 0.62, y: 16, opacity: 0 },
+          { scale: 1, y: 0, opacity: 1, duration: 0.28, ease: "power3.out" }, t);
+      }
+      function reply(i, t) {
+        tl.fromTo($("r" + i), { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.22, ease: "power3.out" }, t);
+        tl.fromTo($("r" + i).querySelectorAll(".f05-dot"), { opacity: 0, y: 7 },
+          { opacity: 1, y: 0, duration: 0.14, ease: "power2.out", stagger: 0.12 }, t + 0.07);
+      }
+      function enter(i, t) {
+        tl.fromTo($("c" + i),
+          { x: 300, y: 40, rotation: 5, opacity: 0, filter: "blur(14px)" },
+          { x: 0, y: 0, rotation: 0, opacity: 1, filter: "blur(0px)", duration: 0.42, ease: "expo.out" }, t);
+      }
+
+      // ================= 1 · "caja del supermercado" =================
+      // "caja": the register rings up and the receipt prints
+      tl.fromTo($("price"), { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "none" }, T.caja - LEAD);
+      tl.fromTo($("receipt"), { scaleY: 0, transformOrigin: "50% 100%" },
+        { scaleY: 1, transformOrigin: "50% 100%", duration: 0.42, ease: "power2.out" }, T.caja - 0.02);
+      // the cart rolls up to the till on "caja"
+      tl.fromTo($("cart"), { x: -120, opacity: 0 }, { x: 0, opacity: 1, duration: 0.32, ease: "power3.out" }, T.caja - 0.04);
+      // the cashier speaks while "la caja" is said, so the card fills right after the cut
+      bubble(1, T.caja + 0.1);
+      word(1, T.supermercado);
+      reply(1, T.supermercado + 0.2);
+
+      // ================= 2 · "al médico" =================
+      enter(2, T.medico - 0.05);
+      word(2, T.medico);
+      tl.fromTo($("ecg"), { attr: { "stroke-dashoffset": 1 } },
+        { attr: { "stroke-dashoffset": 0 }, duration: 0.42, ease: "power2.inOut" }, T.medico + 0.12);
+      bubble(2, T.medico + 0.18);
+      reply(2, T.medico + 0.38);
+
+      // ================= 3 · "a una reunión" =================
+      enter(3, T.reunion - 0.05);
+      word(3, T.reunion);
+      tl.fromTo($("bars").querySelectorAll(".f05-bar"), { scaleY: 0, transformOrigin: "50% 100%" },
+        { scaleY: 1, transformOrigin: "50% 100%", duration: 0.3, ease: "expo.out", stagger: 0.06 }, T.reunion + 0.08);
+      tl.fromTo($("chalk"), { attr: { "stroke-dashoffset": 1 } },
+        { attr: { "stroke-dashoffset": 0 }, duration: 0.3, ease: "power2.out" }, T.reunion + 0.16);
+      bubble(3, T.reunion + 0.18);
+      reply(3, T.reunion + 0.36);
+
+      // ================= 4 · "o a una entrevista…" =================
+      enter(4, T.entrevista - 0.05);
+      word(4, T.entrevista);
+      // climax accent: "entrevista" lands oversized and settles, so the last word hits hardest.
+      // A gentler settle than expo so the oversize still reads once the card's entrance blur clears (~3.85 s).
+      tl.fromTo($("w4"), { scale: 1.24, transformOrigin: "0% 100%" },
+        { scale: 1, transformOrigin: "0% 100%", duration: 0.6, ease: "power2.out" }, T.entrevista - 0.04);
+      tl.fromTo($("hand"), { rotation: -240, svgOrigin: "188 50" },
+        { rotation: 0, svgOrigin: "188 50", duration: 0.7, ease: "expo.out" }, T.entrevista + 0.08);
+      bubble(4, T.entrevista + 0.18);
+      reply(4, T.entrevista + 0.36);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["05-situaciones"] = tl;
+    })();
+  </script>
+</template>

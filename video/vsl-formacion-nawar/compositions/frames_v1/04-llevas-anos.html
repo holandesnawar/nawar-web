@@ -1,0 +1,442 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+
+    /* ---------- ground: paper + indigo dot grid ---------- */
+    #f04-ground { position: absolute; inset: 0; background: #F5F7FF; overflow: hidden; }
+    #f04-dots {
+      position: absolute; left: -120px; top: -40px; right: -120px; bottom: -40px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.6px, transparent 1.8px);
+      background-size: 28px 28px; background-position: 10px 12px;
+    }
+    #f04-light {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 58% 62% at 46% 50%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 95% 95% at 50% 50%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.06) 100%);
+    }
+
+    /* ================= SCENE 1 ================= */
+    #f04-s1, #f04-s1cam, #f04-s2 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #f04-s1cam { transform-origin: 960px 540px; }
+    #f04-s2 { visibility: hidden; }
+
+    /* calendar block (whip wrapper -> thunk wrapper -> card) */
+    #f04-calwrap { position: absolute; left: 286px; top: 268px; width: 560px; height: 540px; }
+    #f04-cal { position: absolute; left: 0; top: 0; width: 560px; height: 540px; transform-origin: 280px 300px; }
+    .f04-sheet {
+      position: absolute; left: 0; top: 36px; width: 560px; height: 470px;
+      background: #FFFFFF; border: 1px solid #DDE6F5; border-radius: 28px;
+    }
+    #f04-sheet3 { left: 21px; width: 518px; top: 60px; box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
+    #f04-sheet2 { left: 14px; width: 532px; top: 52px; }
+    #f04-sheet1 { left: 7px; width: 546px; top: 44px; }
+    #f04-card { box-shadow: 0 6px 16px rgba(18,0,129,0.08); }
+    #f04-head {
+      position: absolute; left: -1px; top: -1px; width: 560px; height: 112px;
+      border-radius: 28px 28px 0 0;
+      background: linear-gradient(180deg, #2A0FA0 0%, #1D0084 100%);
+    }
+    #f04-perf {
+      position: absolute; left: 22px; right: 22px; top: 122px; height: 0;
+      border-top: 4px dotted rgba(29,0,132,0.20);
+    }
+    .f04-hole { position: absolute; top: 38px; width: 30px; height: 30px; border-radius: 50%; background: #07041F; box-shadow: inset 0 3px 6px rgba(0,0,0,0.5); }
+    #f04-hole1 { left: 117px; }
+    #f04-hole2 { left: 413px; }
+    .f04-ring {
+      position: absolute; top: -34px; width: 20px; height: 90px; border-radius: 10px;
+      background: linear-gradient(90deg, #5A6480 0%, #DDE6F5 42%, #FFFFFF 55%, #5A6480 100%);
+      box-shadow: 0 4px 10px rgba(7,4,31,0.35);
+    }
+    #f04-ring1 { left: 122px; }
+    #f04-ring2 { left: 418px; }
+    #f04-flag {
+      position: absolute; left: 238px; top: 30px; width: 84px; height: 54px; border-radius: 10px; overflow: hidden;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.22), 0 6px 14px rgba(7,4,31,0.35);
+    }
+    #f04-flag div { height: 18px; }
+
+    /* split-flap year */
+    #f04-year { position: absolute; left: 38px; top: 186px; width: 484px; height: 196px; display: flex; gap: 12px; }
+    .f04-tile { position: relative; width: 112px; height: 196px; perspective: 560px; }
+    .f04-half {
+      position: absolute; left: 0; width: 112px; height: 98px; overflow: hidden;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    }
+    .f04-top { top: 0; border-radius: 16px 16px 0 0; background: linear-gradient(180deg, #2A0FA0 0%, #1D0084 100%); transform-origin: 50% 100%; }
+    .f04-bot { top: 98px; border-radius: 0 0 16px 16px; background: linear-gradient(180deg, #1D0084 0%, #14005E 100%); transform-origin: 50% 0%; }
+    .f04-half span {
+      position: absolute; left: 0; width: 112px; height: 196px; line-height: 196px; text-align: center;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 150px; letter-spacing: -0.02em; color: #FFFFFF;
+    }
+    .f04-top span { top: 6px; }
+    .f04-bot span { top: -92px; }
+    .f04-hinge { position: absolute; left: 0; top: 97px; width: 112px; height: 2px; background: #07041F; opacity: 0.55; }
+    .f04-nub { position: absolute; top: 90px; width: 5px; height: 16px; border-radius: 2.5px; background: #07041F; opacity: 0.55; }
+    .f04-nubL { left: 0; }
+    .f04-nubR { right: 0; }
+    #f04-tick { position: absolute; left: 38px; top: 410px; width: 484px; height: 34px; display: flex; gap: 8px; }
+    #f04-tick i { display: block; flex: 1; height: 10px; margin-top: 12px; border-radius: 5px; background: #DDE6F5; }
+    #f04-tick i:first-child { background: #0b6df0; }
+
+    /* kinetic copy */
+    #f04-copy { position: absolute; left: 968px; top: 262px; width: 860px; }
+    #f04-llevas {
+      font-weight: 800; font-size: 108px; line-height: 1; letter-spacing: -0.03em; color: #0C0C1E;
+      white-space: nowrap; transform-origin: 0% 100%;
+    }
+    #f04-anos {
+      display: inline-block; margin-top: 6px; margin-left: -6px;
+      font-weight: 900; font-size: 270px; line-height: 0.86; letter-spacing: -0.045em; color: #1D0084;
+      white-space: nowrap; transform-origin: 6% 78%; padding-right: 0.04em;
+      text-shadow: 0 6px 0 rgba(29,0,132,0.08), 0 36px 70px rgba(29,0,132,0.18);
+    }
+    #f04-aquiRow { display: flex; align-items: center; margin-top: 18px; height: 150px; }
+    #f04-aqui {
+      font-weight: 800; font-size: 140px; line-height: 1; letter-spacing: -0.035em; color: #0C0C1E;
+      white-space: nowrap;
+    }
+    #f04-pinwrap { position: relative; width: 108px; height: 150px; margin-left: 22px; }
+    #f04-pinShadow {
+      position: absolute; left: 30px; top: 132px; width: 48px; height: 14px; border-radius: 50%;
+      background: rgba(29,0,132,0.22);
+    }
+    #f04-pin { position: absolute; left: 0; top: 0; width: 108px; height: 140px; overflow: visible; transform-origin: 54px 136px; }
+
+    /* ================= SCENE 2 ================= */
+    .f04-slot {
+      position: absolute; top: 214px; width: 520px; height: 630px; border-radius: 28px; border: 3px dashed rgba(29,0,132,0.10);
+    }
+    .f04-cardw { position: absolute; top: 214px; width: 520px; height: 630px; }
+    .f04-lcard {
+      position: absolute; left: 0; top: 0; width: 520px; height: 630px; background: #FFFFFF; border: 1px solid #DDE6F5; border-radius: 28px;
+      box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08);
+    }
+    .f04-panel {
+      position: absolute; left: 26px; top: 26px; width: 466px; height: 362px; border-radius: 20px; overflow: hidden;
+      background-color: #F5F7FF; border: 1px solid #DDE6F5;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.6px, transparent 1.8px);
+      background-size: 28px 28px; background-position: 6px 6px;
+    }
+    .f04-icon { position: absolute; left: 86px; top: 33px; width: 294px; height: 294px; overflow: visible; }
+    .f04-icon .f04-st { fill: none; stroke: #1D0084; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+    .f04-icon .f04-acc { fill: none; stroke: #0b6df0; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+    .f04-lead {
+      position: absolute; left: 34px; top: 418px; white-space: nowrap;
+      font-weight: 600; font-size: 40px; line-height: 1.2; letter-spacing: -0.01em; color: #5A6480;
+    }
+    .f04-key {
+      position: absolute; left: 30px; top: 474px; white-space: nowrap;
+      font-weight: 800; font-size: 84px; line-height: 1.1; letter-spacing: -0.035em; color: #0C0C1E;
+      transform-origin: 0% 70%;
+    }
+    .f04-w { display: inline-block; }
+
+    /* check badge */
+    .f04-badge { position: absolute; right: -30px; top: -30px; width: 92px; height: 92px; }
+    .f04-ph { position: absolute; left: 0; top: 0; width: 92px; height: 92px; overflow: visible; }
+    .f04-burst {
+      position: absolute; left: 0; top: 0; width: 92px; height: 92px; border-radius: 50%;
+      border: 5px solid #16A34A; box-sizing: border-box; opacity: 0;
+    }
+    .f04-disc {
+      position: absolute; left: 0; top: 0; width: 92px; height: 92px; border-radius: 50%;
+      background: #16A34A; box-shadow: 0 14px 30px rgba(22,163,74,0.35), 0 0 0 6px #FFFFFF;
+    }
+    .f04-disc svg { position: absolute; left: 0; top: 0; width: 92px; height: 92px; overflow: visible; }
+  </style>
+
+  <div id="root" data-composition-id="04-llevas-anos" data-width="1920" data-height="1080" data-duration="5.296">
+    <div id="f04-ground" class="clip" data-start="0" data-duration="5.296" data-track-index="0">
+      <div id="f04-dots"></div>
+      <div id="f04-light"></div>
+    </div>
+
+    <svg width="0" height="0" aria-hidden="true" style="position: absolute">
+      <filter id="f04-streak" x="-60%" y="-30%" width="220%" height="160%">
+        <feGaussianBlur id="f04-streakBlur" in="SourceGraphic" stdDeviation="36 0" />
+      </filter>
+      <filter id="f04-vstreak" x="-5%" y="-20%" width="110%" height="140%">
+        <feGaussianBlur id="f04-vstreakBlur" in="SourceGraphic" stdDeviation="0 0" />
+      </filter>
+    </svg>
+
+    <!-- ================= SCENE 1: calendar + "Llevas años aquí." ================= -->
+    <div id="f04-s1" style="filter: url(#f04-vstreak)">
+      <div id="f04-s1cam">
+        <div id="f04-calwrap" style="filter: url(#f04-streak)">
+          <div id="f04-cal">
+            <div class="f04-sheet" id="f04-sheet3"></div>
+            <div class="f04-sheet" id="f04-sheet2"></div>
+            <div class="f04-sheet" id="f04-sheet1"></div>
+            <div class="f04-sheet" id="f04-card">
+              <div id="f04-head">
+                <div class="f04-hole" id="f04-hole1"></div>
+                <div class="f04-hole" id="f04-hole2"></div>
+                <div id="f04-flag"><div style="background:#AE1C27"></div><div style="background:#FFFFFF"></div><div style="background:#21468C"></div></div>
+              </div>
+              <div id="f04-perf"></div>
+              <div id="f04-year">
+                <div class="f04-tile" id="f04-t0"><div class="f04-half f04-top f04-sT"><span>2</span></div><div class="f04-half f04-bot f04-sB"><span>2</span></div><div class="f04-half f04-top f04-fT"><span>2</span></div><div class="f04-half f04-bot f04-fB"><span>2</span></div><div class="f04-hinge"></div><div class="f04-nub f04-nubL"></div><div class="f04-nub f04-nubR"></div></div>
+                <div class="f04-tile" id="f04-t1"><div class="f04-half f04-top f04-sT"><span>0</span></div><div class="f04-half f04-bot f04-sB"><span>0</span></div><div class="f04-half f04-top f04-fT"><span>0</span></div><div class="f04-half f04-bot f04-fB"><span>0</span></div><div class="f04-hinge"></div><div class="f04-nub f04-nubL"></div><div class="f04-nub f04-nubR"></div></div>
+                <div class="f04-tile" id="f04-t2"><div class="f04-half f04-top f04-sT"><span>1</span></div><div class="f04-half f04-bot f04-sB"><span>1</span></div><div class="f04-half f04-top f04-fT"><span>1</span></div><div class="f04-half f04-bot f04-fB"><span>1</span></div><div class="f04-hinge"></div><div class="f04-nub f04-nubL"></div><div class="f04-nub f04-nubR"></div></div>
+                <div class="f04-tile" id="f04-t3"><div class="f04-half f04-top f04-sT"><span>9</span></div><div class="f04-half f04-bot f04-sB"><span>9</span></div><div class="f04-half f04-top f04-fT"><span>9</span></div><div class="f04-half f04-bot f04-fB"><span>9</span></div><div class="f04-hinge"></div><div class="f04-nub f04-nubL"></div><div class="f04-nub f04-nubR"></div></div>
+              </div>
+              <div id="f04-tick"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="f04-ring" id="f04-ring1"></div>
+            <div class="f04-ring" id="f04-ring2"></div>
+          </div>
+        </div>
+
+        <div id="f04-copy">
+          <div id="f04-llevas">Llevas</div>
+          <div id="f04-anos">años</div>
+          <div id="f04-aquiRow">
+            <div id="f04-aqui">aquí.</div>
+            <div id="f04-pinwrap">
+              <div id="f04-pinShadow"></div>
+              <svg id="f04-pin" viewBox="0 0 108 140" xmlns="http://www.w3.org/2000/svg">
+                <defs><clipPath id="f04-pinClip"><circle cx="54" cy="50" r="27" /></clipPath></defs>
+                <path d="M54 136 C40 112 8 86 8 52 A46 46 0 0 1 100 52 C100 86 68 112 54 136 Z" fill="#1D0084" />
+                <circle cx="54" cy="50" r="31" fill="#FFFFFF" />
+                <g clip-path="url(#f04-pinClip)">
+                  <rect x="20" y="20" width="68" height="20" fill="#AE1C27" />
+                  <rect x="20" y="40" width="68" height="20" fill="#FFFFFF" />
+                  <rect x="20" y="60" width="68" height="22" fill="#21468C" />
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SCENE 2: three life cards ================= -->
+    <div id="f04-s2" style="filter: url(#f04-vstreak)">
+      <div class="f04-slot" id="f04-slot0" style="left: 130px"></div>
+      <div class="f04-slot" id="f04-slot1" style="left: 700px"></div>
+      <div class="f04-slot" id="f04-slot2" style="left: 1270px"></div>
+
+      <!-- card 1: Trabajas (briefcase) -->
+      <div class="f04-cardw" id="f04-c0" style="left: 130px">
+        <div class="f04-lcard">
+          <div class="f04-panel">
+            <svg class="f04-icon" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+              <rect id="f04-bcFill" x="28" y="80" width="184" height="128" rx="22" fill="rgba(11,109,240,0.10)" />
+              <path class="f04-st f04-d0" pathLength="1" d="M86 80 V60 Q86 44 102 44 H138 Q154 44 154 60 V80" />
+              <rect class="f04-st f04-d0" pathLength="1" x="28" y="80" width="184" height="128" rx="22" />
+              <path class="f04-st f04-d0" pathLength="1" d="M28 132 H98" />
+              <path class="f04-st f04-d0" pathLength="1" d="M142 132 H212" />
+              <rect class="f04-acc f04-d0" pathLength="1" x="98" y="116" width="44" height="34" rx="8" />
+            </svg>
+          </div>
+          <div class="f04-key" id="f04-k0">Trabajas</div>
+        </div>
+        <div class="f04-badge" id="f04-b0"><svg class="f04-ph" viewBox="0 0 92 92"><circle cx="46" cy="46" r="40" fill="none" stroke="rgba(29,0,132,0.22)" stroke-width="3" stroke-dasharray="7 7" /></svg><div class="f04-burst"></div><div class="f04-disc"><svg viewBox="0 0 92 92"><path class="f04-tk" pathLength="1" d="M27 47 L40 60 L66 33" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" /></svg></div></div>
+      </div>
+
+      <!-- card 2: Pagas tus impuestos (envelope + document) -->
+      <div class="f04-cardw" id="f04-c1" style="left: 700px">
+        <div class="f04-lcard">
+          <div class="f04-panel">
+            <svg class="f04-icon" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+              <defs><clipPath id="f04-docClip"><rect x="0" y="-60" width="240" height="262" /></clipPath></defs>
+              <g clip-path="url(#f04-docClip)">
+                <g id="f04-doc">
+                  <rect x="64" y="22" width="112" height="150" rx="14" fill="#FFFFFF" stroke="#1D0084" stroke-width="12" />
+                  <path d="M137 52 A27 27 0 1 0 137 96" fill="none" stroke="#0b6df0" stroke-width="11" stroke-linecap="round" />
+                  <path d="M92 68 H124 M92 82 H124" fill="none" stroke="#0b6df0" stroke-width="9" stroke-linecap="round" />
+                </g>
+              </g>
+              <path id="f04-envFill" d="M28 108 H212 V196 Q212 214 194 214 H46 Q28 214 28 196 Z" fill="#FFFFFF" />
+              <path class="f04-st f04-d1" pathLength="1" d="M46 108 H194 Q212 108 212 126 V196 Q212 214 194 214 H46 Q28 214 28 196 V126 Q28 108 46 108 Z" />
+              <path class="f04-st f04-d1" pathLength="1" d="M34 118 L120 172 L206 118" />
+            </svg>
+          </div>
+          <div class="f04-lead" id="f04-l1"><span class="f04-w" id="f04-wPagas">Pagas</span> <span class="f04-w" id="f04-wTus">tus</span></div>
+          <div class="f04-key" id="f04-k1">impuestos</div>
+        </div>
+        <div class="f04-badge" id="f04-b1"><svg class="f04-ph" viewBox="0 0 92 92"><circle cx="46" cy="46" r="40" fill="none" stroke="rgba(29,0,132,0.22)" stroke-width="3" stroke-dasharray="7 7" /></svg><div class="f04-burst"></div><div class="f04-disc"><svg viewBox="0 0 92 92"><path class="f04-tk" pathLength="1" d="M27 47 L40 60 L66 33" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" /></svg></div></div>
+      </div>
+
+      <!-- card 3: Sacas adelante a tu familia (house + three figures) -->
+      <div class="f04-cardw" id="f04-c2" style="left: 1270px">
+        <div class="f04-lcard">
+          <div class="f04-panel">
+            <svg class="f04-icon" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+              <path id="f04-houseFill" d="M34 118 L120 46 L206 118 V214 H34 Z" fill="rgba(11,109,240,0.10)" />
+              <path class="f04-st f04-d2" pathLength="1" d="M16 118 L120 32 L224 118" />
+              <path class="f04-st f04-d2" pathLength="1" d="M166 70 V46 H188 V88" />
+              <path class="f04-st f04-d2" pathLength="1" d="M26 214 H214" />
+              <clipPath id="f04-famClip"><rect x="0" y="0" width="240" height="208" /></clipPath>
+              <g clip-path="url(#f04-famClip)">
+              <g id="f04-fam0" fill="#1D0084" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round">
+                <circle cx="78" cy="126" r="19" /><path d="M46 211 V186 Q46 152 78 152 Q110 152 110 186 V211 Z" />
+              </g>
+              <g id="f04-fam1" fill="#1D0084" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round">
+                <circle cx="162" cy="126" r="19" /><path d="M130 211 V186 Q130 152 162 152 Q194 152 194 186 V211 Z" />
+              </g>
+              <g id="f04-fam2" fill="#0b6df0" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round">
+                <circle cx="120" cy="160" r="15" /><path d="M95 211 V201 Q95 179 120 179 Q145 179 145 201 V211 Z" />
+              </g>
+              </g>
+            </svg>
+          </div>
+          <div class="f04-lead" id="f04-l2"><span class="f04-w" id="f04-wSacas">Sacas</span> <span class="f04-w" id="f04-wAdel">adelante</span> <span class="f04-w" id="f04-wA">a</span> <span class="f04-w" id="f04-wTu">tu</span></div>
+          <div class="f04-key" id="f04-k2">familia</div>
+        </div>
+        <div class="f04-badge" id="f04-b2"><svg class="f04-ph" viewBox="0 0 92 92"><circle cx="46" cy="46" r="40" fill="none" stroke="rgba(29,0,132,0.22)" stroke-width="3" stroke-dasharray="7 7" /></svg><div class="f04-burst"></div><div class="f04-disc"><svg viewBox="0 0 92 92"><path class="f04-tk" pathLength="1" d="M27 47 L40 60 L66 33" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" /></svg></div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var $ = function (id) { return document.getElementById("f04-" + id); };
+      var q = function (root, sel) { return Array.prototype.slice.call(root.querySelectorAll(sel)); };
+      var tl = gsap.timeline({ paused: true });
+      var LEAD = 0.04;
+
+      // exact word cues (frame-relative s)
+      var T = { llevas: 0.12, anos: 0.472, aqui: 0.731, trabajas: 1.564, pagas: 2.361, tus: 2.62,
+                impuestos: 2.787, sacas: 3.5, adelante: 3.879, a: 4.231, tu: 4.296, familia: 4.388 };
+
+      // ================= ENTRANCE: calendar whips in from the right with a directional streak =================
+      var blurNode = $("streakBlur");
+      var blur = { v: 36 };
+      var writeBlur = function () { blurNode.setAttribute("stdDeviation", blur.v.toFixed(2) + " 0"); };
+      writeBlur();
+      tl.fromTo($("calwrap"), { x: 380, opacity: 0.9 }, { x: 0, opacity: 1, duration: 0.3, ease: "expo.out" }, 0);
+      tl.fromTo(blur, { v: 36 }, { v: 0, duration: 0.3, ease: "expo.out", onUpdate: writeBlur }, 0);
+      tl.fromTo($("dots"), { x: 56 }, { x: 0, duration: 0.45, ease: "expo.out" }, 0);
+      // slow camera push under scene 1
+      tl.fromTo($("s1cam"), { scale: 1 }, { scale: 1.035, duration: 1.2, ease: "power1.inOut" }, 0.05);
+
+      // ================= split-flap year: 2019 -> 2026 (7 flips, 0.12 – 0.75) =================
+      var tile = function (i) {
+        var el = $("t" + i);
+        return {
+          sT: el.querySelector(".f04-sT span"), sB: el.querySelector(".f04-sB span"),
+          fT: el.querySelector(".f04-fT"), fTs: el.querySelector(".f04-fT span"),
+          fB: el.querySelector(".f04-fB"), fBs: el.querySelector(".f04-fB span")
+        };
+      };
+      var tiles = [tile(0), tile(1), tile(2), tile(3)];
+      var flip = function (tt, to, t, d) {
+        tl.set(tt.sT, { textContent: to }, t);
+        tl.set(tt.fBs, { textContent: to }, t);
+        tl.set(tt.fB, { rotationX: 90 }, t);
+        tl.fromTo(tt.fT, { rotationX: 0 }, { rotationX: -90, duration: d * 0.5, ease: "power2.in", immediateRender: false }, t);
+        tl.fromTo(tt.fB, { rotationX: 90 }, { rotationX: 0, duration: d * 0.5, ease: "power2.out", immediateRender: false }, t + d * 0.5);
+        tl.set(tt.fTs, { textContent: to }, t + d);
+        tl.set(tt.fT, { rotationX: 0 }, t + d);
+        tl.set(tt.sB, { textContent: to }, t + d);
+      };
+      var FT = [0.12, 0.19, 0.26, 0.33, 0.41, 0.50, 0.61];
+      var FD = [0.065, 0.065, 0.065, 0.075, 0.085, 0.10, 0.14];
+      var LAST = ["0", "1", "2", "3", "4", "5", "6"];
+      for (var k = 0; k < 7; k++) {
+        flip(tiles[3], LAST[k], FT[k], FD[k]);
+        if (k === 0) flip(tiles[2], "2", FT[0] + 0.02, 0.07);
+      }
+      // progress ticks under the year light up one per flip
+      q($("tick"), "i").forEach(function (el, i) {
+        if (i > 0) tl.set(el, { backgroundColor: "#0b6df0" }, FT[i - 1] + FD[i - 1] * 0.5);
+      });
+      // the final flip lands with a thunk
+      tl.fromTo($("cal"), { y: 0, scale: 1 }, { y: 8, scale: 0.985, duration: 0.06, ease: "power2.in", immediateRender: false }, 0.70);
+      tl.to($("cal"), { y: 0, scale: 1, duration: 0.3, ease: "power3.out" }, 0.76);
+
+      // ================= copy: "Llevas años aquí." =================
+      tl.fromTo($("llevas"), { y: 56, opacity: 0, filter: "blur(8px)" },
+        { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, T.llevas - LEAD);
+      tl.fromTo($("anos"), { scale: 1.4, opacity: 0, filter: "blur(10px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "expo.out" }, T.anos - LEAD);
+      tl.fromTo($("aqui"), { y: 60, opacity: 0, filter: "blur(8px)" },
+        { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.28, ease: "power3.out" }, T.aqui - LEAD);
+      tl.fromTo($("pin"), { y: -110, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power4.out" }, T.aqui + 0.06);
+      tl.fromTo($("pin"), { scaleY: 1, scaleX: 1 }, { scaleY: 0.9, scaleX: 1.06, duration: 0.06, ease: "power2.out", immediateRender: false }, T.aqui + 0.2);
+      tl.to($("pin"), { scaleY: 1, scaleX: 1, duration: 0.22, ease: "power3.out" }, T.aqui + 0.26);
+      tl.fromTo($("pinShadow"), { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, T.aqui + 0.08);
+
+      // ================= SEAM (cut-the-curve, upward push) =================
+      // Both scenes ride one vertical strip (s2 sits 1000 px below s1): the outgoing accelerates up
+      // (power3.in), the incoming continues the same direction and decelerates (power3.out). The two
+      // legs are velocity-matched (340/0.18 = 660/0.35), so it reads as one continuous whip-pan.
+      // No opacity fades: s1 stays fully opaque until it is off-canvas, s2 is fully opaque on entry.
+      var S0 = 1.22, S1 = 0.18, S2 = 0.35, SPLIT = 340, GAP = 1000;
+      tl.fromTo($("s1"), { y: 0 }, { y: -SPLIT, duration: S1, ease: "power3.in", immediateRender: false }, S0);
+      tl.fromTo($("s1"), { y: -SPLIT }, { y: -GAP, duration: S2, ease: "power3.out", immediateRender: false }, S0 + S1);
+      tl.fromTo($("s2"), { y: GAP }, { y: GAP - SPLIT, duration: S1, ease: "power3.in" }, S0);
+      tl.fromTo($("s2"), { y: GAP - SPLIT }, { y: 0, duration: S2, ease: "power3.out", immediateRender: false }, S0 + S1);
+      tl.set($("s2"), { visibility: "visible" }, 1.30);   // hidden via CSS before the seam (still below the canvas here)
+      tl.set($("s1"), { visibility: "hidden" }, 1.56);    // already above the canvas (fully gone ~1.52)
+      // vertical motion streak on both scenes + the dot grid, peaking at the velocity junction
+      var vNode = $("vstreakBlur");
+      var vb = { v: 0 };
+      var writeV = function () { vNode.setAttribute("stdDeviation", "0 " + vb.v.toFixed(2)); };
+      tl.fromTo(vb, { v: 0 }, { v: 18, duration: S1, ease: "power2.in", onUpdate: writeV, immediateRender: false }, S0);
+      tl.fromTo(vb, { v: 18 }, { v: 0, duration: 0.22, ease: "power2.out", onUpdate: writeV, immediateRender: false }, S0 + S1);
+      var CUT = 1.51;   // "Trabajas" content leads its 1.564 cue by 0.054 s
+      // ================= draw helpers =================
+      var drawIn = function (els, t, dur, stagger) {
+        els.forEach(function (el) { el.setAttribute("stroke-dasharray", "1 1"); });
+        tl.fromTo(els, { attr: { "stroke-dashoffset": 1 } },
+          { attr: { "stroke-dashoffset": 0 }, duration: dur, ease: "power2.out", stagger: stagger || 0 }, t);
+      };
+      var check = function (i, t) {
+        var b = $("b" + i);
+        var disc = b.querySelector(".f04-disc"), burst = b.querySelector(".f04-burst"), tk = b.querySelector(".f04-tk"), ph = b.querySelector(".f04-ph");
+        tl.fromTo(disc, { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.34, ease: "back.out(2.4)" }, t);
+        tl.fromTo(ph, { opacity: 1 }, { opacity: 0, duration: 0.12, ease: "none", immediateRender: false }, t);
+        tl.fromTo(burst, { scale: 0.9, opacity: 0.8 }, { scale: 1.7, opacity: 0, duration: 0.45, ease: "power2.out", immediateRender: false }, t + 0.04);
+        tk.setAttribute("stroke-dasharray", "1 1");
+        tl.fromTo(tk, { attr: { "stroke-dashoffset": 1 } },
+          { attr: { "stroke-dashoffset": 0 }, duration: 0.2, ease: "power2.out" }, t + 0.08);
+        tl.fromTo($("c" + i), { scale: 1 }, { scale: 1.02, duration: 0.07, ease: "power2.out", immediateRender: false }, t);
+        tl.to($("c" + i), { scale: 1, duration: 0.3, ease: "power3.out" }, t + 0.07);
+      };
+
+      // ================= CARD 1 — "Trabajas" (rides the seam) =================
+      drawIn(q($("c0"), ".f04-d0"), 1.505, 0.28, 0.025);
+      tl.fromTo($("bcFill"), { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 1.70);
+      tl.fromTo($("k0"), { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, CUT);
+      check(0, 2.08);
+
+      // ================= CARD 2 — "Pagas tus impuestos" =================
+      tl.fromTo($("c1"), { y: 170, opacity: 0, scale: 0.94, filter: "blur(10px)" },
+        { y: 0, opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.42, ease: "expo.out" }, T.pagas - LEAD);
+      drawIn(q($("c1"), ".f04-d1"), T.pagas + 0.02, 0.4, 0.06);
+      tl.fromTo($("envFill"), { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, T.pagas);
+      tl.fromTo($("doc"), { y: 96, opacity: 0 }, { y: 0, opacity: 1, duration: 0.42, ease: "expo.out" }, T.impuestos - LEAD);
+      tl.fromTo($("wTus"), { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.24, ease: "power3.out" }, T.tus - LEAD);
+      tl.fromTo($("k1"), { scale: 1.22, opacity: 0, filter: "blur(10px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, T.impuestos - LEAD);
+      check(1, 3.12);
+
+      // ================= CARD 3 — "Sacas adelante a tu familia" =================
+      tl.fromTo($("c2"), { y: 170, opacity: 0, scale: 0.94, filter: "blur(10px)" },
+        { y: 0, opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.42, ease: "expo.out" }, T.sacas - LEAD);
+      drawIn(q($("c2"), ".f04-d2"), T.sacas + 0.02, 0.45, 0.07);
+      tl.fromTo($("houseFill"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, T.sacas + 0.25);
+      tl.fromTo($("wAdel"), { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.24, ease: "power3.out" }, T.adelante - LEAD);
+      tl.fromTo($("wA"), { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.2, ease: "power3.out" }, T.a - LEAD);
+      tl.fromTo($("wTu"), { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.2, ease: "power3.out" }, T.tu - LEAD);
+      tl.fromTo($("k2"), { scale: 1.22, opacity: 0, filter: "blur(10px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, T.familia - LEAD);
+      ["fam0", "fam1", "fam2"].forEach(function (id, i) {
+        tl.fromTo($(id), { y: 46, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, T.familia - LEAD + i * 0.06);
+      });
+      check(2, 4.68);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["04-llevas-anos"] = tl;
+    })();
+  </script>
+</template>

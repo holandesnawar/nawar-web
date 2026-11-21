@@ -1,0 +1,224 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE + dots + soft vignette ---------- */
+    #f25-ground { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%); }
+    #f25-dots {
+      position: absolute; left: -160px; top: -100px; width: 2240px; height: 1280px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px;
+    }
+    #f25-amb {
+      position: absolute; left: 260px; top: 200px; width: 1400px; height: 760px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%);
+    }
+    #f25-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 78% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%); }
+    .f25-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #f25-row { transform-origin: 960px 560px; }
+
+    /* ================= macOS window (tools/mac_mockup.md) ================= */
+    .f25-win { --u: calc(var(--sw) / 1120); }
+    /* standalone macOS window (same chrome, 16:10 overall, 16:9 content) */
+    .f25-win {
+      --sw: 1120px;
+      position: absolute; width: calc(var(--u) * 1120); height: calc(var(--u) * 700);
+      border-radius: calc(var(--u) * 12); overflow: hidden; background: #FFFFFF;
+      box-shadow: 0 0 0 calc(var(--u) * 1) rgba(10,10,30,0.28), 0 calc(var(--u) * 30) calc(var(--u) * 90) rgba(4,0,40,0.50), 0 calc(var(--u) * 10) calc(var(--u) * 26) rgba(4,0,40,0.30);
+    }
+    .f25-win-edge {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: calc(var(--u) * 12); pointer-events: none;
+      box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(255,255,255,0.45);
+    }
+    
+    /* browser chrome (shared): tab strip 36u + toolbar 34u = 70u */
+    .f25-chrome { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 70); font-family: "Inter", sans-serif; }
+    .f25-tabs { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--u) * 36); background: #DEE1E6; }
+    .f25-tl { position: absolute; top: calc(var(--u) * 12); width: calc(var(--u) * 12); height: calc(var(--u) * 12); border-radius: 50%; }
+    .f25-tl-r { left: calc(var(--u) * 13); background: #FF5F57; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #E0443E; }
+    .f25-tl-y { left: calc(var(--u) * 33); background: #FEBC2E; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #DEA123; }
+    .f25-tl-g { left: calc(var(--u) * 53); background: #28C840; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #1AAB29; }
+    .f25-tab {
+      position: absolute; left: calc(var(--u) * 82); top: calc(var(--u) * 7); width: calc(var(--u) * 232); height: calc(var(--u) * 29);
+      border-radius: calc(var(--u) * 9) calc(var(--u) * 9) 0 0; background: #FFFFFF;
+    }
+    .f25-tab::before, .f25-tab::after { content: ""; position: absolute; bottom: 0; width: calc(var(--u) * 9); height: calc(var(--u) * 9); }
+    .f25-tab::before { left: calc(var(--u) * -9); background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f25-tab::after { right: calc(var(--u) * -9); background: radial-gradient(circle at 100% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f25-fav {
+      position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 7); width: calc(var(--u) * 15); height: calc(var(--u) * 15);
+      border-radius: calc(var(--u) * 3.5); overflow: hidden; background: radial-gradient(circle at 50% 45%, #2fb6f2 0%, #0b6df0 80%);
+    }
+    .f25-fav img { position: absolute; left: calc(var(--u) * 1.2); top: calc(var(--u) * 5.2); width: calc(var(--u) * 12.6); height: auto; display: block; }
+    .f25-tab-t {
+      position: absolute; left: calc(var(--u) * 35); top: 0; height: calc(var(--u) * 29); line-height: calc(var(--u) * 29);
+      font-size: calc(var(--u) * 12); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f25-tab-x { position: absolute; right: calc(var(--u) * 10); top: calc(var(--u) * 9.5); width: calc(var(--u) * 10); height: calc(var(--u) * 10); }
+    .f25-plus { position: absolute; left: calc(var(--u) * 330); top: calc(var(--u) * 11); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    .f25-bar { position: absolute; left: 0; top: calc(var(--u) * 36); width: 100%; height: calc(var(--u) * 34); background: #FFFFFF; box-shadow: inset 0 calc(var(--u) * -1) 0 #DADCE0; }
+    .f25-nav { position: absolute; left: calc(var(--u) * 14); top: calc(var(--u) * 9); width: calc(var(--u) * 86); height: calc(var(--u) * 16); overflow: visible; }   /* back · forward (disabled) · reload */
+    .f25-menu { position: absolute; left: calc(var(--u) * 1086); top: calc(var(--u) * 9); width: calc(var(--u) * 16); height: calc(var(--u) * 16); }
+    .f25-url {
+      position: absolute; left: calc(var(--u) * 102); top: calc(var(--u) * 4); width: calc(var(--u) * 962); height: calc(var(--u) * 26);
+      border-radius: calc(var(--u) * 13); background: #F1F3F4;
+    }
+    .f25-lock { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6.5); width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
+    .f25-url-t {
+      position: absolute; left: calc(var(--u) * 33); top: 0; height: calc(var(--u) * 26); line-height: calc(var(--u) * 26);
+      font-size: calc(var(--u) * 13); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f25-star { position: absolute; right: calc(var(--u) * 11); top: calc(var(--u) * 6); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    /* 16:9 content area — real recordings, object-fit cover (never stretch) */
+    .f25-content { position: absolute; left: 0; top: calc(var(--u) * 70); width: calc(var(--u) * 1120); height: calc(var(--u) * 630); overflow: hidden; background: #FFFFFF; }
+    .f25-media { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--fx, 50%) var(--fy, 50%); display: block; }
+
+    /* ---------- three columns: eyebrow · title · window ---------- */
+    .f25-col { position: absolute; top: 0; width: 560px; height: 1080px; }
+    .f25-eyebrow {
+      position: absolute; left: 2px; top: 300px; display: flex; align-items: center; gap: 10px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; color: #9fd5f5;
+    }
+    .f25-eyebrow svg { display: block; width: 24px; height: 24px; }
+    .f25-title {
+      position: absolute; left: 0; top: 334px; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 60px; line-height: 1.1; letter-spacing: -0.025em; color: #FFFFFF;
+    }
+    .f25-w { display: inline-block; }
+    .f25-acc { color: #4da3ff; }
+
+    /* completa-frase.mp4 (1718×690): static framing of the exercise column, source x 549–1514 × y 0–543 (16:9), uniform scale */
+    #f25-vid { position: absolute; left: -318.6px; top: 0; width: 997px; height: 400.4px; display: block; object-fit: fill; }
+    /* luisteren: played bars tinted blue + playhead + pause state (content px, image scale 0.29443, y offset -1.5) */
+    #f25-tclip { position: absolute; left: 48px; top: 104px; width: 0; height: 34px; overflow: hidden; }
+    #f25-tcopy { position: absolute; left: -48px; top: -105.5px; width: 560px; height: 318px; filter: url(#f25-tintf);
+      background: url("assets/img/ui-luisteren-audio.png") 0 0 / 100% 100% no-repeat; }
+    .f25-favlogo { position: absolute; left: calc(var(--u) * 1.2); top: calc(var(--u) * 5.2); width: calc(var(--u) * 12.6); height: calc(var(--u) * 4.5);
+      background: url("assets/img/logo-nawar.png") 0 0 / 100% 100% no-repeat; display: block; }
+    #f25-head { position: absolute; left: 47px; top: 100px; width: 2px; height: 42px; border-radius: 1px; background: #0b6df0; }
+    #f25-pause { position: absolute; left: 256.8px; top: 159.9px; width: 28.3px; height: 28.3px; border-radius: 50%; background: #64A1F8; opacity: 0; }
+    #f25-pause i { position: absolute; top: 9.6px; width: 2.6px; height: 9.2px; border-radius: 1px; background: #1A017F; }
+  </style>
+
+  <div id="root" data-composition-id="25-practica" data-width="1920" data-height="1080" data-duration="2.244">
+    <div id="f25-ground" class="clip" data-start="0" data-duration="2.244" data-track-index="0"><div id="f25-dots"></div><div id="f25-amb"></div><div id="f25-vig"></div></div>
+
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+      <filter id="f25-tintf" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.043  0 0 0 0 0.427  0 0 0 0 0.941  -5.5 0 0 0 5.5" /></filter>
+    </svg>
+
+    <div id="f25-row" class="f25-full">
+      <!-- 1 · LECTURA — the real reading exercise -->
+      <div class="f25-col" id="f25-c1" style="left:96px;">
+        <div class="f25-eyebrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.5 C5.5 4.3 9 4.5 12 6.6 C15 4.5 18.5 4.3 21.5 5.5 V19 C18.5 17.8 15 18 12 20 C9 18 5.5 17.8 2.5 19 Z M12 6.6 V20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg><span>Lezen</span></div>
+        <div class="f25-title">Lectura</div>
+        <div class="f25-win" style="--sw:560px; left:0; top:428px;">
+          <div class="f25-chrome">
+    <div class="f25-tabs"><i class="f25-tl f25-tl-r"></i><i class="f25-tl f25-tl-y"></i><i class="f25-tl f25-tl-g"></i>
+      <div class="f25-tab"><div class="f25-fav"><i class="f25-favlogo"></i></div><div class="f25-tab-t">Holandés Nawar</div><svg class="f25-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
+      <svg class="f25-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
+    <div class="f25-bar"><svg class="f25-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
+      <div class="f25-url"><svg class="f25-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="f25-url-t">app.holandesnawar.com</div><svg class="f25-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
+      <svg class="f25-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
+  </div>
+          <div class="f25-content"><img class="f25-media" src="assets/img/ui-lezen-texto.png" alt="" style="--fy:0%;" /></div>
+          <div class="f25-win-edge"></div>
+        </div>
+      </div>
+
+      <!-- 2 · ESCRITURA — the real «Completa la frase» (the student types the answer) -->
+      <div class="f25-col" id="f25-c2" style="left:680px;">
+        <div class="f25-eyebrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20 L5.3 15.2 L15.8 4.7 L19.3 8.2 L8.8 18.7 Z M13.6 6.9 L17.1 10.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" /></svg><span>Schrijven</span></div>
+        <div class="f25-title">Escritura</div>
+        <div class="f25-win" style="--sw:560px; left:0; top:428px;">
+          <div class="f25-chrome">
+    <div class="f25-tabs"><i class="f25-tl f25-tl-r"></i><i class="f25-tl f25-tl-y"></i><i class="f25-tl f25-tl-g"></i>
+      <div class="f25-tab"><div class="f25-fav"><i class="f25-favlogo"></i></div><div class="f25-tab-t">Holandés Nawar</div><svg class="f25-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
+      <svg class="f25-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
+    <div class="f25-bar"><svg class="f25-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
+      <div class="f25-url"><svg class="f25-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="f25-url-t">app.holandesnawar.com</div><svg class="f25-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
+      <svg class="f25-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
+  </div>
+          <div class="f25-content">
+            <video id="f25-vid" class="clip" src="assets/video/completa-frase.mp4" muted playsinline
+              data-start="0.678" data-duration="1.566" data-media-start="6.85" data-hf-media-start-basis="local" data-track-index="2"></video>
+          </div>
+          <div class="f25-win-edge"></div>
+        </div>
+      </div>
+
+      <!-- 3 · ESCUCHA ACTIVA — the real listening player, now playing -->
+      <div class="f25-col" id="f25-c3" style="left:1264px;">
+        <div class="f25-eyebrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15 V12.5 a8 8 0 0 1 16 0 V15 M4 15 h3 v5.5 H5.5 A1.5 1.5 0 0 1 4 19 Z M20 15 h-3 v5.5 h1.5 A1.5 1.5 0 0 0 20 19 Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg><span>Luisteren</span></div>
+        <div class="f25-title"><span class="f25-w" id="f25-w-escucha">Escucha</span> <span class="f25-w f25-acc" id="f25-w-activa">activa</span></div>
+        <div class="f25-win" style="--sw:560px; left:0; top:428px;">
+          <div class="f25-chrome">
+    <div class="f25-tabs"><i class="f25-tl f25-tl-r"></i><i class="f25-tl f25-tl-y"></i><i class="f25-tl f25-tl-g"></i>
+      <div class="f25-tab"><div class="f25-fav"><i class="f25-favlogo"></i></div><div class="f25-tab-t">Holandés Nawar</div><svg class="f25-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
+      <svg class="f25-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
+    <div class="f25-bar"><svg class="f25-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
+      <div class="f25-url"><svg class="f25-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="f25-url-t">app.holandesnawar.com</div><svg class="f25-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
+      <svg class="f25-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
+  </div>
+          <div class="f25-content">
+            <img class="f25-media" src="assets/img/ui-luisteren-audio.png" alt="" />
+            <div id="f25-tclip"><div id="f25-tcopy"></div></div>
+            <div id="f25-head"></div>
+            <div id="f25-pause"><i style="left:9.6px;"></i><i style="left:16.1px;"></i></div>
+          </div>
+          <div class="f25-win-edge"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 2.33;
+      const T = { lectura: 0.12, escritura: 0.70, escucha: 1.44, activa: 1.84 };
+      // each column (label, title, window) rises in as one piece on its word
+      const col = (id, t) => {
+        tl.fromTo(q(id), { y: 56 }, { y: 0, duration: 0.6, ease: "power3.out" }, t);
+        tl.fromTo(q(id), { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power1.out" }, t);
+      };
+
+      tl.fromTo(q("f25-row"), { scale: 1 }, { scale: 1.012, duration: D, ease: "none" }, 0);
+      col("f25-c1", 0);                        // entrance (first 0.25 s) — «Lectura» at 0.12
+      col("f25-c2", T.escritura - 0.06);
+      col("f25-c3", T.escucha - 0.06);
+      tl.fromTo(q("f25-w-activa"), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, T.activa - 0.04);
+
+      // the audio plays: pause state, played bars turn blue under a moving playhead
+      const P0 = 1.62;
+      tl.fromTo(q("f25-pause"), { opacity: 0 }, { opacity: 1, duration: 0.06, ease: "none" }, P0);
+      tl.fromTo(q("f25-head"), { x: 0 }, { x: 150, duration: D - P0, ease: "none" }, P0);
+      tl.fromTo(q("f25-tclip"), { width: 0 }, { width: 150, duration: D - P0, ease: "none" }, P0);
+
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.698, 0.74], [1.313, 1.275], [1.441, 1.379], [1.845, 1.735], [2.33, 2.244]]);
+      window.__timelines["25-practica"] = tl;
+    })();
+  </script>
+</template>

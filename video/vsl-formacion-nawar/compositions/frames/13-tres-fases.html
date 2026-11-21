@@ -1,0 +1,250 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE ---------- */
+    #f13-ground {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 78% at 50% 50%, rgba(6,0,60,0) 58%, rgba(6,0,60,0.42) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
+
+    /* parallax layer (dots + ambient light) */
+    #f13-par { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 424px 580px; }
+    #f13-dots {
+      position: absolute; left: -280px; top: -140px; width: 2480px; height: 1360px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px;
+    }
+    #f13-amb {
+      position: absolute; left: 110px; top: 250px; width: 1700px; height: 660px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.24) 0%, rgba(77,163,255,0.09) 45%, rgba(77,163,255,0) 70%);
+    }
+
+    /* ---------- camera ---------- */
+    #f13-cam, #f13-camL { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 424px 580px; }
+
+    /* label: — 3 FASES — */
+    #f13-label {
+      position: absolute; left: 0; top: 140px; width: 1920px; height: 80px;
+      display: flex; justify-content: center; align-items: center; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 64px; line-height: 80px;
+      letter-spacing: 0.12em; color: #FFFFFF;
+    }
+    .f13-rule { display: block; width: 170px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.4); }
+    #f13-rl { margin-right: 36px; transform-origin: 100% 50%; }
+    #f13-rr { margin-left: 36px; transform-origin: 0% 50%; }
+    #f13-l3 { display: inline-block; color: #4da3ff; margin-right: 0.28em; }
+    #f13-lfm { display: inline-block; overflow: hidden; height: 80px; padding: 0 6px; margin: 0 -6px; }
+    #f13-lf { display: inline-block; margin-right: -0.12em; }
+
+    /* capsules (pill component, standing up) */
+    .f13-pw { position: absolute; top: 270px; width: 480px; height: 620px; }
+    #f13-pw1 { left: 184px; }
+    #f13-pw2 { left: 720px; }
+    #f13-pw3 { left: 1256px; }
+    .f13-pill { position: absolute; inset: 0; }
+    .f13-face { position: absolute; inset: 0; border-radius: 240px; overflow: hidden; }
+    .f13-base {
+      background: linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.08) 100%);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.24), 0 30px 80px rgba(4,0,40,0.30);
+    }
+    .f13-in { position: absolute; inset: 0; }
+    .f13-num {
+      position: absolute; left: 0; top: 72px; width: 480px; height: 170px; text-align: center;
+      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 156px; line-height: 170px; letter-spacing: -0.04em;
+    }
+    .f13-base .f13-num { color: rgba(255,255,255,0.06); -webkit-text-stroke: 3px rgba(255,255,255,0.85); }
+    .f13-bar { position: absolute; left: 208px; top: 266px; width: 64px; height: 5px; border-radius: 3px; }
+    .f13-base .f13-bar { background: #4da3ff; }
+    .f13-name {
+      position: absolute; left: 0; top: 300px; width: 480px; text-align: center;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 52px; line-height: 1.04; letter-spacing: -0.02em;
+    }
+    .f13-base .f13-name { color: #FFFFFF; }
+    .f13-ico { position: absolute; left: 194px; top: 452px; width: 92px; height: 92px; overflow: visible; }
+    .f13-base .f13-ico { color: rgba(255,255,255,0.88); }
+
+    /* active (white) face of capsule 01 — fills from the bottom */
+    #f13-top1 { background: #FFFFFF; clip-path: inset(620px 0px 0px 0px); }
+    #f13-top1 .f13-num { color: #1D0084; }
+    #f13-top1 .f13-bar { background: #0b6df0; }
+    #f13-top1 .f13-name { color: #1D0084; }
+    #f13-top1 .f13-ico { color: #0b6df0; }
+
+  </style>
+
+  <div id="root" data-composition-id="13-tres-fases" data-width="1920" data-height="1080" data-duration="2.592">
+    <div id="f13-ground" class="clip" data-start="0" data-duration="2.592" data-track-index="0"></div>
+
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+      <filter id="f13-sb1" x="-1.1" y="-0.3" width="3.2" height="1.6"><feGaussianBlur id="f13-sbn1" in="SourceGraphic" stdDeviation="14 0" /></filter>
+      <filter id="f13-sb2" x="-1.1" y="-0.3" width="3.2" height="1.6"><feGaussianBlur id="f13-sbn2" in="SourceGraphic" stdDeviation="14 0" /></filter>
+      <filter id="f13-sb3" x="-1.1" y="-0.3" width="3.2" height="1.6"><feGaussianBlur id="f13-sbn3" in="SourceGraphic" stdDeviation="14 0" /></filter>
+      <symbol id="f13-i-buoy" viewBox="0 0 92 92">
+        <g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">
+          <circle cx="46" cy="46" r="38" />
+          <circle cx="46" cy="46" r="17" />
+          <path d="M19.1 19.1 L33.98 33.98 M72.9 19.1 L58.02 33.98 M19.1 72.9 L33.98 58.02 M72.9 72.9 L58.02 58.02" />
+        </g>
+      </symbol>
+      <symbol id="f13-i-chat" viewBox="0 0 92 92">
+        <g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 12 H74 A12 12 0 0 1 86 24 V56 A12 12 0 0 1 74 68 H40 L22 82 V68 H18 A12 12 0 0 1 6 56 V24 A12 12 0 0 1 18 12 Z" />
+          <path d="M24 33 H68 M24 48 H54" />
+        </g>
+      </symbol>
+      <symbol id="f13-i-blocks" viewBox="0 0 92 92">
+        <g fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round">
+          <rect x="6" y="52" width="36" height="34" rx="7" />
+          <rect x="50" y="52" width="36" height="34" rx="7" />
+          <rect x="28" y="8" width="36" height="34" rx="7" />
+        </g>
+      </symbol>
+    </svg>
+
+    <div id="f13-par">
+      <div id="f13-dots"></div>
+      <div id="f13-amb"></div>
+    </div>
+
+    <div id="f13-camL">
+      <div id="f13-label">
+        <span id="f13-rl" class="f13-rule"></span>
+        <span id="f13-l3">3</span>
+        <span id="f13-lfm"><span id="f13-lf">FASES</span></span>
+        <span id="f13-rr" class="f13-rule"></span>
+      </div>
+    </div>
+
+    <div id="f13-cam">
+
+      <div id="f13-pw1" class="f13-pw">
+        <div id="f13-p1" class="f13-pill">
+          <div class="f13-face f13-base">
+            <div class="f13-in" id="f13-in1">
+              <div class="f13-num">01</div><div class="f13-bar"></div>
+              <div class="f13-name">Supervivencia</div>
+              <svg class="f13-ico"><use href="#f13-i-buoy" /></svg>
+            </div>
+          </div>
+          <div id="f13-top1" class="f13-face">
+            <div class="f13-in" id="f13-in1b">
+              <div class="f13-num">01</div><div class="f13-bar"></div>
+              <div class="f13-name">Supervivencia</div>
+              <svg class="f13-ico"><use href="#f13-i-buoy" /></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="f13-pw2" class="f13-pw">
+        <div id="f13-p2" class="f13-pill">
+          <div class="f13-face f13-base">
+            <div class="f13-in" id="f13-in2">
+              <div class="f13-num">02</div><div class="f13-bar"></div>
+              <div class="f13-name">Vocabulario<br />real</div>
+              <svg class="f13-ico"><use href="#f13-i-chat" /></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="f13-pw3" class="f13-pw">
+        <div id="f13-p3" class="f13-pill">
+          <div class="f13-face f13-base">
+            <div class="f13-in" id="f13-in3">
+              <div class="f13-num">03</div><div class="f13-bar"></div>
+              <div class="f13-name">Estructura<br />y soltura</div>
+              <svg class="f13-ico"><use href="#f13-i-blocks" /></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 2.139;
+      // cue table (frame-relative): Tres 0.12 · fases. 0.35 · Supervivencia. 1.05
+      const T = { tres: 0.12, fases: 0.35, superv: 1.05 };
+
+      // ---------- t=0: the world is already sliding right (the cut lands mid-motion) ----------
+      tl.fromTo(q("f13-dots"), { x: -140 }, { x: 0, duration: 0.62, ease: "power3.out" }, 0);
+
+      // ---------- Scene 1: three capsules glide in left→right (0.12 / 0.22 / 0.32) with a light motion blur ----------
+      const slam = [T.tres - 0.05, 0.17, 0.27];
+      [1, 2, 3].forEach((n, i) => {
+        const pill = q("f13-p" + n);
+        const node = q("f13-sbn" + n);
+        const inner = n === 1 ? [q("f13-in1"), q("f13-in1b")] : [q("f13-in" + n)];
+        const t0 = slam[i];
+        const MOVE = 0.44;
+        pill.style.filter = "url(#f13-sb" + n + ")";
+        const bp = { v: 14 };
+        const writeBlur = () => node.setAttribute("stdDeviation", bp.v.toFixed(2) + " 0");
+        writeBlur();
+        tl.fromTo(pill, { x: -300 }, { x: 0, duration: MOVE, ease: "power4.out" }, t0);
+        tl.fromTo(pill, { opacity: 0 }, { opacity: 1, duration: 0.07, ease: "power1.out" }, t0);
+        tl.fromTo(bp, { v: 14 }, { v: 0, duration: MOVE, ease: "power4.out", onUpdate: writeBlur }, t0);
+        // content drags a beat behind its capsule, then settles inside it
+        tl.fromTo(inner, { x: -36 }, { x: 0, duration: 0.6, ease: "power3.out" }, t0);
+        tl.set(pill, { filter: "none" }, t0 + MOVE + 0.02);
+      });
+
+      // label — "3" on "Tres", "FASES" on "fases."
+      tl.fromTo(q("f13-l3"), { opacity: 0, scale: 1.15, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, T.tres - 0.04);
+      tl.fromTo(q("f13-lf"), { yPercent: 105 }, { yPercent: 0, duration: 0.34, ease: "power3.out" }, T.fases - 0.04);
+      tl.fromTo([q("f13-rl"), q("f13-rr")], { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "power3.out" }, T.fases - 0.02);
+
+      // ---------- Scene 2: "Supervivencia" — capsule 01 fills white, the rest fall back, camera pushes in ----------
+      const S = T.superv - 0.03;
+      const top1 = q("f13-top1");
+      const H1 = 620;
+      const wp = { p: 0 };
+      const writeFill = () => {
+        top1.style.clipPath = "inset(" + ((1 - wp.p) * H1).toFixed(1) + "px 0px 0px 0px)";
+      };
+      writeFill();
+      tl.fromTo(wp, { p: 0 }, { p: 1, duration: 0.32, ease: "power3.out", onUpdate: writeFill }, S);
+
+      // capsule 01 lifts toward camera, the others recede (no overshoot)
+      tl.fromTo(q("f13-pw1"), { scale: 1 }, { scale: 1.04, duration: 0.34, ease: "power3.out" }, S);
+      const rest = [q("f13-pw2"), q("f13-pw3")];
+      tl.fromTo(rest, { opacity: 1, scale: 1 }, { opacity: 0.35, scale: 0.97, duration: 0.32, ease: "power2.out" }, T.superv);
+      tl.fromTo(rest, { filter: "blur(0px)" }, { filter: "blur(3px)", duration: D - T.superv, ease: "power1.in" }, T.superv);
+
+      // camera push toward capsule 01 (anchored on it, drifting it toward centre), accelerating into the cut
+      tl.fromTo(q("f13-cam"), { scale: 1, x: 0, y: 0 }, { scale: 1.2, x: 180, y: 0, duration: D - T.superv, ease: "power1.in" }, T.superv);
+      // the label sits on a deeper plane: same push, less travel (parallax keeps it clear of the top edge)
+      tl.fromTo(q("f13-camL"), { scale: 1, x: 0 }, { scale: 1.13, x: 120, duration: D - T.superv, ease: "power1.in" }, T.superv);
+      tl.fromTo(q("f13-par"), { scale: 1, x: 0 }, { scale: 1.08, x: 60, duration: D - T.superv, ease: "power1.in" }, T.superv);
+
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.038, 0.12], [0.12, 0.355], [0.352, 0.627], [0.763, 1.238], [1.046, 1.688], [2.139, 2.592]]);
+      window.__timelines["13-tres-fases"] = tl;
+    })();
+  </script>
+</template>

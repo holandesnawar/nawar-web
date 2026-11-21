@@ -1,0 +1,449 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script src="assets/vendor/MotionPathPlugin.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 800; font-style: normal; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: paper + indigo dot grid ---------- */
+    #f10-ground { position: absolute; inset: 0; background: #F5F7FF; overflow: hidden; }
+    #f10-dots {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px;
+    }
+    #f10-light {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 62% 58% at 50% 48%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%);
+    }
+    .f10-scene { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+    /* ================= SCENE 1 — the generic course wall ================= */
+    #f10-grid {
+      position: absolute; left: 128px; top: 115px; width: 1664px; height: 850px;
+      display: grid; grid-template-columns: repeat(4, 392px); grid-template-rows: repeat(3, 262px);
+      column-gap: 32px; row-gap: 32px; z-index: 0;
+    }
+    .f10-card {
+      position: relative; background: #FFFFFF; border: 1px solid #DDE6F5; border-radius: 18px;
+      box-shadow: 0 18px 44px rgba(18,0,129,0.10), 0 3px 10px rgba(18,0,129,0.06);
+    }
+    .f10-body { position: absolute; inset: 0; padding: 14px; }
+    .f10-thumb {
+      position: relative; height: 150px; border-radius: 12px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .f10-orb { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.13); }
+    .f10-orb-a { width: 220px; height: 220px; right: -70px; top: -90px; }
+    .f10-orb-b { width: 120px; height: 120px; left: -40px; bottom: -60px; background: rgba(255,255,255,0.09); }
+    .f10-thumb-ico { position: relative; width: 86px; height: 86px; }
+    .f10-thumb-txt {
+      position: relative; font-family: "Poppins", sans-serif; font-weight: 900; font-size: 78px;
+      line-height: 1; letter-spacing: -0.04em; color: #FFFFFF;
+    }
+    .f10-title {
+      margin-top: 16px; padding-left: 4px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px;
+      line-height: 1.2; letter-spacing: -0.01em; color: #0C0C1E; white-space: nowrap;
+    }
+    .f10-meta {
+      margin-top: 8px; padding-left: 4px; display: flex; align-items: center; gap: 10px;
+      font-family: "Inter", sans-serif; font-weight: 500; font-size: 18px; color: #5A6480; white-space: nowrap;
+    }
+    .f10-skel { display: inline-block; width: 46px; height: 10px; border-radius: 5px; background: #DDE6F5; }
+    .f10-badge {
+      position: absolute; top: 26px; right: 26px; padding: 7px 14px 6px; border-radius: 10px;
+      background: #0C0C1E; color: #FFFFFF; font-family: "Inter", sans-serif; font-weight: 800; font-size: 24px;
+      line-height: 1; letter-spacing: 0.08em;
+      box-shadow: 0 10px 24px rgba(12,12,30,0.28);
+    }
+
+    #f10-band { position: absolute; left: 0; top: 401px; width: 1920px; height: 278px; z-index: 1; }
+    #f10-band-bg {
+      position: absolute; inset: 0; background: #FFFFFF; transform-origin: 0% 50%;
+      border-top: 1px solid #DDE6F5; border-bottom: 1px solid #DDE6F5;
+      box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08);
+    }
+    #f10-band-line {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 0.25em;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 88px; line-height: 1;
+      letter-spacing: -0.03em; color: #1D0084; white-space: nowrap;
+    }
+    .f10-m { display: inline-block; overflow: hidden; padding: 0.08em 0.02em 0.14em; margin: -0.08em -0.02em -0.14em; }
+    .f10-w { display: inline-block; }
+    #f10-ti {
+      display: inline-block; background: #1D0084; color: #FFFFFF; border-radius: 14px;
+      padding: 0.06em 0.2em 0.08em; margin-left: 0.02em; transform-origin: 18% 55%;
+      box-shadow: 0 24px 60px rgba(18,0,129,0.28), 0 4px 14px rgba(18,0,129,0.14);
+    }
+
+    /* ================= SCENE 2 — the detour ================= */
+    #f10-routes { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+    #f10-direct { fill: none; stroke: #1D0084; stroke-width: 6; stroke-linecap: round; stroke-dasharray: 2 18; }
+    #f10-direct-lbl {
+      position: absolute; left: 760px; top: 512px; width: 400px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; line-height: 1; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #5A6480;
+    }
+    #f10-route-shadow { fill: none; stroke: rgba(224,45,60,0.16); stroke-width: 26; stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 1000 1000; stroke-dashoffset: 1000; }
+    #f10-route { fill: none; stroke: #E02D3C; stroke-width: 11; stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 1000 1000; stroke-dashoffset: 1000; }
+    #f10-dot {
+      position: absolute; left: 0; top: 0; width: 38px; height: 38px; margin: -19px 0 0 -19px; border-radius: 50%;
+      background: #FFFFFF; border: 8px solid #E02D3C; box-sizing: border-box;
+      box-shadow: 0 0 0 10px rgba(224,45,60,0.16), 0 8px 18px rgba(224,45,60,0.35);
+    }
+    .f10-node { position: absolute; width: 180px; height: 180px; margin: -90px 0 0 -90px; }
+    .f10-disc {
+      position: absolute; inset: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 64px; letter-spacing: -0.02em; line-height: 1;
+      color: #FFFFFF; background: #1D0084;
+      box-shadow: 0 30px 80px rgba(18,0,129,0.22), 0 4px 14px rgba(18,0,129,0.10), inset 0 0 0 8px rgba(255,255,255,0.12);
+    }
+    #f10-n-en .f10-disc { background: #E02D3C; box-shadow: 0 30px 80px rgba(224,45,60,0.30), 0 4px 14px rgba(224,45,60,0.18), inset 0 0 0 8px rgba(255,255,255,0.16); }
+    .f10-ring { position: absolute; inset: -6px; border-radius: 50%; border: 6px solid #E02D3C; opacity: 0; }
+    .f10-label {
+      position: absolute; left: 50%; top: 204px; width: 400px; margin-left: -200px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.14em; color: #0C0C1E;
+    }
+    #f10-n-en .f10-label { color: #E02D3C; }
+    #f10-s2-text { position: absolute; left: 0; top: 742px; width: 1920px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    #f10-s2-lead {
+      display: flex; gap: 0.26em; font-family: "Poppins", sans-serif; font-weight: 600; font-size: 46px;
+      line-height: 1.1; letter-spacing: -0.01em; color: #5A6480; white-space: nowrap;
+    }
+    #f10-s2-main {
+      display: flex; gap: 0.25em; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 100px;
+      line-height: 1.05; letter-spacing: -0.035em; color: #1D0084; white-space: nowrap;
+    }
+    #f10-ingles { color: #E02D3C; transform-origin: 0% 62%; }
+
+    /* ================= SCENE 3 — alone with your errors ================= */
+    #f10-vig {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 66% 60% at 50% 50%, rgba(29,0,132,0) 0%, rgba(29,0,132,0) 50%, rgba(29,0,132,0.10) 78%, rgba(18,0,129,0.24) 100%);
+    }
+    .f10-row {
+      position: absolute; left: 0; width: 1920px; display: flex; align-items: baseline; justify-content: center;
+      white-space: nowrap; column-gap: 30px;
+    }
+    #f10-top { top: 84px; }
+    #f10-bot { top: 738px; }
+    .f10-lead { font-family: "Poppins", sans-serif; font-weight: 600; font-size: 58px; letter-spacing: -0.01em; color: #374151; line-height: 1.1; }
+    .f10-lead-g { display: flex; gap: 0.26em; }
+    .f10-hero {
+      font-family: "Poppins", sans-serif; font-weight: 900; font-size: 196px; line-height: 0.95;
+      letter-spacing: -0.04em; text-transform: uppercase; color: #1D0084; padding-right: 0.04em;
+      transform-origin: 0% 62%;
+    }
+    #f10-errores { color: #E02D3C; }
+    #f10-person { position: absolute; left: 318px; top: 456px; width: 132px; height: 190px; }
+    #f10-person svg { position: absolute; left: 0; top: 0; width: 132px; height: 190px; overflow: visible; }
+    #f10-pool {
+      position: absolute; left: 254px; top: 610px; width: 260px; height: 70px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(29,0,132,0.22) 0%, rgba(29,0,132,0) 70%);
+    }
+    #f10-card3 {
+      position: absolute; left: 500px; top: 420px; width: 1100px; height: 232px; border-radius: 28px;
+      background: #FFFFFF; border: 1px solid #DDE6F5;
+      box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08);
+      display: flex; align-items: center; justify-content: center;
+    }
+    #f10-card3-tag {
+      position: absolute; left: 34px; top: -22px; padding: 9px 18px 8px; border-radius: 999px; background: #1D0084; color: #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 0.14em; line-height: 1;
+    }
+    #f10-sent {
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 78px; line-height: 1; letter-spacing: -0.01em;
+      color: #0C0C1E; white-space: nowrap; margin-top: -10px;
+    }
+    .f10-err { position: relative; display: inline-block; }
+    .f10-sq { position: absolute; left: 6px; width: calc(100% - 12px); bottom: -24px; height: 20px; overflow: visible; }
+    .f10-sq path { fill: none; stroke: #E02D3C; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100 100; stroke-dashoffset: 100; }
+    .f10-x {
+      position: absolute; border-radius: 50%; background: #E02D3C; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 16px 36px rgba(224,45,60,0.38), 0 0 0 8px rgba(224,45,60,0.14);
+    }
+    .f10-x svg { width: 46%; height: 46%; overflow: visible; }
+  </style>
+
+  <div id="root" data-composition-id="10-escuelas" data-width="1920" data-height="1080" data-duration="6.611">
+    <div id="f10-ground" class="clip" data-start="0" data-duration="6.611" data-track-index="0">
+      <div id="f10-dots"></div>
+      <div id="f10-light"></div>
+    </div>
+
+    <!-- ===== SCENE 1 ===== -->
+    <div id="f10-s1" class="f10-scene">
+      <div id="f10-grid">
+        <div class="f10-card" id="f10-c0" style="z-index:20"><div class="f10-body" id="f10-b0"><div class="f10-thumb" style="background:linear-gradient(135deg, #0b6df0 0%, #025dc7 100%)"><span class="f10-orb f10-orb-a"></span><span class="f10-orb f10-orb-b"></span><svg class="f10-thumb-ico" viewBox="0 0 100 100"><circle cx="50" cy="50" r="36" fill="none" stroke="#fff" stroke-width="7"/><path d="M42 34 L68 50 L42 66 Z" fill="#fff"/></svg></div><div class="f10-title">Dutch for Beginners</div><div class="f10-meta"><span class="f10-skel"></span>24 lessons · 6 h</div></div><div class="f10-badge" id="f10-g0">EN</div></div>
+        <div class="f10-card" id="f10-c1" style="z-index:19"><div class="f10-body" id="f10-b1"><div class="f10-thumb" style="background:linear-gradient(135deg, #2a0fa8 0%, #1D0084 100%)"><span class="f10-orb f10-orb-a"></span><span class="f10-orb f10-orb-b"></span><svg class="f10-thumb-ico" viewBox="0 0 100 100"><path d="M41 94 L45 52 H55 L59 94 Z" fill="#fff"/><g stroke="#fff" stroke-width="9" stroke-linecap="round"><line x1="50" y1="46" x2="21" y2="17"/><line x1="50" y1="46" x2="79" y2="17"/><line x1="50" y1="46" x2="21" y2="75"/><line x1="50" y1="46" x2="79" y2="75"/></g><circle cx="50" cy="46" r="7" fill="#fff"/></svg></div><div class="f10-title">Learn Dutch Fast</div><div class="f10-meta"><span class="f10-skel"></span>18 lessons · 4 h</div></div><div class="f10-badge" id="f10-g1">EN</div></div>
+        <div class="f10-card" id="f10-c2" style="z-index:18"><div class="f10-body" id="f10-b2"><div class="f10-thumb" style="background:linear-gradient(135deg, #2f5cb0 0%, #21468C 100%)"><span class="f10-orb f10-orb-a"></span><span class="f10-orb f10-orb-b"></span><span class="f10-thumb-txt">A1</span></div><div class="f10-title">Dutch A1</div><div class="f10-meta"><span class="f10-skel"></span>30 lessons · 9 h</div></div><div class="f10-badge" id="f10-g2">EN</div></div>
+        <div class="f10-card" id="f10-c3" style="z-index:17"><div class="f10-body" id="f10-b3"><div class="f10-thumb" style="background:linear-gradient(135deg, #4da3ff 0%, #0b6df0 100%)"><span class="f10-orb f10-orb-a"></span><span class="f10-orb f10-orb-b"></span><svg class="f10-thumb-ico" viewBox="0 0 100 100"><path d="M50 30 C40 22 22 22 12 27 V77 C22 72 40 72 50 80 C60 72 78 72 88 77 V27 C78 22 60 22 50 30 Z M50 30 V80" fill="none" stroke="#fff" stroke-width="7" stroke-linejoin="round"/></svg></div><div class="f10-title">Dutch Grammar 101</div><div class="f10-meta"><span class="f10-skel"></span>40 lessons · 12 h</div></div><div class="f10-badge" id="f10-g3">EN</div></div>
+        <div class="f10-card" id="f10-c4" style="z-index:16"><div class="f10-body" id="f10-b4"><div class="f10-thumb" style="background:linear-gradient(135deg, #E02D3C 0%, #AE1C27 100%)"><span class="f10-orb f10-orb-a"></span><span class="f10-orb f10-orb-b"></span><svg class="f10-thumb-ico" viewBox="0 0 100 100"><path d="M20 22 H80 Q90 22 90 32 V60 Q90 70 80 70 H46 L28 85 V70 H20 Q10 70 10 60 V32 Q10 22 20 22 Z" fill="none" stroke="#fff" stroke-width="7" stroke-linejoin="round"/><circle cx="34" cy="46" r="5.5" fill="#fff"/><circle cx="50" cy="46" r="5.5" fill="#fff"/><circle cx="66" cy="46" r="5.5" fill="#fff"/></svg></div><div class="f10-title">Speak Dutch Today</div><div class="f10-meta"><span class="f10-skel"></span>12 lessons · 3 h</div></div><div class="f10-badge" id="f10-g4">EN</div></div>
+        <div class="f10-card" id="f10-c5" style="z-index:15"><div class="f10-body" id="f10-b5"><div class="f10-thumb" style="background:linear-gradient(135deg, #0b6df0 0%, #025dc7 100%)"><span class="f10-orb f10-orb-a"></span><span class="f10-orb f10-orb-b"></span><svg class="f10-thumb-ico" viewBox="0 0 100 100"><rect x="12" y="32" width="76" height="52" rx="9" fill="none" stroke="#fff" stroke-width="7"/><path d="M36 32 V24 Q36 18 42 18 H58 Q64 18 64 24 V32" fill="none" stroke="#fff" stroke-width="7"/><line x1="12" y1="54" x2="88" y2="54" stroke="#fff" stroke-width="6"/></svg></div><div class="f10-title">Dutch for Expats</div><div class="f10-meta"><span class="f10-skel"></span>22 lessons · 7 h</div></div><div class="f10-badge" id="f10-g5">EN</div></div>
+        <div class="f10-card" id="f10-c6" style="z-index:14"><div class="f10-body" id="f10-b6"><div class="f10-thumb" style="background:linear-gradient(135deg, #9fd5f5 0%, #4da3ff 100%)"><span class="f10-orb f10-orb-a"></span><span class="f10-orb f10-orb-b"></span><span class="f10-thumb-txt">30</span></div><div class="f10-title">Dutch in 30 Days</div><div class="f10-meta"><span class="f10-skel"></span>30 lessons · 10 h</div></div><div class="f10-badge" id="f10-g6">EN</div></div>
+        <div class="f10-card" id="f10-c7" style="z-index:13"><div class="f10-body" id="f10-b7"><div class="f10-thumb" style="background:linear-gradient(135deg, #2a0fa8 0%, #1D0084 100%)"><span class="f10-orb f10-orb-a"></span><span class="f10-orb f10-orb-b"></span><svg class="f10-thumb-ico" viewBox="0 0 100 100"><path d="M20 66 V52 A30 30 0 0 1 80 52 V66" fill="none" stroke="#fff" stroke-width="7"/><rect x="14" y="56" width="16" height="28" rx="6" fill="#fff"/><rect x="70" y="56" width="16" height="28" rx="6" fill="#fff"/></svg></div><div class="f10-title">Easy Dutch Course</div><div class="f10-meta"><span class="f10-skel"></span>16 lessons · 5 h</div></div><div class="f10-badge" id="f10-g7">EN</div></div>
+        <div class="f10-card" id="f10-c8" style="z-index:12"><div class="f10-body" id="f10-b8"><div class="f10-thumb" style="background:linear-gradient(135deg, #2f5cb0 0%, #21468C 100%)"><span class="f10-orb f10-orb-a"></span><span class="f10-orb f10-orb-b"></span><svg class="f10-thumb-ico" viewBox="0 0 100 100"><path d="M50 30 C40 22 22 22 12 27 V77 C22 72 40 72 50 80 C60 72 78 72 88 77 V27 C78 22 60 22 50 30 Z M50 30 V80" fill="none" stroke="#fff" stroke-width="7" stroke-linejoin="round"/></svg></div><div class="f10-title">Dutch Vocabulary</div><div class="f10-meta"><span class="f10-skel"></span>50 lessons · 8 h</div></div><div class="f10-badge" id="f10-g8">EN</div></div>
+        <div class="f10-card" id="f10-c9" style="z-index:11"><div class="f10-body" id="f10-b9"><div class="f10-thumb" style="background:linear-gradient(135deg, #4da3ff 0%, #0b6df0 100%)"><span class="f10-orb f10-orb-a"></span><span class="f10-orb f10-orb-b"></span><svg class="f10-thumb-ico" viewBox="0 0 100 100"><circle cx="50" cy="50" r="36" fill="none" stroke="#fff" stroke-width="7"/><path d="M42 34 L68 50 L42 66 Z" fill="#fff"/></svg></div><div class="f10-title">Dutch Made Simple</div><div class="f10-meta"><span class="f10-skel"></span>20 lessons · 6 h</div></div><div class="f10-badge" id="f10-g9">EN</div></div>
+        <div class="f10-card" id="f10-c10" style="z-index:10"><div class="f10-body" id="f10-b10"><div class="f10-thumb" style="background:linear-gradient(135deg, #E02D3C 0%, #AE1C27 100%)"><span class="f10-orb f10-orb-a"></span><span class="f10-orb f10-orb-b"></span><svg class="f10-thumb-ico" viewBox="0 0 100 100"><path d="M41 94 L45 52 H55 L59 94 Z" fill="#fff"/><g stroke="#fff" stroke-width="9" stroke-linecap="round"><line x1="50" y1="46" x2="21" y2="17"/><line x1="50" y1="46" x2="79" y2="17"/><line x1="50" y1="46" x2="21" y2="75"/><line x1="50" y1="46" x2="79" y2="75"/></g><circle cx="50" cy="46" r="7" fill="#fff"/></svg></div><div class="f10-title">Business Dutch</div><div class="f10-meta"><span class="f10-skel"></span>14 lessons · 5 h</div></div><div class="f10-badge" id="f10-g10">EN</div></div>
+        <div class="f10-card" id="f10-c11" style="z-index:9"><div class="f10-body" id="f10-b11"><div class="f10-thumb" style="background:linear-gradient(135deg, #0b6df0 0%, #025dc7 100%)"><span class="f10-orb f10-orb-a"></span><span class="f10-orb f10-orb-b"></span><span class="f10-thumb-txt">A2</span></div><div class="f10-title">Complete Dutch A2</div><div class="f10-meta"><span class="f10-skel"></span>36 lessons · 11 h</div></div><div class="f10-badge" id="f10-g11">EN</div></div>
+      </div>
+      <div id="f10-band">
+        <div id="f10-band-bg"></div>
+        <div id="f10-band-line">
+          <span class="f10-m"><span class="f10-w" id="f10-w-casi">Casi</span></span>
+          <span class="f10-m"><span class="f10-w" id="f10-w-ninguna">ninguna</span></span>
+          <span class="f10-m"><span class="f10-w" id="f10-w-escuela">escuela</span></span>
+          <span class="f10-m"><span class="f10-w" id="f10-w-piensa">piensa</span></span>
+          <span class="f10-m"><span class="f10-w" id="f10-w-en">en</span></span>
+          <span id="f10-ti">ti.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SCENE 2 ===== -->
+    <div id="f10-s2" class="f10-scene">
+      <svg id="f10-routes" viewBox="0 0 1920 1080">
+        <path id="f10-direct" d="M532,560 L1388,560"/>
+        <path id="f10-route-shadow" d="M454,468 C490,330 620,250 848,250 L1072,250 C1300,250 1430,330 1466,468" pathLength="1000"/>
+        <path id="f10-route" d="M454,468 C490,330 620,250 848,250 L1072,250 C1300,250 1430,330 1466,468" pathLength="1000"/>
+      </svg>
+      <div id="f10-direct-lbl">directo</div>
+      <div id="f10-dot"></div>
+      <div class="f10-node" id="f10-n-es" style="left:420px; top:560px;">
+        <div class="f10-disc">ES</div><div class="f10-label">ESPAÑOL</div>
+      </div>
+      <div class="f10-node" id="f10-n-en" style="left:960px; top:250px;">
+        <div class="f10-ring" id="f10-ring-en"></div>
+        <div class="f10-disc" id="f10-disc-en">EN</div><div class="f10-label">INGLÉS</div>
+      </div>
+      <div class="f10-node" id="f10-n-nl" style="left:1500px; top:560px;">
+        <div class="f10-ring" id="f10-ring-nl"></div>
+        <div class="f10-disc" id="f10-disc-nl">NL</div><div class="f10-label">NEERLANDÉS</div>
+      </div>
+      <div id="f10-s2-text">
+        <div id="f10-s2-lead">
+          <span class="f10-m"><span class="f10-w" id="f10-w-te">Te</span></span>
+          <span class="f10-m"><span class="f10-w" id="f10-w-ensenan">enseñan</span></span>
+          <span class="f10-m"><span class="f10-w" id="f10-w-el">el</span></span>
+          <span class="f10-m"><span class="f10-w" id="f10-w-idioma">idioma</span></span>
+        </div>
+        <div id="f10-s2-main">
+          <span class="f10-m"><span class="f10-w" id="f10-w-como">como</span></span>
+          <span class="f10-m"><span class="f10-w" id="f10-w-si">si</span></span>
+          <span class="f10-m"><span class="f10-w" id="f10-w-vinieras">vinieras</span></span>
+          <span class="f10-m"><span class="f10-w" id="f10-w-del">del</span></span>
+          <span class="f10-w" id="f10-ingles">inglés</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SCENE 3 ===== -->
+    <div id="f10-s3" class="f10-scene">
+      <div id="f10-vig"></div>
+      <div class="f10-row" id="f10-top">
+        <span class="f10-lead f10-lead-g" id="f10-top-lead">
+          <span class="f10-m"><span class="f10-w" id="f10-w-y">y luego</span></span>
+          <span class="f10-m"><span class="f10-w" id="f10-w-te2">te</span></span>
+          <span class="f10-m"><span class="f10-w" id="f10-w-dejan">dejan</span></span>
+        </span>
+        <span class="f10-hero f10-w" id="f10-solo">solo</span>
+      </div>
+      <div id="f10-pool"></div>
+      <div id="f10-person">
+        <svg viewBox="0 0 132 190">
+          <defs>
+            <linearGradient id="f10-pgrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2a0fa8"/><stop offset="1" stop-color="#1D0084"/>
+            </linearGradient>
+          </defs>
+          <circle cx="66" cy="42" r="34" fill="url(#f10-pgrad)"/>
+          <path d="M8,190 C8,124 32,90 66,90 C100,90 124,124 124,190 Z" fill="url(#f10-pgrad)"/>
+        </svg>
+      </div>
+      <div id="f10-card3">
+        <div id="f10-card3-tag">NL</div>
+        <div id="f10-sent">Ik <span class="f10-err" id="f10-e1">gisteren heb<svg class="f10-sq" viewBox="0 0 471 20" preserveAspectRatio="none"><path id="f10-sq1" d="M0,10.0 q13.09,-6.5 26.19,0 t26.19,0 t26.19,0 t26.19,0 t26.19,0 t26.19,0 t26.19,0 t26.19,0 t26.19,0 t26.19,0 t26.19,0 t26.19,0 t26.19,0 t26.19,0 t26.19,0 t26.19,0 t26.19,0 t26.19,0" pathLength="100"/></svg></span> <span class="f10-err" id="f10-e2">gewerk<svg class="f10-sq" viewBox="0 0 285 20" preserveAspectRatio="none"><path id="f10-sq2" d="M0,10.0 q12.96,-6.5 25.93,0 t25.93,0 t25.93,0 t25.93,0 t25.93,0 t25.93,0 t25.93,0 t25.93,0 t25.93,0 t25.93,0 t25.93,0" pathLength="100"/></svg></span>.</div>
+      </div>
+      <div class="f10-x" id="f10-x1" style="left:1538px; top:368px; width:96px; height:96px;"><svg viewBox="0 0 40 40"><path d="M8,8 L32,32 M32,8 L8,32" stroke="#fff" stroke-width="7" stroke-linecap="round" fill="none"/></svg></div>
+      <div class="f10-x" id="f10-x2" style="left:1268px; top:612px; width:80px; height:80px;"><svg viewBox="0 0 40 40"><path d="M8,8 L32,32 M32,8 L8,32" stroke="#fff" stroke-width="7" stroke-linecap="round" fill="none"/></svg></div>
+      <div class="f10-x" id="f10-x3" style="left:894px; top:384px; width:72px; height:72px;"><svg viewBox="0 0 40 40"><path d="M8,8 L32,32 M32,8 L8,32" stroke="#fff" stroke-width="7" stroke-linecap="round" fill="none"/></svg></div>
+      <div class="f10-row" id="f10-bot">
+        <span class="f10-lead f10-lead-g" id="f10-bot-lead">
+          <span class="f10-m"><span class="f10-w" id="f10-w-con">con</span></span>
+          <span class="f10-m"><span class="f10-w" id="f10-w-tus">tus</span></span>
+        </span>
+        <span class="f10-hero f10-w" id="f10-errores">errores.</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      gsap.registerPlugin(MotionPathPlugin);
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById(id);
+      const F = 1 / 30;
+      const LEAD = 0.04;
+
+      // ---- cue table (frame-relative seconds, from the packet) ----
+      const T = {
+        casi: 0.12, ninguna: 0.36, escuela: 0.78, piensa: 1.21, en: 1.55, ti: 1.59,
+        te: 2.20, ensenan: 2.29, el: 2.57, idioma: 2.69, como: 3.05, si: 3.24, vinieras: 3.39, del: 3.71, ingles: 3.81,
+        y: 4.53, luego: 4.57, te2: 4.87, dejan: 4.99, solo: 5.34, con: 5.67, tus: 5.86, errores: 6.05
+      };
+      const ROUTE = "M454,468 C490,330 620,250 848,250 L1072,250 C1300,250 1430,330 1466,468";
+      const F1 = 0.40659;
+      const P1X = 454, P1Y = 468;
+
+      // masked word rise (lands on its cue, <= 40 ms early)
+      const rise = (id, t, dur) => tl.fromTo(q(id), { yPercent: 115 }, { yPercent: 0, duration: dur || 0.3, ease: "power3.out" }, t - LEAD);
+      // slam: oversized + blurred -> rest
+      const slam = (id, t, from) => tl.fromTo(q(id),
+        { scale: from || 1.6, opacity: 0, filter: "blur(10px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.34, ease: "power4.out" }, t - LEAD);
+      // deterministic 3-frame shake
+      const shake = (id, t, a) => {
+        tl.fromTo(q(id), { x: 0, y: 0 }, { x: a, y: -a * 0.5, duration: F, ease: "power2.out", immediateRender: false }, t);
+        tl.to(q(id), { x: -a * 0.7, y: a * 0.35, duration: F, ease: "power2.out" }, t + F);
+        tl.to(q(id), { x: 0, y: 0, duration: F, ease: "power2.out" }, t + 2 * F);
+      };
+
+      // ================= SCENE 1 (0.00 – 2.17) =================
+      // entrance: the course wall cascades in from the top, row by row (stagger 0.04)
+      // row 1 is already on screen (half-dropped, 50 %) at t=0 so the cut from the dark frame 09 never flashes blank
+      const ROT = [-5, 3, -2, 4, 3, -4, 2, -3, -3, 5, -2, 3];
+      for (let i = 0; i < 12; i++) {
+        const t0 = 0.0 + i * 0.03;
+        const first = i < 4;
+        tl.fromTo(q("f10-c" + i),
+          { y: first ? -110 : -220, scale: 1.06, rotation: ROT[i], filter: "blur(6px)" },
+          { y: 0, scale: 1, rotation: 0, filter: "blur(0px)", duration: 0.38, ease: "power4.out" }, t0);
+        tl.fromTo(q("f10-c" + i), { opacity: first ? 0.5 : 0 }, { opacity: 1, duration: first ? 0.1 : 0.12, ease: "power1.out" }, t0);
+      }
+      // white band wipes in under "Casi", then the words rise into it
+      tl.fromTo(q("f10-band-bg"), { scaleX: 0 }, { scaleX: 1, duration: 0.34, ease: "power4.out" }, 0.04);
+      rise("f10-w-casi", T.casi);
+      rise("f10-w-ninguna", T.ninguna);
+      rise("f10-w-escuela", T.escuela);
+      rise("f10-w-piensa", T.piensa);
+      rise("f10-w-en", T.en, 0.22);
+      // "piensa en ti": every card gets its EN badge and goes grey
+      for (let i = 0; i < 12; i++) {
+        const t = T.piensa - LEAD + [0, 1, 2, 3, 1, 2, 3, 4, 2, 3, 4, 5][i] * 0.035;
+        tl.fromTo(q("f10-g" + i), { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.26, ease: "power3.out" }, t);
+        tl.fromTo(q("f10-b" + i), { filter: "grayscale(0)", opacity: 1 },
+          { filter: "grayscale(1)", opacity: 0.5, duration: 0.42, ease: "power2.out" }, t);
+      }
+      // "ti." — indigo word-chip slams in, band takes the hit
+      tl.fromTo(q("f10-ti"),
+        { scale: 1.8, opacity: 0, rotation: -7, filter: "blur(10px)" },
+        { scale: 1, opacity: 1, rotation: -1.5, filter: "blur(0px)", duration: 0.32, ease: "power4.out" }, T.ti - LEAD);
+      shake("f10-band", T.ti + 0.1, 7);
+
+      // ---- full-screen push seam (no opacity): outgoing + incoming stacked 1080 px apart, moving as ONE sheet.
+      // Accelerate on power3.in for the first half (0 -> -540), cut at peak velocity, decelerate on power4.out
+      // for the second half (-540 -> -1080). Velocities at the cut: 3*540/ta vs 4*540/tb (matched within ~6 %).
+      // A short blur streak rides the two fastest frames on each side of the cut.
+      const push = (outId, inId, tA, durA, durB) => {
+        const o = q(outId), n = q(inId), tB = tA + durA;
+        tl.fromTo(o, { y: 0 }, { y: -540, duration: durA, ease: "power3.in", immediateRender: false }, tA);
+        tl.fromTo(n, { y: 1080 }, { y: 540, duration: durA, ease: "power3.in" }, tA);
+        tl.fromTo(o, { y: -540 }, { y: -1080, duration: durB, ease: "power4.out", immediateRender: false }, tB);
+        tl.fromTo(n, { y: 540 }, { y: 0, duration: durB, ease: "power4.out", immediateRender: false }, tB);
+        tl.fromTo([o, n], { filter: "blur(0px)" }, { filter: "blur(6px)", duration: 0.07, ease: "power1.in", immediateRender: false }, tB - 0.07);
+        tl.fromTo([o, n], { filter: "blur(6px)" }, { filter: "blur(0px)", duration: 0.09, ease: "power1.out", immediateRender: false }, tB);
+      };
+
+      // seam 1 -> 2 (cut at 2.17, right before "Te")
+      push("f10-s1", "f10-s2", 1.93, 0.24, 0.34);
+
+      // ================= SCENE 2 (2.17 – 4.53) =================
+      // nodes arrive solid (no opacity pop) and settle from 0.8 while the sheet decelerates
+      [["f10-n-es", 2.17], ["f10-n-en", 2.21], ["f10-n-nl", 2.25]].forEach(([id, t]) => {
+        tl.fromTo(q(id), { scale: 0.8 }, { scale: 1, duration: 0.36, ease: "power3.out" }, t);
+      });
+      tl.fromTo(q("f10-direct"), { opacity: 0 }, { opacity: 0.35, duration: 0.3, ease: "power1.out" }, 2.3);
+      tl.fromTo(q("f10-direct-lbl"), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, T.como - LEAD);
+      rise("f10-w-te", T.te);
+      rise("f10-w-ensenan", T.ensenan);
+      rise("f10-w-el", T.el);
+      rise("f10-w-idioma", T.idioma);
+      // "enseñan": the route leaves ESPAÑOL and draws to INGLÉS (the detour)
+      const D1 = 0.62, D2 = 0.32;
+      tl.set(q("f10-dot"), { x: P1X, y: P1Y }, 0);
+      tl.fromTo(q("f10-dot"), { scale: 0 }, { scale: 1, duration: 0.2, ease: "power3.out" }, T.ensenan - LEAD);
+      tl.fromTo([q("f10-route"), q("f10-route-shadow")], { strokeDashoffset: 1000 },
+        { strokeDashoffset: 1000 * (1 - F1), duration: D1, ease: "power2.inOut" }, T.ensenan);
+      tl.to(q("f10-dot"), { motionPath: { path: ROUTE, start: 0, end: F1 }, duration: D1, ease: "power2.inOut" }, T.ensenan);
+      rise("f10-w-como", T.como);
+      rise("f10-w-si", T.si);
+      rise("f10-w-vinieras", T.vinieras);
+      rise("f10-w-del", T.del);
+      // "inglés": the word slams, the EN node pulses once, the route continues to NEERLANDÉS
+      slam("f10-ingles", T.ingles, 1.5);
+      tl.fromTo(q("f10-disc-en"), { scale: 1 }, { scale: 1.12, duration: 0.14, ease: "power2.out" }, T.ingles - LEAD);
+      tl.to(q("f10-disc-en"), { scale: 1, duration: 0.3, ease: "power2.inOut" }, T.ingles - LEAD + 0.14);
+      // pulse ring capped at 1.24 (outer r ≈ 119 px) so it never strikes through the label below the disc
+      tl.fromTo(q("f10-ring-en"), { scale: 1, opacity: 0 }, { scale: 1.03, opacity: 0.85, duration: F, ease: "none" }, T.ingles - LEAD);
+      tl.to(q("f10-ring-en"), { scale: 1.24, opacity: 0, duration: 0.45, ease: "power2.out" }, T.ingles - LEAD + F);
+      // EN -> NL lands at ~4.09 so the arrival gets a real beat before the seam
+      const T_NL = T.ingles - LEAD + D2;
+      tl.to([q("f10-route"), q("f10-route-shadow")], { strokeDashoffset: 0, duration: D2, ease: "power2.inOut" }, T.ingles - LEAD);
+      tl.to(q("f10-dot"), { motionPath: { path: ROUTE, start: F1, end: 1 }, duration: D2, ease: "power2.inOut" }, T.ingles - LEAD);
+      tl.fromTo(q("f10-disc-nl"), { scale: 1 }, { scale: 1.08, duration: 0.12, ease: "power2.out" }, T_NL);
+      tl.to(q("f10-disc-nl"), { scale: 1, duration: 0.2, ease: "power2.inOut" }, T_NL + 0.12);
+      tl.fromTo(q("f10-ring-nl"), { scale: 1, opacity: 0 }, { scale: 1.03, opacity: 0.8, duration: F, ease: "none" }, T_NL);
+      tl.to(q("f10-ring-nl"), { scale: 1.24, opacity: 0, duration: 0.4, ease: "power2.out" }, T_NL + F);
+
+      // seam 2 -> 3 (cut at 4.53, exactly on "y")
+      push("f10-s2", "f10-s3", 4.29, 0.24, 0.36);
+
+      // ================= SCENE 3 (4.53 – 6.611) =================
+      rise("f10-w-y", T.y + 0.02);
+      rise("f10-w-te2", T.te2);
+      rise("f10-w-dejan", T.dejan);
+      // red squiggles draw under the two mistakes
+      tl.fromTo(q("f10-sq1"), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.34, ease: "power2.out" }, 4.6);
+      tl.fromTo(q("f10-sq2"), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.28, ease: "power2.out" }, 4.9);
+      // "solo": the word slams, the world around the lone learner dims
+      slam("f10-solo", T.solo, 1.45);
+      tl.fromTo(q("f10-vig"), { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "power2.out" }, T.solo - LEAD);
+      tl.to(q("f10-top-lead"), { opacity: 0.3, duration: 0.4, ease: "power2.out" }, T.solo + 0.06);
+      tl.fromTo(q("f10-dots"), { opacity: 1 }, { opacity: 0.3, duration: 0.5, ease: "power2.out" }, T.solo - LEAD);
+      rise("f10-w-con", T.con);
+      rise("f10-w-tus", T.tus);
+      // "errores": red slam + three ✕ pop around the card
+      slam("f10-errores", T.errores, 1.4);
+      [["f10-x1", 0.0, -10], ["f10-x2", 0.06, 8], ["f10-x3", 0.12, -6]].forEach(([id, dt, r]) => {
+        tl.fromTo(q(id), { scale: 0, opacity: 0, rotation: r - 35 },
+          { scale: 1, opacity: 1, rotation: r, duration: 0.3, ease: "power3.out" }, T.errores - LEAD + dt);
+      });
+      shake("f10-card3", T.errores + 0.08, 6);
+      // hold — lonely.
+
+      // ---- line re-centering: each line slides so its visible words stay centered ----
+      const STEPS = {"f10-band-line": [[null, 672.5], [0.36, 476.6, 0.34], [0.78, 295.2, 0.34], [1.21, 136.5, 0.34], [1.55, 0.0, 0.34]], "f10-s2-lead": [[null, 113.5], [2.57, 87.4, 0.12], [2.69, 0.0, 0.34]], "f10-s2-main": [[null, 512.1], [3.24, 459.3, 0.15], [3.39, 247.7, 0.32], [3.71, 0.0, 0.34]], "f10-top": [[null, 395.1], [4.87, 359.0, 0.12], [4.99, 268.5, 0.34], [5.34, 0.0, 0.34]], "f10-bot": [[null, 516.1], [5.86, 463.3, 0.19], [6.05, 0.0, 0.34]]};
+      Object.keys(STEPS).forEach((id) => {
+        const st = STEPS[id];
+        for (let k = 1; k < st.length; k++) {
+          const t = st[k][0], x = st[k][1], d = st[k][2];
+          if (k === 1) tl.fromTo(q(id), { x: st[0][1] }, { x: x, duration: d, ease: "power3.out" }, t - LEAD);
+          else tl.to(q(id), { x: x, duration: d, ease: "power3.out" }, t - LEAD);
+        }
+      });
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["10-escuelas"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,311 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE + dots + vignette ---------- */
+    #f21-ground { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 50% 46%, #025dc7 0%, #120081 72%); }
+    #f21-dots {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px;
+    }
+    #f21-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 72% 70% at 50% 46%, rgba(4,0,40,0) 52%, rgba(4,0,40,0.42) 100%); }
+
+    /* ---------- 2D cam > perspective stage (= device box) > 3D body ---------- */
+    #f21-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 590.4px 826.8px; }
+    #f21-stage { left: 96px; top: 226px; perspective: 3000px; perspective-origin: 494.4px 600.8px; }
+    #f21-body { position: absolute; left: 0; top: 0; width: 988.8px; height: 622.4px; transform-style: preserve-3d; transform-origin: 494.4px 600.8px; }
+    /* the table under the closed laptop (only seen from above) */
+    #f21-tsp { position: absolute; left: 30.4px; top: 621.1px; width: 928.0px; height: 603.2px; transform-origin: 50% 0; transform: rotateX(90deg); }
+    #f21-tsh {
+      position: absolute; left: 10px; top: 4px; width: 908.0px; height: 589.2px; border-radius: 40px;
+      background: rgba(3,0,30,0.55);
+      box-shadow: -14px 30px 60px 10px rgba(3,0,30,0.50), -4px 10px 18px 2px rgba(3,0,30,0.45);
+    }
+    /* the base: deck top (dark, keyless — edge-on when straight on) + the front lip */
+    #f21-deck {
+      position: absolute; left: 30.4px; top: 586.8px; width: 928.0px; height: 606.0px;
+      transform-origin: 50% 14px; transform: rotateX(90deg); border-radius: 6px 6px 22px 22px;
+      background: linear-gradient(180deg, #121318 0%, #1c1e24 70%, #2a2d34 100%);
+    }
+    #f21-lipw { position: absolute; left: 0; top: 0; width: 988.8px; height: 622.4px; transform-origin: 494.4px 600.8px; transform: translateZ(592.0px) scale(0.93851); }
+    /* the lid: hinge = (580u, 751u); front face = the mockup lid, back = silver aluminium, no logo */
+    #f21-lid { position: absolute; left: 30.4px; top: 0; width: 928.0px; height: 603.2px; transform-style: preserve-3d; transform-origin: 464.0px 600.8px; }
+    #f21-lidf { left: 0; backface-visibility: hidden; }
+    .f21-edge { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: 24.0px 24.0px 12.8px 12.8px; background: #a3a8b0; }
+    #f21-lido {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: 24.0px 24.0px 12.8px 12.8px; overflow: hidden;
+      transform: translateZ(-11.2px) rotateY(180deg); backface-visibility: hidden;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 1 0  0 0 0 1 0  0 0 0 1 0  0 0 0 0 0.09'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E"), radial-gradient(ellipse 120% 95% at 70% 82%, #f4f5f7 0%, #e3e5e9 40%, #cdd0d6 76%, #b8bcc4 100%);
+      box-shadow: inset -2px -2px 0 rgba(255,255,255,0.90), inset 2px 2px 0 rgba(110,116,128,0.40), inset 0 0 0 1px rgba(255,255,255,0.45),
+        inset -5px -5px 10px rgba(255,255,255,0.35), inset 0 0 46px rgba(30,70,190,0.18);
+    }
+    /* soft studio reflection: one broad band + a faint second one */
+    #f21-lidr {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+      background: linear-gradient(302deg, rgba(255,255,255,0) 22%, rgba(255,255,255,0.34) 36%, rgba(255,255,255,0.10) 47%, rgba(255,255,255,0) 58%, rgba(255,255,255,0) 72%, rgba(255,255,255,0.12) 78%, rgba(255,255,255,0) 84%);
+    }
+    /* the black display hinge seen along the back edge */
+    #f21-hinge { position: absolute; left: 88.0px; top: 596.0px; width: 752.0px; height: 7.2px; border-radius: 3.2px; background: linear-gradient(180deg, #34363c 0%, #18191d 100%); }
+
+    /* ================= MAC MOCKUP (tools/mac_mockup.md) — MacBook Pro front view ================= */
+    .f21-mbp { --u: calc(var(--sw) / 1120); }
+    .f21-mbp {
+      --sw: 896px;
+      --al-0: #fbfbfc; --al-1: #e4e6ea; --al-2: #c3c7ce; --al-3: #9a9fa8; --al-4: #6f747d;
+      position: absolute; width: calc(var(--u) * 1236); height: calc(var(--u) * 778);
+    }
+    .f21-mbp-shadow {
+      position: absolute; left: calc(var(--u) * -50); top: calc(var(--u) * 746); width: calc(var(--u) * 1336); height: calc(var(--u) * 110);
+      border-radius: 50%;
+      background: radial-gradient(ellipse 50% 50% at 50% 40%, rgba(3,0,30,0.72) 0%, rgba(3,0,30,0.44) 34%, rgba(3,0,30,0.14) 64%, rgba(3,0,30,0) 100%);
+    }
+    .f21-mbp-occl {
+      position: absolute; left: calc(var(--u) * 30); top: calc(var(--u) * 772); width: calc(var(--u) * 1176); height: calc(var(--u) * 14);
+      border-radius: 50%; background: rgba(2,0,20,0.85); filter: blur(calc(var(--u) * 4));
+    }
+    .f21-mbp-lid {
+      position: absolute; left: calc(var(--u) * 38); top: 0; width: calc(var(--u) * 1160); height: calc(var(--u) * 754);
+      border-radius: calc(var(--u) * 30) calc(var(--u) * 30) calc(var(--u) * 7) calc(var(--u) * 7);
+      background: linear-gradient(180deg, var(--al-1) 0%, var(--al-2) 45%, var(--al-3) 100%);
+      box-shadow: inset 0 0 0 calc(var(--u) * 0.8) rgba(255,255,255,0.55), 0 calc(var(--u) * 26) calc(var(--u) * 70) rgba(4,0,40,0.30);
+    }
+    .f21-mbp-glass {
+      position: absolute; left: calc(var(--u) * 4); top: calc(var(--u) * 4); width: calc(var(--u) * 1152); height: calc(var(--u) * 746);
+      border-radius: calc(var(--u) * 26.5) calc(var(--u) * 26.5) calc(var(--u) * 4) calc(var(--u) * 4); overflow: hidden;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, #0d0e12 0%, #050506 70%);
+      box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(0,0,0,0.85);
+    }
+    .f21-mbp-screen {
+      position: absolute; left: calc(var(--u) * 16); top: calc(var(--u) * 16); width: calc(var(--u) * 1120); height: calc(var(--u) * 700);
+      border-radius: calc(var(--u) * 10) calc(var(--u) * 10) calc(var(--u) * 1.5) calc(var(--u) * 1.5); overflow: hidden; background: #000000;
+    }
+    .f21-mbp-notch {
+      position: absolute; left: calc(var(--u) * 517); top: calc(var(--u) * 16); width: calc(var(--u) * 118); height: calc(var(--u) * 21);
+      border-radius: 0 0 calc(var(--u) * 8) calc(var(--u) * 8); background: #050506;
+    }
+    .f21-mbp-notch::before, .f21-mbp-notch::after { content: ""; position: absolute; top: 0; width: calc(var(--u) * 6); height: calc(var(--u) * 6); }
+    .f21-mbp-notch::before { left: calc(var(--u) * -6); background: radial-gradient(circle at 0% 100%, rgba(5,5,6,0) calc(var(--u) * 5.5), #050506 calc(var(--u) * 6)); }
+    .f21-mbp-notch::after { right: calc(var(--u) * -6); background: radial-gradient(circle at 100% 100%, rgba(5,5,6,0) calc(var(--u) * 5.5), #050506 calc(var(--u) * 6)); }
+    .f21-mbp-lens {
+      position: absolute; left: calc(var(--u) * 55.5); top: calc(var(--u) * 7); width: calc(var(--u) * 7); height: calc(var(--u) * 7); border-radius: 50%;
+      background: radial-gradient(circle at 38% 34%, #4a5a8c 0%, #1a2142 38%, #0a0b14 72%);
+      box-shadow: 0 0 0 calc(var(--u) * 1.2) #111217;
+    }
+    .f21-mbp-reflect {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none;
+      background: linear-gradient(121deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.035) 30%, rgba(255,255,255,0.016) 40.5%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 100%);
+    }
+    .f21-mbp-base {
+      position: absolute; left: 0; top: calc(var(--u) * 751); width: calc(var(--u) * 1236); height: calc(var(--u) * 27);
+      border-radius: calc(var(--u) * 4) calc(var(--u) * 4) calc(var(--u) * 70) calc(var(--u) * 70) / calc(var(--u) * 3) calc(var(--u) * 3) calc(var(--u) * 24) calc(var(--u) * 24);
+      background: linear-gradient(180deg, var(--al-0) 0%, var(--al-1) 12%, var(--al-2) 44%, var(--al-3) 76%, var(--al-4) 100%);
+      box-shadow: inset 0 calc(var(--u) * -1.2) calc(var(--u) * 1.5) rgba(0,0,0,0.22), inset 0 calc(var(--u) * 0.8) 0 rgba(255,255,255,0.7);
+    }
+    .f21-mbp-thumb {
+      position: absolute; left: calc(var(--u) * 538); top: 0; width: calc(var(--u) * 160); height: calc(var(--u) * 8);
+      border-radius: 0 0 50% 50% / 0 0 100% 100%;
+      background: linear-gradient(180deg, var(--al-3) 0%, var(--al-2) 55%, var(--al-1) 100%);
+      box-shadow: inset 0 calc(var(--u) * 1.6) calc(var(--u) * 2.2) rgba(0,0,0,0.30), 0 calc(var(--u) * 0.6) 0 rgba(255,255,255,0.45);
+    }
+
+    /* browser chrome: tab strip 36u + toolbar 34u = 70u; content 1120u x 630u = 16:9 */
+    .f21-chrome { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 70); font-family: "Inter", sans-serif; }
+    .f21-tabs { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--u) * 36); background: #DEE1E6; }
+    .f21-tl { position: absolute; top: calc(var(--u) * 12); width: calc(var(--u) * 12); height: calc(var(--u) * 12); border-radius: 50%; }
+    .f21-tl-r { left: calc(var(--u) * 13); background: #FF5F57; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #E0443E; }
+    .f21-tl-y { left: calc(var(--u) * 33); background: #FEBC2E; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #DEA123; }
+    .f21-tl-g { left: calc(var(--u) * 53); background: #28C840; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #1AAB29; }
+    .f21-tab {
+      position: absolute; left: calc(var(--u) * 82); top: calc(var(--u) * 7); width: calc(var(--u) * 232); height: calc(var(--u) * 29);
+      border-radius: calc(var(--u) * 9) calc(var(--u) * 9) 0 0; background: #FFFFFF;
+    }
+    .f21-tab::before, .f21-tab::after { content: ""; position: absolute; bottom: 0; width: calc(var(--u) * 9); height: calc(var(--u) * 9); }
+    .f21-tab::before { left: calc(var(--u) * -9); background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f21-tab::after { right: calc(var(--u) * -9); background: radial-gradient(circle at 100% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f21-fav {
+      position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 7); width: calc(var(--u) * 15); height: calc(var(--u) * 15);
+      border-radius: calc(var(--u) * 3.5); overflow: hidden; background: radial-gradient(circle at 50% 45%, #2fb6f2 0%, #0b6df0 80%);
+    }
+    .f21-fav img { position: absolute; left: calc(var(--u) * 1.2); top: calc(var(--u) * 5.2); width: calc(var(--u) * 12.6); height: auto; display: block; }
+    .f21-tab-t {
+      position: absolute; left: calc(var(--u) * 35); top: 0; height: calc(var(--u) * 29); line-height: calc(var(--u) * 29);
+      font-size: calc(var(--u) * 12); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f21-tab-x { position: absolute; right: calc(var(--u) * 10); top: calc(var(--u) * 9.5); width: calc(var(--u) * 10); height: calc(var(--u) * 10); }
+    .f21-plus { position: absolute; left: calc(var(--u) * 330); top: calc(var(--u) * 11); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    .f21-bar { position: absolute; left: 0; top: calc(var(--u) * 36); width: 100%; height: calc(var(--u) * 34); background: #FFFFFF; box-shadow: inset 0 calc(var(--u) * -1) 0 #DADCE0; }
+    .f21-nav { position: absolute; left: calc(var(--u) * 14); top: calc(var(--u) * 9); width: calc(var(--u) * 86); height: calc(var(--u) * 16); overflow: visible; }
+    .f21-menu { position: absolute; left: calc(var(--u) * 1086); top: calc(var(--u) * 9); width: calc(var(--u) * 16); height: calc(var(--u) * 16); }
+    .f21-url {
+      position: absolute; left: calc(var(--u) * 102); top: calc(var(--u) * 4); width: calc(var(--u) * 962); height: calc(var(--u) * 26);
+      border-radius: calc(var(--u) * 13); background: #F1F3F4;
+    }
+    .f21-lock { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6.5); width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
+    .f21-url-t {
+      position: absolute; left: calc(var(--u) * 33); top: 0; height: calc(var(--u) * 26); line-height: calc(var(--u) * 26);
+      font-size: calc(var(--u) * 13); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f21-star { position: absolute; right: calc(var(--u) * 11); top: calc(var(--u) * 6); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    .f21-content { position: absolute; left: 0; top: calc(var(--u) * 70); width: calc(var(--u) * 1120); height: calc(var(--u) * 630); overflow: hidden; background: #FFFFFF; }
+    .f21-media { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--fx, 50%) 50%; display: block; }
+
+    #f21-scrim { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 80% at 44% 48%, rgba(4,0,40,0.08) 0%, rgba(4,0,40,0.22) 50%, rgba(3,0,30,0.58) 100%); }
+    #f21-disc { position: absolute; left: 420px; top: 435px; width: 160px; height: 160px; }
+    #f21-discb {
+      position: absolute; inset: 0; border-radius: 50%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 55%), rgba(10,10,32,0.50);
+      box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.40), 0 18px 44px rgba(2,0,24,0.40);
+    }
+    #f21-dpress { position: absolute; inset: 0; border-radius: 50%; background: rgba(2,0,20,0.35); opacity: 0; }
+    .f21-dico { position: absolute; left: 0; top: 0; width: 160px; height: 160px; display: block; }
+    #f21-cursor { position: absolute; left: 509px; top: 528px; width: 30px; height: 46px; }
+    #f21-cursori { position: absolute; left: 0; top: 0; width: 30px; height: 46px; transform-origin: 3px 3px; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.40)); }
+    #f21-ctl {
+      position: absolute; left: 96px; top: 908px; width: 1728px; height: 64px; box-sizing: border-box;
+      display: flex; align-items: center; gap: 28px; padding: 0 30px; border-radius: 18px;
+      background: rgba(10,8,34,0.62); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.14), 0 16px 40px rgba(3,0,28,0.30);
+      font-family: "Inter", sans-serif;
+    }
+    .f21-ic { position: relative; width: 26px; height: 26px; flex: 0 0 26px; }
+    .f21-ic svg { position: absolute; left: 0; top: 0; width: 26px; height: 26px; display: block; }
+    #f21-time { font-weight: 600; font-size: 22px; line-height: 1; color: rgba(255,255,255,0.80); white-space: nowrap; font-variant-numeric: tabular-nums; }
+    #f21-track { position: relative; flex: 1 1 auto; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.26); }
+    #f21-fill { position: absolute; left: 0; top: 0; width: 50.2%; height: 5px; border-radius: 3px; background: #FFFFFF; }
+    #f21-knob { position: absolute; left: 50.2%; top: 2.5px; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 2px 6px rgba(0,0,0,0.35); }
+
+    /* ---------- screen: the browser (website, then the course page) ---------- */
+    #f21-browser { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #FFFFFF; }
+    #f21-url2 { opacity: 0; }
+
+    /* ---------- right column: 16 / semanas / de formación guiada ---------- */
+    #f21-col { position: absolute; left: 1176px; top: 262px; width: 664px; height: 560px; }
+    #f21-num { position: absolute; left: -12px; top: 0; font-weight: 900; font-size: 250px; line-height: 1; letter-spacing: -0.05em; color: #FFFFFF; white-space: nowrap; }
+    #f21-sem { position: absolute; left: 0; top: 252px; font-weight: 800; font-size: 96px; line-height: 1.04; letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    #f21-pills { position: absolute; left: 0; top: 386px; width: 664px; height: 10px; }
+    .f21-pill { position: absolute; top: 0; width: 34px; height: 10px; border-radius: 5px; background: rgba(255,255,255,0.18); overflow: hidden; }
+    .f21-pf { position: absolute; left: 0; top: 0; width: 34px; height: 10px; border-radius: 5px; background: #4da3ff; transform-origin: 0% 50%; }
+    #f21-sub { position: absolute; left: 0; top: 424px; white-space: nowrap; }
+    .f21-lead { display: inline-block; font-weight: 600; font-size: 44px; line-height: 1.2; letter-spacing: -0.01em; color: rgba(255,255,255,0.72); }
+    .f21-lead + .f21-lead { margin-left: 0.25em; }
+    #f21-guiada { color: #4da3ff; }
+  </style>
+
+  <div id="root" data-composition-id="21-portatil" data-width="1920" data-height="1080" data-duration="4.862">
+    <div id="f21-ground" class="clip" data-start="0" data-duration="4.862" data-track-index="0"><div id="f21-dots"></div><div id="f21-vig"></div></div>
+    <div id="f21-cam">
+      <div id="f21-stage" class="f21-mbp">
+        <div id="f21-csh" class="f21-mbp-shadow"></div><div id="f21-coc" class="f21-mbp-occl"></div>
+        <div id="f21-body">
+          <div id="f21-tsp"><div id="f21-tsh"></div></div>
+          <div id="f21-deck"></div>
+          <div id="f21-lipw"><div class="f21-mbp-base"><div class="f21-mbp-thumb"></div></div></div>
+          <div id="f21-lid">
+            <div id="f21-lido"><div id="f21-lidr"></div><div id="f21-hinge"></div></div>
+            <div class="f21-edge" style="transform: translateZ(-2.24px);"></div><div class="f21-edge" style="transform: translateZ(-4.48px);"></div><div class="f21-edge" style="transform: translateZ(-6.72px);"></div><div class="f21-edge" style="transform: translateZ(-8.96px);"></div>
+            <div id="f21-lidf" class="f21-mbp-lid">
+              <div class="f21-mbp-glass">
+                <div class="f21-mbp-screen">
+                  <div id="f21-browser">
+                    <div class="f21-chrome">
+                      <div class="f21-tabs"><i class="f21-tl f21-tl-r"></i><i class="f21-tl f21-tl-y"></i><i class="f21-tl f21-tl-g"></i>
+                        <div class="f21-tab"><div class="f21-fav"><img src="assets/img/logo-nawar.png" alt="" /></div><div class="f21-tab-t">Holandés Nawar</div><svg class="f21-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
+                        <svg class="f21-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
+                      <div class="f21-bar"><svg class="f21-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
+                        <div class="f21-url"><svg class="f21-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div id="f21-url1" class="f21-url-t">holandesnawar.com</div><div id="f21-url2" class="f21-url-t">app.holandesnawar.com</div><svg class="f21-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
+                        <svg class="f21-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
+                    </div>
+                    <div class="f21-content" style="--fx:50%;">
+                      <video id="f21-vid1" class="clip f21-media" src="assets/video/nuestra-vision-hero.mp4" muted playsinline data-start="0" data-duration="2.4" data-media-start="0" data-hf-media-start-basis="local" data-track-index="2"></video>
+                      <video id="f21-vid2" class="clip f21-media" src="assets/video/formacion-134.mp4" muted playsinline data-start="2.4" data-duration="2.462" data-media-start="0" data-hf-media-start-basis="local" data-track-index="2"></video>
+                    </div>
+                  </div>
+                </div>
+                <div class="f21-mbp-notch"><i class="f21-mbp-lens"></i></div>
+                <div class="f21-mbp-reflect"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="f21-scrim"></div>
+    <div id="f21-disc"><div id="f21-discb"></div><div id="f21-dpress"></div>
+      <svg id="f21-dpause" class="f21-dico" viewBox="0 0 160 160" aria-hidden="true"><rect x="58" y="52" width="15" height="56" rx="4" fill="#FFFFFF"></rect><rect x="87" y="52" width="15" height="56" rx="4" fill="#FFFFFF"></rect></svg>
+      <svg id="f21-dplay" class="f21-dico" viewBox="0 0 160 160" aria-hidden="true"><path d="M 66 52 L 66 108 Q 66 115 72.5 111.4 L 114 85.6 Q 119.5 80 114 74.4 L 72.5 48.6 Q 66 45 66 52 Z" fill="#FFFFFF"></path></svg></div>
+    <div id="f21-ctl">
+      <div class="f21-ic"><svg id="f21-bplay" viewBox="0 0 26 26" aria-hidden="true"><path d="M 7 4.2 L 7 21.8 Q 7 23.8 8.8 22.8 L 22.2 14.4 Q 23.8 13 22.2 11.6 L 8.8 3.2 Q 7 2.2 7 4.2 Z" fill="#FFFFFF"></path></svg>
+        <svg id="f21-bpause" viewBox="0 0 26 26" aria-hidden="true"><rect x="5.5" y="4" width="5.5" height="18" rx="1.6" fill="#FFFFFF"></rect><rect x="15" y="4" width="5.5" height="18" rx="1.6" fill="#FFFFFF"></rect></svg></div>
+      <div id="f21-time">1:29 / 2:57</div>
+      <div id="f21-track"><div id="f21-fill"></div><div id="f21-knob"></div></div>
+      <div class="f21-ic"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M 3.5 9.5 L 7.8 9.5 L 13 4.8 L 13 21.2 L 7.8 16.5 L 3.5 16.5 Z" fill="#FFFFFF"></path><path d="M 17 9 Q 19.8 13 17 17 M 19.8 6.2 Q 24.6 13 19.8 19.8" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"></path></svg></div>
+      <div class="f21-ic"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M 4 9.5 L 4 4 L 9.5 4 M 16.5 4 L 22 4 L 22 9.5 M 22 16.5 L 22 22 L 16.5 22 M 9.5 22 L 4 22 L 4 16.5" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+    </div>
+    <div id="f21-cursor"><div id="f21-cursori"><svg viewBox="0 0 30 46" width="30" height="46" style="display:block; overflow:visible;" aria-hidden="true"><path d="M 2.5 2.5 L 2.5 34 L 10 26.6 L 15 38.6 L 20.4 36.4 L 15.5 24.6 L 26 24.6 Z" fill="#0C0C10" stroke="#FFFFFF" stroke-width="2.2" stroke-linejoin="round"></path></svg></div></div>
+    <div id="f21-col">
+      <div id="f21-num">16</div>
+      <div id="f21-sem">semanas</div>
+      <div id="f21-pills"><div class="f21-pill" style="left: 0px;"><div id="f21-pf0" class="f21-pf"></div></div><div class="f21-pill" style="left: 42px;"><div id="f21-pf1" class="f21-pf"></div></div><div class="f21-pill" style="left: 84px;"><div id="f21-pf2" class="f21-pf"></div></div><div class="f21-pill" style="left: 126px;"><div id="f21-pf3" class="f21-pf"></div></div><div class="f21-pill" style="left: 168px;"><div id="f21-pf4" class="f21-pf"></div></div><div class="f21-pill" style="left: 210px;"><div id="f21-pf5" class="f21-pf"></div></div><div class="f21-pill" style="left: 252px;"><div id="f21-pf6" class="f21-pf"></div></div><div class="f21-pill" style="left: 294px;"><div id="f21-pf7" class="f21-pf"></div></div><div class="f21-pill" style="left: 336px;"><div id="f21-pf8" class="f21-pf"></div></div><div class="f21-pill" style="left: 378px;"><div id="f21-pf9" class="f21-pf"></div></div><div class="f21-pill" style="left: 420px;"><div id="f21-pf10" class="f21-pf"></div></div><div class="f21-pill" style="left: 462px;"><div id="f21-pf11" class="f21-pf"></div></div><div class="f21-pill" style="left: 504px;"><div id="f21-pf12" class="f21-pf"></div></div><div class="f21-pill" style="left: 546px;"><div id="f21-pf13" class="f21-pf"></div></div><div class="f21-pill" style="left: 588px;"><div id="f21-pf14" class="f21-pf"></div></div><div class="f21-pill" style="left: 630px;"><div id="f21-pf15" class="f21-pf"></div></div></div>
+      <div id="f21-sub"><span id="f21-w3" class="f21-lead">de</span> <span id="f21-w4" class="f21-lead">formación</span> <span id="f21-guiada" class="f21-lead">guiada</span></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const $ = (id) => document.getElementById(id);
+
+      // seam: identical to the last frame of 20-pausa (lid lifted 5 deg, play pressed)
+      tl.fromTo($("f21-cam"), { x: -221.9, y: -607.16, rotation: -24.0, scale: 1.15 }, { x: -221.9, y: -607.16, rotation: -24.0, scale: 1.15, duration: 0.001 }, 0);
+      tl.fromTo($("f21-body"), { rotationX: -66 }, { rotationX: -66, duration: 0.001 }, 0);
+      tl.fromTo($("f21-lid"), { rotationX: -85 }, { rotationX: -85, duration: 0.001 }, 0);
+      tl.fromTo($("f21-bplay"), { opacity: 0 }, { opacity: 0, duration: 0.001 }, 0);
+      tl.fromTo($("f21-dpause"), { opacity: 0 }, { opacity: 0, duration: 0.001 }, 0);
+
+      // ===== Scene 1 (0.0-1.0): THE DROP — the player hides, the camera cranes down, the lid swings open =====
+      tl.fromTo($("f21-scrim"), { opacity: 1 }, { opacity: 0, duration: 0.6, ease: "power2.out" }, 0);
+      tl.fromTo($("f21-disc"), { opacity: 1, scale: 1 }, { opacity: 0, scale: 1.1, duration: 0.18, ease: "power2.out" }, 0);
+      tl.fromTo($("f21-dpress"), { opacity: 1 }, { opacity: 1, duration: 0.01 }, 0);
+      tl.fromTo($("f21-cursor"), { opacity: 1 }, { opacity: 0, duration: 0.16, ease: "power1.out" }, 0);
+      tl.fromTo($("f21-ctl"), { opacity: 1, y: 0 }, { opacity: 0, y: 36, duration: 0.3, ease: "power2.in" }, 0);
+      // camera: from above (diagonal, close) to straight on, centred
+      tl.fromTo($("f21-cam"), { x: -221.9, y: -607.16, rotation: -24.0, scale: 1.15 }, { x: 369.6, y: 11.76, rotation: 0, scale: 1.1, duration: 1.05, ease: "power3.out" }, 0);
+      // body: top view -> deck height (reaches the deck plane before the lid is more than a few degrees open)
+      tl.fromTo($("f21-body"), { rotationX: -66 }, { rotationX: 0, duration: 0.5, ease: "power3.out" }, 0);
+      // lid: swings up about the hinge, ends straight on
+      tl.fromTo($("f21-lid"), { rotationX: -85 }, { rotationX: 0, duration: 0.92, ease: "power2.inOut" }, 0.06);
+      tl.fromTo($("f21-stage"), { perspective: 3000 }, { perspective: 9627.8, duration: 1.0, ease: "power2.inOut" }, 0);
+      // shadows: the table shadow (seen from above) hands over to the mockup's contact shadow
+      tl.fromTo($("f21-tsp"), { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power1.in" }, 0.05);
+      tl.fromTo([$("f21-csh"), $("f21-coc")], { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "power2.out" }, 0.4);
+
+      // ===== Scene 2 (1.05-SWITCH): the website plays while the camera pushes in slowly =====
+      tl.fromTo($("f21-cam"), { x: 369.6, y: 11.76, rotation: 0, scale: 1.1 }, { x: 369.6, y: 18.13, rotation: 0, scale: 1.122, duration: 1.854, ease: "sine.inOut", immediateRender: false }, 1.05);
+
+      // ===== Scene 3 (SWITCH): the browser navigates to the course page =====
+      tl.set($("f21-url1"), { opacity: 0 }, 2.4);
+      tl.set($("f21-url2"), { opacity: 1 }, 2.4);
+
+      // ===== Scene 4 (voice back): the Mac glides left; 16 semanas de formación guiada =====
+      tl.fromTo($("f21-cam"), { x: 369.6, y: 18.13, rotation: 0, scale: 1.122 }, { x: 0, y: 0, rotation: 0, scale: 1, duration: 0.8, ease: "power3.inOut", immediateRender: false }, 2.884);
+      tl.fromTo($("f21-col"), { x: 369.6 }, { x: 0, duration: 0.8, ease: "power3.inOut" }, 2.884);
+      tl.fromTo($("f21-num"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 2.894);
+      tl.fromTo($("f21-sem"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, 3.495);
+      tl.fromTo($("f21-w3"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.26, ease: "power2.out" }, 3.831);
+      tl.fromTo($("f21-w4"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.26, ease: "power2.out" }, 3.923);
+      tl.fromTo($("f21-guiada"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" }, 4.436);
+      tl.fromTo($("f21-pills"), { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power1.out" }, 3.525);
+      for (let i = 0; i < 16; i++) {
+        tl.fromTo($("f21-pf" + i), { scaleX: 0 }, { scaleX: 1, duration: 0.14, ease: "power2.out" }, 3.585 + i * 0.054);
+      }
+
+      window.__timelines["21-portatil"] = tl;
+    })();
+  </script>
+</template>
