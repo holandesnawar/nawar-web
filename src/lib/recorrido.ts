@@ -21,7 +21,7 @@
  * poder apuntar de dónde venía.
  */
 
-import { webDeOrigen } from './visitas'
+import { webDeOrigen, marcarDatosDejados } from './visitas'
 
 const CLAVE = 'nawar_recorrido'
 const TOPE = 12
@@ -141,6 +141,13 @@ export function leerRecorrido(): string[] {
  * que aterriza directamente en el formulario sin pasar por ninguna página.
  */
 export function contextoDelLead(): { recorrido: string[]; referrer: string } {
+  // Todos los formularios llaman a esto justo al enviar: se avisa al contador
+  // de visitas de que en esta visita se dejaron datos (sin decir de quién).
+  try {
+    marcarDatosDejados()
+  } catch {
+    /* es un contador: si falla, el formulario sigue */
+  }
   let referrer = ''
   try {
     const r = document.referrer || ''
