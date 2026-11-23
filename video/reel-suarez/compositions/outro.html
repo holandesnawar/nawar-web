@@ -1,0 +1,122 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 700; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 100 900; src: url("assets/fonts/inter-var-latin.woff2") format("woff2"); }
+
+    #o-root { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", sans-serif; color: #FFFFFF; }
+    .o-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    /* the page's hero: indigo, two soft blue lights and a faint dot grid */
+    #o-ground { background: #1D0084; }
+    .o-luz1 { position: absolute; top: -280px; right: -320px; width: 1300px; height: 1300px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(11,109,240,0.42) 0%, rgba(11,109,240,0) 65%); }
+    .o-luz2 { position: absolute; bottom: -260px; left: -280px; width: 1150px; height: 1150px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(11,109,240,0.20) 0%, rgba(11,109,240,0) 65%); }
+    .o-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 2px, transparent 2.2px);
+      background-size: 52px 52px; }
+    .o-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    /* the badge: «BLACK FRIDAY · EBOOK NIVEL A0 – A1» (v7.6: without the page's green dot) */
+    #o-badge { top: 212px; }
+    .o-badge { display: flex; align-items: center; height: 64px; padding: 0 32px; border-radius: 999px;
+      background: #025DC7; color: #E0F2FF; font-weight: 700; font-size: 25px; letter-spacing: 0.14em; text-transform: uppercase;
+      white-space: nowrap; line-height: 1; }
+    /* the headline, as the page's title: Poppins 700, the first line in a white gradient, the second in sky blue */
+    .o-h { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 96px; line-height: 1.08; letter-spacing: -0.03em;
+      white-space: nowrap; }
+    #o-l1 { top: 296px; }
+    #o-l1 span { background: linear-gradient(180deg, #FFFFFF 10%, rgba(255,255,255,0.55) 100%); -webkit-background-clip: text;
+      background-clip: text; -webkit-text-fill-color: transparent; color: transparent; padding: 0 6px; }
+    #o-l2 { top: 400px; color: #4DA3FF; }
+    /* the book, and the page's white seal over its corner */
+    #o-book { position: absolute; left: 151px; top: 572px; width: 778px; height: 630px; }
+    #o-book video { position: absolute; left: 0; top: 0; width: 778px; height: 630px; display: block; }
+    #o-seal { position: absolute; left: 120px; top: 540px; transform-origin: 30% 50%; }   /* (at 0.78: over the book's corner
+                                                     and its blue band only, never over the page headings) */
+    .o-seal { position: relative; padding: 20px 30px 22px; border-radius: 28px; background: #FFFFFF; overflow: hidden; }
+    .o-seal .k { font-weight: 700; font-size: 25px; letter-spacing: 0.14em; color: #DC2626; line-height: 1; }
+    .o-seal .p { display: flex; align-items: flex-end; gap: 18px; margin-top: 28px; }   /* (the 112 px price keeps its own line box clear of the label) */
+    #o-eur { display: inline-block; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 112px; line-height: 1;
+      letter-spacing: -0.03em; color: #1D0084; transform-origin: 40% 60%; }
+    .o-seal s { font-family: "Poppins", sans-serif; font-weight: 600; font-size: 40px; color: #5B6380; line-height: 1; padding-bottom: 15px;
+      text-decoration-color: #DC2626; text-decoration-thickness: 4px; }
+    #o-shine { position: absolute; top: -40px; left: -160px; width: 110px; height: 320px; transform: rotate(18deg);
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 100%); opacity: 0.7; }
+    #o-off { position: absolute; left: 339px; top: -16px; transform-origin: 50% 50%; }
+    .o-off { padding: 12px 22px; border-radius: 999px; background: #E02D3C; color: #FFFFFF; font-family: "Poppins", sans-serif;
+      font-weight: 700; font-size: 38px; line-height: 1; white-space: nowrap; }
+    /* the page's light-blue ticker */
+    #o-band { position: absolute; left: -10px; top: 1240px; width: 1100px; height: 64px; background: #4DA3FF; overflow: hidden; }
+    #o-track { position: absolute; left: 0; top: 0; height: 64px; display: flex; align-items: center; white-space: nowrap; }
+    #o-track span { display: flex; align-items: center; gap: 16px; padding: 0 26px; color: #1D0084; font-weight: 700; font-size: 30px; line-height: 1; }
+    #o-track b { font-size: 26px; }
+    /* the call to action: an Instagram comment field */
+    #o-cta { top: 1326px; }
+    .o-field { position: relative; display: flex; align-items: center; gap: 18px; width: 744px; height: 96px; padding: 0 30px 0 18px;
+      border-radius: 999px; background: #FFFFFF; white-space: nowrap; }
+    .o-av { display: block; width: 62px; height: 62px; flex: 0 0 62px; }
+    #o-ph { position: absolute; left: 98px; font-weight: 500; font-size: 32px; color: #8E8E8E; }
+    #o-typed { font-family: "Poppins", sans-serif; font-weight: 800; font-size: 40px; color: #0C0C1E; line-height: 1; letter-spacing: 0.02em; }
+    #o-caret { display: block; width: 4px; height: 46px; border-radius: 2px; background: #0095F6; margin-left: -14px; }
+    .o-fill { flex: 1 1 auto; }
+    #o-post { position: relative; font-weight: 700; font-size: 32px; color: #0095F6; }
+    #o-ripple { position: absolute; left: 50%; top: 50%; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%;
+      background: rgba(0,149,246,0.30); opacity: 0; }
+    #o-ok { top: 1436px; }
+    .o-ok { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 26px 0 14px; border-radius: 16px;
+      background: rgba(34,197,94,0.18); border: 2px solid rgba(34,197,94,0.55); font-weight: 700; font-size: 29px; white-space: nowrap; }
+    .o-ok svg { display: block; width: 36px; height: 36px; }
+
+  </style>
+  <div id="o-root" data-composition-id="outro" data-width="1080" data-height="1920" data-duration="12.42">
+
+    <div id="o-ground" class="o-full"><div class="o-luz1"></div><div class="o-luz2"></div><div class="o-dots"></div></div>
+    <div id="o-badge" class="o-row"><div class="o-badge"><span>Black Friday · eBook nivel A0 – A1</span></div></div>
+    <div id="o-l1" class="o-row o-h"><span>Habla neerlandés</span></div>
+    <div id="o-l2" class="o-row o-h">sin miedo.</div>
+    <div id="o-book"><video id="o-v" class="clip" src="assets/video/libro.webm" muted playsinline data-start="0.3" data-duration="12.12" data-track-index="1"></video></div>
+    <div id="o-seal"><div class="o-seal"><div class="k">BLACK FRIDAY</div><div class="p"><span id="o-eur">1&nbsp;€</span><s>12,50&nbsp;€</s></div><div id="o-shine"></div></div>
+      <div id="o-off"><div class="o-off">−92&nbsp;%</div></div></div>
+    <div id="o-band"><div id="o-track"><span><b>✦</b>70 páginas</span><span><b>✦</b>Explicado en español</span><span><b>✦</b>Vocabulario y gramática</span><span><b>✦</b>Tuyo para siempre</span><span><b>✦</b>Black Friday: −92 %</span><span><b>✦</b>Descarga al momento</span><span><b>✦</b>70 páginas</span><span><b>✦</b>Explicado en español</span><span><b>✦</b>Vocabulario y gramática</span><span><b>✦</b>Tuyo para siempre</span><span><b>✦</b>Black Friday: −92 %</span><span><b>✦</b>Descarga al momento</span><span><b>✦</b>70 páginas</span><span><b>✦</b>Explicado en español</span><span><b>✦</b>Vocabulario y gramática</span><span><b>✦</b>Tuyo para siempre</span><span><b>✦</b>Black Friday: −92 %</span><span><b>✦</b>Descarga al momento</span><span><b>✦</b>70 páginas</span><span><b>✦</b>Explicado en español</span><span><b>✦</b>Vocabulario y gramática</span><span><b>✦</b>Tuyo para siempre</span><span><b>✦</b>Black Friday: −92 %</span><span><b>✦</b>Descarga al momento</span></div></div>
+    <div id="o-cta" class="o-row"><div class="o-field"><svg class="o-av" viewBox="0 0 62 62"><circle cx="31" cy="31" r="31" fill="#E6E8EF"/><circle cx="31" cy="25" r="11" fill="#A9AFBE"/><path d="M11 52 C14 41 22 37 31 37 C40 37 48 41 51 52 A30 30 0 0 1 11 52 Z" fill="#A9AFBE"/></svg><span id="o-ph">Añade un comentario…</span><span id="o-typed"></span><span id="o-caret"></span><span class="o-fill"></span><span id="o-post">Publicar<i id="o-ripple"></i></span></div></div>
+    <div id="o-ok" class="o-row"><div class="o-ok"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#22C55E"/><path d="M10 18.5 L15.5 24 L26 12.5" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Te enviamos los detalles por mensaje</span></div></div>
+
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+
+      // everything comes in at once (0.2–0.8 s), the call to action last
+      tl.fromTo("#o-ground", { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.28, ease: "power2.out" }, 0.0);
+      tl.fromTo("#o-badge", { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.40, ease: "power3.out" }, 0.2);
+      tl.fromTo("#o-l1", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.28);
+      tl.fromTo("#o-l2", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.38);
+      tl.fromTo("#o-book", { opacity: 0, y: 70, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "power3.out" }, 0.3);
+      tl.fromTo("#o-band", { x: -1120 }, { x: 0, duration: 0.50, ease: "power3.out" }, 0.42);
+      tl.fromTo("#o-track", { xPercent: 0 }, { xPercent: -25, duration: 12.42, ease: "none" }, 0);
+      tl.fromTo("#o-seal", { opacity: 0, scale: 0.45, rotation: -14 }, { opacity: 1, scale: 0.78, rotation: 0, duration: 0.50, ease: "back.out(1.8)" }, 0.52);
+      tl.fromTo("#o-off", { opacity: 0, scale: 0.2, rotation: 30 }, { opacity: 1, scale: 1, rotation: 8, duration: 0.40, ease: "back.out(2.2)" }, 0.66);
+      tl.fromTo("#o-eur", { scale: 1 }, { scale: 1.14, duration: 0.16, ease: "power2.out", yoyo: true, repeat: 1 }, 7.48);
+      tl.fromTo("#o-cta", { opacity: 0, y: 46, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.5)" }, 8.2);
+      tl.set("#o-ph", { opacity: 0 }, 8.78);
+      tl.fromTo("#o-post", { opacity: 0.4 }, { opacity: 1, duration: 0.15 }, 8.78);
+      tl.fromTo("#o-ripple", { opacity: 0.9, scale: 0.2 }, { opacity: 0, scale: 1.5, duration: 0.45, ease: "power2.out", immediateRender: false }, 9.54);
+      tl.fromTo("#o-cta .o-field", { scale: 1 }, { scale: 0.97, duration: 0.09, ease: "power2.out", yoyo: true, repeat: 1 }, 9.54);
+      tl.fromTo("#o-ok", { opacity: 0, y: 22, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "back.out(1.6)" }, 9.72);
+      tl.fromTo("#o-shine", { x: 0 }, { x: 620, duration: 0.75, ease: "power2.inOut" }, 11.32);
+      (() => {                                               // «OFERTA» typed letter by letter (one state per letter: seek-safe)
+        const el = document.getElementById("o-typed"), full = "OFERTA", typ = { n: 0 };
+        el.textContent = "";
+        tl.fromTo(typ, { n: 0 }, { n: full.length, duration: 0.66, ease: "none", immediateRender: false,
+          onUpdate: () => { el.textContent = full.slice(0, Math.round(typ.n)); } }, 8.78);
+      })();
+
+      tl.set("#o-caret", { opacity: 1 }, 8.200);
+      tl.set("#o-caret", { opacity: 0 }, 8.450);
+      tl.set("#o-caret", { opacity: 1 }, 8.700);
+      tl.set("#o-caret", { opacity: 1 }, 8.780);
+      tl.set("#o-caret", { opacity: 0 }, 9.540);
+      window.__timelines["outro"] = tl;
+    })();
+  </script>
+</template>

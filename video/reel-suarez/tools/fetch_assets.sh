@@ -23,5 +23,5 @@ python3 tools/esrgan_onnx.py "$RAW/realesr-general-x4v3.pth" "$RAW/esrgan-x4v3.o
 python3 tools/upscale.py 123 993
 python3 tools/frame.py
 python3 tools/subs.py
-python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v6.mp4"
+python3 tools/gen.py      # (copies the closing ad from ../reel-suarez-habla: run its tools/fetch_assets.sh first)
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v7.mp4"

@@ -18,15 +18,14 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
     borrón de movimiento y se deja), y a la blanca se le quita la estrella (`LOGOS`);
   - en el plano 928 la ventana se queda a la izquierda del remolino naranja del escaparate todo lo que se puede sin
     cortarle la cara; el trocito que queda junto a su mandíbula (0,3 s) no se borra, porque borrarlo le mancha la mejilla.
-- **Título (v6, estilo Apple):** una tarjeta blanca esmerilada sobre el pecho desde el primer fotograma (gancho y
-  portada), con la bandera redonda de Países Bajos: «Aprendiendo neerlandés» en azul y, debajo y en grande, «con Luis
-  Suárez». Va justo debajo de la boca del dependiente, que habla en esos segundos. A los 3 s se aparta y, cuando el
-  dependiente baja la cabeza (5,1 s), queda una pastilla pequeña arriba («Neerlandés con Luis Suárez»). La pastilla se
-  aparta para no tapar ojos ni caras: de 8,0 a 10,5 s (el primer plano de Suárez y el dependiente inclinándose) y de
-  14,4 a 30,3 s (los primeros planos de los dos y el plano en el que la cámara sube hasta la cara de Suárez); entra y
-  sale con el mismo movimiento suave. La portada no se oscurece: la sombra de abajo llega con el primer subtítulo. Es el
-  mismo diseño del segundo reel (`../reel-suarez-habla`).
-- **Subtítulos:** por frases cortas, sincronizados palabra a palabra (ElevenLabs Scribe):
+- **Gancho (v7, el diseño final del segundo reel, `../reel-suarez-habla`):** «Aprendiendo / neerlandés con / Luis
+  Suárez» en Inter ExtraBold blanco con un contorno negro grueso y redondo, y los iconos 📚 y 🇳🇱 a los lados de la línea
+  del medio (`tools/img`). Está desde el primer fotograma (es también la portada) y se va a los 3,3 s. Va sobre el pecho
+  y no arriba como en el segundo reel, porque aquí las caras están arriba en esos planos (la de Suárez y luego la del
+  dependiente, cuya boca llega a y ≈ 890). Ya no hay pastilla pequeña arriba.
+- **Anuncio final (v7):** el mismo cierre del segundo reel (su `compositions/outro.html`, la voz de Yair, el libro y el
+  «Comenta OFERTA»). `tools/gen.py` lo copia de `../reel-suarez-habla` y lo monta sobre los últimos 0,3 s del anuncio.
+- **Subtítulos (v7: abajo, como en el segundo reel, de pie sobre y = 1500):** por frases cortas, sincronizados palabra a palabra (ElevenLabs Scribe):
   - el holandés grande y en mayúsculas, todo al mismo tamaño y en dos líneas como mucho, con la palabra que se está
     diciendo en amarillo; los cortes de línea van marcados con «|» en `PHRASES`, para no dejar una palabra sola ni
     partir un nombre;
@@ -58,7 +57,7 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v6.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v7.mp4
 ```
 
 Para cambiar una traducción o cortar una frase de otra manera, edita `PHRASES` en `tools/subs.py` y ejecuta
