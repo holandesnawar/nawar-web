@@ -23,5 +23,9 @@ python3 tools/esrgan_onnx.py "$RAW/realesr-general-x4v3.pth" "$RAW/esrgan-x4v3.o
 python3 tools/upscale.py 123 993
 python3 tools/frame.py
 python3 tools/subs.py
-python3 tools/gen.py      # (copies the closing ad from ../reel-suarez-habla: run its tools/fetch_assets.sh first)
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v7.mp4"
+mkdir -p .raw/outro && cp ../reel-suarez-habla/.raw/outro/music.mp3 .raw/outro/   # the closing card's bed («musica v1»)
+cp ../vsl-formacion-nawar/assets/sfx/{whoosh,pop,click,ping}.mp3 .raw/outro/ && cp ../vsl-formacion-nawar/assets/img/logo-nawar.png assets/img/
+cp ../reel-suarez-habla/assets/fonts/inter-var-latin.woff2 assets/fonts/
+python3 tools/outro.py audio   # (the voice is in outro.json + .raw/outro/voz.mp3; a new take: python3 tools/outro.py voz)
+python3 tools/gen.py
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v8.mp4"

@@ -23,8 +23,11 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
   del medio (`tools/img`). Está desde el primer fotograma (es también la portada) y se va a los 3,3 s. Va sobre el pecho
   y no arriba como en el segundo reel, porque aquí las caras están arriba en esos planos (la de Suárez y luego la del
   dependiente, cuya boca llega a y ≈ 890). Ya no hay pastilla pequeña arriba.
-- **Anuncio final (v7):** el mismo cierre del segundo reel (su `compositions/outro.html`, la voz de Yair, el libro y el
-  «Comenta OFERTA»). `tools/gen.py` lo copia de `../reel-suarez-habla` y lo monta sobre los últimos 0,3 s del anuncio.
+- **Cierre (v8, sin ebook):** el fondo índigo del cierre del segundo reel, con el logo de Nawar, «¿Quieres aprender
+  neerlandés tú también?», «Aprende con nosotros, desde el español», la cinta azul clara y una tarjeta de perfil de
+  Instagram «Holandés Nawar» cuyo botón «Seguir» se pulsa al decir «Síguenos» y pasa a «Siguiendo». La voz es la de Yair
+  (`tools/outro.py voz`): «¿Quieres aprender neerlandés tú también? Aprende con nosotros, desde el español. Síguenos y
+  empieza hoy.»; la música y los efectos, como en el segundo reel (`tools/outro.py audio`).
 - **Subtítulos (v7: abajo, como en el segundo reel, de pie sobre y = 1500):** por frases cortas, sincronizados palabra a palabra (ElevenLabs Scribe):
   - el holandés grande y en mayúsculas, todo al mismo tamaño y en dos líneas como mucho, con la palabra que se está
     diciendo en amarillo; los cortes de línea van marcados con «|» en `PHRASES`, para no dejar una palabra sola ni
@@ -57,7 +60,7 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v7.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v8.mp4
 ```
 
 Para cambiar una traducción o cortar una frase de otra manera, edita `PHRASES` en `tools/subs.py` y ejecuta
