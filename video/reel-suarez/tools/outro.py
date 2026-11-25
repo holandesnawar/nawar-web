@@ -2,6 +2,9 @@
 """The closing card of the reel «Aprendiendo neerlandés con Luis Suárez» (v8, the client: no ebook here — «¿quieres
 aprender holandés tú también? Aprende con nosotros desde el español»), with the second reel's voice (Yair), ending on
 «Síguenos»: an Instagram profile card «Holandés Nawar» whose «Seguir» button is tapped.
+v9 (the client: «aprovechar con algún vídeo dentro de la plataforma… el portátil real abriéndose como en el VSL…
+comenta OFERTA y te enviamos los detalles de nuestra formación… algún cartel tipo Black Friday, últimas plazas»): the
+VSL's MacBook opens onto the course (tools/gen.py), the voice ends on «Comenta OFERTA».
   python3 tools/outro.py voz      the voice-over (ElevenLabs, voice VOICE) → .raw/outro/voz.mp3 + outro.json (word times)
   python3 tools/outro.py audio    the voice-over, a soft music bed and soft effects, mixed → assets/audio/outro.wav
 The music bed («musica v1») and the effects come from ../reel-suarez-habla/.raw/outro and ../vsl-formacion-nawar
@@ -12,7 +15,8 @@ import base64, json, os, subprocess, sys, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, ".raw", "outro")
-TEXT = "¿Quieres aprender neerlandés tú también? Aprende con nosotros, desde el español. Síguenos y empieza hoy."   # (v8: the client — no ebook; Yair, natural tone, no tags)
+TEXT = ("¿Quieres aprender neerlandés tú también? Aprende con nosotros, desde el español. Este Black Friday quedan las "
+        "últimas plazas: comenta OFERTA y te enviamos los detalles de nuestra formación.")   # (v9: the course, «Comenta OFERTA»)
 VOICE = "LP0ZBLgGaLqbDU1l9PDX"         # «Yair - Narration Spanish» (v7; v6 used «Nawar Def»)
 MODEL = "eleven_v4"                    # (v7.2; eleven_multilingual_v2 before: it sounded flat)
 SETTINGS = {"stability": 0.5, "similarity_boost": 0.8}
@@ -89,10 +93,11 @@ def cues():
     def at(text, k=0, end=False):
         hits = [w for w in ws if w["text"].strip(".,¡!¿?\"«»").lower() == text.lower()]
         return hits[k]["end" if end else "t"]
-    c = dict(GROUND=0.0, LOGO=0.18, L1=0.26, L2=0.34, L3=0.42, SUB=0.52, BAND=0.46, CARD=0.60,
-             SIGUE=at("síguenos") - 0.06, SHINE=END - 1.1)
-    c["TAP"] = round(at("síguenos", end=True) - 0.02, 3)       # the tap on «Seguir» as «Síguenos» ends
-    c["DONE"] = round(c["TAP"] + 0.14, 3)                        # …it turns into «Siguiendo»
+    c = dict(GROUND=0.0, LAP=0.04, BADGE=0.20, H1=0.28, H2=0.38, OPEN=0.30, SWITCH=3.30,
+             POSTER=at("black") - 0.10, CTA=at("comenta") - 0.12, TYPE0=at("oferta") - 0.02, TYPE1=at("oferta", end=True) - 0.08,
+             CONFIRM=at("y") - 0.03, SHINE=END - 1.1)
+    c["TAP"] = round(c["TYPE1"] + 0.10, 3)
+    c["CONFIRM"] = max(c["CONFIRM"], c["TAP"] + 0.18)          # (a beat after the tap)
     return {k: round(v, 3) for k, v in c.items()}
 
 
@@ -132,7 +137,7 @@ def audio():
     bed *= np.clip(t / BED_IN, 0, 1)[:, None] * np.clip((END - BED_AT - t) / BED_OUT, 0, 1)[:, None]
     a = int(BED_AT * SR); mix[a:a + len(bed)] += bed
     c = cues()                                                      # soft effects, under the voice: the whoosh on the cut
-    for name, at in (("whoosh", 0.0), ("pop", c["CARD"]), ("click", c["TAP"]), ("ping", c["DONE"])):   # to the ground,
+    for name, at in (("whoosh", 0.0), ("pop", c["POSTER"] + 0.12), ("click", c["TAP"]), ("ping", c["CONFIRM"])):   # to the ground,
         f, db = SFX[name]                                           # the price seal landing, the tap on «Publicar», the
         fx = load(os.path.join(RAW, f)) * 10 ** (db / 20)           # message sent
         fx = fx[int(LEAD.get(name, 0) * SR):]                       # (its silence before the sound trimmed)

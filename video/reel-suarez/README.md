@@ -23,11 +23,14 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
   del medio (`tools/img`). Está desde el primer fotograma (es también la portada) y se va a los 3,3 s. Va sobre el pecho
   y no arriba como en el segundo reel, porque aquí las caras están arriba en esos planos (la de Suárez y luego la del
   dependiente, cuya boca llega a y ≈ 890). Ya no hay pastilla pequeña arriba.
-- **Cierre (v8, sin ebook):** el fondo índigo del cierre del segundo reel, con el logo de Nawar, «¿Quieres aprender
-  neerlandés tú también?», «Aprende con nosotros, desde el español», la cinta azul clara y una tarjeta de perfil de
-  Instagram «Holandés Nawar» cuyo botón «Seguir» se pulsa al decir «Síguenos» y pasa a «Siguiendo». La voz es la de Yair
-  (`tools/outro.py voz`): «¿Quieres aprender neerlandés tú también? Aprende con nosotros, desde el español. Síguenos y
-  empieza hoy.»; la música y los efectos, como en el segundo reel (`tools/outro.py audio`).
+- **Cierre (v9, la formación):** el portátil del VSL (el mismo MacBook en CSS 3D de
+  `../vsl-formacion-nawar/tools/gen_laptop_20_21.py`, importado y escalado al 9:16) llega cerrado, visto desde arriba, y
+  se abre sobre la plataforma: primero el curso (lista de lecciones, «Formación Nawar A0–A1»), con el cursor sobre una
+  lección de vídeo, y luego, como si se pulsara, una lección de vídeo con el profe («De structuur»). Encima: «Formación
+  Nawar · A0 – A1», «Aprende neerlandés / desde el español», un cartel «Black Friday · Últimas plazas» que cae al decir
+  «Black Friday» y el campo de comentario de Instagram que escribe «OFERTA» → «Te enviamos los detalles por mensaje».
+  Voz de Yair (`tools/outro.py voz`): «¿Quieres aprender neerlandés tú también? Aprende con nosotros, desde el español.
+  Este Black Friday quedan las últimas plazas: comenta OFERTA y te enviamos los detalles de nuestra formación.»
 - **Subtítulos (v7: abajo, como en el segundo reel, de pie sobre y = 1500):** por frases cortas, sincronizados palabra a palabra (ElevenLabs Scribe):
   - el holandés grande y en mayúsculas, todo al mismo tamaño y en dos líneas como mucho, con la palabra que se está
     diciendo en amarillo; los cortes de línea van marcados con «|» en `PHRASES`, para no dejar una palabra sola ni
@@ -60,7 +63,7 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v8.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v9.mp4
 ```
 
 Para cambiar una traducción o cortar una frase de otra manera, edita `PHRASES` en `tools/subs.py` y ejecuta

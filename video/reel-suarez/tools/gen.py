@@ -19,6 +19,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import outro as O  # noqa: E402
 INDIGO, SKY = "#1D0084", "#4DA3FF"
+VSL = os.path.join(ROOT, "..", "vsl-formacion-nawar")
+LAP_S, LAP_CY = 0.88, 900     # the laptop in the frame: its 1920×1080 space scaled LAP_S, the straight-on device centred at y = LAP_CY
 YEL = "#FFE11B"
 SUB_BOTTOM = 1500                 # the subtitle block stands on this line (frame px), as in the second reel
 NL_W, NL_CX = 744, 540
@@ -51,13 +53,27 @@ def outline_shadow(r, color="#000"):
 
 
 def outro_html():
-    """compositions/outro.html: the closing card, O.END s long, every moment from O.cues()."""
+    """compositions/outro.html (v9): the closing ad, O.END s long, every moment from O.cues(). The VSL's MacBook
+    (../vsl-formacion-nawar/tools/gen_laptop_20_21.py: the same CSS-3D rig, imported, in its 1920×1080 space, scaled
+    LAP_S into the 9:16 frame) arrives closed, seen from above, and opens straight onto the course: the lesson list
+    (assets/video/plat-curso.mp4, the cursor resting on a video lesson), then, as if clicked, a video lesson with the
+    teacher (plat-clase.mp4). Over it: the badge «Formación Nawar · A0 – A1», «Aprende neerlandés / desde el español»,
+    a Black Friday «Últimas plazas» sign on «Black Friday», and the call to action of the second reel: an Instagram
+    comment field typing «OFERTA», «Publicar», «Te enviamos los detalles por mensaje»."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("vsl_laptop", os.path.join(VSL, "tools", "gen_laptop_20_21.py"))
+    L = importlib.util.module_from_spec(spec); spec.loader.exec_module(L)
     c = O.cues()
-    v = dict(c, D=O.END, INDIGO=INDIGO, SKY=SKY)
+    P = "lp"
+    # the closed laptop seen from above, a little turned, centred where it will open (cam space)
+    top = dict(zip(("x", "y"), L.pose((0, L.LIDC), (960, 560), 0.92, -12.0)), rotation=-12.0, scale=0.92)
+    cen = L.CEN
+    cen2 = dict(zip(("x", "y"), L.pose((0, L.BOX_H / 2 - L.HY), (960, 520), L.S1 * 1.03, 0)), rotation=0, scale=round(L.S1 * 1.03, 4))
+    lap_l, lap_t = round(540 - 960 * LAP_S, 1), round(LAP_CY - 520 * LAP_S, 1)
+    v = dict(c, D=O.END, INDIGO=INDIGO, SKY=SKY, RED="#DC2626", LAPL=lap_l, LAPT=lap_t, LAPS=LAP_S)
     css = """
     #o-root { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", sans-serif; color: #FFFFFF; }
     .o-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
-    /* the ground of the second reel's closing ad: indigo, two soft blue lights and a faint dot grid */
     #o-ground { background: «INDIGO»; }
     .o-luz1 { position: absolute; top: -280px; right: -320px; width: 1300px; height: 1300px; border-radius: 50%;
       background: radial-gradient(circle, rgba(11,109,240,0.42) 0%, rgba(11,109,240,0) 65%); }
@@ -66,96 +82,133 @@ def outro_html():
     .o-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 2px, transparent 2.2px);
       background-size: 52px 52px; }
     .o-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
-    /* the logo on a white pill (it is drawn for a white ground) */
-    #o-logo { top: 330px; }
-    .o-logo { display: flex; align-items: center; justify-content: center; height: 128px; padding: 0 44px; border-radius: 999px; background: #FFFFFF; }
-    .o-logo img { display: block; height: 88px; }
-    /* the question, as the page's title: Poppins 700, white gradient, «neerlandés» in sky blue */
-    .o-h { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 100px; line-height: 1.08; letter-spacing: -0.03em; white-space: nowrap; }
-    .o-h span { background: linear-gradient(180deg, #FFFFFF 10%, rgba(255,255,255,0.6) 100%); -webkit-background-clip: text;
+    #o-badge { top: 196px; }
+    .o-badge { display: flex; align-items: center; height: 62px; padding: 0 30px; border-radius: 999px; background: #025DC7; color: #E0F2FF;
+      font-weight: 700; font-size: 25px; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; line-height: 1; }
+    .o-h { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 94px; line-height: 1.08; letter-spacing: -0.03em; white-space: nowrap; }
+    #o-h1 { top: 280px; }
+    #o-h1 span { background: linear-gradient(180deg, #FFFFFF 10%, rgba(255,255,255,0.6) 100%); -webkit-background-clip: text;
       background-clip: text; -webkit-text-fill-color: transparent; color: transparent; padding: 0 6px; }
-    #o-l1 { top: 520px; }
-    #o-l2 { top: 628px; color: «SKY»; }
-    #o-l3 { top: 736px; }
-    /* the answer: «Aprende con nosotros, desde el español» */
-    #o-sub { top: 898px; }
-    .o-sub { display: flex; align-items: center; gap: 16px; font-weight: 600; font-size: 44px; line-height: 1.2; color: #E0F2FF; white-space: nowrap; }
-    .o-sub b { font-weight: 800; color: #FFFFFF; }
-    /* the light-blue ticker */
-    #o-band { position: absolute; left: -10px; top: 1028px; width: 1100px; height: 64px; background: «SKY»; overflow: hidden; }
-    #o-track { position: absolute; left: 0; top: 0; height: 64px; display: flex; align-items: center; white-space: nowrap; }
-    #o-track span { display: flex; align-items: center; gap: 16px; padding: 0 26px; color: «INDIGO»; font-weight: 700; font-size: 30px; line-height: 1; }
-    #o-track b { font-size: 26px; }
-    /* the call to action: an Instagram profile card with its «Seguir» button */
-    #o-card { top: 1170px; }
-    .o-card { position: relative; display: flex; align-items: center; gap: 20px; width: 744px; height: 180px; padding: 0 26px; border-radius: 38px;
-      background: #FFFFFF; color: #0C0C1E; white-space: nowrap; }
-    .o-av { position: relative; display: flex; align-items: center; justify-content: center; width: 108px; height: 108px; flex: 0 0 108px;
-      border-radius: 50%; background: conic-gradient(from 200deg, #FEDA75, #FA7E1E, #D62976, #962FBF, #4F5BD5, #FEDA75); }
-    .o-av i { display: flex; align-items: center; justify-content: center; width: 98px; height: 98px; border-radius: 50%; background: #FFFFFF;
-      border: 4px solid #FFFFFF; overflow: hidden; }
-    .o-av img { display: block; width: 86px; }
-    .o-who { display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto; }
-    .o-name { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 34px; line-height: 1; }
-    .o-name svg { display: block; width: 30px; height: 30px; }
-    .o-bio { font-weight: 500; font-size: 27px; line-height: 1.15; color: #5B6380; }
-    #o-btn { position: relative; display: flex; align-items: center; justify-content: center; width: 216px; height: 76px; flex: 0 0 216px; border-radius: 18px;
-      background: #0095F6; overflow: hidden; }
-    #o-btn span { position: absolute; font-weight: 700; font-size: 31px; line-height: 1; }
-    #o-follow { color: #FFFFFF; }
-    #o-following { color: #0C0C1E; opacity: 0; }
-    #o-ripple { position: absolute; left: 50%; top: 50%; width: 220px; height: 220px; margin: -110px 0 0 -110px; border-radius: 50%;
-      background: rgba(255,255,255,0.45); opacity: 0; }
-    #o-shine { position: absolute; top: -40px; left: -180px; width: 110px; height: 260px; transform: rotate(18deg);
-      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%); opacity: 0.6; }
+    #o-h2 { top: 382px; color: «SKY»; }
+    /* the laptop: the VSL's rig in its own 1920×1080 space, scaled into the frame */
+    #o-lapw { position: absolute; left: «LAPL»px; top: «LAPT»px; width: 1920px; height: 1080px; transform-origin: 0 0; transform: scale(«LAPS»); }
+    #o-lap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #lp-browser { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #FFFFFF; }
+    /* the Black Friday sign over the laptop's top-right corner */
+    #o-sign { position: absolute; left: 648px; top: 528px; transform-origin: 50% 50%; }
+    .o-sign { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 20px 30px 22px; border-radius: 26px;
+      background: #0C0C1E; box-shadow: 0 0 0 3px rgba(255,255,255,0.92), 0 18px 40px rgba(2,0,24,0.45); overflow: hidden; position: relative; }
+    .o-sign .k { font-family: "Poppins", sans-serif; font-weight: 800; font-size: 46px; line-height: 1; letter-spacing: 0.04em; color: #FFFFFF; white-space: nowrap; }
+    .o-sign .p { display: flex; align-items: center; gap: 12px; height: 54px; padding: 0 22px; border-radius: 999px; background: «RED»;
+      font-weight: 800; font-size: 27px; letter-spacing: 0.10em; color: #FFFFFF; white-space: nowrap; line-height: 1; }
+    #o-dot { display: block; width: 14px; height: 14px; border-radius: 50%; background: #FFFFFF; }
+    #o-shine { position: absolute; top: -40px; left: -160px; width: 90px; height: 260px; transform: rotate(18deg);
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0) 100%); }
+    /* the call to action: an Instagram comment field (as in the second reel) */
+    #o-cta { top: 1262px; }
+    .o-field { position: relative; display: flex; align-items: center; gap: 18px; width: 744px; height: 96px; padding: 0 30px 0 18px;
+      border-radius: 999px; background: #FFFFFF; white-space: nowrap; }
+    .o-av { display: block; width: 62px; height: 62px; flex: 0 0 62px; }
+    #o-ph { position: absolute; left: 98px; font-weight: 500; font-size: 32px; color: #8E8E8E; }
+    #o-typed { font-family: "Poppins", sans-serif; font-weight: 800; font-size: 40px; color: #0C0C1E; line-height: 1; letter-spacing: 0.02em; }
+    #o-caret { display: block; width: 4px; height: 46px; border-radius: 2px; background: #0095F6; margin-left: -14px; }
+    .o-fill { flex: 1 1 auto; }
+    #o-post { position: relative; font-weight: 700; font-size: 32px; color: #0095F6; }
+    #o-ripple { position: absolute; left: 50%; top: 50%; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%;
+      background: rgba(0,149,246,0.30); opacity: 0; }
+    #o-ok { top: 1372px; }
+    .o-ok { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 26px 0 14px; border-radius: 16px;
+      background: rgba(34,197,94,0.18); border: 2px solid rgba(34,197,94,0.55); font-weight: 700; font-size: 29px; white-space: nowrap; }
+    .o-ok svg { display: block; width: 36px; height: 36px; }
 """
-    ticker = ["Desde cero", "Explicado en español", "Vocabulario y gramática", "Pronunciación", "Paso a paso", "Con Holandés Nawar"]
-    track = "".join(f"<span><b>✦</b>{html.escape(t)}</span>" for t in ticker * 4)
-    tick = ('<svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#0095F6"/><path d="M8.5 15.5 L13 20 L21.5 10.5" fill="none" '
-            'stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+    rig = L.rig_css(P)
+    rig = rig[rig.index("    /* ---------- 2D cam"):]                     # (not the VSL's #root nor its ground: ours is the indigo)
+    css_rig = rig + L.mockup_css(P) + L.chrome_css(P)
+    screen = f"""                  <div id="lp-browser">
+                    <div class="lp-chrome">
+                      <div class="lp-tabs"><i class="lp-tl lp-tl-r"></i><i class="lp-tl lp-tl-y"></i><i class="lp-tl lp-tl-g"></i>
+                        <div class="lp-tab"><div class="lp-fav"><img src="assets/img/logo-nawar.png" alt="" /></div><div class="lp-tab-t">Formación Nawar A0–A1</div><svg class="lp-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
+                        <svg class="lp-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
+                      <div class="lp-bar"><svg class="lp-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
+                        <div class="lp-url"><svg class="lp-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="lp-url-t">app.holandesnawar.com</div><svg class="lp-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
+                        <svg class="lp-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
+                    </div>
+                    <div class="lp-content">
+                      <video id="lp-vid1" class="clip lp-media" src="assets/video/plat-curso.mp4" muted playsinline data-start="0" data-duration="«SWITCH»" data-media-start="0" data-track-index="2"></video>
+                      <video id="lp-vid2" class="clip lp-media" src="assets/video/plat-clase.mp4" muted playsinline data-start="«SWITCH»" data-duration="{round(O.END - c['SWITCH'], 3)}" data-media-start="0" data-track-index="3"></video>
+                    </div>
+                  </div>"""
+    av = ('<svg class="o-av" viewBox="0 0 62 62"><circle cx="31" cy="31" r="31" fill="#E6E8EF"/><circle cx="31" cy="25" r="11" fill="#A9AFBE"/>'
+          '<path d="M11 52 C14 41 22 37 31 37 C40 37 48 41 51 52 A30 30 0 0 1 11 52 Z" fill="#A9AFBE"/></svg>')
+    ok = ('<svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#22C55E"/><path d="M10 18.5 L15.5 24 L26 12.5" fill="none" '
+          'stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>')
     body = f"""
     <div id="o-ground" class="o-full"><div class="o-luz1"></div><div class="o-luz2"></div><div class="o-dots"></div></div>
-    <div id="o-logo" class="o-row"><div class="o-logo"><img src="assets/img/logo-nawar.png" alt="Nawar"></div></div>
-    <div id="o-l1" class="o-row o-h"><span>¿Quieres aprender</span></div>
-    <div id="o-l2" class="o-row o-h">neerlandés</div>
-    <div id="o-l3" class="o-row o-h"><span>tú también?</span></div>
-    <div id="o-sub" class="o-row"><div class="o-sub"><span>Aprende con nosotros, <b>desde el español</b></span></div></div>
-    <div id="o-band"><div id="o-track">{track}</div></div>
-    <div id="o-card" class="o-row"><div class="o-card"><div class="o-av"><i><img src="assets/img/logo-nawar.png" alt=""></i></div>
-      <div class="o-who"><div class="o-name"><span>Holandés Nawar</span>{tick}</div><div class="o-bio">Neerlandés en español</div></div>
-      <div id="o-btn"><span id="o-follow">Seguir</span><span id="o-following">Siguiendo</span><i id="o-ripple"></i><i id="o-shine"></i></div></div></div>
+    <div id="o-badge" class="o-row"><div class="o-badge"><span>Formación Nawar · A0 – A1</span></div></div>
+    <div id="o-h1" class="o-row o-h"><span>Aprende neerlandés</span></div>
+    <div id="o-h2" class="o-row o-h">desde el español</div>
+    <div id="o-lapw" data-layout-allow-overflow><div id="o-lap">
+{L.rig_html(P, screen)}
+    </div></div>
+    <div id="o-sign" data-layout-allow-overlap><div class="o-sign"><div class="k" data-layout-allow-overlap>BLACK FRIDAY</div><div class="p" data-layout-allow-overlap><i id="o-dot"></i><span>ÚLTIMAS PLAZAS</span></div><i id="o-shine"></i></div></div>
+    <div id="o-cta" class="o-row"><div class="o-field">{av}<span id="o-ph">Añade un comentario…</span><span id="o-typed"></span><span id="o-caret"></span><span class="o-fill"></span><span id="o-post">Publicar<i id="o-ripple"></i></span></div></div>
+    <div id="o-ok" class="o-row"><div class="o-ok">{ok}<span>Te enviamos los detalles por mensaje</span></div></div>
 """
-    js = """
-      // everything comes in at once (0.2–0.8 s), as in the second reel's closing ad; the button is tapped on «Síguenos»
+    js = L.rig_state_js(P, top, L.BODY0, -90) + """
       tl.fromTo("#o-ground", { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.28, ease: "power2.out" }, «GROUND»);
-      tl.fromTo("#o-logo", { opacity: 0, y: -24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "back.out(1.6)" }, «LOGO»);
-      tl.fromTo("#o-l1", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, «L1»);
-      tl.fromTo("#o-l2", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, «L2»);
-      tl.fromTo("#o-l3", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, «L3»);
-      tl.fromTo("#o-sub", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, «SUB»);
-      tl.fromTo("#o-band", { x: -1120 }, { x: 0, duration: 0.50, ease: "power3.out" }, «BAND»);
-      tl.fromTo("#o-track", { xPercent: 0 }, { xPercent: -25, duration: «D», ease: "none" }, 0);
-      tl.fromTo("#o-card", { opacity: 0, y: 46, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.5)" }, «CARD»);
-      tl.fromTo("#o-btn", { scale: 1 }, { scale: 1.08, duration: 0.18, ease: "power2.out", yoyo: true, repeat: 1 }, «SIGUE»);
-      tl.fromTo("#o-btn", { scale: 1 }, { scale: 0.92, duration: 0.08, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, «TAP»);
-      tl.fromTo("#o-ripple", { opacity: 0.9, scale: 0.2 }, { opacity: 0, scale: 1.4, duration: 0.45, ease: "power2.out", immediateRender: false }, «TAP»);
-      tl.set("#o-btn", { backgroundColor: "#EFEFF2" }, «DONE»);
-      tl.set("#o-follow", { opacity: 0 }, «DONE»);
-      tl.set("#o-following", { opacity: 1 }, «DONE»);
-      tl.fromTo("#o-shine", { x: 0 }, { x: 560, duration: 0.75, ease: "power2.inOut" }, «SHINE»);
+      tl.fromTo("#o-badge", { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.40, ease: "power3.out" }, «BADGE»);
+      tl.fromTo("#o-h1", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, «H1»);
+      tl.fromTo("#o-h2", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, «H2»);
+      // the laptop: in closed, seen from above; the camera comes down to straight on as the lid swings open (the VSL's move)
+      tl.fromTo("#o-lap", { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, «LAP»);
+      tl.fromTo($("lp-cam"), CAM_TOP, Object.assign({}, CAM_CEN, { duration: 1.05, ease: "power3.out", immediateRender: false }), «OPEN»);
+      tl.fromTo($("lp-body"), { rotationX: BODY0 }, { rotationX: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, «OPEN»);
+      tl.fromTo($("lp-lid"), { rotationX: -90 }, { rotationX: 0, duration: 0.92, ease: "power2.inOut", immediateRender: false }, «OPEN» + 0.06);
+      tl.fromTo($("lp-stage"), { perspective: PERSP }, { perspective: PERSP_END, duration: 1.0, ease: "power2.inOut" }, «OPEN»);
+      tl.fromTo($("lp-tsp"), { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power1.in" }, «OPEN» + 0.05);
+      tl.fromTo([$("lp-csh"), $("lp-coc")], { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "power2.out" }, «OPEN» + 0.4);
+      tl.fromTo($("lp-cam"), CAM_CEN, Object.assign({}, CAM_CEN2, { duration: «D» - «OPEN» - 1.05, ease: "sine.inOut", immediateRender: false }), «OPEN» + 1.05);
+      // the Black Friday sign lands on «Black Friday»; its dot blinks
+      tl.fromTo("#o-sign", { opacity: 0, scale: 0.4, rotation: -16 }, { opacity: 1, scale: 1, rotation: 6, duration: 0.5, ease: "back.out(1.9)" }, «POSTER»);
+      tl.fromTo("#o-shine", { x: 0 }, { x: 560, duration: 0.75, ease: "power2.inOut" }, «POSTER» + 0.45);
+      tl.fromTo("#o-shine", { x: 0 }, { x: 560, duration: 0.75, ease: "power2.inOut", immediateRender: false }, «SHINE»);
+      // the call to action
+      tl.fromTo("#o-cta", { opacity: 0, y: 46, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.5)" }, «CTA»);
+      tl.set("#o-ph", { opacity: 0 }, «TYPE0»);
+      tl.fromTo("#o-post", { opacity: 0.4 }, { opacity: 1, duration: 0.15 }, «TYPE0»);
+      tl.fromTo("#o-ripple", { opacity: 0.9, scale: 0.2 }, { opacity: 0, scale: 1.5, duration: 0.45, ease: "power2.out", immediateRender: false }, «TAP»);
+      tl.fromTo("#o-cta .o-field", { scale: 1 }, { scale: 0.97, duration: 0.09, ease: "power2.out", yoyo: true, repeat: 1 }, «TAP»);
+      tl.fromTo("#o-ok", { opacity: 0, y: 22, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "back.out(1.6)" }, «CONFIRM»);
+      (() => {                                               // «OFERTA» typed letter by letter (one state per letter: seek-safe)
+        const el = document.getElementById("o-typed"), full = "OFERTA", typ = { n: 0 };
+        el.textContent = "";
+        tl.fromTo(typ, { n: 0 }, { n: full.length, duration: «TYPEDUR», ease: "none", immediateRender: false,
+          onUpdate: () => { el.textContent = full.slice(0, Math.round(typ.n)); } }, «TYPE0»);
+      })();
 """
+    js = (js.replace("CAM_TOP", L.js(top)).replace("CAM_CEN2", L.js(cen2)).replace("CAM_CEN", L.js(cen))
+            .replace("BODY0", str(L.BODY0)).replace("PERSP_END", str(L.PERSP_END)).replace("PERSP", f"{L.PERSP:.0f}"))
+    v["TYPEDUR"] = round(c["TYPE1"] - c["TYPE0"], 3)
+    blink, k, on = [], c["POSTER"] + 0.5, True                # the sign's dot blinks; the caret blinks while waiting
+    while k < O.END:
+        blink.append(f'      tl.set("#o-dot", {{ opacity: {1 if on else 0.25} }}, {k:.3f});'); k += 0.4; on = not on
+    k, on = c["CTA"], True
+    while k < c["TYPE0"]:
+        blink.append(f'      tl.set("#o-caret", {{ opacity: {1 if on else 0} }}, {k:.3f});'); k += 0.25; on = not on
+    blink += [f'      tl.set("#o-caret", {{ opacity: 1 }}, {c["TYPE0"]:.3f});', f'      tl.set("#o-caret", {{ opacity: 0 }}, {c["TAP"]:.3f});']
     def sub(s):
         for key in sorted(v, key=len, reverse=True):
             s = s.replace(f"«{key}»", str(v[key]))
         return s
     fonts = "\n".join([f'    @font-face {{ font-family: "Poppins"; font-weight: {w}; src: url("assets/fonts/poppins-latin-{w}-normal.woff2") format("woff2"); }}'
-                       for w in (700,)] +
+                       for w in (700, 800)] +
                       ['    @font-face { font-family: "Inter"; font-weight: 100 900; src: url("assets/fonts/inter-var-latin.woff2") format("woff2"); }'])
     page = f"""<template>
   <script src="assets/vendor/gsap.min.js"></script>
   <style>
 {fonts}
 {sub(css)}
+{css_rig}
   </style>
   <div id="o-root" data-composition-id="outro" data-width="1080" data-height="1920" data-duration="{O.END}">
 {sub(body)}
@@ -163,7 +216,9 @@ def outro_html():
   <script>
     (function () {{
       const tl = gsap.timeline({{ paused: true }});
+      const $ = (id) => document.getElementById(id);
 {sub(js)}
+{chr(10).join(blink)}
       window.__timelines["outro"] = tl;
     }})();
   </script>
