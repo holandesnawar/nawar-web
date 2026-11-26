@@ -8,59 +8,65 @@
 
     #o-root { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", sans-serif; color: #FFFFFF; }
     .o-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
-    #o-freeze { transform-origin: 50% 22%; }
-    #o-freeze img { display: block; width: 1080px; height: 1920px; object-fit: cover; }
+    #o-freeze { transform-origin: 50% 20%; }
+    #o-freeze img { position: absolute; left: 0; top: -40px; display: block; width: 1080px; height: 1920px; object-fit: cover; }
     #o-flash { background: #FFFFFF; opacity: 0; }
-    #o-shade { background: linear-gradient(180deg, rgba(4,2,20,0) 0%, rgba(4,2,20,0) 28%, rgba(4,2,20,0.62) 42%, rgba(4,2,20,0.80) 60%, rgba(4,2,20,0.86) 100%); }
+    /* the panel: Nawar indigo, everything builds up on it and stays */
+    #o-panel { position: absolute; left: 0; top: 660px; width: 1080px; height: 1400px; border-radius: 56px 56px 0 0; overflow: hidden;
+      background: #1D0084; box-shadow: 0 -18px 50px rgba(0,0,0,0.35); }
+    .o-luz1 { position: absolute; top: -380px; right: -360px; width: 1200px; height: 1200px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(11,109,240,0.40) 0%, rgba(11,109,240,0) 65%); }
+    .o-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 2px, transparent 2.2px); background-size: 52px 52px; }
     .o-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
-    .o-ol { flex-direction: column; text-align: center; font-family: "InterV", sans-serif; font-weight: 800; letter-spacing: -0.012em;
-      line-height: 1.06; color: #FFFFFF; text-shadow: 6.00px 0.00px 0 #000, 5.88px 1.17px 0 #000, 5.54px 2.30px 0 #000, 4.99px 3.33px 0 #000, 4.24px 4.24px 0 #000, 3.33px 4.99px 0 #000, 2.30px 5.54px 0 #000, 1.17px 5.88px 0 #000, 0.00px 6.00px 0 #000, -1.17px 5.88px 0 #000, -2.30px 5.54px 0 #000, -3.33px 4.99px 0 #000, -4.24px 4.24px 0 #000, -4.99px 3.33px 0 #000, -5.54px 2.30px 0 #000, -5.88px 1.17px 0 #000, -6.00px 0.00px 0 #000, -5.88px -1.17px 0 #000, -5.54px -2.30px 0 #000, -4.99px -3.33px 0 #000, -4.24px -4.24px 0 #000, -3.33px -4.99px 0 #000, -2.30px -5.54px 0 #000, -1.17px -5.88px 0 #000, -0.00px -6.00px 0 #000, 1.17px -5.88px 0 #000, 2.30px -5.54px 0 #000, 3.33px -4.99px 0 #000, 4.24px -4.24px 0 #000, 4.99px -3.33px 0 #000, 5.54px -2.30px 0 #000, 5.88px -1.17px 0 #000, 3.30px 0.00px 0 #000, 3.05px 1.26px 0 #000, 2.33px 2.33px 0 #000, 1.26px 3.05px 0 #000, 0.00px 3.30px 0 #000, -1.26px 3.05px 0 #000, -2.33px 2.33px 0 #000, -3.05px 1.26px 0 #000, -3.30px 0.00px 0 #000, -3.05px -1.26px 0 #000, -2.33px -2.33px 0 #000, -1.26px -3.05px 0 #000, -0.00px -3.30px 0 #000, 1.26px -3.05px 0 #000, 2.33px -2.33px 0 #000, 3.05px -1.26px 0 #000; white-space: nowrap; }
-    #o-l1, #o-l2 { top: 780px; font-size: 84px; }
-    #o-ap { top: 760px; font-size: 92px; }
-    .o-y { color: #FFE11B; }
-    /* the pain: white pills, stacked, a little askew */
-    #o-pains { position: absolute; left: 0; top: 1000px; width: 1080px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
-    .o-pain { display: flex; align-items: center; gap: 14px; height: 84px; padding: 0 34px 0 22px; border-radius: 999px; background: #FFFFFF;
-      color: #0C0C1E; font-weight: 700; font-size: 40px; white-space: nowrap; line-height: 1; box-shadow: 0 14px 34px rgba(0,0,0,0.35); }
-    .o-pain svg { display: block; width: 42px; height: 42px; }
-    #o-p1 { transform: rotate(-2deg); } #o-p2 { transform: rotate(1.5deg); } #o-p3 { transform: rotate(-1deg); }
+    .o-h { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 64px; line-height: 1.08; letter-spacing: -0.025em; white-space: nowrap; }
+    #o-t1 { top: 708px; }
+    #o-t2 { top: 778px; color: #FFE11B; }
+    /* the three words of the joke, with both meanings */
+    #o-dict { position: absolute; left: 168px; top: 874px; width: 744px; padding: 12px 26px; border-radius: 28px;
+      background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.16); }
+    .o-d { display: flex; align-items: center; height: 62px; white-space: nowrap; }
+    .o-d + .o-d { border-top: 1.5px solid rgba(255,255,255,0.12); }
+    .o-d b { width: 236px; flex: 0 0 236px; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 34px; color: #FFE11B; line-height: 1; }
+    .o-d i { font-style: normal; width: 46px; flex: 0 0 46px; font-weight: 700; font-size: 30px; color: rgba(255,255,255,0.55); }
+    .o-d span { font-weight: 600; font-size: 31px; color: #FFFFFF; line-height: 1; }
+    .o-d em { font-style: normal; color: #4DA3FF; font-weight: 800; }
+    .o-q { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 48px; line-height: 1.1; letter-spacing: -0.02em; white-space: nowrap; }
+    #o-q1 { top: 1106px; }
+    #o-q2 { top: 1160px; color: #4DA3FF; }
     /* the advantages */
-    #o-bens { top: 892px; gap: 18px; }
-    .o-ben { display: flex; align-items: center; gap: 12px; height: 74px; padding: 0 28px 0 16px; border-radius: 999px; background: #FFFFFF;
-      color: #0C0C1E; font-weight: 700; font-size: 34px; white-space: nowrap; line-height: 1; box-shadow: 0 12px 30px rgba(0,0,0,0.30); }
-    .o-ben svg { display: block; width: 42px; height: 42px; }
+    #o-bens { top: 1238px; gap: 16px; }
+    .o-ben { display: flex; align-items: center; gap: 12px; height: 66px; padding: 0 26px 0 14px; border-radius: 999px; background: #FFFFFF;
+      color: #0C0C1E; font-weight: 700; font-size: 32px; white-space: nowrap; line-height: 1; }
+    .o-ben svg { display: block; width: 40px; height: 40px; }
     /* the call to action: an Instagram comment field */
-    #o-cta { top: 1030px; }
-    .o-field { position: relative; display: flex; align-items: center; gap: 18px; width: 744px; height: 96px; padding: 0 30px 0 18px;
+    #o-cta { top: 1322px; }
+    .o-field { position: relative; display: flex; align-items: center; gap: 18px; width: 744px; height: 88px; padding: 0 30px 0 16px;
       border-radius: 999px; background: #FFFFFF; white-space: nowrap; }
-    .o-av { display: block; width: 62px; height: 62px; flex: 0 0 62px; }
-    #o-ph { position: absolute; left: 98px; font-weight: 500; font-size: 32px; color: #8E8E8E; }
-    #o-typed { font-family: "Poppins", sans-serif; font-weight: 800; font-size: 40px; color: #0C0C1E; line-height: 1; letter-spacing: 0.02em; }
-    #o-caret { display: block; width: 4px; height: 46px; border-radius: 2px; background: #0095F6; margin-left: -14px; }
+    .o-av { display: block; width: 58px; height: 58px; flex: 0 0 58px; }
+    #o-ph { position: absolute; left: 92px; font-weight: 500; font-size: 31px; color: #8E8E8E; }
+    #o-typed { font-family: "Poppins", sans-serif; font-weight: 800; font-size: 38px; color: #0C0C1E; line-height: 1; letter-spacing: 0.02em; }
+    #o-caret { display: block; width: 4px; height: 44px; border-radius: 2px; background: #0095F6; margin-left: -14px; }
     .o-fill { flex: 1 1 auto; }
-    #o-post { position: relative; font-weight: 700; font-size: 32px; color: #0095F6; }
+    #o-post { position: relative; font-weight: 700; font-size: 31px; color: #0095F6; }
     #o-ripple { position: absolute; left: 50%; top: 50%; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%;
       background: rgba(0,149,246,0.30); opacity: 0; }
-    #o-ok { top: 1144px; }
-    .o-ok { display: flex; align-items: center; gap: 14px; height: 64px; padding: 0 26px 0 14px; border-radius: 16px;
-      background: rgba(34,197,94,0.22); border: 2px solid rgba(34,197,94,0.65); font-weight: 700; font-size: 30px; white-space: nowrap; }
-    .o-ok svg { display: block; width: 36px; height: 36px; }
+    #o-ok { top: 1424px; }
+    .o-ok { display: flex; align-items: center; gap: 12px; height: 54px; padding: 0 22px 0 12px; border-radius: 14px;
+      background: rgba(34,197,94,0.20); border: 2px solid rgba(34,197,94,0.60); font-weight: 700; font-size: 27px; white-space: nowrap; }
+    .o-ok svg { display: block; width: 32px; height: 32px; }
 
   </style>
-  <div id="o-root" data-composition-id="outro" data-width="1080" data-height="1920" data-duration="14.14">
+  <div id="o-root" data-composition-id="outro" data-width="1080" data-height="1920" data-duration="14.5">
 
     <div id="o-freeze" class="o-full"><img src="assets/img/freeze.png" alt=""></div>
-    <div id="o-shade" class="o-full"></div>
     <div id="o-flash" class="o-full"></div>
-    <div id="o-l1" class="o-row o-ol"><div>Suárez no pilló</div><div>ni una</div></div>
-    <div id="o-l2" class="o-row o-ol"><div>¿Y a ti, cuántas veces</div><div>te ha <span class="o-y">pasado</span>?</div></div>
-    <div id="o-pains">
-      <div id="o-p1" class="o-pain"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="21" fill="#EF4444"/><path d="M14 14 L28 28 M28 14 L14 28" fill="none" stroke="#FFFFFF" stroke-width="3.8" stroke-linecap="round"/></svg><span>En el gemeente</span></div>
-      <div id="o-p2" class="o-pain"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="21" fill="#EF4444"/><path d="M14 14 L28 28 M28 14 L14 28" fill="none" stroke="#FFFFFF" stroke-width="3.8" stroke-linecap="round"/></svg><span>Con el casero</span></div>
-      <div id="o-p3" class="o-pain"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="21" fill="#EF4444"/><path d="M14 14 L28 28 M28 14 L14 28" fill="none" stroke="#FFFFFF" stroke-width="3.8" stroke-linecap="round"/></svg><span>En el dentista</span></div>
-    </div>
-    <div id="o-ap" class="o-row o-ol"><div>Aprende neerlandés</div></div>
-    <div id="o-bens" class="o-row"><div id="o-b1" class="o-ben"><svg viewBox="0 0 36 36" width="42" height="42"><circle cx="18" cy="18" r="18" fill="#22C55E"/><path d="M10 18.5 L15.5 24 L26 12.5" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Desde el español</span></div><div id="o-b2" class="o-ben"><svg viewBox="0 0 36 36" width="42" height="42"><circle cx="18" cy="18" r="18" fill="#22C55E"/><path d="M10 18.5 L15.5 24 L26 12.5" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>A tu ritmo</span></div></div>
+    <div id="o-panel"><div class="o-luz1"></div><div class="o-dots"></div></div>
+    <div id="o-t1" class="o-row o-h" data-layout-allow-overlap>Suárez lo pilló todo</div>
+    <div id="o-t2" class="o-row o-h" data-layout-allow-overlap>hasta el doble sentido</div>
+    <div id="o-dict"><div id="o-d1" class="o-d"><b>fluiten</b><i>→</i><span>pitar… <em>como el árbitro</em></span></div><div id="o-d2" class="o-d"><b>de bank</b><i>→</i><span>el sofá… <em>o el banquillo</em></span></div><div id="o-d3" class="o-d"><b>een kaartje</b><i>→</i><span>una tarjeta… <em>¿amarilla?</em></span></div></div>
+    <div id="o-q1" class="o-row o-q">¿Y tú, pillas los chistes</div>
+    <div id="o-q2" class="o-row o-q">o sonríes por compromiso?</div>
+    <div id="o-bens" class="o-row"><div id="o-b1" class="o-ben"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#22C55E"/><path d="M10 18.5 L15.5 24 L26 12.5" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Desde el español</span></div><div id="o-b2" class="o-ben"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#22C55E"/><path d="M10 18.5 L15.5 24 L26 12.5" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>A tu ritmo</span></div></div>
     <div id="o-cta" class="o-row"><div class="o-field"><svg class="o-av" viewBox="0 0 62 62"><circle cx="31" cy="31" r="31" fill="#E6E8EF"/><circle cx="31" cy="25" r="11" fill="#A9AFBE"/><path d="M11 52 C14 41 22 37 31 37 C40 37 48 41 51 52 A30 30 0 0 1 11 52 Z" fill="#A9AFBE"/></svg><span id="o-ph">Añade un comentario…</span><span id="o-typed"></span><span id="o-caret"></span><span class="o-fill"></span><span id="o-post">Publicar<i id="o-ripple"></i></span></div></div>
     <div id="o-ok" class="o-row"><div class="o-ok"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#22C55E"/><path d="M10 18.5 L15.5 24 L26 12.5" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Te contamos nuestro método por mensaje</span></div></div>
 
@@ -69,41 +75,45 @@
     (function () {
       const tl = gsap.timeline({ paused: true });
 
-      // the freeze: a quick flash and punch-in on Suárez's look, then a slow push the whole time
+      // Suárez freezes (a quick flash and punch-in), then a slow push; the panel slides up under his face
       tl.fromTo("#o-flash", { opacity: 0.55 }, { opacity: 0, duration: 0.28, ease: "power2.out" }, 0.0);
       tl.fromTo("#o-freeze", { scale: 1.10 }, { scale: 1.0, duration: 0.35, ease: "power3.out" }, 0.0);
-      tl.fromTo("#o-freeze", { scale: 1.0 }, { scale: 1.06, duration: 14.14 - 0.35, ease: "none", immediateRender: false }, 0.0 + 0.35);
-      tl.fromTo("#o-shade", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 0.0 + 0.1);
-      // the beats
-      tl.fromTo("#o-l1", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, 0.34);
-      tl.to("#o-l1", { opacity: 0, y: -30, duration: 0.18, ease: "power2.in" }, 2.376 - 0.16);
-      tl.fromTo("#o-l2", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, 2.376);
-      tl.fromTo("#o-p1", { opacity: 0, y: 30, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(2)" }, 4.829);
-      tl.fromTo("#o-p2", { opacity: 0, y: 30, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(2)" }, 5.92);
-      tl.fromTo("#o-p3", { opacity: 0, y: 30, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(2)" }, 6.34);
-      tl.to(["#o-l2", "#o-pains"], { opacity: 0, y: -30, duration: 0.2, ease: "power2.in" }, 6.991 - 0.18);
-      tl.fromTo("#o-ap", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, 6.991);
-      tl.fromTo("#o-b1", { opacity: 0, y: 24, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(2)" }, 8.373);
-      tl.fromTo("#o-b2", { opacity: 0, y: 24, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(2)" }, 9.5);
+      tl.fromTo("#o-freeze", { scale: 1.0 }, { scale: 1.05, duration: 14.5 - 0.35, ease: "none", immediateRender: false }, 0.0 + 0.35);
+      tl.fromTo("#o-panel", { y: 1300 }, { y: 0, duration: 0.5, ease: "power3.out" }, 0.08);
+      // everything builds up and stays
+      const pop = (sel, at, from) => tl.fromTo(sel, Object.assign({ opacity: 0 }, from), { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.8)" }, at);
+      pop("#o-t1", 0.34, { y: 24, scale: 0.92 });
+      pop("#o-t2", 2.122, { y: 24, scale: 0.92 });
+      pop("#o-dict", 2.505 - 0.06, { y: 20, scale: 0.97 });
+      tl.set(["#o-d2", "#o-d3"], { opacity: 0 }, 0);
+      tl.fromTo("#o-d1 > *", { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.24, ease: "power2.out", stagger: 0.05 }, 2.505);
+      tl.set("#o-d2", { opacity: 1 }, 2.865);
+      tl.fromTo("#o-d2 > *", { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.24, ease: "power2.out", stagger: 0.05 }, 2.865);
+      tl.set("#o-d3", { opacity: 1 }, 3.225);
+      tl.fromTo("#o-d3 > *", { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.24, ease: "power2.out", stagger: 0.05 }, 3.225);
+      pop("#o-q1", 3.685, { y: 24, scale: 0.92 });
+      pop("#o-q2", 6.158, { y: 24, scale: 0.92 });
+      pop("#o-b1", 8.882, { y: 20, scale: 0.85 });
+      pop("#o-b2", 9.9, { y: 20, scale: 0.85 });
       // the call to action
-      tl.fromTo("#o-cta", { opacity: 0, y: 46, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.5)" }, 10.171);
-      tl.set("#o-ph", { opacity: 0 }, 10.707);
-      tl.fromTo("#o-post", { opacity: 0.4 }, { opacity: 1, duration: 0.15 }, 10.707);
-      tl.fromTo("#o-ripple", { opacity: 0.9, scale: 0.2 }, { opacity: 0, scale: 1.5, duration: 0.45, ease: "power2.out", immediateRender: false }, 11.141);
-      tl.fromTo("#o-cta .o-field", { scale: 1 }, { scale: 0.97, duration: 0.09, ease: "power2.out", yoyo: true, repeat: 1 }, 11.141);
-      tl.fromTo("#o-ok", { opacity: 0, y: 22, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "back.out(1.6)" }, 11.321);
+      tl.fromTo("#o-cta", { opacity: 0, y: 40, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.5)" }, 10.607);
+      tl.set("#o-ph", { opacity: 0 }, 11.144);
+      tl.fromTo("#o-post", { opacity: 0.4 }, { opacity: 1, duration: 0.15 }, 11.144);
+      tl.fromTo("#o-ripple", { opacity: 0.9, scale: 0.2 }, { opacity: 0, scale: 1.5, duration: 0.45, ease: "power2.out", immediateRender: false }, 11.577);
+      tl.fromTo("#o-cta .o-field", { scale: 1 }, { scale: 0.97, duration: 0.09, ease: "power2.out", yoyo: true, repeat: 1 }, 11.577);
+      tl.fromTo("#o-ok", { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "back.out(1.6)" }, 11.757);
       (() => {                                               // «QUIERO» typed letter by letter (one state per letter: seek-safe)
         const el = document.getElementById("o-typed"), full = "QUIERO", typ = { n: 0 };
         el.textContent = "";
-        tl.fromTo(typ, { n: 0 }, { n: full.length, duration: 0.334, ease: "none", immediateRender: false,
-          onUpdate: () => { el.textContent = full.slice(0, Math.round(typ.n)); } }, 10.707);
+        tl.fromTo(typ, { n: 0 }, { n: full.length, duration: 0.333, ease: "none", immediateRender: false,
+          onUpdate: () => { el.textContent = full.slice(0, Math.round(typ.n)); } }, 11.144);
       })();
 
-      tl.set("#o-caret", { opacity: 1 }, 10.171);
-      tl.set("#o-caret", { opacity: 0 }, 10.421);
-      tl.set("#o-caret", { opacity: 1 }, 10.671);
-      tl.set("#o-caret", { opacity: 1 }, 10.707);
-      tl.set("#o-caret", { opacity: 0 }, 11.141);
+      tl.set("#o-caret", { opacity: 1 }, 10.607);
+      tl.set("#o-caret", { opacity: 0 }, 10.857);
+      tl.set("#o-caret", { opacity: 1 }, 11.107);
+      tl.set("#o-caret", { opacity: 1 }, 11.144);
+      tl.set("#o-caret", { opacity: 0 }, 11.577);
       window.__timelines["outro"] = tl;
     })();
   </script>

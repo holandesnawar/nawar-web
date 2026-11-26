@@ -8,6 +8,9 @@ VSL's MacBook opens onto the course (tools/gen.py), the voice ends on «Comenta 
 v10 (the client: «no quiero enseñar mi plataforma tipo mira esto, cómpralo… más buscar el dolor… que no suene a
 comercial, va para Instagram… comenta QUIERO y te contamos nuestro método… alguna ventaja, desde el español, a tu
 ritmo… que la voz acompañe pero no se haga pesada»): Suárez frozen, the viewer's pain, two advantages, «Comenta QUIERO».
+v11 (the client: Suárez did understand — the joke is that he takes it all to football; and nothing should leave the
+screen): «Suárez lo pilló todo… hasta el doble sentido», the three Dutch words with both meanings, «¿Pillas los chistes en
+neerlandés, o sonríes por compromiso?», the two advantages and «Comenta QUIERO», all building up and staying.
   python3 tools/outro.py voz      the voice-over (ElevenLabs, voice VOICE) → .raw/outro/voz.mp3 + outro.json (word times)
   python3 tools/outro.py audio    the voice-over, a soft music bed and soft effects, mixed → assets/audio/outro.wav
 The music bed («musica v1») and the effects come from ../reel-suarez-habla/.raw/outro and ../vsl-formacion-nawar
@@ -18,8 +21,8 @@ import base64, json, os, subprocess, sys, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, ".raw", "outro")
-TEXT = ("Suárez no pilló ni una. ¿Y a ti, cuántas veces te ha pasado? En el gemeente, con el casero... Aprende "
-        "neerlandés desde el español, y a tu ritmo. Comenta QUIERO y te contamos nuestro método.")   # (v10: no ad tone — the pain, two advantages, «Comenta QUIERO»)
+TEXT = ("Suárez lo pilló todo... hasta el doble sentido. ¿Y tú? ¿Pillas los chistes en neerlandés, o sonríes por "
+        "compromiso? Aprende desde el español, a tu ritmo. Comenta QUIERO y te contamos nuestro método.")   # (v11: the double meanings)
 VOICE = "LP0ZBLgGaLqbDU1l9PDX"         # «Yair - Narration Spanish» (v7; v6 used «Nawar Def»)
 MODEL = "eleven_v4"                    # (v7.2; eleven_multilingual_v2 before: it sounded flat)
 SETTINGS = {"stability": 0.5, "similarity_boost": 0.8}
@@ -97,9 +100,10 @@ def cues():
     def at(text, k=0, end=False):
         hits = [w for w in ws if w["text"].strip(".,¡!¿?\"«»").lower() == text.lower()]
         return hits[k]["end" if end else "t"]
-    c = dict(FREEZE=0.0, L1=at("suárez") - 0.06, L2=at("y") - 0.06, C1=at("gemeente") - 0.08, C2=at("casero") - 0.08,
-             C3=at("casero") + 0.34, AP=at("aprende") - 0.10, B1=at("español") - 0.10, B2=at("ritmo") - 0.10,
-             CTA=at("comenta") - 0.12, TYPE0=at("quiero") - 0.02, TYPE1=at("quiero", end=True) - 0.05, CONFIRM=at("y", 2) - 0.03)
+    c = dict(FREEZE=0.0, PANEL=0.08, T1=at("suárez") - 0.06, T2=at("hasta") - 0.06, D1=at("doble") - 0.04,
+             Q1=at("y") - 0.06, Q2=at("o") - 0.06, B1=at("español") - 0.10, B2=at("ritmo") - 0.10,
+             CTA=at("comenta") - 0.12, TYPE0=at("quiero") - 0.02, TYPE1=at("quiero", end=True) - 0.05, CONFIRM=at("y", 1) - 0.03)
+    c["D2"], c["D3"] = round(c["D1"] + 0.36, 3), round(c["D1"] + 0.72, 3)
     c["TAP"] = round(c["TYPE1"] + 0.10, 3)
     c["CONFIRM"] = max(c["CONFIRM"], c["TAP"] + 0.18)
     return {k: round(v, 3) for k, v in c.items()}
@@ -141,7 +145,7 @@ def audio():
     bed *= np.clip(t / BED_IN, 0, 1)[:, None] * np.clip((END - BED_AT - t) / BED_OUT, 0, 1)[:, None]
     a = int(BED_AT * SR); mix[a:a + len(bed)] += bed
     c = cues()                                                      # soft effects, under the voice: the whoosh on the cut
-    for name, at in (("whoosh", 0.0), ("pop", c["C1"] + 0.05), ("pop", c["C2"] + 0.05), ("pop", c["C3"] + 0.05), ("pop", c["B1"] + 0.05),
+    for name, at in (("whoosh", 0.0), ("pop", c["D1"] + 0.05), ("pop", c["D2"] + 0.05), ("pop", c["D3"] + 0.05), ("pop", c["B1"] + 0.05),
                      ("pop", c["B2"] + 0.05), ("click", c["TAP"]), ("ping", c["CONFIRM"])):   # to the ground,
         f, db = SFX[name]                                           # the price seal landing, the tap on «Publicar», the
         fx = load(os.path.join(RAW, f)) * 10 ** (db / 20)           # message sent
