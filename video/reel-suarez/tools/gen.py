@@ -19,11 +19,6 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import outro as O  # noqa: E402
 INDIGO, SKY = "#1D0084", "#4DA3FF"
-FREEZE_AT = 33.70                 # (v10) the closing freezes on this frame of the ad: Suárez, puzzled, into the lens
-PANEL_TOP = 660                   # (v11) the indigo panel under his face, where the closing builds up
-DOBLES = [("fluiten", "pitar… <em>como el árbitro</em>"),          # (v11) the joke's three Dutch words, both meanings
-          ("de bank", "el sofá… <em>o el banquillo</em>"),
-          ("een kaartje", "una tarjeta… <em>¿amarilla?</em>")]
 YEL = "#FFE11B"
 SUB_BOTTOM = 1500                 # the subtitle block stands on this line (frame px), as in the second reel
 NL_W, NL_CX = 744, 540
@@ -56,114 +51,138 @@ def outline_shadow(r, color="#000"):
 
 
 def outro_html():
-    """compositions/outro.html (v11, the client: Suárez did understand — he takes everything to football; nothing should
-    leave the screen): Suárez frozen on his puzzled look into the lens (the ad's frame at FREEZE_AT) on top, and under
-    his face an indigo panel where everything builds up with the voice and stays: «Suárez lo pilló todo / hasta el doble
-    sentido», the joke's three Dutch words with both meanings (DOBLES), «¿Y tú, pillas los chistes / o sonríes por
-    compromiso?», ✓ Desde el español · ✓ A tu ritmo, and an Instagram comment field typing «QUIERO» → «Te contamos
-    nuestro método por mensaje»."""
-    import subprocess
+    """compositions/outro.html (v12, the client: like the ebook closing — everything on one screen, almost at once, or
+    people leave; no computer): the indigo screen of the second reel's closing ad, all in within ~1 s — the badge
+    «Holandés Nawar», «¿Pillas los chistes / en neerlandés?», a phone with the Instagram DM that follows the comment
+    («QUIERO» → «¡Genial! Te cuento cómo es nuestro método» → «Desde el español y a tu ritmo»), the light-blue ticker with
+    the advantages and the comment field, which types «QUIERO» on the voice's «Comenta QUIERO» → «Te contamos nuestro
+    método por mensaje»."""
     c = O.cues()
-    os.makedirs(os.path.join(ROOT, "assets", "img"), exist_ok=True)
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{FREEZE_AT}", "-i", os.path.join(ROOT, "assets", "video", "suarez-916.mp4"),
-                    "-frames:v", "1", os.path.join(ROOT, "assets", "img", "freeze.png")], check=True)
-    v = dict(c, D=O.END, TYPEDUR=round(c["TYPE1"] - c["TYPE0"], 3), INDIGO=INDIGO, SKY=SKY, YEL=YEL, PT=PANEL_TOP)
+    v = dict(c, D=O.END, TYPEDUR=round(c["TYPE1"] - c["TYPE0"], 3), INDIGO=INDIGO, SKY=SKY)
     css = """
     #o-root { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", sans-serif; color: #FFFFFF; }
     .o-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
-    #o-freeze { transform-origin: 50% 20%; }
-    #o-freeze img { position: absolute; left: 0; top: -40px; display: block; width: 1080px; height: 1920px; object-fit: cover; }
-    #o-flash { background: #FFFFFF; opacity: 0; }
-    /* the panel: Nawar indigo, everything builds up on it and stays */
-    #o-panel { position: absolute; left: 0; top: «PT»px; width: 1080px; height: 1400px; border-radius: 56px 56px 0 0; overflow: hidden;
-      background: «INDIGO»; box-shadow: 0 -18px 50px rgba(0,0,0,0.35); }
-    .o-luz1 { position: absolute; top: -380px; right: -360px; width: 1200px; height: 1200px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(11,109,240,0.40) 0%, rgba(11,109,240,0) 65%); }
+    #o-ground { background: «INDIGO»; }
+    .o-luz1 { position: absolute; top: -280px; right: -320px; width: 1300px; height: 1300px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(11,109,240,0.42) 0%, rgba(11,109,240,0) 65%); }
+    .o-luz2 { position: absolute; bottom: -260px; left: -280px; width: 1150px; height: 1150px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(11,109,240,0.20) 0%, rgba(11,109,240,0) 65%); }
     .o-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 2px, transparent 2.2px); background-size: 52px 52px; }
     .o-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
-    .o-h { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 64px; line-height: 1.08; letter-spacing: -0.025em; white-space: nowrap; }
-    #o-t1 { top: 708px; }
-    #o-t2 { top: 778px; color: «YEL»; }
-    /* the three words of the joke, with both meanings */
-    #o-dict { position: absolute; left: 168px; top: 874px; width: 744px; padding: 12px 26px; border-radius: 28px;
-      background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.16); }
-    .o-d { display: flex; align-items: center; height: 62px; white-space: nowrap; }
-    .o-d + .o-d { border-top: 1.5px solid rgba(255,255,255,0.12); }
-    .o-d b { width: 236px; flex: 0 0 236px; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 34px; color: «YEL»; line-height: 1; }
-    .o-d i { font-style: normal; width: 46px; flex: 0 0 46px; font-weight: 700; font-size: 30px; color: rgba(255,255,255,0.55); }
-    .o-d span { font-weight: 600; font-size: 31px; color: #FFFFFF; line-height: 1; }
-    .o-d em { font-style: normal; color: «SKY»; font-weight: 800; }
-    .o-q { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 48px; line-height: 1.1; letter-spacing: -0.02em; white-space: nowrap; }
-    #o-q1 { top: 1106px; }
-    #o-q2 { top: 1160px; color: «SKY»; }
-    /* the advantages */
-    #o-bens { top: 1238px; gap: 16px; }
-    .o-ben { display: flex; align-items: center; gap: 12px; height: 66px; padding: 0 26px 0 14px; border-radius: 999px; background: #FFFFFF;
-      color: #0C0C1E; font-weight: 700; font-size: 32px; white-space: nowrap; line-height: 1; }
-    .o-ben svg { display: block; width: 40px; height: 40px; }
+    #o-badge { top: 196px; }
+    .o-badge { display: flex; align-items: center; height: 62px; padding: 0 30px; border-radius: 999px; background: #025DC7; color: #E0F2FF;
+      font-weight: 700; font-size: 25px; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; line-height: 1; }
+    .o-h { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 92px; line-height: 1.08; letter-spacing: -0.03em; white-space: nowrap; }
+    #o-l1 { top: 276px; }
+    #o-l1 span { background: linear-gradient(180deg, #FFFFFF 10%, rgba(255,255,255,0.6) 100%); -webkit-background-clip: text;
+      background-clip: text; -webkit-text-fill-color: transparent; color: transparent; padding: 0 6px; }
+    #o-l2 { top: 376px; color: «SKY»; }
+    /* the phone: the Instagram DM that follows the comment */
+    #o-phone { position: absolute; left: 360px; top: 518px; width: 360px; height: 690px; border-radius: 58px; background: #0C0C1E;
+      box-shadow: inset 0 0 0 2px #2A2D3A, 0 30px 70px rgba(2,0,24,0.55); }
+    #o-scr { position: absolute; left: 13px; top: 13px; width: 334px; height: 664px; border-radius: 46px; overflow: hidden; background: #FFFFFF; color: #0C0C1E; }
+    #o-island { position: absolute; left: 117px; top: 12px; width: 100px; height: 30px; border-radius: 16px; background: #0C0C1E; }
+    #o-sb { position: absolute; left: 34px; top: 17px; font-weight: 700; font-size: 17px; line-height: 1; }
+    #o-dmh { position: absolute; left: 0; top: 56px; width: 334px; height: 74px; display: flex; align-items: center; gap: 12px; padding: 0 18px;
+      border-bottom: 1px solid #EFEFF2; }
+    #o-dmh .back { display: block; width: 14px; height: 24px; }
+    .o-pav { display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; flex: 0 0 50px; border-radius: 50%;
+      background: #FFFFFF; box-shadow: 0 0 0 2px #E6E8EF; overflow: hidden; }
+    .o-pav img { display: block; width: 44px; }
+    .o-who b { display: block; font-weight: 700; font-size: 20px; line-height: 1.1; white-space: nowrap; }
+    .o-who span { display: block; font-weight: 500; font-size: 15px; line-height: 1.2; color: #8E8E8E; }
+    #o-msgs { position: absolute; left: 0; bottom: 90px; width: 334px; display: flex; flex-direction: column; gap: 9px; padding: 0 16px; }
+    .o-time { align-self: center; font-weight: 600; font-size: 14px; color: #8E8E8E; margin-bottom: 4px; }
+    .o-me { align-self: flex-end; padding: 12px 20px; border-radius: 24px; background: linear-gradient(135deg, #7B2FF7 0%, #3D5AFE 100%);
+      color: #FFFFFF; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 28px; letter-spacing: 0.03em; line-height: 1.1; }
+    .o-them { display: flex; align-items: flex-end; gap: 8px; }
+    .o-them .o-pav { width: 30px; height: 30px; flex: 0 0 30px; box-shadow: 0 0 0 1px #E6E8EF; }
+    .o-them .o-pav img { width: 27px; }
+    .o-bub { max-width: 250px; padding: 13px 18px; border-radius: 22px; background: #EFEFF2; font-weight: 500; font-size: 23px; line-height: 1.25; }
+    .o-bub b { font-weight: 800; }
+    .o-hide { visibility: hidden; }
+    #o-prof { position: absolute; left: 0; top: 142px; width: 334px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    #o-prof .o-pav { width: 62px; height: 62px; flex: 0 0 62px; box-shadow: 0 0 0 2px #E6E8EF; }
+    #o-prof .o-pav img { width: 56px; }
+    #o-prof b { margin-top: 2px; font-weight: 800; font-size: 18px; line-height: 1.1; }
+    #o-prof span { font-weight: 500; font-size: 16px; color: #8E8E8E; line-height: 1.2; }
+    #o-prof i { margin-top: 8px; font-style: normal; padding: 8px 18px; border-radius: 10px; background: #EFEFF2; font-weight: 700; font-size: 16px; }
+    .o-dots3 { display: flex; gap: 6px; padding: 16px 18px; border-radius: 22px; background: #EFEFF2; }
+    .o-dots3 i { display: block; width: 9px; height: 9px; border-radius: 50%; background: #9CA0AA; }
+    #o-inp { position: absolute; left: 14px; bottom: 26px; width: 306px; height: 52px; border-radius: 26px; border: 1.5px solid #E1E3E8;
+      display: flex; align-items: center; padding: 0 20px; font-weight: 500; font-size: 18px; color: #8E8E8E; }
+    /* the light-blue ticker with the advantages */
+    #o-band { position: absolute; left: -10px; top: 1240px; width: 1100px; height: 64px; background: «SKY»; overflow: hidden; }
+    #o-track { position: absolute; left: 0; top: 0; height: 64px; display: flex; align-items: center; white-space: nowrap; }
+    #o-track span { display: flex; align-items: center; gap: 16px; padding: 0 26px; color: «INDIGO»; font-weight: 700; font-size: 30px; line-height: 1; }
+    #o-track b { font-size: 26px; }
     /* the call to action: an Instagram comment field */
-    #o-cta { top: 1322px; }
-    .o-field { position: relative; display: flex; align-items: center; gap: 18px; width: 744px; height: 88px; padding: 0 30px 0 16px;
+    #o-cta { top: 1326px; }
+    .o-field { position: relative; display: flex; align-items: center; gap: 18px; width: 744px; height: 96px; padding: 0 30px 0 18px;
       border-radius: 999px; background: #FFFFFF; white-space: nowrap; }
-    .o-av { display: block; width: 58px; height: 58px; flex: 0 0 58px; }
-    #o-ph { position: absolute; left: 92px; font-weight: 500; font-size: 31px; color: #8E8E8E; }
-    #o-typed { font-family: "Poppins", sans-serif; font-weight: 800; font-size: 38px; color: #0C0C1E; line-height: 1; letter-spacing: 0.02em; }
-    #o-caret { display: block; width: 4px; height: 44px; border-radius: 2px; background: #0095F6; margin-left: -14px; }
+    .o-av { display: block; width: 62px; height: 62px; flex: 0 0 62px; }
+    #o-ph { position: absolute; left: 98px; font-weight: 500; font-size: 32px; color: #8E8E8E; }
+    #o-typed { font-family: "Poppins", sans-serif; font-weight: 800; font-size: 40px; color: #0C0C1E; line-height: 1; letter-spacing: 0.02em; }
+    #o-caret { display: block; width: 4px; height: 46px; border-radius: 2px; background: #0095F6; margin-left: -14px; }
     .o-fill { flex: 1 1 auto; }
-    #o-post { position: relative; font-weight: 700; font-size: 31px; color: #0095F6; }
+    #o-post { position: relative; font-weight: 700; font-size: 32px; color: #0095F6; }
     #o-ripple { position: absolute; left: 50%; top: 50%; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%;
       background: rgba(0,149,246,0.30); opacity: 0; }
-    #o-ok { top: 1424px; }
-    .o-ok { display: flex; align-items: center; gap: 12px; height: 54px; padding: 0 22px 0 12px; border-radius: 14px;
-      background: rgba(34,197,94,0.20); border: 2px solid rgba(34,197,94,0.60); font-weight: 700; font-size: 27px; white-space: nowrap; }
-    .o-ok svg { display: block; width: 32px; height: 32px; }
+    #o-ok { top: 1436px; }
+    .o-ok { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 26px 0 14px; border-radius: 16px;
+      background: rgba(34,197,94,0.18); border: 2px solid rgba(34,197,94,0.55); font-weight: 700; font-size: 29px; white-space: nowrap; }
+    .o-ok svg { display: block; width: 36px; height: 36px; }
 """
+    ticker = ["Desde el español", "A tu ritmo", "Desde cero", "Explicado en español", "Vocabulario y gramática", "Paso a paso"]
+    track = "".join(f"<span><b>✦</b>{html.escape(t)}</span>" for t in ticker * 4)
     ok = ('<svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#22C55E"/><path d="M10 18.5 L15.5 24 L26 12.5" fill="none" '
           'stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>')
     av = ('<svg class="o-av" viewBox="0 0 62 62"><circle cx="31" cy="31" r="31" fill="#E6E8EF"/><circle cx="31" cy="25" r="11" fill="#A9AFBE"/>'
           '<path d="M11 52 C14 41 22 37 31 37 C40 37 48 41 51 52 A30 30 0 0 1 11 52 Z" fill="#A9AFBE"/></svg>')
-    dict_rows = "".join(f'<div id="o-d{i + 1}" class="o-d"><b>{nl}</b><i>→</i><span>{es}</span></div>' for i, (nl, es) in enumerate(DOBLES))
+    pav = '<div class="o-pav"><img src="assets/img/logo-nawar.png" alt=""></div>'
+    back = '<svg class="back" viewBox="0 0 14 24"><path d="M11 3 L3 12 L11 21" fill="none" stroke="#0C0C1E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
     body = f"""
-    <div id="o-freeze" class="o-full"><img src="assets/img/freeze.png" alt=""></div>
-    <div id="o-flash" class="o-full"></div>
-    <div id="o-panel"><div class="o-luz1"></div><div class="o-dots"></div></div>
-    <div id="o-t1" class="o-row o-h" data-layout-allow-overlap>Suárez lo pilló todo</div>
-    <div id="o-t2" class="o-row o-h" data-layout-allow-overlap>hasta el doble sentido</div>
-    <div id="o-dict">{dict_rows}</div>
-    <div id="o-q1" class="o-row o-q">¿Y tú, pillas los chistes</div>
-    <div id="o-q2" class="o-row o-q">o sonríes por compromiso?</div>
-    <div id="o-bens" class="o-row"><div id="o-b1" class="o-ben">{ok}<span>Desde el español</span></div><div id="o-b2" class="o-ben">{ok}<span>A tu ritmo</span></div></div>
+    <div id="o-ground" class="o-full"><div class="o-luz1"></div><div class="o-luz2"></div><div class="o-dots"></div></div>
+    <div id="o-badge" class="o-row"><div class="o-badge"><span>Holandés Nawar</span></div></div>
+    <div id="o-l1" class="o-row o-h"><span>¿Pillas los chistes</span></div>
+    <div id="o-l2" class="o-row o-h">en neerlandés?</div>
+    <div id="o-phone"><div id="o-scr">
+      <div id="o-sb">9:41</div><div id="o-island"></div>
+      <div id="o-dmh">{back}{pav}<div class="o-who"><b>Holandés Nawar</b><span>Activo ahora</span></div></div>
+      <div id="o-prof">{pav}<b>Holandés Nawar</b></div>
+      <div id="o-msgs">
+        <div id="o-m1" class="o-me">QUIERO</div>
+        <div id="o-m2" class="o-them">{pav}<div class="o-bub">¡Genial! Te cuento cómo es <b>nuestro método</b></div></div>
+        <div id="o-m3" class="o-them">{pav.replace('o-pav"', 'o-pav o-hide"')}<div class="o-bub">Desde el español y <b>a tu ritmo</b></div></div>
+        <div id="o-m4" class="o-them">{pav.replace('o-pav"', 'o-pav o-hide"')}<div class="o-dots3"><i id="o-k1"></i><i id="o-k2"></i><i id="o-k3"></i></div></div>
+      </div>
+      <div id="o-inp">Mensaje…</div>
+    </div></div>
+    <div id="o-band"><div id="o-track">{track}</div></div>
     <div id="o-cta" class="o-row"><div class="o-field">{av}<span id="o-ph">Añade un comentario…</span><span id="o-typed"></span><span id="o-caret"></span><span class="o-fill"></span><span id="o-post">Publicar<i id="o-ripple"></i></span></div></div>
     <div id="o-ok" class="o-row"><div class="o-ok">{ok}<span>Te contamos nuestro método por mensaje</span></div></div>
 """
     js = """
-      // Suárez freezes (a quick flash and punch-in), then a slow push; the panel slides up under his face
-      tl.fromTo("#o-flash", { opacity: 0.55 }, { opacity: 0, duration: 0.28, ease: "power2.out" }, «FREEZE»);
-      tl.fromTo("#o-freeze", { scale: 1.10 }, { scale: 1.0, duration: 0.35, ease: "power3.out" }, «FREEZE»);
-      tl.fromTo("#o-freeze", { scale: 1.0 }, { scale: 1.05, duration: «D» - 0.35, ease: "none", immediateRender: false }, «FREEZE» + 0.35);
-      tl.fromTo("#o-panel", { y: 1300 }, { y: 0, duration: 0.5, ease: "power3.out" }, «PANEL»);
-      // everything builds up and stays
-      const pop = (sel, at, from) => tl.fromTo(sel, Object.assign({ opacity: 0 }, from), { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.8)" }, at);
-      pop("#o-t1", «T1», { y: 24, scale: 0.92 });
-      pop("#o-t2", «T2», { y: 24, scale: 0.92 });
-      pop("#o-dict", «D1» - 0.06, { y: 20, scale: 0.97 });
-      tl.set(["#o-d2", "#o-d3"], { opacity: 0 }, 0);
-      tl.fromTo("#o-d1 > *", { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.24, ease: "power2.out", stagger: 0.05 }, «D1»);
-      tl.set("#o-d2", { opacity: 1 }, «D2»);
-      tl.fromTo("#o-d2 > *", { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.24, ease: "power2.out", stagger: 0.05 }, «D2»);
-      tl.set("#o-d3", { opacity: 1 }, «D3»);
-      tl.fromTo("#o-d3 > *", { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.24, ease: "power2.out", stagger: 0.05 }, «D3»);
-      pop("#o-q1", «Q1», { y: 24, scale: 0.92 });
-      pop("#o-q2", «Q2», { y: 24, scale: 0.92 });
-      pop("#o-b1", «B1», { y: 20, scale: 0.85 });
-      pop("#o-b2", «B2», { y: 20, scale: 0.85 });
-      // the call to action
-      tl.fromTo("#o-cta", { opacity: 0, y: 40, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.5)" }, «CTA»);
+      // everything in at once (0.2–1.3 s), as in the second reel's closing ad
+      tl.fromTo("#o-ground", { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.28, ease: "power2.out" }, «GROUND»);
+      tl.fromTo("#o-badge", { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.40, ease: "power3.out" }, «BADGE»);
+      tl.fromTo("#o-l1", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, «L1»);
+      tl.fromTo("#o-l2", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, «L2»);
+      tl.fromTo("#o-phone", { opacity: 0, y: 90, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "power3.out" }, «PHONE»);
+      tl.fromTo("#o-band", { x: -1120 }, { x: 0, duration: 0.50, ease: "power3.out" }, «BAND»);
+      tl.fromTo("#o-track", { xPercent: 0 }, { xPercent: -25, duration: «D», ease: "none" }, 0);
+      tl.fromTo("#o-m1", { opacity: 0, y: 16, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.8)" }, «M1»);
+      tl.fromTo("#o-m2", { opacity: 0, y: 16, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.6)" }, «M2»);
+      tl.fromTo("#o-m3", { opacity: 0, y: 16, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.6)" }, «M3»);
+      tl.fromTo("#o-m4", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }, «M3» + 0.35);
+      tl.fromTo(["#o-k1", "#o-k2", "#o-k3"], { opacity: 0.3 }, { opacity: 1, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: Math.floor((«D» - «M3») / 0.3), stagger: 0.12 }, «M3» + 0.5);
+      tl.fromTo("#o-cta", { opacity: 0, y: 46, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.5)" }, «CTA»);
+      // «Comenta QUIERO»: typed, «Publicar» tapped, confirmed
       tl.set("#o-ph", { opacity: 0 }, «TYPE0»);
       tl.fromTo("#o-post", { opacity: 0.4 }, { opacity: 1, duration: 0.15 }, «TYPE0»);
       tl.fromTo("#o-ripple", { opacity: 0.9, scale: 0.2 }, { opacity: 0, scale: 1.5, duration: 0.45, ease: "power2.out", immediateRender: false }, «TAP»);
       tl.fromTo("#o-cta .o-field", { scale: 1 }, { scale: 0.97, duration: 0.09, ease: "power2.out", yoyo: true, repeat: 1 }, «TAP»);
-      tl.fromTo("#o-ok", { opacity: 0, y: 18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "back.out(1.6)" }, «CONFIRM»);
+      tl.fromTo("#o-ok", { opacity: 0, y: 22, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "back.out(1.6)" }, «CONFIRM»);
       (() => {                                               // «QUIERO» typed letter by letter (one state per letter: seek-safe)
         const el = document.getElementById("o-typed"), full = "QUIERO", typ = { n: 0 };
         el.textContent = "";
@@ -181,8 +200,7 @@ def outro_html():
         return s
     fonts = "\n".join([f'    @font-face {{ font-family: "Poppins"; font-weight: {w}; src: url("assets/fonts/poppins-latin-{w}-normal.woff2") format("woff2"); }}'
                        for w in (700, 800)] +
-                      ['    @font-face { font-family: "Inter"; font-weight: 100 900; src: url("assets/fonts/inter-var-latin.woff2") format("woff2"); }',
-                       '    @font-face { font-family: "InterV"; font-weight: 100 900; src: url("assets/fonts/inter-var-latin.woff2") format("woff2"); }'])
+                      ['    @font-face { font-family: "Inter"; font-weight: 100 900; src: url("assets/fonts/inter-var-latin.woff2") format("woff2"); }'])
     page = f"""<template>
   <script src="assets/vendor/gsap.min.js"></script>
   <style>

@@ -11,6 +11,8 @@ ritmo… que la voz acompañe pero no se haga pesada»): Suárez frozen, the vie
 v11 (the client: Suárez did understand — the joke is that he takes it all to football; and nothing should leave the
 screen): «Suárez lo pilló todo… hasta el doble sentido», the three Dutch words with both meanings, «¿Pillas los chistes en
 neerlandés, o sonríes por compromiso?», the two advantages and «Comenta QUIERO», all building up and staying.
+v12 (the client: like the ebook closing — all on one screen, almost at once, or people leave; no computer): the
+indigo screen of the second reel with a phone showing the Instagram DM «QUIERO» → the reply, and «Comenta QUIERO».
   python3 tools/outro.py voz      the voice-over (ElevenLabs, voice VOICE) → .raw/outro/voz.mp3 + outro.json (word times)
   python3 tools/outro.py audio    the voice-over, a soft music bed and soft effects, mixed → assets/audio/outro.wav
 The music bed («musica v1») and the effects come from ../reel-suarez-habla/.raw/outro and ../vsl-formacion-nawar
@@ -21,8 +23,8 @@ import base64, json, os, subprocess, sys, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, ".raw", "outro")
-TEXT = ("Suárez lo pilló todo... hasta el doble sentido. ¿Y tú? ¿Pillas los chistes en neerlandés, o sonríes por "
-        "compromiso? Aprende desde el español, a tu ritmo. Comenta QUIERO y te contamos nuestro método.")   # (v11: the double meanings)
+TEXT = ("¿Pillas los chistes en neerlandés? Aprende desde el español, a tu ritmo. Comenta QUIERO y te contamos nuestro "
+        "método por mensaje.")   # (v12: short — everything is on screen at once, the voice only accompanies)
 VOICE = "LP0ZBLgGaLqbDU1l9PDX"         # «Yair - Narration Spanish» (v7; v6 used «Nawar Def»)
 MODEL = "eleven_v4"                    # (v7.2; eleven_multilingual_v2 before: it sounded flat)
 SETTINGS = {"stability": 0.5, "similarity_boost": 0.8}
@@ -100,10 +102,8 @@ def cues():
     def at(text, k=0, end=False):
         hits = [w for w in ws if w["text"].strip(".,¡!¿?\"«»").lower() == text.lower()]
         return hits[k]["end" if end else "t"]
-    c = dict(FREEZE=0.0, PANEL=0.08, T1=at("suárez") - 0.06, T2=at("hasta") - 0.06, D1=at("doble") - 0.04,
-             Q1=at("y") - 0.06, Q2=at("o") - 0.06, B1=at("español") - 0.10, B2=at("ritmo") - 0.10,
-             CTA=at("comenta") - 0.12, TYPE0=at("quiero") - 0.02, TYPE1=at("quiero", end=True) - 0.05, CONFIRM=at("y", 1) - 0.03)
-    c["D2"], c["D3"] = round(c["D1"] + 0.36, 3), round(c["D1"] + 0.72, 3)
+    c = dict(GROUND=0.0, BADGE=0.20, L1=0.28, L2=0.38, PHONE=0.30, BAND=0.42, M1=0.62, M2=0.92, M3=1.22, CTA=0.70,
+             TYPE0=at("quiero") - 0.02, TYPE1=at("quiero", end=True) - 0.05, CONFIRM=at("y") - 0.03)
     c["TAP"] = round(c["TYPE1"] + 0.10, 3)
     c["CONFIRM"] = max(c["CONFIRM"], c["TAP"] + 0.18)
     return {k: round(v, 3) for k, v in c.items()}
@@ -145,8 +145,7 @@ def audio():
     bed *= np.clip(t / BED_IN, 0, 1)[:, None] * np.clip((END - BED_AT - t) / BED_OUT, 0, 1)[:, None]
     a = int(BED_AT * SR); mix[a:a + len(bed)] += bed
     c = cues()                                                      # soft effects, under the voice: the whoosh on the cut
-    for name, at in (("whoosh", 0.0), ("pop", c["D1"] + 0.05), ("pop", c["D2"] + 0.05), ("pop", c["D3"] + 0.05), ("pop", c["B1"] + 0.05),
-                     ("pop", c["B2"] + 0.05), ("click", c["TAP"]), ("ping", c["CONFIRM"])):   # to the ground,
+    for name, at in (("whoosh", 0.0), ("pop", c["M1"] + 0.05), ("pop", c["M2"] + 0.05), ("click", c["TAP"]), ("ping", c["CONFIRM"])):
         f, db = SFX[name]                                           # the price seal landing, the tap on «Publicar», the
         fx = load(os.path.join(RAW, f)) * 10 ** (db / 20)           # message sent
         fx = fx[int(LEAD.get(name, 0) * SR):]                       # (its silence before the sound trimmed)

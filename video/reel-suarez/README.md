@@ -23,15 +23,13 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
   del medio (`tools/img`). Está desde el primer fotograma (es también la portada) y se va a los 3,3 s. Va sobre el pecho
   y no arriba como en el segundo reel, porque aquí las caras están arriba en esos planos (la de Suárez y luego la del
   dependiente, cuya boca llega a y ≈ 890). Ya no hay pastilla pequeña arriba.
-- **Cierre (v11, el doble sentido, todo se queda):** Suárez se congela mirando a cámara (fotograma `FREEZE_AT`, con un
-  destello y un empuje lento) y bajo su cara sube un panel índigo donde todo va saliendo con la voz y se queda: «Suárez
-  lo pilló todo / hasta el doble sentido», las tres palabras del chiste con sus dos sentidos (`DOBLES`: *fluiten* →
-  pitar… como el árbitro; *de bank* → el sofá… o el banquillo; *een kaartje* → una tarjeta… ¿amarilla?), «¿Y tú, pillas
-  los chistes / o sonríes por compromiso?», ✓ Desde el español · ✓ A tu ritmo, y el campo de comentario de Instagram que
-  escribe «QUIERO» → «Te contamos nuestro método por mensaje». Voz de Yair, de colega, un poco más rápida (`TEMPO` 1,1):
-  «Suárez lo pilló todo… hasta el doble sentido. ¿Y tú? ¿Pillas los chistes en neerlandés, o sonríes por compromiso?
-  Aprende desde el español, a tu ritmo. Comenta QUIERO y te contamos nuestro método.» (Las versiones anteriores del
-  cierre —el ebook, el perfil, el portátil del VSL— están en el historial de git.)
+- **Cierre (v12, todo en una pantalla y casi de golpe):** la pantalla índigo del cierre del segundo reel, entera en
+  ~1 s para que nadie se vaya antes de verlo: «Holandés Nawar», «¿Pillas los chistes / en neerlandés?», un móvil con el
+  DM de Instagram que sigue al comentario («QUIERO» → «¡Genial! Te cuento cómo es nuestro método» → «Desde el español y a
+  tu ritmo» → escribiendo…), la cinta azul clara con las ventajas y el campo de comentario, que escribe «QUIERO» al
+  decirlo la voz → «Te contamos nuestro método por mensaje». Voz de Yair, corta (`TEMPO` 1,1): «¿Pillas los chistes en
+  neerlandés? Aprende desde el español, a tu ritmo. Comenta QUIERO y te contamos nuestro método por mensaje.» (Las
+  versiones anteriores del cierre están en el historial de git.)
 - **Subtítulos (v7: abajo, como en el segundo reel, de pie sobre y = 1500):** por frases cortas, sincronizados palabra a palabra (ElevenLabs Scribe):
   - el holandés grande y en mayúsculas, todo al mismo tamaño y en dos líneas como mucho, con la palabra que se está
     diciendo en amarillo; los cortes de línea van marcados con «|» en `PHRASES`, para no dejar una palabra sola ni
@@ -64,7 +62,7 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v11.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v12.mp4
 ```
 
 Para cambiar una traducción o cortar una frase de otra manera, edita `PHRASES` en `tools/subs.py` y ejecuta

@@ -28,4 +28,4 @@ cp ../vsl-formacion-nawar/assets/sfx/{whoosh,pop,click,ping}.mp3 .raw/outro/ && 
 cp ../reel-suarez-habla/assets/fonts/inter-var-latin.woff2 assets/fonts/
 python3 tools/outro.py audio   # (the voice is in outro.json + .raw/outro/voz.mp3; a new take: python3 tools/outro.py voz)
 python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v11.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v12.mp4"
