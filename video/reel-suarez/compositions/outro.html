@@ -4,41 +4,33 @@
     @font-face { font-family: "Poppins"; font-weight: 700; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
     @font-face { font-family: "Poppins"; font-weight: 800; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
     @font-face { font-family: "Inter"; font-weight: 100 900; src: url("assets/fonts/inter-var-latin.woff2") format("woff2"); }
+    @font-face { font-family: "InterV"; font-weight: 100 900; src: url("assets/fonts/inter-var-latin.woff2") format("woff2"); }
 
     #o-root { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", sans-serif; color: #FFFFFF; }
     .o-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
-    #o-ground { background: #1D0084; }
-    .o-luz1 { position: absolute; top: -280px; right: -320px; width: 1300px; height: 1300px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(11,109,240,0.42) 0%, rgba(11,109,240,0) 65%); }
-    .o-luz2 { position: absolute; bottom: -260px; left: -280px; width: 1150px; height: 1150px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(11,109,240,0.20) 0%, rgba(11,109,240,0) 65%); }
-    .o-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 2px, transparent 2.2px);
-      background-size: 52px 52px; }
+    #o-freeze { transform-origin: 50% 22%; }
+    #o-freeze img { display: block; width: 1080px; height: 1920px; object-fit: cover; }
+    #o-flash { background: #FFFFFF; opacity: 0; }
+    #o-shade { background: linear-gradient(180deg, rgba(4,2,20,0) 0%, rgba(4,2,20,0) 28%, rgba(4,2,20,0.62) 42%, rgba(4,2,20,0.80) 60%, rgba(4,2,20,0.86) 100%); }
     .o-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
-    #o-badge { top: 196px; }
-    .o-badge { display: flex; align-items: center; height: 62px; padding: 0 30px; border-radius: 999px; background: #025DC7; color: #E0F2FF;
-      font-weight: 700; font-size: 25px; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; line-height: 1; }
-    .o-h { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 94px; line-height: 1.08; letter-spacing: -0.03em; white-space: nowrap; }
-    #o-h1 { top: 280px; }
-    #o-h1 span { background: linear-gradient(180deg, #FFFFFF 10%, rgba(255,255,255,0.6) 100%); -webkit-background-clip: text;
-      background-clip: text; -webkit-text-fill-color: transparent; color: transparent; padding: 0 6px; }
-    #o-h2 { top: 382px; color: #4DA3FF; }
-    /* the laptop: the VSL's rig in its own 1920×1080 space, scaled into the frame */
-    #o-lapw { position: absolute; left: -304.8px; top: 442.4px; width: 1920px; height: 1080px; transform-origin: 0 0; transform: scale(0.88); }
-    #o-lap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
-    #lp-browser { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #FFFFFF; }
-    /* the Black Friday sign over the laptop's top-right corner */
-    #o-sign { position: absolute; left: 648px; top: 528px; transform-origin: 50% 50%; }
-    .o-sign { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 20px 30px 22px; border-radius: 26px;
-      background: #0C0C1E; box-shadow: 0 0 0 3px rgba(255,255,255,0.92), 0 18px 40px rgba(2,0,24,0.45); overflow: hidden; position: relative; }
-    .o-sign .k { font-family: "Poppins", sans-serif; font-weight: 800; font-size: 46px; line-height: 1; letter-spacing: 0.04em; color: #FFFFFF; white-space: nowrap; }
-    .o-sign .p { display: flex; align-items: center; gap: 12px; height: 54px; padding: 0 22px; border-radius: 999px; background: #DC2626;
-      font-weight: 800; font-size: 27px; letter-spacing: 0.10em; color: #FFFFFF; white-space: nowrap; line-height: 1; }
-    #o-dot { display: block; width: 14px; height: 14px; border-radius: 50%; background: #FFFFFF; }
-    #o-shine { position: absolute; top: -40px; left: -160px; width: 90px; height: 260px; transform: rotate(18deg);
-      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0) 100%); }
-    /* the call to action: an Instagram comment field (as in the second reel) */
-    #o-cta { top: 1262px; }
+    .o-ol { flex-direction: column; text-align: center; font-family: "InterV", sans-serif; font-weight: 800; letter-spacing: -0.012em;
+      line-height: 1.06; color: #FFFFFF; text-shadow: 6.00px 0.00px 0 #000, 5.88px 1.17px 0 #000, 5.54px 2.30px 0 #000, 4.99px 3.33px 0 #000, 4.24px 4.24px 0 #000, 3.33px 4.99px 0 #000, 2.30px 5.54px 0 #000, 1.17px 5.88px 0 #000, 0.00px 6.00px 0 #000, -1.17px 5.88px 0 #000, -2.30px 5.54px 0 #000, -3.33px 4.99px 0 #000, -4.24px 4.24px 0 #000, -4.99px 3.33px 0 #000, -5.54px 2.30px 0 #000, -5.88px 1.17px 0 #000, -6.00px 0.00px 0 #000, -5.88px -1.17px 0 #000, -5.54px -2.30px 0 #000, -4.99px -3.33px 0 #000, -4.24px -4.24px 0 #000, -3.33px -4.99px 0 #000, -2.30px -5.54px 0 #000, -1.17px -5.88px 0 #000, -0.00px -6.00px 0 #000, 1.17px -5.88px 0 #000, 2.30px -5.54px 0 #000, 3.33px -4.99px 0 #000, 4.24px -4.24px 0 #000, 4.99px -3.33px 0 #000, 5.54px -2.30px 0 #000, 5.88px -1.17px 0 #000, 3.30px 0.00px 0 #000, 3.05px 1.26px 0 #000, 2.33px 2.33px 0 #000, 1.26px 3.05px 0 #000, 0.00px 3.30px 0 #000, -1.26px 3.05px 0 #000, -2.33px 2.33px 0 #000, -3.05px 1.26px 0 #000, -3.30px 0.00px 0 #000, -3.05px -1.26px 0 #000, -2.33px -2.33px 0 #000, -1.26px -3.05px 0 #000, -0.00px -3.30px 0 #000, 1.26px -3.05px 0 #000, 2.33px -2.33px 0 #000, 3.05px -1.26px 0 #000; white-space: nowrap; }
+    #o-l1, #o-l2 { top: 780px; font-size: 84px; }
+    #o-ap { top: 760px; font-size: 92px; }
+    .o-y { color: #FFE11B; }
+    /* the pain: white pills, stacked, a little askew */
+    #o-pains { position: absolute; left: 0; top: 1000px; width: 1080px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+    .o-pain { display: flex; align-items: center; gap: 14px; height: 84px; padding: 0 34px 0 22px; border-radius: 999px; background: #FFFFFF;
+      color: #0C0C1E; font-weight: 700; font-size: 40px; white-space: nowrap; line-height: 1; box-shadow: 0 14px 34px rgba(0,0,0,0.35); }
+    .o-pain svg { display: block; width: 42px; height: 42px; }
+    #o-p1 { transform: rotate(-2deg); } #o-p2 { transform: rotate(1.5deg); } #o-p3 { transform: rotate(-1deg); }
+    /* the advantages */
+    #o-bens { top: 892px; gap: 18px; }
+    .o-ben { display: flex; align-items: center; gap: 12px; height: 74px; padding: 0 28px 0 16px; border-radius: 999px; background: #FFFFFF;
+      color: #0C0C1E; font-weight: 700; font-size: 34px; white-space: nowrap; line-height: 1; box-shadow: 0 12px 30px rgba(0,0,0,0.30); }
+    .o-ben svg { display: block; width: 42px; height: 42px; }
+    /* the call to action: an Instagram comment field */
+    #o-cta { top: 1030px; }
     .o-field { position: relative; display: flex; align-items: center; gap: 18px; width: 744px; height: 96px; padding: 0 30px 0 18px;
       border-radius: 999px; background: #FFFFFF; white-space: nowrap; }
     .o-av { display: block; width: 62px; height: 62px; flex: 0 0 62px; }
@@ -49,262 +41,69 @@
     #o-post { position: relative; font-weight: 700; font-size: 32px; color: #0095F6; }
     #o-ripple { position: absolute; left: 50%; top: 50%; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%;
       background: rgba(0,149,246,0.30); opacity: 0; }
-    #o-ok { top: 1372px; }
-    .o-ok { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 26px 0 14px; border-radius: 16px;
-      background: rgba(34,197,94,0.18); border: 2px solid rgba(34,197,94,0.55); font-weight: 700; font-size: 29px; white-space: nowrap; }
+    #o-ok { top: 1144px; }
+    .o-ok { display: flex; align-items: center; gap: 14px; height: 64px; padding: 0 26px 0 14px; border-radius: 16px;
+      background: rgba(34,197,94,0.22); border: 2px solid rgba(34,197,94,0.65); font-weight: 700; font-size: 30px; white-space: nowrap; }
     .o-ok svg { display: block; width: 36px; height: 36px; }
 
-    /* ---------- 2D cam > perspective stage (= device box) > 3D body ---------- */
-    #lp-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 590.4px 826.8px; }
-    #lp-stage { left: 96px; top: 226px; perspective: 3000px; perspective-origin: 494.4px 600.8px; }
-    #lp-body { position: absolute; left: 0; top: 0; width: 988.8px; height: 622.4px; transform-style: preserve-3d; transform-origin: 494.4px 600.8px; }
-    /* the table under the closed laptop (only seen from above) */
-    #lp-tsp { position: absolute; left: 30.4px; top: 621.1px; width: 928.0px; height: 603.2px; transform-origin: 50% 0; transform: rotateX(90deg); }
-    #lp-tsh {
-      position: absolute; left: 10px; top: 4px; width: 908.0px; height: 589.2px; border-radius: 40px;
-      background: rgba(3,0,30,0.55);
-      box-shadow: -14px 30px 60px 10px rgba(3,0,30,0.50), -4px 10px 18px 2px rgba(3,0,30,0.45);
-    }
-    /* the base: deck top (dark, keyless — edge-on when straight on) + the front lip */
-    #lp-deck {
-      position: absolute; left: 30.4px; top: 586.8px; width: 928.0px; height: 606.0px;
-      transform-origin: 50% 14px; transform: rotateX(90deg); border-radius: 6px 6px 22px 22px;
-      background: linear-gradient(180deg, #121318 0%, #1c1e24 70%, #2a2d34 100%);
-    }
-    #lp-lipw { position: absolute; left: 0; top: 0; width: 988.8px; height: 622.4px; transform-origin: 494.4px 600.8px; transform: translateZ(592.0px) scale(0.93851); }
-    /* the lid: hinge = (580u, 751u); front face = the mockup lid, back = silver aluminium, no logo */
-    #lp-lid { position: absolute; left: 30.4px; top: 0; width: 928.0px; height: 603.2px; transform-style: preserve-3d; transform-origin: 464.0px 600.8px; }
-    #lp-lidf { left: 0; backface-visibility: hidden; }
-    .lp-edge { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: 24.0px 24.0px 12.8px 12.8px; background: #a3a8b0; }
-    #lp-lido {
-      position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: 24.0px 24.0px 12.8px 12.8px; overflow: hidden;
-      transform: translateZ(-11.2px) rotateY(180deg); backface-visibility: hidden;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 1 0  0 0 0 1 0  0 0 0 1 0  0 0 0 0 0.09'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E"), radial-gradient(ellipse 120% 95% at 70% 82%, #f4f5f7 0%, #e3e5e9 40%, #cdd0d6 76%, #b8bcc4 100%);
-      box-shadow: inset -2px -2px 0 rgba(255,255,255,0.90), inset 2px 2px 0 rgba(110,116,128,0.40), inset 0 0 0 1px rgba(255,255,255,0.45),
-        inset -5px -5px 10px rgba(255,255,255,0.35), inset 0 0 46px rgba(30,70,190,0.18);
-    }
-    /* soft studio reflection: one broad band + a faint second one */
-    #lp-lidr {
-      position: absolute; left: 0; top: 0; width: 100%; height: 100%;
-      background: linear-gradient(302deg, rgba(255,255,255,0) 22%, rgba(255,255,255,0.34) 36%, rgba(255,255,255,0.10) 47%, rgba(255,255,255,0) 58%, rgba(255,255,255,0) 72%, rgba(255,255,255,0.12) 78%, rgba(255,255,255,0) 84%);
-    }
-    /* the black display hinge seen along the back edge */
-    #lp-hinge { position: absolute; left: 88.0px; top: 596.0px; width: 752.0px; height: 7.2px; border-radius: 3.2px; background: linear-gradient(180deg, #34363c 0%, #18191d 100%); }
-
-    /* ================= MAC MOCKUP (tools/mac_mockup.md) — MacBook Pro front view ================= */
-    .lp-mbp { --u: calc(var(--sw) / 1120); }
-    .lp-mbp {
-      --sw: 896px;
-      --al-0: #fbfbfc; --al-1: #e4e6ea; --al-2: #c3c7ce; --al-3: #9a9fa8; --al-4: #6f747d;
-      position: absolute; width: calc(var(--u) * 1236); height: calc(var(--u) * 778);
-    }
-    .lp-mbp-shadow {
-      position: absolute; left: calc(var(--u) * -50); top: calc(var(--u) * 746); width: calc(var(--u) * 1336); height: calc(var(--u) * 110);
-      border-radius: 50%;
-      background: radial-gradient(ellipse 50% 50% at 50% 40%, rgba(3,0,30,0.72) 0%, rgba(3,0,30,0.44) 34%, rgba(3,0,30,0.14) 64%, rgba(3,0,30,0) 100%);
-    }
-    .lp-mbp-occl {
-      position: absolute; left: calc(var(--u) * 30); top: calc(var(--u) * 772); width: calc(var(--u) * 1176); height: calc(var(--u) * 14);
-      border-radius: 50%; background: rgba(2,0,20,0.85); filter: blur(calc(var(--u) * 4));
-    }
-    .lp-mbp-lid {
-      position: absolute; left: calc(var(--u) * 38); top: 0; width: calc(var(--u) * 1160); height: calc(var(--u) * 754);
-      border-radius: calc(var(--u) * 30) calc(var(--u) * 30) calc(var(--u) * 7) calc(var(--u) * 7);
-      background: linear-gradient(180deg, var(--al-1) 0%, var(--al-2) 45%, var(--al-3) 100%);
-      box-shadow: inset 0 0 0 calc(var(--u) * 0.8) rgba(255,255,255,0.55), 0 calc(var(--u) * 26) calc(var(--u) * 70) rgba(4,0,40,0.30);
-    }
-    .lp-mbp-glass {
-      position: absolute; left: calc(var(--u) * 4); top: calc(var(--u) * 4); width: calc(var(--u) * 1152); height: calc(var(--u) * 746);
-      border-radius: calc(var(--u) * 26.5) calc(var(--u) * 26.5) calc(var(--u) * 4) calc(var(--u) * 4); overflow: hidden;
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, #0d0e12 0%, #050506 70%);
-      box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(0,0,0,0.85);
-    }
-    .lp-mbp-screen {
-      position: absolute; left: calc(var(--u) * 16); top: calc(var(--u) * 16); width: calc(var(--u) * 1120); height: calc(var(--u) * 700);
-      border-radius: calc(var(--u) * 10) calc(var(--u) * 10) calc(var(--u) * 1.5) calc(var(--u) * 1.5); overflow: hidden; background: #000000;
-    }
-    .lp-mbp-notch {
-      position: absolute; left: calc(var(--u) * 517); top: calc(var(--u) * 16); width: calc(var(--u) * 118); height: calc(var(--u) * 21);
-      border-radius: 0 0 calc(var(--u) * 8) calc(var(--u) * 8); background: #050506;
-    }
-    .lp-mbp-notch::before, .lp-mbp-notch::after { content: ""; position: absolute; top: 0; width: calc(var(--u) * 6); height: calc(var(--u) * 6); }
-    .lp-mbp-notch::before { left: calc(var(--u) * -6); background: radial-gradient(circle at 0% 100%, rgba(5,5,6,0) calc(var(--u) * 5.5), #050506 calc(var(--u) * 6)); }
-    .lp-mbp-notch::after { right: calc(var(--u) * -6); background: radial-gradient(circle at 100% 100%, rgba(5,5,6,0) calc(var(--u) * 5.5), #050506 calc(var(--u) * 6)); }
-    .lp-mbp-lens {
-      position: absolute; left: calc(var(--u) * 55.5); top: calc(var(--u) * 7); width: calc(var(--u) * 7); height: calc(var(--u) * 7); border-radius: 50%;
-      background: radial-gradient(circle at 38% 34%, #4a5a8c 0%, #1a2142 38%, #0a0b14 72%);
-      box-shadow: 0 0 0 calc(var(--u) * 1.2) #111217;
-    }
-    .lp-mbp-reflect {
-      position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none;
-      background: linear-gradient(121deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.035) 30%, rgba(255,255,255,0.016) 40.5%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 100%);
-    }
-    .lp-mbp-base {
-      position: absolute; left: 0; top: calc(var(--u) * 751); width: calc(var(--u) * 1236); height: calc(var(--u) * 27);
-      border-radius: calc(var(--u) * 4) calc(var(--u) * 4) calc(var(--u) * 70) calc(var(--u) * 70) / calc(var(--u) * 3) calc(var(--u) * 3) calc(var(--u) * 24) calc(var(--u) * 24);
-      background: linear-gradient(180deg, var(--al-0) 0%, var(--al-1) 12%, var(--al-2) 44%, var(--al-3) 76%, var(--al-4) 100%);
-      box-shadow: inset 0 calc(var(--u) * -1.2) calc(var(--u) * 1.5) rgba(0,0,0,0.22), inset 0 calc(var(--u) * 0.8) 0 rgba(255,255,255,0.7);
-    }
-    .lp-mbp-thumb {
-      position: absolute; left: calc(var(--u) * 538); top: 0; width: calc(var(--u) * 160); height: calc(var(--u) * 8);
-      border-radius: 0 0 50% 50% / 0 0 100% 100%;
-      background: linear-gradient(180deg, var(--al-3) 0%, var(--al-2) 55%, var(--al-1) 100%);
-      box-shadow: inset 0 calc(var(--u) * 1.6) calc(var(--u) * 2.2) rgba(0,0,0,0.30), 0 calc(var(--u) * 0.6) 0 rgba(255,255,255,0.45);
-    }
-
-    /* browser chrome: tab strip 36u + toolbar 34u = 70u; content 1120u x 630u = 16:9 */
-    .lp-chrome { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 70); font-family: "Inter", sans-serif; }
-    .lp-tabs { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--u) * 36); background: #DEE1E6; }
-    .lp-tl { position: absolute; top: calc(var(--u) * 12); width: calc(var(--u) * 12); height: calc(var(--u) * 12); border-radius: 50%; }
-    .lp-tl-r { left: calc(var(--u) * 13); background: #FF5F57; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #E0443E; }
-    .lp-tl-y { left: calc(var(--u) * 33); background: #FEBC2E; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #DEA123; }
-    .lp-tl-g { left: calc(var(--u) * 53); background: #28C840; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #1AAB29; }
-    .lp-tab {
-      position: absolute; left: calc(var(--u) * 82); top: calc(var(--u) * 7); width: calc(var(--u) * 232); height: calc(var(--u) * 29);
-      border-radius: calc(var(--u) * 9) calc(var(--u) * 9) 0 0; background: #FFFFFF;
-    }
-    .lp-tab::before, .lp-tab::after { content: ""; position: absolute; bottom: 0; width: calc(var(--u) * 9); height: calc(var(--u) * 9); }
-    .lp-tab::before { left: calc(var(--u) * -9); background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
-    .lp-tab::after { right: calc(var(--u) * -9); background: radial-gradient(circle at 100% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
-    .lp-fav {
-      position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 7); width: calc(var(--u) * 15); height: calc(var(--u) * 15);
-      border-radius: calc(var(--u) * 3.5); overflow: hidden; background: radial-gradient(circle at 50% 45%, #2fb6f2 0%, #0b6df0 80%);
-    }
-    .lp-fav img { position: absolute; left: calc(var(--u) * 1.2); top: calc(var(--u) * 5.2); width: calc(var(--u) * 12.6); height: auto; display: block; }
-    .lp-tab-t {
-      position: absolute; left: calc(var(--u) * 35); top: 0; height: calc(var(--u) * 29); line-height: calc(var(--u) * 29);
-      font-size: calc(var(--u) * 12); font-weight: 500; color: #202124; white-space: nowrap;
-    }
-    .lp-tab-x { position: absolute; right: calc(var(--u) * 10); top: calc(var(--u) * 9.5); width: calc(var(--u) * 10); height: calc(var(--u) * 10); }
-    .lp-plus { position: absolute; left: calc(var(--u) * 330); top: calc(var(--u) * 11); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
-    .lp-bar { position: absolute; left: 0; top: calc(var(--u) * 36); width: 100%; height: calc(var(--u) * 34); background: #FFFFFF; box-shadow: inset 0 calc(var(--u) * -1) 0 #DADCE0; }
-    .lp-nav { position: absolute; left: calc(var(--u) * 14); top: calc(var(--u) * 9); width: calc(var(--u) * 86); height: calc(var(--u) * 16); overflow: visible; }
-    .lp-menu { position: absolute; left: calc(var(--u) * 1086); top: calc(var(--u) * 9); width: calc(var(--u) * 16); height: calc(var(--u) * 16); }
-    .lp-url {
-      position: absolute; left: calc(var(--u) * 102); top: calc(var(--u) * 4); width: calc(var(--u) * 962); height: calc(var(--u) * 26);
-      border-radius: calc(var(--u) * 13); background: #F1F3F4;
-    }
-    .lp-lock { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6.5); width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
-    .lp-url-t {
-      position: absolute; left: calc(var(--u) * 33); top: 0; height: calc(var(--u) * 26); line-height: calc(var(--u) * 26);
-      font-size: calc(var(--u) * 13); font-weight: 500; color: #202124; white-space: nowrap;
-    }
-    .lp-star { position: absolute; right: calc(var(--u) * 11); top: calc(var(--u) * 6); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
-    .lp-content { position: absolute; left: 0; top: calc(var(--u) * 70); width: calc(var(--u) * 1120); height: calc(var(--u) * 630); overflow: hidden; background: #FFFFFF; }
-    .lp-media { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--fx, 50%) 50%; display: block; }
-
   </style>
-  <div id="o-root" data-composition-id="outro" data-width="1080" data-height="1920" data-duration="13.54">
+  <div id="o-root" data-composition-id="outro" data-width="1080" data-height="1920" data-duration="14.14">
 
-    <div id="o-ground" class="o-full"><div class="o-luz1"></div><div class="o-luz2"></div><div class="o-dots"></div></div>
-    <div id="o-badge" class="o-row"><div class="o-badge"><span>Formación Nawar · A0 – A1</span></div></div>
-    <div id="o-h1" class="o-row o-h"><span>Aprende neerlandés</span></div>
-    <div id="o-h2" class="o-row o-h">desde el español</div>
-    <div id="o-lapw" data-layout-allow-overflow><div id="o-lap">
-    <div id="lp-cam">
-      <div id="lp-stage" class="lp-mbp">
-        <div id="lp-csh" class="lp-mbp-shadow"></div><div id="lp-coc" class="lp-mbp-occl"></div>
-        <div id="lp-body">
-          <div id="lp-tsp"><div id="lp-tsh"></div></div>
-          <div id="lp-deck"></div>
-          <div id="lp-lipw"><div class="lp-mbp-base"><div class="lp-mbp-thumb"></div></div></div>
-          <div id="lp-lid">
-            <div id="lp-lido"><div id="lp-lidr"></div><div id="lp-hinge"></div></div>
-            <div class="lp-edge" style="transform: translateZ(-2.24px);"></div><div class="lp-edge" style="transform: translateZ(-4.48px);"></div><div class="lp-edge" style="transform: translateZ(-6.72px);"></div><div class="lp-edge" style="transform: translateZ(-8.96px);"></div>
-            <div id="lp-lidf" class="lp-mbp-lid">
-              <div class="lp-mbp-glass">
-                <div class="lp-mbp-screen">
-                  <div id="lp-browser">
-                    <div class="lp-chrome">
-                      <div class="lp-tabs"><i class="lp-tl lp-tl-r"></i><i class="lp-tl lp-tl-y"></i><i class="lp-tl lp-tl-g"></i>
-                        <div class="lp-tab"><div class="lp-fav"><img src="assets/img/logo-nawar.png" alt="" /></div><div class="lp-tab-t">Formación Nawar A0–A1</div><svg class="lp-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
-                        <svg class="lp-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
-                      <div class="lp-bar"><svg class="lp-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
-                        <div class="lp-url"><svg class="lp-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="lp-url-t">app.holandesnawar.com</div><svg class="lp-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
-                        <svg class="lp-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
-                    </div>
-                    <div class="lp-content">
-                      <video id="lp-vid1" class="clip lp-media" src="assets/video/plat-curso.mp4" muted playsinline data-start="0" data-duration="3.3" data-media-start="0" data-track-index="2"></video>
-                      <video id="lp-vid2" class="clip lp-media" src="assets/video/plat-clase.mp4" muted playsinline data-start="3.3" data-duration="10.24" data-media-start="0" data-track-index="3"></video>
-                    </div>
-                  </div>
-                </div>
-                <div class="lp-mbp-notch"><i class="lp-mbp-lens"></i></div>
-                <div class="lp-mbp-reflect"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div id="o-freeze" class="o-full"><img src="assets/img/freeze.png" alt=""></div>
+    <div id="o-shade" class="o-full"></div>
+    <div id="o-flash" class="o-full"></div>
+    <div id="o-l1" class="o-row o-ol"><div>Suárez no pilló</div><div>ni una</div></div>
+    <div id="o-l2" class="o-row o-ol"><div>¿Y a ti, cuántas veces</div><div>te ha <span class="o-y">pasado</span>?</div></div>
+    <div id="o-pains">
+      <div id="o-p1" class="o-pain"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="21" fill="#EF4444"/><path d="M14 14 L28 28 M28 14 L14 28" fill="none" stroke="#FFFFFF" stroke-width="3.8" stroke-linecap="round"/></svg><span>En el gemeente</span></div>
+      <div id="o-p2" class="o-pain"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="21" fill="#EF4444"/><path d="M14 14 L28 28 M28 14 L14 28" fill="none" stroke="#FFFFFF" stroke-width="3.8" stroke-linecap="round"/></svg><span>Con el casero</span></div>
+      <div id="o-p3" class="o-pain"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="21" fill="#EF4444"/><path d="M14 14 L28 28 M28 14 L14 28" fill="none" stroke="#FFFFFF" stroke-width="3.8" stroke-linecap="round"/></svg><span>En el dentista</span></div>
     </div>
-    </div></div>
-    <div id="o-sign" data-layout-allow-overlap><div class="o-sign"><div class="k" data-layout-allow-overlap>BLACK FRIDAY</div><div class="p" data-layout-allow-overlap><i id="o-dot"></i><span>ÚLTIMAS PLAZAS</span></div><i id="o-shine"></i></div></div>
+    <div id="o-ap" class="o-row o-ol"><div>Aprende neerlandés</div></div>
+    <div id="o-bens" class="o-row"><div id="o-b1" class="o-ben"><svg viewBox="0 0 36 36" width="42" height="42"><circle cx="18" cy="18" r="18" fill="#22C55E"/><path d="M10 18.5 L15.5 24 L26 12.5" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Desde el español</span></div><div id="o-b2" class="o-ben"><svg viewBox="0 0 36 36" width="42" height="42"><circle cx="18" cy="18" r="18" fill="#22C55E"/><path d="M10 18.5 L15.5 24 L26 12.5" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>A tu ritmo</span></div></div>
     <div id="o-cta" class="o-row"><div class="o-field"><svg class="o-av" viewBox="0 0 62 62"><circle cx="31" cy="31" r="31" fill="#E6E8EF"/><circle cx="31" cy="25" r="11" fill="#A9AFBE"/><path d="M11 52 C14 41 22 37 31 37 C40 37 48 41 51 52 A30 30 0 0 1 11 52 Z" fill="#A9AFBE"/></svg><span id="o-ph">Añade un comentario…</span><span id="o-typed"></span><span id="o-caret"></span><span class="o-fill"></span><span id="o-post">Publicar<i id="o-ripple"></i></span></div></div>
-    <div id="o-ok" class="o-row"><div class="o-ok"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#22C55E"/><path d="M10 18.5 L15.5 24 L26 12.5" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Te enviamos los detalles por mensaje</span></div></div>
+    <div id="o-ok" class="o-row"><div class="o-ok"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#22C55E"/><path d="M10 18.5 L15.5 24 L26 12.5" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Te contamos nuestro método por mensaje</span></div></div>
 
   </div>
   <script>
     (function () {
       const tl = gsap.timeline({ paused: true });
-      const $ = (id) => document.getElementById(id);
-      tl.fromTo($("lp-cam"), { x: 315.82, y: -519.8, rotation: -12.0, scale: 0.92 }, { x: 315.82, y: -519.8, rotation: -12.0, scale: 0.92, duration: 0.001 }, 0);
-      tl.fromTo($("lp-body"), { rotationX: -66 }, { rotationX: -66, duration: 0.001 }, 0);
-      tl.fromTo($("lp-lid"), { rotationX: -90 }, { rotationX: -90, duration: 0.001 }, 0);
 
-      tl.fromTo("#o-ground", { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.28, ease: "power2.out" }, 0.0);
-      tl.fromTo("#o-badge", { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.40, ease: "power3.out" }, 0.2);
-      tl.fromTo("#o-h1", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.28);
-      tl.fromTo("#o-h2", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.38);
-      // the laptop: in closed, seen from above; the camera comes down to straight on as the lid swings open (the VSL's move)
-      tl.fromTo("#o-lap", { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0.04);
-      tl.fromTo($("lp-cam"), { x: 315.82, y: -519.8, rotation: -12.0, scale: 0.92 }, Object.assign({}, { x: 369.6, y: 11.76, rotation: 0, scale: 1.1 }, { duration: 1.05, ease: "power3.out", immediateRender: false }), 0.3);
-      tl.fromTo($("lp-body"), { rotationX: -66 }, { rotationX: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, 0.3);
-      tl.fromTo($("lp-lid"), { rotationX: -90 }, { rotationX: 0, duration: 0.92, ease: "power2.inOut", immediateRender: false }, 0.3 + 0.06);
-      tl.fromTo($("lp-stage"), { perspective: 3000 }, { perspective: 9627.8, duration: 1.0, ease: "power2.inOut" }, 0.3);
-      tl.fromTo($("lp-tsp"), { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power1.in" }, 0.3 + 0.05);
-      tl.fromTo([$("lp-csh"), $("lp-coc")], { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "power2.out" }, 0.3 + 0.4);
-      tl.fromTo($("lp-cam"), { x: 369.6, y: 11.76, rotation: 0, scale: 1.1 }, Object.assign({}, { x: 369.6, y: 21.32, rotation: 0, scale: 1.133 }, { duration: 13.54 - 0.3 - 1.05, ease: "sine.inOut", immediateRender: false }), 0.3 + 1.05);
-      // the Black Friday sign lands on «Black Friday»; its dot blinks
-      tl.fromTo("#o-sign", { opacity: 0, scale: 0.4, rotation: -16 }, { opacity: 1, scale: 1, rotation: 6, duration: 0.5, ease: "back.out(1.9)" }, 5.94);
-      tl.fromTo("#o-shine", { x: 0 }, { x: 560, duration: 0.75, ease: "power2.inOut" }, 5.94 + 0.45);
-      tl.fromTo("#o-shine", { x: 0 }, { x: 560, duration: 0.75, ease: "power2.inOut", immediateRender: false }, 12.44);
+      // the freeze: a quick flash and punch-in on Suárez's look, then a slow push the whole time
+      tl.fromTo("#o-flash", { opacity: 0.55 }, { opacity: 0, duration: 0.28, ease: "power2.out" }, 0.0);
+      tl.fromTo("#o-freeze", { scale: 1.10 }, { scale: 1.0, duration: 0.35, ease: "power3.out" }, 0.0);
+      tl.fromTo("#o-freeze", { scale: 1.0 }, { scale: 1.06, duration: 14.14 - 0.35, ease: "none", immediateRender: false }, 0.0 + 0.35);
+      tl.fromTo("#o-shade", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 0.0 + 0.1);
+      // the beats
+      tl.fromTo("#o-l1", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, 0.34);
+      tl.to("#o-l1", { opacity: 0, y: -30, duration: 0.18, ease: "power2.in" }, 2.376 - 0.16);
+      tl.fromTo("#o-l2", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, 2.376);
+      tl.fromTo("#o-p1", { opacity: 0, y: 30, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(2)" }, 4.829);
+      tl.fromTo("#o-p2", { opacity: 0, y: 30, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(2)" }, 5.92);
+      tl.fromTo("#o-p3", { opacity: 0, y: 30, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(2)" }, 6.34);
+      tl.to(["#o-l2", "#o-pains"], { opacity: 0, y: -30, duration: 0.2, ease: "power2.in" }, 6.991 - 0.18);
+      tl.fromTo("#o-ap", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)" }, 6.991);
+      tl.fromTo("#o-b1", { opacity: 0, y: 24, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(2)" }, 8.373);
+      tl.fromTo("#o-b2", { opacity: 0, y: 24, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(2)" }, 9.5);
       // the call to action
-      tl.fromTo("#o-cta", { opacity: 0, y: 46, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.5)" }, 8.52);
-      tl.set("#o-ph", { opacity: 0 }, 9.1);
-      tl.fromTo("#o-post", { opacity: 0.4 }, { opacity: 1, duration: 0.15 }, 9.1);
-      tl.fromTo("#o-ripple", { opacity: 0.9, scale: 0.2 }, { opacity: 0, scale: 1.5, duration: 0.45, ease: "power2.out", immediateRender: false }, 9.86);
-      tl.fromTo("#o-cta .o-field", { scale: 1 }, { scale: 0.97, duration: 0.09, ease: "power2.out", yoyo: true, repeat: 1 }, 9.86);
-      tl.fromTo("#o-ok", { opacity: 0, y: 22, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "back.out(1.6)" }, 10.04);
-      (() => {                                               // «OFERTA» typed letter by letter (one state per letter: seek-safe)
-        const el = document.getElementById("o-typed"), full = "OFERTA", typ = { n: 0 };
+      tl.fromTo("#o-cta", { opacity: 0, y: 46, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.5)" }, 10.171);
+      tl.set("#o-ph", { opacity: 0 }, 10.707);
+      tl.fromTo("#o-post", { opacity: 0.4 }, { opacity: 1, duration: 0.15 }, 10.707);
+      tl.fromTo("#o-ripple", { opacity: 0.9, scale: 0.2 }, { opacity: 0, scale: 1.5, duration: 0.45, ease: "power2.out", immediateRender: false }, 11.141);
+      tl.fromTo("#o-cta .o-field", { scale: 1 }, { scale: 0.97, duration: 0.09, ease: "power2.out", yoyo: true, repeat: 1 }, 11.141);
+      tl.fromTo("#o-ok", { opacity: 0, y: 22, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "back.out(1.6)" }, 11.321);
+      (() => {                                               // «QUIERO» typed letter by letter (one state per letter: seek-safe)
+        const el = document.getElementById("o-typed"), full = "QUIERO", typ = { n: 0 };
         el.textContent = "";
-        tl.fromTo(typ, { n: 0 }, { n: full.length, duration: 0.66, ease: "none", immediateRender: false,
-          onUpdate: () => { el.textContent = full.slice(0, Math.round(typ.n)); } }, 9.1);
+        tl.fromTo(typ, { n: 0 }, { n: full.length, duration: 0.334, ease: "none", immediateRender: false,
+          onUpdate: () => { el.textContent = full.slice(0, Math.round(typ.n)); } }, 10.707);
       })();
 
-      tl.set("#o-dot", { opacity: 1 }, 6.440);
-      tl.set("#o-dot", { opacity: 0.25 }, 6.840);
-      tl.set("#o-dot", { opacity: 1 }, 7.240);
-      tl.set("#o-dot", { opacity: 0.25 }, 7.640);
-      tl.set("#o-dot", { opacity: 1 }, 8.040);
-      tl.set("#o-dot", { opacity: 0.25 }, 8.440);
-      tl.set("#o-dot", { opacity: 1 }, 8.840);
-      tl.set("#o-dot", { opacity: 0.25 }, 9.240);
-      tl.set("#o-dot", { opacity: 1 }, 9.640);
-      tl.set("#o-dot", { opacity: 0.25 }, 10.040);
-      tl.set("#o-dot", { opacity: 1 }, 10.440);
-      tl.set("#o-dot", { opacity: 0.25 }, 10.840);
-      tl.set("#o-dot", { opacity: 1 }, 11.240);
-      tl.set("#o-dot", { opacity: 0.25 }, 11.640);
-      tl.set("#o-dot", { opacity: 1 }, 12.040);
-      tl.set("#o-dot", { opacity: 0.25 }, 12.440);
-      tl.set("#o-dot", { opacity: 1 }, 12.840);
-      tl.set("#o-dot", { opacity: 0.25 }, 13.240);
-      tl.set("#o-caret", { opacity: 1 }, 8.520);
-      tl.set("#o-caret", { opacity: 0 }, 8.770);
-      tl.set("#o-caret", { opacity: 1 }, 9.020);
-      tl.set("#o-caret", { opacity: 1 }, 9.100);
-      tl.set("#o-caret", { opacity: 0 }, 9.860);
+      tl.set("#o-caret", { opacity: 1 }, 10.171);
+      tl.set("#o-caret", { opacity: 0 }, 10.421);
+      tl.set("#o-caret", { opacity: 1 }, 10.671);
+      tl.set("#o-caret", { opacity: 1 }, 10.707);
+      tl.set("#o-caret", { opacity: 0 }, 11.141);
       window.__timelines["outro"] = tl;
     })();
   </script>

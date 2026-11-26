@@ -1,151 +1,187 @@
 {
- "text": "¿Quieres aprender neerlandés tú también? Aprende con nosotros, desde el español. Este Black Friday quedan las últimas plazas: comenta OFERTA y te enviamos los detalles de nuestra formación.",
+ "text": "Suárez no pilló ni una. ¿Y a ti, cuántas veces te ha pasado? En el gemeente, con el casero... Aprende neerlandés desde el español, y a tu ritmo. Comenta QUIERO y te contamos nuestro método.",
  "voice": "LP0ZBLgGaLqbDU1l9PDX",
  "model": "eleven_v4",
  "settings": {
   "stability": 0.5,
-  "similarity_boost": 0.8
+  "similarity_boost": 0.8,
+  "speed": 1.1
  },
  "words": [
   {
-   "text": "¿Quieres",
+   "text": "Suárez",
    "t": 0.0,
-   "end": 0.24
+   "end": 0.48
   },
   {
-   "text": "aprender",
-   "t": 0.32,
-   "end": 0.72
+   "text": "no",
+   "t": 0.64,
+   "end": 0.8
   },
   {
-   "text": "neerlandés",
-   "t": 0.76,
-   "end": 1.28
+   "text": "pilló",
+   "t": 0.88,
+   "end": 1.12
   },
   {
-   "text": "tú",
-   "t": 1.32,
-   "end": 1.4
+   "text": "ni",
+   "t": 1.28,
+   "end": 1.44
   },
   {
-   "text": "también?",
-   "t": 1.44,
-   "end": 2.08
+   "text": "una.",
+   "t": 1.52,
+   "end": 2.04
   },
   {
-   "text": "Aprende",
-   "t": 2.32,
-   "end": 2.72
+   "text": "¿Y",
+   "t": 2.24,
+   "end": 2.32
   },
   {
-   "text": "con",
-   "t": 2.8,
-   "end": 2.88
+   "text": "a",
+   "t": 2.36,
+   "end": 2.4
   },
   {
-   "text": "nosotros,",
-   "t": 2.96,
-   "end": 3.76
+   "text": "ti,",
+   "t": 2.48,
+   "end": 2.96
   },
   {
-   "text": "desde",
-   "t": 3.88,
-   "end": 4.08
+   "text": "cuántas",
+   "t": 3.0,
+   "end": 3.28
   },
   {
-   "text": "el",
-   "t": 4.12,
-   "end": 4.16
-  },
-  {
-   "text": "español.",
-   "t": 4.24,
-   "end": 5.0
-  },
-  {
-   "text": "Este",
-   "t": 5.28,
-   "end": 5.52
-  },
-  {
-   "text": "Black",
-   "t": 5.64,
-   "end": 5.76
-  },
-  {
-   "text": "Friday",
-   "t": 5.84,
-   "end": 6.24
-  },
-  {
-   "text": "quedan",
-   "t": 6.28,
-   "end": 6.48
-  },
-  {
-   "text": "las",
-   "t": 6.56,
-   "end": 6.8
-  },
-  {
-   "text": "últimas",
-   "t": 6.88,
-   "end": 7.28
-  },
-  {
-   "text": "plazas:",
-   "t": 7.36,
-   "end": 8.16
-  },
-  {
-   "text": "comenta",
-   "t": 8.24,
-   "end": 8.64
-  },
-  {
-   "text": "OFERTA",
-   "t": 8.72,
-   "end": 9.44
-  },
-  {
-   "text": "y",
-   "t": 9.48,
-   "end": 9.52
+   "text": "veces",
+   "t": 3.36,
+   "end": 3.6
   },
   {
    "text": "te",
-   "t": 9.56,
-   "end": 9.6
+   "t": 3.64,
+   "end": 3.68
   },
   {
-   "text": "enviamos",
+   "text": "ha",
+   "t": 3.72,
+   "end": 3.76
+  },
+  {
+   "text": "pasado?",
+   "t": 3.84,
+   "end": 4.48
+  },
+  {
+   "text": "En",
+   "t": 4.72,
+   "end": 4.8
+  },
+  {
+   "text": "el",
+   "t": 4.88,
+   "end": 4.92
+  },
+  {
+   "text": "gemeente,",
+   "t": 4.96,
+   "end": 5.84
+  },
+  {
+   "text": "con",
+   "t": 5.92,
+   "end": 6.0
+  },
+  {
+   "text": "el",
+   "t": 6.04,
+   "end": 6.08
+  },
+  {
+   "text": "casero...",
+   "t": 6.16,
+   "end": 7.28
+  },
+  {
+   "text": "Aprende",
+   "t": 7.36,
+   "end": 7.68
+  },
+  {
+   "text": "neerlandés",
+   "t": 7.76,
+   "end": 8.32
+  },
+  {
+   "text": "desde",
+   "t": 8.48,
+   "end": 8.72
+  },
+  {
+   "text": "el",
+   "t": 8.76,
+   "end": 8.8
+  },
+  {
+   "text": "español,",
+   "t": 8.88,
+   "end": 9.52
+  },
+  {
+   "text": "y",
    "t": 9.68,
-   "end": 10.04
+   "end": 9.76
   },
   {
-   "text": "los",
-   "t": 10.08,
-   "end": 10.16
+   "text": "a",
+   "t": 9.8,
+   "end": 9.84
   },
   {
-   "text": "detalles",
-   "t": 10.28,
+   "text": "tu",
+   "t": 9.92,
+   "end": 10.0
+  },
+  {
+   "text": "ritmo.",
+   "t": 10.12,
    "end": 10.64
   },
   {
-   "text": "de",
-   "t": 10.68,
-   "end": 10.72
+   "text": "Comenta",
+   "t": 10.88,
+   "end": 11.28
   },
   {
-   "text": "nuestra",
-   "t": 10.76,
-   "end": 10.96
+   "text": "QUIERO",
+   "t": 11.36,
+   "end": 11.76
   },
   {
-   "text": "formación.",
-   "t": 11.04,
-   "end": 11.84
+   "text": "y",
+   "t": 11.92,
+   "end": 12.0
+  },
+  {
+   "text": "te",
+   "t": 12.04,
+   "end": 12.08
+  },
+  {
+   "text": "contamos",
+   "t": 12.16,
+   "end": 12.64
+  },
+  {
+   "text": "nuestro",
+   "t": 12.68,
+   "end": 12.96
+  },
+  {
+   "text": "método.",
+   "t": 13.0,
+   "end": 13.68
   }
  ]
 }

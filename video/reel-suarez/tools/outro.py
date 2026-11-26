@@ -5,6 +5,9 @@ aprender holandés tú también? Aprende con nosotros desde el español»), with
 v9 (the client: «aprovechar con algún vídeo dentro de la plataforma… el portátil real abriéndose como en el VSL…
 comenta OFERTA y te enviamos los detalles de nuestra formación… algún cartel tipo Black Friday, últimas plazas»): the
 VSL's MacBook opens onto the course (tools/gen.py), the voice ends on «Comenta OFERTA».
+v10 (the client: «no quiero enseñar mi plataforma tipo mira esto, cómpralo… más buscar el dolor… que no suene a
+comercial, va para Instagram… comenta QUIERO y te contamos nuestro método… alguna ventaja, desde el español, a tu
+ritmo… que la voz acompañe pero no se haga pesada»): Suárez frozen, the viewer's pain, two advantages, «Comenta QUIERO».
   python3 tools/outro.py voz      the voice-over (ElevenLabs, voice VOICE) → .raw/outro/voz.mp3 + outro.json (word times)
   python3 tools/outro.py audio    the voice-over, a soft music bed and soft effects, mixed → assets/audio/outro.wav
 The music bed («musica v1») and the effects come from ../reel-suarez-habla/.raw/outro and ../vsl-formacion-nawar
@@ -15,11 +18,12 @@ import base64, json, os, subprocess, sys, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, ".raw", "outro")
-TEXT = ("¿Quieres aprender neerlandés tú también? Aprende con nosotros, desde el español. Este Black Friday quedan las "
-        "últimas plazas: comenta OFERTA y te enviamos los detalles de nuestra formación.")   # (v9: the course, «Comenta OFERTA»)
+TEXT = ("Suárez no pilló ni una. ¿Y a ti, cuántas veces te ha pasado? En el gemeente, con el casero... Aprende "
+        "neerlandés desde el español, y a tu ritmo. Comenta QUIERO y te contamos nuestro método.")   # (v10: no ad tone — the pain, two advantages, «Comenta QUIERO»)
 VOICE = "LP0ZBLgGaLqbDU1l9PDX"         # «Yair - Narration Spanish» (v7; v6 used «Nawar Def»)
 MODEL = "eleven_v4"                    # (v7.2; eleven_multilingual_v2 before: it sounded flat)
 SETTINGS = {"stability": 0.5, "similarity_boost": 0.8}
+TEMPO = 1.1                            # (v10) the take played a touch quicker (pitch kept): light, never heavy
 
 
 def api(path, body):
@@ -73,13 +77,13 @@ BED_AT, BED_IN, BED_OUT = 0.25, 0.6, 1.2
 EQ = "highpass=f=110,lowshelf=f=150:g=-6,lowshelf=f=250:g=-6,equalizer=f=2500:t=q:w=0.9:g=-3"   # (as in the BF ad: room for the voice)
 SR = 48000
 LEAD = {"ping": 0.28}                  # ping.mp3 opens with 0.3 s of near-silence: trimmed, so it sounds with the pill
-SFX = {"whoosh": ("whoosh.mp3", -9), "pop": ("pop.mp3", -15), "click": ("click.mp3", -14), "ping": ("ping.mp3", -15)}
+SFX = {"whoosh": ("whoosh.mp3", -9), "pop": ("pop.mp3", -19), "click": ("click.mp3", -14), "ping": ("ping.mp3", -15)}
 
 
 def words():
     """the voice-over's words in outro time (s)."""
     vo = json.load(open(os.path.join(ROOT, "outro.json")))
-    return [{"text": w["text"], "t": round(w["t"] + VO_AT, 3), "end": round(w["end"] + VO_AT, 3)} for w in vo["words"]]
+    return [{"text": w["text"], "t": round(w["t"] / TEMPO + VO_AT, 3), "end": round(w["end"] / TEMPO + VO_AT, 3)} for w in vo["words"]]
 
 
 if os.path.exists(os.path.join(ROOT, "outro.json")):
@@ -93,11 +97,11 @@ def cues():
     def at(text, k=0, end=False):
         hits = [w for w in ws if w["text"].strip(".,¡!¿?\"«»").lower() == text.lower()]
         return hits[k]["end" if end else "t"]
-    c = dict(GROUND=0.0, LAP=0.04, BADGE=0.20, H1=0.28, H2=0.38, OPEN=0.30, SWITCH=3.30,
-             POSTER=at("black") - 0.10, CTA=at("comenta") - 0.12, TYPE0=at("oferta") - 0.02, TYPE1=at("oferta", end=True) - 0.08,
-             CONFIRM=at("y") - 0.03, SHINE=END - 1.1)
+    c = dict(FREEZE=0.0, L1=at("suárez") - 0.06, L2=at("y") - 0.06, C1=at("gemeente") - 0.08, C2=at("casero") - 0.08,
+             C3=at("casero") + 0.34, AP=at("aprende") - 0.10, B1=at("español") - 0.10, B2=at("ritmo") - 0.10,
+             CTA=at("comenta") - 0.12, TYPE0=at("quiero") - 0.02, TYPE1=at("quiero", end=True) - 0.05, CONFIRM=at("y", 2) - 0.03)
     c["TAP"] = round(c["TYPE1"] + 0.10, 3)
-    c["CONFIRM"] = max(c["CONFIRM"], c["TAP"] + 0.18)          # (a beat after the tap)
+    c["CONFIRM"] = max(c["CONFIRM"], c["TAP"] + 0.18)
     return {k: round(v, 3) for k, v in c.items()}
 
 
@@ -122,7 +126,7 @@ def audio():
     tmp = os.path.join(RAW, "vo.wav")
     # the voice to VO_LUFS with its true peak under −2.5 dBTP (as the interview): a gentle compressor, then loudnorm in
     # two passes (measured, then applied)
-    comp = "acompressor=threshold=-20dB:ratio=2.5:attack=5:release=90:makeup=2"
+    comp = f"atempo={TEMPO},acompressor=threshold=-20dB:ratio=2.5:attack=5:release=90:makeup=2"
     out = subprocess.run(["ffmpeg", "-nostats", "-i", os.path.join(RAW, "voz.mp3"), "-af",
                           f"{comp},loudnorm=I={VO_LUFS}:TP=-2.5:LRA=7:print_format=json", "-f", "null", "-"], capture_output=True, text=True).stderr
     ms = json.loads(out[out.rindex("{"):out.rindex("}") + 1])
@@ -137,7 +141,8 @@ def audio():
     bed *= np.clip(t / BED_IN, 0, 1)[:, None] * np.clip((END - BED_AT - t) / BED_OUT, 0, 1)[:, None]
     a = int(BED_AT * SR); mix[a:a + len(bed)] += bed
     c = cues()                                                      # soft effects, under the voice: the whoosh on the cut
-    for name, at in (("whoosh", 0.0), ("pop", c["POSTER"] + 0.12), ("click", c["TAP"]), ("ping", c["CONFIRM"])):   # to the ground,
+    for name, at in (("whoosh", 0.0), ("pop", c["C1"] + 0.05), ("pop", c["C2"] + 0.05), ("pop", c["C3"] + 0.05), ("pop", c["B1"] + 0.05),
+                     ("pop", c["B2"] + 0.05), ("click", c["TAP"]), ("ping", c["CONFIRM"])):   # to the ground,
         f, db = SFX[name]                                           # the price seal landing, the tap on «Publicar», the
         fx = load(os.path.join(RAW, f)) * 10 ** (db / 20)           # message sent
         fx = fx[int(LEAD.get(name, 0) * SR):]                       # (its silence before the sound trimmed)

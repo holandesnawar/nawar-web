@@ -26,11 +26,6 @@ python3 tools/subs.py
 mkdir -p .raw/outro && cp ../reel-suarez-habla/.raw/outro/music.mp3 .raw/outro/   # the closing card's bed («musica v1»)
 cp ../vsl-formacion-nawar/assets/sfx/{whoosh,pop,click,ping}.mp3 .raw/outro/ && cp ../vsl-formacion-nawar/assets/img/logo-nawar.png assets/img/
 cp ../reel-suarez-habla/assets/fonts/inter-var-latin.woff2 assets/fonts/
-# the platform recordings for the laptop's screen (Drive, the VSL's folder): the course, then a video lesson
-dlp() { mkdir -p .raw/plat/$2 && curl -sS -L --fail --retry 3 -o ".raw/plat/$2/$2.mov" "https://drive.usercontent.google.com/download?id=$1&export=download&confirm=t"; }
-dlp 12xQ_z9byuPvWBk0HTyLGM6XBlxnTEuoi clases-video-dentro && dlp 1tdK1eKjcEPxTcmB5b1-a2CtnN1mguk67 paul-clase-2
-ffmpeg -v error -y -t 4.2 -i .raw/plat/clases-video-dentro/clases-video-dentro.mov -an -vf "fps=30,scale=1440:-2:flags=lanczos,format=yuv420p" -c:v libx264 -preset slow -crf 17 -g 15 -movflags +faststart assets/video/plat-curso.mp4
-ffmpeg -v error -y -ss 1.0 -t 11.0 -i .raw/plat/paul-clase-2/paul-clase-2.mov -an -vf "fps=30,scale=1440:-2:flags=lanczos,format=yuv420p" -c:v libx264 -preset slow -crf 17 -g 15 -movflags +faststart assets/video/plat-clase.mp4
 python3 tools/outro.py audio   # (the voice is in outro.json + .raw/outro/voz.mp3; a new take: python3 tools/outro.py voz)
 python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v9.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v10.mp4"

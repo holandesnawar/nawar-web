@@ -23,14 +23,14 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
   del medio (`tools/img`). Está desde el primer fotograma (es también la portada) y se va a los 3,3 s. Va sobre el pecho
   y no arriba como en el segundo reel, porque aquí las caras están arriba en esos planos (la de Suárez y luego la del
   dependiente, cuya boca llega a y ≈ 890). Ya no hay pastilla pequeña arriba.
-- **Cierre (v9, la formación):** el portátil del VSL (el mismo MacBook en CSS 3D de
-  `../vsl-formacion-nawar/tools/gen_laptop_20_21.py`, importado y escalado al 9:16) llega cerrado, visto desde arriba, y
-  se abre sobre la plataforma: primero el curso (lista de lecciones, «Formación Nawar A0–A1»), con el cursor sobre una
-  lección de vídeo, y luego, como si se pulsara, una lección de vídeo con el profe («De structuur»). Encima: «Formación
-  Nawar · A0 – A1», «Aprende neerlandés / desde el español», un cartel «Black Friday · Últimas plazas» que cae al decir
-  «Black Friday» y el campo de comentario de Instagram que escribe «OFERTA» → «Te enviamos los detalles por mensaje».
-  Voz de Yair (`tools/outro.py voz`): «¿Quieres aprender neerlandés tú también? Aprende con nosotros, desde el español.
-  Este Black Friday quedan las últimas plazas: comenta OFERTA y te enviamos los detalles de nuestra formación.»
+- **Cierre (v10, sin tono de anuncio):** el reel sigue. Suárez se congela mirando a cámara, desconcertado (fotograma
+  `FREEZE_AT` del anuncio, con un destello y un empuje lento), se oscurece abajo y, con el estilo del gancho, van saliendo
+  los golpes de la voz: «Suárez no pilló ni una» → «¿Y a ti, cuántas veces te ha pasado?», con el dolor en pastillas (en
+  el gemeente · con el casero · en el dentista) → «Aprende neerlandés» con dos ventajas (✓ Desde el español · ✓ A tu
+  ritmo) → el campo de comentario de Instagram que escribe «QUIERO» → «Te contamos nuestro método por mensaje». Voz de
+  Yair, de colega, un poco más rápida (`TEMPO` 1,1): «Suárez no pilló ni una. ¿Y a ti, cuántas veces te ha pasado? En el
+  gemeente, con el casero… Aprende neerlandés desde el español, y a tu ritmo. Comenta QUIERO y te contamos nuestro
+  método.» (La v9, con el portátil del VSL y la plataforma por dentro, está en el historial de git.)
 - **Subtítulos (v7: abajo, como en el segundo reel, de pie sobre y = 1500):** por frases cortas, sincronizados palabra a palabra (ElevenLabs Scribe):
   - el holandés grande y en mayúsculas, todo al mismo tamaño y en dos líneas como mucho, con la palabra que se está
     diciendo en amarillo; los cortes de línea van marcados con «|» en `PHRASES`, para no dejar una palabra sola ni
@@ -63,7 +63,7 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v9.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v10.mp4
 ```
 
 Para cambiar una traducción o cortar una frase de otra manera, edita `PHRASES` en `tools/subs.py` y ejecuta
