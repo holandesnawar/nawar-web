@@ -26,6 +26,7 @@ python3 tools/subs.py
 mkdir -p .raw/outro && cp ../reel-suarez-habla/.raw/outro/music.mp3 .raw/outro/   # the closing card's bed («musica v1»)
 cp ../vsl-formacion-nawar/assets/sfx/{whoosh,pop,click,ping}.mp3 .raw/outro/ && cp ../vsl-formacion-nawar/assets/img/logo-nawar.png assets/img/
 cp ../reel-suarez-habla/assets/fonts/inter-var-latin.woff2 assets/fonts/
+mkdir -p .raw/metodo-pdf && curl -sS -L --fail -o .raw/metodo-pdf/metodo.pdf "https://docs.holandesnawar.com/dossier/ME%CC%81TODO.pdf"   # the method guide (v13's mockup)
 python3 tools/outro.py audio   # (the voice is in outro.json + .raw/outro/voz.mp3; a new take: python3 tools/outro.py voz)
 python3 tools/gen.py
-echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v12.mp4"
+echo "done. Then: npx hyperframes check && npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v13.mp4"
