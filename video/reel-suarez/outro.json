@@ -1,5 +1,5 @@
 {
- "text": "Esta es la guía de nuestro método, explicado desde el español. Este Black Friday quedan las últimas plazas: comenta QUIERO y te la enviamos por mensaje.",
+ "text": "Recibe el PDF de nuestro método y comienza a hablar neerlandés ya. Este Black Friday quedan las últimas plazas: comenta QUIERO y te lo enviamos por mensaje.",
  "voice": "LP0ZBLgGaLqbDU1l9PDX",
  "model": "eleven_v4",
  "settings": {
@@ -8,134 +8,139 @@
  },
  "words": [
   {
-   "text": "Esta",
+   "text": "Recibe",
    "t": 0.0,
-   "end": 0.32
-  },
-  {
-   "text": "es",
-   "t": 0.4,
-   "end": 0.48
-  },
-  {
-   "text": "la",
-   "t": 0.56,
-   "end": 0.6
-  },
-  {
-   "text": "guía",
-   "t": 0.64,
-   "end": 0.88
-  },
-  {
-   "text": "de",
-   "t": 0.96,
-   "end": 1.0
-  },
-  {
-   "text": "nuestro",
-   "t": 1.04,
-   "end": 1.28
-  },
-  {
-   "text": "método,",
-   "t": 1.36,
-   "end": 2.0
-  },
-  {
-   "text": "explicado",
-   "t": 2.12,
-   "end": 2.64
-  },
-  {
-   "text": "desde",
-   "t": 2.72,
-   "end": 2.88
+   "end": 0.4
   },
   {
    "text": "el",
-   "t": 2.92,
-   "end": 2.96
+   "t": 0.44,
+   "end": 0.48
   },
   {
-   "text": "español.",
-   "t": 3.04,
-   "end": 4.08
+   "text": "PDF",
+   "t": 0.64,
+   "end": 1.12
   },
   {
-   "text": "Este",
-   "t": 4.2,
-   "end": 4.32
+   "text": "de",
+   "t": 1.2,
+   "end": 1.24
   },
   {
-   "text": "Black",
-   "t": 4.44,
-   "end": 4.56
+   "text": "nuestro",
+   "t": 1.28,
+   "end": 1.6
   },
   {
-   "text": "Friday",
-   "t": 4.64,
-   "end": 5.04
-  },
-  {
-   "text": "quedan",
-   "t": 5.08,
-   "end": 5.36
-  },
-  {
-   "text": "las",
-   "t": 5.48,
-   "end": 5.6
-  },
-  {
-   "text": "últimas",
-   "t": 5.68,
-   "end": 6.16
-  },
-  {
-   "text": "plazas:",
-   "t": 6.24,
-   "end": 7.04
-  },
-  {
-   "text": "comenta",
-   "t": 7.12,
-   "end": 7.52
-  },
-  {
-   "text": "QUIERO",
-   "t": 7.68,
-   "end": 8.24
+   "text": "método",
+   "t": 1.68,
+   "end": 2.08
   },
   {
    "text": "y",
-   "t": 8.267,
-   "end": 8.293
+   "t": 2.16,
+   "end": 2.24
+  },
+  {
+   "text": "comienza",
+   "t": 2.32,
+   "end": 2.72
+  },
+  {
+   "text": "a",
+   "t": 2.76,
+   "end": 2.8
+  },
+  {
+   "text": "hablar",
+   "t": 2.84,
+   "end": 3.04
+  },
+  {
+   "text": "neerlandés",
+   "t": 3.12,
+   "end": 3.76
+  },
+  {
+   "text": "ya.",
+   "t": 3.92,
+   "end": 4.24
+  },
+  {
+   "text": "Este",
+   "t": 4.72,
+   "end": 4.96
+  },
+  {
+   "text": "Black",
+   "t": 5.08,
+   "end": 5.2
+  },
+  {
+   "text": "Friday",
+   "t": 5.28,
+   "end": 5.68
+  },
+  {
+   "text": "quedan",
+   "t": 5.733,
+   "end": 5.92
+  },
+  {
+   "text": "las",
+   "t": 6.04,
+   "end": 6.16
+  },
+  {
+   "text": "últimas",
+   "t": 6.24,
+   "end": 6.64
+  },
+  {
+   "text": "plazas:",
+   "t": 6.72,
+   "end": 7.52
+  },
+  {
+   "text": "comenta",
+   "t": 7.6,
+   "end": 8.0
+  },
+  {
+   "text": "QUIERO",
+   "t": 8.16,
+   "end": 8.56
+  },
+  {
+   "text": "y",
+   "t": 8.72,
+   "end": 8.8
   },
   {
    "text": "te",
-   "t": 8.32,
-   "end": 8.4
+   "t": 8.84,
+   "end": 8.88
   },
   {
-   "text": "la",
-   "t": 8.48,
-   "end": 8.52
+   "text": "lo",
+   "t": 8.96,
+   "end": 9.0
   },
   {
    "text": "enviamos",
-   "t": 8.56,
-   "end": 8.96
+   "t": 9.04,
+   "end": 9.36
   },
   {
    "text": "por",
-   "t": 9.0,
-   "end": 9.04
+   "t": 9.44,
+   "end": 9.52
   },
   {
    "text": "mensaje.",
-   "t": 9.12,
-   "end": 9.84
+   "t": 9.76,
+   "end": 10.24
   }
  ]
 }

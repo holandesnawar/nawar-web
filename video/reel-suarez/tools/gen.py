@@ -71,7 +71,8 @@ def metodo_pages():
 def outro_html():
     """compositions/outro.html (v13, the client: the method guide as a mockup — three sheets, one straight and two turned
     to the sides, «so you see you get something real» — a «Black Friday · últimas plazas» tab, and no typing): the
-    indigo screen of the second reel's closing ad, all in within ~1 s: the red tab, «Recibe la guía / de nuestro método»,
+    indigo screen of the second reel's closing ad, all in within ~1 s: the red tab, (v14) «Recibe el PDF / de nuestro método /
+    y comienza a hablar neerlandés ya»,
     the guide's cover straight in front with «Lo que incluye» and «Te lo han explicado en el idioma equivocado» fanned
     out behind it, the light-blue ticker with what the course is (from the guide) and a «Comenta QUIERO» button that
     pulses when the voice says it."""
@@ -89,53 +90,56 @@ def outro_html():
     .o-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 2px, transparent 2.2px); background-size: 52px 52px; }
     .o-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
     /* the tab: Black Friday · últimas plazas */
-    #o-tab { top: 190px; }
+    #o-tab { top: 180px; }
     .o-tab { display: flex; align-items: center; gap: 14px; height: 66px; padding: 0 32px 0 26px; border-radius: 999px; background: «RED»;
       font-weight: 800; font-size: 27px; letter-spacing: 0.12em; color: #FFFFFF; white-space: nowrap; line-height: 1;
-      box-shadow: 0 10px 30px rgba(220,38,38,0.35); }
+      }
     #o-dot { display: block; width: 14px; height: 14px; border-radius: 50%; background: #FFFFFF; }
     .o-h { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 92px; line-height: 1.08; letter-spacing: -0.03em; white-space: nowrap; }
-    #o-l1 { top: 272px; }
+    #o-l1 { top: 262px; }
     #o-l1 span { background: linear-gradient(180deg, #FFFFFF 10%, rgba(255,255,255,0.6) 100%); -webkit-background-clip: text;
       background-clip: text; -webkit-text-fill-color: transparent; color: transparent; padding: 0 6px; }
-    #o-l2 { top: 372px; color: «SKY»; }
+    #o-l2 { top: 362px; color: «SKY»; }
+    #o-l3 { top: 478px; font-weight: 600; font-size: 40px; color: #E0F2FF; white-space: nowrap; }
+    #o-l3 b { font-weight: 800; color: #FFFFFF; }
     /* the guide: three A4 sheets, the cover straight in front, two fanned out behind */
     .o-sheet { position: absolute; display: block; border-radius: 10px; overflow: hidden; background: #FFFFFF;
       box-shadow: 0 0 0 1.5px rgba(255,255,255,0.25), 0 26px 60px rgba(2,0,24,0.55), 0 6px 14px rgba(2,0,24,0.35); }
     .o-sheet img { display: block; width: 100%; height: 100%; object-fit: cover; }
-    #o-s1 { left: 320px; top: 520px; width: 440px; height: 622px; z-index: 3; box-shadow: 0 0 0 3px rgba(255,255,255,0.55), 0 30px 70px rgba(2,0,24,0.65), 0 6px 14px rgba(2,0,24,0.35); }
-    #o-s2 { left: 176px; top: 586px; width: 380px; height: 537px; z-index: 1; transform-origin: 70% 90%; }
-    #o-s3 { left: 524px; top: 586px; width: 380px; height: 537px; z-index: 2; transform-origin: 30% 90%; }
+    #o-s1 { left: 330px; top: 562px; width: 420px; height: 594px; z-index: 3; box-shadow: 0 0 0 3px rgba(255,255,255,0.55), 0 30px 70px rgba(2,0,24,0.65), 0 6px 14px rgba(2,0,24,0.35); }
+    #o-s2 { left: 190px; top: 622px; width: 360px; height: 509px; z-index: 1; transform-origin: 70% 90%; }
+    #o-s3 { left: 530px; top: 622px; width: 360px; height: 509px; z-index: 2; transform-origin: 30% 90%; }
     #o-shine { position: absolute; top: -60px; left: -260px; width: 140px; height: 800px; transform: rotate(18deg);
       background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0) 100%); }
     /* the light-blue ticker: what the course is (from the guide) */
-    #o-band { position: absolute; left: -10px; top: 1196px; width: 1100px; height: 64px; background: «SKY»; overflow: hidden; }
+    #o-band { position: absolute; left: -10px; top: 1238px; width: 1100px; height: 64px; background: «SKY»; overflow: hidden; }
     #o-track { position: absolute; left: 0; top: 0; height: 64px; display: flex; align-items: center; white-space: nowrap; }
     #o-track span { display: flex; align-items: center; gap: 16px; padding: 0 26px; color: «INDIGO»; font-weight: 700; font-size: 30px; line-height: 1; }
     #o-track b { font-size: 26px; }
     /* the call to action: a button, no typing */
-    #o-cta { top: 1296px; flex-direction: column; gap: 14px; }
-    .o-btn { display: flex; align-items: center; gap: 18px; height: 104px; padding: 0 46px 0 34px; border-radius: 999px; background: #FFFFFF;
-      color: #0C0C1E; white-space: nowrap; box-shadow: 0 16px 40px rgba(2,0,24,0.40); }
-    .o-btn svg { display: block; width: 52px; height: 52px; }
-    .o-btn span { font-weight: 700; font-size: 42px; line-height: 1; }
+    #o-cta { top: 1362px; flex-direction: column; gap: 12px; }
+    .o-btn { display: flex; align-items: center; gap: 18px; height: 96px; padding: 0 44px 0 32px; border-radius: 999px; background: #FFFFFF;
+      color: #0C0C1E; white-space: nowrap; }
+    .o-btn svg { display: block; width: 48px; height: 48px; }
+    .o-btn span { font-weight: 700; font-size: 40px; line-height: 1; }
     .o-btn b { font-family: "Poppins", sans-serif; font-weight: 800; color: «INDIGO»; letter-spacing: 0.02em; }
-    .o-sub { font-weight: 600; font-size: 30px; color: #E0F2FF; white-space: nowrap; }
+    .o-sub { font-weight: 600; font-size: 28px; color: #E0F2FF; white-space: nowrap; }
 """
-    ticker = ["16 semanas", "Desde el español", "Clase en directo cada semana", "10 módulos", "Dudas resueltas en menos de 24 h", "Certificado Holandés Nawar"]
+    ticker = ["Clases en directo cada semana", "Desde el español", "Autoestudio incluido", "16 semanas", "Dudas resueltas en menos de 24 h", "Certificado Holandés Nawar"]
     track = "".join(f"<span><b>✦</b>{html.escape(t)}</span>" for t in ticker * 4)
     bubble = ('<svg viewBox="0 0 52 52"><path d="M26 6 C14.4 6 5 14.2 5 24.4 C5 29.6 7.4 34.2 11.3 37.6 L9.6 46 L18.6 41.6 C20.9 42.3 23.4 42.7 26 42.7 '
               'C37.6 42.7 47 34.5 47 24.4 C47 14.2 37.6 6 26 6 Z" fill="none" stroke="«INDIGO»" stroke-width="4" stroke-linejoin="round"/></svg>')
     body = f"""
     <div id="o-ground" class="o-full"><div class="o-luz1"></div><div class="o-luz2"></div><div class="o-dots"></div></div>
     <div id="o-tab" class="o-row"><div class="o-tab"><i id="o-dot"></i><span>BLACK FRIDAY · ÚLTIMAS PLAZAS</span></div></div>
-    <div id="o-l1" class="o-row o-h"><span>Recibe la guía</span></div>
+    <div id="o-l1" class="o-row o-h"><span>Recibe el PDF</span></div>
     <div id="o-l2" class="o-row o-h">de nuestro método</div>
+    <div id="o-l3" class="o-row">y comienza a <b>&nbsp;hablar neerlandés ya</b></div>
     <div id="o-s2" class="o-sheet"><img src="assets/img/metodo-{METODO_PAGES[1]}.jpg" alt=""></div>
     <div id="o-s3" class="o-sheet"><img src="assets/img/metodo-{METODO_PAGES[2]}.jpg" alt=""></div>
     <div id="o-s1" class="o-sheet"><img src="assets/img/metodo-{METODO_PAGES[0]}.jpg" alt=""><i id="o-shine"></i></div>
     <div id="o-band"><div id="o-track">{track}</div></div>
-    <div id="o-cta" class="o-row"><div class="o-btn">{bubble}<span>Comenta <b>QUIERO</b></span></div><div class="o-sub">y te la enviamos por mensaje</div></div>
+    <div id="o-cta" class="o-row"><div class="o-btn">{bubble}<span>Comenta <b>QUIERO</b></span></div><div class="o-sub">y te lo enviamos por mensaje</div></div>
 """
     js = """
       // everything in at once (0.2–1.0 s), as in the second reel's closing ad
@@ -143,10 +147,11 @@ def outro_html():
       tl.fromTo("#o-tab", { opacity: 0, y: -24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "back.out(1.8)" }, «TAB»);
       tl.fromTo("#o-l1", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, «L1»);
       tl.fromTo("#o-l2", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, «L2»);
+      tl.fromTo("#o-l3", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.40, ease: "power3.out" }, «L2» + 0.08);
       // the sheets: they come up together, then the two behind fan out to the sides
       tl.fromTo(["#o-s1", "#o-s2", "#o-s3"], { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, «PAGES»);
-      tl.fromTo("#o-s2", { x: 144, rotation: 0 }, { x: 0, rotation: -11, duration: 0.5, ease: "back.out(1.4)" }, «FAN»);
-      tl.fromTo("#o-s3", { x: -204, rotation: 0 }, { x: 0, rotation: 11, duration: 0.5, ease: "back.out(1.4)" }, «FAN»);
+      tl.fromTo("#o-s2", { x: 140, rotation: 0 }, { x: 0, rotation: -11, duration: 0.5, ease: "back.out(1.4)" }, «FAN»);
+      tl.fromTo("#o-s3", { x: -200, rotation: 0 }, { x: 0, rotation: 11, duration: 0.5, ease: "back.out(1.4)" }, «FAN»);
       tl.fromTo("#o-s1", { scale: 1 }, { scale: 1.04, duration: «D» - «FAN» - 0.5, ease: "sine.inOut" }, «FAN» + 0.5);
       tl.fromTo("#o-shine", { x: 0 }, { x: 900, duration: 0.9, ease: "power2.inOut" }, «FAN» + 0.4);
       tl.fromTo("#o-shine", { x: 0 }, { x: 900, duration: 0.9, ease: "power2.inOut", immediateRender: false }, «SHINE»);

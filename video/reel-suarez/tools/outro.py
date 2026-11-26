@@ -25,8 +25,8 @@ import base64, json, os, subprocess, sys, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, ".raw", "outro")
-TEXT = ("Esta es la guía de nuestro método, explicado desde el español. Este Black Friday quedan las últimas plazas: "
-        "comenta QUIERO y te la enviamos por mensaje.")   # (v13: the method guide, «últimas plazas», «Comenta QUIERO»)
+TEXT = ("Recibe el PDF de nuestro método y comienza a hablar neerlandés ya. Este Black Friday quedan las últimas plazas: "
+        "comenta QUIERO y te lo enviamos por mensaje.")   # (v14: «el PDF», as on screen)
 VOICE = "LP0ZBLgGaLqbDU1l9PDX"         # «Yair - Narration Spanish» (v7; v6 used «Nawar Def»)
 MODEL = "eleven_v4"                    # (v7.2; eleven_multilingual_v2 before: it sounded flat)
 SETTINGS = {"stability": 0.5, "similarity_boost": 0.8}
