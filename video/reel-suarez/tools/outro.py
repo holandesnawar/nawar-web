@@ -78,7 +78,7 @@ def voz(take=None):
 VO_AT = 0.40                           # outro s: the voice-over starts (the ground is in at 0.25)
 TAIL = 1.30                            # the end card holds this long after the last word
 END = None                             # the outro's length: set from outro.json below (last word + TAIL)
-VO_LUFS, BED_LUFS = -15.0, -35.0       # the voice a touch under the interview (−14.5), the bed 20 LU under the voice
+VO_LUFS, BED_LUFS = -15.0, -41.0       # the voice a touch under the interview (−14.5); (v16) the bed 26 LU under it: soft, not a TV ad
 BED_FROM = 0.023 + 8 * 4 * 60 / 107.7  # «musica v1» (the BF ad's track): from bar 8, where its light groove comes in
 BED_AT, BED_IN, BED_OUT = 0.25, 0.6, 1.2
 EQ = "highpass=f=110,lowshelf=f=150:g=-6,lowshelf=f=250:g=-6,equalizer=f=2500:t=q:w=0.9:g=-3"   # (as in the BF ad: room for the voice)
