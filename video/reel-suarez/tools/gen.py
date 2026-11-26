@@ -90,25 +90,25 @@ def outro_html():
     .o-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 2px, transparent 2.2px); background-size: 52px 52px; }
     .o-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
     /* the tab: Black Friday · últimas plazas */
-    #o-tab { top: 180px; }
+    #o-tab { top: 168px; }
     .o-tab { display: flex; align-items: center; gap: 14px; height: 66px; padding: 0 32px 0 26px; border-radius: 999px; background: «RED»;
       font-weight: 800; font-size: 27px; letter-spacing: 0.12em; color: #FFFFFF; white-space: nowrap; line-height: 1;
       }
     #o-dot { display: block; width: 14px; height: 14px; border-radius: 50%; background: #FFFFFF; }
     .o-h { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 92px; line-height: 1.08; letter-spacing: -0.03em; white-space: nowrap; }
-    #o-l1 { top: 262px; }
+    #o-l1 { top: 280px; }
     #o-l1 span { background: linear-gradient(180deg, #FFFFFF 10%, rgba(255,255,255,0.6) 100%); -webkit-background-clip: text;
       background-clip: text; -webkit-text-fill-color: transparent; color: transparent; padding: 0 6px; }
-    #o-l2 { top: 362px; color: «SKY»; }
-    #o-l3 { top: 478px; font-weight: 600; font-size: 40px; color: #E0F2FF; white-space: nowrap; }
+    #o-l2 { top: 380px; color: «SKY»; }
+    #o-l3 { top: 496px; font-weight: 600; font-size: 40px; color: #E0F2FF; white-space: nowrap; }
     #o-l3 b { font-weight: 800; color: #FFFFFF; }
     /* the guide: three A4 sheets, the cover straight in front, two fanned out behind */
     .o-sheet { position: absolute; display: block; border-radius: 10px; overflow: hidden; background: #FFFFFF;
       box-shadow: 0 0 0 1.5px rgba(255,255,255,0.25), 0 26px 60px rgba(2,0,24,0.55), 0 6px 14px rgba(2,0,24,0.35); }
     .o-sheet img { display: block; width: 100%; height: 100%; object-fit: cover; }
-    #o-s1 { left: 330px; top: 562px; width: 420px; height: 594px; z-index: 3; box-shadow: 0 0 0 3px rgba(255,255,255,0.55), 0 30px 70px rgba(2,0,24,0.65), 0 6px 14px rgba(2,0,24,0.35); }
-    #o-s2 { left: 190px; top: 622px; width: 360px; height: 509px; z-index: 1; transform-origin: 70% 90%; }
-    #o-s3 { left: 530px; top: 622px; width: 360px; height: 509px; z-index: 2; transform-origin: 30% 90%; }
+    #o-s1 { left: 340px; top: 602px; width: 400px; height: 566px; z-index: 3; box-shadow: 0 0 0 3px rgba(255,255,255,0.55), 0 30px 70px rgba(2,0,24,0.65), 0 6px 14px rgba(2,0,24,0.35); }
+    #o-s2 { left: 198px; top: 660px; width: 344px; height: 486px; z-index: 1; transform-origin: 70% 90%; }
+    #o-s3 { left: 538px; top: 660px; width: 344px; height: 486px; z-index: 2; transform-origin: 30% 90%; }
     #o-shine { position: absolute; top: -60px; left: -260px; width: 140px; height: 800px; transform: rotate(18deg);
       background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0) 100%); }
     /* the light-blue ticker: what the course is (from the guide) */
