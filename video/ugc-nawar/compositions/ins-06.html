@@ -1,0 +1,112 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .i6-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .i6-paper { background: #F5F7FF; }
+    .i6-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .i6-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i6-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .i6-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i6-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .i6-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .i6-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    .i6-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
+    .i6-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    .i6-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .i6-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .i6-pill svg { display: block; width: 28px; height: 28px; }
+    .i6-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .i6-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .i6-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .i6-flag svg { display: block; width: 40px; height: 27px; }
+    .i6-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .i6-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+    .i6-av svg { display: block; width: 96px; height: 96px; }
+    .i6-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .i6-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .i6-bub-g { background: #E8ECF7; color: #374151; }
+    .i6-bub-b { background: #0b6df0; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .i6-bl { border-bottom-left-radius: 10px; }
+    .i6-br { border-bottom-right-radius: 10px; }
+    .i6-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .i6-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .i6-acc { color: #4da3ff; }
+    .i6-w { display: inline-block; }
+
+    .i6-call-av { position: absolute; left: 32px; top: 33px; width: 104px; height: 104px; border-radius: 50%; background: #1D0084; }
+    .i6-call-av svg { position: absolute; left: 18px; top: 18px; width: 68px; height: 68px; }
+    .i6-ring { position: absolute; left: 32px; top: 33px; width: 104px; height: 104px; border-radius: 50%; border: 5px solid #0b6df0; box-sizing: border-box; opacity: 0; }
+    .i6-call-name { position: absolute; left: 168px; top: 30px; font-weight: 700; font-size: 46px; line-height: 1.15; letter-spacing: -0.02em; color: #0C0C1E; white-space: nowrap; }
+    .i6-call-st { position: absolute; left: 170px; top: 98px; display: flex; align-items: center; gap: 12px; font-family: "Inter", sans-serif;
+      font-weight: 600; font-size: 29px; line-height: 1.1; color: #5A6480; white-space: nowrap; }
+    .i6-dot { display: block; width: 14px; height: 14px; border-radius: 50%; background: #16A34A; }
+    .i6-call-btn { position: absolute; right: 34px; top: 40px; width: 90px; height: 90px; border-radius: 50%; background: #16A34A;
+      box-shadow: 0 12px 26px rgba(22,163,74,0.35); }
+    .i6-call-btn svg { position: absolute; left: 21px; top: 21px; width: 48px; height: 48px; }
+
+    #i6-wrow { top: 236px; }
+    #i6-av1 { right: 90px; top: 622px; background: #1D0084; }
+    #i6-b1 { right: 214px; top: 576px; width: 620px; white-space: normal; transform-origin: 100% 100%; }
+    #i6-av2 { left: 90px; top: 856px; background: #9fd5f5; }
+    #i6-b2 { left: 214px; top: 844px; transform-origin: 0% 100%; }
+    #i6-okrow { top: 1030px; }
+    #i6-ok { display: flex; align-items: center; gap: 14px; height: 80px; padding: 0 34px 0 18px; border-radius: 999px; background: #16A34A; color: #FFFFFF;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 36px; line-height: 1; white-space: nowrap; box-shadow: 0 18px 44px rgba(4,0,40,0.35); }
+    #i6-ok svg { display: block; width: 48px; height: 48px; }
+
+  </style>
+  <div id="root" data-composition-id="ins-06" data-width="1080" data-height="1920" data-duration="2.143">
+    <div class="i6-full i6-blue"><div class="i6-blue-dots"></div><div class="i6-blue-amb"></div><div class="i6-blue-vig"></div></div>
+    <div id="i6-wrow" class="i6-row"><div id="i6-wk" class="i6-wpill"><span class="i6-flag i6-flagd"><svg viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></span><span>Semana 16</span></div></div>
+    <div id="i6-call" class="i6-card i6-on-blue" style="left:90px; top:350px; width:900px; height:170px;">
+      <div class="i6-ring" id="i6-ring1"></div><div class="i6-ring" id="i6-ring2"></div>
+      <div class="i6-call-av"><svg viewBox="0 0 120 120"><g fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M34 18 V48 A23 23 0 0 0 80 48 V18"/><path d="M57 71 V84 A16 16 0 0 0 89 84 V77"/><circle cx="89" cy="64" r="12"/></g></svg></div>
+      <div class="i6-call-name">Huisarts</div>
+      <div class="i6-call-st"><span class="i6-dot"></span>En llamada · 00:14</div>
+      <div class="i6-call-btn"><svg viewBox="0 0 48 48"><path d="M15.5 6.5 l5 9 -3.2 3.4 c2.2 4.6 5.6 8 10.2 10.2 l3.4 -3.2 9 5 -2.2 7.6 c-0.4 1.3 -1.6 2.1 -3 2 C19 39.4 8.6 29 7.5 14.6 c-0.1 -1.4 0.7 -2.6 2 -3 z" fill="#FFFFFF"/></svg></div>
+    </div>
+    <div id="i6-av1" class="i6-av"><svg viewBox="0 0 96 96"><circle cx="48" cy="38" r="17.5" fill="#FFFFFF" /><path d="M13 101 C13 75 29 62 48 62 C67 62 83 75 83 101 Z" fill="#FFFFFF" /></svg></div>
+    <div id="i6-b1" class="i6-bub i6-bub-b i6-br">Goedemorgen! Ik wil graag een afspraak maken.</div>
+    <div id="i6-av2" class="i6-av"><svg viewBox="0 0 96 96"><circle cx="48" cy="38" r="17.5" fill="#FFFFFF" /><path d="M13 101 C13 75 29 62 48 62 C67 62 83 75 83 101 Z" fill="#FFFFFF" /></svg></div>
+    <div id="i6-b2" class="i6-bub i6-bub-w i6-bl">Natuurlijk. Dinsdag om tien uur?</div>
+    <div id="i6-okrow" class="i6-row"><div id="i6-ok"><svg viewBox="0 0 64 64"><path d="M16 33 L28 45 L49 21" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Cita confirmada</span></div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("i6-" + id);
+
+      tl.fromTo(q("wk"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 0);
+      tl.fromTo(q("call"), { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, 0.02);
+      tl.fromTo(q("av1"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(2)" }, 0.057 + 0.04);
+      tl.fromTo(q("b1"), { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 0.057 + 0.08);
+      tl.fromTo(q("av2"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(2)" }, 1.095 - 0.12);
+      tl.fromTo(q("b2"), { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 1.095 - 0.08);
+      tl.fromTo(q("ok"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.34, ease: "back.out(2)" }, 1.591 - 0.04);
+
+      window.__timelines["ins-06"] = tl;
+    })();
+  </script>
+</template>

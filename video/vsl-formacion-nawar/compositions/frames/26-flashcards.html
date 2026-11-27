@@ -1,0 +1,313 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: NAWAR BLUE ---------- */
+    #f26-ground {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+    }
+    #f26-dots {
+      position: absolute; left: -56px; top: -56px; width: 2032px; height: 1192px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px;
+    }
+    #f26-amb {
+      position: absolute; left: 40px; top: 190px; width: 1100px; height: 760px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%);
+    }
+
+    /* ---------- MacBook (tools/mac_mockup.md), left ---------- */
+    #f26-drift { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 590px 545px; }
+    .f26-mbp { --u: calc(var(--sw) / 1120); }
+    .f26-mbp {
+      --sw: 896px;
+      --al-0: #fbfbfc; --al-1: #e4e6ea; --al-2: #c3c7ce; --al-3: #9a9fa8; --al-4: #6f747d;   /* silver */
+      position: absolute; width: calc(var(--u) * 1236); height: calc(var(--u) * 778);
+    }
+    .f26-mbp--grey { --al-0: #c4c7cc; --al-1: #8e9198; --al-2: #6c6f76; --al-3: #4d5056; --al-4: #34363b; }
+    /* soft contact shadow on the "table" + a tight occlusion line under the lip */
+    .f26-mbp-shadow {
+      position: absolute; left: calc(var(--u) * -50); top: calc(var(--u) * 746); width: calc(var(--u) * 1336); height: calc(var(--u) * 110);
+      border-radius: 50%;
+      background: radial-gradient(ellipse 50% 50% at 50% 40%, rgba(3,0,30,0.72) 0%, rgba(3,0,30,0.44) 34%, rgba(3,0,30,0.14) 64%, rgba(3,0,30,0) 100%);
+    }
+    .f26-mbp-occl {
+      position: absolute; left: calc(var(--u) * 30); top: calc(var(--u) * 772); width: calc(var(--u) * 1176); height: calc(var(--u) * 14);
+      border-radius: 50%; background: rgba(2,0,20,0.85); filter: blur(calc(var(--u) * 4));
+    }
+    /* lid: thin aluminium edge around black glass */
+    .f26-mbp-lid {
+      position: absolute; left: calc(var(--u) * 38); top: 0; width: calc(var(--u) * 1160); height: calc(var(--u) * 754);
+      border-radius: calc(var(--u) * 30) calc(var(--u) * 30) calc(var(--u) * 7) calc(var(--u) * 7);
+      background: linear-gradient(180deg, var(--al-1) 0%, var(--al-2) 45%, var(--al-3) 100%);
+      box-shadow: inset 0 0 0 calc(var(--u) * 0.8) rgba(255,255,255,0.55), 0 calc(var(--u) * 26) calc(var(--u) * 70) rgba(4,0,40,0.30);
+    }
+    .f26-mbp-glass {
+      position: absolute; left: calc(var(--u) * 4); top: calc(var(--u) * 4); width: calc(var(--u) * 1152); height: calc(var(--u) * 746);
+      border-radius: calc(var(--u) * 26.5) calc(var(--u) * 26.5) calc(var(--u) * 4) calc(var(--u) * 4); overflow: hidden;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, #0d0e12 0%, #050506 70%);
+      box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(0,0,0,0.85);
+    }
+    .f26-mbp-screen {
+      position: absolute; left: calc(var(--u) * 16); top: calc(var(--u) * 16); width: calc(var(--u) * 1120); height: calc(var(--u) * 700);
+      border-radius: calc(var(--u) * 10) calc(var(--u) * 10) calc(var(--u) * 1.5) calc(var(--u) * 1.5); overflow: hidden; background: #FFFFFF;
+    }
+    /* camera notch (with concave fillets into the bezel) + lens */
+    .f26-mbp-notch {
+      position: absolute; left: calc(var(--u) * 517); top: calc(var(--u) * 16); width: calc(var(--u) * 118); height: calc(var(--u) * 21);
+      border-radius: 0 0 calc(var(--u) * 8) calc(var(--u) * 8); background: #050506;
+    }
+    .f26-mbp-notch::before, .f26-mbp-notch::after { content: ""; position: absolute; top: 0; width: calc(var(--u) * 6); height: calc(var(--u) * 6); }
+    .f26-mbp-notch::before { left: calc(var(--u) * -6); background: radial-gradient(circle at 0% 100%, rgba(5,5,6,0) calc(var(--u) * 5.5), #050506 calc(var(--u) * 6)); }
+    .f26-mbp-notch::after { right: calc(var(--u) * -6); background: radial-gradient(circle at 100% 100%, rgba(5,5,6,0) calc(var(--u) * 5.5), #050506 calc(var(--u) * 6)); }
+    .f26-mbp-lens {
+      position: absolute; left: calc(var(--u) * 55.5); top: calc(var(--u) * 7); width: calc(var(--u) * 7); height: calc(var(--u) * 7); border-radius: 50%;
+      background: radial-gradient(circle at 38% 34%, #4a5a8c 0%, #1a2142 38%, #0a0b14 72%);
+      box-shadow: 0 0 0 calc(var(--u) * 1.2) #111217;
+    }
+    /* glass reflection over bezel + screen */
+    .f26-mbp-reflect {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none;
+      background: linear-gradient(121deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.035) 30%, rgba(255,255,255,0.016) 40.5%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 100%);
+    }
+    /* base: front lip only (no keyboard), slightly wider than the lid, drawn over the lid's hinge edge */
+    .f26-mbp-base {
+      position: absolute; left: 0; top: calc(var(--u) * 751); width: calc(var(--u) * 1236); height: calc(var(--u) * 27);
+      border-radius: calc(var(--u) * 4) calc(var(--u) * 4) calc(var(--u) * 70) calc(var(--u) * 70) / calc(var(--u) * 3) calc(var(--u) * 3) calc(var(--u) * 24) calc(var(--u) * 24);
+      background: linear-gradient(180deg, var(--al-0) 0%, var(--al-1) 12%, var(--al-2) 44%, var(--al-3) 76%, var(--al-4) 100%);
+      box-shadow: inset 0 calc(var(--u) * -1.2) calc(var(--u) * 1.5) rgba(0,0,0,0.22), inset 0 calc(var(--u) * 0.8) 0 rgba(255,255,255,0.7);
+    }
+    .f26-mbp-thumb {
+      position: absolute; left: calc(var(--u) * 538); top: 0; width: calc(var(--u) * 160); height: calc(var(--u) * 8);
+      border-radius: 0 0 50% 50% / 0 0 100% 100%;
+      background: linear-gradient(180deg, var(--al-3) 0%, var(--al-2) 55%, var(--al-1) 100%);
+      box-shadow: inset 0 calc(var(--u) * 1.6) calc(var(--u) * 2.2) rgba(0,0,0,0.30), 0 calc(var(--u) * 0.6) 0 rgba(255,255,255,0.45);
+    }
+
+    /* browser chrome (shared): tab strip 36u + toolbar 34u = 70u */
+    .f26-chrome { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 70); font-family: "Inter", sans-serif; }
+    .f26-tabs { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--u) * 36); background: #DEE1E6; }
+    .f26-tl { position: absolute; top: calc(var(--u) * 12); width: calc(var(--u) * 12); height: calc(var(--u) * 12); border-radius: 50%; }
+    .f26-tl-r { left: calc(var(--u) * 13); background: #FF5F57; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #E0443E; }
+    .f26-tl-y { left: calc(var(--u) * 33); background: #FEBC2E; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #DEA123; }
+    .f26-tl-g { left: calc(var(--u) * 53); background: #28C840; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #1AAB29; }
+    .f26-tab {
+      position: absolute; left: calc(var(--u) * 82); top: calc(var(--u) * 7); width: calc(var(--u) * 232); height: calc(var(--u) * 29);
+      border-radius: calc(var(--u) * 9) calc(var(--u) * 9) 0 0; background: #FFFFFF;
+    }
+    .f26-tab::before, .f26-tab::after { content: ""; position: absolute; bottom: 0; width: calc(var(--u) * 9); height: calc(var(--u) * 9); }
+    .f26-tab::before { left: calc(var(--u) * -9); background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f26-tab::after { right: calc(var(--u) * -9); background: radial-gradient(circle at 100% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f26-fav {
+      position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 7); width: calc(var(--u) * 15); height: calc(var(--u) * 15);
+      border-radius: calc(var(--u) * 3.5); overflow: hidden; background: radial-gradient(circle at 50% 45%, #2fb6f2 0%, #0b6df0 80%);
+    }
+    .f26-fav img { position: absolute; left: calc(var(--u) * 1.2); top: calc(var(--u) * 5.2); width: calc(var(--u) * 12.6); height: auto; display: block; }
+    .f26-tab-t {
+      position: absolute; left: calc(var(--u) * 35); top: 0; height: calc(var(--u) * 29); line-height: calc(var(--u) * 29);
+      font-size: calc(var(--u) * 12); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f26-tab-x { position: absolute; right: calc(var(--u) * 10); top: calc(var(--u) * 9.5); width: calc(var(--u) * 10); height: calc(var(--u) * 10); }
+    .f26-plus { position: absolute; left: calc(var(--u) * 330); top: calc(var(--u) * 11); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    .f26-bar { position: absolute; left: 0; top: calc(var(--u) * 36); width: 100%; height: calc(var(--u) * 34); background: #FFFFFF; box-shadow: inset 0 calc(var(--u) * -1) 0 #DADCE0; }
+    .f26-nav { position: absolute; left: calc(var(--u) * 14); top: calc(var(--u) * 9); width: calc(var(--u) * 86); height: calc(var(--u) * 16); overflow: visible; }   /* back · forward (disabled) · reload */
+    .f26-menu { position: absolute; left: calc(var(--u) * 1086); top: calc(var(--u) * 9); width: calc(var(--u) * 16); height: calc(var(--u) * 16); }
+    .f26-url {
+      position: absolute; left: calc(var(--u) * 102); top: calc(var(--u) * 4); width: calc(var(--u) * 962); height: calc(var(--u) * 26);
+      border-radius: calc(var(--u) * 13); background: #F1F3F4;
+    }
+    .f26-lock { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6.5); width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
+    .f26-url-t {
+      position: absolute; left: calc(var(--u) * 33); top: 0; height: calc(var(--u) * 26); line-height: calc(var(--u) * 26);
+      font-size: calc(var(--u) * 13); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f26-star { position: absolute; right: calc(var(--u) * 11); top: calc(var(--u) * 6); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    /* 16:9 content area — real recordings, object-fit cover (never stretch) */
+    .f26-content { position: absolute; left: 0; top: calc(var(--u) * 70); width: calc(var(--u) * 1120); height: calc(var(--u) * 630); overflow: hidden; background: #FFFFFF; }
+    .f26-media { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--fx, 50%) 50%; display: block; }
+
+    /* ---------- right column ---------- */
+    #f26-col { position: absolute; left: 1164px; top: 0; width: 660px; height: 1080px; }
+    .f26-h {
+      position: absolute; left: -4px; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 100px; line-height: 1; letter-spacing: -0.035em; color: #FFFFFF;
+    }
+    #f26-h1 { top: 166px; }
+    #f26-h2 { top: 268px; color: #4da3ff; }
+    .f26-s {
+      position: absolute; left: 0; display: flex; gap: 0.27em; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 36px; line-height: 1.2; letter-spacing: -0.01em; color: rgba(255,255,255,0.72);
+    }
+    .f26-w { display: inline-block; }
+    .f26-hi { color: #FFFFFF; }
+    #f26-s1 { top: 408px; }
+    #f26-s2 { top: 754px; }
+
+    /* word cards: a clean stack (back cards peek out above the front one) */
+    #f26-stack { position: absolute; left: 0; top: 488px; width: 560px; height: 228px; }
+    .f26-card {
+      position: absolute; left: 0; width: 560px; height: 108px; border-radius: 18px; background: #FFFFFF;
+      transform-origin: 50% 0%;
+      box-shadow: 0 16px 34px rgba(4,0,40,0.30), 0 2px 6px rgba(4,0,40,0.14);
+    }
+    #f26-c3 { top: 0; background: #E4EAF7; }
+    #f26-c2 { top: 60px; background: #F0F3FB; }
+    #f26-c1 { top: 120px; }
+    .f26-cw {
+      position: absolute; left: 30px; top: 14px; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 36px; line-height: 44px; letter-spacing: -0.02em; color: #0C0C1E;
+    }
+    .f26-cg { position: absolute; left: 30px; top: 64px; font-family: "Inter", sans-serif; font-weight: 500; font-size: 20px; line-height: 28px; color: #5A6480; }
+    .f26-flag { position: absolute; right: 28px; top: 24px; width: 36px; height: 24px; border-radius: 5px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(12,12,30,0.10); }
+    .f26-flag i { display: block; height: 8px; }
+
+    /* week strip */
+    #f26-week { position: absolute; left: 0; top: 822px; width: 556px; height: 92px; }
+    .f26-day { position: absolute; top: 0; width: 64px; height: 92px; }
+    .f26-dl {
+      position: absolute; left: 0; top: 0; width: 64px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; line-height: 24px; color: rgba(255,255,255,0.72);
+    }
+    .f26-dc { position: absolute; left: 9px; top: 36px; width: 46px; height: 46px; border-radius: 50%; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.26); }
+    .f26-df { position: absolute; left: 0; top: 0; width: 46px; height: 46px; border-radius: 50%; background: #4da3ff; opacity: 0; }
+    .f26-dk { position: absolute; left: 0; top: 0; width: 46px; height: 46px; overflow: visible; }
+    .f26-dk path { fill: none; stroke: #FFFFFF; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100 100; stroke-dashoffset: 100; }
+  </style>
+
+  <div id="root" data-composition-id="26-flashcards" data-width="1920" data-height="1080" data-duration="3.907">
+    <div id="f26-ground" class="clip" data-start="0" data-duration="3.907" data-track-index="0"><div id="f26-dots"></div></div>
+    <div id="f26-amb"></div>
+
+    <!-- ===== MacBook Pro (front view) with the REAL flashcards tool ===== -->
+    <div id="f26-drift">
+      <div id="f26-lap" class="f26-mbp" style="--sw:896px; left:96px; top:232px;">
+        <div class="f26-mbp-shadow"></div><div class="f26-mbp-occl"></div>
+        <div class="f26-mbp-lid">
+          <div class="f26-mbp-glass">
+            <div class="f26-mbp-screen">
+              <div class="f26-chrome">
+<div class="f26-tabs"><i class="f26-tl f26-tl-r"></i><i class="f26-tl f26-tl-y"></i><i class="f26-tl f26-tl-g"></i>
+<div class="f26-tab"><div class="f26-fav"><img src="assets/img/logo-nawar.png" alt="" /></div><div class="f26-tab-t">Holandés Nawar</div><svg class="f26-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
+<svg class="f26-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
+<div class="f26-bar"><svg class="f26-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
+<div class="f26-url"><svg class="f26-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="f26-url-t">app.holandesnawar.com</div><svg class="f26-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
+<svg class="f26-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
+</div>
+              <div class="f26-content" style="--fx:0%;">
+                <!-- source 1.1–4.99: «el bocadillo» flips to «het broodje» at ≈0.5–0.75 (on «Flashcards … incluidas») -->
+                <video id="f26-vid" class="clip f26-media" src="assets/video/flashcards.mp4" muted playsinline
+                  data-start="0" data-duration="3.907" data-media-start="1.1" data-hf-media-start-basis="local" data-track-index="2"></video>
+              </div>
+            </div>
+            <div class="f26-mbp-notch"><i class="f26-mbp-lens"></i></div>
+            <div class="f26-mbp-reflect"></div>
+          </div>
+        </div>
+        <div class="f26-mbp-base"><div class="f26-mbp-thumb"></div></div>
+      </div>
+    </div>
+
+    <!-- ===== right column ===== -->
+    <div id="f26-col">
+      <div class="f26-h" id="f26-h1">Flashcards</div>
+      <div class="f26-h" id="f26-h2">incluidas.</div>
+
+      <div class="f26-s" id="f26-s1"><span class="f26-w" id="f26-w-para">para</span><span class="f26-w" id="f26-w-que">que</span><span class="f26-w" id="f26-w-el">el</span><span class="f26-w" id="f26-w-vocab">vocabulario</span><span class="f26-w f26-hi" id="f26-w-se">se</span><span class="f26-w f26-hi" id="f26-w-quede">quede</span></div>
+
+      <div id="f26-stack">
+        <div class="f26-card" id="f26-c3"><div class="f26-cw">komen</div><div class="f26-cg">venir</div><div class="f26-flag"><i style="background:#AE1C27"></i><i style="background:#FFFFFF"></i><i style="background:#21468C"></i></div></div>
+        <div class="f26-card" id="f26-c2"><div class="f26-cw">de vis</div><div class="f26-cg">el pescado</div><div class="f26-flag"><i style="background:#AE1C27"></i><i style="background:#FFFFFF"></i><i style="background:#21468C"></i></div></div>
+        <div class="f26-card" id="f26-c1"><div class="f26-cw">het broodje</div><div class="f26-cg">el bocadillo</div><div class="f26-flag"><i style="background:#AE1C27"></i><i style="background:#FFFFFF"></i><i style="background:#21468C"></i></div></div>
+      </div>
+
+      <div class="f26-s" id="f26-s2"><span class="f26-w" id="f26-w-y">y</span><span class="f26-w" id="f26-w-no">no</span><span class="f26-w" id="f26-w-se2">se</span><span class="f26-w" id="f26-w-te">te</span><span class="f26-w" id="f26-w-escape">escape</span><span class="f26-w" id="f26-w-a">a</span><span class="f26-w" id="f26-w-la">la</span><span class="f26-w f26-hi" id="f26-w-semana">semana.</span></div>
+
+      <div id="f26-week">
+        <div class="f26-day" style="left:0px;"><div class="f26-dl" id="f26-dl0">L</div><div class="f26-dc"><div class="f26-df" id="f26-df0"></div><svg class="f26-dk" viewBox="0 0 46 46" aria-hidden="true"><path id="f26-dt0" d="M14.5 23.5 L20.5 29.5 L32 17.5" pathLength="100" /></svg></div></div>
+        <div class="f26-day" style="left:82px;"><div class="f26-dl" id="f26-dl1">M</div><div class="f26-dc"><div class="f26-df" id="f26-df1"></div><svg class="f26-dk" viewBox="0 0 46 46" aria-hidden="true"><path id="f26-dt1" d="M14.5 23.5 L20.5 29.5 L32 17.5" pathLength="100" /></svg></div></div>
+        <div class="f26-day" style="left:164px;"><div class="f26-dl" id="f26-dl2">X</div><div class="f26-dc"><div class="f26-df" id="f26-df2"></div><svg class="f26-dk" viewBox="0 0 46 46" aria-hidden="true"><path id="f26-dt2" d="M14.5 23.5 L20.5 29.5 L32 17.5" pathLength="100" /></svg></div></div>
+        <div class="f26-day" style="left:246px;"><div class="f26-dl" id="f26-dl3">J</div><div class="f26-dc"><div class="f26-df" id="f26-df3"></div><svg class="f26-dk" viewBox="0 0 46 46" aria-hidden="true"><path id="f26-dt3" d="M14.5 23.5 L20.5 29.5 L32 17.5" pathLength="100" /></svg></div></div>
+        <div class="f26-day" style="left:328px;"><div class="f26-dl" id="f26-dl4">V</div><div class="f26-dc"><div class="f26-df" id="f26-df4"></div><svg class="f26-dk" viewBox="0 0 46 46" aria-hidden="true"><path id="f26-dt4" d="M14.5 23.5 L20.5 29.5 L32 17.5" pathLength="100" /></svg></div></div>
+        <div class="f26-day" style="left:410px;"><div class="f26-dl" id="f26-dl5">S</div><div class="f26-dc"><div class="f26-df" id="f26-df5"></div><svg class="f26-dk" viewBox="0 0 46 46" aria-hidden="true"><path id="f26-dt5" d="M14.5 23.5 L20.5 29.5 L32 17.5" pathLength="100" /></svg></div></div>
+        <div class="f26-day" style="left:492px;"><div class="f26-dl" id="f26-dl6">D</div><div class="f26-dc"><div class="f26-df" id="f26-df6"></div><svg class="f26-dk" viewBox="0 0 46 46" aria-hidden="true"><path id="f26-dt6" d="M14.5 23.5 L20.5 29.5 L32 17.5" pathLength="100" /></svg></div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 3.89, LEAD = 0.05;
+      // v3 voice cues (frame-relative)
+      const T = {
+        flash: 0.12, incl: 0.616, para: 1.285, que: 1.423, el: 1.496, vocab: 1.57, se: 2.083, quede: 2.194,
+        y: 2.437, no: 2.588, se2: 2.726, te: 2.863, escape: 2.946, a: 3.294, la: 3.34, semana: 3.414
+      };
+      const rise = (el, cue, dy, dur) => tl.fromTo(el, { opacity: 0, y: dy },
+        { opacity: 1, y: 0, duration: dur || 0.36, ease: "power3.out" }, cue - LEAD);
+
+      // ================= ENTRANCE: the MacBook rises into place (one move) =================
+      tl.fromTo(q("f26-lap"), { y: 64 }, { y: 0, duration: 0.7, ease: "power3.out" }, 0);
+      tl.fromTo(q("f26-lap"), { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power1.out" }, 0);
+      tl.fromTo(q("f26-amb"), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0);
+      // slow, purposeful camera: the device breathes in by 1.5 % over the shot (footage never zoomed)
+      tl.fromTo(q("f26-drift"), { scale: 1 }, { scale: 1.015, duration: D, ease: "power1.inOut" }, 0);
+
+      // ================= «Flashcards incluidas,» =================
+      rise(q("f26-h1"), T.flash, 46, 0.5);
+      rise(q("f26-h2"), T.incl, 46, 0.5);
+
+      // ================= «para que el vocabulario se quede» =================
+      [["para", T.para], ["que", T.que], ["el", T.el], ["vocab", T.vocab], ["se", T.se], ["quede", T.quede]]
+        .forEach(([id, t]) => rise(q("f26-w-" + id), t, 18, 0.32));
+      // the real word cards arrive with «vocabulario» and the stack settles on «quede»
+      [["f26-c3", 0.92, 34, T.vocab - LEAD], ["f26-c2", 0.96, 34, T.vocab + 0.14], ["f26-c1", 1, 40, T.quede - LEAD]].forEach(([id, s, dy, at]) => {
+        tl.fromTo(q(id), { y: dy, scale: s }, { y: 0, scale: s, duration: 0.5, ease: "power3.out" }, at);
+        tl.fromTo(q(id), { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "power1.out" }, at);
+      });
+
+      // ================= «y no se te escape a la semana.» =================
+      [["y", T.y], ["no", T.no], ["se2", T.se2], ["te", T.te], ["escape", T.escape], ["a", T.a], ["la", T.la], ["semana", T.semana]]
+        .forEach(([id, t]) => rise(q("f26-w-" + id), t, 18, 0.32));
+      tl.fromTo(q("f26-week"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, T.y - LEAD);
+      // every day of the week ticks in #4da3ff, the last one on «semana»
+      const step = (T.semana - T.no) / 6;
+      for (let i = 0; i < 7; i++) {
+        const at = T.no + i * step - 0.03;
+        tl.fromTo(q("f26-df" + i), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.26, ease: "power3.out" }, at);
+        tl.fromTo(q("f26-dt" + i), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.22, ease: "power2.out" }, at + 0.06);
+        tl.fromTo(q("f26-dl" + i), { color: "rgba(255,255,255,0.72)" }, { color: "#FFFFFF", duration: 0.2, ease: "power1.out" }, at);
+      }
+
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.616, 0.59], [1.285, 1.247], [1.423, 1.379], [1.496, 1.473], [1.57, 1.557], [2.083, 2.102], [2.194, 2.186], [2.437, 2.444], [2.588, 2.609], [2.726, 2.75], [2.863, 2.89], [2.946, 2.966], [3.294, 3.322], [3.34, 3.369], [3.414, 3.444], [3.89, 3.907]]);
+      window.__timelines["26-flashcards"] = tl;
+    })();
+  </script>
+</template>

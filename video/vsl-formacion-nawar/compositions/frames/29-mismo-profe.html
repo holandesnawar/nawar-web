@@ -1,0 +1,402 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: nawar-blue + white dot grid + vignette ---------- */
+    #f29-ground { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 50% 46%, #025dc7 0%, #120081 72%); }
+    #f29-dots {
+      position: absolute; left: -160px; top: -100px; width: 2240px; height: 1280px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px);
+      background-size: 28px 28px; background-position: 14px 14px;
+    }
+    #f29-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 72% 70% at 50% 46%, rgba(4,0,40,0) 52%, rgba(4,0,40,0.42) 100%); }
+
+    /* ---------- type: 88 px headline · 30 px card/chip titles · 20 px labels ---------- */
+    .f29-hd { position: absolute; top: 172px; height: 96px; white-space: nowrap; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 88px; line-height: 96px; letter-spacing: -0.035em; color: #FFFFFF; }
+    .f29-w { display: inline-block; }
+    .f29-lbl {
+      position: absolute; top: 848px; height: 44px; box-sizing: border-box; padding: 0 20px 0 16px; border-radius: 22px;
+      display: flex; align-items: center; gap: 12px; white-space: nowrap;
+      background: rgba(255,255,255,0.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25);
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 0.14em; color: #FFFFFF;
+    }
+    .f29-lbl svg { width: 14px; height: 14px; display: block; }
+    .f29-lbl i { width: 11px; height: 11px; border-radius: 50%; background: #E02D3C; display: block; }
+
+    /* ================= MAC MOCKUP (tools/mac_mockup.md) — standalone macOS window ================= */
+    .f29-win { --u: calc(var(--sw) / 1120); }
+    .f29-win {
+      --sw: 1120px;
+      position: absolute; width: calc(var(--u) * 1120); height: calc(var(--u) * 700);
+      border-radius: calc(var(--u) * 12); overflow: hidden; background: #FFFFFF;
+      box-shadow: 0 0 0 calc(var(--u) * 1) rgba(10,10,30,0.28), 0 calc(var(--u) * 30) calc(var(--u) * 90) rgba(4,0,40,0.50), 0 calc(var(--u) * 10) calc(var(--u) * 26) rgba(4,0,40,0.30);
+    }
+    .f29-win-edge {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: calc(var(--u) * 12); pointer-events: none;
+      box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(255,255,255,0.45);
+    }
+    .f29-chrome { position: absolute; left: 0; top: 0; width: calc(var(--u) * 1120); height: calc(var(--u) * 70); font-family: "Inter", sans-serif; }
+    .f29-tabs { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--u) * 36); background: #DEE1E6; }
+    .f29-tl { position: absolute; top: calc(var(--u) * 12); width: calc(var(--u) * 12); height: calc(var(--u) * 12); border-radius: 50%; }
+    .f29-tl-r { left: calc(var(--u) * 13); background: #FF5F57; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #E0443E; }
+    .f29-tl-y { left: calc(var(--u) * 33); background: #FEBC2E; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #DEA123; }
+    .f29-tl-g { left: calc(var(--u) * 53); background: #28C840; box-shadow: inset 0 0 0 calc(var(--u) * 0.6) #1AAB29; }
+    .f29-tab {
+      position: absolute; left: calc(var(--u) * 82); top: calc(var(--u) * 7); width: calc(var(--u) * 232); height: calc(var(--u) * 29);
+      border-radius: calc(var(--u) * 9) calc(var(--u) * 9) 0 0; background: #FFFFFF;
+    }
+    .f29-tab::before, .f29-tab::after { content: ""; position: absolute; bottom: 0; width: calc(var(--u) * 9); height: calc(var(--u) * 9); }
+    .f29-tab::before { left: calc(var(--u) * -9); background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f29-tab::after { right: calc(var(--u) * -9); background: radial-gradient(circle at 100% 0%, rgba(255,255,255,0) calc(var(--u) * 8.6), #FFFFFF calc(var(--u) * 9)); }
+    .f29-fav {
+      position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 7); width: calc(var(--u) * 15); height: calc(var(--u) * 15);
+      border-radius: calc(var(--u) * 3.5); overflow: hidden;
+      background: url("assets/img/logo-nawar.png") no-repeat calc(var(--u) * 1.2) calc(var(--u) * 5.2) / calc(var(--u) * 12.6) auto, radial-gradient(circle at 50% 45%, #2fb6f2 0%, #0b6df0 80%);
+    }
+    .f29-tab-t {
+      position: absolute; left: calc(var(--u) * 35); top: 0; height: calc(var(--u) * 29); line-height: calc(var(--u) * 29);
+      font-size: calc(var(--u) * 12); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f29-tab-x { position: absolute; right: calc(var(--u) * 10); top: calc(var(--u) * 9.5); width: calc(var(--u) * 10); height: calc(var(--u) * 10); }
+    .f29-tab-rec { position: absolute; right: calc(var(--u) * 28); top: calc(var(--u) * 11); width: calc(var(--u) * 7); height: calc(var(--u) * 7); border-radius: 50%; background: #E02D3C; }
+    .f29-plus { position: absolute; left: calc(var(--u) * 330); top: calc(var(--u) * 11); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    .f29-bar { position: absolute; left: 0; top: calc(var(--u) * 36); width: 100%; height: calc(var(--u) * 34); background: #FFFFFF; box-shadow: inset 0 calc(var(--u) * -1) 0 #DADCE0; }
+    .f29-nav { position: absolute; left: calc(var(--u) * 14); top: calc(var(--u) * 9); width: calc(var(--u) * 86); height: calc(var(--u) * 16); overflow: visible; }
+    .f29-menu { position: absolute; left: calc(var(--u) * 1086); top: calc(var(--u) * 9); width: calc(var(--u) * 16); height: calc(var(--u) * 16); }
+    .f29-url {
+      position: absolute; left: calc(var(--u) * 102); top: calc(var(--u) * 4); width: calc(var(--u) * 962); height: calc(var(--u) * 26);
+      border-radius: calc(var(--u) * 13); background: #F1F3F4;
+    }
+    .f29-lock { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6.5); width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
+    .f29-url-t {
+      position: absolute; left: calc(var(--u) * 33); top: 0; height: calc(var(--u) * 26); line-height: calc(var(--u) * 26);
+      font-size: calc(var(--u) * 13); font-weight: 500; color: #202124; white-space: nowrap;
+    }
+    .f29-star { position: absolute; right: calc(var(--u) * 11); top: calc(var(--u) * 6); width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+    .f29-content { position: absolute; left: 0; top: calc(var(--u) * 70); width: calc(var(--u) * 1120); height: calc(var(--u) * 630); overflow: hidden; background: #FFFFFF; }
+
+    /* ---------- page B: live class (call layout) — Paul (paul-clase-1) + his shared slide ---------- */
+    #f29-pageB { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #0E1124; font-family: "Inter", sans-serif; }
+    .f29-cpill {
+      position: absolute; left: calc(var(--u) * 20); top: calc(var(--u) * 14); height: calc(var(--u) * 24); box-sizing: border-box;
+      padding: 0 calc(var(--u) * 10) 0 calc(var(--u) * 9); border-radius: calc(var(--u) * 6); background: #E02D3C;
+      display: flex; align-items: center; gap: calc(var(--u) * 6); white-space: nowrap;
+      font-weight: 700; font-size: calc(var(--u) * 11); letter-spacing: 0.12em; color: #FFFFFF;
+    }
+    .f29-cpill i { width: calc(var(--u) * 7); height: calc(var(--u) * 7); border-radius: 50%; background: #FFFFFF; display: block; }
+    .f29-ctitle { position: absolute; left: calc(var(--u) * 138); top: 0; height: calc(var(--u) * 52); line-height: calc(var(--u) * 52); white-space: nowrap; font-weight: 600; font-size: calc(var(--u) * 15); color: rgba(255,255,255,0.9); }
+    .f29-avs { position: absolute; right: calc(var(--u) * 20); top: calc(var(--u) * 13); display: flex; }
+    .f29-av {
+      width: calc(var(--u) * 26); height: calc(var(--u) * 26); margin-left: calc(var(--u) * 5); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 calc(var(--u) * 2) #0E1124;
+      font-weight: 700; font-size: calc(var(--u) * 9.5); color: #FFFFFF; letter-spacing: 0.02em;
+    }
+    .f29-tile { position: absolute; top: calc(var(--u) * 52); height: calc(var(--u) * 500); border-radius: calc(var(--u) * 12); overflow: hidden; background: #1A1D33; }
+    .f29-tp { left: calc(var(--u) * 20); width: calc(var(--u) * 400); }
+    .f29-ts { left: calc(var(--u) * 432); width: calc(var(--u) * 668); }
+    /* Paul's camera: source x 770–1325, y 120–814 of 2502×992 → 400u × 500u (scale 0.7207u) */
+    .f29-vp { position: absolute; left: calc(var(--u) * -555.0); top: calc(var(--u) * -86.5); width: calc(var(--u) * 1803.2); height: calc(var(--u) * 714.9); display: block; object-fit: fill; }
+    /* his slide: source x 1347–2456, y 125–955 → 668u × 500u (scale 0.6024u) */
+    .f29-vs { position: absolute; left: calc(var(--u) * -811.4); top: calc(var(--u) * -75.3); width: calc(var(--u) * 1507.2); height: calc(var(--u) * 597.6); display: block; object-fit: fill; }
+    .f29-name {
+      position: absolute; left: calc(var(--u) * 12); bottom: calc(var(--u) * 12); height: calc(var(--u) * 26); box-sizing: border-box;
+      padding: 0 calc(var(--u) * 10) 0 calc(var(--u) * 8); border-radius: calc(var(--u) * 7); background: rgba(12,12,30,0.58);
+      display: flex; align-items: center; gap: calc(var(--u) * 6); white-space: nowrap; font-weight: 600; font-size: calc(var(--u) * 13); color: #FFFFFF;
+    }
+    .f29-name svg { width: calc(var(--u) * 12); height: calc(var(--u) * 12); display: block; }
+    .f29-spk { position: absolute; left: 0; top: 0; width: 100%; height: 100%; box-sizing: border-box; border-radius: calc(var(--u) * 12); border: calc(var(--u) * 3) solid #4da3ff; }
+    .f29-ctl { position: absolute; left: 0; top: calc(var(--u) * 562); width: 100%; height: calc(var(--u) * 56); display: flex; justify-content: center; align-items: center; gap: calc(var(--u) * 12); }
+    .f29-b { width: calc(var(--u) * 40); height: calc(var(--u) * 40); border-radius: 50%; background: rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; }
+    .f29-b svg { width: calc(var(--u) * 20); height: calc(var(--u) * 20); display: block; }
+    .f29-b.f29-end { width: calc(var(--u) * 58); border-radius: calc(var(--u) * 20); background: #E02D3C; }
+
+    /* ---------- module window: paul-clase-2 lesson page, source x 270–2113, y 0–1037 → 16:9 ---------- */
+    .f29-vm { position: absolute; left: calc(var(--u) * -164.1); top: 0; width: calc(var(--u) * 1473.0); height: calc(var(--u) * 752.3); display: block; object-fit: fill; }
+    #f29-winL, #f29-wrapR { transform-origin: 0 0; }
+    #f29-wrapR { position: absolute; left: 992px; top: 300px; width: 832px; height: 520px; }
+    #f29-winR { box-shadow: none; }
+    #f29-shR { position: absolute; left: 0; top: 0; width: 832px; height: 520px; border-radius: 8.9px; box-shadow: 0 0 0 0.75px rgba(10,10,30,0.28), 0 22px 67px rgba(4,0,40,0.50), 0 7.4px 19.3px rgba(4,0,40,0.30); }
+
+    /* face frames: four thin corner marks (inside the window content, so they ride the re-layout) */
+    .f29-ff { position: absolute; filter: drop-shadow(0 1px 2px rgba(4,0,40,0.45)); }
+    .f29-ff i { position: absolute; width: var(--c); height: var(--c); box-sizing: border-box; border: 0 solid #FFFFFF; }
+    .f29-ff i:nth-child(1) { left: 0; top: 0; border-top-width: var(--t); border-left-width: var(--t); border-top-left-radius: var(--r); }
+    .f29-ff i:nth-child(2) { right: 0; top: 0; border-top-width: var(--t); border-right-width: var(--t); border-top-right-radius: var(--r); }
+    .f29-ff i:nth-child(3) { left: 0; bottom: 0; border-bottom-width: var(--t); border-left-width: var(--t); border-bottom-left-radius: var(--r); }
+    .f29-ff i:nth-child(4) { right: 0; bottom: 0; border-bottom-width: var(--t); border-right-width: var(--t); border-bottom-right-radius: var(--r); }
+    #f29-ffL { left: calc(var(--u) * 128); top: calc(var(--u) * 66); width: calc(var(--u) * 104); height: calc(var(--u) * 124); --c: calc(var(--u) * 22); --t: calc(var(--u) * 4); --r: calc(var(--u) * 6); }
+    #f29-ffR { left: calc(var(--u) * 88); top: calc(var(--u) * 80); width: calc(var(--u) * 210); height: calc(var(--u) * 292); --c: calc(var(--u) * 36); --t: calc(var(--u) * 4); --r: calc(var(--u) * 8); }
+    #f29-match { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+
+    /* «● Grabando» badge on Paul's tile */
+    #f29-rec {
+      position: absolute; left: calc(var(--u) * 34); top: calc(var(--u) * 66); height: calc(var(--u) * 36); box-sizing: border-box;
+      padding: 0 calc(var(--u) * 14) 0 calc(var(--u) * 12); border-radius: calc(var(--u) * 18); background: #FFFFFF;
+      display: flex; align-items: center; gap: calc(var(--u) * 9); white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: calc(var(--u) * 17); letter-spacing: 0.12em; color: #0C0C1E;
+      box-shadow: 0 calc(var(--u) * 6) calc(var(--u) * 16) rgba(4,0,40,0.35);
+    }
+    #f29-rec i { width: calc(var(--u) * 10); height: calc(var(--u) * 10); border-radius: 50%; background: #E02D3C; display: block; }
+
+    /* correction chips over the shared slide's empty band */
+    #f29-chips { position: absolute; right: 128px; top: 692px; height: 64px; display: flex; align-items: center; gap: 14px; }
+    .f29-chip {
+      height: 64px; box-sizing: border-box; padding: 0 24px; border-radius: 16px; background: #FFFFFF;
+      display: flex; align-items: center; gap: 14px; white-space: nowrap; font-family: "Inter", sans-serif; font-size: 30px; line-height: 1;
+      box-shadow: 0 18px 44px rgba(4,0,40,0.40), 0 3px 10px rgba(4,0,40,0.18);
+    }
+    #f29-chipA { font-weight: 600; color: #0C0C1E; }
+    #f29-txtA { position: relative; display: block; }
+    #f29-strike { position: absolute; left: -6px; right: -6px; top: 54%; height: 4px; margin-top: -2px; border-radius: 2px; background: #E02D3C; transform-origin: 0% 50%; }
+    #f29-arrow { width: 34px; height: 20px; display: block; overflow: visible; }
+    #f29-chipB { font-weight: 700; color: #1D0084; padding: 0 22px 0 16px; }
+    #f29-ok { width: 34px; height: 34px; display: block; }
+
+    /* progress card (over the module window) */
+    #f29-prog { position: absolute; left: 136px; top: 624px; width: 752px; height: 232px; border-radius: 24px; background: #FFFFFF; box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 6px 16px rgba(4,0,40,0.16); }
+    #f29-plbl { position: absolute; left: 36px; top: 32px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 18px; line-height: 22px; letter-spacing: 0.14em; color: #5A6480; white-space: nowrap; }
+    #f29-ptit { position: absolute; left: 36px; top: 60px; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 40px; letter-spacing: -0.015em; color: #1D0084; white-space: nowrap; }
+    #f29-trk { position: absolute; left: 36px; top: 182px; width: 680px; height: 4px; border-radius: 2px; background: #DDE6F5; }
+    #f29-trkf { position: absolute; left: 0; top: 0; width: 151.1px; height: 4px; border-radius: 2px; background: #0b6df0; transform-origin: 0% 50%; }
+    .f29-nd { position: absolute; top: -7px; width: 18px; height: 18px; margin-left: -9px; box-sizing: border-box; border-radius: 50%; background: #FFFFFF; border: 3px solid #C9D3E6; }
+    .f29-nd.f29-done { background: #0b6df0; border-color: #0b6df0; }
+    #f29-nd3 { top: -10px; width: 24px; height: 24px; margin-left: -12px; border: 5px solid #0b6df0; }
+    #f29-here {
+      position: absolute; left: 151.1px; top: -66px; height: 40px; margin-left: -72px; width: 144px; box-sizing: border-box; border-radius: 20px;
+      background: #0b6df0; color: #FFFFFF; display: flex; align-items: center; justify-content: center; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 18px; line-height: 1;
+    }
+    #f29-here svg { position: absolute; left: 62px; top: 38px; width: 20px; height: 10px; display: block; }
+
+    /* «Grabaciones» panel (the live window files itself into it) */
+    #f29-panel { position: absolute; left: 992px; top: 300px; width: 832px; height: 520px; border-radius: 20px; background: #FFFFFF; box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 6px 16px rgba(4,0,40,0.16); font-family: "Inter", sans-serif; }
+    #f29-gtit { position: absolute; left: 36px; top: 30px; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 40px; letter-spacing: -0.015em; color: #1D0084; white-space: nowrap; }
+    #f29-gsub { position: absolute; right: 36px; top: 42px; font-weight: 700; font-size: 15px; line-height: 18px; letter-spacing: 0.14em; color: #5A6480; white-space: nowrap; }
+    #f29-r1 { position: absolute; left: 448px; top: 104px; width: 348px; height: 216px; }
+    #f29-new { position: absolute; left: 0; top: 8px; height: 28px; box-sizing: border-box; padding: 0 12px; border-radius: 14px; background: #E8F1FF; color: #0b6df0; display: flex; align-items: center; font-weight: 700; font-size: 14px; letter-spacing: 0.14em; white-space: nowrap; }
+    #f29-r1t { position: absolute; left: 0; top: 50px; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 40px; letter-spacing: -0.015em; color: #0C0C1E; white-space: nowrap; }
+    #f29-r1m { position: absolute; left: 0; top: 94px; font-weight: 600; font-size: 20px; line-height: 26px; color: #5A6480; white-space: nowrap; }
+    #f29-dur { position: absolute; left: 0; top: 168px; width: 340px; height: 6px; border-radius: 3px; background: #DDE6F5; overflow: hidden; }
+    #f29-durf { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: 3px; background: #0b6df0; transform-origin: 0% 50%; }
+    .f29-row { position: absolute; left: 36px; width: 760px; height: 72px; box-shadow: inset 0 1px 0 #E6EBF5; display: flex; align-items: center; gap: 16px; }
+    .f29-row svg { width: 36px; height: 36px; display: block; flex: none; }
+    .f29-row b { font-weight: 600; font-size: 22px; color: #0C0C1E; white-space: nowrap; }
+    .f29-row span { margin-left: auto; font-weight: 500; font-size: 20px; color: #5A6480; white-space: nowrap; }
+    #f29-tdim { position: absolute; left: 1028px; top: 400px; width: 384px; height: 216px; background: rgba(12,12,30,0.28); }
+    #f29-play { position: absolute; left: 1184px; top: 472px; width: 72px; height: 72px; border-radius: 50%; background: rgba(255,255,255,0.94); box-shadow: 0 8px 22px rgba(4,0,40,0.35); }
+    #f29-play svg { position: absolute; left: 25px; top: 21px; width: 28px; height: 30px; display: block; }
+  </style>
+
+  <div id="root" data-composition-id="29-mismo-profe" data-width="1920" data-height="1080" data-duration="7.634">
+    <div id="f29-ground" class="clip" data-start="0" data-duration="7.634" data-track-index="0"><div id="f29-dots"></div><div id="f29-vig"></div></div>
+
+    <!-- headlines (two columns, each swaps once) -->
+    <div class="f29-hd" id="f29-hL1" style="left:96px;"><span class="f29-w" id="f29-wL1">Te</span> <span class="f29-w" id="f29-wL2">enseña</span></div>
+    <div class="f29-hd" id="f29-hL2" style="left:96px;"><span class="f29-w" id="f29-wL3">Te</span> <span class="f29-w" id="f29-wL4">conocen</span></div>
+    <div class="f29-hd" id="f29-hR1" style="left:992px;"><span class="f29-w" id="f29-wR1">Te</span> <span class="f29-w" id="f29-wR2">corrige</span></div>
+    <div class="f29-hd" id="f29-hR2" style="left:992px;"><span class="f29-w" id="f29-wR3">Queda</span> <span class="f29-w" id="f29-wR4">grabada</span></div>
+
+    <!-- window labels -->
+    <div class="f29-lbl" id="f29-lblL" style="left:96px;"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3.2 1.8 L12 7 L3.2 12.2 Z" fill="#FFFFFF" /></svg>EN EL VÍDEO DEL MÓDULO</div>
+    <div class="f29-lbl" id="f29-lblR" style="left:992px;"><i></i>EN DIRECTO</div>
+
+    <!-- «Grabaciones» panel (behind the live window) -->
+    <div id="f29-panel">
+      <div id="f29-gtit">Grabaciones</div>
+      <div id="f29-gsub">CLASES EN DIRECTO</div>
+      <div id="f29-r1"><div id="f29-new">NUEVA</div><div id="f29-r1t">Clase en directo</div><div id="f29-r1m">Jueves · 19:00</div><div id="f29-dur"><div id="f29-durf"></div></div></div>
+      <div class="f29-row" id="f29-r2" style="top:344px;"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="16.5" fill="none" stroke="#0b6df0" stroke-width="2" /><path d="M15 12.2 L24.4 18 L15 23.8 Z" fill="#0b6df0" /></svg><b>Clase en directo</b><span>24 sept</span></div>
+      <div class="f29-row" id="f29-r3" style="top:416px;"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="16.5" fill="none" stroke="#0b6df0" stroke-width="2" /><path d="M15 12.2 L24.4 18 L15 23.8 Z" fill="#0b6df0" /></svg><b>Clase en directo</b><span>17 sept</span></div>
+    </div>
+
+    <!-- LEFT: module video lesson (paul-clase-2) -->
+    <div id="f29-winL" class="f29-win" style="--sw:832px; left:96px; top:300px;">
+      <div class="f29-chrome">
+        <div class="f29-tabs"><i class="f29-tl f29-tl-r"></i><i class="f29-tl f29-tl-y"></i><i class="f29-tl f29-tl-g"></i>
+          <div class="f29-tab"><div class="f29-fav"></div><div class="f29-tab-t">Holandés Nawar</div><svg class="f29-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
+          <svg class="f29-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
+        <div class="f29-bar"><svg class="f29-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
+          <div class="f29-url"><svg class="f29-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="f29-url-t">app.holandesnawar.com</div><svg class="f29-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
+          <svg class="f29-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
+      </div>
+      <div class="f29-content">
+        <video id="f29-vmod" class="clip f29-vm" src="assets/video/paul-clase-2.mp4" muted playsinline
+          data-start="0" data-duration="7.634" data-media-start="1.842" data-hf-media-start-basis="local" data-track-index="2"></video>
+        <div class="f29-ff" id="f29-ffL"><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="f29-win-edge"></div>
+    </div>
+
+    <!-- RIGHT: the live class (paul-clase-1) — continues 28's window -->
+    <div id="f29-wrapR">
+      <div id="f29-shR"></div>
+      <div id="f29-winR" class="f29-win" style="--sw:832px; left:0; top:0;">
+        <div class="f29-chrome" id="f29-chromeR">
+          <div class="f29-tabs"><i class="f29-tl f29-tl-r"></i><i class="f29-tl f29-tl-y"></i><i class="f29-tl f29-tl-g"></i>
+            <div class="f29-tab"><div class="f29-fav"></div><div class="f29-tab-t">Clase en directo</div><i class="f29-tab-rec"></i><svg class="f29-tab-x" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 2.2 L7.8 7.8 M7.8 2.2 L2.2 7.8" fill="none" stroke="#5F6368" stroke-width="1.3" stroke-linecap="round" /></svg></div>
+            <svg class="f29-plus" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2 V11.8 M2.2 7 H11.8" fill="none" stroke="#5F6368" stroke-width="1.4" stroke-linecap="round" /></svg></div>
+          <div class="f29-bar"><svg class="f29-nav" viewBox="0 0 86 16" aria-hidden="true"><g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8 H3.4 M7.8 3.6 L3.4 8 L7.8 12.4" stroke="#5F6368" /><path d="M31 8 H40.6 M36.2 3.6 L40.6 8 L36.2 12.4" stroke="#BDC1C6" /><path d="M68.7 8.6 A4.8 4.8 0 1 1 67.3 4.5 M68 1.9 V5.1 H64.8" stroke="#5F6368" /></g></svg>
+            <div class="f29-url"><svg class="f29-lock" viewBox="0 0 13 13" aria-hidden="true"><path d="M4.3 6 V4.3 A2.2 2.2 0 0 1 8.7 4.3 V6" fill="none" stroke="#5F6368" stroke-width="1.3" /><rect x="2.6" y="5.8" width="7.8" height="5.9" rx="1.3" fill="#5F6368" /></svg><div class="f29-url-t">app.holandesnawar.com</div><svg class="f29-star" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8 L8.55 5.05 L12.1 5.5 L9.5 7.95 L10.15 11.5 L7 9.8 L3.85 11.5 L4.5 7.95 L1.9 5.5 L5.45 5.05 Z" fill="none" stroke="#5F6368" stroke-width="1.1" stroke-linejoin="round" /></svg></div>
+            <svg class="f29-menu" viewBox="0 0 16 16" aria-hidden="true"><g fill="#5F6368"><circle cx="8" cy="3.4" r="1.35" /><circle cx="8" cy="8" r="1.35" /><circle cx="8" cy="12.6" r="1.35" /></g></svg></div>
+        </div>
+        <div class="f29-content">
+          <div id="f29-pageB">
+            <div id="f29-chead"><div class="f29-cpill"><i></i>EN DIRECTO</div><div class="f29-ctitle">Clase en directo · Hobby’s &amp; vrije tijd</div>
+              <div class="f29-avs"><div class="f29-av" style="background:#0b6df0;">AL</div><div class="f29-av" style="background:#5A6480;">MR</div><div class="f29-av" style="background:#1D0084;">JS</div></div></div>
+            <div class="f29-tile f29-tp">
+              <video id="f29-vpaul" class="clip f29-vp" src="assets/video/paul-clase-1.mp4" muted playsinline
+                data-start="0" data-duration="6.843" data-media-start="2.792" data-hf-media-start-basis="local" data-track-index="2"></video>
+              <video id="f29-vpaul2" class="clip f29-vp" src="assets/video/paul-clase-1.mp4" muted playsinline
+                data-start="6.843" data-duration="0.791" data-media-start="0.3" data-hf-media-start-basis="local" data-track-index="2"></video>
+              <div class="f29-name" id="f29-name"><svg viewBox="0 0 12 12" aria-hidden="true"><rect x="4.2" y="1" width="3.6" height="6.2" rx="1.8" fill="#FFFFFF" /><path d="M2.4 5.6 A3.6 3.6 0 0 0 9.6 5.6 M6 9.2 V11" fill="none" stroke="#FFFFFF" stroke-width="1.1" stroke-linecap="round" /></svg>Paul</div>
+              <div class="f29-spk" id="f29-spk"></div>
+            </div>
+            <div class="f29-tile f29-ts">
+              <video id="f29-vslide" class="clip f29-vs" src="assets/video/paul-clase-1.mp4" muted playsinline
+                data-start="0" data-duration="6.822" data-media-start="2.792" data-hf-media-start-basis="local" data-track-index="2"></video>
+              <video id="f29-vslide2" class="clip f29-vs" src="assets/video/paul-clase-1.mp4" muted playsinline
+                data-start="6.822" data-duration="0.812" data-media-start="0.28" data-hf-media-start-basis="local" data-track-index="2"></video>
+            </div>
+            <div class="f29-ctl" id="f29-ctl">
+              <div class="f29-b"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5.5 11 A6.5 6.5 0 0 0 18.5 11 M12 17.5 V21" /></g></svg></div>
+              <div class="f29-b"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6.5" width="12.5" height="11" rx="2.5" /><path d="M15.5 10.5 L20.5 7.5 V16.5 L15.5 13.5 Z" /></g></svg></div>
+              <div class="f29-b"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12.5" rx="2" /><path d="M12 14 V8 M9 10.5 L12 7.5 L15 10.5 M8.5 20.5 H15.5" /></g></svg></div>
+              <div class="f29-b"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5 H20 V16 H10.5 L6.5 19.5 V16 H4 Z" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linejoin="round" /></svg></div>
+              <div class="f29-b f29-end"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 14 C7.5 9.5 16.5 9.5 21 14 L18.6 16.4 L15.4 14.6 V12.6 C13.2 11.8 10.8 11.8 8.6 12.6 V14.6 L5.4 16.4 Z" fill="#FFFFFF" /></svg></div>
+            </div>
+            <div class="f29-ff" id="f29-ffR"><i></i><i></i><i></i><i></i></div>
+            <div id="f29-rec"><i></i>GRABANDO</div>
+          </div>
+        </div>
+        <div class="f29-win-edge" id="f29-edgeR"></div>
+      </div>
+    </div>
+
+    <!-- thumbnail overlays (the recording) -->
+    <div id="f29-tdim"></div>
+    <div id="f29-play"><svg viewBox="0 0 28 30" aria-hidden="true"><path d="M3 2.5 L26 15 L3 27.5 Z" fill="#1D0084" /></svg></div>
+
+    <!-- match line between the two faces -->
+    <svg id="f29-match" viewBox="0 0 1920 1080" aria-hidden="true">
+      <path id="f29-mline" d="M 272 447 L 1053 520" pathLength="1" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 1" stroke-dashoffset="1" />
+      <circle id="f29-mA" cx="272" cy="447" r="5" fill="#FFFFFF" />
+      <circle id="f29-mB" cx="1053" cy="520" r="5" fill="#FFFFFF" />
+    </svg>
+
+    <!-- correction: Werkt jij? → Werk jij? ✓ -->
+    <div id="f29-chips">
+      <div class="f29-chip" id="f29-chipA"><span id="f29-txtA">Werkt jij?<span id="f29-strike"></span></span></div>
+      <svg id="f29-arrow" viewBox="0 0 34 20" aria-hidden="true"><path d="M2 10 H30 M22 3 L30 10 L22 17" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      <div class="f29-chip" id="f29-chipB"><svg id="f29-ok" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="17" fill="#16A34A" /><path id="f29-tick" d="M10 17.5 L15 22.5 L24.5 12" pathLength="1" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" stroke-dashoffset="1" /></svg>Werk jij?</div>
+    </div>
+
+    <!-- progress card -->
+    <div id="f29-prog">
+      <div id="f29-plbl">TU PROGRESO</div>
+      <div id="f29-ptit">Módulo 3 · Eten en drinken</div>
+      <div id="f29-trk">
+        <div id="f29-trkf"></div>
+        <div class="f29-nd f29-done" id="f29-nd1" style="left:0px;"></div>
+        <div class="f29-nd f29-done" id="f29-nd2" style="left:75.6px;"></div>
+        <div class="f29-nd" id="f29-nd3" style="left:151.1px;"></div>
+        <div class="f29-nd" style="left:226.7px;"></div>
+        <div class="f29-nd" style="left:302.2px;"></div>
+        <div class="f29-nd" style="left:377.8px;"></div>
+        <div class="f29-nd" style="left:453.3px;"></div>
+        <div class="f29-nd" style="left:528.9px;"></div>
+        <div class="f29-nd" style="left:604.4px;"></div>
+        <div class="f29-nd" style="left:680px;"></div>
+        <div id="f29-here">Estás aquí<svg viewBox="0 0 20 10" aria-hidden="true"><path d="M0 0 H20 L10 10 Z" fill="#0b6df0" /></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const q = (id) => document.getElementById(id);
+      const tl = gsap.timeline({ paused: true });
+      const D = 7.78;
+      const inn = (id, t, dy, dur) => tl.fromTo(q(id), { opacity: 0, y: dy || 28 }, { opacity: 1, y: 0, duration: dur || 0.32, ease: "power3.out" }, t);
+      const out = (els, t, dur) => tl.fromTo(els, { opacity: 1 }, { opacity: 0, duration: dur || 0.25, ease: "power1.out", immediateRender: false }, t);
+
+      // ===== entrance: 28's layout (live window big, module window small) tiles into a side-by-side split =====
+      tl.fromTo(q("f29-winL"), { x: 0, y: 260, scale: 0.71154 }, { x: 0, y: 0, scale: 1, duration: 0.62, ease: "power3.out" }, 0);
+      tl.fromTo(q("f29-wrapR"), { x: -240, y: -100, scale: 1.30769 }, { x: 0, y: 0, scale: 1, duration: 0.62, ease: "power3.out" }, 0);
+      tl.fromTo(q("f29-dots"), { x: 0 }, { x: -28, duration: D, ease: "power1.out" }, 0);
+
+      // ===== «La cara que te enseña en el vídeo» =====
+      tl.fromTo(q("f29-ffL"), { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, 0.23);
+      inn("f29-wL1", 0.58); inn("f29-wL2", 0.66);
+      inn("f29-lblL", 1.16, 14);
+
+      // ===== «es la que te corrige en directo» — the match line: same face =====
+      tl.fromTo(q("f29-mA"), { opacity: 0 }, { opacity: 1, duration: 0.15, ease: "power1.out" }, 1.56);
+      tl.fromTo(q("f29-mline"), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.34, ease: "power2.inOut" }, 1.58);
+      tl.fromTo(q("f29-mB"), { opacity: 0 }, { opacity: 1, duration: 0.15, ease: "power1.out" }, 1.88);
+      tl.fromTo(q("f29-ffR"), { opacity: 0, scale: 1.18 }, { opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, 1.84);
+      inn("f29-wR1", 1.94); inn("f29-wR2", 2.04);
+      // correction on «corrige»
+      tl.fromTo(q("f29-chipA"), { y: 16 }, { y: 0, duration: 0.32, ease: "power3.out" }, 2.04);
+      tl.fromTo(q("f29-chipA"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power1.out" }, 2.04);
+      tl.fromTo(q("f29-strike"), { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power2.out" }, 2.24);
+      tl.fromTo(q("f29-arrow"), { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.24, ease: "power3.out" }, 2.36);
+      tl.fromTo(q("f29-chipB"), { x: -12 }, { x: 0, duration: 0.32, ease: "power3.out" }, 2.42);
+      tl.fromTo(q("f29-chipB"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power1.out" }, 2.42);
+      tl.fromTo(q("f29-tick"), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.24, ease: "power2.out" }, 2.56);
+      inn("f29-lblR", 2.48, 14);
+
+      // ===== «Te conocen y saben dónde estás.» =====
+      out([q("f29-ffL"), q("f29-ffR"), q("f29-mline"), q("f29-mA"), q("f29-mB")], 3.2, 0.3);
+      tl.fromTo(q("f29-hL1"), { opacity: 1, y: 0 }, { opacity: 0, y: -24, duration: 0.2, ease: "power2.in", immediateRender: false }, 3.08);
+      inn("f29-wL3", 3.2); inn("f29-wL4", 3.29);
+      out(q("f29-lblL"), 3.96, 0.2);
+      tl.fromTo(q("f29-prog"), { y: 44 }, { y: 0, duration: 0.46, ease: "power3.out" }, 4.04);
+      tl.fromTo(q("f29-prog"), { opacity: 0 }, { opacity: 1, duration: 0.14, ease: "power1.out" }, 4.04);
+      tl.fromTo(q("f29-trkf"), { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "power2.inOut" }, 4.4);
+      tl.fromTo([q("f29-nd1"), q("f29-nd2")], { backgroundColor: "#FFFFFF", borderColor: "#C9D3E6" }, { backgroundColor: "#0b6df0", borderColor: "#0b6df0", duration: 0.16, ease: "power1.out", stagger: 0.2 }, 4.4);
+      tl.fromTo(q("f29-here"), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 4.72);
+
+      // ===== «Además, queda grabada por si no pudiste asistir.» =====
+      out(q("f29-chips"), 5.4, 0.25);
+      tl.fromTo(q("f29-hR1"), { opacity: 1, y: 0 }, { opacity: 0, y: -24, duration: 0.2, ease: "power2.in", immediateRender: false }, 5.7);
+      inn("f29-wR3", 5.88); inn("f29-wR4", 6.1);
+      tl.fromTo(q("f29-rec"), { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 5.9);
+      // the live window files itself into «Grabaciones» as the newest recording
+      tl.fromTo(q("f29-panel"), { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power1.out" }, 6.36);
+      tl.to(q("f29-wrapR"), { x: 36, y: 76, scale: 0.461538, duration: 0.62, ease: "power3.inOut" }, 6.46);
+      out([q("f29-chromeR"), q("f29-edgeR"), q("f29-chead"), q("f29-ctl"), q("f29-spk"), q("f29-name"), q("f29-lblR")], 6.46, 0.26);
+      out(q("f29-shR"), 6.5, 0.4);
+      out(q("f29-rec"), 6.64, 0.2);
+      tl.fromTo(q("f29-r1"), { opacity: 0, x: 14 }, { opacity: 1, x: 0, duration: 0.36, ease: "power3.out" }, 6.86);
+      tl.fromTo(q("f29-durf"), { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.inOut" }, 6.96);
+      tl.fromTo(q("f29-tdim"), { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power1.out" }, 6.98);
+      tl.fromTo(q("f29-play"), { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 7.2);
+
+      window.__timelines = window.__timelines || {};
+      // voice retime (tools/retime_v4.py): design-time cues → v4 voice cues (earlier takes folded in), piecewise linear. Design untouched.
+      ((tl, A) => {
+        const f = (t) => {
+          if (t <= A[0][0]) return t - A[0][0] + A[0][1];
+          for (let i = 1; i < A.length; i++) if (t <= A[i][0]) { const [a0, b0] = A[i - 1], [a1, b1] = A[i]; return b0 + (t - a0) * (b1 - b0) / (a1 - a0); }
+          const [a, b] = A[A.length - 1]; return b + (t - a);
+        };
+        tl.getChildren(false, true, true).forEach((c) => {
+          const s = c.startTime(), d = c.duration(), ns = f(s);
+          if (d >= 1.0 && !(c.vars && c.vars.repeat)) {
+            const nd = Math.max(0.05, f(s + d) - ns);
+            if (c instanceof gsap.core.Timeline) c.timeScale((c.timeScale() || 1) * d / nd); else c.duration(nd);
+          }
+          c.startTime(ns);
+        });
+      })(tl, [[-0.0, 0.0], [0.12, 0.12], [0.225, 0.261], [0.459, 0.477], [0.597, 0.59], [0.679, 0.674], [1.01, 1.059], [1.056, 1.087], [1.175, 1.191], [1.578, 1.576], [1.753, 1.735], [1.844, 1.829], [1.964, 1.961], [2.056, 2.054], [2.404, 2.421], [2.496, 2.533], [3.221, 3.256], [3.303, 3.341], [3.945, 3.932], [4.056, 4.05], [4.413, 4.392], [4.744, 4.637], [5.422, 5.238], [5.9, 5.763], [6.12, 5.951], [6.487, 6.327], [6.643, 6.468], [6.789, 6.618], [6.881, 6.721], [7.23, 7.078], [7.78, 7.634]]);
+      window.__timelines["29-mismo-profe"] = tl;
+    })();
+  </script>
+</template>

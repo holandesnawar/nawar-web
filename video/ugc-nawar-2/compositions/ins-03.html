@@ -1,0 +1,151 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .i3-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .i3-paper { background: #F5F7FF; }
+    .i3-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .i3-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i3-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .i3-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i3-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .i3-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .i3-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    .i3-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
+    .i3-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    .i3-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .i3-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .i3-pill svg { display: block; width: 28px; height: 28px; }
+    .i3-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .i3-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .i3-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .i3-flag svg { display: block; width: 40px; height: 27px; }
+    .i3-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .i3-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+    .i3-av svg { display: block; width: 96px; height: 96px; }
+    .i3-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .i3-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .i3-bub-g { background: #E8ECF7; color: #374151; }
+    .i3-bub-b { background: #0b6df0; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .i3-bl { border-bottom-left-radius: 10px; }
+    .i3-br { border-bottom-right-radius: 10px; }
+    .i3-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .i3-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .i3-acc { color: #4da3ff; }
+    .i3-w { display: inline-block; }
+
+    #i3-h1 { top: 206px; }
+    #i3-chip { transform-origin: 50% 60%; }
+    #i3-svg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+    .i3-node { position: absolute; width: 150px; height: 150px; border-radius: 50%; background: #FFFFFF;
+      box-shadow: 0 30px 70px rgba(4,0,40,0.42), 0 6px 18px rgba(4,0,40,0.24); }
+    .i3-fl { position: absolute; left: 14px; top: 14px; width: 122px; height: 122px; border-radius: 50%; overflow: hidden; }
+    .i3-fl svg { display: block; width: 122px; height: 122px; }
+    #i3-en .i3-fl { filter: grayscale(0.8); }
+    .i3-fe { position: absolute; left: 14px; top: 14px; width: 122px; height: 122px; border-radius: 50%;
+      box-shadow: inset 0 0 0 2px rgba(12,12,30,0.10); }
+    .i3-lab { position: absolute; width: 320px; text-align: center; font-family: "Inter", sans-serif; font-weight: 700; font-size: 25px;
+      line-height: 1; letter-spacing: 0.14em; text-indent: 0.14em; color: #FFFFFF; white-space: nowrap; }
+    #i3-ring { position: absolute; left:114px; top:934px; width: 192px; height: 192px; border-radius: 50%; box-sizing: border-box;
+      border: 6px solid #4da3ff; box-shadow: 0 0 34px rgba(77,163,255,0.55), inset 0 0 22px rgba(77,163,255,0.30); }
+    #i3-glow { position: absolute; left:680px; top:668px; width: 380px; height: 380px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(77,163,255,0.42) 0%, rgba(77,163,255,0.14) 42%, rgba(77,163,255,0) 70%); }
+    #i3-tick { position: absolute; left: 900px; top: 771px; width: 62px; height: 62px; border-radius: 50%; background: #16A34A;
+      box-shadow: 0 0 0 5px #FFFFFF, 0 10px 22px rgba(4,0,40,0.35); }
+    #i3-tick svg { display: block; width: 62px; height: 62px; }
+    #i3-dotw { position: absolute; left: 314.5px; top: 1002.8px; width: 0; height: 0; }
+    #i3-tail { position: absolute; left: -130px; top: -7px; width: 130px; height: 14px; border-radius: 7px; transform-origin: 100% 50%;
+      transform: rotate(-14.61deg); background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(190,224,255,0.55) 70%, rgba(255,255,255,0.95) 100%); }
+    #i3-dot { position: absolute; left: -15px; top: -15px; width: 30px; height: 30px; border-radius: 50%; background: #FFFFFF;
+      box-shadow: 0 0 0 7px rgba(77,163,255,0.35), 0 0 30px 10px rgba(77,163,255,0.75); }
+    #i3-prow { position: absolute; left: 220px; top: 797px; width: 600px; height: 72px; display: flex; justify-content: center; }
+    #i3-pill { gap: 14px; padding: 0 30px 0 14px; }
+    #i3-pill svg { display: block; width: 46px; height: 46px; }
+
+  </style>
+  <div id="root" data-composition-id="ins-03" data-width="1080" data-height="1920" data-duration="4.024">
+    <div class="i3-full i3-blue"><div class="i3-blue-dots"></div><div class="i3-blue-amb"></div><div class="i3-blue-vig"></div></div>
+    <div id="i3-h1" class="i3-h1"><span id="i3-t1" class="i3-w">Desde el</span> <span id="i3-chip" class="i3-chip">español</span></div>
+    <div id="i3-glow" data-layout-allow-overlap></div>
+    <svg id="i3-svg" viewBox="0 0 1080 1920" data-layout-allow-overlap>
+      <g id="i3-route" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-dasharray="16 15">
+        <path id="i3-ra" d="M 210 920 C 210 690 330 500 451 500" /><path id="i3-rb" d="M 629 500 C 750 500 870 600 870 769" />
+      </g>
+      <g id="i3-dir">
+        <line id="i3-dg" x1="314.5" y1="1002.8" x2="781.9" y2="880.9" stroke="#4da3ff" stroke-opacity="0.38" stroke-width="24" stroke-linecap="round" stroke-dasharray="483.0 523.0" />
+        <line id="i3-dl" x1="314.5" y1="1002.8" x2="781.9" y2="880.9" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-dasharray="483.0 523.0" />
+      </g>
+    </svg>
+    <div id="i3-dotw" data-layout-allow-overlap><div id="i3-tail"></div><div id="i3-dot"></div></div>
+    <div id="i3-ring" data-layout-allow-overlap></div>
+    <div id="i3-en" class="i3-node" style="left:465px; top:425px;"><div class="i3-fl"><svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 40 27"><rect width="40" height="27" fill="#012169"/><path d="M0 0 L40 27 M40 0 L0 27" stroke="#FFFFFF" stroke-width="5"/><path d="M0 0 L40 27 M40 0 L0 27" stroke="#C8102E" stroke-width="2"/><path d="M20 0 V27 M0 13.5 H40" stroke="#FFFFFF" stroke-width="8"/><path d="M20 0 V27 M0 13.5 H40" stroke="#C8102E" stroke-width="4.5"/></svg></div><div class="i3-fe"></div></div>
+    <div id="i3-enl" class="i3-lab" style="left:380px; top:599px;">INGLÉS</div>
+    <div id="i3-es" class="i3-node" style="left:135px; top:955px;"><div class="i3-fl"><svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 40 27"><rect width="40" height="27" fill="#AA151B" /><rect y="7" width="40" height="13" fill="#F1BF00" /></svg></div><div class="i3-fe"></div></div>
+    <div id="i3-esl" class="i3-lab" style="left:50px; top:1144px;">ESPAÑOL</div>
+    <div id="i3-nl" class="i3-node" style="left:795px; top:783px;"><div class="i3-fl"><svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 40 27"><rect width="40" height="9" fill="#AE1C27" /><rect y="9" width="40" height="9" fill="#FFFFFF" /><rect y="18" width="40" height="9" fill="#21468C" /></svg></div><div class="i3-fe"></div></div>
+    <div id="i3-nll" class="i3-lab" style="left:710px; top:957px;">NEERLANDÉS</div>
+    <div id="i3-tick" data-layout-allow-overlap><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div id="i3-prow"><div id="i3-pill" class="i3-wpill"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#1D0084"/><path d="M14 15 L23 24 L14 33 M25 15 L34 24 L25 33" fill="none" stroke="#FFFFFF" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Más rápido</span></div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("i3-" + id);
+
+      // the map: ES, NL, then the faded EN and the usual detour through it
+      tl.fromTo(q("es"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.36, ease: "back.out(1.8)" }, 0.02);
+      tl.fromTo(q("esl"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.08);
+      tl.fromTo(q("nl"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.36, ease: "back.out(1.8)" }, 0.1);
+      tl.fromTo(q("nll"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.16);
+      tl.fromTo(q("en"), { opacity: 0, scale: 0.6 }, { opacity: 0.5, scale: 1, duration: 0.36, ease: "back.out(1.8)" }, 0.18);
+      tl.fromTo(q("enl"), { opacity: 0, y: 14 }, { opacity: 0.5, y: 0, duration: 0.3, ease: "power3.out" }, 0.24);
+      tl.fromTo(q("route"), { opacity: 0 }, { opacity: 0.42, duration: 0.45, ease: "power2.out" }, 0.22);
+      // «desde el español»: the title, the chip, the sky ring on ES
+      tl.fromTo(q("t1"), { opacity: 0, y: 30, x: 196 }, { opacity: 1, y: 0, x: 196, duration: 0.3, ease: "power3.out" }, 0.944 - 0.05);
+      tl.to(q("t1"), { x: 0, duration: 0.24, ease: "power3.out" }, 1.454 - 0.13);
+      tl.fromTo(q("chip"), { opacity: 0, scale: 0.7, rotation: -1.5 }, { opacity: 1, scale: 1, rotation: -1.5, duration: 0.3, ease: "back.out(1.8)" }, 1.454 - 0.05);
+      tl.fromTo(q("ring"), { opacity: 0, scale: 0.78 }, { opacity: 1, scale: 1, duration: 0.36, ease: "back.out(1.8)" }, 1.454 - 0.04);
+      tl.to(q("es"), { scale: 1.06, duration: 0.14, ease: "power2.out" }, 1.454 - 0.04);
+      tl.to(q("es"), { scale: 1, duration: 0.3, ease: "power2.out" }, 1.454 + 0.1);
+      // «avanzas»: the direct line draws, the detour steps back
+      tl.fromTo(q("dir"), { opacity: 0 }, { opacity: 1, duration: 0.01 }, 1.982 - 0.05);
+      tl.fromTo([q("dl"), q("dg")], { strokeDashoffset: 483 }, { strokeDashoffset: 0, duration: 0.4, ease: "power2.inOut" }, 1.982 - 0.05);
+      tl.to(q("route"), { opacity: 0.16, duration: 0.4, ease: "power2.out" }, 1.982 - 0.05);
+      tl.to([q("en"), q("enl")], { opacity: 0.36, duration: 0.4, ease: "power2.out" }, 1.982 - 0.05);
+      // the dot zips along it and lands on «más»
+      tl.fromTo(q("dotw"), { opacity: 0, x: 0, y: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, 2.369 - 0.06);
+      tl.fromTo(q("tail"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, 2.369);
+      tl.to(q("dotw"), { x: 467.4, y: -121.8, duration: 2.629 - 2.369, ease: "power2.in" }, 2.369);
+      tl.to(q("dotw"), { opacity: 0, duration: 0.08, ease: "none" }, 2.629);
+      // NL: bump, the green tick, the glow; then the pill
+      tl.to(q("nl"), { scale: 1.12, duration: 0.12, ease: "power2.out" }, 2.629);
+      tl.to(q("nl"), { scale: 1, duration: 0.34, ease: "back.out(2)" }, 2.629 + 0.12);
+      tl.fromTo(q("glow"), { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 2.629);
+      tl.fromTo(q("tick"), { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.34, ease: "back.out(2)" }, 2.629 + 0.02);
+      tl.fromTo(q("pill"), { opacity: 0, y: 22, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.7)" }, 2.699 - 0.04);
+
+      window.__timelines["ins-03"] = tl;
+    })();
+  </script>
+</template>

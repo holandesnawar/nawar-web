@@ -1,0 +1,107 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 900; font-style: normal; src: url("assets/fonts/poppins-latin-900-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #0C0C1E; }
+    .i6-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+    .i6-paper { background: #F5F7FF; }
+    .i6-paper-light { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 42% at 50% 34%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 72%),
+                  radial-gradient(ellipse 110% 90% at 50% 45%, rgba(29,0,132,0) 58%, rgba(29,0,132,0.07) 100%); }
+    .i6-paper-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(29,0,132,0.075) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i6-blue { background: radial-gradient(circle at 50% 36%, #025dc7 0%, #120081 72%); }
+    .i6-blue-dots { position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.7px, transparent 1.9px); background-size: 30px 30px; }
+    .i6-blue-amb { position: absolute; left: 40px; top: 260px; width: 1000px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(77,163,255,0.20) 0%, rgba(77,163,255,0.07) 45%, rgba(77,163,255,0) 70%); }
+    .i6-blue-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 40%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.40) 100%); }
+    .i6-card { position: absolute; background: #FFFFFF; border-radius: 32px; }
+    .i6-on-paper { box-shadow: 0 30px 80px rgba(18,0,129,0.16), 0 4px 14px rgba(18,0,129,0.08); }
+    .i6-on-blue { box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.25); }
+    .i6-row { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; align-items: center; }
+    .i6-pill { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 28px 0 20px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; }
+    .i6-pill svg { display: block; width: 28px; height: 28px; }
+    .i6-wpill { display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 32px 0 18px; border-radius: 999px;
+      background: #FFFFFF; color: #1D0084; white-space: nowrap; box-shadow: 0 16px 40px rgba(4,0,40,0.30);
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.005em; }
+    .i6-ipill { position: absolute; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 14px; border-radius: 999px;
+      background: #1D0084; color: #FFFFFF; white-space: nowrap; box-shadow: 0 8px 18px rgba(29,0,132,0.16), 0 0 0 5px #FFFFFF;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: 0.14em; }
+    .i6-flag { display: block; width: 40px; height: 27px; border-radius: 6px; overflow: hidden; flex: 0 0 40px; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }
+    .i6-flag svg { display: block; width: 40px; height: 27px; }
+    .i6-flagd { box-shadow: 0 0 0 2px rgba(12,12,30,0.08); }
+    .i6-av { position: absolute; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 0 6px #FFFFFF, 0 14px 30px rgba(18,0,129,0.18); }
+    .i6-av svg { display: block; width: 96px; height: 96px; }
+    .i6-bub { position: absolute; padding: 26px 36px; border-radius: 34px; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.22; letter-spacing: -0.01em; }
+    .i6-bub-w { background: #FFFFFF; color: #0C0C1E; box-shadow: 0 24px 50px rgba(18,0,129,0.13), 0 4px 10px rgba(18,0,129,0.07); }
+    .i6-bub-g { background: #E8ECF7; color: #374151; }
+    .i6-bub-b { background: #0b6df0; color: #FFFFFF; box-shadow: 0 24px 50px rgba(4,0,40,0.35); }
+    .i6-bl { border-bottom-left-radius: 10px; }
+    .i6-br { border-bottom-right-radius: 10px; }
+    .i6-h1 { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; font-size: 84px; line-height: 1.05;
+      letter-spacing: -0.03em; color: #FFFFFF; white-space: nowrap; }
+    .i6-chip { display: inline-block; padding: 0 22px 6px; border-radius: 18px; background: #FFFFFF; color: #1D0084; }
+    .i6-acc { color: #4da3ff; }
+    .i6-w { display: inline-block; }
+
+    #i6-h1 { top: 200px; }
+    #i6-h2 { top: 312px; }
+    .i6-card { position: absolute; left: 80px; top: 488px; width: 920px; border-radius: 34px; background: #F1F2F8; transform-origin: 50% 0%;
+      box-shadow: 0 40px 100px rgba(4,0,40,0.45), 0 8px 24px rgba(4,0,40,0.22); }
+    .i6-in { position: absolute; left: 30px; top: 30px; width: 860px; overflow: hidden; border-radius: 20px; background: #FFFFFF;
+      box-shadow: 0 0 0 1px rgba(29,0,132,0.07); }
+    #i6-ce { height: 387.6px; } #i6-ce .i6-in { height: 327.6px; }
+    #i6-co { height: 381.7px; } #i6-co .i6-in { height: 321.7px; }
+    #i6-cl { height: 421.1px; } #i6-cl .i6-in { height: 361.1px; }
+    #i6-ve { position: absolute; left: -577.2px; top: 0.0px; width: 1675.1px; height: 672.8px; }
+    #i6-io { position: absolute; left: -35.6px; top: -10.6px; width: 915.9px; height: 520.0px; display: block; }
+    #i6-il { position: absolute; left: -133.5px; top: -153.2px; width: 1120.4px; height: 791.6px; display: block; }
+    #i6-skills { top: 1010px; gap: 18px; }
+    .i6-sk { display: flex; align-items: center; gap: 12px; height: 70px; padding: 0 28px 0 16px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; white-space: nowrap;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 31px; line-height: 1; }
+    .i6-ic { position: relative; width: 44px; height: 44px; }
+    .i6-ic svg { position: absolute; left: 0; top: 0; width: 44px; height: 44px; }
+
+  </style>
+  <div id="root" data-composition-id="ins-06" data-width="1080" data-height="1920" data-duration="1.798">
+    <div class="i6-full i6-blue"><div class="i6-blue-dots"></div><div class="i6-blue-amb"></div><div class="i6-blue-vig"></div></div>
+    <div id="i6-h1" class="i6-h1">Ejercicios</div>
+    <div id="i6-h2" class="i6-h1"><span id="i6-chip" class="i6-chip">para el día a día</span></div>
+    <div id="i6-ce" class="i6-card"><div class="i6-in"><video id="i6-ve" class="clip" src="assets/video/completa-frase.mp4" muted playsinline data-start="0" data-duration="1.998" data-media-start="6.0" data-track-index="1" data-hf-media-start-basis="local" data-layout-allow-overflow></video></div></div>
+    <div id="i6-co" class="i6-card"><div class="i6-in"><img id="i6-io" src="assets/img/ui-luisteren-audio.png" alt="" /></div></div>
+    <div id="i6-cl" class="i6-card"><div class="i6-in"><img id="i6-il" src="assets/img/ui-lezen-texto.png" alt="" /></div></div>
+    <div id="i6-skills" class="i6-row"><div id="i6-s1" class="i6-sk"><div class="i6-ic"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Escribir</span></div><div id="i6-s2" class="i6-sk"><div class="i6-ic"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Escuchar</span></div><div id="i6-s3" class="i6-sk"><div class="i6-ic"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#16A34A"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Leer</span></div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (id) => document.getElementById("i6-" + id);
+
+      tl.fromTo(q("h1"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.26, ease: "power3.out" }, 0);
+      tl.fromTo(q("chip"), { opacity: 0, scale: 0.7, rotation: -1.5 }, { opacity: 1, scale: 1, rotation: -1.5, duration: 0.3, ease: "back.out(1.8)" }, 0.567 - 0.06);
+      tl.fromTo(q("ce"), { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.04);
+      tl.fromTo(q("s1"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 0.04);
+      tl.fromTo(q("co"), { opacity: 0, y: 110 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.647);
+      tl.to(q("ce"), { y: -34, scale: 0.94, opacity: 0.55, duration: 0.3, ease: "power3.out" }, 0.647);
+      tl.fromTo(q("s2"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 0.647);
+      tl.fromTo(q("cl"), { opacity: 0, y: 110 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 1.187);
+      tl.to(q("co"), { y: -34, scale: 0.94, opacity: 0.55, duration: 0.3, ease: "power3.out" }, 1.187);
+      tl.to(q("ce"), { y: -62, scale: 0.88, opacity: 0.25, duration: 0.3, ease: "power3.out" }, 1.187);
+      tl.fromTo(q("s3"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 1.187);
+
+      window.__timelines["ins-06"] = tl;
+    })();
+  </script>
+</template>

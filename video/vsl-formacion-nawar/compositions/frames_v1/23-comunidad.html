@@ -1,0 +1,332 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url("assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url("assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+
+    /* ---------- ground: nawar-blue + white dot grid + soft vignette (same as 21) ---------- */
+    #f23-ground {
+      position: absolute; inset: 0;
+      background-color: #120081;
+      background-image:
+        radial-gradient(ellipse 85% 85% at 50% 50%, rgba(4,0,40,0) 55%, rgba(4,0,40,0.38) 100%),
+        radial-gradient(circle, rgba(255,255,255,0.07) 1.6px, transparent 1.7px),
+        radial-gradient(circle at 50% 50%, #025dc7 0%, #120081 72%);
+      background-size: 100% 100%, 28px 28px, 100% 100%;
+    }
+
+    /* ---------- constellation world (scales about the hub centre 960,470) ---------- */
+    #f23-world { position: absolute; inset: 0; transform-origin: 960px 470px; }
+    #f23-bloom {
+      position: absolute; left: 360px; top: 70px; width: 1200px; height: 800px; opacity: 0;
+      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(77,163,255,0.42) 0%, rgba(77,163,255,0.16) 42%, rgba(77,163,255,0) 70%);
+    }
+    #f23-lines, #f23-comets { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+    /* SHARED: connector lines disc-centre -> hub-centre, 2px rgba(255,255,255,0.22) (pill + discs paint over the ends) */
+    #f23-lines line { stroke: rgba(255,255,255,0.22); stroke-width: 2; fill: none; }
+    .f23-comet { stroke: #FFFFFF; stroke-width: 4.5; stroke-linecap: round; fill: none; }
+    #f23-comets { filter: drop-shadow(0 0 7px rgba(159,213,245,1)) drop-shadow(0 0 16px rgba(77,163,255,0.8)); }
+    /* opening orbit ring (r=200 about the hub centre) — drawn on "tienes", blown out on "comunidad" */
+    #f23-orbit { position: absolute; left: 700px; top: 210px; width: 520px; height: 520px; opacity: 1; }
+    #f23-orbit svg { position: absolute; left: 0; top: 0; width: 520px; height: 520px; overflow: visible; }
+
+    /* SHARED: avatar discs (centre/diameter from the geometry table; initials Inter 700 ~0.36 d) */
+    .f23-av { position: absolute; }
+    .f23-disc {
+      position: absolute; inset: 0; border-radius: 50%; box-sizing: border-box;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Inter", sans-serif; font-weight: 700; letter-spacing: -0.01em; line-height: 1;
+      box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.16), 0 12px 28px rgba(4,0,40,0.38);
+    }
+    .f23-disc span { display: block; }
+    .f23-ping {
+      position: absolute; inset: -4px; border-radius: 50%; box-sizing: border-box;
+      border: 3px solid rgba(255,255,255,0.9); opacity: 0;
+    }
+
+    /* ---------- hub: SHARED pill «Comunidad Nawar» centred (960,470), 460x96 ---------- */
+    .f23-shock {
+      position: absolute; left: 912px; top: 422px; width: 96px; height: 96px; border-radius: 50%;
+      box-sizing: border-box; border: 4px solid rgba(255,255,255,0.9); opacity: 0;
+    }
+    #f23-hub {
+      position: absolute; left: 730px; top: 422px; width: 460px; height: 96px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #f23-pill {
+      position: relative; width: 460px; height: 96px; flex: none; border-radius: 999px; background: #FFFFFF;
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 40px 110px rgba(4,0,40,0.45), 0 0 80px rgba(77,163,255,0.55);
+    }
+    #f23-pill-text {
+      flex: none; white-space: nowrap; display: block;
+      font-family: "Poppins", sans-serif; font-weight: 700; font-size: 40px; line-height: 1;
+      letter-spacing: -0.01em; color: #1D0084; padding-top: 4px;
+    }
+    #f23-pill-icon { position: absolute; left: 50%; top: 50%; width: 58px; height: 42px; margin: -21px 0 0 -29px; }
+
+    /* ---------- chat bubbles ---------- */
+    .f23-bub { position: absolute; filter: drop-shadow(0 22px 34px rgba(4,0,40,0.42)); }
+    .f23-bub-body {
+      position: relative; background: #FFFFFF; border-radius: 28px; padding: 19px 32px 20px;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 34px; line-height: 1.28;
+      letter-spacing: -0.005em; color: #0C0C1E; white-space: nowrap;
+    }
+    .f23-nl { font-weight: 700; color: #0b6df0; }
+    .f23-tail { position: absolute; display: block; overflow: visible; }
+    #f23-b3 .f23-bub-body {
+      background: #9fd5f5; color: #1D0084; padding: 12px 26px 13px;
+      font-family: "Poppins", sans-serif; font-weight: 800; font-size: 40px; line-height: 1.1; letter-spacing: -0.02em;
+    }
+
+    /* ---------- closing line ---------- */
+    #f23-say {
+      position: absolute; left: 80px; right: 80px; top: 832px; height: 120px;
+      display: flex; justify-content: center; align-items: baseline; white-space: nowrap;
+    }
+    .f23-w {
+      display: inline-block; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 100px;
+      line-height: 1.05; letter-spacing: -0.03em; color: #FFFFFF; margin-right: 28px;
+    }
+    .f23-w:last-child { margin-right: 0; }
+    .f23-acc { color: #4da3ff; text-shadow: 0 0 44px rgba(77,163,255,0.45); }
+  </style>
+
+  <div id="root" data-composition-id="23-comunidad" data-width="1920" data-height="1080" data-duration="4.991">
+    <div id="f23-ground" class="clip" data-start="0" data-duration="4.991" data-track-index="0"></div>
+
+    <div id="f23-world">
+      <div id="f23-bloom"></div>
+      <svg id="f23-lines" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true">
+        <line id="f23-ln-MA" x1="960" y1="470" x2="560" y2="300" style="stroke-dasharray:434.63; stroke-dashoffset:434.63;" />
+        <line id="f23-ln-JL" x1="960" y1="470" x2="760" y2="230" style="stroke-dasharray:312.41; stroke-dashoffset:312.41;" />
+        <line id="f23-ln-SO" x1="960" y1="470" x2="1180" y2="220" style="stroke-dasharray:333.02; stroke-dashoffset:333.02;" />
+        <line id="f23-ln-PE" x1="960" y1="470" x2="1380" y2="310" style="stroke-dasharray:449.44; stroke-dashoffset:449.44;" />
+        <line id="f23-ln-LU" x1="960" y1="470" x2="1500" y2="470" style="stroke-dasharray:540.00; stroke-dashoffset:540.00;" />
+        <line id="f23-ln-AN" x1="960" y1="470" x2="1390" y2="640" style="stroke-dasharray:462.39; stroke-dashoffset:462.39;" />
+        <line id="f23-ln-CR" x1="960" y1="470" x2="1160" y2="720" style="stroke-dasharray:320.16; stroke-dashoffset:320.16;" />
+        <line id="f23-ln-DI" x1="960" y1="470" x2="760" y2="720" style="stroke-dasharray:320.16; stroke-dashoffset:320.16;" />
+        <line id="f23-ln-RO" x1="960" y1="470" x2="540" y2="640" style="stroke-dasharray:453.10; stroke-dashoffset:453.10;" />
+        <line id="f23-ln-VA" x1="960" y1="470" x2="420" y2="470" style="stroke-dasharray:540.00; stroke-dashoffset:540.00;" />
+        <line id="f23-ln-IS" x1="960" y1="470" x2="320" y2="250" style="stroke-dasharray:676.76; stroke-dashoffset:676.76;" />
+        <line id="f23-ln-TO" x1="960" y1="470" x2="1600" y2="230" style="stroke-dasharray:683.52; stroke-dashoffset:683.52;" />
+        <line id="f23-ln-EL" x1="960" y1="470" x2="1640" y2="780" style="stroke-dasharray:747.33; stroke-dashoffset:747.33;" />
+        <line id="f23-ln-GA" x1="960" y1="470" x2="300" y2="780" style="stroke-dasharray:729.18; stroke-dashoffset:729.18;" />
+      </svg>
+      <svg id="f23-comets" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true">
+        <line class="f23-comet" id="f23-co-MA" x1="960" y1="470" x2="560" y2="300" style="stroke-dasharray:130 564.63; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-co-JL" x1="960" y1="470" x2="760" y2="230" style="stroke-dasharray:130 442.41; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-co-SO" x1="960" y1="470" x2="1180" y2="220" style="stroke-dasharray:130 463.02; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-co-PE" x1="960" y1="470" x2="1380" y2="310" style="stroke-dasharray:130 579.44; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-co-LU" x1="960" y1="470" x2="1500" y2="470" style="stroke-dasharray:130 670.00; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-co-AN" x1="960" y1="470" x2="1390" y2="640" style="stroke-dasharray:130 592.39; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-co-CR" x1="960" y1="470" x2="1160" y2="720" style="stroke-dasharray:130 450.16; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-co-DI" x1="960" y1="470" x2="760" y2="720" style="stroke-dasharray:130 450.16; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-co-RO" x1="960" y1="470" x2="540" y2="640" style="stroke-dasharray:130 583.10; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-co-VA" x1="960" y1="470" x2="420" y2="470" style="stroke-dasharray:130 670.00; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-co-IS" x1="960" y1="470" x2="320" y2="250" style="stroke-dasharray:130 806.76; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-co-TO" x1="960" y1="470" x2="1600" y2="230" style="stroke-dasharray:130 813.52; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-co-EL" x1="960" y1="470" x2="1640" y2="780" style="stroke-dasharray:130 877.33; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-co-GA" x1="960" y1="470" x2="300" y2="780" style="stroke-dasharray:130 859.18; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-ci-JL" x1="760" y1="230" x2="960" y2="470" style="stroke-dasharray:130 442.41; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-ci-LU" x1="1500" y1="470" x2="960" y2="470" style="stroke-dasharray:130 670.00; stroke-dashoffset:130;" />
+        <line class="f23-comet" id="f23-ci-GA" x1="300" y1="780" x2="960" y2="470" style="stroke-dasharray:130 859.18; stroke-dashoffset:130;" />
+      </svg>
+      <div id="f23-orbit">
+        <svg viewBox="0 0 520 520" width="520" height="520" aria-hidden="true">
+          <defs>
+            <mask id="f23-orbit-mask" maskUnits="userSpaceOnUse" x="-40" y="-40" width="600" height="600">
+              <circle id="f23-orbit-draw" cx="260" cy="260" r="200" fill="none" stroke="#FFFFFF" stroke-width="14" transform="rotate(-90 260 260)" style="stroke-dasharray:1256.64; stroke-dashoffset:1256.64;" />
+            </mask>
+          </defs>
+          <circle cx="260" cy="260" r="200" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 12" mask="url(#f23-orbit-mask)" />
+        </svg>
+      </div>
+      <div class="f23-av" id="f23-av-MA" style="left:508px; top:248px; width:104px; height:104px;"><div class="f23-ping" id="f23-pg-MA"></div><div class="f23-disc" id="f23-dc-MA" style="background:#0b6df0; color:#FFFFFF; font-size:37px; "><span>MA</span></div></div>
+      <div class="f23-av" id="f23-av-JL" style="left:716px; top:186px; width:88px; height:88px;"><div class="f23-ping" id="f23-pg-JL"></div><div class="f23-disc" id="f23-dc-JL" style="background:#9fd5f5; color:#1D0084; font-size:32px; "><span>JL</span></div></div>
+      <div class="f23-av" id="f23-av-SO" style="left:1132px; top:172px; width:96px; height:96px;"><div class="f23-ping" id="f23-pg-SO"></div><div class="f23-disc" id="f23-dc-SO" style="background:#FFFFFF; color:#1D0084; font-size:35px; "><span>SO</span></div></div>
+      <div class="f23-av" id="f23-av-PE" style="left:1328px; top:258px; width:104px; height:104px;"><div class="f23-ping" id="f23-pg-PE"></div><div class="f23-disc" id="f23-dc-PE" style="background:#4da3ff; color:#FFFFFF; font-size:37px; "><span>PE</span></div></div>
+      <div class="f23-av" id="f23-av-LU" style="left:1456px; top:426px; width:88px; height:88px;"><div class="f23-ping" id="f23-pg-LU"></div><div class="f23-disc" id="f23-dc-LU" style="background:#21468C; color:#FFFFFF; font-size:32px; "><span>LU</span></div></div>
+      <div class="f23-av" id="f23-av-AN" style="left:1340px; top:590px; width:100px; height:100px;"><div class="f23-ping" id="f23-pg-AN"></div><div class="f23-disc" id="f23-dc-AN" style="background:#1D0084; color:#FFFFFF; font-size:36px; border:3px solid #FFFFFF;"><span>AN</span></div></div>
+      <div class="f23-av" id="f23-av-CR" style="left:1116px; top:676px; width:88px; height:88px;"><div class="f23-ping" id="f23-pg-CR"></div><div class="f23-disc" id="f23-dc-CR" style="background:#0b6df0; color:#FFFFFF; font-size:32px; "><span>CR</span></div></div>
+      <div class="f23-av" id="f23-av-DI" style="left:712px; top:672px; width:96px; height:96px;"><div class="f23-ping" id="f23-pg-DI"></div><div class="f23-disc" id="f23-dc-DI" style="background:#9fd5f5; color:#1D0084; font-size:35px; "><span>DI</span></div></div>
+      <div class="f23-av" id="f23-av-RO" style="left:496px; top:596px; width:88px; height:88px;"><div class="f23-ping" id="f23-pg-RO"></div><div class="f23-disc" id="f23-dc-RO" style="background:#FFFFFF; color:#1D0084; font-size:32px; "><span>RO</span></div></div>
+      <div class="f23-av" id="f23-av-VA" style="left:370px; top:420px; width:100px; height:100px;"><div class="f23-ping" id="f23-pg-VA"></div><div class="f23-disc" id="f23-dc-VA" style="background:#4da3ff; color:#FFFFFF; font-size:36px; "><span>VA</span></div></div>
+      <div class="f23-av" id="f23-av-IS" style="left:284px; top:214px; width:72px; height:72px;"><div class="f23-ping" id="f23-pg-IS"></div><div class="f23-disc" id="f23-dc-IS" style="background:#21468C; color:#FFFFFF; font-size:26px; "><span>IS</span></div></div>
+      <div class="f23-av" id="f23-av-TO" style="left:1564px; top:194px; width:72px; height:72px;"><div class="f23-ping" id="f23-pg-TO"></div><div class="f23-disc" id="f23-dc-TO" style="background:#1D0084; color:#FFFFFF; font-size:26px; border:3px solid #FFFFFF;"><span>TO</span></div></div>
+      <div class="f23-av" id="f23-av-EL" style="left:1602px; top:742px; width:76px; height:76px;"><div class="f23-ping" id="f23-pg-EL"></div><div class="f23-disc" id="f23-dc-EL" style="background:#FFFFFF; color:#1D0084; font-size:27px; "><span>EL</span></div></div>
+      <div class="f23-av" id="f23-av-GA" style="left:262px; top:742px; width:76px; height:76px;"><div class="f23-ping" id="f23-pg-GA"></div><div class="f23-disc" id="f23-dc-GA" style="background:#0b6df0; color:#FFFFFF; font-size:27px; "><span>GA</span></div></div>
+      <div class="f23-shock" id="f23-shock-a"></div>
+      <div class="f23-shock" id="f23-shock-b"></div>
+      <div class="f23-shock" id="f23-shock-c"></div>
+      <div id="f23-hub">
+        <div id="f23-pill">
+          <span id="f23-pill-text">Comunidad Nawar</span>
+          <svg id="f23-pill-icon" viewBox="0 0 58 42" aria-hidden="true">
+            <circle cx="12" cy="15" r="6.5" fill="#0b6df0" />
+            <path d="M 1 39 C 1 30 5.5 25.5 12 25.5 C 16 25.5 19 27 21 30 L 21 39 Z" fill="#0b6df0" />
+            <circle cx="46" cy="15" r="6.5" fill="#0b6df0" />
+            <path d="M 57 39 C 57 30 52.5 25.5 46 25.5 C 42 25.5 39 27 37 30 L 37 39 Z" fill="#0b6df0" />
+            <circle cx="29" cy="11" r="9" fill="#1D0084" stroke="#FFFFFF" stroke-width="2.5" />
+            <path d="M 14 41 C 14 29 20.5 23 29 23 C 37.5 23 44 29 44 41 Z" fill="#1D0084" stroke="#FFFFFF" stroke-width="2.5" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- chat bubble 1 — JL (760,230) -->
+    <div class="f23-bub" id="f23-b1" style="left:580px; top:72px; transform-origin:184px 110px;">
+      <div class="f23-bub-body">¡Hoy pedí cita con el <span class="f23-nl">huisarts</span> en neerlandés!</div>
+      <svg class="f23-tail" style="left:174px; top:81px;" width="40" height="30" viewBox="0 0 40 30" aria-hidden="true">
+        <path d="M 4 0 L 36 0 C 28 8 20 18 10 28 C 13 18 12 8 4 0 Z" fill="#FFFFFF" />
+      </svg>
+    </div>
+
+    <!-- chat bubble 2 — LU (1500,470) -->
+    <div class="f23-bub" id="f23-b2" style="left:1484px; top:542px; transform-origin:24px -22px;">
+      <svg class="f23-tail" style="left:12px; top:-24px;" width="40" height="30" viewBox="0 0 40 30" aria-hidden="true">
+        <path d="M 6 30 L 38 30 C 28 22 20 12 12 2 C 14 12 12 22 6 30 Z" fill="#FFFFFF" />
+      </svg>
+      <div class="f23-bub-body">¿Alguien practica<br>esta tarde?</div>
+    </div>
+
+    <!-- chat bubble 3 — GA (300,780) reply -->
+    <div class="f23-bub" id="f23-b3" style="left:244px; top:646px; transform-origin:52px 92px;">
+      <div class="f23-bub-body">¡Yo!</div>
+      <svg class="f23-tail" style="left:34px; top:66px;" width="40" height="30" viewBox="0 0 40 30" aria-hidden="true">
+        <path d="M 4 0 L 36 0 C 30 8 24 18 18 28 C 18 18 12 8 4 0 Z" fill="#9fd5f5" />
+      </svg>
+    </div>
+
+    <!-- closing line -->
+    <div id="f23-say">
+      <span class="f23-w" id="f23-w-en">en</span>
+      <span class="f23-w f23-acc" id="f23-w-tu">tu</span>
+      <span class="f23-w f23-acc" id="f23-w-idioma">idioma.</span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (s) => document.querySelector(s);
+      const HUB = { x: 960, y: 470 };
+      // SHARED GEOMETRY: [id, cx, cy, diameter, distance-to-hub]
+      const AV = [["MA", 560, 300, 104, 434.63], ["JL", 760, 230, 88, 312.41], ["SO", 1180, 220, 96, 333.02], ["PE", 1380, 310, 104, 449.44], ["LU", 1500, 470, 88, 540.0], ["AN", 1390, 640, 100, 462.39], ["CR", 1160, 720, 88, 320.16], ["DI", 760, 720, 96, 320.16], ["RO", 540, 640, 88, 453.1], ["VA", 420, 470, 100, 540.0], ["IS", 320, 250, 72, 676.76], ["TO", 1600, 230, 72, 683.52], ["EL", 1640, 780, 76, 747.33], ["GA", 300, 780, 76, 729.18]];
+      const DMIN = 312.41, DMAX = 747.33;
+
+      // ===== Scene 1a — entrance (0.00–0.24): camera slam onto the hub (zoom-in from blur) =====
+      tl.fromTo("#f23-hub", { scale: 4.2, opacity: 0.35, filter: "blur(18px)" }, { scale: 2.3, opacity: 1, filter: "blur(0px)", duration: 0.24, ease: "expo.out" }, 0.0);
+      tl.fromTo("#f23-shock-a", { scale: 2.4, opacity: 0.9 }, { scale: 7, opacity: 0, duration: 0.62, ease: "power2.out", immediateRender: false }, 0.02);
+      // "tienes": a softer second ping
+      tl.fromTo("#f23-shock-c", { scale: 2.2, opacity: 0.55 }, { scale: 6, opacity: 0, duration: 0.6, ease: "power2.out", immediateRender: false }, 0.19);
+      tl.fromTo("#f23-bloom", { opacity: 0.5, scale: 0.6 }, { opacity: 1, scale: 0.85, duration: 0.08, ease: "power2.out" }, 0.0);
+      tl.fromTo("#f23-bloom", { opacity: 1, scale: 0.85 }, { opacity: 0.5, scale: 0.75, duration: 0.22, ease: "power2.out", immediateRender: false }, 0.08);
+      // camera: slight push that pulls back as the community spreads (ends at identity = handoff)
+      tl.fromTo("#f23-world", { scale: 1.1 }, { scale: 1, duration: 1.9, ease: "power2.inOut" }, 0.2);
+      // wind-up on "una"
+      tl.fromTo("#f23-hub", { scale: 2.3 }, { scale: 2.05, duration: 0.15, ease: "power2.in", immediateRender: false }, 0.6);
+
+      // "tienes" (0.19): the community is already there — a dashed orbit draws around the hub and
+      // 14 faint satellites park on it, tethered by stubs of their lines (radius keeps them clear of the hub)
+      const OPEN = 0.76;
+      const RPARK = (L) => 170 + 0.4 * (L - DMIN);
+      tl.fromTo("#f23-orbit-draw", { strokeDashoffset: 1256.64 }, { strokeDashoffset: 0, duration: 0.41, ease: "power2.inOut" }, 0.19);
+      tl.fromTo("#f23-orbit", { rotation: -24 }, { rotation: 18, duration: 1.1, ease: "none" }, 0.19);
+      tl.fromTo("#f23-orbit", { scale: 1, opacity: 1 }, { scale: 2.6, opacity: 0, duration: 0.55, ease: "power2.out", immediateRender: false }, OPEN);
+      AV.forEach(([n, cx, cy, d, L], i) => {
+        const k = 1 - RPARK(L) / L, kIn = 1 - (RPARK(L) * 0.6) / L;
+        const ts = 0.19 + i * 0.015;
+        tl.fromTo("#f23-av-" + n, { x: (HUB.x - cx) * kIn, y: (HUB.y - cy) * kIn, scale: 0.1, opacity: 0 },
+          { x: (HUB.x - cx) * k, y: (HUB.y - cy) * k, scale: 0.34, opacity: 0.6, duration: 0.36, ease: "power3.out" }, ts);
+        tl.fromTo("#f23-ln-" + n, { strokeDashoffset: L * kIn, opacity: 0 },
+          { strokeDashoffset: L * k, opacity: 0.7, duration: 0.36, ease: "power3.out" }, ts);
+      });
+
+      // ===== Scene 1b — "comunidad" (0.78): pill opens, avatars burst outward =====
+      tl.fromTo("#f23-hub", { scale: 2.05 }, { scale: 1, duration: 0.5, ease: "expo.out", immediateRender: false }, OPEN);
+      tl.fromTo("#f23-pill", { width: 96 }, { width: 460, duration: 0.55, ease: "expo.out" }, OPEN);
+      tl.fromTo("#f23-pill-icon", { opacity: 1, scale: 1 }, { opacity: 0, scale: 0.4, duration: 0.06, ease: "power2.in" }, OPEN);
+      // label grows with the pill (scale tracks the width tween), so it always fits inside and is never clipped
+      tl.fromTo("#f23-pill-text", { opacity: 0, scale: 0.65 }, { opacity: 1, scale: 1, duration: 0.49, ease: "expo.out" }, OPEN + 0.06);
+      tl.fromTo("#f23-shock-b", { scale: 2.1, opacity: 0.6 }, { scale: 8, opacity: 0, duration: 0.9, ease: "power2.out", immediateRender: false }, OPEN);
+      tl.fromTo("#f23-bloom", { opacity: 0.5, scale: 0.75 }, { opacity: 1, scale: 1.15, duration: 0.35, ease: "power2.out", immediateRender: false }, OPEN);
+      tl.fromTo("#f23-bloom", { opacity: 1, scale: 1.15 }, { opacity: 0, scale: 1.3, duration: 1.0, ease: "power1.inOut", immediateRender: false }, OPEN + 0.4);
+
+      // center-outward expansion: each satellite flies from its orbit slot to its place, its line drawing behind it
+      const FLY = 0.85, FLY_EASE = "expo.out";
+      AV.forEach(([n, cx, cy, d, L]) => {
+        const t0 = OPEN + 0.02 + ((L - DMIN) / (DMAX - DMIN)) * 0.06; // near-simultaneous: same-ray neighbours never cross
+        const k = 1 - RPARK(L) / L;
+        const dx = (HUB.x - cx) * k, dy = (HUB.y - cy) * k;
+        tl.fromTo("#f23-av-" + n, { x: dx, y: dy, scale: 0.34 },
+          { x: 0, y: 0, scale: 1, duration: FLY, ease: FLY_EASE, immediateRender: false }, t0);
+        tl.fromTo("#f23-av-" + n, { opacity: 0.6 }, { opacity: 1, duration: 0.12, ease: "none", immediateRender: false }, t0);
+        tl.fromTo("#f23-ln-" + n, { strokeDashoffset: L * k }, { strokeDashoffset: 0, duration: FLY, ease: FLY_EASE, immediateRender: false }, t0);
+        tl.fromTo("#f23-ln-" + n, { opacity: 0.7 }, { opacity: 1, duration: 0.14, ease: "none", immediateRender: false }, t0);
+      });
+
+      // "compañeros" (1.39): the discs settle — a ripple of hellos from the hub outward
+      const bump = (n, t, amp) => {
+        tl.fromTo("#f23-dc-" + n, { scale: 1 }, { scale: amp, duration: 0.11, ease: "power2.out", immediateRender: false }, t);
+        tl.fromTo("#f23-dc-" + n, { scale: amp }, { scale: 1, duration: 0.34, ease: "power3.out", immediateRender: false }, t + 0.11);
+      };
+      const ping = (n, t, to, a) => {
+        tl.fromTo("#f23-pg-" + n, { scale: 1, opacity: a }, { scale: to, opacity: 0, duration: 0.55, ease: "power2.out", immediateRender: false }, t);
+      };
+      AV.forEach(([n, cx, cy, d, L]) => {
+        const t = 1.37 + ((L - DMIN) / (DMAX - DMIN)) * 0.22;
+        bump(n, t, 1.09);
+        ping(n, t, 1.55, 0.55);
+      });
+
+      // ===== Scene 2 — the community talks =====
+      const hubBump = (t) => {
+        tl.fromTo("#f23-hub", { scale: 1 }, { scale: 1.045, duration: 0.09, ease: "power2.out", immediateRender: false }, t);
+        tl.fromTo("#f23-hub", { scale: 1.045 }, { scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, t + 0.09);
+      };
+      const comet = (sel, L, t, dur) => {
+        tl.fromTo(sel, { strokeDashoffset: 130 }, { strokeDashoffset: -L, duration: dur, ease: "power1.in", immediateRender: false }, t);
+      };
+      const Lof = (n) => AV.find((a) => a[0] === n)[4];
+
+      // "están" (2.16): JL — «¡Hoy pedí cita con el huisarts en neerlandés!»
+      const B1 = 2.14;
+      bump("JL", B1, 1.14); ping("JL", B1, 1.7, 0.9);
+      tl.fromTo("#f23-b1", { opacity: 0, scale: 0.4, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "expo.out" }, B1);
+      comet("#f23-ci-JL", Lof("JL"), B1 + 0.06, 0.3);
+      hubBump(B1 + 0.36);
+
+      // "mismo" (3.00): LU — «¿Alguien practica esta tarde?» -> broadcast to everyone
+      const B2 = 2.98;
+      bump("LU", B2, 1.14); ping("LU", B2, 1.7, 0.9);
+      tl.fromTo("#f23-b2", { opacity: 0, scale: 0.4, y: -18 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "expo.out" }, B2);
+      comet("#f23-ci-LU", Lof("LU"), B2 + 0.04, 0.24);
+      hubBump(B2 + 0.28);
+      AV.forEach(([n, cx, cy, d, L]) => {
+        if (n === "LU") return;
+        tl.fromTo("#f23-co-" + n, { strokeDashoffset: 130 }, { strokeDashoffset: -L, duration: 0.34, ease: "power1.out", immediateRender: false }, B2 + 0.26);
+        if (n !== "GA") bump(n, B2 + 0.56, 1.06);
+      });
+
+      // 3.50: GA replies «¡Yo!»
+      const B3 = 3.48;
+      bump("GA", B3, 1.16); ping("GA", B3, 1.8, 0.95);
+      tl.fromTo("#f23-b3", { opacity: 0, scale: 0.3, y: 14 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "expo.out" }, B3);
+      comet("#f23-ci-GA", Lof("GA"), B3 + 0.06, 0.32);
+      hubBump(B3 + 0.4);
+
+      // ===== Scene 3 — "en tu idioma." (4.14 / 4.24 / 4.30), then hold =====
+      tl.fromTo("#f23-w-en", { opacity: 0, y: 46, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, 4.1);
+      tl.fromTo("#f23-w-tu", { opacity: 0, y: 46, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, 4.2);
+      tl.fromTo("#f23-w-idioma", { opacity: 0, scale: 1.3, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.32, ease: "expo.out" }, 4.26);
+
+      tl.set({}, {}, 4.991);
+      window.__timelines["23-comunidad"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://hyperframes.heygen.com/schema/hyperframes.json",
+  "registry": "https://raw.githubusercontent.com/heygen-com/hyperframes/main/registry",
+  "paths": {
+    "blocks": "compositions",
+    "components": "compositions/components",
+    "assets": "assets"
+  },
+  "media": {
+    "autoProxy": true
+  },
+  "authoringSkill": "product-launch-video",
+  "registryItems": [
+    {
+      "name": "whip-pan-cut",
+      "type": "hyperframes:component",
+      "target": "compositions/components/whip-pan-cut.html"
+    },
+    {
+      "name": "zoom-through-transition",
+      "type": "hyperframes:component",
+      "target": "compositions/components/zoom-through-transition.html"
+    },
+    {
+      "name": "headline-slam",
+      "type": "hyperframes:component",
+      "target": "compositions/components/headline-slam.html"
+    },
+    {
+      "name": "shutter-slam",
+      "type": "hyperframes:component",
+      "target": "compositions/components/shutter-slam.html"
+    },
+    {
+      "name": "kinetic-type-swap",
+      "type": "hyperframes:component",
+      "target": "compositions/components/kinetic-type-swap.html"
+    },
+    {
+      "name": "chat-message",
+      "type": "hyperframes:component",
+      "target": "compositions/components/chat-message.html"
+    },
+    {
+      "name": "browser-device-stage",
+      "type": "hyperframes:component",
+      "target": "compositions/components/browser-device-stage.html"
+    },
+    {
+      "name": "device-frame-stage",
+      "type": "hyperframes:component",
+      "target": "compositions/components/device-frame-stage.html"
+    },
+    {
+      "name": "light-sweep-pass",
+      "type": "hyperframes:component",
+      "target": "compositions/components/light-sweep-pass.html"
+    },
+    {
+      "name": "conic-progress-ring",
+      "type": "hyperframes:component",
+      "target": "compositions/components/conic-progress-ring.html"
+    },
+    {
+      "name": "offset-path-traveler",
+      "type": "hyperframes:component",
+      "target": "compositions/components/offset-path-traveler.html"
+    },
+    {
+      "name": "char-slam-explode",
+      "type": "hyperframes:component",
+      "target": "compositions/components/char-slam-explode.html"
+    },
+    {
+      "name": "caption-kinetic-slam",
+      "type": "hyperframes:component",
+      "target": "compositions/components/caption-kinetic-slam.html"
+    },
+    {
+      "name": "parallax-device-dive",
+      "type": "hyperframes:component",
+      "target": "compositions/components/parallax-device-dive.html"
+    }
+  ]
+}
