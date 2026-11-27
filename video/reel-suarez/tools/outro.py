@@ -25,11 +25,11 @@ import base64, json, os, subprocess, sys, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, ".raw", "outro")
-TEXT = ("Recibe el PDF de nuestro método y comienza a hablar neerlandés ya. Este Black Friday quedan las últimas plazas: "
-        "comenta QUIERO y te lo enviamos por mensaje.")   # (v14: «el PDF», as on screen)
+TEXT = ("Imagínate pillando hasta los chistes en neerlandés… y sintiéndote, por fin, en casa. ¡Este Black Friday quedan "
+        "las últimas plazas! Comenta QUIERO y te enviamos el PDF ahora mismo.")   # (v17: more emotion — the result first, then the urgency)
 VOICE = "LP0ZBLgGaLqbDU1l9PDX"         # «Yair - Narration Spanish» (v7; v6 used «Nawar Def»)
 MODEL = "eleven_v4"                    # (v7.2; eleven_multilingual_v2 before: it sounded flat)
-SETTINGS = {"stability": 0.5, "similarity_boost": 0.8}
+SETTINGS = {"stability": 0.35, "similarity_boost": 0.8}   # (v17: 0.35, more expressive)
 TEMPO = 1.1                            # (v10) the take played a touch quicker (pitch kept): light, never heavy
 
 

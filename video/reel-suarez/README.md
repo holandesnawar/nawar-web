@@ -29,9 +29,9 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
   la portada recta delante y «Lo que incluye» y «Te lo han explicado en el idioma equivocado» abiertas detrás, giradas a
   los lados (`METODO_PAGES`); con aire debajo, la cinta azul clara (clases en directo cada semana, desde el español,
   autoestudio incluido, 16 semanas, dudas en menos de 24 h, certificado) y, con su propio espacio, el botón «Comenta
-  QUIERO / y te lo enviamos por mensaje», sin sombra y sin escribir nada. Voz de Yair (`TEMPO` 1,1): «Recibe el PDF de
-  nuestro método y comienza a hablar neerlandés ya. Este Black Friday quedan las últimas plazas: comenta QUIERO y te lo
-  enviamos por mensaje.» (Las versiones anteriores del cierre están en git.)
+  QUIERO / y te lo enviamos por mensaje», sin sombra y sin escribir nada. Voz de Yair (`TEMPO` 1,1), con más emoción (v17: estabilidad 0,35): «Imagínate pillando hasta los chistes en
+  neerlandés… y sintiéndote, por fin, en casa. ¡Este Black Friday quedan las últimas plazas! Comenta QUIERO y te enviamos
+  el PDF ahora mismo.» (Las versiones anteriores del cierre están en git.)
 - **Subtítulos (v7: abajo, como en el segundo reel, de pie sobre y = 1500):** por frases cortas, sincronizados palabra a palabra (ElevenLabs Scribe):
   - el holandés grande y en mayúsculas, todo al mismo tamaño y en dos líneas como mucho, con la palabra que se está
     diciendo en amarillo; los cortes de línea van marcados con «|» en `PHRASES`, para no dejar una palabra sola ni
@@ -64,7 +64,7 @@ con el título arriba y subtítulos en holandés y en español. Esta vez es el a
 ```bash
 bash tools/fetch_assets.sh
 npx hyperframes check
-npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v16.mp4
+npx hyperframes render . --quality high --fps 25 -o renders/reel-suarez-v17.mp4
 ```
 
 Para cambiar una traducción o cortar una frase de otra manera, edita `PHRASES` en `tools/subs.py` y ejecuta

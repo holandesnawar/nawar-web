@@ -51,7 +51,7 @@
     .o-sub { font-weight: 600; font-size: 28px; color: #E0F2FF; white-space: nowrap; }
 
   </style>
-  <div id="o-root" data-composition-id="outro" data-width="1080" data-height="1920" data-duration="11.01">
+  <div id="o-root" data-composition-id="outro" data-width="1080" data-height="1920" data-duration="13.34">
 
     <div id="o-ground" class="o-full"><div class="o-luz1"></div><div class="o-luz2"></div><div class="o-dots"></div></div>
     <div id="o-tab" class="o-row"><div class="o-tab"><i id="o-dot"></i><span>BLACK FRIDAY · ÚLTIMAS PLAZAS</span></div></div>
@@ -79,15 +79,15 @@
       tl.fromTo(["#o-s1", "#o-s2", "#o-s3"], { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.3);
       tl.fromTo("#o-s2", { x: 140, rotation: 0 }, { x: 0, rotation: -11, duration: 0.5, ease: "back.out(1.4)" }, 0.55);
       tl.fromTo("#o-s3", { x: -200, rotation: 0 }, { x: 0, rotation: 11, duration: 0.5, ease: "back.out(1.4)" }, 0.55);
-      tl.fromTo("#o-s1", { scale: 1 }, { scale: 1.04, duration: 11.01 - 0.55 - 0.5, ease: "sine.inOut" }, 0.55 + 0.5);
+      tl.fromTo("#o-s1", { scale: 1 }, { scale: 1.04, duration: 13.34 - 0.55 - 0.5, ease: "sine.inOut" }, 0.55 + 0.5);
       tl.fromTo("#o-shine", { x: 0 }, { x: 900, duration: 0.9, ease: "power2.inOut" }, 0.55 + 0.4);
-      tl.fromTo("#o-shine", { x: 0 }, { x: 900, duration: 0.9, ease: "power2.inOut", immediateRender: false }, 9.81);
+      tl.fromTo("#o-shine", { x: 0 }, { x: 900, duration: 0.9, ease: "power2.inOut", immediateRender: false }, 12.14);
       tl.fromTo("#o-band", { x: -1120 }, { x: 0, duration: 0.50, ease: "power3.out" }, 0.46);
-      tl.fromTo("#o-track", { xPercent: 0 }, { xPercent: -25, duration: 11.01, ease: "none" }, 0);
+      tl.fromTo("#o-track", { xPercent: 0 }, { xPercent: -25, duration: 13.34, ease: "none" }, 0);
       tl.fromTo("#o-cta", { opacity: 0, y: 46, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.5)" }, 0.7);
-      // the tab pulses on «Black Friday»; the button on 7.778
-      tl.fromTo("#o-tab", { scale: 1 }, { scale: 1.08, duration: 0.18, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 4.938);
-      tl.fromTo("#o-cta .o-btn", { scale: 1 }, { scale: 1.08, duration: 0.18, ease: "power2.out", yoyo: true, repeat: 1 }, 7.778);
+      // the tab pulses on «Black Friday»; the button on 9.378
+      tl.fromTo("#o-tab", { scale: 1 }, { scale: 1.08, duration: 0.18, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 6.611);
+      tl.fromTo("#o-cta .o-btn", { scale: 1 }, { scale: 1.08, duration: 0.18, ease: "power2.out", yoyo: true, repeat: 1 }, 9.378);
 
       tl.set("#o-dot", { opacity: 1 }, 0.600);
       tl.set("#o-dot", { opacity: 0.25 }, 1.000);
@@ -116,6 +116,11 @@
       tl.set("#o-dot", { opacity: 1 }, 10.200);
       tl.set("#o-dot", { opacity: 0.25 }, 10.600);
       tl.set("#o-dot", { opacity: 1 }, 11.000);
+      tl.set("#o-dot", { opacity: 0.25 }, 11.400);
+      tl.set("#o-dot", { opacity: 1 }, 11.800);
+      tl.set("#o-dot", { opacity: 0.25 }, 12.200);
+      tl.set("#o-dot", { opacity: 1 }, 12.600);
+      tl.set("#o-dot", { opacity: 0.25 }, 13.000);
       window.__timelines["outro"] = tl;
     })();
   </script>
